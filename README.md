@@ -7,25 +7,6 @@
 > 你们当中很多人都知道程序员的美德，那就是懒惰、急躁以及傲慢。——Larry Wall
 
 * [在线阅读](http://mlm.apachecn.org)
-* [在线阅读（Gitee）](https://apachecn.gitee.io/ml-mastery-zh/)
-* [ApacheCN 机器学习交流群 724187166](http://shang.qq.com/wpa/qunwpa?idkey=51040bbd0bf7d0efbfa7256a0331d912a2055a906c324d52b02371d06f3c9878)
-* [ApacheCN 学习资源](http://www.apachecn.org/)
-
-## 目录
-
-+   [应用机器学习](docs/appml/README.md)
-+   [Keras](docs/keras/README.md)
-+   [NLP](docs/nlp/README.md)
-+   [深度学习时间序列](docs/dlts/README.md)
-+   [线性代数](docs/linalg/README.md)
-+   [LSTM](docs/lstm/README.md)
-+   [机器学习算法](docs/algo/README.md)
-+   [机器学习入门](docs/start/README.md)
-+   [Sklearn](docs/sklearn/README.md)
-+   [统计学](docs/stat/README.md)
-+   [时间序列入门](docs/ts/README.md)
-+   [XGBoost](docs/xgboost/README.md)
-    
 ## 负责人
 
 * [mooker](https://github.com/ElmaDavies): 1306014226
@@ -49,14 +30,6 @@ docker run -tid -p <port>:80 apachecn0/ml-mastery-zh
 # 访问 http://localhost:{port} 查看文档
 ```
 
-### PYPI
-
-```
-pip install ml-mastery-zh
-ml-mastery-zh <port>
-# 访问 http://localhost:{port} 查看文档
-```
-
 ### NPM
 
 ```
@@ -64,10 +37,6 @@ npm install -g ml-mastery-zh
 ml-mastery-zh <port>
 # 访问 http://localhost:{port} 查看文档
 ```
-
-## 贡献指南
-
-为了不断改进翻译质量，我们特此启动了【翻译、校对、笔记整理活动】，开设了多个校对项目。贡献者校对一章之后可以领取千字2\~4元的奖励。进行中的校对活动请见[活动列表](https://home.apachecn.org/#/docs/activity/docs-activity)。更多详情请联系飞龙（Q562826179，V:wizardforcel）。
 
 ## DOCX：开放共享科研记录行动倡议
 
