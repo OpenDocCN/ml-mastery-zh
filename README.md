@@ -6,7 +6,7 @@
 >
 > 你们当中很多人都知道程序员的美德，那就是懒惰、急躁以及傲慢。——Larry Wall
 
-* [在线阅读](http://mlm.apachecn.org)
+* [在线阅读](http://mlm.flygon.net)
 ## 负责人
 
 * [mooker](https://github.com/ElmaDavies): 1306014226
