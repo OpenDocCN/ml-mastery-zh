@@ -75,11 +75,11 @@ ml-mastery-zh <port>
 
 希望大家了解这个倡议，把这个倡议与自己的兴趣点结合，做点力所能及的事情。每个人的微小的贡献，汇聚在一起就是整个开源生态。
 
-## 赞助我们
+## 赞助我
 
 组织：
 
-![Donate](http://data.apachecn.org/img/about/donate.jpg)
+![Donate](https://img-blog.csdnimg.cn/20200112005920729.png)
 
 贡献者：
 
