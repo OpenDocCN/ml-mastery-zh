@@ -1,6 +1,6 @@
 # Keras 深度学习模型中的丢弃正则化
 
-> 原文： [https://machinelearningmastery.com/dropout-regularization-deep-learning-models-keras/](https://machinelearningmastery.com/dropout-regularization-deep-learning-models-keras/)
+> 原文： [`machinelearningmastery.com/dropout-regularization-deep-learning-models-keras/`](https://machinelearningmastery.com/dropout-regularization-deep-learning-models-keras/)
 
 神经网络和深度学习模型的简单而强大的正则化技术是 dropout。
 

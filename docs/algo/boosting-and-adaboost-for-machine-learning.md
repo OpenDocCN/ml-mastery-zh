@@ -1,6 +1,6 @@
 # 机器学习的提升和 AdaBoost
 
-> 原文： [https://machinelearningmastery.com/boosting-and-adaboost-for-machine-learning/](https://machinelearningmastery.com/boosting-and-adaboost-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/boosting-and-adaboost-for-machine-learning/`](https://machinelearningmastery.com/boosting-and-adaboost-for-machine-learning/)
 
 Boosting 是一种集合技术，试图从许多弱分类器中创建一个强分类器。
 
@@ -129,7 +129,7 @@ w = w * exp（阶段*恐怖）
 以下是一些从机器学习角度描述 AdaBoost 的机器学习文本。
 
 *   [统计学习简介：在 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) 中的应用，第 321 页
-*   [统计学习要素：数据挖掘，推理和预测](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)，第 10 章
+*   [统计学习要素：数据挖掘，推理和预测](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)，第十章
 *   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，第 203 页，第 389 页
 
 下面是一些关于该方法的开创性和良好的概述研究文章，如果您希望深入研究该方法的理论基础，可能会有用：

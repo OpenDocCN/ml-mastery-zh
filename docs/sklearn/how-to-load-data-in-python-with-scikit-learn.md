@@ -1,6 +1,6 @@
 # 如何使用 Python 和 Scikit-Learn 加载数据
 
-> 原文： [https://machinelearningmastery.com/how-to-load-data-in-python-with-scikit-learn/](https://machinelearningmastery.com/how-to-load-data-in-python-with-scikit-learn/)
+> 原文： [`machinelearningmastery.com/how-to-load-data-in-python-with-scikit-learn/`](https://machinelearningmastery.com/how-to-load-data-in-python-with-scikit-learn/)
 
 在构建机器学习模型之前，需要将数据加载到内存中。
 
@@ -8,7 +8,7 @@
 
 *   **更新 March / 2018** ：添加了备用链接以下载数据集，因为原始图像已被删除。
 
-[![load csv data](img/f608f7298ea72f4a851f20c7d2b63460.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/07/load-csv-data.jpg)
+![load csv data](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/07/load-csv-data.jpg)
 
 加载 CSV 数据
 照片由 [Jim Makos](https://www.flickr.com/photos/jim-makos/13775073055) 拍摄，保留一些权利

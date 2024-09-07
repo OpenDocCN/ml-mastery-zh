@@ -1,6 +1,6 @@
 # 在机器学习中学习线性代数的主要资源
 
-> 原文： [https://machinelearningmastery.com/resources-for-linear-algebra-in-machine-learning/](https://machinelearningmastery.com/resources-for-linear-algebra-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/resources-for-linear-algebra-in-machine-learning/`](https://machinelearningmastery.com/resources-for-linear-algebra-in-machine-learning/)
 
 ### 如何获得机器学习的线性代数帮助？
 
@@ -59,7 +59,7 @@
 
 我推荐的一些关于线性代数的入门教材包括：
 
-[![Amazon Image](img/3cc8a497a530923ebb0e1ef181f6ebca.jpg)](http://www.amazon.com/dp/0980232775?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0980232775?tag=inspiredalgor-20)
 
 *   [线性代数简介](http://amzn.to/2j2J0g4)，第五版，Gilbert Strang，2016。
 *   [Linear Algebra Done Right](http://amzn.to/2BGuEqI) ，第三版，2015 年。
@@ -67,14 +67,14 @@
 
 我推荐的一些更高级的教科书包括：
 
-[![Amazon Image](img/b0247dafd69e30cc6ef47f677b4be225.jpg)](http://www.amazon.com/dp/1421407949?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1421407949?tag=inspiredalgor-20)
 
 *   [Matrix Computations](http://amzn.to/2B9xnLD) ，Gene Golub 和 Charles Van Loan，2012。
 *   [数值线性代数](http://amzn.to/2kjEF4S)，Lloyd Trefethen 和 David Bau 1997。
 
 我还推荐一本关于多元统计的好教科书，它是线性代数和数值统计方法的交集。一些好的入门教材包括：
 
-[![Amazon Image](img/38733a50929fef3faefc1ce0ca977dc5.jpg)](http://www.amazon.com/dp/8120345878?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/8120345878?tag=inspiredalgor-20)
 
 *   [应用多变量统计分析](http://amzn.to/2AUcEc5)，Richard Johnson 和 Dean Wichern，2012 年。
 *   [应用多变量统计分析](http://amzn.to/2AWIViz)，Wolfgang Karl Hardle 和 Leopold Simar，2015 年。

@@ -14,7 +14,7 @@
 
 我们开始吧。
 
-[![Caret package in R](img/3536c9556d60967e606a9a2b78ffeeed.png)](https://machinelearningmastery.com/wp-content/uploads/2014/09/Caret-package-in-R.png)
+![Caret package in R](https://machinelearningmastery.com/wp-content/uploads/2014/09/Caret-package-in-R.png)
 
 从 caret 主页将 caret 包放入 R，
 
@@ -149,4 +149,4 @@ print(model)
 
 这些方法是:数据分割、自举、k 倍交叉验证、重复 k 倍交叉验证和遗漏交叉验证。
 
-您可以在[caret 包主页](http://caret.r-forge.r-project.org/)和[caret 包 CRAN 页面](https://cran.r-project.org/web/packages/caret/index.html)了解更多关于 R caret 包的信息。如果你想掌握 caret 包，我会推荐包的作者写的书，书名是:[应用预测建模](https://amzn.to/3iFPHhq)，特别是关于过拟合模型的第 4 章。
+您可以在[caret 包主页](http://caret.r-forge.r-project.org/)和[caret 包 CRAN 页面](https://cran.r-project.org/web/packages/caret/index.html)了解更多关于 R caret 包的信息。如果你想掌握 caret 包，我会推荐包的作者写的书，书名是:[应用预测建模](https://amzn.to/3iFPHhq)，特别是关于过拟合模型的第四章。

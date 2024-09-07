@@ -58,7 +58,7 @@ y = f(x)
 
 具体来说，我们想要一个我们容易理解和绘制的函数。这将有助于设定模型应该生成什么的预期，并有助于使用生成的示例的视觉检查来了解它们的质量。
 
-我们将使用一个简单的功能*x^2*；也就是说，函数将返回输入的平方。你可能还记得高中代数中的这个函数，它是 *u* 形函数。
+我们将使用一个简单的功能*x²*；也就是说，函数将返回输入的平方。你可能还记得高中代数中的这个函数，它是 *u* 形函数。
 
 我们可以用 Python 定义函数如下:
 
@@ -73,7 +73,7 @@ def calculate(x):
 下面列出了完整的示例。
 
 ```py
-# demonstrate simple x^2 function
+# demonstrate simple x² function
 from matplotlib import pyplot
 
 # simple function
@@ -93,11 +93,11 @@ pyplot.show()
 
 我们可以看到，远离 0.0 的值会导致更大的输出值，而接近零的值会导致更小的输出值，并且这种行为在零附近是对称的。
 
-这就是众所周知的 X^2 一维函数的 u 形图。
+这就是众所周知的 X² 一维函数的 u 形图。
 
-![Plot of inputs vs. outputs for X^2 function.](img/0f96d13a6487083636a8688e043f70c8.png)
+![Plot of inputs vs. outputs for X² function.](img/0f96d13a6487083636a8688e043f70c8.png)
 
-X^2 函数的输入与输出图。
+X² 函数的输入与输出图。
 
 我们可以从函数中生成随机样本或点。
 
@@ -110,16 +110,16 @@ X^2 函数的输入与输出图。
 首先，我们生成 0 到 1 之间的均匀随机值，然后将它们移动到-0.5 到 0.5 的范围内。然后，我们计算每个随机生成的输入值的输出值，并将这些数组组合成一个具有 *n* 行(100)和两列的单个 NumPy 数组。
 
 ```py
-# example of generating random samples from X^2
+# example of generating random samples from X²
 from numpy.random import rand
 from numpy import hstack
 from matplotlib import pyplot
 
-# generate randoms sample from x^2
+# generate randoms sample from x²
 def generate_samples(n=100):
 	# generate random inputs in [-0.5, 0.5]
 	X1 = rand(n) - 0.5
-	# generate outputs X^2 (quadratic)
+	# generate outputs X² (quadratic)
 	X2 = X1 * X1
 	# stack arrays
 	X1 = X1.reshape(n, 1)
@@ -135,13 +135,13 @@ pyplot.show()
 
 运行该示例会生成 100 个随机输入及其计算输出，并将样本绘制为散点图，显示熟悉的 u 形。
 
-![Plot of randomly generated sample of inputs vs. calculated outputs for X^2 function.](img/af2296a640ef1c29af3626fcc2ce6526.png)
+![Plot of randomly generated sample of inputs vs. calculated outputs for X² function.](img/af2296a640ef1c29af3626fcc2ce6526.png)
 
-X^2 函数随机生成的输入样本与计算输出的关系图。
+X² 函数随机生成的输入样本与计算输出的关系图。
 
 我们可以使用这个函数作为为我们的鉴别器函数生成真实样本的起点。具体来说，一个样本由一个包含两个元素的向量组成，一个元素用于输入，一个元素用于一维函数的输出。
 
-我们还可以想象发电机模型如何产生新的样本，我们可以绘制出来，并与 X^2 函数的预期 u 形进行比较。具体来说，生成器将输出一个包含两个元素的向量:一个用于输入，一个用于一维函数的输出。
+我们还可以想象发电机模型如何产生新的样本，我们可以绘制出来，并与 X² 函数的预期 u 形进行比较。具体来说，生成器将输出一个包含两个元素的向量:一个用于输入，一个用于一维函数的输出。
 
 ## 定义鉴别器模型
 
@@ -235,7 +235,7 @@ GAN 中鉴别器模型的绘制
 def generate_real_samples(n):
 	# generate inputs in [-0.5, 0.5]
 	X1 = rand(n) - 0.5
-	# generate outputs X^2
+	# generate outputs X²
 	X2 = X1 * X1
 	# stack arrays
 	X1 = X1.reshape(n, 1)
@@ -323,7 +323,7 @@ def define_discriminator(n_inputs=2):
 def generate_real_samples(n):
 	# generate inputs in [-0.5, 0.5]
 	X1 = rand(n) - 0.5
-	# generate outputs X^2
+	# generate outputs X²
 	X2 = X1 * X1
 	# stack arrays
 	X1 = X1.reshape(n, 1)
@@ -392,7 +392,7 @@ train_discriminator(model)
 
 下一步是定义生成器模型。
 
-生成器模型从潜在空间中获取一个点作为输入，并生成一个新的样本，例如一个包含我们函数的输入和输出元素的向量，例如 x 和 x^2.
+生成器模型从潜在空间中获取一个点作为输入，并生成一个新的样本，例如一个包含我们函数的输入和输出元素的向量，例如 x 和 x².
 
 潜变量是隐藏的或未被观察到的变量，潜空间是这些变量的多维向量空间。我们可以定义问题潜在空间的大小以及潜在空间中变量的形状或分布。
 
@@ -401,7 +401,7 @@ train_discriminator(model)
 我们将定义一个五维的小潜在空间，并使用 GAN 文献中的标准方法，对潜在空间中的每个变量使用高斯分布。我们将通过从标准高斯分布中提取随机数来生成新的输入，即平均值为零，标准偏差为 1。
 
 *   **输入**:潜在空间中的点，例如高斯随机数的五元素向量。
-*   **输出**:表示我们的函数(x 和 x^2).)的生成样本的二元向量
+*   **输出**:表示我们的函数(x 和 x²).)的生成样本的二元向量
 
 生成器模型将像鉴别器模型一样小。
 
@@ -758,7 +758,7 @@ def train(g_model, d_model, gan_model, latent_dim, n_epochs=10000, n_batch=128):
 def generate_real_samples(n):
 	# generate inputs in [-0.5, 0.5]
 	X1 = rand(n) - 0.5
-	# generate outputs X^2
+	# generate outputs X²
 	X2 = X1 * X1
 	# stack arrays
 	X1 = X1.reshape(n, 1)
@@ -923,7 +923,7 @@ def define_gan(generator, discriminator):
 def generate_real_samples(n):
 	# generate inputs in [-0.5, 0.5]
 	X1 = rand(n) - 0.5
-	# generate outputs X^2
+	# generate outputs X²
 	X2 = X1 * X1
 	# stack arrays
 	X1 = X1.reshape(n, 1)
@@ -1029,7 +1029,7 @@ train(generator, discriminator, gan_model, latent_dim)
 
 第二个图显示了经过 10，000 次迭代后真实(红色)与虚假(蓝色)的对比。
 
-在这里，我们可以看到生成器模型在生成似是而非的样本方面做得很合理，输入值在[-0.5 和 0.5]之间的正确域中，输出值显示出 X^2 关系，或者接近这种关系。
+在这里，我们可以看到生成器模型在生成似是而非的样本方面做得很合理，输入值在[-0.5 和 0.5]之间的正确域中，输出值显示出 X² 关系，或者接近这种关系。
 
 ![Scatter Plot of Real and Generated Examples for the Target Function After 10,000 Iterations.](img/02939b4088cc394fb76dc60cc2c3a378.png)
 

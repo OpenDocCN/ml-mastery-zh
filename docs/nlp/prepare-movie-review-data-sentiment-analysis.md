@@ -1,6 +1,6 @@
 # 如何为情感分析准备电影评论数据
 
-> 原文： [https://machinelearningmastery.com/prepare-movie-review-data-sentiment-analysis/](https://machinelearningmastery.com/prepare-movie-review-data-sentiment-analysis/)
+> 原文： [`machinelearningmastery.com/prepare-movie-review-data-sentiment-analysis/`](https://machinelearningmastery.com/prepare-movie-review-data-sentiment-analysis/)
 
 每个问题的文本数据准备都不同。
 
@@ -747,7 +747,7 @@ save_list(positive_lines, 'positive.txt')
 ### 蜜蜂
 
 *   [nltk.tokenize 包 API](http://www.nltk.org/api/nltk.tokenize.html)
-*   [第 2 章，访问文本语料库和词汇资源](http://www.nltk.org/book/ch02.html)
+*   [第二章，访问文本语料库和词汇资源](http://www.nltk.org/book/ch02.html)
 *   [os API 其他操作系统接口](https://docs.python.org/3/library/os.html)
 *   [集合 API - 容器数据类型](https://docs.python.org/3/library/collections.html)
 

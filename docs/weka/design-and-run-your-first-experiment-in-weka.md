@@ -14,7 +14,7 @@ Weka 的一个强大功能是 Weka 实验员界面。与用于过滤数据和尝
 
 **用我的新书[用 Weka](https://machinelearningmastery.com/machine-learning-mastery-weka/) 启动你的项目**，包括*的分步教程*和清晰的*截图*所有示例。
 
-[![First Experiment](img/424292e3a62fda34ca2fa595d41340c2.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/first-experiment.jpg)
+![First Experiment](https://machinelearningmastery.com/wp-content/uploads/2014/02/first-experiment.jpg)
 
 第一次实验
 图片由 [mhofstrand](https://www.flickr.com/photos/mhofstrand/25972084/sizes/o/) 提供，保留部分权利
@@ -31,7 +31,7 @@ Weka 需要 Java。您可能已经安装了 Java，如果没有，下载页面�
 
 启动 Weka。这可能需要在程序启动器中找到它，或者双击 weka.jar 文件。这将启动 Weka 图形用户界面选择器。
 
-[![Weka GUI Chooser](img/fba124929a0da99095d1a3de3149684b.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-loader.png)
+![Weka GUI Chooser](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-loader.png)
 
 Weka 图形用户界面选择器
 
@@ -45,7 +45,7 @@ Weka Experimenter 允许您设计自己的在数据集上运行算法的实验�
 
 点击 ***新建*** 按钮创建新的实验配置。
 
-[![Weka Experimenter](img/e62972aa108580fd3e72907a41627ccb.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.36.21-AM.png)
+![Weka Experimenter](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.36.21-AM.png)
 
 Weka 实验者
 开始新的实验
@@ -89,7 +89,7 @@ OneR 就像是我们第二简单的算法。它选择一个与类值最相关的
 
 J48 是决策树算法。它是 C4.8 算法在 Java 中的实现(“J”代表 Java，48 代表 C4.8)。C4.8 算法是著名的 C4.5 算法的一个小扩展，是一个非常强大的预测算法。
 
-[![Weka Experimenter](img/7b8df0cf704edb9df582877210c02990.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.36.56-AM.png)
+![Weka Experimenter](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.36.56-AM.png)
 
 Weka 实验者
 配置实验
@@ -104,7 +104,7 @@ Weka 实验者
 
 点击大的“ ***【开始】*** ”按钮开始实验，观看“日志”和“状态”部分，关注实验进展。
 
-[![Weka Experimenter](img/838de83061966acc67ad8cb6bb1230e4.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.37.02-AM.png)
+![Weka Experimenter](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.37.02-AM.png)
 
 Weka 实验者
 运行实验
@@ -117,7 +117,7 @@ Weka 实验者
 
  **这将打开实验结果分析面板。
 
-[![Weka Experimenter](img/d8f509fb896588af496fc915c4d86a14.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.37.09-AM.png)
+![Weka Experimenter](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.37.09-AM.png)
 
 Weka 实验者
 加载实验结果
@@ -131,7 +131,7 @@ Weka 实验者
 1.  点击“ ***”选择*** ”按钮为“ ***【测试基地】*** ”并选择“ ***【排名】*** ”。
 2.  现在点击 ***执行测试*** 按钮。
 
-[![Weka Experimenter](img/2b96142159d9bdf491b21cafee17acc0.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.37.15-AM.png)
+![Weka Experimenter](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.37.15-AM.png)
 
 Weka 实验者
 对实验结果中的算法进行排序
@@ -148,7 +148,7 @@ Weka 实验者
 2.  单击“ ***【显示标准】旁边的复选框。偏差*** ”。
 3.  现在点击 ***执行测试*** 按钮。
 
-[![Weka Experimenter](img/90c7556c860cdd06f527faa68827a996.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.42.45-AM.png)
+![Weka Experimenter](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.42.45-AM.png)
 
 Weka 实验者
 算法准确率与零相比
@@ -162,7 +162,7 @@ J48 的分数高于 OneR 的分数，所以接下来我们想看看这两个准�
 1.  点击 ***【测试基地】*** 的 ***选择*** 按钮，在列表中选择 ***J48*** 算法，点击 ***选择*** 按钮。
 2.  现在点击 ***执行测试*** 按钮。
 
-[![Weka Experimenter](img/8be7ef0230cc8606d58e0bb6f228e186.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.37.46-AM.png)
+![Weka Experimenter](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-19-at-5.37.46-AM.png)
 
 Weka 实验者
 算法准确率对比 J48

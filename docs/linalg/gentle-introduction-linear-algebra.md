@@ -1,6 +1,6 @@
 # 线性代数的温和介绍
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-linear-algebra/](https://machinelearningmastery.com/gentle-introduction-linear-algebra/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-linear-algebra/`](https://machinelearningmastery.com/gentle-introduction-linear-algebra/)
 
 ### 什么是线性代数？
 

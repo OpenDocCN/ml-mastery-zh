@@ -1,6 +1,6 @@
 # 如何在评估机器学习算法时选择正确的测试选项
 
-> 原文： [https://machinelearningmastery.com/how-to-choose-the-right-test-options-when-evaluating-machine-learning-algorithms/](https://machinelearningmastery.com/how-to-choose-the-right-test-options-when-evaluating-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/how-to-choose-the-right-test-options-when-evaluating-machine-learning-algorithms/`](https://machinelearningmastery.com/how-to-choose-the-right-test-options-when-evaluating-machine-learning-algorithms/)
 
 当[评估机器学习算法](http://machinelearningmastery.com/how-to-evaluate-machine-learning-algorithms/ "How to Evaluate Machine Learning Algorithms")时使用的测试选项可能意味着过度学习，平庸的结果和可用的最先进结果之间的差异，您可以自信地从屋顶上呼喊（您真的觉得有时这样做）。
 
@@ -10,7 +10,7 @@
 
 选择正确的测试选项的困难的根源是随机性。大多数（几乎所有）机器学习算法都以某种方式使用随机性。随机性可以在算法中是明确的，或者可以在选择用于训练算法的数据的样本中。
 
-[![Randomness](img/7fdef373b950726d311b892d6d8c33fb.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/randomness.jpg)
+![Randomness](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/randomness.jpg)
 
 随机性
 摄影： [afoncubierta](http://www.flickr.com/photos/afoncubierta/12020857005/sizes/l/) ，保留一些权利
@@ -45,7 +45,7 @@
 
 我们模型的平均表现为 87.5，标准偏差约为 0.85。
 
-[![Coin Toss](img/57a54ab84255096383635723c7b7e95b.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/coin-toss.jpg)
+![Coin Toss](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/coin-toss.jpg)
 
 硬币折腾
 照片由 [ICMA 照片](http://www.flickr.com/photos/icma/3635981474/sizes/l/)，保留一些权利

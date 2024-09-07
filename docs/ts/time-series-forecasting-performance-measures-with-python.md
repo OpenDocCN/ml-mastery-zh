@@ -1,6 +1,6 @@
 # 将 Python 用于时间序列预测表现测量
 
-> 原文： [https://machinelearningmastery.com/time-series-forecasting-performance-measures-with-python/](https://machinelearningmastery.com/time-series-forecasting-performance-measures-with-python/)
+> 原文： [`machinelearningmastery.com/time-series-forecasting-performance-measures-with-python/`](https://machinelearningmastery.com/time-series-forecasting-performance-measures-with-python/)
 
 时间序列预测表现度量提供了做出预测的预测模型的技能和能力的总结。
 
@@ -119,7 +119,7 @@ MAE: 0.140000
 非常大或异常的预测误差是平方的，这反过来又具有拖动平方预测误差的平均值的效果，导致更大的均方误差分数。实际上，得分会给那些做出大错误预测的模型带来更差的表现。
 
 ```py
-mean_squared_error = mean(forecast_error^2)
+mean_squared_error = mean(forecast_error²)
 ```
 
 我们可以使用 scikit-learn 中的 [mean_squared_error（）](http://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html)函数来计算预测列表的均方误差。以下示例演示了此功能。

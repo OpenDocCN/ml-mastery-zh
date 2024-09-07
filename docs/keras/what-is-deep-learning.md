@@ -1,6 +1,6 @@
 # 什么是深度学习？
 
-> 原文： [https://machinelearningmastery.com/what-is-deep-learning/](https://machinelearningmastery.com/what-is-deep-learning/)
+> 原文： [`machinelearningmastery.com/what-is-deep-learning/`](https://machinelearningmastery.com/what-is-deep-learning/)
 
 > 校对：[linmeishang](https://github.com/linmeishang)
 

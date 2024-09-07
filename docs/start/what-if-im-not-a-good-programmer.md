@@ -1,6 +1,6 @@
 # 如果我不是一个优秀的程序员怎么办？
 
-> 原文： [https://machinelearningmastery.com/what-if-im-not-a-good-programmer/](https://machinelearningmastery.com/what-if-im-not-a-good-programmer/)
+> 原文： [`machinelearningmastery.com/what-if-im-not-a-good-programmer/`](https://machinelearningmastery.com/what-if-im-not-a-good-programmer/)
 
 编程是机器学习的一部分，但机器学习比编程要大得多。
 

@@ -1,6 +1,6 @@
 # 如何在 Python 中从零开始编写 T 检验
 
-> 原文： [https://machinelearningmastery.com/how-to-code-the-students-t-test-from-scratch-in-python/](https://machinelearningmastery.com/how-to-code-the-students-t-test-from-scratch-in-python/)
+> 原文： [`machinelearningmastery.com/how-to-code-the-students-t-test-from-scratch-in-python/`](https://machinelearningmastery.com/how-to-code-the-students-t-test-from-scratch-in-python/)
 
 也许最广泛使用的统计假设检验之一是 T 检验。
 
@@ -87,7 +87,7 @@ t = (mean(X1) - mean(X2)) / sed
 平均值之间差异的标准误差可以计算如下：
 
 ```py
-sed = sqrt(se1^2 + se2^2)
+sed = sqrt(se1² + se2²)
 ```
 
 其中`se1`和`se2`是第一和第二数据集的标准误差。
@@ -373,7 +373,7 @@ sed = sd / sqrt(n)
 `sd`的计算首先需要计算样本之间的平方差之和：
 
 ```py
-d1 = sum (X1[i] - X2[i])^2 for i in n
+d1 = sum (X1[i] - X2[i])² for i in n
 ```
 
 它还需要样本之间（非平方）差异的总和：

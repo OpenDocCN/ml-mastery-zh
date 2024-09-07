@@ -1,6 +1,6 @@
 # 机器学习中的装袋和随机森林集成算法
 
-> 原文： [https://machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/](https://machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/`](https://machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/)
 
 随机森林是最流行和最强大的机器学习算法之一。它是一种称为 Bootstrap Aggregation 或 bagging 的集成机器学习算法。
 
@@ -123,9 +123,9 @@ Bagging 是 Bootstrap 程序应用于高方差机器学习算法，通常是决�
 
 套袋是一种简单的技术，在大多数介绍性机器学习文本中都有介绍。下面列出了一些示例。
 
-*   [统计学习简介：在 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) 中的应用，第 8 章。
-*   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，第 8 章和第 14 章。
-*   [统计学习要素：数据挖掘，推理和预测](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)，第 15 章
+*   [统计学习简介：在 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) 中的应用，第八章。
+*   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，第八章和第十四章。
+*   [统计学习要素：数据挖掘，推理和预测](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)，第十五章
 
 ## 摘要
 

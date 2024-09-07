@@ -1,6 +1,6 @@
 # 研究对您来说很重要的机器学习问题
 
-> 原文： [https://machinelearningmastery.com/work-on-machine-learning-problems-that-matter-to-you/](https://machinelearningmastery.com/work-on-machine-learning-problems-that-matter-to-you/)
+> 原文： [`machinelearningmastery.com/work-on-machine-learning-problems-that-matter-to-you/`](https://machinelearningmastery.com/work-on-machine-learning-problems-that-matter-to-you/)
 
 自学机器学习时很难保持动力。
 
@@ -31,7 +31,7 @@
 
 您的个人生活中是否存在可以使用机器学习方法建模的问题和数据来源？
 
-[![machine learning fitness](img/a7e159b0a34486d591929e28ae792e4c.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/machine-learning-fitness.jpg)
+![machine learning fitness](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/machine-learning-fitness.jpg)
 
 跟踪和建模您自己的健身。
 摄影： [Phil Gradwell](https://www.flickr.com/photos/philgradwell/12420412833/sizes/l) ，保留一些权利。
@@ -50,7 +50,7 @@
 
 你有机器学习以外的爱好吗？考虑一下您可以收集与您的爱好相关的模型数据。
 
-[![machine learning horse racing](img/3a4af5a9c994745044e8b7dff2f2b6dd.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/machine-learning-horse-racing.jpg)
+![machine learning horse racing](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/machine-learning-horse-racing.jpg)
 
 将机器学习应用到您的爱好中。
 照片由[你作为一台机器](https://www.flickr.com/photos/youasamachine/7672323774/sizes/l)，保留一些权利。
@@ -69,7 +69,7 @@
 
 您是否可以访问工作中的数据或您工作的内容？这可能是您的博客或其他在线内容，也可能是您的工作创建或发布的数据或与之相关的数据。
 
-[![machine learning at work](img/9097ffe38b130f58c367c0f053afddbd.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/machine-learning-at-work.jpg)
+![machine learning at work](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/machine-learning-at-work.jpg)
 
 在工作中应用机器学习。
 照片来自 [BiblioArchives / LibraryArchives](https://www.flickr.com/photos/lac-bac/4678564541/sizes/o/) ，保留一些权利。

@@ -1,6 +1,6 @@
 # 机器学习卷积神经网络的速成课程
 
-> 原文： [https://machinelearningmastery.com/crash-course-convolutional-neural-networks/](https://machinelearningmastery.com/crash-course-convolutional-neural-networks/)
+> 原文： [`machinelearningmastery.com/crash-course-convolutional-neural-networks/`](https://machinelearningmastery.com/crash-course-convolutional-neural-networks/)
 
 卷积神经网络是一种强大的人工神经网络技术。
 
@@ -157,7 +157,7 @@
 *   [DeepLearning4J 中的卷积网络](http://deeplearning4j.org/convolutionalnets.html)
 *   [斯坦福 CS231n 课程中的卷积网络模型](https://cs231n.github.io/convolutional-networks/ https://cs231n.github.io/)
 *   [卷积网络与视觉应用](http://yann.lecun.com/exdb/publis/pdf/lecun-iscas-10.pdf) [PDF]
-*   [Michael Nielsen 开放式深度学习书](http://neuralnetworksanddeeplearning.com/chap6.html)第 6 章
+*   [Michael Nielsen 开放式深度学习书](http://neuralnetworksanddeeplearning.com/chap6.html)第六章
 *   [来自于牛津实践的 VGG 卷积神经网络](http://www.robots.ox.ac.uk/~vgg/practicals/cnn/)
 *   [了解 Denny Britz](http://www.wildml.com/2015/11/understanding-convolutional-neural-networks-for-nlp/) 对 NLP 的卷积神经网络的理解
 

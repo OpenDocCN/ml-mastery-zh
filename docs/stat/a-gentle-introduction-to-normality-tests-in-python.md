@@ -1,6 +1,6 @@
 # Python 中正态测试的温和介绍
 
-> 原文： [https://machinelearningmastery.com/a-gentle-introduction-to-normality-tests-in-python/](https://machinelearningmastery.com/a-gentle-introduction-to-normality-tests-in-python/)
+> 原文： [`machinelearningmastery.com/a-gentle-introduction-to-normality-tests-in-python/`](https://machinelearningmastery.com/a-gentle-introduction-to-normality-tests-in-python/)
 
 处理数据样本时的一个重要决策点是使用参数统计方法还是非参数统计方法。
 

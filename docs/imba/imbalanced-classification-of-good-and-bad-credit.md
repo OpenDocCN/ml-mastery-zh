@@ -265,11 +265,11 @@ pyplot.show()
 
 这可以通过使用一个版本的 F-measure 来实现，该版本计算准确率和召回率的加权[调和平均值](https://machinelearningmastery.com/arithmetic-geometric-and-harmonic-means-for-machine-learning/)，但是倾向于较高的召回率分数而不是准确率分数。这被称为 [Fbeta-measure](https://machinelearningmastery.com/fbeta-measure-for-machine-learning/) ，是 F-measure 的推广，其中“ *beta* ”是定义两个分数权重的参数。
 
-*   Fbeta-Measure = ((1 + beta^2) *准确率*召回)/ (beta^2 *准确率+召回)
+*   Fbeta-Measure = ((1 + beta²) *准确率*召回)/ (beta² *准确率+召回)
 
 β值 2 比准确率更重视召回率，被称为 F2-测度。
 
-*   F2-Measure = ((1 + 2^2) *准确率*召回)/ (2^2 *准确率+召回)
+*   F2-Measure = ((1 + 2²) *准确率*召回)/ (2² *准确率+召回)
 
 我们将使用这一衡量标准来评估德国信贷数据集上的模型。这可以使用 [fbeta_score() Sklearn 功能](https://Sklearn.org/stable/modules/generated/sklearn.metrics.fbeta_score.html)来实现。
 

@@ -1,6 +1,6 @@
 # 如何利用 Python 处理序列预测问题中的缺失时间步长
 
-> 原文： [https://machinelearningmastery.com/handle-missing-timesteps-sequence-prediction-problems-python/](https://machinelearningmastery.com/handle-missing-timesteps-sequence-prediction-problems-python/)
+> 原文： [`machinelearningmastery.com/handle-missing-timesteps-sequence-prediction-problems-python/`](https://machinelearningmastery.com/handle-missing-timesteps-sequence-prediction-problems-python/)
 
 通常缺少来自序列数据的观察结果。
 

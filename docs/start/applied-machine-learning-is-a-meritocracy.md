@@ -1,6 +1,6 @@
 # 应用机器学习是一种精英统治
 
-> 原文： [https://machinelearningmastery.com/applied-machine-learning-is-a-meritocracy/](https://machinelearningmastery.com/applied-machine-learning-is-a-meritocracy/)
+> 原文： [`machinelearningmastery.com/applied-machine-learning-is-a-meritocracy/`](https://machinelearningmastery.com/applied-machine-learning-is-a-meritocracy/)
 
 在新领域开始时，通常会感到不知所措。
 
@@ -34,7 +34,7 @@
 
 机器学习领域有很多途径。学位，数学课程和教科书都有一个地方，它们就在这条路上。
 
-[![many paths](img/14e02b94e03b65437716ca002be50799.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/many-paths.jpg)
+![many paths](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/many-paths.jpg)
 
 许多路径
 照片由 [keepitsurreal](http://www.flickr.com/photos/keepitsurreal/3973603846/sizes/l/) ，保留一些权利

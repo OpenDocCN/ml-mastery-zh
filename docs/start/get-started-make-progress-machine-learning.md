@@ -1,12 +1,12 @@
 # 开始并在机器学习方面取得进展
 
-> 原文： [https://machinelearningmastery.com/get-started-make-progress-machine-learning/](https://machinelearningmastery.com/get-started-make-progress-machine-learning/)
+> 原文： [`machinelearningmastery.com/get-started-make-progress-machine-learning/`](https://machinelearningmastery.com/get-started-make-progress-machine-learning/)
 
 在这篇文章中，我将阐述我的宣言，了解如何开始并在机器学习方面取得进展。
 
 在这篇文章中，您将了解机器学习是什么，重要的原因，如何做以及如何识别和克服您的自我限制信念。
 
-[![Get Started and Make Progress in Machine Learning](img/d2786646046d21a99bcbb7a9991d6b48.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/02/Get-Started-and-Make-Progress-in-Machine-Learning.jpg)
+![Get Started and Make Progress in Machine Learning](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/02/Get-Started-and-Make-Progress-in-Machine-Learning.jpg)
 
 开始并在机器学习方面取得进展
 摄影： [Sam Howzit](https://www.flickr.com/photos/aloha75/6086355843) ，保留一些权利

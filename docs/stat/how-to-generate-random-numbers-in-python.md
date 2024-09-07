@@ -1,6 +1,6 @@
 # 如何在 Python 中生成随机数
 
-> 原文： [https://machinelearningmastery.com/how-to-generate-random-numbers-in-python/](https://machinelearningmastery.com/how-to-generate-random-numbers-in-python/)
+> 原文： [`machinelearningmastery.com/how-to-generate-random-numbers-in-python/`](https://machinelearningmastery.com/how-to-generate-random-numbers-in-python/)
 
 随机性的使用是机器学习算法的配置和评估的重要部分。
 

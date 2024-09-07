@@ -1,6 +1,6 @@
 # 如何使用 Python 对时间序列预测数据执行幂变换
 
-> 原文： [https://machinelearningmastery.com/power-transform-time-series-forecast-data-python/](https://machinelearningmastery.com/power-transform-time-series-forecast-data-python/)
+> 原文： [`machinelearningmastery.com/power-transform-time-series-forecast-data-python/`](https://machinelearningmastery.com/power-transform-time-series-forecast-data-python/)
 
 数据转换旨在消除噪声并改善时间序列预测中的信号。
 

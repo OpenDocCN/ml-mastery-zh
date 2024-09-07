@@ -1,6 +1,6 @@
 # 初学者如何在机器学习中犯错
 
-> 原文： [https://machinelearningmastery.com/beginners-get-it-wrong/](https://machinelearningmastery.com/beginners-get-it-wrong/)
+> 原文： [`machinelearningmastery.com/beginners-get-it-wrong/`](https://machinelearningmastery.com/beginners-get-it-wrong/)
 
 ### _ 初学者犯下的 5 个最常见的错误
 以及如何避免它们。_

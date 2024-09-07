@@ -1,6 +1,6 @@
 # 用于比较机器学习算法的统计显着性检验
 
-> 原文： [https://machinelearningmastery.com/statistical-significance-tests-for-comparing-machine-learning-algorithms/](https://machinelearningmastery.com/statistical-significance-tests-for-comparing-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/statistical-significance-tests-for-comparing-machine-learning-algorithms/`](https://machinelearningmastery.com/statistical-significance-tests-for-comparing-machine-learning-algorithms/)
 
 比较机器学习方法和选择最终模型是应用机器学习中的常见操作。
 
@@ -157,7 +157,7 @@ Remco Bouckaert 和 Eibe Frank 在其 2004 年题为“[评估比较学习算法
 
 > 已经提出了对标准 t 检验的各种修改来规避这个问题，所有这些修改都是启发式的并且缺乏合理的理论依据。在实践中似乎运行良好的是校正的重采样 t 检验。 [...]相同的修改统计量可用于重复交叉验证，这只是重复保持的特殊情况，其中一个交叉验证的各个测试集不重叠。
 
-- 第 159 页，第 5 章，可信度：评估已经学到的东西，[数据挖掘：实用机器学习工具和技术](https://amzn.to/2GgeHch)，第三版，2011。
+- 第 159 页，第五章，可信度：评估已经学到的东西，[数据挖掘：实用机器学习工具和技术](https://amzn.to/2GgeHch)，第三版，2011。
 
 ## 建议
 
@@ -173,7 +173,7 @@ Remco Bouckaert 和 Eibe Frank 在其 2004 年题为“[评估比较学习算法
 
 > ...假设存在基本上无限的数据，以便可以使用正确大小的几个独立数据集。实际上，通常只有一个有限大小的数据集。可以做些什么？
 
-- 第 158 页，第 5 章，可信度：评估已经学到的东西，[数据挖掘：实用机器学习工具和技术](https://amzn.to/2GgeHch)，第三版，2011。
+- 第 158 页，第五章，可信度：评估已经学到的东西，[数据挖掘：实用机器学习工具和技术](https://amzn.to/2GgeHch)，第三版，2011。
 
 ### 2.接受 10 倍 CV 的问题
 
@@ -223,7 +223,7 @@ Tom Mitchell 在其 1997 年的书中提出了类似的建议，建议将统计�
 
 > 总而言之，没有一种基于有限数据的比较学习方法的程序满足我们想要的所有约束。明智的是要记住，当可用数据有限时，统计模型很少完全符合测试学习算法的实际约束。然而，它们确实提供了近似置信区间，这对于解释学习方法的实验比较有很大帮助。
 
-- 第 150 页，第 5 章，评估假设，[机器学习](https://amzn.to/2pE6l83)，1997。
+- 第 150 页，第五章，评估假设，[机器学习](https://amzn.to/2pE6l83)，1997。
 
 诸如自举之类的统计方法可用于计算可防御的非参数置信区间，其可用于呈现结果和比较分类器。这是一种简单而有效的方法，您可以随时使用，我建议一般。
 
@@ -255,8 +255,8 @@ Tom Mitchell 在其 1997 年的书中提出了类似的建议，建议将统计�
 
 ### 图书
 
-*   第 5 章，评估假设，[机器学习](https://amzn.to/2pE6l83)，1997。
-*   第 5 章，可信度：评估已经学到的东西，[数据挖掘：实用机器学习工具和技术](https://amzn.to/2GgeHch)，第三版，2011。
+*   第五章，评估假设，[机器学习](https://amzn.to/2pE6l83)，1997。
+*   第五章，可信度：评估已经学到的东西，[数据挖掘：实用机器学习工具和技术](https://amzn.to/2GgeHch)，第三版，2011。
 *   [引导程序简介](https://amzn.to/2ISXPKe)，1994。
 
 ### 用品

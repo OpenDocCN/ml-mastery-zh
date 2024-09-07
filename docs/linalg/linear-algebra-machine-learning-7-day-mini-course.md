@@ -1,6 +1,6 @@
 # 机器学习中的线性代数（7 天迷你课程）
 
-> 原文： [https://machinelearningmastery.com/linear-algebra-machine-learning-7-day-mini-course/](https://machinelearningmastery.com/linear-algebra-machine-learning-7-day-mini-course/)
+> 原文： [`machinelearningmastery.com/linear-algebra-machine-learning-7-day-mini-course/`](https://machinelearningmastery.com/linear-algebra-machine-learning-7-day-mini-course/)
 
 ### 机器学习速成课程的线性代数。
 

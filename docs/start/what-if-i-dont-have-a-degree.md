@@ -1,6 +1,6 @@
 # 如果我没有学位怎么办？
 
-> 原文： [https://machinelearningmastery.com/what-if-i-dont-have-a-degree/](https://machinelearningmastery.com/what-if-i-dont-have-a-degree/)
+> 原文： [`machinelearningmastery.com/what-if-i-dont-have-a-degree/`](https://machinelearningmastery.com/what-if-i-dont-have-a-degree/)
 
 我见过有人认为他们需要获得机器学习学位。
 
@@ -8,7 +8,7 @@
 
 在这篇文章中，我将说服你，你不需要获得机器学习的学位就可以开始或在机器学习领域取得进步。
 
-[![What if I Don't Have a Degree](img/132b6866cca2360525bbc9773c1ce7fe.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/What-if-I-Dont-Have-a-Degree.jpg)
+![What if I Don't Have a Degree](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/What-if-I-Dont-Have-a-Degree.jpg)
 
 如果我没有学位怎么办
 照 [Alexander Kachkaev](http://www.flickr.com/photos/kachkaev/8409381914/sizes/l/) ，保留一些权利

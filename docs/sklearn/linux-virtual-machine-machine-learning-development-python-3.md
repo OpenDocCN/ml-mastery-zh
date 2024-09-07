@@ -1,6 +1,6 @@
 # 如何使用 Python 3 为机器学习开发创建 Linux 虚拟机
 
-> 原文： [https://machinelearningmastery.com/linux-virtual-machine-machine-learning-development-python-3/](https://machinelearningmastery.com/linux-virtual-machine-machine-learning-development-python-3/)
+> 原文： [`machinelearningmastery.com/linux-virtual-machine-machine-learning-development-python-3/`](https://machinelearningmastery.com/linux-virtual-machine-machine-learning-development-python-3/)
 
 Linux 是使用 Python 进行机器学习开发的绝佳环境。
 

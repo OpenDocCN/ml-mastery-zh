@@ -1,6 +1,6 @@
 # 将预测模型部署到生产环境中
 
-> 原文： [https://machinelearningmastery.com/deploy-machine-learning-model-to-production/](https://machinelearningmastery.com/deploy-machine-learning-model-to-production/)
+> 原文： [`machinelearningmastery.com/deploy-machine-learning-model-to-production/`](https://machinelearningmastery.com/deploy-machine-learning-model-to-production/)
 
 ### 5 个实现机器学习的最佳实践。
 

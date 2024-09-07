@@ -1,6 +1,6 @@
 # 使用 Python 中的描述性统计量来了解您的机器学习数据
 
-> 原文： [https://machinelearningmastery.com/understand-machine-learning-data-descriptive-statistics-python/](https://machinelearningmastery.com/understand-machine-learning-data-descriptive-statistics-python/)
+> 原文： [`machinelearningmastery.com/understand-machine-learning-data-descriptive-statistics-python/`](https://machinelearningmastery.com/understand-machine-learning-data-descriptive-statistics-python/)
 
 您必须了解您的数据才能获得最佳效果。
 

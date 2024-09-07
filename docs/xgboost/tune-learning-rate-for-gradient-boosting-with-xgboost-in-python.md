@@ -1,6 +1,6 @@
 # 使用 Python 和 XGBoost 调整梯度提升的学习率
 
-> 原文： [https://machinelearningmastery.com/tune-learning-rate-for-gradient-boosting-with-xgboost-in-python/](https://machinelearningmastery.com/tune-learning-rate-for-gradient-boosting-with-xgboost-in-python/)
+> 原文： [`machinelearningmastery.com/tune-learning-rate-for-gradient-boosting-with-xgboost-in-python/`](https://machinelearningmastery.com/tune-learning-rate-for-gradient-boosting-with-xgboost-in-python/)
 
 梯度提升决策树的问题在于它们快速学习和过度训练数据。
 

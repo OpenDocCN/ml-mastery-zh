@@ -12,7 +12,7 @@
 
 我们开始吧。
 
-[![Irises](img/5ca6400308a8cda8b12f673236f0930d.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/irises.jpg)
+![Irises](https://machinelearningmastery.com/wp-content/uploads/2014/03/irises.jpg)
 
 鸢尾花
 dottieg 2007 摄影，版权所有

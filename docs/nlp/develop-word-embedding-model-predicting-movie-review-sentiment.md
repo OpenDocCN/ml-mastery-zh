@@ -1,6 +1,6 @@
 # 如何开发一种预测电影评论情感的词嵌入模型
 
-> 原文： [https://machinelearningmastery.com/develop-word-embedding-model-predicting-movie-review-sentiment/](https://machinelearningmastery.com/develop-word-embedding-model-predicting-movie-review-sentiment/)
+> 原文： [`machinelearningmastery.com/develop-word-embedding-model-predicting-movie-review-sentiment/`](https://machinelearningmastery.com/develop-word-embedding-model-predicting-movie-review-sentiment/)
 
 #### 开发一个深度学习模型，使用 Keras 自动将电影评论
 分类为 Python 中的正面或负面，一步一步。

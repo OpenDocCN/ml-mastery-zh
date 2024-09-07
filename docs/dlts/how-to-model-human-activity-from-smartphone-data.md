@@ -1,6 +1,6 @@
 # 如何从智能手机数据建模人类活动
 
-> 原文： [https://machinelearningmastery.com/how-to-model-human-activity-from-smartphone-data/](https://machinelearningmastery.com/how-to-model-human-activity-from-smartphone-data/)
+> 原文： [`machinelearningmastery.com/how-to-model-human-activity-from-smartphone-data/`](https://machinelearningmastery.com/how-to-model-human-activity-from-smartphone-data/)
 
 人类活动识别是将由专用线束或智能电话记录的加速度计数据序列分类为已知的明确定义的运动的问题。
 

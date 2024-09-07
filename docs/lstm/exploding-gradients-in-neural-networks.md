@@ -1,6 +1,6 @@
 # 神经网络中梯度爆炸的温和介绍
 
-> 原文： [https://machinelearningmastery.com/exploding-gradients-in-neural-networks/](https://machinelearningmastery.com/exploding-gradients-in-neural-networks/)
+> 原文： [`machinelearningmastery.com/exploding-gradients-in-neural-networks/`](https://machinelearningmastery.com/exploding-gradients-in-neural-networks/)
 
 梯度爆炸是一个问题，其中大的误差梯度累积并导致在训练期间对神经网络模型权重的非常大的更新。
 

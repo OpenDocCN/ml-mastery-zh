@@ -128,7 +128,7 @@ AdaGrad 是 Adam 的扩展，它保持第二个矩向量的最大值，并使用
 
 使用梯度的平方和超参数*β2*更新第二矩向量。
 
-*   v(t)=β2 * v(t-1)+(1–β2)* g(t)^2
+*   v(t)=β2 * v(t-1)+(1–β2)* g(t)²
 
 接下来，更新第二矩向量的最大值。
 
@@ -261,9 +261,9 @@ pyplot.show()
 
 首先，我们需要一个函数来计算这个函数的导数。
 
-*x^2* 的导数在每个维度上为 *x * 2* 。
+*x²* 的导数在每个维度上为 *x * 2* 。
 
-*   f(x) = x^2
+*   f(x) = x²
 *   f'(x) = x * 2
 
 *导数()*函数实现如下。
@@ -336,7 +336,7 @@ m[i] = beta1**(t+1) * m[i] + (1.0 - beta1**(t+1)) * g[i]
 
 ```py
 ...
-# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)^2
+# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)²
 v[i] = (beta2 * v[i]) + (1.0 - beta2) * g[i]**2
 ```
 
@@ -395,7 +395,7 @@ def amsgrad(objective, derivative, bounds, n_iter, alpha, beta1, beta2):
 		for i in range(x.shape[0]):
 			# m(t) = beta1(t) * m(t-1) + (1 - beta1(t)) * g(t)
 			m[i] = beta1**(t+1) * m[i] + (1.0 - beta1**(t+1)) * g[i]
-			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)^2
+			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)²
 			v[i] = (beta2 * v[i]) + (1.0 - beta2) * g[i]**2
 			# vhat(t) = max(vhat(t-1), v(t))
 			vhat[i] = max(vhat[i], v[i])
@@ -472,7 +472,7 @@ def amsgrad(objective, derivative, bounds, n_iter, alpha, beta1, beta2):
 		for i in range(x.shape[0]):
 			# m(t) = beta1(t) * m(t-1) + (1 - beta1(t)) * g(t)
 			m[i] = beta1**(t+1) * m[i] + (1.0 - beta1**(t+1)) * g[i]
-			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)^2
+			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)²
 			v[i] = (beta2 * v[i]) + (1.0 - beta2) * g[i]**2
 			# vhat(t) = max(vhat(t-1), v(t))
 			vhat[i] = max(vhat[i], v[i])
@@ -552,7 +552,7 @@ def amsgrad(objective, derivative, bounds, n_iter, alpha, beta1, beta2):
 		for i in range(x.shape[0]):
 			# m(t) = beta1(t) * m(t-1) + (1 - beta1(t)) * g(t)
 			m[i] = beta1**(t+1) * m[i] + (1.0 - beta1**(t+1)) * g[i]
-			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)^2
+			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)²
 			v[i] = (beta2 * v[i]) + (1.0 - beta2) * g[i]**2
 			# vhat(t) = max(vhat(t-1), v(t))
 			vhat[i] = max(vhat[i], v[i])
@@ -649,7 +649,7 @@ def amsgrad(objective, derivative, bounds, n_iter, alpha, beta1, beta2):
 		for i in range(x.shape[0]):
 			# m(t) = beta1(t) * m(t-1) + (1 - beta1(t)) * g(t)
 			m[i] = beta1**(t+1) * m[i] + (1.0 - beta1**(t+1)) * g[i]
-			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)^2
+			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)²
 			v[i] = (beta2 * v[i]) + (1.0 - beta2) * g[i]**2
 			# vhat(t) = max(vhat(t-1), v(t))
 			vhat[i] = max(vhat[i], v[i])

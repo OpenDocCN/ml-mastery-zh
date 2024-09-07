@@ -1,6 +1,6 @@
 # Python 中时间序列预测的温和简介
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-random-walk-times-series-forecasting-python/](https://machinelearningmastery.com/gentle-introduction-random-walk-times-series-forecasting-python/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-random-walk-times-series-forecasting-python/`](https://machinelearningmastery.com/gentle-introduction-random-walk-times-series-forecasting-python/)
 
 你怎么知道你的时间序列问题是否可以预测？
 

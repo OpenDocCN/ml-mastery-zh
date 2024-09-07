@@ -1,6 +1,6 @@
 # 有监督和无监督的机器学习算法
 
-> 原文： [https://machinelearningmastery.com/supervised-and-unsupervised-machine-learning-algorithms/](https://machinelearningmastery.com/supervised-and-unsupervised-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/supervised-and-unsupervised-machine-learning-algorithms/`](https://machinelearningmastery.com/supervised-and-unsupervised-machine-learning-algorithms/)
 
 什么是监督机器学习以及它与无监督机器学习有什么关系？
 

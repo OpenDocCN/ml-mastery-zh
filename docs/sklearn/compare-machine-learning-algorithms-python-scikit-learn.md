@@ -1,6 +1,6 @@
 # 如何比较 Python 和 scikit-learn 中的机器学习算法
 
-> 原文： [https://machinelearningmastery.com/compare-machine-learning-algorithms-python-scikit-learn/](https://machinelearningmastery.com/compare-machine-learning-algorithms-python-scikit-learn/)
+> 原文： [`machinelearningmastery.com/compare-machine-learning-algorithms-python-scikit-learn/`](https://machinelearningmastery.com/compare-machine-learning-algorithms-python-scikit-learn/)
 
 重要的是要一致地比较多种不同机器学习算法的表现。
 

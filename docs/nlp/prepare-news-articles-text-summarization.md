@@ -1,6 +1,6 @@
 # 如何为文本摘要准备新闻文章
 
-> 原文： [https://machinelearningmastery.com/prepare-news-articles-text-summarization/](https://machinelearningmastery.com/prepare-news-articles-text-summarization/)
+> 原文： [`machinelearningmastery.com/prepare-news-articles-text-summarization/`](https://machinelearningmastery.com/prepare-news-articles-text-summarization/)
 
 文本摘要是创建文章的简短，准确和流畅的摘要的任务。
 

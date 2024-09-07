@@ -1,6 +1,6 @@
 # 使用探索性数据分析了解您的问题并获得更好的结果
 
-> 原文： [https://machinelearningmastery.com/understand-problem-get-better-results-using-exploratory-data-analysis/](https://machinelearningmastery.com/understand-problem-get-better-results-using-exploratory-data-analysis/)
+> 原文： [`machinelearningmastery.com/understand-problem-get-better-results-using-exploratory-data-analysis/`](https://machinelearningmastery.com/understand-problem-get-better-results-using-exploratory-data-analysis/)
 
 您经常从应用机器学习中的问题跳到问题，并且需要快速掌握新数据集。
 
@@ -8,7 +8,7 @@
 
 在这篇文章中，您将发现探索性数据分析（EDA），您可以使用的技术和策略，以及为什么您应该在下一个问题上执行 EDA。
 
-[![Exploratory Data Analysis](img/e1109dd520c06c6257c547b8dc4c4f10.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Exploratory-Data-Analysis.jpg)
+![Exploratory Data Analysis](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Exploratory-Data-Analysis.jpg)
 
 探索性数据分析
 摄影： [Andy Lamb](https://www.flickr.com/photos/speedoflife/8273922515/) ，保留一些权利
@@ -93,7 +93,7 @@
 
 ## 资源
 
-[![Amazon Image](img/b2e5de14ca298184b1c5ae6d58fb8486.jpg)](http://www.amazon.com/dp/0961392142?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0961392142?tag=inspiredalgor-20)
 
 书[做数据科学：从前线直接谈话](http://www.amazon.com/dp/1449358659?tag=inspiredalgor-20)有一个关于 EDA 的简短部分，并提供了一个很好的阅读列表，以获取更多信息：
 

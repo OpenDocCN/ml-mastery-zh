@@ -1,6 +1,6 @@
 # Python 中统计功效和功效分析的简要介绍
 
-> 原文： [https://machinelearningmastery.com/statistical-power-and-power-analysis-in-python/](https://machinelearningmastery.com/statistical-power-and-power-analysis-in-python/)
+> 原文： [`machinelearningmastery.com/statistical-power-and-power-analysis-in-python/`](https://machinelearningmastery.com/statistical-power-and-power-analysis-in-python/)
 
 如果存在检测到的真实效果，则假设检验的统计功效是检测效果的概率。
 

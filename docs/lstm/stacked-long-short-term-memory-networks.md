@@ -1,6 +1,6 @@
 # 栈式长短期记忆网络
 
-> 原文： [https://machinelearningmastery.com/stacked-long-short-term-memory-networks/](https://machinelearningmastery.com/stacked-long-short-term-memory-networks/)
+> 原文： [`machinelearningmastery.com/stacked-long-short-term-memory-networks/`](https://machinelearningmastery.com/stacked-long-short-term-memory-networks/)
 
 ### 使用 Python 中的示例代码轻松介绍 Stacked LSTM
 。

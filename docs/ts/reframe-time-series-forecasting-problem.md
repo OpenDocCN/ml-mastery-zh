@@ -1,6 +1,6 @@
 # 如何重构时间序列预测问题
 
-> 原文： [https://machinelearningmastery.com/reframe-time-series-forecasting-problem/](https://machinelearningmastery.com/reframe-time-series-forecasting-problem/)
+> 原文： [`machinelearningmastery.com/reframe-time-series-forecasting-problem/`](https://machinelearningmastery.com/reframe-time-series-forecasting-problem/)
 
 您不必按原样建立时间序列预测问题的模型。
 

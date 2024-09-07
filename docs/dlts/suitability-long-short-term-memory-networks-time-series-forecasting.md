@@ -1,6 +1,6 @@
 # 长短期记忆网络在时间序列预测中的适用性
 
-> 原文： [https://machinelearningmastery.com/suitability-long-short-term-memory-networks-time-series-forecasting/](https://machinelearningmastery.com/suitability-long-short-term-memory-networks-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/suitability-long-short-term-memory-networks-time-series-forecasting/`](https://machinelearningmastery.com/suitability-long-short-term-memory-networks-time-series-forecasting/)
 
 长短期记忆（LSTM）是一种循环神经网络，可以学习序列中项目之间的顺序依赖性。
 
@@ -21,7 +21,7 @@ LSTM 承诺能够学习在时间序列预测问题中做出预测所需的上下
 
 我们将仔细研究一篇旨在探讨 LSTM 是否适合时间序列预测的论文。
 
-该论文标题为“[将 LSTM 应用于通过时间窗口方法预测的时间序列](https://link.springer.com/chapter/10.1007/3-540-44668-0_93)”（[得到 PDF](ftp://ftp.idsia.ch/pub/juergen/icann2001predict.pdf) ，Gers，Eck 和 Schmidhuber，发表于 2001 年。
+该论文标题为“[将 LSTM 应用于通过时间窗口方法预测的时间序列](https://link.springer.com/chapter/10.1007/3-540-44668-0_93)”（得到 PDF ，Gers，Eck 和 Schmidhuber，发表于 2001 年。
 
 他们首先评论单变量时间序列预测问题实际上比传统上用于演示 LSTM 功能的问题类型更简单。
 
@@ -57,7 +57,7 @@ Mackey-Glass 系列的情节，取自 Schoarpedia
 
 有关更多信息，请参阅：
 
-*   第 2 节“竞争”[时间序列的未来](http://samoa.santafe.edu/media/workingpapers/93-08-053.pdf)，1993。
+*   第二部分“竞争”[时间序列的未来](http://samoa.santafe.edu/media/workingpapers/93-08-053.pdf)，1993。
 
 ## 自回归
 

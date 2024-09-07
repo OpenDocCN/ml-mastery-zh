@@ -1,6 +1,6 @@
 # 使用 Python 和 Keras 的 LSTM 循环神经网络的文本生成
 
-> 原文： [https://machinelearningmastery.com/text-generation-lstm-recurrent-neural-networks-python-keras/](https://machinelearningmastery.com/text-generation-lstm-recurrent-neural-networks-python-keras/)
+> 原文： [`machinelearningmastery.com/text-generation-lstm-recurrent-neural-networks-python-keras/`](https://machinelearningmastery.com/text-generation-lstm-recurrent-neural-networks-python-keras/)
 
 循环神经网络也可以用作生成模型。
 

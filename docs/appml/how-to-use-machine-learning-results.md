@@ -1,12 +1,12 @@
 # 如何使用机器学习结果
 
-> 原文： [https://machinelearningmastery.com/how-to-use-machine-learning-results/](https://machinelearningmastery.com/how-to-use-machine-learning-results/)
+> 原文： [`machinelearningmastery.com/how-to-use-machine-learning-results/`](https://machinelearningmastery.com/how-to-use-machine-learning-results/)
 
 一旦[发现](http://machinelearningmastery.com/how-to-evaluate-machine-learning-algorithms/ "How to Evaluate Machine Learning Algorithms")和[调整](http://machinelearningmastery.com/how-to-improve-machine-learning-results/ "How to Improve Machine Learning Results")一个可行的问题模型，就可以利用该模型了。你可能需要重新审视你的[为什么](http://machinelearningmastery.com/how-to-define-your-machine-learning-problem/ "How to Define Your Machine Learning Problem")，并提醒自己，你需要一个解决你正在解决的问题的形式。
 
 在对结果执行某些操作之前，不会解决此问题。在这篇文章中，您将学习在将原型模型转换为生产系统时回答问题和考虑因素的结果。
 
-[![Presentation of Results](img/f4b7fc4eaff7df44fd100bcaf9d90cdf.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/presentation-of-results.jpg)
+![Presentation of Results](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/presentation-of-results.jpg)
 
 结果展示
 照片归属于 [Phil Sexton](http://www.flickr.com/photos/john_hall_associates/3175199088/sizes/l/) ，保留一些权利

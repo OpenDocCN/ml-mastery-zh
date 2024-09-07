@@ -1,6 +1,6 @@
 # 如何将 Keras `TimeseriesGenerator`用于时间序列预测
 
-> 原文： [https://machinelearningmastery.com/how-to-use-the-timeseriesgenerator-for-time-series-forecasting-in-keras/](https://machinelearningmastery.com/how-to-use-the-timeseriesgenerator-for-time-series-forecasting-in-keras/)
+> 原文： [`machinelearningmastery.com/how-to-use-the-timeseriesgenerator-for-time-series-forecasting-in-keras/`](https://machinelearningmastery.com/how-to-use-the-timeseriesgenerator-for-time-series-forecasting-in-keras/)
 
 必须将时间序列数据转换为具有输入和输出组件的样本结构，然后才能用于拟合监督学习模型。
 

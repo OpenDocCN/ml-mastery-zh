@@ -1,6 +1,6 @@
 # 使用 Python 管道和 scikit-learn 自动化机器学习工作流程
 
-> 原文： [https://machinelearningmastery.com/automate-machine-learning-workflows-pipelines-python-scikit-learn/](https://machinelearningmastery.com/automate-machine-learning-workflows-pipelines-python-scikit-learn/)
+> 原文： [`machinelearningmastery.com/automate-machine-learning-workflows-pipelines-python-scikit-learn/`](https://machinelearningmastery.com/automate-machine-learning-workflows-pipelines-python-scikit-learn/)
 
 机器学习项目中有标准工作流程可以自动化。
 

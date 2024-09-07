@@ -14,7 +14,7 @@
 
 让我们开始吧！
 
-[![Feature Engineering and Selection (Book Review)](img/0a5d1338424813a3f0cb6448810da9aa.png)](https://amzn.to/2VZgn4j)
+![Feature Engineering and Selection (Book Review)](https://amzn.to/2VZgn4j)
 
 特征工程与选择(书评)
 

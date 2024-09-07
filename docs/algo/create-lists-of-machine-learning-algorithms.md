@@ -1,6 +1,6 @@
 # 通过创建机器学习算法的目标列表来获得控制权
 
-> 原文： [https://machinelearningmastery.com/create-lists-of-machine-learning-algorithms/](https://machinelearningmastery.com/create-lists-of-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/create-lists-of-machine-learning-algorithms/`](https://machinelearningmastery.com/create-lists-of-machine-learning-algorithms/)
 
 任何关于机器学习的书都会列出并描述几十种机器学习算法。
 
@@ -12,7 +12,7 @@
 
 在这篇文章中，您将发现创建机器学习算法列表，如何操作，如何做好以及为什么要开始创建今天的第一个算法列表的好处。
 
-[![Create a List of Machine Learning Algorithms](img/66f275ec8f53ac0ed88c89d1c4b91aad.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Create-a-List-of-Machine-Learning-Algorithms.jpg)
+![Create a List of Machine Learning Algorithms](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Create-a-List-of-Machine-Learning-Algorithms.jpg)
 
 创建机器学习算法列表
 照片由 [Joel Montes de Oca](http://www.flickr.com/photos/joelmontes/4762384399) ，保留一些权利

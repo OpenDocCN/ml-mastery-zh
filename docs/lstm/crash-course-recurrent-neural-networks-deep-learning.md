@@ -1,6 +1,6 @@
 # 深度学习中的循环神经网络的速成课程
 
-> 原文： [https://machinelearningmastery.com/crash-course-recurrent-neural-networks-deep-learning/](https://machinelearningmastery.com/crash-course-recurrent-neural-networks-deep-learning/)
+> 原文： [`machinelearningmastery.com/crash-course-recurrent-neural-networks-deep-learning/`](https://machinelearningmastery.com/crash-course-recurrent-neural-networks-deep-learning/)
 
 另一种类型的神经网络主导着困难的机器学习问题，涉及称为循环神经网络的输入序列。
 

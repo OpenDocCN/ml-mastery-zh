@@ -1,6 +1,6 @@
 # 如何加载和探索家庭用电数据
 
-> 原文： [https://machinelearningmastery.com/how-to-load-and-explore-household-electricity-usage-data/](https://machinelearningmastery.com/how-to-load-and-explore-household-electricity-usage-data/)
+> 原文： [`machinelearningmastery.com/how-to-load-and-explore-household-electricity-usage-data/`](https://machinelearningmastery.com/how-to-load-and-explore-household-electricity-usage-data/)
 
 鉴于智能电表的兴起以及太阳能电池板等发电技术的广泛采用，可提供大量的用电数据。
 

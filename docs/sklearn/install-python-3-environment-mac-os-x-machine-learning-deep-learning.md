@@ -1,6 +1,6 @@
 # 如何在 Mac OS X 上为机器学习和深度学习安装 Python 3 环境
 
-> 原文： [https://machinelearningmastery.com/install-python-3-environment-mac-os-x-machine-learning-deep-learning/](https://machinelearningmastery.com/install-python-3-environment-mac-os-x-machine-learning-deep-learning/)
+> 原文： [`machinelearningmastery.com/install-python-3-environment-mac-os-x-machine-learning-deep-learning/`](https://machinelearningmastery.com/install-python-3-environment-mac-os-x-machine-learning-deep-learning/)
 
 在 Mac OS X 上安装 Python 机器学习环境可能很困难。
 
@@ -355,8 +355,8 @@ sudo pip freeze
 本节提供了一些进一步阅读的资源。
 
 *   [MacPorts 安装](https://www.macports.org/install.php)
-*   [第 2 章安装 MacPorts](https://guide.macports.org/chunked/installing.macports.html)
-*   [第 3 章使用 MacPorts](https://guide.macports.org/chunked/using.html)
+*   [第二章安装 MacPorts](https://guide.macports.org/chunked/installing.macports.html)
+*   [第三章使用 MacPorts](https://guide.macports.org/chunked/using.html)
 *   [安装 SciPy 栈](https://www.scipy.org/install.html)
 *   [Scikit-learn 安装](http://scikit-learn.org/stable/install.html)
 *   [安装 Theano](http://deeplearning.net/software/theano/install.html)

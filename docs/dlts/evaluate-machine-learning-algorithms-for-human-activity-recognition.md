@@ -1,6 +1,6 @@
 # 如何评估用于人类活动识别的机器学习算法
 
-> 原文： [https://machinelearningmastery.com/evaluate-machine-learning-algorithms-for-human-activity-recognition/](https://machinelearningmastery.com/evaluate-machine-learning-algorithms-for-human-activity-recognition/)
+> 原文： [`machinelearningmastery.com/evaluate-machine-learning-algorithms-for-human-activity-recognition/`](https://machinelearningmastery.com/evaluate-machine-learning-algorithms-for-human-activity-recognition/)
 
 人类活动识别是将由专用线束或智能电话记录的加速度计数据序列分类为已知的明确定义的运动的问题。
 

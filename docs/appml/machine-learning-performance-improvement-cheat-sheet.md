@@ -1,6 +1,6 @@
 # 机器学习表现改进备忘单
 
-> 原文： [https://machinelearningmastery.com/machine-learning-performance-improvement-cheat-sheet/](https://machinelearningmastery.com/machine-learning-performance-improvement-cheat-sheet/)
+> 原文： [`machinelearningmastery.com/machine-learning-performance-improvement-cheat-sheet/`](https://machinelearningmastery.com/machine-learning-performance-improvement-cheat-sheet/)
 
 **32 个可以用来做出更好预测的技巧，窍门和黑客。**
 

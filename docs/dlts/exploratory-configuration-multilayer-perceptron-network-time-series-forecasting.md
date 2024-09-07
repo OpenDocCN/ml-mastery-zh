@@ -1,6 +1,6 @@
 # 用于时间序列预测的多层感知机网络的探索性配置
 
-> 原文： [https://machinelearningmastery.com/exploratory-configuration-multilayer-perceptron-network-time-series-forecasting/](https://machinelearningmastery.com/exploratory-configuration-multilayer-perceptron-network-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/exploratory-configuration-multilayer-perceptron-network-time-series-forecasting/`](https://machinelearningmastery.com/exploratory-configuration-multilayer-perceptron-network-time-series-forecasting/)
 
 当开始使用神经网络的新预测性建模项目时，可能会很困难。
 

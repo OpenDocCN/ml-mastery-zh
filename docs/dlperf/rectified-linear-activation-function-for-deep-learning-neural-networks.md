@@ -452,7 +452,7 @@ Maxout 是一种可选的分段线性函数，返回输入的最大值，设计�
 
 ### 文章
 
-*   [神经网络常见问题](ftp://ftp.sas.com/pub/neural/FAQ.html)
+*   神经网络常见问题
 *   [激活功能，维基百科](https://en.wikipedia.org/wiki/Activation_function)。
 *   [消失梯度问题，维基百科](https://en.wikipedia.org/wiki/Vanishing_gradient_problem)。
 *   [整流器(神经网络)，维基百科](https://en.wikipedia.org/wiki/Rectifier_(neural_networks))。

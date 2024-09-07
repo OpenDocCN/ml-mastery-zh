@@ -1,6 +1,6 @@
 # 机器学习中的逻辑回归教程
 
-> 原文： [https://machinelearningmastery.com/logistic-regression-tutorial-for-machine-learning/](https://machinelearningmastery.com/logistic-regression-tutorial-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/logistic-regression-tutorial-for-machine-learning/`](https://machinelearningmastery.com/logistic-regression-tutorial-for-machine-learning/)
 
 逻辑回归是用于二分类的最流行的机器学习算法之一。这是因为它是一种简单的算法，可以很好地解决各种各样的问题。
 

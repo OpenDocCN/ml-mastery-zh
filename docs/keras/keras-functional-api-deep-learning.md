@@ -1,6 +1,6 @@
 # 如何将 Keras 函数式 API 用于深度学习
 
-> 原文： [https://machinelearningmastery.com/keras-functional-api-deep-learning/](https://machinelearningmastery.com/keras-functional-api-deep-learning/)
+> 原文： [`machinelearningmastery.com/keras-functional-api-deep-learning/`](https://machinelearningmastery.com/keras-functional-api-deep-learning/)
 
 Keras Python 库使创建深度学习模型变得快速而简单。
 

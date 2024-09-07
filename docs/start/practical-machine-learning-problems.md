@@ -1,6 +1,6 @@
 # 实用机器学习问题
 
-> 原文： [https://machinelearningmastery.com/practical-machine-learning-problems/](https://machinelearningmastery.com/practical-machine-learning-problems/)
+> 原文： [`machinelearningmastery.com/practical-machine-learning-problems/`](https://machinelearningmastery.com/practical-machine-learning-problems/)
 
 什么是机器学习？我们可以阅读[机器学习](http://machinelearningmastery.com/what-is-machine-learning/ "What is Machine Learning: A Tour of Authoritative Definitions and a Handy One-Liner You Can Use")的权威定义，但实际上，机器学习是由正在解决的问题定义的。因此，了解机器学习的最佳方法是查看一些示例问题。
 

@@ -1,6 +1,6 @@
 # 如何学习任何机器学习工具
 
-> 原文： [https://machinelearningmastery.com/how-to-learn-any-machine-learning-tool/](https://machinelearningmastery.com/how-to-learn-any-machine-learning-tool/)
+> 原文： [`machinelearningmastery.com/how-to-learn-any-machine-learning-tool/`](https://machinelearningmastery.com/how-to-learn-any-machine-learning-tool/)
 
 机器学习工具通过自动化机器学习项目的各个方面来节省您的时间。
 

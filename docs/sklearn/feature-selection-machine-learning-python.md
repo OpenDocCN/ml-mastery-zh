@@ -1,6 +1,6 @@
 # Python 中机器学习的特征选择
 
-> 原文： [https://machinelearningmastery.com/feature-selection-machine-learning-python/](https://machinelearningmastery.com/feature-selection-machine-learning-python/)
+> 原文： [`machinelearningmastery.com/feature-selection-machine-learning-python/`](https://machinelearningmastery.com/feature-selection-machine-learning-python/)
 
 用于训练机器学习模型的数据功能会对您可以实现的表现产生巨大影响。
 

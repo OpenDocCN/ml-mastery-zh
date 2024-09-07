@@ -1,6 +1,6 @@
 # 机器学习算法迷你课程
 
-> 原文： [https://machinelearningmastery.com/machine-learning-algorithms-mini-course/](https://machinelearningmastery.com/machine-learning-algorithms-mini-course/)
+> 原文： [`machinelearningmastery.com/machine-learning-algorithms-mini-course/`](https://machinelearningmastery.com/machine-learning-algorithms-mini-course/)
 
 机器学习算法是机器学习的重要组成部分。
 

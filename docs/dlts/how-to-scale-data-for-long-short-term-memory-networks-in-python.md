@@ -1,6 +1,6 @@
 # 如何在 Python 中扩展长短期记忆网络的数据
 
-> 原文： [https://machinelearningmastery.com/how-to-scale-data-for-long-short-term-memory-networks-in-python/](https://machinelearningmastery.com/how-to-scale-data-for-long-short-term-memory-networks-in-python/)
+> 原文： [`machinelearningmastery.com/how-to-scale-data-for-long-short-term-memory-networks-in-python/`](https://machinelearningmastery.com/how-to-scale-data-for-long-short-term-memory-networks-in-python/)
 
 在训练神经网络时，可能需要缩放序列预测问题的数据，例如长期短期记忆复现神经网络。
 
@@ -165,7 +165,7 @@ mean = sum(x) / count(x)
 而 standard_deviation 计算如下：
 
 ```py
-standard_deviation = sqrt( sum( (x - mean)^2 ) / count(x))
+standard_deviation = sqrt( sum( (x - mean)² ) / count(x))
 ```
 
 我们可以猜测平均值为 10，标准偏差约为 5.使用这些值，我们可以将第一个值 20.7 标准化如下：
@@ -274,7 +274,7 @@ Mean: 5.355556, StandardDeviation: 2.712568
 
 > 如果输入变量是线性组合的，就像在 MLP [多层感知机]中一样，那么至少在理论上很少有必要对输入进行标准化。 ......但是，有很多实际的原因可以解释为什么标准化输入可以使训练更快，并减少陷入局部最优的机会。
 
-- [我应该规范化/标准化/重新缩放数据吗？](ftp://ftp.sas.com/pub/neural/FAQ2.html#A_std) 神经网络常见问题解答
+- 我应该规范化/标准化/重新缩放数据吗？ 神经网络常见问题解答
 
 ## 缩放输出变量
 
@@ -284,7 +284,7 @@ Mean: 5.355556, StandardDeviation: 2.712568
 
 > 如果输出激活函数的范围为[0,1]，那么显然您必须确保目标值位于该范围内。但通常最好选择适合目标分布的输出激活函数，而不是强制数据符合输出激活函数。
 
-- [我应该规范化/标准化/重新缩放数据吗？](ftp://ftp.sas.com/pub/neural/FAQ2.html#A_std) 神经网络常见问题解答
+- 我应该规范化/标准化/重新缩放数据吗？ 神经网络常见问题解答
 
 以下启发式方法应涵盖大多数序列预测问题：
 
@@ -321,7 +321,7 @@ Mean: 5.355556, StandardDeviation: 2.712568
 
 本节列出了扩展时要考虑的一些其他资源。
 
-*   [我应该规范化/标准化/重缩放数据吗？](ftp://ftp.sas.com/pub/neural/FAQ2.html#A_std) 神经网络常见问题解答
+*   我应该规范化/标准化/重缩放数据吗？ 神经网络常见问题解答
 *   [MinMaxScaler scikit-learn API 文档](http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html)
 *   [StandardScaler scikit-learn API 文档](http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html)
 *   [如何使用 Python 从零开始扩展机器学习数据](http://machinelearningmastery.com/scale-machine-learning-data-scratch-python/)

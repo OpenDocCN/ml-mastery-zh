@@ -1,6 +1,6 @@
 # 如何使用 Python 和 XGBoost 可视化梯度提升决策树
 
-> 原文： [https://machinelearningmastery.com/visualize-gradient-boosting-decision-trees-xgboost-python/](https://machinelearningmastery.com/visualize-gradient-boosting-decision-trees-xgboost-python/)
+> 原文： [`machinelearningmastery.com/visualize-gradient-boosting-decision-trees-xgboost-python/`](https://machinelearningmastery.com/visualize-gradient-boosting-decision-trees-xgboost-python/)
 
 绘制单个决策树可以提供对给定数据集的梯度提升过程的深入了解。
 

@@ -1,6 +1,6 @@
 # 如何处理时间序列预测项目
 
-> 原文： [https://machinelearningmastery.com/work-time-series-forecast-project/](https://machinelearningmastery.com/work-time-series-forecast-project/)
+> 原文： [`machinelearningmastery.com/work-time-series-forecast-project/`](https://machinelearningmastery.com/work-time-series-forecast-project/)
 
 时间序列预测过程是一组步骤或秘籍，可引导您定义问题，直至具有时间序列预测模型或预测集的结果。
 

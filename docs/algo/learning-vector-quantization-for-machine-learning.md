@@ -1,6 +1,6 @@
 # 学习机器学习中的向量量化
 
-> 原文： [https://machinelearningmastery.com/learning-vector-quantization-for-machine-learning/](https://machinelearningmastery.com/learning-vector-quantization-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/learning-vector-quantization-for-machine-learning/`](https://machinelearningmastery.com/learning-vector-quantization-for-machine-learning/)
 
 K 最近邻的缺点是你需要坚持整个训练数据集。
 
@@ -109,7 +109,7 @@ learning_rate = alpha *（1 - （epoch / max_epoch））
 
 该技术由 Kohonen 开发，他编写了关于 LVQ 的开创性书籍和姐妹方法 Self-Organizing Maps，名为：[自组织地图](http://www.amazon.com/dp/3540679219?tag=inspiredalgor-20)。
 
-[![Amazon Image](img/741e0a605620af7a68b5e096dd05139b.jpg)](http://www.amazon.com/dp/3540679219?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/3540679219?tag=inspiredalgor-20)
 
 如果您对 LVQ 感兴趣，我强烈推荐这本书。
 

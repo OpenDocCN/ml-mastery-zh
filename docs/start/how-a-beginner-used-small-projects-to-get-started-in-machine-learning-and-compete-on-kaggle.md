@@ -1,6 +1,6 @@
 # 初学者如何使用小型项目开始机器学习并在 Kaggle 上打比赛
 
-> 原文： [https://machinelearningmastery.com/how-a-beginner-used-small-projects-to-get-started-in-machine-learning-and-compete-on-kaggle/](https://machinelearningmastery.com/how-a-beginner-used-small-projects-to-get-started-in-machine-learning-and-compete-on-kaggle/)
+> 原文： [`machinelearningmastery.com/how-a-beginner-used-small-projects-to-get-started-in-machine-learning-and-compete-on-kaggle/`](https://machinelearningmastery.com/how-a-beginner-used-small-projects-to-get-started-in-machine-learning-and-compete-on-kaggle/)
 
 了解真实的人们如何开始机器学习是很有价值的。
 

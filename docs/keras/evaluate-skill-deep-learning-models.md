@@ -1,6 +1,6 @@
 # 如何评估深度学习模型的表现
 
-> 原文： [https://machinelearningmastery.com/evaluate-skill-deep-learning-models/](https://machinelearningmastery.com/evaluate-skill-deep-learning-models/)
+> 原文： [`machinelearningmastery.com/evaluate-skill-deep-learning-models/`](https://machinelearningmastery.com/evaluate-skill-deep-learning-models/)
 
 我经常看到从业者对如何评估深度学习模型表示困惑。
 
@@ -89,7 +89,7 @@ mean_skill = sum(scores) / count(scores)
 我们还可以使用 mean_skill 计算标准偏差，以了解 mean_skill 周围的平均分数差异：
 
 ```py
-standard_deviation = sqrt(1/count(scores) * sum( (score - mean_skill)^2 ))
+standard_deviation = sqrt(1/count(scores) * sum( (score - mean_skill)² ))
 ```
 
 ## 评估随机模型的表现

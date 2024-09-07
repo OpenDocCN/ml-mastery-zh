@@ -1,6 +1,6 @@
 # 参数化和非参数化机器学习算法
 
-> 原文： [https://machinelearningmastery.com/parametric-and-nonparametric-machine-learning-algorithms/](https://machinelearningmastery.com/parametric-and-nonparametric-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/parametric-and-nonparametric-machine-learning-algorithms/`](https://machinelearningmastery.com/parametric-and-nonparametric-machine-learning-algorithms/)
 
 什么是参数化机器学习算法？它与非参数机器学习算法有什么不同？
 
@@ -116,8 +116,8 @@ b0 + b1 * x1 + b2 * x2 = 0
 
 ### 图书
 
-*   [统计学习简介：在 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) 中的应用，第 2 章
-*   [人工智能：现代方法](http://www.amazon.com/dp/0136042597?tag=inspiredalgor-20)，第 18 章
+*   [统计学习简介：在 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) 中的应用，第二章
+*   [人工智能：现代方法](http://www.amazon.com/dp/0136042597?tag=inspiredalgor-20)，第十八章
 
 ### 帖子
 

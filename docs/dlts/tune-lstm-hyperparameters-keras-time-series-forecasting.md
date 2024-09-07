@@ -1,6 +1,6 @@
 # 如何用 Keras 为时间序列预测调整 LSTM 超参数
 
-> 原文： [https://machinelearningmastery.com/tune-lstm-hyperparameters-keras-time-series-forecasting/](https://machinelearningmastery.com/tune-lstm-hyperparameters-keras-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/tune-lstm-hyperparameters-keras-time-series-forecasting/`](https://machinelearningmastery.com/tune-lstm-hyperparameters-keras-time-series-forecasting/)
 
 配置神经网络很困难，因为没有关于如何做到这一点的好理论。
 

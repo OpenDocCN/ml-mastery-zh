@@ -1,6 +1,6 @@
 # 默认情况下可重现的机器学习结果
 
-> 原文： [https://machinelearningmastery.com/reproducible-machine-learning-results-by-default/](https://machinelearningmastery.com/reproducible-machine-learning-results-by-default/)
+> 原文： [`machinelearningmastery.com/reproducible-machine-learning-results-by-default/`](https://machinelearningmastery.com/reproducible-machine-learning-results-by-default/)
 
 在软件项目中获得可重现的结果是一种很好的做法。它现在甚至可能是标准做法，我希望它是。
 
@@ -10,7 +10,7 @@
 
 作为一名程序员和开发人员，如果您有这门学科，那么您已经拥有了向前发展的工具和流程。
 
-[![Reproducible Computational Research](img/3be42e9d4577ccb585f18ec34fd0ebce.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/Reproducible-Computational-Research.jpg)
+![Reproducible Computational Research](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/Reproducible-Computational-Research.jpg)
 
 可重复的计算研究
 照片来源[蔡司显微镜](http://www.flickr.com/photos/zeissmicro/10307015376/sizes/l/)，保留一些权利
@@ -105,7 +105,7 @@ Jill Mesirov 在 2010 年发表在“科学”杂志上的一篇文章。在这�
 
 使用 Continuous Integration 服务器经常（每天或每小时）运行测试工具。
 
-[![Continuous Integration](img/ccee515ee1f73b892f26b452398dd51b.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/continuous-integration.jpg)
+![Continuous Integration](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/continuous-integration.jpg)
 
 持续整合
 照片来源 [regocasasnovas](http://www.flickr.com/photos/regocasasnovas/2941953416/sizes/l/) ，保留一些权利

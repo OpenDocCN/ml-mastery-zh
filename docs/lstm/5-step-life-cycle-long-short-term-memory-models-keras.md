@@ -1,6 +1,6 @@
 # Keras 中长短期记忆模型的 5 步生命周期
 
-> 原文： [https://machinelearningmastery.com/5-step-life-cycle-long-short-term-memory-models-keras/](https://machinelearningmastery.com/5-step-life-cycle-long-short-term-memory-models-keras/)
+> 原文： [`machinelearningmastery.com/5-step-life-cycle-long-short-term-memory-models-keras/`](https://machinelearningmastery.com/5-step-life-cycle-long-short-term-memory-models-keras/)
 
 使用 Keras 在 Python 中创建和评估深度学习神经网络非常容易，但您必须遵循严格的模型生命周期。
 

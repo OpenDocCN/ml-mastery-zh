@@ -1,6 +1,6 @@
 # 如何在 macOS 上为 Python 安装 XGBoost
 
-> 原文： [https://machinelearningmastery.com/install-xgboost-python-macos/](https://machinelearningmastery.com/install-xgboost-python-macos/)
+> 原文： [`machinelearningmastery.com/install-xgboost-python-macos/`](https://machinelearningmastery.com/install-xgboost-python-macos/)
 
 XGBoost 是一个用于开发非常快速和准确的梯度提升模型的库。
 

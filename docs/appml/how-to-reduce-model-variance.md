@@ -1,6 +1,6 @@
 # 如何减少最终机器学习模型中的方差
 
-> 原文： [https://machinelearningmastery.com/how-to-reduce-model-variance/](https://machinelearningmastery.com/how-to-reduce-model-variance/)
+> 原文： [`machinelearningmastery.com/how-to-reduce-model-variance/`](https://machinelearningmastery.com/how-to-reduce-model-variance/)
 
 最终的机器学习模型是对所有可用数据进行训练的模型，然后用于对新数据做出预测。
 

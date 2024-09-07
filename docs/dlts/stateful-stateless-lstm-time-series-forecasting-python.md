@@ -1,6 +1,6 @@
 # 使用 Python 用于时间序列预测的有状态和无状态 LSTM
 
-> 原文： [https://machinelearningmastery.com/stateful-stateless-lstm-time-series-forecasting-python/](https://machinelearningmastery.com/stateful-stateless-lstm-time-series-forecasting-python/)
+> 原文： [`machinelearningmastery.com/stateful-stateless-lstm-time-series-forecasting-python/`](https://machinelearningmastery.com/stateful-stateless-lstm-time-series-forecasting-python/)
 
 Keras Python 深度学习库支持有状态和无状态长短期内存（LSTM）网络。
 

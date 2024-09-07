@@ -1,6 +1,6 @@
 # 机器学习中的稀疏矩阵的温和介绍
 
-> 原文： [https://machinelearningmastery.com/sparse-matrices-for-machine-learning/](https://machinelearningmastery.com/sparse-matrices-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/sparse-matrices-for-machine-learning/`](https://machinelearningmastery.com/sparse-matrices-for-machine-learning/)
 
 主要包含零值的矩阵称为稀疏矩阵，与大多数值非零的矩阵不同，称为密集。
 

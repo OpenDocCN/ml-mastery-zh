@@ -1,6 +1,6 @@
 # 现实世界的机器学习问题之旅
 
-> 原文： [https://machinelearningmastery.com/tour-of-real-world-machine-learning-problems/](https://machinelearningmastery.com/tour-of-real-world-machine-learning-problems/)
+> 原文： [`machinelearningmastery.com/tour-of-real-world-machine-learning-problems/`](https://machinelearningmastery.com/tour-of-real-world-machine-learning-problems/)
 
 现实世界的例子使机器学习的抽象描述变得具体。
 

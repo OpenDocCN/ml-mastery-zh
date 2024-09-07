@@ -1,6 +1,6 @@
 # 使用 ROC 曲线评估和比较分类器表现
 
-> 原文： [https://machinelearningmastery.com/assessing-comparing-classifier-performance-roc-curves-2/](https://machinelearningmastery.com/assessing-comparing-classifier-performance-roc-curves-2/)
+> 原文： [`machinelearningmastery.com/assessing-comparing-classifier-performance-roc-curves-2/`](https://machinelearningmastery.com/assessing-comparing-classifier-performance-roc-curves-2/)
 
 最常报告的分类器表现测量是准确度：获得的正确分类的百分比。
 
@@ -20,7 +20,7 @@
 
 但是，应用于数据集的任何阈值（其中 PP 是阳性群体，NP 是阴性群体）将产生真阳性（TP），假阳性（FP），真阴性（TN）和假阴性（FN） （图 1）。我们需要一种考虑所有这些数字的方法。
 
-[![ROC Curve Explaination](img/df79b24f4bd4a610b7985c177240e4c7.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/ROC1.png)
+![ROC Curve Explaination](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/ROC1.png)
 
 图 1.重叠数据集将始终生成误报和否定以及真正的正数和负数
 
@@ -32,7 +32,7 @@
 
 让我们为一些合理的现实世界数字计算这些指标。如果我们有 100,000 名患者，其中 200 名（20％）实际上患有癌症，我们可能会看到以下测试结果（表 1）：
 
-[![Table of sample data](img/f3b3efa1d15a9cd160194d0d62de8f13.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Table.png)
+![Table of sample data](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Table.png)
 
 表 1.巴氏涂片筛查的“合理”值的诊断测试表现的图示
 
@@ -49,7 +49,7 @@
 
 然后可以针对所使用的每个阈值针对 FP（1-特异性）绘制 TP（灵敏度）。结果图称为接收器工作特性（ROC）曲线（图 2）。 ROC 曲线被开发用于 20 世纪 50 年代雷达回波中的信号检测，并且已经应用​​于广泛的问题。
 
-[![Example ROC Curves](img/7abcb18fb49c85daaaf3923372d3b795.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/ROC2.png)
+![Example ROC Curves](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/ROC2.png)
 
 图 2\. ROC 曲线的示例
 

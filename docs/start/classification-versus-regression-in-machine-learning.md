@@ -1,6 +1,6 @@
 # 机器学习中分类与回归的区别
 
-> 原文： [https://machinelearningmastery.com/classification-versus-regression-in-machine-learning/](https://machinelearningmastery.com/classification-versus-regression-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/classification-versus-regression-in-machine-learning/`](https://machinelearningmastery.com/classification-versus-regression-in-machine-learning/)
 
 分类和回归问题之间存在重要差异。
 
@@ -107,8 +107,8 @@ accuracy = 60%
 例如，如果回归预测模型做出 2 个预测，其中 1.5 个预期值为 1.0，另一个预测值为 3.3，预期值为 3.0，那么 RMSE 将为：
 
 ```
-RMSE = sqrt(average(error^2))
-RMSE = sqrt(((1.0 - 1.5)^2 + (3.0 - 3.3)^2) / 2)
+RMSE = sqrt(average(error²))
+RMSE = sqrt(((1.0 - 1.5)² + (3.0 - 3.3)²) / 2)
 RMSE = sqrt((0.25 + 0.09) / 2)
 RMSE = sqrt(0.17)
 RMSE = 0.412

@@ -1,6 +1,6 @@
 # 11 个 Python 中的经典时间序列预测方法（备忘单）
 
-> 原文： [https://machinelearningmastery.com/time-series-forecasting-methods-in-python-cheat-sheet/](https://machinelearningmastery.com/time-series-forecasting-methods-in-python-cheat-sheet/)
+> 原文： [`machinelearningmastery.com/time-series-forecasting-methods-in-python-cheat-sheet/`](https://machinelearningmastery.com/time-series-forecasting-methods-in-python-cheat-sheet/)
 
 机器学习方法可用于分类和预测时间序列问题。
 

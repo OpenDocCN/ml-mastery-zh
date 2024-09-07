@@ -1,6 +1,6 @@
 # 长短期记忆循环神经网络的注意事项
 
-> 原文： [https://machinelearningmastery.com/attention-long-short-term-memory-recurrent-neural-networks/](https://machinelearningmastery.com/attention-long-short-term-memory-recurrent-neural-networks/)
+> 原文： [`machinelearningmastery.com/attention-long-short-term-memory-recurrent-neural-networks/`](https://machinelearningmastery.com/attention-long-short-term-memory-recurrent-neural-networks/)
 
 编解码器架构很受欢迎，因为它已经在一系列领域中展示了最先进的结果。
 

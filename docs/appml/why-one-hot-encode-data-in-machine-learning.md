@@ -1,6 +1,6 @@
 # 为什么在机器学习中单热编码数据？
 
-> 原文： [https://machinelearningmastery.com/why-one-hot-encode-data-in-machine-learning/](https://machinelearningmastery.com/why-one-hot-encode-data-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/why-one-hot-encode-data-in-machine-learning/`](https://machinelearningmastery.com/why-one-hot-encode-data-in-machine-learning/)
 
 应用机器学习入门可能很困难，尤其是在处理实际数据时。
 

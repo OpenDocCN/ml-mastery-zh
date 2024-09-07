@@ -1,6 +1,6 @@
 # 使用 Python 和 scikit-learn 保存和加载机器学习模型
 
-> 原文： [https://machinelearningmastery.com/save-load-machine-learning-models-python-scikit-learn/](https://machinelearningmastery.com/save-load-machine-learning-models-python-scikit-learn/)
+> 原文： [`machinelearningmastery.com/save-load-machine-learning-models-python-scikit-learn/`](https://machinelearningmastery.com/save-load-machine-learning-models-python-scikit-learn/)
 
 找到准确的机器学习模型并不是项目的终点。
 

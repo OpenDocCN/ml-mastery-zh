@@ -1,6 +1,6 @@
 # 使用任何机器学习工具和秘籍快速启动
 
-> 原文： [https://machinelearningmastery.com/proceduralize-machine-learning-tools/](https://machinelearningmastery.com/proceduralize-machine-learning-tools/)
+> 原文： [`machinelearningmastery.com/proceduralize-machine-learning-tools/`](https://machinelearningmastery.com/proceduralize-machine-learning-tools/)
 
 您如何最好地使用机器学习工具进行准确的预测？
 

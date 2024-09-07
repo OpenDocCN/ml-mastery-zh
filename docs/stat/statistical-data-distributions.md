@@ -1,6 +1,6 @@
 # 统计量分布的简要介绍
 
-> 原文： [https://machinelearningmastery.com/statistical-data-distributions/](https://machinelearningmastery.com/statistical-data-distributions/)
+> 原文： [`machinelearningmastery.com/statistical-data-distributions/`](https://machinelearningmastery.com/statistical-data-distributions/)
 
 数据样本将形成分布，到目前为止，最着名的分布是高斯分布，通常称为正态分布。
 
@@ -229,7 +229,7 @@ T 分布累积密度函数的线图
 将卡方分布中的观察值计算为从高斯分布绘制的`k`平方观测值的总和。
 
 ```py
-chi = sum x[i]^2 for i=1 to k.
+chi = sum x[i]² for i=1 to k.
 ```
 
 `chi`是具有卡方分布的观察值，`x`是从高斯分布中得出的观察值，`k`是 _x 的数量 _ 观察也是卡方分布的自由度数。

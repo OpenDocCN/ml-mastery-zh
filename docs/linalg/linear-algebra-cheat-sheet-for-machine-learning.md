@@ -1,6 +1,6 @@
 # 机器学习中的线性代数备忘单
 
-> 原文： [https://machinelearningmastery.com/linear-algebra-cheat-sheet-for-machine-learning/](https://machinelearningmastery.com/linear-algebra-cheat-sheet-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/linear-algebra-cheat-sheet-for-machine-learning/`](https://machinelearningmastery.com/linear-algebra-cheat-sheet-for-machine-learning/)
 
 ### NumPy 中用于机器学习的所有线性代数运算
 。

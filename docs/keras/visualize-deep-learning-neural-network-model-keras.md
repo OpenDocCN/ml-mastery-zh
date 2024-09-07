@@ -1,6 +1,6 @@
 # 如何在 Keras 中可视化深度学习神经网络模型
 
-> 原文： [https://machinelearningmastery.com/visualize-deep-learning-neural-network-model-keras/](https://machinelearningmastery.com/visualize-deep-learning-neural-network-model-keras/)
+> 原文： [`machinelearningmastery.com/visualize-deep-learning-neural-network-model-keras/`](https://machinelearningmastery.com/visualize-deep-learning-neural-network-model-keras/)
 
 Keras Python 深度学习库提供了可视化和更好地理解您的神经网络模型的工具。
 

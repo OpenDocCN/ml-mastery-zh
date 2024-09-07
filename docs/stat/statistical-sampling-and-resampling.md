@@ -1,6 +1,6 @@
 # 统计采样和重采样的简要介绍
 
-> 原文： [https://machinelearningmastery.com/statistical-sampling-and-resampling/](https://machinelearningmastery.com/statistical-sampling-and-resampling/)
+> 原文： [`machinelearningmastery.com/statistical-sampling-and-resampling/`](https://machinelearningmastery.com/statistical-sampling-and-resampling/)
 
 数据是应用机器学习的货币。因此，有效地收集和使用它是很重要的。
 

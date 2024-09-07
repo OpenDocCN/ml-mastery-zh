@@ -1,6 +1,6 @@
 # 如何研究机器学习算法
 
-> 原文： [https://machinelearningmastery.com/how-to-study-machine-learning-algorithms/](https://machinelearningmastery.com/how-to-study-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/how-to-study-machine-learning-algorithms/`](https://machinelearningmastery.com/how-to-study-machine-learning-algorithms/)
 
 算法构成了机器学习的重要组成部分。
 
@@ -8,7 +8,7 @@
 
 在这篇文章中，您将回顾 5 种不同的方法，您可以使用它们来研究机器学习算法。
 
-[![study machine learning algorithms](img/9cc23a6914f0da856fc09d1b25a9d5d9.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/study-machine-learning-algorithms.jpg)
+![study machine learning algorithms](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/study-machine-learning-algorithms.jpg)
 
 如何学习机器学习算法
 图片来自 [mer chau](http://www.flickr.com/photos/merchau/8548057127) ，保留一些权利

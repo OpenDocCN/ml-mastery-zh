@@ -1,6 +1,6 @@
 # 机器学习中统计容差区间的温和介绍
 
-> 原文： [https://machinelearningmastery.com/statistical-tolerance-intervals-in-machine-learning/](https://machinelearningmastery.com/statistical-tolerance-intervals-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/statistical-tolerance-intervals-in-machine-learning/`](https://machinelearningmastery.com/statistical-tolerance-intervals-in-machine-learning/)
 
 对数据设置上限和下限可能很有用。
 
@@ -131,7 +131,7 @@ chi_critical = chi2.isf(q=prob, df=dof)
 我们现在有了所有的部分来计算高斯容差区间。计算如下：
 
 ```py
-interval = sqrt((dof * (1 + (1/n)) * gauss_critical^2) / chi_critical)
+interval = sqrt((dof * (1 + (1/n)) * gauss_critical²) / chi_critical)
 ```
 
 `dof`是自由度数，`n`是数据样本的大小，`gauss_critical`是临界值，如 95％覆盖率为 1.96 人口中，`chi_critical`是所希望的置信度和自由度的 Chi Squared 临界值。

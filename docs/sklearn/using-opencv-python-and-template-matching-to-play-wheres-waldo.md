@@ -1,10 +1,10 @@
 # 使用 OpenCV，Python 和模板匹配来播放“哪里是 Waldo？”
 
-> 原文： [https://machinelearningmastery.com/using-opencv-python-and-template-matching-to-play-wheres-waldo/](https://machinelearningmastery.com/using-opencv-python-and-template-matching-to-play-wheres-waldo/)
+> 原文： [`machinelearningmastery.com/using-opencv-python-and-template-matching-to-play-wheres-waldo/`](https://machinelearningmastery.com/using-opencv-python-and-template-matching-to-play-wheres-waldo/)
 
 **_ 这是来自 [PyImageSearch](http://www.pyimagesearch.com) 的 Adrian Rosebrock 的客座文章，这是一个关于计算机视觉，图像处理和建筑图像搜索引擎的博客。_**
 
-[![Where's Waldo](img/5a3e619109cefc50778f2cd53732e44a.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/puzzle_small.jpg)
+![Where's Waldo](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/puzzle_small.jpg)
 
 图 1：在这个难题中找到 Waldo 需要多长时间？
 
@@ -45,7 +45,7 @@ Waldo 的核心只是一种视觉模式。他戴眼镜。一顶帽子。而他�
 
 第二张图片是我们对 Waldo 的查询图片：
 
-[![Our Waldo query image](img/b37f6280d873923b76b37ddf6ae83387.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/waldo_query.jpg)
+![Our Waldo query image](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/waldo_query.jpg)
 
 图 2：我们的 Waldo 查询图像
 
@@ -254,7 +254,7 @@ $ python find_waldo.py --puzzle puzzle.png --waldo waldo.png
 
 当您的脚本执行完毕后，您应该在屏幕上看到类似的内容：
 
-[![We have successfully found Waldo](img/e53dad325bbf01b013bf53a2ef9bbd25.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/puzzle_found_waldo1.jpg)
+![We have successfully found Waldo](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/puzzle_found_waldo1.jpg)
 
 图 3：我们成功找到了 Waldo！
 

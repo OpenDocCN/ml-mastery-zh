@@ -1,6 +1,6 @@
 # 如何用 Python 和 Keras 开发用于序列分类的双向 LSTM
 
-> 原文： [https://machinelearningmastery.com/develop-bidirectional-lstm-sequence-classification-python-keras/](https://machinelearningmastery.com/develop-bidirectional-lstm-sequence-classification-python-keras/)
+> 原文： [`machinelearningmastery.com/develop-bidirectional-lstm-sequence-classification-python-keras/`](https://machinelearningmastery.com/develop-bidirectional-lstm-sequence-classification-python-keras/)
 
 双向 LSTM 是传统 LSTM 的扩展，可以提高序列分类问题的模型表现。
 
@@ -64,13 +64,13 @@
 
 > ...依赖于对未来的了解似乎乍一看违反了因果关系。我们怎样才能将我们所听到的东西的理解基于尚未说过的东西？然而，人类听众正是这样做的。根据未来的背景，听起来，单词甚至整个句子最初都意味着没有任何意义。我们必须记住的是真正在线的任务之间的区别 - 在每次输入后需要输出 - 以及仅在某些输入段结束时需要输出的任务。
 
-- Alex Graves 和 Jurgen Schmidhuber，[具有双向 LSTM 和其他神经网络架构的 Framewise 音素分类](ftp://ftp.idsia.ch/pub/juergen/nn_2005.pdf)，2005
+- Alex Graves 和 Jurgen Schmidhuber，具有双向 LSTM 和其他神经网络架构的 Framewise 音素分类，2005
 
 双向 LSTM 的使用对于所有序列预测问题可能没有意义，但是对于那些适当的域，可以提供更好的结果。
 
 > 我们发现双向网络比单向网络明显更有效......
 
-— Alex Graves and Jurgen Schmidhuber, [Framewise Phoneme Classification with Bidirectional LSTM and Other Neural Network Architectures](ftp://ftp.idsia.ch/pub/juergen/nn_2005.pdf), 2005
+— Alex Graves and Jurgen Schmidhuber, Framewise Phoneme Classification with Bidirectional LSTM and Other Neural Network Architectures, 2005
 
 需要说明的是，输入序列中的时间步长仍然是一次处理一次，只是网络同时在两个方向上逐步通过输入序列。
 

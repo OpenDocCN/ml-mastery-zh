@@ -1,6 +1,6 @@
 # 专家对长短期记忆网络的简要介绍
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-long-short-term-memory-networks-experts/](https://machinelearningmastery.com/gentle-introduction-long-short-term-memory-networks-experts/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-long-short-term-memory-networks-experts/`](https://machinelearningmastery.com/gentle-introduction-long-short-term-memory-networks-experts/)
 
 长短期记忆（LSTM）网络是一种循环神经网络，能够学习序列预测问题中的顺序依赖性。
 

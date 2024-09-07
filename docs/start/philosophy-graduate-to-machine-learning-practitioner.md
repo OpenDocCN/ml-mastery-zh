@@ -1,6 +1,6 @@
 # 哲学毕业生到机器学习从业者（Brian Thomas 采访）
 
-> 原文： [https://machinelearningmastery.com/philosophy-graduate-to-machine-learning-practitioner/](https://machinelearningmastery.com/philosophy-graduate-to-machine-learning-practitioner/)
+> 原文： [`machinelearningmastery.com/philosophy-graduate-to-machine-learning-practitioner/`](https://machinelearningmastery.com/philosophy-graduate-to-machine-learning-practitioner/)
 
 机器学习入门可能令人沮丧。有太多东西值得学习，感觉压倒一切。
 
@@ -31,7 +31,7 @@ Brian 在使用理论沉重的在线课程感到沮丧后，采用自上而下�
 
 目前我正在通过 Stephen Marsland 的[机器学习：算法视角](http://www.amazon.com/dp/1466583282?tag=inspiredalgor-20)工作。这是非常好的，我发现它比我大约一年前第一次拿起它时更容易通过。
 
-[![Amazon Image](img/bbd25613cb12b55b69497c7479119553.jpg)](http://www.amazon.com/dp/1466583282?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1466583282?tag=inspiredalgor-20)
 
 总的来说，看起来效果最好的是进入那里并开始使用不同的数据集和不同的模型。我不得不说特别是 scikit-learn 确实帮助我解决了这个话题。我还要向 IPython 倾诉，呃，我应该说 Jupyter 笔记本。对我来说，能够加载一些数据，从 scikit-learn 中尝试不同的模型，然后添加一些用我自己的话来解释模型和结果的降价单元格是非常有益的。
 

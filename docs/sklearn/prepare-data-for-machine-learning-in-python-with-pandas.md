@@ -1,12 +1,12 @@
 # 使用 Python 和 Pandas 为机器学习准备数据
 
-> 原文： [https://machinelearningmastery.com/prepare-data-for-machine-learning-in-python-with-pandas/](https://machinelearningmastery.com/prepare-data-for-machine-learning-in-python-with-pandas/)
+> 原文： [`machinelearningmastery.com/prepare-data-for-machine-learning-in-python-with-pandas/`](https://machinelearningmastery.com/prepare-data-for-machine-learning-in-python-with-pandas/)
 
 如果您使用 Python 栈来学习和应用机器学习，那么您将要用于数据分析和数据操作的库是 Pandas。
 
 这篇文章为您提供了熊猫库的快速介绍，并指出了正确的入门方向。
 
-[![pandas for data analysis](img/3bc3a262f55efff00379805f454d39f4.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/pandas-for-data-analysis.jpg)
+![pandas for data analysis](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/pandas-for-data-analysis.jpg)
 
 用于数据分析的熊猫。
 照 [gzlu](https://www.flickr.com/photos/gzlu/7708872342) ，保留一些权利。
@@ -83,4 +83,4 @@ YouTube 上有很多关于人们在自己的数据和会议上展示 Pandas 的�
 
 ### 图书
 
-[![Amazon Image](img/5c5b56437fa133b5ee981c458449e64f.jpg)](http://www.amazon.com/dp/1449319793?tag=inspiredalgor-20) 最后，Wes 是 Python 中关于数据分析的权威书籍的作者。如果你想认真练习，还要考虑抓住这本书。它被称为：[用于数据分析的 Python：与 Pandas，NumPy 和 IPython](http://www.amazon.com/dp/1449319793?tag=inspiredalgor-20) 进行数据争夺。
+![Amazon Image](http://www.amazon.com/dp/1449319793?tag=inspiredalgor-20) 最后，Wes 是 Python 中关于数据分析的权威书籍的作者。如果你想认真练习，还要考虑抓住这本书。它被称为：[用于数据分析的 Python：与 Pandas，NumPy 和 IPython](http://www.amazon.com/dp/1449319793?tag=inspiredalgor-20) 进行数据争夺。

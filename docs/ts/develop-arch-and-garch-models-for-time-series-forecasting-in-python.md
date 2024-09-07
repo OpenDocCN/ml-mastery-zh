@@ -1,6 +1,6 @@
 # 如何用 ARCH 和 GARCH 为时间序列预测建模波动率
 
-> 原文： [https://machinelearningmastery.com/develop-arch-and-garch-models-for-time-series-forecasting-in-python/](https://machinelearningmastery.com/develop-arch-and-garch-models-for-time-series-forecasting-in-python/)
+> 原文： [`machinelearningmastery.com/develop-arch-and-garch-models-for-time-series-forecasting-in-python/`](https://machinelearningmastery.com/develop-arch-and-garch-models-for-time-series-forecasting-in-python/)
 
 当使用 ARIMA 等经典方法对时间序列建模时，方差或波动率随时间的变化可能会导致问题。
 
@@ -316,7 +316,7 @@ pyplot.show()
 
 *   [具有英国通货膨胀方差估计的自回归条件异方差](http://www.jstor.org/stable/1912773)，1982。
 *   [广义自回归条件异方差](https://www.sciencedirect.com/science/article/pii/0304407686900631)，1986。
-*   第 7 章，非平稳模型， [R](https://amzn.to/2smB9LR) 的入门时间序列，2009。
+*   第七章，非平稳模型， [R](https://amzn.to/2smB9LR) 的入门时间序列，2009。
 
 ### API
 

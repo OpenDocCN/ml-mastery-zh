@@ -1,6 +1,6 @@
 # 机器学习中的评估统计的温和介绍
 
-> 原文： [https://machinelearningmastery.com/estimation-statistics-for-machine-learning/](https://machinelearningmastery.com/estimation-statistics-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/estimation-statistics-for-machine-learning/`](https://machinelearningmastery.com/estimation-statistics-for-machine-learning/)
 
 统计假设检验可用于指示两个样本之间的差异是否是由于随机机会，但不能评论差异的大小。
 

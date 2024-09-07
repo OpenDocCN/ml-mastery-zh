@@ -74,7 +74,7 @@ pip install opencv-python
 
 我们使用的数据集是 [ORL 人脸数据库](https://cam-orl.co.uk/facedatabase.html)，这个数据库已经很老了，但是我们可以从 Kaggle 下载:
 
-*   [https://www . ka ggle . com/kasi krit/att-人脸数据库/下载](https://www.kaggle.com/kasikrit/att-database-of-faces/download)
+*   [`www . ka ggle . com/kasi krit/att-人脸数据库/下载`](https://www.kaggle.com/kasikrit/att-database-of-faces/download)
 
 该文件是一个 4MB 左右的压缩文件。它有 40 个人的照片，每个人有 10 张照片。总计 400 张图片。在下文中，我们假设文件被下载到本地目录并命名为`attface.zip`。
 

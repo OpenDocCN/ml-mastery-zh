@@ -1,6 +1,6 @@
 # Python 机器学习中的随机数生成器简介
 
-> 原文： [https://machinelearningmastery.com/introduction-to-random-number-generators-for-machine-learning/](https://machinelearningmastery.com/introduction-to-random-number-generators-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/introduction-to-random-number-generators-for-machine-learning/`](https://machinelearningmastery.com/introduction-to-random-number-generators-for-machine-learning/)
 
 随机性是机器学习的重要组成部分。
 

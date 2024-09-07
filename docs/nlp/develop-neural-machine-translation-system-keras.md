@@ -1,6 +1,6 @@
 # 如何从零开始开发神经机器翻译系统
 
-> 原文： [https://machinelearningmastery.com/develop-neural-machine-translation-system-keras/](https://machinelearningmastery.com/develop-neural-machine-translation-system-keras/)
+> 原文： [`machinelearningmastery.com/develop-neural-machine-translation-system-keras/`](https://machinelearningmastery.com/develop-neural-machine-translation-system-keras/)
 
 #### 自动开发深度学习模型
 使用 Keras 逐步将 Python 从德语翻译成英语。

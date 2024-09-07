@@ -1,6 +1,6 @@
 # 在 Python 中如何调优 XGBoost 的多线程支持
 
-> 原文： [https://machinelearningmastery.com/best-tune-multithreading-support-xgboost-python/](https://machinelearningmastery.com/best-tune-multithreading-support-xgboost-python/)
+> 原文： [`machinelearningmastery.com/best-tune-multithreading-support-xgboost-python/`](https://machinelearningmastery.com/best-tune-multithreading-support-xgboost-python/)
 
 为梯度提升（gradient boosting）而设计的 XGBoost 库具有高效的多核并行处理功能。
 

@@ -14,7 +14,7 @@ r 也许是统计编程和应用机器学习最强大和最受欢迎的平台之
 
 我们开始吧。
 
-[![R Logo](img/77cd5adda522d8b151b1d4fbb40c44b9.png)](https://machinelearningmastery.com/wp-content/uploads/2014/08/R-Logo.jpg)
+![R Logo](https://machinelearningmastery.com/wp-content/uploads/2014/08/R-Logo.jpg)
 
 r 很快
 

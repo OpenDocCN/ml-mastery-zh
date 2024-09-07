@@ -8,7 +8,7 @@
 
 我个人觉得这一步有时很繁重，只是想继续定义我的测试工具，但我知道它总是会冲出感兴趣的想法和假设来测试。因此，在应用机器学习过程的下一步之前，我使用一个逐步的过程来捕获关于实际数据集的最少数量的观察。
 
-[![Quick and Dirty Data Analysis](img/4a0b6d775d4aac668ad4853d6528c928.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/quick-and-dirty.jpg)
+![Quick and Dirty Data Analysis](https://machinelearningmastery.com/wp-content/uploads/2014/02/quick-and-dirty.jpg)
 
 快速和肮脏的数据分析
 图片由[蒂姆·帕金森](https://www.flickr.com/photos/timparkinson/3788737796/sizes/l/)提供，保留部分权利
@@ -72,7 +72,7 @@
 
 用图形表示离散分布可以快速突出显示可能的分布族(如正态分布或指数分布)以及类值如何映射到这些分布上。
 
-[![Attribute Histograms](img/035f27316a68e09ce1194833b5bac2ad.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/histograms.png)
+![Attribute Histograms](https://machinelearningmastery.com/wp-content/uploads/2014/02/histograms.png)
 
 显示类别值的属性直方图
 
@@ -87,7 +87,7 @@
 
 这些图表可以快速突出属性之间的二维结构(如相关性)以及属性到类值的映射中的跨属性趋势。
 
-[![Pairwise Scatter-plots Showing Class Values](img/9cf68d5bd985f0d4813e1ecbe641e539.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/pair-wise-scatterplots.png)
+![Pairwise Scatter-plots Showing Class Values](https://machinelearningmastery.com/wp-content/uploads/2014/02/pair-wise-scatterplots.png)
 
 显示类别值的成对散点图
 

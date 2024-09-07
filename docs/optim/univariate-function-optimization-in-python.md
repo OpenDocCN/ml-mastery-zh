@@ -94,7 +94,7 @@ result = minimize_scalar(objective, method='brent')
 
 首先，我们可以定义一个函数来实现我们的功能。
 
-在这种情况下，我们将使用 x^2 函数的简单偏移版本，例如简单的[抛物线](https://en.wikipedia.org/wiki/Parabola) (u 形)函数。这是一个最小化目标函数，其最优值为-5.0。
+在这种情况下，我们将使用 x² 函数的简单偏移版本，例如简单的[抛物线](https://en.wikipedia.org/wiki/Parabola) (u 形)函数。这是一个最小化目标函数，其最优值为-5.0。
 
 ```py
 # objective function

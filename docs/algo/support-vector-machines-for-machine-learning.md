@@ -1,6 +1,6 @@
 # 机器学习中的支持向量机
 
-> 原文： [https://machinelearningmastery.com/support-vector-machines-for-machine-learning/](https://machinelearningmastery.com/support-vector-machines-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/support-vector-machines-for-machine-learning/`](https://machinelearningmastery.com/support-vector-machines-for-machine-learning/)
 
 支持向量机可能是最流行和最受关注的机器学习算法之一。
 
@@ -146,9 +146,9 @@ K（x，xi）= exp（-gamma * sum（（x-xi ^ 2））
 
 任何关于机器学习的好书都将涵盖 SVM，下面是我最喜欢的一些。
 
-*   [统计学习简介：在 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) 中的应用，第 8 章
-*   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，第 13 章
-*   [统计学习要素：数据挖掘，推理和预测](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)第 12 章
+*   [统计学习简介：在 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) 中的应用，第八章
+*   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，第十三章
+*   [统计学习要素：数据挖掘，推理和预测](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)第十二章
 
 有关 SVM 的无数教程和期刊文章。以下是 Cortes 和 Vapnik 关于 SVM 的开创性论文的链接，以及另一篇精彩的入门教程。
 

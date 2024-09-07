@@ -1,6 +1,6 @@
 # 如何系统地规划和运行机器学习实验
 
-> 原文： [https://machinelearningmastery.com/plan-run-machine-learning-experiments-systematically/](https://machinelearningmastery.com/plan-run-machine-learning-experiments-systematically/)
+> 原文： [`machinelearningmastery.com/plan-run-machine-learning-experiments-systematically/`](https://machinelearningmastery.com/plan-run-machine-learning-experiments-systematically/)
 
 机器学习实验可能需要很长时间。在某些情况下，小时，天，甚至几周。
 

@@ -1,6 +1,6 @@
 # 如何在 Python 中为时间序列预测创建 ARIMA 模型
 
-> 原文： [https://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/](https://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/)
+> 原文： [`machinelearningmastery.com/arima-for-time-series-forecasting-with-python/`](https://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/)
 
 ARIMA 模型是一种流行且广泛使用的时间序列预测统计方法。
 

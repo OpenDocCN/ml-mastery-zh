@@ -1,6 +1,6 @@
 # 我如何开始机器学习？（简短版）
 
-> 原文： [https://machinelearningmastery.com/how-do-i-get-started-in-machine-learning/](https://machinelearningmastery.com/how-do-i-get-started-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/how-do-i-get-started-in-machine-learning/`](https://machinelearningmastery.com/how-do-i-get-started-in-machine-learning/)
 
 我收到每日电子邮件询问的问题：
 
@@ -49,7 +49,7 @@
 4.  **选择一个数据集**。选择要处理的数据集并练习该过程。理想情况下，选择要练习的问题的属性，并找到具有要练习的特征的充分理解的数据集。
 5.  **建立投资组合**。在半正式的工作产品（博客文章，演示文稿，技术报告）中写下您的结果和知识，并公开分享，以展示您不断增长的机器学习技能和能力，并吸引志同道合的从业者。
 
-[![Machine Learning for Programmers - A Better Approach](img/3cf413c8473531f22e5e8c6fc486f4a7.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/Machine-Learning-for-Programmers-A-Better-Approach-e1439699675138.png)
+![Machine Learning for Programmers - A Better Approach](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/Machine-Learning-for-Programmers-A-Better-Approach-e1439699675138.png)
 
 学习机器学习的更好方法，从端到端的工作机器学习问题开始。
 
@@ -67,7 +67,7 @@
 4.  **数据集**。从 UCI 机器学习库中选择数据集。这篇文章将[帮助您按特征](http://machinelearningmastery.com/practice-machine-learning-with-small-in-memory-datasets-from-the-uci-machine-learning-repository/)选择数据集。从[虹膜花数据集](https://archive.ics.uci.edu/ml/datasets/Iris)开始。
 5.  **投资组合**。查看这篇文章，[解释了如何构建机器学习组合](http://machinelearningmastery.com/build-a-machine-learning-portfolio/)。
 
-[![Weka Explorer Interface with the Iris dataset loaded](img/b79e0b319fbba714230cac4458420b7e.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/weka-explorer.png)
+![Weka Explorer Interface with the Iris dataset loaded](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/weka-explorer.png)
 
 加载了 Iris 数据集的 Weka Explorer Interface
 

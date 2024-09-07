@@ -1,6 +1,6 @@
 # 机器学习算法的过拟合和欠拟合
 
-> 原文： [https://machinelearningmastery.com/overfitting-and-underfitting-with-machine-learning-algorithms/](https://machinelearningmastery.com/overfitting-and-underfitting-with-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/overfitting-and-underfitting-with-machine-learning-algorithms/`](https://machinelearningmastery.com/overfitting-and-underfitting-with-machine-learning-algorithms/)
 
 机器学习中表现不佳的原因是过拟合或数据不合适。
 

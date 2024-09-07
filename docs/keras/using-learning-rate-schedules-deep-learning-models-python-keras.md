@@ -1,6 +1,6 @@
 # 在 Python 和 Keras 中对深度学习模型使用学习率调度
 
-> 原文： [https://machinelearningmastery.com/using-learning-rate-schedules-deep-learning-models-python-keras/](https://machinelearningmastery.com/using-learning-rate-schedules-deep-learning-models-python-keras/)
+> 原文： [`machinelearningmastery.com/using-learning-rate-schedules-deep-learning-models-python-keras/`](https://machinelearningmastery.com/using-learning-rate-schedules-deep-learning-models-python-keras/)
 
 训练神经网络或大型深度学习模型是一项困难的优化任务。
 

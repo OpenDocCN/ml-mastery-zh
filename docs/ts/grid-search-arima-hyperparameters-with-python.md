@@ -1,6 +1,6 @@
 # 如何使用 Python 网格搜索 ARIMA 模型超参数
 
-> 原文： [https://machinelearningmastery.com/grid-search-arima-hyperparameters-with-python/](https://machinelearningmastery.com/grid-search-arima-hyperparameters-with-python/)
+> 原文： [`machinelearningmastery.com/grid-search-arima-hyperparameters-with-python/`](https://machinelearningmastery.com/grid-search-arima-hyperparameters-with-python/)
 
 用于时间序列分析和预测的 ARIMA 模型可能很难配置。
 

@@ -1,6 +1,6 @@
 # 你应该专注的 5 个机器学习领域
 
-> 原文： [https://machinelearningmastery.com/5-machine-learning-areas-you-should-be-cultivating/](https://machinelearningmastery.com/5-machine-learning-areas-you-should-be-cultivating/)
+> 原文： [`machinelearningmastery.com/5-machine-learning-areas-you-should-be-cultivating/`](https://machinelearningmastery.com/5-machine-learning-areas-you-should-be-cultivating/)
 
 您希望学习机器学习以获得更多工作机会或找到工作。您可能已经在担任数据科学家或机器学习工程师，并希望提高您的技能。
 
@@ -12,7 +12,7 @@
 
 在这篇文章中，我们将看看您可能想要开发技能的 5 个关键领域以及您可以在这些领域进行练习的活动类型。
 
-[![machine learning skills](img/41caf2696650fba58bae008a5552f909.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/machine-learning-skills.jpg)
+![machine learning skills](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/machine-learning-skills.jpg)
 
 训练您的机器学习技能摄影： [Rachel Johnson](http://www.flickr.com/photos/rachel-johnson/4298911131) ，保留一些权利
 

@@ -1,6 +1,6 @@
 # 如何开发一个单词级神经语言模型并用它来生成文本
 
-> 原文： [https://machinelearningmastery.com/how-to-develop-a-word-level-neural-language-model-in-keras/](https://machinelearningmastery.com/how-to-develop-a-word-level-neural-language-model-in-keras/)
+> 原文： [`machinelearningmastery.com/how-to-develop-a-word-level-neural-language-model-in-keras/`](https://machinelearningmastery.com/how-to-develop-a-word-level-neural-language-model-in-keras/)
 
 语言模型可以基于序列中已经观察到的单词来预测序列中下一个单词的概率。
 

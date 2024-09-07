@@ -1,6 +1,6 @@
 # 过拟合的简单直觉，或者为什么测试训练数据是一个坏主意
 
-> 原文： [https://machinelearningmastery.com/a-simple-intuition-for-overfitting/](https://machinelearningmastery.com/a-simple-intuition-for-overfitting/)
+> 原文： [`machinelearningmastery.com/a-simple-intuition-for-overfitting/`](https://machinelearningmastery.com/a-simple-intuition-for-overfitting/)
 
 当您第一次开始机器学习时，您[加载数据集并尝试模型](http://machinelearningmastery.com/how-to-run-your-first-classifier-in-weka/ "How to Run Your First Classifier in Weka")。您可能会想到，为什么我不能仅使用所有数据构建模型并在同一数据集上对其进行评估？
 
@@ -14,7 +14,7 @@
 
 如果你有一个数据集，比如[虹膜花数据集](http://en.wikipedia.org/wiki/Iris_flower_data_set)，那个数据集的最佳模型是什么？
 
-[![Irises](img/5b7373d161f6f66439a98efac5d05c91.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/irises.jpg)
+![Irises](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/irises.jpg)
 
 鸢尾花
 照片来自 [dottieg2007](http://www.flickr.com/photos/dottieg2007/5647202653/sizes/m/) ，保留一些权利
@@ -41,7 +41,7 @@
 
 考虑一个组合分类问题，其目标是将数据实例分类为红色或绿色。
 
-[![Modeling a Target Function](img/77809e5faf6897967a209bc3eb7dbad8.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/Modeling-a-Target-Function.jpg)
+![Modeling a Target Function](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/Modeling-a-Target-Function.jpg)
 
 建模目标函数
 照片由 [seantoyer](http://www.flickr.com/photos/seanhobson/4517383187/sizes/l/) 拍摄，保留一些权利。
@@ -78,7 +78,7 @@
 
 您必须[在看不见的数据](http://machinelearningmastery.com/how-to-choose-the-right-test-options-when-evaluating-machine-learning-algorithms/ "How To Choose The Right Test Options When Evaluating Machine Learning Algorithms")上测试您的模型以反击过拟合。
 
-[![Tackling Overfitting](img/a77dbce41566e3377c4a95048a3d91a9.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/overfit.jpg)
+![Tackling Overfitting](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/overfit.jpg)
 
 解决过拟合
 照片由 [Adrian Fallace Design＆amp;摄影](http://www.flickr.com/photos/69187071@N02/12688141173/sizes/l/)，保留一些权利。

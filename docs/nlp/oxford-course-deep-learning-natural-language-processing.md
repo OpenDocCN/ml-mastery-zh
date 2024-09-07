@@ -1,6 +1,6 @@
 # 牛津自然语言处理深度学习课程
 
-> 原文： [https://machinelearningmastery.com/oxford-course-deep-learning-natural-language-processing/](https://machinelearningmastery.com/oxford-course-deep-learning-natural-language-processing/)
+> 原文： [`machinelearningmastery.com/oxford-course-deep-learning-natural-language-processing/`](https://machinelearningmastery.com/oxford-course-deep-learning-natural-language-processing/)
 
 深度学习方法在一系列自然语言处理问题上实现了最先进的结果
 
@@ -81,8 +81,8 @@
 *   第 1b 讲 - 深度神经网络[王玲]
 *   第 2a 讲 - 词汇层次语义[Ed Grefenstette]
 *   第 2b 讲 - 实用概述[Chris Dyer]
-*   第 3 讲 - 语言建模和 RNN 第 1 部分[Phil Blunsom]
-*   第 4 讲 - 语言建模和 RNN 第 2 部分[Phil Blunsom]
+*   第 3 讲 - 语言建模和 RNN 第一部分[Phil Blunsom]
+*   第 4 讲 - 语言建模和 RNN 第二部分[Phil Blunsom]
 *   第 5 讲 - 文本分类[Karl Moritz Hermann]
 *   第 6 讲 - 关于 Nvidia GPU 的深度 NLP [Jeremy Appleyard]
 *   第 7 讲 - 条件语言模型[Chris Dyer]

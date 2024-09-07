@@ -1,6 +1,6 @@
 # 生成式长短期记忆网络的温和介绍
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-generative-long-short-term-memory-networks/](https://machinelearningmastery.com/gentle-introduction-generative-long-short-term-memory-networks/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-generative-long-short-term-memory-networks/`](https://machinelearningmastery.com/gentle-introduction-generative-long-short-term-memory-networks/)
 
 开发了用于序列预测的长短期记忆循环神经网络。
 

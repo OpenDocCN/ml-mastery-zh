@@ -1,6 +1,6 @@
 # Python 是应用机器学习的成长平台
 
-> 原文： [https://machinelearningmastery.com/python-growing-platform-applied-machine-learning/](https://machinelearningmastery.com/python-growing-platform-applied-machine-learning/)
+> 原文： [`machinelearningmastery.com/python-growing-platform-applied-machine-learning/`](https://machinelearningmastery.com/python-growing-platform-applied-machine-learning/)
 
 你应该为这份工作挑选合适的工具。
 

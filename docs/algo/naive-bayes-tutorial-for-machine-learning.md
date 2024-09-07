@@ -1,6 +1,6 @@
 # 机器学习中的朴素贝叶斯教程
 
-> 原文： [https://machinelearningmastery.com/naive-bayes-tutorial-for-machine-learning/](https://machinelearningmastery.com/naive-bayes-tutorial-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/naive-bayes-tutorial-for-machine-learning/`](https://machinelearningmastery.com/naive-bayes-tutorial-for-machine-learning/)
 
 Naive Bayes 是一种非常简单的分类算法，它对每个输入变量的独立性做出了一些强有力的假设。
 

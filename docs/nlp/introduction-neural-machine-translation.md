@@ -1,6 +1,6 @@
 # 浅谈神经机器翻译
 
-> 原文： [https://machinelearningmastery.com/introduction-neural-machine-translation/](https://machinelearningmastery.com/introduction-neural-machine-translation/)
+> 原文： [`machinelearningmastery.com/introduction-neural-machine-translation/`](https://machinelearningmastery.com/introduction-neural-machine-translation/)
 
 计算机最早的目标之一是将文本从一种语言自动转换为另一种语言。
 
@@ -172,7 +172,7 @@ https://translate.google.com
 
 *   [机器翻译档案](http://www.mt-archive.info/)
 *   [维基百科上的神经机器翻译](https://en.wikipedia.org/wiki/Neural_machine_translation)
-*   [第 13 章，神经机器翻译，统计机器翻译](https://arxiv.org/abs/1709.07809)，2017。
+*   [第十三章，神经机器翻译，统计机器翻译](https://arxiv.org/abs/1709.07809)，2017。
 
 ## 摘要
 

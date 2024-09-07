@@ -1,6 +1,6 @@
 # 机器学习中的简单线性回归教程
 
-> 原文： [https://machinelearningmastery.com/simple-linear-regression-tutorial-for-machine-learning/](https://machinelearningmastery.com/simple-linear-regression-tutorial-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/simple-linear-regression-tutorial-for-machine-learning/`](https://machinelearningmastery.com/simple-linear-regression-tutorial-for-machine-learning/)
 
 线性回归是一种非常简单的方法，但已被证明对大量情况非常有用。
 

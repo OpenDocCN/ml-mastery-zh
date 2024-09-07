@@ -1,6 +1,6 @@
 # Python 深度学习库 TensorFlow 简介
 
-> 原文： [https://machinelearningmastery.com/introduction-python-deep-learning-library-tensorflow/](https://machinelearningmastery.com/introduction-python-deep-learning-library-tensorflow/)
+> 原文： [`machinelearningmastery.com/introduction-python-deep-learning-library-tensorflow/`](https://machinelearningmastery.com/introduction-python-deep-learning-library-tensorflow/)
 
 TensorFlow 是一个用于 Google 创建和发布的快速数值计算的 Python 库。
 

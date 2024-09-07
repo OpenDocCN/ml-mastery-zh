@@ -1,6 +1,6 @@
 # 构建机器学习项目库
 
-> 原文： [https://machinelearningmastery.com/build-a-machine-learning-portfolio/](https://machinelearningmastery.com/build-a-machine-learning-portfolio/)
+> 原文： [`machinelearningmastery.com/build-a-machine-learning-portfolio/`](https://machinelearningmastery.com/build-a-machine-learning-portfolio/)
 
 ### _ 完成小型项目并展示您的技能 _
 

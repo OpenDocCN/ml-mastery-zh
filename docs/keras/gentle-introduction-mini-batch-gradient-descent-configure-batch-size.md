@@ -1,6 +1,6 @@
 # 小批量梯度下降的简要介绍以及如何配置批量大小
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-mini-batch-gradient-descent-configure-batch-size/](https://machinelearningmastery.com/gentle-introduction-mini-batch-gradient-descent-configure-batch-size/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-mini-batch-gradient-descent-configure-batch-size/`](https://machinelearningmastery.com/gentle-introduction-mini-batch-gradient-descent-configure-batch-size/)
 
 随机梯度下降是用于训练深度学习模型的主要方法。
 

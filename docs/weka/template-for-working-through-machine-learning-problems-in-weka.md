@@ -10,7 +10,7 @@
 
 选择太多了。你可以做的事情太多了。
 
-[![Too much Choice](img/14c0e33d22ea16c8bf1a218040f3bdf5.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/choice.jpg)
+![Too much Choice](https://machinelearningmastery.com/wp-content/uploads/2014/03/choice.jpg)
 
 太多选择
 图片由[埃米利奥拉布拉多](https://www.flickr.com/photos/3059349393/3786855827/sizes/l/)提供，保留部分权利。
@@ -57,7 +57,7 @@
 
 数据分析的目的是了解可用于开发模型的信息。
 
-[![Attribute Histograms](img/035f27316a68e09ce1194833b5bac2ad.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/histograms.png)
+![Attribute Histograms](https://machinelearningmastery.com/wp-content/uploads/2014/02/histograms.png)
 
 显示类别值的属性直方图
 
@@ -83,7 +83,7 @@
 
 评估计法的目的是开发测试工具和基线准确率，并以此为基础进行改进。
 
-[![Algorithm ranking when analyzing results in the Weka Experimenter](img/cdab3456f0be64680cff89d02b8213f7.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-25-at-5.30.54-AM.png)
+![Algorithm ranking when analyzing results in the Weka Experimenter](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-25-at-5.30.54-AM.png)
 
 在 Weka 实验器中分析结果时的算法排名
 

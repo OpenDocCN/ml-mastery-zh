@@ -1,6 +1,6 @@
 # 参数和超参数之间有什么区别？
 
-> 原文： [https://machinelearningmastery.com/difference-between-a-parameter-and-a-hyperparameter/](https://machinelearningmastery.com/difference-between-a-parameter-and-a-hyperparameter/)
+> 原文： [`machinelearningmastery.com/difference-between-a-parameter-and-a-hyperparameter/`](https://machinelearningmastery.com/difference-between-a-parameter-and-a-hyperparameter/)
 
 当您开始应用机器学习时，这可能会让您感到困惑。
 

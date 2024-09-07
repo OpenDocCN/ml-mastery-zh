@@ -1,6 +1,6 @@
 # 如何以及何时使用 scikit-learn 中的的校准分类模型
 
-> 原文： [https://machinelearningmastery.com/calibrated-classification-model-in-scikit-learn/](https://machinelearningmastery.com/calibrated-classification-model-in-scikit-learn/)
+> 原文： [`machinelearningmastery.com/calibrated-classification-model-in-scikit-learn/`](https://machinelearningmastery.com/calibrated-classification-model-in-scikit-learn/)
 
 不是直接为分类问题预测类值，而是可以方便地预测观察属于每个可能类别的概率。
 

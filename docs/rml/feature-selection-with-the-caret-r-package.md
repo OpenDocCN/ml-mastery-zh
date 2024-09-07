@@ -79,7 +79,7 @@ print(importance)
 plot(importance)
 ```
 
-[![Rank of Features by Importance](img/2fb872b9db1aabe5824b708681dde83b.png)](https://machinelearningmastery.com/wp-content/uploads/2014/09/variable_importance.png)
+![Rank of Features by Importance](https://machinelearningmastery.com/wp-content/uploads/2014/09/variable_importance.png)
 
 使用 Caret R 包按重要性排列特征
 
@@ -111,7 +111,7 @@ predictors(results)
 plot(results, type=c("g", "o"))
 ```
 
-[![Feature Selection](img/0eeb33f328e60dbff71ca493966c02b5.png)](https://machinelearningmastery.com/wp-content/uploads/2014/09/feature-selection.png)
+![Feature Selection](https://machinelearningmastery.com/wp-content/uploads/2014/09/feature-selection.png)
 
 使用 Caret 包选择功能
 

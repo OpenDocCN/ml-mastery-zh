@@ -1,6 +1,6 @@
 # 使用编解码器模型的用于字幕生成的注入和合并架构
 
-> 原文： [https://machinelearningmastery.com/caption-generation-inject-merge-architectures-encoder-decoder-model/](https://machinelearningmastery.com/caption-generation-inject-merge-architectures-encoder-decoder-model/)
+> 原文： [`machinelearningmastery.com/caption-generation-inject-merge-architectures-encoder-decoder-model/`](https://machinelearningmastery.com/caption-generation-inject-merge-architectures-encoder-decoder-model/)
 
 字幕生成是一个具有挑战性的人工智能问题，它利用计算机视觉和自然语言处理。
 

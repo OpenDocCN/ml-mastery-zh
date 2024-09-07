@@ -1,6 +1,6 @@
 # 黑盒机器学习的诱惑陷阱
 
-> 原文： [https://machinelearningmastery.com/the-seductive-trap-of-black-box-machine-learning/](https://machinelearningmastery.com/the-seductive-trap-of-black-box-machine-learning/)
+> 原文： [`machinelearningmastery.com/the-seductive-trap-of-black-box-machine-learning/`](https://machinelearningmastery.com/the-seductive-trap-of-black-box-machine-learning/)
 
 只要我参与数据挖掘和机器学习竞赛，我就考虑过自动参与。也许它表明我想要解决构建工具的问题比我想要解决手头的问题更多。
 
@@ -12,7 +12,7 @@
 
 我甚至用几种不同语言为竞赛建立了几次不完美的系统变体。第一个版本是在十多年前的 Java 中。最近的版本是在 R 中使用 make 文件和 bash 脚本大约 6 个月前。
 
-[![machine learning pipeline](img/8e7964ae28b4b9ec47b735d3dbcdbe8d.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/machine-learning-pipeline.jpg)
+![machine learning pipeline](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/machine-learning-pipeline.jpg)
 
 机器学习管道
 照片由[西雅图市档案馆](https://www.flickr.com/photos/seattlemunicipalarchives/12504672623/sizes/l)，保留一些权利。
@@ -67,7 +67,7 @@
 
 我上面描述的系统专注于一个问题：给定数据集，可以生成哪些最佳预测？ [谷歌预测 API](https://developers.google.com/prediction/) 可能是这种类型的系统的一个例子（如果我关闭一只眼睛并与另一只眼睛斜视）。我不在乎我如何获得最好的结果（或者足够好的结果），只是给他们我，该死的。
 
-[![BigML Interactive Decision Tree](img/9201339dae39c27755ad066f401d4656.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-decision-tree.png)
+![BigML Interactive Decision Tree](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-decision-tree.png)
 
 BigML 交互式决策树
 
@@ -81,7 +81,7 @@ BigML 交互式决策树
 
 可能存在黑盒机器学习的地方，这就是模型无关紧要的问题。想到的一个例子是赌博（如赛马或股票市场）。这些模型并不重要，因为它很快变得陈旧。因此，只有下一批预测和建立模型的过程才是最重要的。
 
-[![black box machine learning](img/53faa3791ec3bca045b48328a466b215.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/black-box-machine-learning.jpg)
+![black box machine learning](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/black-box-machine-learning.jpg)
 
 黑盒机学习
 摄影：[混乱之屋](https://www.flickr.com/photos/home_of_chaos/6332465890/sizes/l)，保留一些权利

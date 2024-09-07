@@ -1,6 +1,6 @@
 # 如何在 Keras 中检查深度学习模型
 
-> 原文： [https://machinelearningmastery.com/check-point-deep-learning-models-keras/](https://machinelearningmastery.com/check-point-deep-learning-models-keras/)
+> 原文： [`machinelearningmastery.com/check-point-deep-learning-models-keras/`](https://machinelearningmastery.com/check-point-deep-learning-models-keras/)
 
 深度学习模型在训练时可能需要花费数小时，数天甚至数周。
 

@@ -1,6 +1,6 @@
 # 深度学习字幕生成模型的温和介绍
 
-> 原文： [https://machinelearningmastery.com/deep-learning-caption-generation-models/](https://machinelearningmastery.com/deep-learning-caption-generation-models/)
+> 原文： [`machinelearningmastery.com/deep-learning-caption-generation-models/`](https://machinelearningmastery.com/deep-learning-caption-generation-models/)
 
 字幕生成是在给定照片的情况下生成人类可读的文本描述的具有挑战性的人工智能问题。
 

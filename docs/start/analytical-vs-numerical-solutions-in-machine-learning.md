@@ -1,6 +1,6 @@
 # 机器学习中的解析与数值解
 
-> 原文： [https://machinelearningmastery.com/analytical-vs-numerical-solutions-in-machine-learning/](https://machinelearningmastery.com/analytical-vs-numerical-solutions-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/analytical-vs-numerical-solutions-in-machine-learning/`](https://machinelearningmastery.com/analytical-vs-numerical-solutions-in-machine-learning/)
 
 你有这样的问题：
 

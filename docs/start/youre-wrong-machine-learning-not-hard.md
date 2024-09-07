@@ -1,6 +1,6 @@
 # 你这样做是错的。为什么机器学习不必如此困难？
 
-> 原文： [https://machinelearningmastery.com/youre-wrong-machine-learning-not-hard/](https://machinelearningmastery.com/youre-wrong-machine-learning-not-hard/)
+> 原文： [`machinelearningmastery.com/youre-wrong-machine-learning-not-hard/`](https://machinelearningmastery.com/youre-wrong-machine-learning-not-hard/)
 
 使用自下而上的方法教授数学，物理学甚至计算机科学等技术主题。
 

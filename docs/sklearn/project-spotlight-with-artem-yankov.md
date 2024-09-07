@@ -1,6 +1,6 @@
 # 项目聚焦：使用 Artem Yankov 在 Python 中推荐事件
 
-> 原文： [https://machinelearningmastery.com/project-spotlight-with-artem-yankov/](https://machinelearningmastery.com/project-spotlight-with-artem-yankov/)
+> 原文： [`machinelearningmastery.com/project-spotlight-with-artem-yankov/`](https://machinelearningmastery.com/project-spotlight-with-artem-yankov/)
 
 这是 Artem Yankov 的项目聚焦。
 
@@ -20,7 +20,7 @@
 
 因此，当我完成机器学习课程并开始寻找项目来练习我的技能时，我认为我可以通过从这些网站获取事件列表然后根据我喜欢的方式构建推荐来真正自动化此事件搜索过程。
 
-[![HapsRadar by Artem Yankov](img/e715ac239501fe3fea7f5fda20667d1d.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/HapsRadar.png)
+![HapsRadar by Artem Yankov](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/HapsRadar.png)
 
 HapsRadar by Artem Yankov
 

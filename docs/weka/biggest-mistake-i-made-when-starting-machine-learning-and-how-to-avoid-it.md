@@ -16,7 +16,7 @@
 
 **用我的新书[用 Weka](https://machinelearningmastery.com/machine-learning-mastery-weka/) 启动你的项目**，包括*的分步教程*和清晰的*截图*所有示例。
 
-[![Weka Explorer Interface with the Iris dataset loaded](img/864dc1ea6a777ac55c1be13bcb543f86.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-explorer.png)
+![Weka Explorer Interface with the Iris dataset loaded](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-explorer.png)
 
 加载虹膜数据集的 Weka 浏览器界面
 

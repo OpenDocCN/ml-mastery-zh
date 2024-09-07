@@ -1,6 +1,6 @@
 # Python 中效果大小度量的温和介绍
 
-> 原文： [https://machinelearningmastery.com/effect-size-measures-in-python/](https://machinelearningmastery.com/effect-size-measures-in-python/)
+> 原文： [`machinelearningmastery.com/effect-size-measures-in-python/`](https://machinelearningmastery.com/effect-size-measures-in-python/)
 
 统计假设检验报告了假设观察结果的可能性，例如变量之间没有关联或组间没有差异。
 
@@ -165,7 +165,7 @@ d = (u1 - u2) / s
 两个独立样本的合并标准偏差可以计算如下：
 
 ```py
-s = sqrt(((n1 - 1) . s1^2 + (n2 - 1) . s2^2) / (n1 + n2 - 2))
+s = sqrt(((n1 - 1) . s1² + (n2 - 1) . s2²) / (n1 + n2 - 2))
 ```
 
 是合并的标准偏差，`n1`和`n2`是第一个样本和第二个样本和 _s1 ^ 2_ 的大小和 _s2 ^ 2_ 是第一个和第二个样本的方差。减法是对自由度数的调整。

@@ -1,6 +1,6 @@
 # 通过提前停止避免应用 Python 和 XGBoost 时发生的过拟合现象
 
-> 原文： [https://machinelearningmastery.com/avoid-overfitting-by-early-stopping-with-xgboost-in-python/](https://machinelearningmastery.com/avoid-overfitting-by-early-stopping-with-xgboost-in-python/)
+> 原文： [`machinelearningmastery.com/avoid-overfitting-by-early-stopping-with-xgboost-in-python/`](https://machinelearningmastery.com/avoid-overfitting-by-early-stopping-with-xgboost-in-python/)
 
 过拟合是非线性学习算法（例如梯度提升）中常见的一个复杂问题。
 

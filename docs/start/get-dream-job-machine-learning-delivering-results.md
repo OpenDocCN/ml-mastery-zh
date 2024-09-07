@@ -1,6 +1,6 @@
 # 通过提供结果在机器学习中获得梦想的工作
 
-> 原文： [https://machinelearningmastery.com/get-dream-job-machine-learning-delivering-results/](https://machinelearningmastery.com/get-dream-job-machine-learning-delivering-results/)
+> 原文： [`machinelearningmastery.com/get-dream-job-machine-learning-delivering-results/`](https://machinelearningmastery.com/get-dream-job-machine-learning-delivering-results/)
 
 你可以站起来，成为一名机器学习从业者和数据科学家。
 
@@ -10,7 +10,7 @@
 
 你会发现，高层管理人员和首席执行官都在关注结果，而不是背景，而像你这样的程序员和工程师正在崛起，赢得比赛并从事机器学习。
 
-[![Get Your Dream Job](img/29de6e3144fae1c04015b654e89c6f22.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Get-Your-Dream-Job.jpg)
+![Get Your Dream Job](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Get-Your-Dream-Job.jpg)
 
 得到你梦想的工作
 照片由 [Andrew Turner](http://www.flickr.com/photos/ajturner/3362409021) 拍摄，保留一些权利

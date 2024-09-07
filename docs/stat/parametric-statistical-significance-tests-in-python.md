@@ -1,6 +1,6 @@
 # 如何在 Python 中计算参数统计显着性检验
 
-> 原文： [https://machinelearningmastery.com/parametric-statistical-significance-tests-in-python/](https://machinelearningmastery.com/parametric-statistical-significance-tests-in-python/)
+> 原文： [`machinelearningmastery.com/parametric-statistical-significance-tests-in-python/`](https://machinelearningmastery.com/parametric-statistical-significance-tests-in-python/)
 
 参数统计方法通常意味着假设数据样本具有高斯分布的那些方法。
 

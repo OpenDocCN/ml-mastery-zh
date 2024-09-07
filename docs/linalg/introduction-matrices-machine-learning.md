@@ -1,6 +1,6 @@
 # 机器学习的矩阵和矩阵算法简介
 
-> 原文： [https://machinelearningmastery.com/introduction-matrices-machine-learning/](https://machinelearningmastery.com/introduction-matrices-machine-learning/)
+> 原文： [`machinelearningmastery.com/introduction-matrices-machine-learning/`](https://machinelearningmastery.com/introduction-matrices-machine-learning/)
 
 矩阵是线性代数的基本元素。
 

@@ -1,6 +1,6 @@
 # 机器学习模型运行期间要做什么
 
-> 原文： [https://machinelearningmastery.com/machine-learning-model-running/](https://machinelearningmastery.com/machine-learning-model-running/)
+> 原文： [`machinelearningmastery.com/machine-learning-model-running/`](https://machinelearningmastery.com/machine-learning-model-running/)
 
 最近有一个问题是“[如何在 ml 脚本运行时不浪费时间/拖延？](http://www.reddit.com/r/MachineLearning/comments/2uznyb/how_to_not_wastetimeprocrastinate_while_ml/) “。
 
@@ -8,7 +8,7 @@
 
 我在这个问题上留下了[小评论](http://www.reddit.com/r/MachineLearning/comments/2uznyb/how_to_not_wastetimeprocrastinate_while_ml/cof6co0)，但是在这篇文章中，我详细阐述了我的答案并给出了一些关于如何考虑这个问题，最小化它甚至完全避免它的观点。
 
-[![What to do during machine learning model runs](img/9d69ff3c47ec6f6b40ef7218127e3a17.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/02/What-to-do-during-machine-learning-model-runs.jpg)
+![What to do during machine learning model runs](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/02/What-to-do-during-machine-learning-model-runs.jpg)
 
 在机器学习模型运行期间做什么
 照片由 [Mark Fischer](https://www.flickr.com/photos/fischerfotos/7519614160) ，保留一些权利

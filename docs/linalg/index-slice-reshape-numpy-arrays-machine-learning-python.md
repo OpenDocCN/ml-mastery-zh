@@ -1,6 +1,6 @@
 # 如何在 Python 中为机器学习索引，切片和重塑 NumPy 数组
 
-> 原文： [https://machinelearningmastery.com/index-slice-reshape-numpy-arrays-machine-learning-python/](https://machinelearningmastery.com/index-slice-reshape-numpy-arrays-machine-learning-python/)
+> 原文： [`machinelearningmastery.com/index-slice-reshape-numpy-arrays-machine-learning-python/`](https://machinelearningmastery.com/index-slice-reshape-numpy-arrays-machine-learning-python/)
 
 机器学习数据表示为数组。
 

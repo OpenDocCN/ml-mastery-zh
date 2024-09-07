@@ -1,12 +1,12 @@
 # 五个机器学习竞赛的好处
 
-> 原文： [https://machinelearningmastery.com/5-benefits-of-competitive-machine-learning/](https://machinelearningmastery.com/5-benefits-of-competitive-machine-learning/)
+> 原文： [`machinelearningmastery.com/5-benefits-of-competitive-machine-learning/`](https://machinelearningmastery.com/5-benefits-of-competitive-machine-learning/)
 
 Jeremy Howard， [Kaggle](http://www.kaggle.com/) 的正式演出于 2013 年中期在[旧金山大学](http://www.usfca.edu/)进行了演示。在那次演讲中他谈到了机器学习比赛的一些更广泛的好处，比如那些 Kaggle。
 
 在这篇文章中，你将发现我从这次演讲中提取的 5 分，这将激励你想要开始参加机器学习比赛
 
-[![Competitive Machine Learning is a Meritocracy](img/5dab5e85e1fd800e2906680bb1b7db51.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/Competitive-Machine-Learning-is-a-Meritocracy.jpg)
+![Competitive Machine Learning is a Meritocracy](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/Competitive-Machine-Learning-is-a-Meritocracy.jpg)
 
 机器学习竞赛是一种精英统治
 摄影作者 [PaulBarber](https://www.flickr.com/photos/boipevassu/7742521640) ，保留一些权利

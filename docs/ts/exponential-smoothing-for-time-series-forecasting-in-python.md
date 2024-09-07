@@ -1,6 +1,6 @@
 # Python 中用于时间序列预测的指数平滑的温和介绍
 
-> 原文： [https://machinelearningmastery.com/exponential-smoothing-for-time-series-forecasting-in-python/](https://machinelearningmastery.com/exponential-smoothing-for-time-series-forecasting-in-python/)
+> 原文： [`machinelearningmastery.com/exponential-smoothing-for-time-series-forecasting-in-python/`](https://machinelearningmastery.com/exponential-smoothing-for-time-series-forecasting-in-python/)
 
 指数平滑是单变量数据的时间序列预测方法，可以扩展为支持具有系统趋势或季节性成分的数据。
 
@@ -230,7 +230,7 @@ yhat = model_fit.predict(...)
 
 ### 图书
 
-*   第 7 章指数平滑，[预测：原则和实践](https://amzn.to/2xlJsfV)，2013。
+*   第七章指数平滑，[预测：原则和实践](https://amzn.to/2xlJsfV)，2013。
 *   第 6.4 节。时间序列分析简介，[工程统计手册](https://www.itl.nist.gov/div898/handbook/)，2012。
 *   [实际时间序列预测与 R](https://amzn.to/2LGKzKm) ，2016 年。
 

@@ -1,6 +1,6 @@
 # 对抗机器学习数据集中不平衡类别的 8 种策略
 
-> 原文： [https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/](https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/)
+> 原文： [`machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/`](https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/)
 
 这件事发生在你身上吗？
 
@@ -10,7 +10,7 @@
 
 在这篇文章中，您将发现可用于在具有不平衡数据的机器学习数据集上提供出色结果的策略。
 
-[![Class Imbalance](img/91af52f371c29b2d49296aa5aaa26f1a.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/Class-Imbalance.jpg)
+![Class Imbalance](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/Class-Imbalance.jpg)
 
 在机器学习中找到一些平衡点。
 摄影：MichaEli，保留一些权利。

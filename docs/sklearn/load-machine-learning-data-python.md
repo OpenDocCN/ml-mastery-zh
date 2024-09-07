@@ -1,6 +1,6 @@
 # 如何在 Python 中加载机器学习数据
 
-> 原文： [https://machinelearningmastery.com/load-machine-learning-data-python/](https://machinelearningmastery.com/load-machine-learning-data-python/)
+> 原文： [`machinelearningmastery.com/load-machine-learning-data-python/`](https://machinelearningmastery.com/load-machine-learning-data-python/)
 
 您必须能够在启动机器学习项目之前加载数据。
 

@@ -1,6 +1,6 @@
 # 使用随机森林：在 121 个数据集上测试 179 个分类器
 
-> 原文： [https://machinelearningmastery.com/use-random-forest-testing-179-classifiers-121-datasets/](https://machinelearningmastery.com/use-random-forest-testing-179-classifiers-121-datasets/)
+> 原文： [`machinelearningmastery.com/use-random-forest-testing-179-classifiers-121-datasets/`](https://machinelearningmastery.com/use-random-forest-testing-179-classifiers-121-datasets/)
 
 如果您不知道在问题上使用什么算法，请尝试一些。
 
@@ -10,7 +10,7 @@
 
 在这篇文章中，我们将回顾这项研究，并考虑在我们自己应用的机器学习问题上测试算法的一些含义。
 
-[![Do We Need Hundreds of Classifiers](img/9d8c9a4e94f79734e175a188b54806c9.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Do-We-Need-Hundreds-of-Classifiers.jpg)
+![Do We Need Hundreds of Classifiers](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Do-We-Need-Hundreds-of-Classifiers.jpg)
 
 我们需要数百个分类器
 照片来自 [Thomas Leth-Olsen](http://www.flickr.com/photos/thomasletholsen/8064127235) ，保留一些权利

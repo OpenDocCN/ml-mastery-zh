@@ -1,6 +1,6 @@
 # 如何用 Python 从零开始实现堆叠泛化
 
-> 原文： [https://machinelearningmastery.com/implementing-stacking-scratch-python/](https://machinelearningmastery.com/implementing-stacking-scratch-python/)
+> 原文： [`machinelearningmastery.com/implementing-stacking-scratch-python/`](https://machinelearningmastery.com/implementing-stacking-scratch-python/)
 
 #### 使用 Python 从零开始编写栈集合，循序渐进。
 
@@ -228,7 +228,7 @@ kNN,	Per,	Y
 def to_stacked_row(models, predict_list, row):
 	stacked_row = list()
 	for i in range(len(models)):
-		prediction = predict_list[i](models[i], row)
+		prediction = predict_listi
 		stacked_row.append(prediction)
 	stacked_row.append(row[-1])
 	return stacked_row
@@ -247,7 +247,7 @@ def to_stacked_row(models, predict_list, row):
 def to_stacked_row(models, predict_list, row):
 	stacked_row = list()
 	for i in range(len(models)):
-		prediction = predict_list[i](models[i], row)
+		prediction = predict_listi
 		stacked_row.append(prediction)
 	stacked_row.append(row[-1])
 	return row[0:len(row)-1] + stacked_row
@@ -425,7 +425,7 @@ def logistic_regression_model(train, l_rate=0.01, n_epoch=5000):
 def to_stacked_row(models, predict_list, row):
 	stacked_row = list()
 	for i in range(len(models)):
-		prediction = predict_list[i](models[i], row)
+		prediction = predict_listi
 		stacked_row.append(prediction)
 	stacked_row.append(row[-1])
 	return row[0:len(row)-1] + stacked_row
@@ -436,7 +436,7 @@ def stacking(train, test):
 	predict_list = [knn_predict, perceptron_predict]
 	models = list()
 	for i in range(len(model_list)):
-		model = model_list[i](train)
+		model = model_listi
 		models.append(model)
 	stacked_dataset = list()
 	for row in train:

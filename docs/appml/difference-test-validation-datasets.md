@@ -1,6 +1,6 @@
 # 测试和验证数据集之间有什么区别？
 
-> 原文： [https://machinelearningmastery.com/difference-test-validation-datasets/](https://machinelearningmastery.com/difference-test-validation-datasets/)
+> 原文： [`machinelearningmastery.com/difference-test-validation-datasets/`](https://machinelearningmastery.com/difference-test-validation-datasets/)
 
 验证数据集是训练模型时保留的数据样本，用于在调整模型的超参数时对模型技能进行估计。
 
@@ -82,7 +82,7 @@
 > 
 > 关键的一点是，根据 NN [神经网络]文献中的标准定义，测试集从不用于在两个或更多网络中进行选择，因此测试集上的误差提供了对泛化误差的无偏估计（假设测试集代表人口等）。
 
-- [主题：人口，样本，训练集，设计集，验证集和测试集是什么？](ftp://ftp.sas.com/pub/neural/FAQ.html#A_data)
+- 主题：人口，样本，训练集，设计集，验证集和测试集是什么？
 
 您是否知道这些术语的任何其他明确定义或用法，例如：论文或教科书中的引用？
 请在下面的评论中告诉我。
@@ -183,7 +183,7 @@ skill = evaluate(model, test)
 如果您要深入了解，本节将提供有关该主题的更多资源。
 
 *   维基百科上的[测试集](https://en.wikipedia.org/wiki/Test_set)
-*   [主题：人口，样本，训练集，设计集，验证集和测试集是什么？](ftp://ftp.sas.com/pub/neural/FAQ.html#A_data) 神经网络常见问题解答
+*   主题：人口，样本，训练集，设计集，验证集和测试集是什么？ 神经网络常见问题解答
 *   [统计学习简介：应用于 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) ，2013
 *   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，2013
 *   [人工智能：现代方法](http://www.amazon.com/dp/0136042597?tag=inspiredalgor-20)，2009

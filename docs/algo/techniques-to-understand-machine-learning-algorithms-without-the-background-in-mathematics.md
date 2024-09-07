@@ -1,6 +1,6 @@
 # 在没有数学背景的情况下理解机器学习算法的 5 种技巧
 
-> 原文： [https://machinelearningmastery.com/techniques-to-understand-machine-learning-algorithms-without-the-background-in-mathematics/](https://machinelearningmastery.com/techniques-to-understand-machine-learning-algorithms-without-the-background-in-mathematics/)
+> 原文： [`machinelearningmastery.com/techniques-to-understand-machine-learning-algorithms-without-the-background-in-mathematics/`](https://machinelearningmastery.com/techniques-to-understand-machine-learning-algorithms-without-the-background-in-mathematics/)
 
 理论在哪里适合自上而下研究机器学习的方法？
 

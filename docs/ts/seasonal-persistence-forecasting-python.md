@@ -1,6 +1,6 @@
 # 将 Python 用于季节性持久性预测
 
-> 原文： [https://machinelearningmastery.com/seasonal-persistence-forecasting-python/](https://machinelearningmastery.com/seasonal-persistence-forecasting-python/)
+> 原文： [`machinelearningmastery.com/seasonal-persistence-forecasting-python/`](https://machinelearningmastery.com/seasonal-persistence-forecasting-python/)
 
 通常使用[持久性或朴素预测](http://machinelearningmastery.com/persistence-time-series-forecasting-with-python/)作为时间序列问题的首次预测。
 

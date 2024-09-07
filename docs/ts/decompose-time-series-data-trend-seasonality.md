@@ -1,6 +1,6 @@
 # 如何将时间序列数据分解为趋势和季节性
 
-> 原文： [https://machinelearningmastery.com/decompose-time-series-data-trend-seasonality/](https://machinelearningmastery.com/decompose-time-series-data-trend-seasonality/)
+> 原文： [`machinelearningmastery.com/decompose-time-series-data-trend-seasonality/`](https://machinelearningmastery.com/decompose-time-series-data-trend-seasonality/)
 
 时间序列分解涉及将一系列视为水平，趋势，季节性和噪声分量的组合。
 

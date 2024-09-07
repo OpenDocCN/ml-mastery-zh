@@ -1,6 +1,6 @@
 # 时间序列预测问题的分类系统
 
-> 原文： [https://machinelearningmastery.com/taxonomy-of-time-series-forecasting-problems/](https://machinelearningmastery.com/taxonomy-of-time-series-forecasting-problems/)
+> 原文： [`machinelearningmastery.com/taxonomy-of-time-series-forecasting-problems/`](https://machinelearningmastery.com/taxonomy-of-time-series-forecasting-problems/)
 
 当您遇到新的时间序列预测问题时，有许多事情需要考虑。
 

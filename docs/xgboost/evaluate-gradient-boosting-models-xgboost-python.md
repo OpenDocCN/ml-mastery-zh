@@ -1,6 +1,6 @@
 # 如何使用 Python 和 XGBoost 评估梯度提升模型
 
-> 原文： [https://machinelearningmastery.com/evaluate-gradient-boosting-models-xgboost-python/](https://machinelearningmastery.com/evaluate-gradient-boosting-models-xgboost-python/)
+> 原文： [`machinelearningmastery.com/evaluate-gradient-boosting-models-xgboost-python/`](https://machinelearningmastery.com/evaluate-gradient-boosting-models-xgboost-python/)
 
 开发预测模型的目标是开发一个对看不见的数据准确的模型。
 

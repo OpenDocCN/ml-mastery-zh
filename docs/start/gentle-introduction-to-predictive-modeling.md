@@ -1,6 +1,6 @@
 # 预测性建模的温和简介
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-to-predictive-modeling/](https://machinelearningmastery.com/gentle-introduction-to-predictive-modeling/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-to-predictive-modeling/`](https://machinelearningmastery.com/gentle-introduction-to-predictive-modeling/)
 
 当你是一个绝对的初学者时，它会非常混乱。令人沮丧的是。
 
@@ -49,7 +49,7 @@
 
 在我们从样本数据中学习之后，我们希望保留模型。
 
-[![Create a Predictive Model](img/2e10b6f7551052800e6fb3990f7df639.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/09/Create-a-Predictive-Model.png)
+![Create a Predictive Model](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/09/Create-a-Predictive-Model.png)
 
 根据训练数据和算法创建预测模型。
 

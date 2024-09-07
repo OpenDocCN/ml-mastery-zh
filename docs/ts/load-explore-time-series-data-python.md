@@ -1,6 +1,6 @@
 # 如何在 Python 中加载和探索时间序列数据
 
-> 原文： [https://machinelearningmastery.com/load-explore-time-series-data-python/](https://machinelearningmastery.com/load-explore-time-series-data-python/)
+> 原文： [`machinelearningmastery.com/load-explore-time-series-data-python/`](https://machinelearningmastery.com/load-explore-time-series-data-python/)
 
 Python 中的 [Pandas 库](http://machinelearningmastery.com/quick-and-dirty-data-analysis-with-pandas/)为时间序列数据提供了出色的内置支持。
 

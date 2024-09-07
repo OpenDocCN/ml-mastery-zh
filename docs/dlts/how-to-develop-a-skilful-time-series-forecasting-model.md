@@ -1,6 +1,6 @@
 # 如何开发一种熟练的机器学习时间序列预测模型
 
-> 原文： [https://machinelearningmastery.com/how-to-develop-a-skilful-time-series-forecasting-model/](https://machinelearningmastery.com/how-to-develop-a-skilful-time-series-forecasting-model/)
+> 原文： [`machinelearningmastery.com/how-to-develop-a-skilful-time-series-forecasting-model/`](https://machinelearningmastery.com/how-to-develop-a-skilful-time-series-forecasting-model/)
 
 您交给数据并告知他们开发预测模型。
 

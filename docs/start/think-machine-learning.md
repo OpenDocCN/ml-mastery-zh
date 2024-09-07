@@ -1,6 +1,6 @@
 # 如何思考机器学习
 
-> 原文： [https://machinelearningmastery.com/think-machine-learning/](https://machinelearningmastery.com/think-machine-learning/)
+> 原文： [`machinelearningmastery.com/think-machine-learning/`](https://machinelearningmastery.com/think-machine-learning/)
 
 机器学习是一个庞大的跨学科研究领域。
 

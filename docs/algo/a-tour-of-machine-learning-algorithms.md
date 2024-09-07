@@ -1,6 +1,6 @@
 # 机器学习算法之旅
 
-> 原文： [https://machinelearningmastery.com/a-tour-of-machine-learning-algorithms/](https://machinelearningmastery.com/a-tour-of-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/a-tour-of-machine-learning-algorithms/`](https://machinelearningmastery.com/a-tour-of-machine-learning-algorithms/)
 
 在这篇文章中，我们将介绍最流行的机器学习算法。
 
@@ -56,7 +56,7 @@
 
 ### **3.半监督学习**
 
-[![Semi-supervised Learning Algorithms](img/f12c7caccaa57cf156e9ab2539c0c74b.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/11/Semi-supervised-Learning-Algorithms.png) 输入数据是标记和未标记示例的混合。
+![Semi-supervised Learning Algorithms](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/11/Semi-supervised-Learning-Algorithms.png) 输入数据是标记和未标记示例的混合。
 
 存在期望的预测问题，但模型必须学习组织数据以及做出预测的结构。
 

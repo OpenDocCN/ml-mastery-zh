@@ -263,8 +263,8 @@ YOLO 模型所做预测的摘要。摘自:你只看一次:统一、实时的对�
 ### 文章
 
 *   [图像分割中的 CNN 简史:从 R-CNN 到 Mask R-CNN](https://blog.athelas.com/a-brief-history-of-cnns-in-image-segmentation-from-r-cnn-to-mask-r-cnn-34ea83205de4) ，2017。
-*   [假人的对象检测第 3 部分:R-CNN 家族](https://lilianweng.github.io/lil-log/2017/12/31/object-recognition-for-dummies-part-3.html)，2017。
-*   [对象检测第 4 部分:快速检测模型](https://lilianweng.github.io/lil-log/2018/12/27/object-detection-part-4.html)，2018。
+*   [假人的对象检测第三部分:R-CNN 家族](https://lilianweng.github.io/lil-log/2017/12/31/object-recognition-for-dummies-part-3.html)，2017。
+*   [对象检测第四部分:快速检测模型](https://lilianweng.github.io/lil-log/2018/12/27/object-detection-part-4.html)，2018。
 
 ## 摘要
 

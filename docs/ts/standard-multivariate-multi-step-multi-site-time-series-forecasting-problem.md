@@ -1,6 +1,6 @@
 # 标准多变量，多步骤和多站点时间序列预测问题
 
-> 原文： [https://machinelearningmastery.com/standard-multivariate-multi-step-multi-site-time-series-forecasting-problem/](https://machinelearningmastery.com/standard-multivariate-multi-step-multi-site-time-series-forecasting-problem/)
+> 原文： [`machinelearningmastery.com/standard-multivariate-multi-step-multi-site-time-series-forecasting-problem/`](https://machinelearningmastery.com/standard-multivariate-multi-step-multi-site-time-series-forecasting-problem/)
 
 实时世界时间序列预测具有挑战性，其原因不仅限于问题特征，例如具有多个输入变量，需要预测多个时间步骤，以及需要对多个物理站点执行相同类型的预测。
 

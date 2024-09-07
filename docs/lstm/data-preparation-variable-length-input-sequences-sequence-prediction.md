@@ -1,6 +1,6 @@
 # 可变长度输入序列的数据准备
 
-> 原文： [https://machinelearningmastery.com/data-preparation-variable-length-input-sequences-sequence-prediction/](https://machinelearningmastery.com/data-preparation-variable-length-input-sequences-sequence-prediction/)
+> 原文： [`machinelearningmastery.com/data-preparation-variable-length-input-sequences-sequence-prediction/`](https://machinelearningmastery.com/data-preparation-variable-length-input-sequences-sequence-prediction/)
 
 深度学习库假设您的数据的向量化表示。
 

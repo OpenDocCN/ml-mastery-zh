@@ -1,6 +1,6 @@
 # 如何诊断 LSTM 模型的过拟合和欠拟合
 
-> 原文： [https://machinelearningmastery.com/diagnose-overfitting-underfitting-lstm-models/](https://machinelearningmastery.com/diagnose-overfitting-underfitting-lstm-models/)
+> 原文： [`machinelearningmastery.com/diagnose-overfitting-underfitting-lstm-models/`](https://machinelearningmastery.com/diagnose-overfitting-underfitting-lstm-models/)
 
 可能很难确定您的长短期记忆模型是否在您的序列预测问题上表现良好。
 

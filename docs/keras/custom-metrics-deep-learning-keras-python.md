@@ -1,6 +1,6 @@
 # 如何在 Python 和 Keras 中对深度学习使用度量
 
-> 原文： [https://machinelearningmastery.com/custom-metrics-deep-learning-keras-python/](https://machinelearningmastery.com/custom-metrics-deep-learning-keras-python/)
+> 原文： [`machinelearningmastery.com/custom-metrics-deep-learning-keras-python/`](https://machinelearningmastery.com/custom-metrics-deep-learning-keras-python/)
 
 Keras 库提供了一种在训练深度学习模型时的计算方法和报告一系列标准指标的方法。
 

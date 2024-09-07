@@ -1,6 +1,6 @@
 # 如何开发一种深度学习的词袋模型来预测电影评论情感
 
-> 原文： [https://machinelearningmastery.com/deep-learning-bag-of-words-model-sentiment-analysis/](https://machinelearningmastery.com/deep-learning-bag-of-words-model-sentiment-analysis/)
+> 原文： [`machinelearningmastery.com/deep-learning-bag-of-words-model-sentiment-analysis/`](https://machinelearningmastery.com/deep-learning-bag-of-words-model-sentiment-analysis/)
 
 电影评论可以被分类为有利或无。
 
@@ -1096,7 +1096,7 @@ print(predict_sentiment(text, vocab, tokenizer, model))
 ### 蜜蜂
 
 *   [nltk.tokenize 包 API](http://www.nltk.org/api/nltk.tokenize.html)
-*   [第 2 章，访问文本语料库和词汇资源](http://www.nltk.org/book/ch02.html)
+*   [第二章，访问文本语料库和词汇资源](http://www.nltk.org/book/ch02.html)
 *   [os API 其他操作系统接口](https://docs.python.org/3/library/os.html)
 *   [集合 API - 容器数据类型](https://docs.python.org/3/library/collections.html)
 *   [Tokenizer Keras API](https://keras.io/preprocessing/text/#tokenizer)

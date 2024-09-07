@@ -1,6 +1,6 @@
 # 随机化在机器学习中解决混杂变量的作用
 
-> 原文： [https://machinelearningmastery.com/confounding-variables-in-machine-learning/](https://machinelearningmastery.com/confounding-variables-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/confounding-variables-in-machine-learning/`](https://machinelearningmastery.com/confounding-variables-in-machine-learning/)
 
 应用机器学习的很大一部分是关于运行对照试验以发现在预测性建模问题上使用什么算法或算法配置。
 

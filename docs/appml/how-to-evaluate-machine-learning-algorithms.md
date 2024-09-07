@@ -1,6 +1,6 @@
 # 如何评估机器学习算法
 
-> 原文： [https://machinelearningmastery.com/how-to-evaluate-machine-learning-algorithms/](https://machinelearningmastery.com/how-to-evaluate-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/how-to-evaluate-machine-learning-algorithms/`](https://machinelearningmastery.com/how-to-evaluate-machine-learning-algorithms/)
 
 一旦[定义了您的问题](http://machinelearningmastery.com/how-to-define-your-machine-learning-problem/ "How to Define Your Machine Learning Problem")和[准备好您的数据](http://machinelearningmastery.com/how-to-prepare-data-for-machine-learning/ "How to Prepare Data For Machine Learning")，您需要将机器学习算法应用于数据以解决您的问题。
 
@@ -8,7 +8,7 @@
 
 在这篇文章中，您将逐步完成一个过程，快速测试算法并发现问题中是否存在用于学习算法以及哪些算法有效的结构。
 
-[![Test Harness](img/2624449a5b217ca3c2a96331e936a106.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/test-harness.jpg)
+![Test Harness](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/test-harness.jpg)
 
 测试线束
 照片归属于 [NASA Webb 望远镜](http://www.flickr.com/photos/nasawebbtelescope/8721550190/sizes/l/)，部分版权所有
@@ -77,5 +77,5 @@
 
 如果您希望深入了解此主题，可以从以下资源中了解更多信息。
 
-*   [数据挖掘：实用机器学习工具和技术](http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20)（会员链接），第 5 章：可信度：评估所学知识
-*   [机器学习：神经和统计分类](http://www.amazon.com/dp/8188689734?tag=inspiredalgor-20)（会员链接），第 7 章：比较方法
+*   [数据挖掘：实用机器学习工具和技术](http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20)（会员链接），第五章：可信度：评估所学知识
+*   [机器学习：神经和统计分类](http://www.amazon.com/dp/8188689734?tag=inspiredalgor-20)（会员链接），第七章：比较方法

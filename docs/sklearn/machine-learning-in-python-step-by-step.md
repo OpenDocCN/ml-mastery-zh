@@ -1,6 +1,6 @@
 # 您在 Python 中的第一个逐步的机器学习项目
 
-> 原文： [https://machinelearningmastery.com/machine-learning-in-python-step-by-step/](https://machinelearningmastery.com/machine-learning-in-python-step-by-step/)
+> 原文： [`machinelearningmastery.com/machine-learning-in-python-step-by-step/`](https://machinelearningmastery.com/machine-learning-in-python-step-by-step/)
 
 你想用 Python 做机器学习，但是你开始时遇到了麻烦吗？
 

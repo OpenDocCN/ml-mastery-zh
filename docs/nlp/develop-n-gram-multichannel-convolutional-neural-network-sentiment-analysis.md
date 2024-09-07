@@ -1,6 +1,6 @@
 # 如何开发用于情感分析的 N-gram 多通道卷积神经网络
 
-> 原文： [https://machinelearningmastery.com/develop-n-gram-multichannel-convolutional-neural-network-sentiment-analysis/](https://machinelearningmastery.com/develop-n-gram-multichannel-convolutional-neural-network-sentiment-analysis/)
+> 原文： [`machinelearningmastery.com/develop-n-gram-multichannel-convolutional-neural-network-sentiment-analysis/`](https://machinelearningmastery.com/develop-n-gram-multichannel-convolutional-neural-network-sentiment-analysis/)
 
 用于文本分类和情感分析的标准深度学习模型使用单词嵌入层和一维卷积神经网络。
 

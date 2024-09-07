@@ -714,7 +714,7 @@ Accuracy: 72.63
 
 **注**:点击图片查看大版。
 
-[![Plot of the Model Architecture With Separate Inputs and Embeddings for each Categorical Variable](img/e0573e236a4131666d033bd273a655f4.png)](https://machinelearningmastery.com/wp-content/uploads/2019/09/Plot-of-the-Model-Architecture-with-Separate-Inputs-and-Embeddings-for-each-Categorical-Variable.png)
+![Plot of the Model Architecture With Separate Inputs and Embeddings for each Categorical Variable](https://machinelearningmastery.com/wp-content/uploads/2019/09/Plot-of-the-Model-Architecture-with-Separate-Inputs-and-Embeddings-for-each-Categorical-Variable.png)
 
 每个类别变量有单独输入和嵌入的模型架构图
 点击放大。

@@ -361,7 +361,7 @@ library(help="caret")
 
 我建议抓住一个好的参考文本，并把它放在附近。我用推荐 [R 简单说](https://amzn.to/2FrJ83J)。
 
-[![R in a Nutshell](img/89a0f4db7e2e13caf03017405263ca89.png)](https://amzn.to/2FrJ83J)
+![R in a Nutshell](https://amzn.to/2FrJ83J)
 
 简而言之
 

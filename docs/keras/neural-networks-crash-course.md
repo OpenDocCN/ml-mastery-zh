@@ -1,6 +1,6 @@
 # 多层感知机神经网络速成课程
 
-> 原文： [https://machinelearningmastery.com/neural-networks-crash-course/](https://machinelearningmastery.com/neural-networks-crash-course/)
+> 原文： [`machinelearningmastery.com/neural-networks-crash-course/`](https://machinelearningmastery.com/neural-networks-crash-course/)
 
 人工神经网络是一个迷人的研究领域，尽管它们在刚开始时可能会令人生畏。
 

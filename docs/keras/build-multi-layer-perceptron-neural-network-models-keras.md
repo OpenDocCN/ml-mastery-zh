@@ -1,6 +1,6 @@
 # 如何用 Keras 构建多层感知机神经网络模型
 
-> 原文： [https://machinelearningmastery.com/build-multi-layer-perceptron-neural-network-models-keras/](https://machinelearningmastery.com/build-multi-layer-perceptron-neural-network-models-keras/)
+> 原文： [`machinelearningmastery.com/build-multi-layer-perceptron-neural-network-models-keras/`](https://machinelearningmastery.com/build-multi-layer-perceptron-neural-network-models-keras/)
 
 用于深度学习的 Keras Python 库专门用于构建一系列层的模型。
 

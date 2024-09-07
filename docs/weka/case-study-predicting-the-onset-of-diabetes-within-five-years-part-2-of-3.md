@@ -1,4 +1,4 @@
-# 案例研究：预测五年内糖尿病的发作（第 2 部分，共 3 部分）
+# 案例研究：预测五年内糖尿病的发作（第二部分，共 3 部分）
 
 > 原文：<https://machinelearningmastery.com/case-study-predicting-the-onset-of-diabetes-within-five-years-part-2-of-3/>
 
@@ -6,7 +6,7 @@
 
 这是我一直在辅导的聪明的年轻学生伊戈尔·什瓦尔策尔的客座博文。
 
-这篇文章是关于建模著名的[皮马印第安人糖尿病数据集](https://archive.ics.uci.edu/ml/datasets/Pima+Indians+Diabetes)的 3 部分系列文章的第 2 部分(更新:[从这里下载](https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv))。在[第 1 部分](https://machinelearningmastery.com/case-study-predicting-the-onset-of-diabetes-within-five-years-part-1-of-3/ "Case Study: Predicting the Onset of Diabetes Within Five Years (part 1 of 3)")中，我们定义了问题并查看了数据集，根据我们在数据中注意到的模式描述了观察结果。
+这篇文章是关于建模著名的[皮马印第安人糖尿病数据集](https://archive.ics.uci.edu/ml/datasets/Pima+Indians+Diabetes)的 3 部分系列文章的第二部分(更新:[从这里下载](https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv))。在[第一部分](https://machinelearningmastery.com/case-study-predicting-the-onset-of-diabetes-within-five-years-part-1-of-3/ "Case Study: Predicting the Onset of Diabetes Within Five Years (part 1 of 3)")中，我们定义了问题并查看了数据集，根据我们在数据中注意到的模式描述了观察结果。
 
 在本文中，我们将介绍方法论、抽查算法，并回顾初步结果。
 
@@ -37,7 +37,7 @@
 
 朴素贝叶斯是基于贝叶斯定理的简单概率分类器，具有很强的独立性假设。贝叶斯定理如下:
 
-[![Bayes' Theorem](img/54afc037a8dd737046c7822ac9d776a9.png)](https://machinelearningmastery.com/wp-content/uploads/2014/04/bayes-theorem.png)
+![Bayes' Theorem](https://machinelearningmastery.com/wp-content/uploads/2014/04/bayes-theorem.png)
 
 贝叶斯定理
 
@@ -83,7 +83,7 @@ C4.5(在 Weka 中也称为“J48”)是一种用于生成分类决策树的算�
 
 为了对各种算法进行严格的分析，我使用[Weka 实验者](https://machinelearningmastery.com/design-and-run-your-first-experiment-in-weka/ "Design and Run your First Experiment in Weka")对所有创建的数据集进行了表现评估。结果如下所示。
 
-[![Summary of results](img/b5384f72a57063ead14f2f72706f4783.png)](https://machinelearningmastery.com/wp-content/uploads/2014/04/summary-of-results.png)
+![Summary of results](https://machinelearningmastery.com/wp-content/uploads/2014/04/summary-of-results.png)
 
 糖尿病数据集上的算法分类准确率平均值和各种数据集上逻辑回归表现的散点图。
 
@@ -91,7 +91,7 @@ C4.5(在 Weka 中也称为“J48”)是一种用于生成分类决策树的算�
 
 平均而言，标准化和规范化数据集似乎具有更高的准确率，而离散数据集的准确率最差。这可能是因为标称值不允许对我考虑的算法进行准确预测。
 
-[![Results from weka experimenter](img/3b9bea585406ab3c88679547cef5f828.png)](https://machinelearningmastery.com/wp-content/uploads/2014/04/results-from-weka-experimenter.png)
+![Results from weka experimenter](https://machinelearningmastery.com/wp-content/uploads/2014/04/results-from-weka-experimenter.png)
 
 Weka Experimenter 输出将逻辑回归的表现与其他算法的表现进行比较。
 
@@ -99,7 +99,7 @@ Weka Experimenter 输出将逻辑回归的表现与其他算法的表现进行�
 
 我们还可以通过与第一列中的值(逻辑回归的准确性)相比具有统计学显著差异的值来看到星号(*)。Weka 通过使用标准 T-Test 或校正的重采样 T-Test 对方案进行成对比较，得出统计上无意义的结论，参见论文[对泛化误差的推断](https://link.springer.com/article/10.1023%2FA%3A1024068626366#page-2)。
 
-[![Summary of results area under roc](img/d8ddac0813aec7e6e1c205e879f68ca2.png)](https://machinelearningmastery.com/wp-content/uploads/2014/04/summary-of-results-area-under-roc.png)
+![Summary of results area under roc](https://machinelearningmastery.com/wp-content/uploads/2014/04/summary-of-results-area-under-roc.png)
 
 算法在糖尿病数据集上的 ROC 面积平均值和在不同数据集上的 logistic 回归表现散点图
 
@@ -107,19 +107,19 @@ Weka Experimenter 输出将逻辑回归的表现与其他算法的表现进行�
 
 在这两种情况下，我们发现树算法在这个数据集上的表现都不好。事实上，C4.5 给出的所有结果(以及 RandomForest 给出的除一个结果之外的所有结果)与 LogisticRegression 给出的结果相比，具有统计学上的显著差异。
 
-[![Results from weka experimenter area under roc](img/fdfec978ef402a06989c02bc09bc645c.png)](https://machinelearningmastery.com/wp-content/uploads/2014/04/results-from-weka-experimenter-area-under-roc.png)
+![Results from weka experimenter area under roc](https://machinelearningmastery.com/wp-content/uploads/2014/04/results-from-weka-experimenter-area-under-roc.png)
 
 Weka Experimenter 输出将逻辑回归的 ROC 曲线面积与其他算法的 ROC 曲线面积进行比较。
 
 这种较差的表现可能是树算法复杂的结果。测量因变量和自变量之间的关系可能是一个优势。此外，C4.5 可能没有为其分析选择正确的属性，因此恶化了基于最高信息增益的预测。
 
-[![Summary of results f1 score](img/2199fce200097028b758c6e3e47906c9.png)](https://machinelearningmastery.com/wp-content/uploads/2014/04/summary-of-results-f1-score.png)
+![Summary of results f1 score](https://machinelearningmastery.com/wp-content/uploads/2014/04/summary-of-results-f1-score.png)
 
 糖尿病数据集上的 F1 测量值和各种数据集上的逻辑回归 F1 测量的散点图。
 
 在前两个分析中，我们发现朴素贝叶斯的表现紧跟在物流配送的表现之后。现在我们发现，除了一个结果之外，朴素贝叶斯的所有结果与逻辑推理给出的结果相比都有统计学上的显著差异。
 
-[![Results from weka experimenter f1 score](img/7e2a5bad2861c98478f220b35ccbe66a.png)](https://machinelearningmastery.com/wp-content/uploads/2014/04/results-from-weka-experimenter-f1-score.png)
+![Results from weka experimenter f1 score](https://machinelearningmastery.com/wp-content/uploads/2014/04/results-from-weka-experimenter-f1-score.png)
 
 Weka Experimenter 输出将逻辑回归的 F1 分数与其他算法的 F1 分数进行比较。
 
@@ -137,4 +137,4 @@ Weka Experimenter 输出将逻辑回归的 F1 分数与其他算法的 F1 分数
 
 有趣的是，我们还发现，在*diabetes _ distributed . ARFF*数据集上，表现最好的算法 LogisticRegression 的表现最差。可以很有把握地假设，对于 LogisticRegression，所有的数据转换(除了*diabetes _ distributed . ARFF*)似乎都会产生更好的非常相似的结果，这一点通过每个散点图中的相似趋势非常明显！
 
-接下来在[第 3 部分中，我们将研究分类准确率的改进和结果的最终呈现](https://machinelearningmastery.com/case-study-predicting-the-onset-of-diabetes-within-five-years-part-3-of-3/ "Case Study: Predicting the Onset of Diabetes Within Five Years (part 3 of 3)")。
+接下来在[第三部分中，我们将研究分类准确率的改进和结果的最终呈现](https://machinelearningmastery.com/case-study-predicting-the-onset-of-diabetes-within-five-years-part-3-of-3/ "Case Study: Predicting the Onset of Diabetes Within Five Years (part 3 of 3)")。

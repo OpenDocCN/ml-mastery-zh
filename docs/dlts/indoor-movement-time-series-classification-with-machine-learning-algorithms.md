@@ -1,6 +1,6 @@
 # 基于机器学习算法的室内运动时间序列分类
 
-> 原文： [https://machinelearningmastery.com/indoor-movement-time-series-classification-with-machine-learning-algorithms/](https://machinelearningmastery.com/indoor-movement-time-series-classification-with-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/indoor-movement-time-series-classification-with-machine-learning-algorithms/`](https://machinelearningmastery.com/indoor-movement-time-series-classification-with-machine-learning-algorithms/)
 
 室内运动预测涉及使用无线传感器强度数据来预测建筑物内的对象的位置和运动。
 

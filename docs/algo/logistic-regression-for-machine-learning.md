@@ -1,6 +1,6 @@
 # 机器学习中的逻辑回归
 
-> 原文： [https://machinelearningmastery.com/logistic-regression-for-machine-learning/](https://machinelearningmastery.com/logistic-regression-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/logistic-regression-for-machine-learning/`](https://machinelearningmastery.com/logistic-regression-for-machine-learning/)
 
 逻辑回归是统计领域机器学习所借用的另一种技术。
 

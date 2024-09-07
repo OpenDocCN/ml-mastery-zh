@@ -316,7 +316,7 @@ print(X.shape, y.shape)
 model = AutoSklearnRegressor(time_left_for_this_task=5*60, per_run_time_limit=30, n_jobs=8)
 ```
 
-默认情况下，回归器将优化 R^2 度量。
+默认情况下，回归器将优化 R² 度量。
 
 在这种情况下，我们对平均绝对误差(MAE)感兴趣，当调用 *fit()* 函数时，我们可以通过“*度量*”参数指定它。
 

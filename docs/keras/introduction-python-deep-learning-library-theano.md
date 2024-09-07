@@ -1,6 +1,6 @@
 # Python 深度学习库 Theano 简介
 
-> 原文： [https://machinelearningmastery.com/introduction-python-deep-learning-library-theano/](https://machinelearningmastery.com/introduction-python-deep-learning-library-theano/)
+> 原文： [`machinelearningmastery.com/introduction-python-deep-learning-library-theano/`](https://machinelearningmastery.com/introduction-python-deep-learning-library-theano/)
 
 Theano 是一个用于快速数值计算的 Python 库，可以在 CPU 或 GPU 上运行。
 

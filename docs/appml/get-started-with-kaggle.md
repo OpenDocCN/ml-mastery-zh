@@ -1,6 +1,6 @@
 # 如何开始使用 Kaggle
 
-> 原文： [https://machinelearningmastery.com/get-started-with-kaggle/](https://machinelearningmastery.com/get-started-with-kaggle/)
+> 原文： [`machinelearningmastery.com/get-started-with-kaggle/`](https://machinelearningmastery.com/get-started-with-kaggle/)
 
 #### 入门和擅长
 机器学习竞赛的四步流程。

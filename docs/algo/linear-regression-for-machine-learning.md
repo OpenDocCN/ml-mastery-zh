@@ -1,6 +1,6 @@
 # 机器学习中的线性回归
 
-> 原文： [https://machinelearningmastery.com/linear-regression-for-machine-learning/](https://machinelearningmastery.com/linear-regression-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/linear-regression-for-machine-learning/`](https://machinelearningmastery.com/linear-regression-for-machine-learning/)
 
 线性回归可能是统计学和机器学习中最知名且易于理解的算法之一。
 
@@ -182,11 +182,11 @@ y = B0 + B1 * x1
 
 这些是您可能拥有或可访问的一些机器学习书籍，它们描述了机器学习环境中的线性回归。
 
-*   [机器学习的第一门课程](http://www.amazon.com/dp/1439824142?tag=inspiredalgor-20)，第 1 章。
-*   [统计学习简介：应用于 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) ，第 3 章。
-*   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，第 6 章。
-*   [机器学习在行动](http://www.amazon.com/dp/1617290181?tag=inspiredalgor-20)，第 8 章。
-*   [统计学习要素：数据挖掘，推理和预测，第二版](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)，第 3 章。
+*   [机器学习的第一门课程](http://www.amazon.com/dp/1439824142?tag=inspiredalgor-20)，第一章。
+*   [统计学习简介：应用于 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) ，第三章。
+*   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，第六章。
+*   [机器学习在行动](http://www.amazon.com/dp/1617290181?tag=inspiredalgor-20)，第八章。
+*   [统计学习要素：数据挖掘，推理和预测，第二版](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)，第三章。
 
 ### 线性回归的帖子
 

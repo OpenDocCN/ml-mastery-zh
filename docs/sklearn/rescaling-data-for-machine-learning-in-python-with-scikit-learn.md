@@ -1,6 +1,6 @@
 # 使用 Python 和 Scikit-Learn 重缩放机器学习数据
 
-> 原文： [https://machinelearningmastery.com/rescaling-data-for-machine-learning-in-python-with-scikit-learn/](https://machinelearningmastery.com/rescaling-data-for-machine-learning-in-python-with-scikit-learn/)
+> 原文： [`machinelearningmastery.com/rescaling-data-for-machine-learning-in-python-with-scikit-learn/`](https://machinelearningmastery.com/rescaling-data-for-machine-learning-in-python-with-scikit-learn/)
 
 在构建模型之前，必须准备好数据。 [数据准备](http://machinelearningmastery.com/how-to-prepare-data-for-machine-learning/ "How to Prepare Data For Machine Learning")过程可以包括三个步骤：数据选择，数据预处理和数据转换。
 
@@ -8,7 +8,7 @@
 
 **更新**：[有关更新的示例集](http://machinelearningmastery.com/prepare-data-machine-learning-python-scikit-learn/)，请参阅此帖子。
 
-[![Data Rescaling](img/fc8259088110f3e7b9ccb32457b8dc37.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/07/Data-Rescaling.jpg)
+![Data Rescaling](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/07/Data-Rescaling.jpg)
 
 数据重缩放
 照片由 [Quinn Dombrowski](https://www.flickr.com/photos/quinnanya/4508825094) 拍摄，保留一些权利。

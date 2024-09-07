@@ -1,6 +1,6 @@
 # 用于罕见事件时间序列预测的 LSTM 模型架构
 
-> 原文： [https://machinelearningmastery.com/lstm-model-architecture-for-rare-event-time-series-forecasting/](https://machinelearningmastery.com/lstm-model-architecture-for-rare-event-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/lstm-model-architecture-for-rare-event-time-series-forecasting/`](https://machinelearningmastery.com/lstm-model-architecture-for-rare-event-time-series-forecasting/)
 
 使用 LSTM 直接进行时间序列预测几乎没有成功。
 

@@ -1,6 +1,6 @@
 # 探索特征工程，如何设计特征以及如何获得它
 
-> 译文： [https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/](https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/)
+> 译文： [`machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/`](https://machinelearningmastery.com/discover-feature-engineering-how-to-engineer-features-and-how-to-get-good-at-it/)
 
 特征工程是一个非正式的主题，但绝对众所周知并且同意成为应用机器学习成功的关键。
 
@@ -16,7 +16,7 @@
 
 ## 特征工程解决的问题
 
-[![Feature engineering is hard. Photo by Vik Nanda, some rights reserved](img/410b3832c1108f1a47bd6c028e867caa.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/feature-engineering-is-hard.jpg)
+![Feature engineering is hard. Photo by Vik Nanda, some rights reserved](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/feature-engineering-is-hard.jpg)
 
 特征工程很难。
 摄影： [Vik Nanda](https://www.flickr.com/photos/viknanda/371160360) ，保留一些权利

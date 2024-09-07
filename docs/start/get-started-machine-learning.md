@@ -1,6 +1,6 @@
 # 如何开始机器学习：自学蓝图
 
-> 原文： [https://machinelearningmastery.com/get-started-machine-learning/](https://machinelearningmastery.com/get-started-machine-learning/)
+> 原文： [`machinelearningmastery.com/get-started-machine-learning/`](https://machinelearningmastery.com/get-started-machine-learning/)
 
 您如何开始机器学习，特别是深度学习？最近在机器学习 sub-reddit 中询问了这个[问题。](http://www.reddit.com/r/MachineLearning/comments/2p9lz0/suggestions_for_a_beginner/)
 
@@ -14,7 +14,7 @@
 
 如果这些问题引起共鸣，那么这篇文章就是为你而写的。
 
-[![How To Get Started In Machine Learning](img/4e6ecaae6570a23343756933349d7533.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/How-To-Get-Started-In-Machine-Learning.jpg)
+![How To Get Started In Machine Learning](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/How-To-Get-Started-In-Machine-Learning.jpg)
 
 如何开始机器学习
 摄影： [Sheila Sund](http://www.flickr.com/photos/sheila_sund/8983237721) ，保留一些权利

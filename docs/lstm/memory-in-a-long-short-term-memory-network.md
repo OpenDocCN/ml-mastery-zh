@@ -1,6 +1,6 @@
 # 在 Python 中使用长短期记忆网络演示记忆
 
-> 原文： [https://machinelearningmastery.com/memory-in-a-long-short-term-memory-network/](https://machinelearningmastery.com/memory-in-a-long-short-term-memory-network/)
+> 原文： [`machinelearningmastery.com/memory-in-a-long-short-term-memory-network/`](https://machinelearningmastery.com/memory-in-a-long-short-term-memory-network/)
 
 长短期记忆（LSTM）网络是一种能够学习长序列的循环神经网络。
 

@@ -1,6 +1,6 @@
 # Python 中的时间序列预测案例研究：波士顿每月武装抢劫案
 
-> 原文： [https://machinelearningmastery.com/time-series-forecast-case-study-python-monthly-armed-robberies-boston/](https://machinelearningmastery.com/time-series-forecast-case-study-python-monthly-armed-robberies-boston/)
+> 原文： [`machinelearningmastery.com/time-series-forecast-case-study-python-monthly-armed-robberies-boston/`](https://machinelearningmastery.com/time-series-forecast-case-study-python-monthly-armed-robberies-boston/)
 
 时间序列预测是一个过程，获得良好预测的唯一方法是实现此过程。
 

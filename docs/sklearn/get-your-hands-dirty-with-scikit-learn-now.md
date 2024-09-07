@@ -1,6 +1,6 @@
 # scikit-learn 中的机器学习算法秘籍
 
-> 原文： [https://machinelearningmastery.com/get-your-hands-dirty-with-scikit-learn-now/](https://machinelearningmastery.com/get-your-hands-dirty-with-scikit-learn-now/)
+> 原文： [`machinelearningmastery.com/get-your-hands-dirty-with-scikit-learn-now/`](https://machinelearningmastery.com/get-your-hands-dirty-with-scikit-learn-now/)
 
 你必须弄脏你的手。
 
@@ -8,7 +8,7 @@
 
 [scikit-learn Python 库](http://machinelearningmastery.com/a-gentle-introduction-to-scikit-learn-a-python-machine-learning-library/ "A Gentle Introduction to Scikit-Learn: A Python Machine Learning Library")很容易启动和运行。尽管如此，我看到很多初学者犹豫不决。在这篇博文中，我想给出一些使用 scikit-learn 进行一些监督分类算法的非常简单的例子。
 
-[![mean-shift clustering algorithm](img/d4cccaa0dbd532c10d1f94d11b71eace.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/plot_mean_shift_1.png)
+![mean-shift clustering algorithm](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/plot_mean_shift_1.png)
 
 ## Scikit-Learn Recipes
 

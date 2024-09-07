@@ -1,6 +1,6 @@
 # 如何使用机器学习清单可靠地获得准确的预测（即使您是初学者）
 
-> 原文： [https://machinelearningmastery.com/machine-learning-checklist/](https://machinelearningmastery.com/machine-learning-checklist/)
+> 原文： [`machinelearningmastery.com/machine-learning-checklist/`](https://machinelearningmastery.com/machine-learning-checklist/)
 
 如何在问题出现后使用机器学习获得准确的结果？
 
@@ -104,7 +104,7 @@
 
 我错过了一些重要的事吗？请在评论中告诉我。
 
-[![Machine Learning for Programmers - Select Tools](img/e8ee3b384634f311cc805035a204e77b.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/Machine-Learning-for-Programmers-Select-Tools-e1439699936331.png)
+![Machine Learning for Programmers - Select Tools](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/Machine-Learning-for-Programmers-Select-Tools-e1439699936331.png)
 
 将您首选的机器学习工具映射到您选择的系统过程，以解决问题。
 

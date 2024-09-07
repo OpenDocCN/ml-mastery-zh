@@ -1,6 +1,6 @@
 # 如何研究机器学习算法
 
-> 原文： [https://machinelearningmastery.com/how-to-research-a-machine-learning-algorithm/](https://machinelearningmastery.com/how-to-research-a-machine-learning-algorithm/)
+> 原文： [`machinelearningmastery.com/how-to-research-a-machine-learning-algorithm/`](https://machinelearningmastery.com/how-to-research-a-machine-learning-algorithm/)
 
 算法是机器学习领域的重要组成部分。
 
@@ -10,7 +10,7 @@
 
 在这篇文章中，您将发现研究机器学习算法的重要性以及可用于加速理解机器学习算法的 5 种不同来源。
 
-[![Research Machine Learning Algorithms](img/51c2dcad65f7394738f8be9d0795deb5.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Research-Machine-Learning-Algorithms.jpg)
+![Research Machine Learning Algorithms](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Research-Machine-Learning-Algorithms.jpg)
 
 研究机器学习算法
 摄影： [Anders Sandberg](http://www.flickr.com/photos/arenamontanus/2243540719) ，保留一些权利

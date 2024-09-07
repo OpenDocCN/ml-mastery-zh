@@ -1,6 +1,6 @@
 # 在 Python 中计算文本 BLEU 分数的温和介绍
 
-> 原文： [https://machinelearningmastery.com/calculate-bleu-score-for-text-python/](https://machinelearningmastery.com/calculate-bleu-score-for-text-python/)
+> 原文： [`machinelearningmastery.com/calculate-bleu-score-for-text-python/`](https://machinelearningmastery.com/calculate-bleu-score-for-text-python/)
 
 BLEU 或双语评估 Understudy 是用于将文本的候选翻译与一个或多个参考翻译进行比较的分数。
 

@@ -1,6 +1,6 @@
 # 评估 Keras 中深度学习模型的表现
 
-> 原文： [https://machinelearningmastery.com/evaluate-performance-deep-learning-models-keras/](https://machinelearningmastery.com/evaluate-performance-deep-learning-models-keras/)
+> 原文： [`machinelearningmastery.com/evaluate-performance-deep-learning-models-keras/`](https://machinelearningmastery.com/evaluate-performance-deep-learning-models-keras/)
 
 Keras 是一个易于使用且功能强大被用于深度学习的 Python 库。
 

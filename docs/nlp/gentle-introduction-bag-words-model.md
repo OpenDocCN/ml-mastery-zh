@@ -1,6 +1,6 @@
 # 浅谈词袋模型
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-bag-words-model/](https://machinelearningmastery.com/gentle-introduction-bag-words-model/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-bag-words-model/`](https://machinelearningmastery.com/gentle-introduction-bag-words-model/)
 
 词袋模型是一种在使用机器学习算法对文本建模时表示文本数据的方式。
 
@@ -263,10 +263,10 @@
 
 ### 图书
 
-*   第 6 章，[自然语言处理中的神经网络方法](http://amzn.to/2wycQKA)，2017。
-*   第 4 章，[语音和语言处理](http://amzn.to/2vaEb7T)，2009。
-*   第 6 章，[信息检索简介](https://amzn.to/2Endtxh)，2008 年。
-*   第 6 章，[统计自然语言处理基础](http://amzn.to/2vvnPHP)，1999。
+*   第六章，[自然语言处理中的神经网络方法](http://amzn.to/2wycQKA)，2017。
+*   第四章，[语音和语言处理](http://amzn.to/2vaEb7T)，2009。
+*   第六章，[信息检索简介](https://amzn.to/2Endtxh)，2008 年。
+*   第六章，[统计自然语言处理基础](http://amzn.to/2vvnPHP)，1999。
 
 ## 摘要
 

@@ -34,7 +34,7 @@ R
 具体来说，本节将向您展示如何在 R:
 
 *   准确度和卡帕值
-*   RMSE 和 R^2
+*   RMSE 和 R²
 *   敏感性和特异性
 *   日志丢失
 
@@ -82,13 +82,13 @@ Resampling results
   0.7695442  0.4656824  0.02692468   0.0616666
 ```
 
-### RMSE 和 R^2
+### RMSE 和 R²
 
 这些是用于评估 caret 中回归数据集算法的默认度量。
 
 **RMSE** 或均方根误差是预测值与观测值的平均偏差。以输出变量为单位，大致了解一个算法做得好不好是很有用的。[在这里了解更多 RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation)。
 
-**R^2** 表示为 r 的平方，也称为决定系数，为观测值的预测提供了“拟合优度”的度量。这是一个介于 0 和 1 之间的值，分别表示非拟合和完美拟合。[在这里了解更多关于 R^2 的信息](https://en.wikipedia.org/wiki/Coefficient_of_determination)。
+**R²** 表示为 r 的平方，也称为决定系数，为观测值的预测提供了“拟合优度”的度量。这是一个介于 0 和 1 之间的值，分别表示非拟合和完美拟合。[在这里了解更多关于 R² 的信息](https://en.wikipedia.org/wiki/Coefficient_of_determination)。
 
 在本例中，使用了长期经济数据集。输出变量是一个“使用的数字”。不清楚这是实际计数(例如，以百万计)还是百分比。
 
@@ -217,7 +217,7 @@ The final value used for the model was cp = 0.
 在这篇文章中，你发现了不同的度量标准，可以用来评估你的机器学习算法在 R 中使用 caret 的表现。具体来说:
 
 *   准确度和卡帕值
-*   RMSE 和 R^2
+*   RMSE 和 R²
 *   敏感性和特异性
 *   日志丢失
 

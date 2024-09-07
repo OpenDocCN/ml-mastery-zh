@@ -56,7 +56,7 @@ $
 
 让我们看看如何利用奇异值分解的结果来构建一个推荐系统。首先，让我们从这个链接下载数据集(注意:它有 600 兆字节大)
 
-*   [http://deep yeti . ucsd . edu/JM caley/datasets/library thing/lthing _ data . tar . gz](http://deepyeti.ucsd.edu/jmcauley/datasets/librarything/lthing_data.tar.gz)
+*   [`deep yeti . ucsd . edu/JM caley/datasets/library thing/lthing _ data . tar . gz`](http://deepyeti.ucsd.edu/jmcauley/datasets/librarything/lthing_data.tar.gz)
 
 该数据集是来自[推荐系统和个性化数据集](https://cseweb.ucsd.edu/~jmcauley/datasets.html#social_data)的“社交推荐数据”。它包含用户对[图书馆事物](https://www.librarything.com/)上的书籍的评论。我们感兴趣的是用户给一本书的“星星”数量。
 

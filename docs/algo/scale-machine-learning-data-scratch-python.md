@@ -1,6 +1,6 @@
 # 如何使用 Python 从零开始扩展机器学习数据
 
-> 原文： [https://machinelearningmastery.com/scale-machine-learning-data-scratch-python/](https://machinelearningmastery.com/scale-machine-learning-data-scratch-python/)
+> 原文： [`machinelearningmastery.com/scale-machine-learning-data-scratch-python/`](https://machinelearningmastery.com/scale-machine-learning-data-scratch-python/)
 
 许多机器学习算法都希望数据能够一致地进行缩放。
 
@@ -262,7 +262,7 @@ def column_means(dataset):
 标准偏差描述了平均值的平均值。它可以计算为每个值与平均值之间的平方差之和的平方根，并除以值的数量减 1。
 
 ```py
-standard deviation = sqrt( (value_i - mean)^2 / (total_values-1))
+standard deviation = sqrt( (value_i - mean)² / (total_values-1))
 ```
 
 以下名为 **column_stdevs（）**的函数计算数据集中每列的值的标准偏差，并假设已经计算了均值。

@@ -1,6 +1,6 @@
 # 来自世界级从业者 Phil Brierley 的机器学习技巧
 
-> 原文： [https://machinelearningmastery.com/machine-learning-tips-from-a-world-class-practitioner-phil-brierley/](https://machinelearningmastery.com/machine-learning-tips-from-a-world-class-practitioner-phil-brierley/)
+> 原文： [`machinelearningmastery.com/machine-learning-tips-from-a-world-class-practitioner-phil-brierley/`](https://machinelearningmastery.com/machine-learning-tips-from-a-world-class-practitioner-phil-brierley/)
 
 Phil Brierley 赢得了[遗产健康奖](http://www.heritagehealthprize.com/c/hhp) Kaggle 机器学习竞赛。 Phil 是一名机械工程师，并在他的公司 [Tiberius Data Mining](http://www.tiberius.biz/) 中拥有数据挖掘的背景。这些天他很重视 R，并在[另一个数据挖掘博客](http://anotherdataminingblog.blogspot.com.au/)上留下了博客。
 

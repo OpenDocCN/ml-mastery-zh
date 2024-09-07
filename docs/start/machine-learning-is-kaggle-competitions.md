@@ -1,6 +1,6 @@
 # 机器学习是 Kaggle 比赛
 
-> 原文： [https://machinelearningmastery.com/machine-learning-is-kaggle-competitions/](https://machinelearningmastery.com/machine-learning-is-kaggle-competitions/)
+> 原文： [`machinelearningmastery.com/machine-learning-is-kaggle-competitions/`](https://machinelearningmastery.com/machine-learning-is-kaggle-competitions/)
 
 [Julia Evans](https://twitter.com/b0rk) 最近写了一篇题为“[机器学习不是 Kaggle 比赛](http://jvns.ca/blog/2014/06/19/machine-learning-isnt-kaggle-competitions/)”的帖子。
 
@@ -8,7 +8,7 @@
 
 这是一个需要考虑的重点，特别是如果你刚刚开始并发现自己在排行榜上做得很好。在这篇文章中，我们将重点讨论机器学习竞赛与应用机器学习的关系。
 
-[![racing algorithms](img/0e7de320d82cb812b3d7b3ab56bb7b4f.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/07/racing-algorithms.jpg)
+![racing algorithms](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/07/racing-algorithms.jpg)
 
 机器学习竞赛
 照片由 [tableatny](https://www.flickr.com/photos/53370644@N06/4976494944/in/photostream/) ，保留一些权利

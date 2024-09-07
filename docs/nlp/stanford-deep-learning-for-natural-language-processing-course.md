@@ -1,6 +1,6 @@
 # 斯坦福自然语言处理深度学习课程评价
 
-> 原文： [https://machinelearningmastery.com/stanford-deep-learning-for-natural-language-processing-course/](https://machinelearningmastery.com/stanford-deep-learning-for-natural-language-processing-course/)
+> 原文： [`machinelearningmastery.com/stanford-deep-learning-for-natural-language-processing-course/`](https://machinelearningmastery.com/stanford-deep-learning-for-natural-language-processing-course/)
 
 自然语言处理（NLP）是机器学习的一个子领域，涉及理解语音和文本数据。
 

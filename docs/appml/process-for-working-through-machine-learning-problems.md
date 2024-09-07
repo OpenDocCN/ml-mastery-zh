@@ -1,6 +1,6 @@
 # 应用机器学习的过程
 
-> 原文： [https://machinelearningmastery.com/process-for-working-through-machine-learning-problems/](https://machinelearningmastery.com/process-for-working-through-machine-learning-problems/)
+> 原文： [`machinelearningmastery.com/process-for-working-through-machine-learning-problems/`](https://machinelearningmastery.com/process-for-working-through-machine-learning-problems/)
 
 ## 
 _
@@ -29,7 +29,7 @@ _ 预测模型问题的系统过程 __
 
 这是一条伟大的大型生产线，我尝试以线性方式进行。使用自动化工具的好处在于您可以返回几个步骤（例如从“改进结果”回到“准备数据”）并插入数据集的新变换并在中间步骤中重新运行实验以查看有趣的结果出来了，它们与你之前执行的实验相比如何。
 
-[![Production Line](img/bbbe602095664e39a3e2ce489b0521d0.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/production-line.jpg)
+![Production Line](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/production-line.jpg)
 
 生产线
 摄影： [East Capital](http://www.flickr.com/photos/eastcapital/4554220770/sizes/o/) ，部分版权所有

@@ -1,6 +1,6 @@
 # 10 个在机器学习项目中使用统计方法的示例
 
-> 原文： [https://machinelearningmastery.com/statistical-methods-in-an-applied-machine-learning-project/](https://machinelearningmastery.com/statistical-methods-in-an-applied-machine-learning-project/)
+> 原文： [`machinelearningmastery.com/statistical-methods-in-an-applied-machine-learning-project/`](https://machinelearningmastery.com/statistical-methods-in-an-applied-machine-learning-project/)
 
 统计和机器学习是两个非常密切相关的领域。
 

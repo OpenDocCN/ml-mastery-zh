@@ -1,6 +1,6 @@
 # 为什么从零开始实现机器学习算法
 
-> 原文： [https://machinelearningmastery.com/why-implement-a-machine-learning-algorithm-from-scratch/](https://machinelearningmastery.com/why-implement-a-machine-learning-algorithm-from-scratch/)
+> 原文： [`machinelearningmastery.com/why-implement-a-machine-learning-algorithm-from-scratch/`](https://machinelearningmastery.com/why-implement-a-machine-learning-algorithm-from-scratch/)
 
 当现有 API 中提供了如此多的算法时，为什么要从零开始实现机器学习算法？
 

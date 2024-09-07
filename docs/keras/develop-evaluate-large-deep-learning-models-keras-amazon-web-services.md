@@ -1,6 +1,6 @@
 # 如何设置 Amazon AWS EC2 GPU 来训练 Keras 深度学习模型（分步）
 
-> 原文： [https://machinelearningmastery.com/develop-evaluate-large-deep-learning-models-keras-amazon-web-services/](https://machinelearningmastery.com/develop-evaluate-large-deep-learning-models-keras-amazon-web-services/)
+> 原文： [`machinelearningmastery.com/develop-evaluate-large-deep-learning-models-keras-amazon-web-services/`](https://machinelearningmastery.com/develop-evaluate-large-deep-learning-models-keras-amazon-web-services/)
 
 Keras 是一个 Python 深度学习库，可以轻松方便地访问功能强大的数学库 Theano 和 TensorFlow.
 

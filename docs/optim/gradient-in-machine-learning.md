@@ -137,7 +137,7 @@ Let’s get started.![What Is a Gradient in Machine Learning?](img/770b708744f66
 
 首先，让我们定义一个简单的一维函数，它对输入进行平方，并定义从-1.0 到 1.0 的有效输入范围。
 
-*   f(x) = x^2
+*   f(x) = x²
 
 以下示例以 0.1 的增量对此函数的输入进行采样，计算每个输入的函数值，并绘制结果图。
 
@@ -262,7 +262,7 @@ f'(0.0) = 0.000
 
 一个例子是 Wolfram Alpha 网站，它将为您计算函数的导数；例如:
 
-*   [计算 x^2 导数](https://www.wolframalpha.com/input/?i=x%5E2)
+*   [计算 x² 导数](https://www.wolframalpha.com/input/?i=x%5E2)
 
 并不是所有的函数都是可微的，一些可微的函数可能会使某些方法很难求导数。
 

@@ -1,6 +1,6 @@
 # 浅谈自相关和部分自相关
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-autocorrelation-partial-autocorrelation/](https://machinelearningmastery.com/gentle-introduction-autocorrelation-partial-autocorrelation/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-autocorrelation-partial-autocorrelation/`](https://machinelearningmastery.com/gentle-introduction-autocorrelation-partial-autocorrelation/)
 
 自相关和部分自相关图在时间序列分析和预测中被大量使用。
 

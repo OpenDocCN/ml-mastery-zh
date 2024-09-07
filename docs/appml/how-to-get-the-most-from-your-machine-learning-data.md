@@ -1,6 +1,6 @@
 # 如何充分利用机器学习数据
 
-> 原文： [https://machinelearningmastery.com/how-to-get-the-most-from-your-machine-learning-data/](https://machinelearningmastery.com/how-to-get-the-most-from-your-machine-learning-data/)
+> 原文： [`machinelearningmastery.com/how-to-get-the-most-from-your-machine-learning-data/`](https://machinelearningmastery.com/how-to-get-the-most-from-your-machine-learning-data/)
 
 您使用的数据以及使用方式可能会定义预测性建模问题的成功。
 

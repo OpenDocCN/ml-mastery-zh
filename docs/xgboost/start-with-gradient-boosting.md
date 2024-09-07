@@ -1,6 +1,6 @@
 # 从梯度提升开始，比较 165 个数据集上的 13 种算法
 
-> 原文： [https://machinelearningmastery.com/start-with-gradient-boosting/](https://machinelearningmastery.com/start-with-gradient-boosting/)
+> 原文： [`machinelearningmastery.com/start-with-gradient-boosting/`](https://machinelearningmastery.com/start-with-gradient-boosting/)
 
 _**你应该使用哪种机器学习算法？**_
 

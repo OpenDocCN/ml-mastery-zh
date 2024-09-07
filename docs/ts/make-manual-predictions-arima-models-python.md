@@ -1,6 +1,6 @@
 # 如何使用 Python 手动预测 ARIMA 模型
 
-> 原文： [https://machinelearningmastery.com/make-manual-predictions-arima-models-python/](https://machinelearningmastery.com/make-manual-predictions-arima-models-python/)
+> 原文： [`machinelearningmastery.com/make-manual-predictions-arima-models-python/`](https://machinelearningmastery.com/make-manual-predictions-arima-models-python/)
 
 自动回归集成移动平均模型或 ARIMA 模型对初学者来说似乎有点吓人。
 

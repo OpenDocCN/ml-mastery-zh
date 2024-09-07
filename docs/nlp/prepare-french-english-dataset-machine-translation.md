@@ -1,6 +1,6 @@
 # 如何为机器翻译准备法语到英语的数据集
 
-> 原文： [https://machinelearningmastery.com/prepare-french-english-dataset-machine-translation/](https://machinelearningmastery.com/prepare-french-english-dataset-machine-translation/)
+> 原文： [`machinelearningmastery.com/prepare-french-english-dataset-machine-translation/`](https://machinelearningmastery.com/prepare-french-english-dataset-machine-translation/)
 
 机器翻译是将文本从源语言转换为目标语言中的连贯和匹配文本的挑战性任务。
 

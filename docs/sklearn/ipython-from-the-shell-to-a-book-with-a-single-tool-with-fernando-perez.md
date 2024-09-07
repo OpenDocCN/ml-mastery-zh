@@ -1,6 +1,6 @@
 # 从 shell 到一本书，Fernando Perez 的单一工具 IPython 简介
 
-> 原文： [https://machinelearningmastery.com/ipython-from-the-shell-to-a-book-with-a-single-tool-with-fernando-perez/](https://machinelearningmastery.com/ipython-from-the-shell-to-a-book-with-a-single-tool-with-fernando-perez/)
+> 原文： [`machinelearningmastery.com/ipython-from-the-shell-to-a-book-with-a-single-tool-with-fernando-perez/`](https://machinelearningmastery.com/ipython-from-the-shell-to-a-book-with-a-single-tool-with-fernando-perez/)
 
 如果您在 python 中认真对待数据分析和机器学习，那么您将充分利用 IPython 笔记本。
 
@@ -23,7 +23,7 @@
 5.  **教育**：分享学到的东西
 6.  转到第 1 步
 
-[![Lifecycle of a scientific idea](img/0192f9863663be4919fc5120dd77e1b5.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/schematic.png)
+![Lifecycle of a scientific idea](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/schematic.png)
 
 科学理念的生命周期
 
@@ -49,7 +49,7 @@ IPython 笔记本允许您拥有可执行 python 代码和 markdown 描述的单
 
 博客 [Pythonic Perambulations，Musings 和漫游在 Python 世界和超越](http://jakevdp.github.io/)的 Jake VanderPlas。
 
-[![Pythonic Perambulations](img/e8a1c354652be7c7262ccc5a4bf64b26.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/blog.png)
+![Pythonic Perambulations](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/blog.png)
 
 截图来自 Jake VanderPlas 的 Pythonic Perambulations
 
@@ -59,7 +59,7 @@ Jake 博客使用 IPython 笔记本，允许以图形的形式组合描述，计
 
 书籍[黑客贝叶斯方法](https://github.com/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers)由 Cameron Davidson-Pilon 开发，作为一系列 IPython 笔记本（每章一个），您可以通过。
 
-[![Bayesian Methods for Hackers](img/813e19a476d707ab8925282a40994859.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/Bayesian-Methods-for-Hackers.png)
+![Bayesian Methods for Hackers](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/Bayesian-Methods-for-Hackers.png)
 
 黑客的贝叶斯方法
 

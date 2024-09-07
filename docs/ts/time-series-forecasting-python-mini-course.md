@@ -1,6 +1,6 @@
 # Python 中的时间序列预测的 7 天迷你课程
 
-> 原文： [https://machinelearningmastery.com/time-series-forecasting-python-mini-course/](https://machinelearningmastery.com/time-series-forecasting-python-mini-course/)
+> 原文： [`machinelearningmastery.com/time-series-forecasting-python-mini-course/`](https://machinelearningmastery.com/time-series-forecasting-python-mini-course/)
 
 ### 从开发人员到 7 天的时间序列预测。
 

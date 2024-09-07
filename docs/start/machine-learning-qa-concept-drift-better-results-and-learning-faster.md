@@ -1,6 +1,6 @@
 # 机器学习 Q&A：概念漂移，更好的结果和更快的学习
 
-> 原文： [https://machinelearningmastery.com/machine-learning-qa-concept-drift-better-results-and-learning-faster/](https://machinelearningmastery.com/machine-learning-qa-concept-drift-better-results-and-learning-faster/)
+> 原文： [`machinelearningmastery.com/machine-learning-qa-concept-drift-better-results-and-learning-faster/`](https://machinelearningmastery.com/machine-learning-qa-concept-drift-better-results-and-learning-faster/)
 
 我通过电子邮件得到了很多关于机器学习的问题，我喜欢回答它们。
 
@@ -8,7 +8,7 @@
 
 在这篇文章中，我重点介绍了我最近收到的一些有趣的问题并总结了我的答案。
 
-[![machine learning q&a](img/462c374e497fef634b835d40bc0ecd2a.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/machine-learning-qa.jpg)
+![machine learning q&a](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/machine-learning-qa.jpg)
 
 机器学习 Q＆amp; A
 摄影： [Angelo Amboldi](http://www.flickr.com/photos/angelocesare/8141688142) ，保留一些权利

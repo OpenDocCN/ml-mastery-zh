@@ -1,6 +1,6 @@
 # 如何开发用于时间序列预测的多层感知机模型
 
-> 原文： [https://machinelearningmastery.com/how-to-develop-multilayer-perceptron-models-for-time-series-forecasting/](https://machinelearningmastery.com/how-to-develop-multilayer-perceptron-models-for-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/how-to-develop-multilayer-perceptron-models-for-time-series-forecasting/`](https://machinelearningmastery.com/how-to-develop-multilayer-perceptron-models-for-time-series-forecasting/)
 
 多层感知机（简称 MLP）可应用于时间序列预测。
 

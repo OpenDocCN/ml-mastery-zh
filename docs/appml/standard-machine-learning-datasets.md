@@ -1,6 +1,6 @@
 # 10 个实践应用机器学习的标准数据集
 
-> 原文： [https://machinelearningmastery.com/standard-machine-learning-datasets/](https://machinelearningmastery.com/standard-machine-learning-datasets/)
+> 原文： [`machinelearningmastery.com/standard-machine-learning-datasets/`](https://machinelearningmastery.com/standard-machine-learning-datasets/)
 
 熟练应用机器学习的关键是在许多不同的数据集上练习。
 

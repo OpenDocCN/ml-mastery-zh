@@ -1,6 +1,6 @@
 # 机器学习竞赛的模型选择技巧
 
-> 原文： [https://machinelearningmastery.com/model-selection-tips-from-competitive-machine-learning/](https://machinelearningmastery.com/model-selection-tips-from-competitive-machine-learning/)
+> 原文： [`machinelearningmastery.com/model-selection-tips-from-competitive-machine-learning/`](https://machinelearningmastery.com/model-selection-tips-from-competitive-machine-learning/)
 
 在[对您的问题进行采样检查算法](http://machinelearningmastery.com/why-you-should-be-spot-checking-algorithms-on-your-machine-learning-problems/ "Why you should be Spot-Checking Algorithms on your Machine Learning Problems")并调整好几个之后，您最终需要选择一个或两个最佳模型来继续。
 
@@ -8,7 +8,7 @@
 
 在这篇文章中，您将发现模型选择的灵感来自于机器学习竞赛，以及如何将这些技巧提升到更高水平并像其他任何复杂系统一样研究测试工具的想法。
 
-[![Model Selection](img/5937b602f13b3f1fabf4294f941f6d75.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Model-Selection.jpg)
+![Model Selection](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Model-Selection.jpg)
 
 型号选择
 照片由 [tami.vroma](http://www.flickr.com/photos/32314864@N02/3253876458) 拍摄，部分版权所有

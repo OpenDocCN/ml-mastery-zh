@@ -68,18 +68,18 @@ Let’s get started.![Books on Genetic Programming](img/98496dcfc5210940218e8be7
 *   第七章:遗传网络的自动合成
 *   第八章:代谢途径的自动合成
 *   第九章:控制器参数化拓扑的自动综合
-*   第 10 章:电路参数化拓扑的自动综合
-*   第 11 章:用电路条件发展算子自动综合参数化拓扑
-*   第 12 章:PID 控制器改进整定规则的自动综合
-*   第 13 章:改进控制器的参数化拓扑的自动综合
-*   第 14 章:负面反馈的重塑
-*   第 15 章:六个 2000 年后专利电路的自动化改造
-*   第 16 章:遗传编程可能非常适合的问题
-*   第 17 章:并行实现和计算机时间
-*   第 18 章:摩尔定律的历史观点和遗传程序设计产生的定性更实质性结果的进展
-*   第 19 章:结论
+*   第十章:电路参数化拓扑的自动综合
+*   第十一章:用电路条件发展算子自动综合参数化拓扑
+*   第十二章:PID 控制器改进整定规则的自动综合
+*   第十三章:改进控制器的参数化拓扑的自动综合
+*   第十四章:负面反馈的重塑
+*   第十五章:六个 2000 年后专利电路的自动化改造
+*   第十六章:遗传编程可能非常适合的问题
+*   第十七章:并行实现和计算机时间
+*   第十八章:摩尔定律的历史观点和遗传程序设计产生的定性更实质性结果的进展
+*   第十九章:结论
 
-[![Genetic Programming IV: Routine Human-Competitive Machine Intelligence](img/c2f01fabf558dd27ca832a3288315349.png)](https://amzn.to/366MuTj)
+![Genetic Programming IV: Routine Human-Competitive Machine Intelligence](https://amzn.to/366MuTj)
 
 遗传编程四:常规人机竞争智能
 
@@ -111,10 +111,10 @@ Let’s get started.![Books on Genetic Programming](img/98496dcfc5210940218e8be7
 *   第八章:全科医生搜索空间:理论分析
 *   第九章:例子一:人工蚂蚁
 *   第十章:例子二:最大值问题
-*   第 11 章:全科医生的融合和膨胀
-*   第 12 章:结论
+*   第十一章:全科医生的融合和膨胀
+*   第十二章:结论
 
-[![Foundations of Genetic Programming](img/7b141bcfb3fd04f8afec55fc1278843f.png)](https://amzn.to/2Ic6OdU)
+![Foundations of Genetic Programming](https://amzn.to/2Ic6OdU)
 
 遗传程序设计基础
 
@@ -133,19 +133,19 @@ Let’s get started.![Books on Genetic Programming](img/98496dcfc5210940218e8be7
 *   第一章:引言
 *   第二章:基于树的遗传规划中的表示、初始化和运算
 *   第三章:准备运行基因编程
-*   第 4 章:遗传编程运行示例
+*   第四章:遗传编程运行示例
 *   第五章:基于树的遗传规划中的替代初始化和操作
 *   第六章:基于模块化、语法化和发展树的全科医生
 *   第七章:线性和图形遗传规划
 *   第八章:概率遗传规划
 *   第九章:多目标遗传规划
-*   第 10 章:快速分布式遗传编程
-*   第 11 章:GP 理论及其应用
-*   第 12 章:应用
-*   第 13 章:GP 故障排除
-*   第 14 章:结论
+*   第十章:快速分布式遗传编程
+*   第十一章:GP 理论及其应用
+*   第十二章:应用
+*   第十三章:GP 故障排除
+*   第十四章:结论
 
-[![A Field Guide to Genetic Programming](img/f51083be7cab989eedf0e5ff137e2baa.png)](https://amzn.to/3p2xcrd)
+![A Field Guide to Genetic Programming](https://amzn.to/3p2xcrd)
 
 遗传程序设计领域指南
 
@@ -159,7 +159,7 @@ Let’s get started.![Books on Genetic Programming](img/98496dcfc5210940218e8be7
 *   [动态环境语法演变的基础](https://amzn.to/3ewVd55)，2009。
 *   [语法演变手册](https://amzn.to/2TUcg7L)，2018。
 
-[![Handbook of Grammatical Evolution](img/42291e885addad5cadf6409e36f55724.png)](https://amzn.to/2TUcg7L)
+![Handbook of Grammatical Evolution](https://amzn.to/2TUcg7L)
 
 语法进化手册
 
@@ -191,7 +191,7 @@ Let’s get started.![Books on Genetic Programming](img/98496dcfc5210940218e8be7
 *   [遗传规划理论与实践十六](https://amzn.to/36nBG3x)，2019。
 *   [遗传规划理论与实践 XVII](https://amzn.to/3n95ibF) ，2020。
 
-[![Genetic Programming Theory and Practice XVII](img/e61447fe58fdd049de44c6a1ad0ce6a6.png)](https://amzn.to/3n95ibF)
+![Genetic Programming Theory and Practice XVII](https://amzn.to/3n95ibF)
 
 遗传规划理论与实践
 
@@ -207,7 +207,7 @@ Let’s get started.![Books on Genetic Programming](img/98496dcfc5210940218e8be7
 *   [基因编程:第 22 届欧洲会议](https://amzn.to/38lIaT7)，EuroGP 2019
 *   [基因编程:第 23 届欧洲会议](https://amzn.to/38bZ5r3)，EuroGP 2020
 
-[![Genetic Programming: 23rd European Conference](img/b3c45daa6983a8270f542d0f874180bf.png)](https://amzn.to/38bZ5r3)
+![Genetic Programming: 23rd European Conference](https://amzn.to/38bZ5r3)
 
 遗传程序设计:第 23 届欧洲会议
 
@@ -221,7 +221,7 @@ Let’s get started.![Books on Genetic Programming](img/98496dcfc5210940218e8be7
 *   [遗传程序设计进展 2](https://amzn.to/2Id5reA) ，1996。
 *   [遗传程序设计进展 3](https://amzn.to/2HZbnIJ) ，1999。
 
-[![Advances in Genetic Programming 3](img/b08624ff8eee767a938297debf89e99f.png)](https://amzn.to/2HZbnIJ)
+![Advances in Genetic Programming 3](https://amzn.to/2HZbnIJ)
 
 遗传程序设计进展 3
 

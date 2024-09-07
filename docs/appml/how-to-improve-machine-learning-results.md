@@ -1,6 +1,6 @@
 # 如何改进机器学习结果
 
-> 原文： [https://machinelearningmastery.com/how-to-improve-machine-learning-results/](https://machinelearningmastery.com/how-to-improve-machine-learning-results/)
+> 原文： [`machinelearningmastery.com/how-to-improve-machine-learning-results/`](https://machinelearningmastery.com/how-to-improve-machine-learning-results/)
 
 拥有一个或两个在问题上表现相当好的算法是一个良好的开端，但有时您可能会受到激励以获得最佳结果，您可以获得可用的时间和资源。
 
@@ -77,9 +77,9 @@ Tuning Fork
 
 如果您希望深入了解此主题，请查看以下资源。
 
-*   [黑客机器学习](http://www.amazon.com/dp/1449303714?tag=inspiredalgor-20)，第 12 章：模型比较
-*   [数据挖掘：实用机器学习工具和技术](http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20)，第 7 章：转换：设计输入和输出
-*   [统计学习要素：数据挖掘，推理和预测](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)，第 16 章：集成学习
+*   [黑客机器学习](http://www.amazon.com/dp/1449303714?tag=inspiredalgor-20)，第十二章：模型比较
+*   [数据挖掘：实用机器学习工具和技术](http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20)，第七章：转换：设计输入和输出
+*   [统计学习要素：数据挖掘，推理和预测](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)，第十六章：集成学习
 
 **更新**
 

@@ -1,6 +1,6 @@
 # 是什么阻碍了你的机器学习目标？
 
-> 原文： [https://machinelearningmastery.com/what-is-holding-you-back-from-your-machine-learning-goals/](https://machinelearningmastery.com/what-is-holding-you-back-from-your-machine-learning-goals/)
+> 原文： [`machinelearningmastery.com/what-is-holding-you-back-from-your-machine-learning-goals/`](https://machinelearningmastery.com/what-is-holding-you-back-from-your-machine-learning-goals/)
 
 ## _ 识别和解决你的自我限制信念和
 最后取得进展 _
@@ -15,7 +15,7 @@
 
 也许你会看到自己处于这些信念中的一个或多个。如果是这样，我敦促你挑战你的假设。
 
-[![Don't give up](img/b9bc160653ab667be24bf91fedfdcb59.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/dont-give-up.jpg)
+![Don't give up](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/dont-give-up.jpg)
 
 不要放弃
 照 [brendan-c](https://www.flickr.com/photos/brendan-c/5186068838) ，保留一些权利

@@ -1,12 +1,12 @@
 # 数据清理：将凌乱的数据转换为整洁的数据
 
-> 原文： [https://machinelearningmastery.com/data-cleaning-turn-messy-data-into-tidy-data/](https://machinelearningmastery.com/data-cleaning-turn-messy-data-into-tidy-data/)
+> 原文： [`machinelearningmastery.com/data-cleaning-turn-messy-data-into-tidy-data/`](https://machinelearningmastery.com/data-cleaning-turn-messy-data-into-tidy-data/)
 
 数据准备很困难，因为这个过程不客观，或者至少它没有这种感觉。诸如“_ 之类的问题，描述问题的最佳数据形式是什么？_ “不客观。您必须从您想要解决的问题的角度思考，并通过您的管道尝试一些不同的表示。
 
 [Hadley Wickham](http://had.co.nz) 是莱斯大学的[兼职教授](http://www.linkedin.com/pub/hadley-wickham/13/9b6/31)和首席科学家以及 [RStudio](https://www.rstudio.com/) ，他对这个问题非常感兴趣。他撰写了一些最受欢迎的 R 软件包，用于组织和呈现您的数据，例如 reshape，plyr 和 ggplot2。在他的期刊文章 [Tidy Data](http://vita.had.co.nz/papers/tidy-data.pdf) 中，Wickham 展示了他对数据清理的看法，并通过整洁的数据来定义他的意思。
 
-[![tidy data](img/1aae24a59d7cb52444eb8b05c331ba00.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/tidy-data.jpg)
+![tidy data](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/tidy-data.jpg)
 
 Tidy Data，照片由 [Andrew King](https://www.flickr.com/photos/watt_dabney/5514730517) 拍摄
 
@@ -44,7 +44,7 @@ Wickham 说真实数据集违反了整洁数据的原则。他描述了 5 个常
 
 这些例子非常有启发性，非常值得单独阅读这些工作示例的论文。他接着提供了一份更大的案例研究，其中包含墨西哥的死亡率数据。
 
-[![tidy data](img/0390eac54610b78fbfb4868fa0401233.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/tidy-data.png)
+![tidy data](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/tidy-data.png)
 
 Hadley Wickham 提供的整洁数据
 

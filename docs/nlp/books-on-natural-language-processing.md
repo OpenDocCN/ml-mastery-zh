@@ -1,6 +1,6 @@
 # 关于自然语言处理的热门书籍
 
-> 原文： [https://machinelearningmastery.com/books-on-natural-language-processing/](https://machinelearningmastery.com/books-on-natural-language-processing/)
+> 原文： [`machinelearningmastery.com/books-on-natural-language-processing/`](https://machinelearningmastery.com/books-on-natural-language-processing/)
 
 自然语言处理（简称 NLP）是研究处理语音和文本数据的计算方法。
 
@@ -28,7 +28,7 @@
 
 由 [Steven Bird](http://www.stevenbird.net/) ， [Ewan Klein](http://homepages.inf.ed.ac.uk/ewan/) 和 [Edward Loper](http://ed.loper.org/) 撰写。
 
-[![Amazon Image](img/19f0f750991783bf68f45d8dd511f0b3.jpg)](http://www.amazon.com/dp/0596516495?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0596516495?tag=inspiredalgor-20)
 
 本书介绍了使用 Python 栈为从业者提供的 NLP。
 
@@ -59,7 +59,7 @@
 
 本书介绍了一套不同的 NLP 工具和问题，例如 [Apache Solr](http://lucene.apache.org/solr/) ， [Apache OpenNLP](https://opennlp.apache.org/) 和 [Apache Mahout](http://mahout.apache.org/) 。
 
-[![Amazon Image](img/ccdaa2c9afcb80ec5c71b6b4473bfff7.jpg)](http://www.amazon.com/dp/193398838X?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/193398838X?tag=inspiredalgor-20)
 
 代码示例使用 Java。
 
@@ -91,7 +91,7 @@
 
 由 [Julia Silge](https://juliasilge.com/) 和 [David Robinson](http://varianceexplained.org/) 撰写。
 
-[![Amazon Image](img/338ca6b828ebb63d55ae60c4e8b5d4be.jpg)](http://www.amazon.com/dp/1491981652?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1491981652?tag=inspiredalgor-20)
 
 本书展示了一系列现代应用程序的统计自然语言处理方法。
 
@@ -136,7 +136,7 @@
 
 由 [Christopher Manning](https://nlp.stanford.edu/manning/) 和[HinrichSchütze](http://www.cis.uni-muenchen.de/schuetze/)撰写。
 
-[![Amazon Image](img/293d2a3a7a81bb7ed6fe7bcdb882166e.jpg)](http://www.amazon.com/dp/0262133601?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0262133601?tag=inspiredalgor-20)
 
 值得注意的是，克里斯托弗曼宁在斯坦福大学教授 NLP，并且支持 [CS224n：深度学习自然语言处理](http://web.stanford.edu/class/cs224n/)课程。
 
@@ -172,7 +172,7 @@
 
 由 [Daniel Jurafsky](https://web.stanford.edu/~jurafsky/) 和 [James Martin](http://www.cs.colorado.edu/~martin/) 撰写。
 
-[![Amazon Image](img/b92b7f11dd51704896a180129d8d3fbc.jpg)](http://www.amazon.com/dp/0131873210?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0131873210?tag=inspiredalgor-20)
 
 本书从语音和文本的角度介绍了 NLP，重点关注应用程序（每章一章）。
 
@@ -215,7 +215,7 @@
 
 由 [Philipp Koehn 撰写](http://www.cs.jhu.edu/~phi/)。
 
-[![Amazon Image](img/092ba190b6edd38d8ce3841bf20af914.jpg)](http://www.amazon.com/dp/0521874157?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0521874157?tag=inspiredalgor-20)
 
 本书介绍了统计机器翻译的主题，这是 NLP 的一个子领域。
 
@@ -242,7 +242,7 @@
 
 由 [Frederick Jelinek 撰写](https://www.clsp.jhu.edu/~jelinek/)。
 
-[![Amazon Image](img/950499028e9afd43c6f0492f7a935db9.jpg)](http://www.amazon.com/dp/0262100665?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0262100665?tag=inspiredalgor-20)
 
 本书介绍了统计语音识别的主题，这是 NLP 的另一个子领域，它在 20 世纪 90 年代通过统计方法进行了大修。
 

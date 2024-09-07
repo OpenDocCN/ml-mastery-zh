@@ -1,6 +1,6 @@
 # 深度学习在自然语言处理中的 7 个应用
 
-> 原文： [https://machinelearningmastery.com/applications-of-deep-learning-for-natural-language-processing/](https://machinelearningmastery.com/applications-of-deep-learning-for-natural-language-processing/)
+> 原文： [`machinelearningmastery.com/applications-of-deep-learning-for-natural-language-processing/`](https://machinelearningmastery.com/applications-of-deep-learning-for-natural-language-processing/)
 
 自然语言处理领域正在从统计方法转向神经网络方法。
 

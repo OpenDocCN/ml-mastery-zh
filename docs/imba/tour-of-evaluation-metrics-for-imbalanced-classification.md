@@ -170,7 +170,7 @@ F-Measure 是一种流行的不平衡分类度量。
 
 Fbeta 测度是 F 测度的抽象，其中[谐波均值](https://machinelearningmastery.com/arithmetic-geometric-and-harmonic-means-for-machine-learning/)计算中的准确率和召回率的平衡由一个称为*β*的系数控制。
 
-*   **fbeta-measure**=((1+beta^2)*准确率*召回)/ (beta^2 *准确率+召回)
+*   **fbeta-measure**=((1+beta²)*准确率*召回)/ (beta² *准确率+召回)
 
 有关不平衡分类的准确率、召回率和 F-measure 的更多信息，请参见教程:
 
@@ -294,7 +294,7 @@ ROC 曲线的另一种选择是准确率-召回率曲线，它可以以类似的
 
 Brier 分数计算为正类的预期概率(例如 1.0)和预测概率之间的均方误差。回想一下，均方误差是值之间的平方差的平均值。
 
-*   **brierscore**= 1/n * I 与 n 之和(yhat _ I–y_i)^2
+*   **brierscore**= 1/n * I 与 n 之和(yhat _ I–y_i)²
 
 完美的分类器的 Brier 评分为 0.0。尽管典型地用二进制分类任务来描述，布瑞尔分数也可以被计算用于多类分类问题。
 
@@ -372,7 +372,7 @@ Brier 分数计算为正类的预期概率(例如 1.0)和预测概率之间的�
 
 ### 书
 
-*   第 8 章不平衡学习的评估指标，[不平衡学习:基础、算法和应用](https://amzn.to/32K9K6d)，2013。
+*   第八章不平衡学习的评估指标，[不平衡学习:基础、算法和应用](https://amzn.to/32K9K6d)，2013。
 *   [第三章绩效衡量，从不平衡数据集学习](https://amzn.to/307Xlva)，2018。
 
 ### 文章

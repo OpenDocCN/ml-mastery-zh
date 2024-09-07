@@ -1,6 +1,6 @@
 # 机器学习中的特征分解，特征值和特征向量的温和介绍
 
-> 原文： [https://machinelearningmastery.com/introduction-to-eigendecomposition-eigenvalues-and-eigenvectors/](https://machinelearningmastery.com/introduction-to-eigendecomposition-eigenvalues-and-eigenvectors/)
+> 原文： [`machinelearningmastery.com/introduction-to-eigendecomposition-eigenvalues-and-eigenvectors/`](https://machinelearningmastery.com/introduction-to-eigendecomposition-eigenvalues-and-eigenvectors/)
 
 矩阵分解是用于将矩阵减少到其组成部分的有用工具，以简化一系列更复杂的操作。
 
@@ -227,9 +227,9 @@ print(B)
 ### 图书
 
 *   第 6.1 节特征值和特征向量。 [线性代数无废话指南](http://amzn.to/2k76D4)，2017 年。
-*   第 6 章特征值和特征向量，[线性代数导论](http://amzn.to/2AZ7R8j)，第 5 版，2016 年。
+*   第六章特征值和特征向量，[线性代数导论](http://amzn.to/2AZ7R8j)，第 5 版，2016 年。
 *   第 2.7 节特征分解，[深度学习](http://amzn.to/2B3MsuU)，2016 年。
-*   第 5 章特征值，特征向量和不变子空间，[线性代数完成权](http://amzn.to/2BGuEqI)，第三版，2015 年。
+*   第五章特征值，特征向量和不变子空间，[线性代数完成权](http://amzn.to/2BGuEqI)，第三版，2015 年。
 *   第 24 讲，特征值问题，[数值线性代数](http://amzn.to/2BI9kRH)，1997。
 
 ### API

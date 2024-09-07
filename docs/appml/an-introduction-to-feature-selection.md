@@ -1,6 +1,6 @@
 # 特征选择简介
 
-> 原文： [https://machinelearningmastery.com/an-introduction-to-feature-selection/](https://machinelearningmastery.com/an-introduction-to-feature-selection/)
+> 原文： [`machinelearningmastery.com/an-introduction-to-feature-selection/`](https://machinelearningmastery.com/an-introduction-to-feature-selection/)
 
 您应该使用哪些功能来创建预测模型？
 
@@ -10,7 +10,7 @@
 
 在这篇文章中，您将发现功能选择，可以使用的方法类型以及下次需要为机器学习模型选择功能时可以使用的便捷清单。
 
-[![feature selection](img/b625073b2a067d3091fb55f2b5a1dd59.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/feature-selection.jpg)
+![feature selection](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/feature-selection.jpg)
 
 特征选择简介
 照片由 [John Tann](https://www.flickr.com/photos/31031835@N08/6498604953) 拍摄，保留一些权利

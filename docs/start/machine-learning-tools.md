@@ -1,6 +1,6 @@
 # 机器学习工具
 
-> 原文： [https://machinelearningmastery.com/machine-learning-tools/](https://machinelearningmastery.com/machine-learning-tools/)
+> 原文： [`machinelearningmastery.com/machine-learning-tools/`](https://machinelearningmastery.com/machine-learning-tools/)
 
 工具是机器学习的重要组成部分，选择合适的工具与使用最佳算法同样重要。
 
@@ -125,7 +125,7 @@
 
 如果您喜欢使用这个命令，请在命令行“[数据科学命令行：使用经过时间测试的工具](http://www.amazon.com/dp/1491947853?tag=inspiredalgor-20)面向未来”的命令行上查看有关如何解决机器学习问题的好书。
 
-[![Amazon Image](img/34335eafcfd18a87a92c9d6c58006c9d.jpg)](http://www.amazon.com/dp/1491947853?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1491947853?tag=inspiredalgor-20)
 
 ### 应用程序接口
 

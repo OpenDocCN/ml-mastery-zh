@@ -1,6 +1,6 @@
 # 如何在 Keras 中用长短期记忆模型做出预测
 
-> 原文： [https://machinelearningmastery.com/make-predictions-long-short-term-memory-models-keras/](https://machinelearningmastery.com/make-predictions-long-short-term-memory-models-keras/)
+> 原文： [`machinelearningmastery.com/make-predictions-long-short-term-memory-models-keras/`](https://machinelearningmastery.com/make-predictions-long-short-term-memory-models-keras/)
 
 开发 LSTM 模型的目标是可以用于序列预测问题的最终模型。
 

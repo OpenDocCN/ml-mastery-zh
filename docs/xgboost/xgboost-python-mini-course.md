@@ -1,6 +1,6 @@
 # 开始使用 Python 和 XGBoost 的 7 步迷你课程
 
-> 原文： [https://machinelearningmastery.com/xgboost-python-mini-course/](https://machinelearningmastery.com/xgboost-python-mini-course/)
+> 原文： [`machinelearningmastery.com/xgboost-python-mini-course/`](https://machinelearningmastery.com/xgboost-python-mini-course/)
 
 ### XGBoost 使用 Python 迷你课程。
 

@@ -16,7 +16,7 @@
 
 我们开始吧。
 
-[![Feature Selection](img/14b1d15017eb4575429aa9172d7cd102.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/feature-selection.jpg)
+![Feature Selection](https://machinelearningmastery.com/wp-content/uploads/2014/03/feature-selection.jpg)
 
 在数据集
 中仔细选择要素[加布照片](https://www.flickr.com/photos/ravescuritiba/728057039/sizes/o/)，保留部分权利
@@ -84,7 +84,7 @@ Weka 提供了一个属性选择工具。该过程分为两个部分:
 
 加载数据集，然后单击“选择属性”选项卡。在数据集上尝试不同的属性赋值器和搜索方法，并在输出窗口中查看结果。
 
-[![Feature Selection Methods in the Weka Explorer](img/1e186d30b71fd845e4a4b3ec27db329a.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/Screen-Shot-2014-03-09-at-11.40.22-AM.png)
+![Feature Selection Methods in the Weka Explorer](https://machinelearningmastery.com/wp-content/uploads/2014/03/Screen-Shot-2014-03-09-at-11.40.22-AM.png)
 
 Weka 浏览器中的功能选择方法
 
@@ -96,7 +96,7 @@ Weka 浏览器中的功能选择方法
 
 预处理数据集时可以使用一个过滤器，该过滤器将运行属性选择方案，然后将数据集修剪为仅包含选定的属性。在无监督属性过滤器下，该过滤器被称为“属性选择”。
 
-[![Creating Transforms of a Dataset using Feature Selection methods in Weka](img/537eb8a4772020e21427f9bc68535bbf.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/Screen-Shot-2014-03-09-at-11.40.55-AM.png)
+![Creating Transforms of a Dataset using Feature Selection methods in Weka](https://machinelearningmastery.com/wp-content/uploads/2014/03/Screen-Shot-2014-03-09-at-11.40.55-AM.png)
 
 在 Weka 中使用要素选择方法创建数据集的转换
 
@@ -108,7 +108,7 @@ Weka 浏览器中的功能选择方法
 
 有一个元算法，你可以运行，并包括在实验中，选择运行算法的属性。该算法被称为“元”算法组下的“属性选择分类器”。您可以将此算法配置为使用您选择的算法以及您选择的属性评估器和搜索方法。
 
-[![Coupling a Classifier and Attribute Selection in a Meta Algorithm in Weka](img/47435ef7fd074d5f4df09ab8de34d246.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/Screen-Shot-2014-03-09-at-11.42.52-AM.png)
+![Coupling a Classifier and Attribute Selection in a Meta Algorithm in Weka](https://machinelearningmastery.com/wp-content/uploads/2014/03/Screen-Shot-2014-03-09-at-11.42.52-AM.png)
 
 Weka 元算法中分类器和属性选择的耦合
 

@@ -1,6 +1,6 @@
 # 你所知道的深度学习是一种谎言
 
-> 原文： [https://machinelearningmastery.com/deep-learning-for-developers/](https://machinelearningmastery.com/deep-learning-for-developers/)
+> 原文： [`machinelearningmastery.com/deep-learning-for-developers/`](https://machinelearningmastery.com/deep-learning-for-developers/)
 
 开始深度学习是一项艰巨的任务。
 

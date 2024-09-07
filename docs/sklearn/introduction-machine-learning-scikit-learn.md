@@ -1,6 +1,6 @@
 # 机器学习中的 scikit-learn 简介
 
-> 原文： [https://machinelearningmastery.com/introduction-machine-learning-scikit-learn/](https://machinelearningmastery.com/introduction-machine-learning-scikit-learn/)
+> 原文： [`machinelearningmastery.com/introduction-machine-learning-scikit-learn/`](https://machinelearningmastery.com/introduction-machine-learning-scikit-learn/)
 
 [scikit-learn 库](http://machinelearningmastery.com/a-gentle-introduction-to-scikit-learn-a-python-machine-learning-library/)是日常机器学习和数据科学最受欢迎的平台之一。原因是它是基于 Python 构建的，这是一种功能齐全的编程语言。
 

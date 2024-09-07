@@ -1,6 +1,6 @@
 # 如何根据环境因素预测房间占用率
 
-> 原文： [https://machinelearningmastery.com/how-to-predict-room-occupancy-based-on-environmental-factors/](https://machinelearningmastery.com/how-to-predict-room-occupancy-based-on-environmental-factors/)
+> 原文： [`machinelearningmastery.com/how-to-predict-room-occupancy-based-on-environmental-factors/`](https://machinelearningmastery.com/how-to-predict-room-occupancy-based-on-environmental-factors/)
 
 诸如 Arduino 设备之类的小型计算机可以在建筑物内用于记录环境变量，从中可以预测简单和有用的属性。
 

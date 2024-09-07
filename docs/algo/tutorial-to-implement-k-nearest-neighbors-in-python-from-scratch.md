@@ -1,6 +1,6 @@
 # 从零开始在 Python 中实现 K 最近邻
 
-> 原文： [https://machinelearningmastery.com/tutorial-to-implement-k-nearest-neighbors-in-python-from-scratch/](https://machinelearningmastery.com/tutorial-to-implement-k-nearest-neighbors-in-python-from-scratch/)
+> 原文： [`machinelearningmastery.com/tutorial-to-implement-k-nearest-neighbors-in-python-from-scratch/`](https://machinelearningmastery.com/tutorial-to-implement-k-nearest-neighbors-in-python-from-scratch/)
 
 K 最近邻算法（或简称 kNN）是一种易于理解和实现的算法，是您可以随意使用的强大工具。
 
@@ -8,7 +8,7 @@ K 最近邻算法（或简称 kNN）是一种易于理解和实现的算法，�
 
 本教程适合您，如果您是 Python 程序员，或者可以快速获取 python 的程序员，并且您对如何从零开始实现 K 最近邻算法感兴趣。
 
-[![K 最近邻 algorithm](img/db0046e6a5d2174b405ded8fd90d8edb.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/k-Nearest-Neighbors-algorithm.png)
+![K 最近邻 algorithm](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/k-Nearest-Neighbors-algorithm.png)
 
 K 最近邻 algorithm
 图片来自 [Wikipedia](http://en.wikipedia.org/wiki/File:Map1NN.png) ，保留所有权利
@@ -383,9 +383,9 @@ Accuracy: 98.0392156862745%
 
 *   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，第 159 和 350 页。
 *   [数据挖掘：实用机器学习工具和技术，第三版（数据管理系统中的 Morgan Kaufmann 系列）](http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20)，第 76,128 和 235 页。
-*   [黑客机器学习](http://www.amazon.com/dp/1449303714?tag=inspiredalgor-20)，第 10 章。
-*   [机器学习在行动](http://www.amazon.com/dp/1617290181?tag=inspiredalgor-20)，第 2 章。
-*   [编程集体智慧：构建智能 Web 2.0 应用程序](http://www.amazon.com/dp/0596529325?tag=inspiredalgor-20)，第 2 章和第 8 章以及第 293 页。
+*   [黑客机器学习](http://www.amazon.com/dp/1449303714?tag=inspiredalgor-20)，第十章。
+*   [机器学习在行动](http://www.amazon.com/dp/1617290181?tag=inspiredalgor-20)，第二章。
+*   [编程集体智慧：构建智能 Web 2.0 应用程序](http://www.amazon.com/dp/0596529325?tag=inspiredalgor-20)，第二章和第八章以及第 293 页。
 
 ## 教程摘要
 

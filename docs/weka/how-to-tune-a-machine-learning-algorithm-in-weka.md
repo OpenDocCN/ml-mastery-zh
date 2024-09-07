@@ -10,7 +10,7 @@
 
 在之前的一篇文章中，我们研究了如何在数据集上用 3 种算法设计和运行一个实验，以及如何分析和报告结果。
 
-[![Manhattan Skyline](img/7cc8475e13d818cbffb7c15511a24c0a.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/manhattan.jpg)
+![Manhattan Skyline](https://machinelearningmastery.com/wp-content/uploads/2014/02/manhattan.jpg)
 
 曼哈顿天际线，因为我们将使用曼哈顿距离和 k 近邻算法。
 蒂姆·皮尔斯摄，洛斯加托斯，版权所有。
@@ -31,7 +31,7 @@ Weka 需要 Java。您可能已经安装了 Java，如果没有，下载页面�
 
 启动 Weka。这可能需要在程序启动器中找到它，或者双击 weka.jar 文件。这将启动 Weka 图形用户界面选择器。
 
-[![Weka GUI Chooser](img/fba124929a0da99095d1a3de3149684b.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-loader.png)
+![Weka GUI Chooser](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-loader.png)
 
 Weka 图形用户界面选择器
 
@@ -87,7 +87,7 @@ IBk 算法并不构建模型，而是及时为测试实例生成预测。IBk 算
 6.  点击*近邻搜索算法*配置中的*确定*按钮。
 7.  点击 *IBk* 配置上的*确定*按钮。
 
-[![Select a distance measures for IBk](img/907e90af90b6e9d6962a2e654929cd8f.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-24-at-5.22.30-AM.png)
+![Select a distance measures for IBk](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-24-at-5.22.30-AM.png)
 
 为 IBk 选择距离度量
 
@@ -109,7 +109,7 @@ IBk 算法并不构建模型，而是及时为测试实例生成预测。IBk 算
 
 点击屏幕顶部的“*运行*”标签。
 
-[![Run the experiment in weka](img/473d057384266fe6c48d0cee4dd6e921.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-24-at-5.22.54-AM.png)
+![Run the experiment in weka](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-24-at-5.22.54-AM.png)
 
 该选项卡是运行当前配置实验的控制面板。
 
@@ -130,7 +130,7 @@ IBk 算法并不构建模型，而是及时为测试实例生成预测。IBk 算
 
 排名表显示了每种算法相对于数据集中所有其他算法的统计显著优势。一次胜利意味着比另一种算法的准确率更高的准确率，并且差异具有统计学意义。
 
-[![Algorithm ranking in the Weka explorer for the Ionosphere dataset](img/104e1d3c1478002f51ac6ef58c5e005b.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-24-at-5.23.06-AM.png)
+![Algorithm ranking in the Weka explorer for the Ionosphere dataset](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-24-at-5.23.06-AM.png)
 
 电离层数据集在 Weka 浏览器中的算法排名
 
@@ -146,7 +146,7 @@ IBk 算法并不构建模型，而是及时为测试实例生成预测。IBk 算
 
 在“测试输出”中，我们可以看到一个表格，上面有三种 IBk 算法的结果。每个算法在数据集上运行 10 次，报告的准确率是这 10 次运行的平均值和标准差。
 
-[![Table of algorithm classification accuracy on the Ionosphere dataset in the Weka Explorer](img/bace77d64205883fe6c8cf0bc78e10aa.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-24-at-5.23.26-AM.png)
+![Table of algorithm classification accuracy on the Ionosphere dataset in the Weka Explorer](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-24-at-5.23.26-AM.png)
 
 Weka 探索者电离层数据集算法分类准确率表
 

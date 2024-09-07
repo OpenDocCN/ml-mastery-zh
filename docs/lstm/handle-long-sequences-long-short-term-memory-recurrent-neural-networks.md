@@ -1,6 +1,6 @@
 # 如何利用长短期记忆循环神经网络处理很长的序列
 
-> 原文： [https://machinelearningmastery.com/handle-long-sequences-long-short-term-memory-recurrent-neural-networks/](https://machinelearningmastery.com/handle-long-sequences-long-short-term-memory-recurrent-neural-networks/)
+> 原文： [`machinelearningmastery.com/handle-long-sequences-long-short-term-memory-recurrent-neural-networks/`](https://machinelearningmastery.com/handle-long-sequences-long-short-term-memory-recurrent-neural-networks/)
 
 长短期记忆或 LSTM 循环神经网络能够学习和记忆长输入序列。
 

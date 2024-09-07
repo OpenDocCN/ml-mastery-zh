@@ -1,10 +1,10 @@
 # 机器学习很重要
 
-> 原文： [https://machinelearningmastery.com/machine-learning-that-matters/](https://machinelearningmastery.com/machine-learning-that-matters/)
+> 原文： [`machinelearningmastery.com/machine-learning-that-matters/`](https://machinelearningmastery.com/machine-learning-that-matters/)
 
 阅读引导机器学习，路易斯提到了一篇我不得不去阅读的论文。该论文的标题是来自 JPL 的 [Kiri Wagstaff](http://www.wkiri.com/) 的[机器学习](http://icml.cc/2012/papers/298.pdf)（PDF），并于 2012 年出版。
 
-[![machine learning that matters](img/a08bae3e267278eadd0ba9b5a1c7e8d2.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/machine-learning-that-matters.png)
+![machine learning that matters](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/machine-learning-that-matters.png)
 
 机器学习很重要
 

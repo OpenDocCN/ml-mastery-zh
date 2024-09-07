@@ -1,6 +1,6 @@
 # 如何学习机器学习算法
 
-> 原文： [https://machinelearningmastery.com/how-to-learn-a-machine-learning-algorithm/](https://machinelearningmastery.com/how-to-learn-a-machine-learning-algorithm/)
+> 原文： [`machinelearningmastery.com/how-to-learn-a-machine-learning-algorithm/`](https://machinelearningmastery.com/how-to-learn-a-machine-learning-algorithm/)
 
 在电子邮件列表中出现了几次如何学习机器学习算法的问题。
 

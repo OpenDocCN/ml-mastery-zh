@@ -1,6 +1,6 @@
 # 如何开发用于多步时间序列预测的卷积神经网络
 
-> 原文： [https://machinelearningmastery.com/how-to-develop-convolutional-neural-networks-for-multi-step-time-series-forecasting/](https://machinelearningmastery.com/how-to-develop-convolutional-neural-networks-for-multi-step-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/how-to-develop-convolutional-neural-networks-for-multi-step-time-series-forecasting/`](https://machinelearningmastery.com/how-to-develop-convolutional-neural-networks-for-multi-step-time-series-forecasting/)
 
 鉴于智能电表的兴起以及太阳能电池板等发电技术的广泛采用，可提供大量的用电数据。
 

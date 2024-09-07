@@ -1,6 +1,6 @@
 # 机器学习向量的温和介绍
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-vectors-machine-learning/](https://machinelearningmastery.com/gentle-introduction-vectors-machine-learning/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-vectors-machine-learning/`](https://machinelearningmastery.com/gentle-introduction-vectors-machine-learning/)
 
 向量是线性代数的基本元素。
 
@@ -419,7 +419,7 @@ print(c)
 *   第 1.15 节，向量。 [线性代数无废话指南](http://amzn.to/2k76D4)，2017 年。
 *   第 2.2 节，向量运算。 [线性代数无废话指南](http://amzn.to/2k76D4)，2017 年。
 *   [线性代数](http://amzn.to/2j2J0g4)简介，2016 年。
-*   第 2 章，线性代数，[深度学习](http://amzn.to/2j4oKuP)，2016。
+*   第二章，线性代数，[深度学习](http://amzn.to/2j4oKuP)，2016。
 
 ### API
 

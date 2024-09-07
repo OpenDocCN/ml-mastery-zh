@@ -1,6 +1,6 @@
 # 用于时间序列预测的 Python 环境
 
-> 原文： [https://machinelearningmastery.com/python-environment-time-series-forecasting/](https://machinelearningmastery.com/python-environment-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/python-environment-time-series-forecasting/`](https://machinelearningmastery.com/python-environment-time-series-forecasting/)
 
 Python 生态系统正在发展，可能成为应用机器学习的主要平台。
 

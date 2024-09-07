@@ -1,6 +1,6 @@
 # 如何使用 Python 和 XGBoost 保存梯度提升模型
 
-> 原文： [https://machinelearningmastery.com/save-gradient-boosting-models-xgboost-python/](https://machinelearningmastery.com/save-gradient-boosting-models-xgboost-python/)
+> 原文： [`machinelearningmastery.com/save-gradient-boosting-models-xgboost-python/`](https://machinelearningmastery.com/save-gradient-boosting-models-xgboost-python/)
 
 XGBoost 可用于使用梯度提升算法为表格数据创建一些表现最佳的模型。
 

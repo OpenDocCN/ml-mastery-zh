@@ -1,6 +1,6 @@
 # 用于神经机器翻译的编解码器循环神经网络模型
 
-> 原文： [https://machinelearningmastery.com/encoder-decoder-recurrent-neural-network-models-neural-machine-translation/](https://machinelearningmastery.com/encoder-decoder-recurrent-neural-network-models-neural-machine-translation/)
+> 原文： [`machinelearningmastery.com/encoder-decoder-recurrent-neural-network-models-neural-machine-translation/`](https://machinelearningmastery.com/encoder-decoder-recurrent-neural-network-models-neural-machine-translation/)
 
 用于循环神经网络的编解码器架构是标准的神经机器翻译方法，其可以与传统的统计机器翻译方法相媲美并且在某些情
 
@@ -173,7 +173,7 @@
 
 > 也许更重要的是，所提出的方法实现了与现有的基于短语的统计机器翻译相当的翻译表现。考虑到所提出的架构或整个神经机器翻译系列仅在今年才被提出，这是一个引人注目的结果。我们相信这里提出的架构是朝着更好的机器翻译和更好地理解自然语言迈出的有希望的一步。
 
-Kyunghyun Cho 也是 Nvidia 开发者博客 2015 年系列帖子的作者，该博客主题为神经机器翻译的编解码器架构，题为“ _GPU 神经机器翻译简介”。_ “该系列提供了对主题和模型的良好介绍;见[第 1 部分](https://devblogs.nvidia.com/parallelforall/introduction-neural-machine-translation-with-gpus/)，[第 2 部分](https://devblogs.nvidia.com/parallelforall/introduction-neural-machine-translation-gpus-part-2/)和[第 3 部分](https://devblogs.nvidia.com/parallelforall/introduction-neural-machine-translation-gpus-part-3/)。
+Kyunghyun Cho 也是 Nvidia 开发者博客 2015 年系列帖子的作者，该博客主题为神经机器翻译的编解码器架构，题为“ _GPU 神经机器翻译简介”。_ “该系列提供了对主题和模型的良好介绍;见[第一部分](https://devblogs.nvidia.com/parallelforall/introduction-neural-machine-translation-with-gpus/)，[第二部分](https://devblogs.nvidia.com/parallelforall/introduction-neural-machine-translation-gpus-part-2/)和[第三部分](https://devblogs.nvidia.com/parallelforall/introduction-neural-machine-translation-gpus-part-3/)。
 
 ## 进一步阅读
 

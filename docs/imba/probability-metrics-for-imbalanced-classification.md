@@ -248,12 +248,12 @@ Perfect: Log Loss=0.000
 
 与预期概率( *y* )相比，正预测概率( *yhat* )的 Brier 得分可计算如下:
 
-*   briers core = 1/n * I 与 n 之和(yhat _ I–y_i)^2)
+*   briers core = 1/n * I 与 n 之和(yhat _ I–y_i)²)
 
 例如，如果预测的正类别概率为 0.8，预期概率为 1.0，则布瑞尔分数计算如下:
 
-*   briers core =(yhat _ I–y_i)^2)
-*   briers core =(0.8–1.0)^2
+*   briers core =(yhat _ I–y_i)²)
+*   briers core =(0.8–1.0)²
 *   BrierScore = 0.04
 
 我们可以用一个工作示例来演示如何使用上一节中使用的相同数据集和简单预测模型来计算布瑞尔分数。
@@ -423,7 +423,7 @@ Perfect: BSS=1.0000
 
 ### 书
 
-*   第 8 章不平衡学习的评估指标，[不平衡学习:基础、算法和应用](https://amzn.to/32K9K6d)，2013。
+*   第八章不平衡学习的评估指标，[不平衡学习:基础、算法和应用](https://amzn.to/32K9K6d)，2013。
 *   第三章绩效衡量，[从不平衡数据集](https://amzn.to/307Xlva)中学习，2018。
 
 ### 应用程序接口

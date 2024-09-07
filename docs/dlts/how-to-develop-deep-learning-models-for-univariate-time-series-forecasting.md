@@ -1,6 +1,6 @@
 # 如何开发用于单变量时间序列预测的深度学习模型
 
-> 原文： [https://machinelearningmastery.com/how-to-develop-deep-learning-models-for-univariate-time-series-forecasting/](https://machinelearningmastery.com/how-to-develop-deep-learning-models-for-univariate-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/how-to-develop-deep-learning-models-for-univariate-time-series-forecasting/`](https://machinelearningmastery.com/how-to-develop-deep-learning-models-for-univariate-time-series-forecasting/)
 
 深度学习神经网络能够自动学习和从原始数据中提取特征。
 

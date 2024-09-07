@@ -1,6 +1,6 @@
 # 最好的机器学习算法
 
-> 原文： [https://machinelearningmastery.com/the-best-machine-learning-algorithm/](https://machinelearningmastery.com/the-best-machine-learning-algorithm/)
+> 原文： [`machinelearningmastery.com/the-best-machine-learning-algorithm/`](https://machinelearningmastery.com/the-best-machine-learning-algorithm/)
 
 什么是最好的机器学习算法？我经常收到这个问题。也许甚至每天。
 
@@ -14,7 +14,7 @@
 
 在这篇文章中，我想为您提供一些工具，帮助您开始思考一个最佳解决方案。
 
-[![fear of loss](img/36739776f1fb0575394ae414fb703d11.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/fear-of-loss.jpg)
+![fear of loss](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/fear-of-loss.jpg)
 
 害怕失去。
 摄影： [Jimee，Jackie，Tom＆amp; Asha](https://www.flickr.com/photos/wilderdom/266650346/sizes/o/) ，保留一些权利
@@ -59,7 +59,7 @@
 
 现在，这是一个理论结果，并假设没有关于我们的问题或算法的先验知识。但是，对于我们必须做出的思考过渡来说，这是一个有用的框架。
 
-[![no free lunch](img/fc1c9315f8aa41ceba64015541385cba.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/no-free-lunch.jpg)
+![no free lunch](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/no-free-lunch.jpg)
 
 天下没有免费的午餐。
 照 [..匹配..](https://www.flickr.com/photos/47294014@N00/210574919/sizes/o/) ，保留一些权利
@@ -94,7 +94,7 @@
 
 阅读算法工作原理的理论是更难的，但也是您想要用来告知您尝试的算法选择的有价值的信息。
 
-[![machine learning as search](img/488720e9099731014b8c3992e464e4f7.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/machine-learning-as-search.jpg)
+![machine learning as search](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/machine-learning-as-search.jpg)
 
 机器学习作为一个搜索问题。
 照 [taylar](https://www.flickr.com/photos/taylar/3460980819) ，保留一些权利。

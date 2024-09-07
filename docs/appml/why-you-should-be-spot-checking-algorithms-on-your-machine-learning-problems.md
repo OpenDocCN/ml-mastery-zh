@@ -1,10 +1,10 @@
 # 为什么你应该在你的机器学习问题上采样检查算法
 
-> 原文： [https://machinelearningmastery.com/why-you-should-be-spot-checking-algorithms-on-your-machine-learning-problems/](https://machinelearningmastery.com/why-you-should-be-spot-checking-algorithms-on-your-machine-learning-problems/)
+> 原文： [`machinelearningmastery.com/why-you-should-be-spot-checking-algorithms-on-your-machine-learning-problems/`](https://machinelearningmastery.com/why-you-should-be-spot-checking-algorithms-on-your-machine-learning-problems/)
 
 点检算法是关于在机器学习问题上快速评估一堆不同的算法，以便您了解要关注的算法和丢弃的内容。
 
-[![spot check machine learning algorithm](img/c3f5ebc44bf8c02b929d6b9f6524f5bb.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/spot-check-machine-learning-algorithm.jpg)
+![spot check machine learning algorithm](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/spot-check-machine-learning-algorithm.jpg)
 
 照片来自 [withassociates](http://www.flickr.com/photos/withassociates/4385364607/sizes/l/) ，保留一些权利
 
@@ -30,7 +30,7 @@
 
 当您进行采样检查算法时，您可以做一些事情，以确保您获得有用且可操作的结果。
 
-[![Tips for Spot-Checking Algorithms](img/523a73ee541937510210f41453302406.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/Tips-for-Spot-Checking-Algorithms.jpg)
+![Tips for Spot-Checking Algorithms](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/Tips-for-Spot-Checking-Algorithms.jpg)
 
 点检算法提示
 照 [vintagedept](http://www.flickr.com/photos/vintagedept/6358537847/sizes/l/) ，保留一些权利。
@@ -49,7 +49,7 @@
 
 2008 年发表了一篇题为“[数据挖掘前十大算法](http://scholar.google.com/scholar?q=Top+10+algorithms+in+data+mining)”的论文。谁可以通过这样的头衔？它也变成了一本书“[数据挖掘中的十大算法](http://www.amazon.com/dp/1420089641?tag=inspiredalgor-20)”，并启发了另一个“机器学习在行动”的结构。
 
-[![Amazon Image](img/6ecaee515e4ac4c1906474d65ec2907e.jpg)](http://www.amazon.com/dp/1420089641?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1420089641?tag=inspiredalgor-20)
 
 这可能是一篇很好的论文，可以帮助您快速启动算法的简短列表，以便对您的下一次机器学习问题进行抽查。本文列出的前 10 个数据挖掘算法是。
 

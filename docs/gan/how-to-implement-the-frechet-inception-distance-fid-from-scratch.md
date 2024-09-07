@@ -96,13 +96,13 @@ FID 分数是通过首先加载一个预先训练好的 Inception v3 模型来�
 
 *   d ^ 2 = | | mu _ 1-mu _ 2 | ^ 2+tr(c _ 1+c _ 2–2 * sqrt(c _ 1 * c _ 2))
 
-分数被称为 *d^2* ，表示它是一个距离，有平方单位。
+分数被称为 *d²* ，表示它是一个距离，有平方单位。
 
 “*μ_ 1*”和“*μ_ 2*”是指真实图像和生成图像的特征平均，例如 2，048 个元素向量，其中每个元素是在图像上观察到的平均特征。
 
 *C_1* 和 *C_2* 是真实和生成的特征向量的[协方差矩阵](https://en.wikipedia.org/wiki/Covariance_matrix)，通常称为σ。
 
-*| |μ_ 1–mu_2||^2*是指两个均值向量之间的平方差之和。 *Tr* 指的是[迹线性代数运算](https://en.wikipedia.org/wiki/Trace_(linear_algebra))，例如沿着方阵主对角线的元素之和。
+*| |μ_ 1–mu_2||²*是指两个均值向量之间的平方差之和。 *Tr* 指的是[迹线性代数运算](https://en.wikipedia.org/wiki/Trace_(linear_algebra))，例如沿着方阵主对角线的元素之和。
 
 sqrt 是方阵的[平方根，作为两个协方差矩阵的乘积给出。](https://en.wikipedia.org/wiki/Square_root_of_a_matrix)
 

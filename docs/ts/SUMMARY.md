@@ -30,7 +30,7 @@
 +   [用于时间序列预测的随机森林](random-forest-for-time-series-forecasting.md)
 +   [如何重构时间序列预测问题](reframe-time-series-forecasting-problem.md)
 +   [如何使用 Python 重采样和插值您的时间序列数据](resample-interpolate-time-series-data-python.md)
-+   [使用 Python 为时间序列预测编写 SARIMA ](sarima-for-time-series-forecasting-in-python.md)
++   [使用 Python 为时间序列预测编写 SARIMA](sarima-for-time-series-forecasting-in-python.md)
 +   [如何在 Python 中保存 ARIMA 时间序列预测模型](save-arima-time-series-forecasting-model-python.md)
 +   [将 Python 用于季节性持久性预测](seasonal-persistence-forecasting-python.md)
 +   [基于 Python 和 ARIMA 的历史规模敏感性分析的预测技巧](sensitivity-analysis-history-size-forecast-skill-arima-python.md)

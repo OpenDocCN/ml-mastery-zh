@@ -1,6 +1,6 @@
 # Python 中数据可视化方法的简要介绍
 
-> 原文： [https://machinelearningmastery.com/data-visualization-methods-in-python/](https://machinelearningmastery.com/data-visualization-methods-in-python/)
+> 原文： [`machinelearningmastery.com/data-visualization-methods-in-python/`](https://machinelearningmastery.com/data-visualization-methods-in-python/)
 
 有时数据没有意义，直到您可以用视觉形式查看，例如图表和图表。
 

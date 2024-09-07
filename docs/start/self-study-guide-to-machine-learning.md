@@ -1,6 +1,6 @@
 # 机器学习自学指南
 
-> 原文： [https://machinelearningmastery.com/self-study-guide-to-machine-learning/](https://machinelearningmastery.com/self-study-guide-to-machine-learning/)
+> 原文： [`machinelearningmastery.com/self-study-guide-to-machine-learning/`](https://machinelearningmastery.com/self-study-guide-to-machine-learning/)
 
 你可以做很多关于机器学习的事情。
 

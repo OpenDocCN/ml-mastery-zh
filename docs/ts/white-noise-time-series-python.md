@@ -1,6 +1,6 @@
 # Python 中的白噪声时间序列
 
-> 原文： [https://machinelearningmastery.com/white-noise-time-series-python/](https://machinelearningmastery.com/white-noise-time-series-python/)
+> 原文： [`machinelearningmastery.com/white-noise-time-series-python/`](https://machinelearningmastery.com/white-noise-time-series-python/)
 
 白噪声是时间序列预测中的一个重要概念。
 

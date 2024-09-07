@@ -1,6 +1,6 @@
 # 机器学习的有用知识
 
-> 原文： [https://machinelearningmastery.com/useful-things-to-know-about-machine-learning/](https://machinelearningmastery.com/useful-things-to-know-about-machine-learning/)
+> 原文： [`machinelearningmastery.com/useful-things-to-know-about-machine-learning/`](https://machinelearningmastery.com/useful-things-to-know-about-machine-learning/)
 
 您是否想要一些有助于开发成功的机器学习应用程序的技巧和窍门？
 

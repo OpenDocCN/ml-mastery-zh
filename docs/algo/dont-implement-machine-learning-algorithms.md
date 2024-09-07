@@ -1,6 +1,6 @@
 # 停止从零开始编写机器学习算法
 
-> 原文： [https://machinelearningmastery.com/dont-implement-machine-learning-algorithms/](https://machinelearningmastery.com/dont-implement-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/dont-implement-machine-learning-algorithms/`](https://machinelearningmastery.com/dont-implement-machine-learning-algorithms/)
 
 ### 你不必实现算法
 ... _ 如果你是初学者并且刚刚开始。_

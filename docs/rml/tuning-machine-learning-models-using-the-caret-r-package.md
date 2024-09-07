@@ -152,7 +152,7 @@ plot(model)
 
 模型使用的最终值是 size = 35 和 k = 5。
 
-[![Grid Search using the Caret R Package](img/f6f848415da26f8a8dda7c8fd8224f7a.png)](https://machinelearningmastery.com/wp-content/uploads/2014/09/size-vs-k.png)
+![Grid Search using the Caret R Package](https://machinelearningmastery.com/wp-content/uploads/2014/09/size-vs-k.png)
 
 使用 Caret R 包的网格搜索
 显示了 LVQ 的大小和 k 与模型准确率的关系

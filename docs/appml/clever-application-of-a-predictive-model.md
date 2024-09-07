@@ -1,14 +1,14 @@
 # 一种预测模型的巧妙应用
 
-> 原文： [https://machinelearningmastery.com/clever-application-of-a-predictive-model/](https://machinelearningmastery.com/clever-application-of-a-predictive-model/)
+> 原文： [`machinelearningmastery.com/clever-application-of-a-predictive-model/`](https://machinelearningmastery.com/clever-application-of-a-predictive-model/)
 
 如果您可以使用预测模型来查找数据中不存在但可能有价值的新属性组合，该怎么办？
 
-在 [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) 的第 10 章中，Kuhn 和 Johnson 提供了一个案例研究。这是一个如何使用预测模型的迷人和创造性的例子。
+在 [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) 的第十章中，Kuhn 和 Johnson 提供了一个案例研究。这是一个如何使用预测模型的迷人和创造性的例子。
 
 在这篇文章中，我们将发现这种不太明显的预测模型的使用以及它所属的实验设计的类型。
 
-[![wet concrete](img/14c90d71e3bf4b3f2356fa31ea9c6d68.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/wet-concrete.jpg)
+![wet concrete](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/wet-concrete.jpg)
 
 湿混凝土
 摄影：[美国海军官方网页](https://www.flickr.com/photos/usnavy/5405473010)，保留一些权利
@@ -27,7 +27,7 @@
 
 所得混合物所关注的性质是混凝土的抗压强度。需要具有较少或较便宜成分的强混凝土。
 
-请参阅 [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) 的第 10 章，以深入了解该问题。
+请参阅 [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) 的第十章，以深入了解该问题。
 
 ### 预测模型
 

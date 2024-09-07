@@ -1,6 +1,6 @@
 # 如何以及何时在 Python 中对分类使用 ROC 曲线和精确召回曲线
 
-> 原文： [https://machinelearningmastery.com/roc-curves-and-precision-recall-curves-for-classification-in-python/](https://machinelearningmastery.com/roc-curves-and-precision-recall-curves-for-classification-in-python/)
+> 原文： [`machinelearningmastery.com/roc-curves-and-precision-recall-curves-for-classification-in-python/`](https://machinelearningmastery.com/roc-curves-and-precision-recall-curves-for-classification-in-python/)
 
 可以更灵活地预测属于分类问题中每个类的观察的概率，而不是直接预测类。
 

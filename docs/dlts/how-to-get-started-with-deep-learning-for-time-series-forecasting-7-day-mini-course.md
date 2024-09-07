@@ -1,6 +1,6 @@
 # 如何开始用于时间序列预测的深度学习（7 天迷你课程）
 
-> 原文： [https://machinelearningmastery.com/how-to-get-started-with-deep-learning-for-time-series-forecasting-7-day-mini-course/](https://machinelearningmastery.com/how-to-get-started-with-deep-learning-for-time-series-forecasting-7-day-mini-course/)
+> 原文： [`machinelearningmastery.com/how-to-get-started-with-deep-learning-for-time-series-forecasting-7-day-mini-course/`](https://machinelearningmastery.com/how-to-get-started-with-deep-learning-for-time-series-forecasting-7-day-mini-course/)
 
 ### 时间序列预测速成课程的深度学习。
 
@@ -16,7 +16,7 @@
 
 让我们开始吧。
 
-[![How to Get Started with Deep Learning for Time Series Forecasting (7-Day Mini-Course)](img/ddabd4eb61af3e12ea5e27191572ab52.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2018/11/How-to-Get-Started-with-Deep-Learning-for-Time-Series-Forecasting-7-Day-Mini-Course.jpg)
+![How to Get Started with Deep Learning for Time Series Forecasting (7-Day Mini-Course)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2018/11/How-to-Get-Started-with-Deep-Learning-for-Time-Series-Forecasting-7-Day-Mini-Course.jpg)
 
 如何开始深度学习时间序列预测（7 天迷你课程）
 摄影： [Brian Richardson](https://www.flickr.com/photos/seriousbri/3736154699/) ，保留一些权利。

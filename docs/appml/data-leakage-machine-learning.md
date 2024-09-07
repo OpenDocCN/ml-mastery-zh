@@ -1,6 +1,6 @@
 # 机器学习中的数据泄漏
 
-> 原文： [https://machinelearningmastery.com/data-leakage-machine-learning/](https://machinelearningmastery.com/data-leakage-machine-learning/)
+> 原文： [`machinelearningmastery.com/data-leakage-machine-learning/`](https://machinelearningmastery.com/data-leakage-machine-learning/)
 
 在开发预测模型时，数据泄漏是机器学习中的一个大问题。
 
@@ -67,7 +67,7 @@
 
 > “太好了不可能”表现是它存在的“死亡赠品”
 
-- 第 13 章，[做数据科学：从前线直接谈话](http://www.amazon.com/dp/1449358659?tag=inspiredalgor-20)
+- 第十三章，[做数据科学：从前线直接谈话](http://www.amazon.com/dp/1449358659?tag=inspiredalgor-20)
 
 数据泄漏通常是复杂数据集的一个问题，例如：
 
@@ -140,7 +140,7 @@
 
 *   [数据挖掘中的泄漏：秘籍，检测和避免](https://www.cs.umb.edu/~ding/history/470_670_fall_2011/papers/cs670_Tran_PreferredPaper_LeakingInDataMining.pdf) [pdf]，2011。（推荐！）
 *   [关于数据怀疑播客](http://dataskeptic.com/epnotes/leakage.php)数据泄漏的迷你剧集。
-*   第 13 章：从数据竞争中吸取的教训：数据泄漏和模型评估，来自[做数据科学：直接从前线谈话](http://www.amazon.com/dp/1449358659?tag=inspiredalgor-20)，2013。
+*   第十三章：从数据竞争中吸取的教训：数据泄漏和模型评估，来自[做数据科学：直接从前线谈话](http://www.amazon.com/dp/1449358659?tag=inspiredalgor-20)，2013。
 *   [询问数据科学家：数据泄漏](http://insidebigdata.com/2014/11/26/ask-data-scientist-data-leakage/)，2014 年
 *   [Kaggle Wiki 上的数据泄漏](https://www.kaggle.com/wiki/Leakage)
 *   [有关 ICML 2013 鲸鱼挑战赛](https://www.kaggle.com/c/the-icml-2013-whale-challenge-right-whale-redux/forums/t/4865/the-leakage-and-how-it-was-fixed/25839#post25839)数据泄漏的精彩讨论

@@ -1,6 +1,6 @@
 # 如何使用相关来理解变量之间的关系
 
-> 原文： [https://machinelearningmastery.com/how-to-use-correlation-to-understand-the-relationship-between-variables/](https://machinelearningmastery.com/how-to-use-correlation-to-understand-the-relationship-between-variables/)
+> 原文： [`machinelearningmastery.com/how-to-use-correlation-to-understand-the-relationship-between-variables/`](https://machinelearningmastery.com/how-to-use-correlation-to-understand-the-relationship-between-variables/)
 
 数据集中的变量之间可能存在复杂且未知的关系。
 

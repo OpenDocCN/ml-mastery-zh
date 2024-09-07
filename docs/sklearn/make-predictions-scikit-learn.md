@@ -1,6 +1,6 @@
 # 如何使用 scikit-learn 做出预测
 
-> 原文： [https://machinelearningmastery.com/make-predictions-scikit-learn/](https://machinelearningmastery.com/make-predictions-scikit-learn/)
+> 原文： [`machinelearningmastery.com/make-predictions-scikit-learn/`](https://machinelearningmastery.com/make-predictions-scikit-learn/)
 
 #### 如何使用 Python 中的 scikit-learn 模型预测分类或回归结果
 。

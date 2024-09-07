@@ -1,6 +1,6 @@
 # 如何使用统计量识别数据中的异常值
 
-> 原文： [https://machinelearningmastery.com/how-to-use-statistics-to-identify-outliers-in-data/](https://machinelearningmastery.com/how-to-use-statistics-to-identify-outliers-in-data/)
+> 原文： [`machinelearningmastery.com/how-to-use-statistics-to-identify-outliers-in-data/`](https://machinelearningmastery.com/how-to-use-statistics-to-identify-outliers-in-data/)
 
 建模时，清理数据样本以确保观察结果最能代表问题非常重要。
 

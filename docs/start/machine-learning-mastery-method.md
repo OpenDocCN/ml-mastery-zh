@@ -1,6 +1,6 @@
 # 掌握机器学习的方法
 
-> 原文： [https://machinelearningmastery.com/machine-learning-mastery-method/](https://machinelearningmastery.com/machine-learning-mastery-method/)
+> 原文： [`machinelearningmastery.com/machine-learning-mastery-method/`](https://machinelearningmastery.com/machine-learning-mastery-method/)
 
 ### 5 个步骤开始并擅长机器学习
 

@@ -1,6 +1,6 @@
 # 如何在 Python 中从零开始实现感知机算法
 
-> 原文： [https://machinelearningmastery.com/implement-perceptron-algorithm-scratch-python/](https://machinelearningmastery.com/implement-perceptron-algorithm-scratch-python/)
+> 原文： [`machinelearningmastery.com/implement-perceptron-algorithm-scratch-python/`](https://machinelearningmastery.com/implement-perceptron-algorithm-scratch-python/)
 
 Perceptron 算法是最简单的人工神经网络。
 

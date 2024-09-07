@@ -1,6 +1,6 @@
 # 如何在机器学习中取得更好的成绩
 
-> 原文： [https://machinelearningmastery.com/how-to-get-better-at-machine-learning/](https://machinelearningmastery.com/how-to-get-better-at-machine-learning/)
+> 原文： [`machinelearningmastery.com/how-to-get-better-at-machine-learning/`](https://machinelearningmastery.com/how-to-get-better-at-machine-learning/)
 
 [来自 Metacademy 的科罗拉多里德](http://obphio.us/)最近写了一篇很棒的文章，名为“ [_ 升级你的机器学习 _](http://metacademy.org/roadmaps/cjrd/level-up-your-ml) ”来回答他经常收到的问题：
 
@@ -8,7 +8,7 @@
 
 在这篇文章中，您将发现科罗拉多州建议的摘要和他的路线图的细分。
 
-[![level-up machine learning](img/7ef4d5767c376af4000a99bf27b9654b.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/level-up-machine-learning.jpg)
+![level-up machine learning](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/level-up-machine-learning.jpg)
 
 升级您的机器学习
 照片由[HelgiHalldórsson](https://www.flickr.com/photos/8058853@N06/4393957264)，保留一些权利

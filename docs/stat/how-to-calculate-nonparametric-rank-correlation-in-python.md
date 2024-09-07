@@ -1,6 +1,6 @@
 # 如何在 Python 中计算非参数秩相关性
 
-> 原文： [https://machinelearningmastery.com/how-to-calculate-nonparametric-rank-correlation-in-python/](https://machinelearningmastery.com/how-to-calculate-nonparametric-rank-correlation-in-python/)
+> 原文： [`machinelearningmastery.com/how-to-calculate-nonparametric-rank-correlation-in-python/`](https://machinelearningmastery.com/how-to-calculate-nonparametric-rank-correlation-in-python/)
 
 相关性是两个变量之间关联的度量。
 

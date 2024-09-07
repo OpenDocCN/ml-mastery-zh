@@ -1,6 +1,6 @@
 # 应用统计学与机器学习的密切关系
 
-> 原文： [https://machinelearningmastery.com/relationship-between-applied-statistics-and-machine-learning/](https://machinelearningmastery.com/relationship-between-applied-statistics-and-machine-learning/)
+> 原文： [`machinelearningmastery.com/relationship-between-applied-statistics-and-machine-learning/`](https://machinelearningmastery.com/relationship-between-applied-statistics-and-machine-learning/)
 
 机器学习从业者具有算法传统，并且注重结果和模型技能，而不是其他关注点，例如模型可解释性。
 

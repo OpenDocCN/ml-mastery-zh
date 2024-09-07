@@ -105,7 +105,7 @@ print(fit)
 # make predictions
 predictions <- predict(fit, BostonHousing)
 # summarize accuracy
-mse <- mean((BostonHousing$medv - predictions)^2)
+mse <- mean((BostonHousing$medv - predictions)²)
 print(mse)
 ```
 
@@ -239,7 +239,7 @@ print(fit)
 # make predictions
 predictions <- predict(fit, x, type="link")
 # summarize accuracy
-mse <- mean((y - predictions)^2)
+mse <- mean((y - predictions)²)
 print(mse)
 ```
 
@@ -325,7 +325,7 @@ print(fit)
 # make predictions
 predictions <- predict(fit, x)
 # summarize accuracy
-mse <- mean((BostonHousing$medv - predictions)^2)
+mse <- mean((BostonHousing$medv - predictions)²)
 print(mse)
 ```
 
@@ -436,7 +436,7 @@ print(fit)
 # make predictions
 predictions <- predict(fit, BostonHousing)
 # summarize accuracy
-mse <- mean((BostonHousing$medv - predictions)^2)
+mse <- mean((BostonHousing$medv - predictions)²)
 print(mse)
 ```
 
@@ -509,7 +509,7 @@ print(fit)
 # make predictions
 predictions <- predict(fit, BostonHousing[,1:13])
 # summarize accuracy
-mse <- mean((BostonHousing$medv - predictions)^2)
+mse <- mean((BostonHousing$medv - predictions)²)
 print(mse)
 ```
 

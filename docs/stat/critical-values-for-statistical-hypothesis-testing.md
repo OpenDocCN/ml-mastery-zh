@@ -1,6 +1,6 @@
 # 统计假设检验的临界值以及如何在 Python 中计算它们
 
-> 原文： [https://machinelearningmastery.com/critical-values-for-statistical-hypothesis-testing/](https://machinelearningmastery.com/critical-values-for-statistical-hypothesis-testing/)
+> 原文： [`machinelearningmastery.com/critical-values-for-statistical-hypothesis-testing/`](https://machinelearningmastery.com/critical-values-for-statistical-hypothesis-testing/)
 
 如果不是标准的话，使用 p 值来解释统计假设检验的结果是常见的。
 

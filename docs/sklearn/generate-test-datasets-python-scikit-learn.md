@@ -1,6 +1,6 @@
 # 如何使用 Python 和 scikit-learn 生成测试数据集
 
-> 原文： [https://machinelearningmastery.com/generate-test-datasets-python-scikit-learn/](https://machinelearningmastery.com/generate-test-datasets-python-scikit-learn/)
+> 原文： [`machinelearningmastery.com/generate-test-datasets-python-scikit-learn/`](https://machinelearningmastery.com/generate-test-datasets-python-scikit-learn/)
 
 测试数据集是一些小型设计数据集，可用于测试机器学习算法或测试工具。
 

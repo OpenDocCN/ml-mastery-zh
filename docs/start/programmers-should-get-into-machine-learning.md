@@ -1,6 +1,6 @@
 # 程序员应该入门机器学习
 
-> 原文： [https://machinelearningmastery.com/programmers-should-get-into-machine-learning/](https://machinelearningmastery.com/programmers-should-get-into-machine-learning/)
+> 原文： [`machinelearningmastery.com/programmers-should-get-into-machine-learning/`](https://machinelearningmastery.com/programmers-should-get-into-machine-learning/)
 
 程序员应该参与机器学习领域，因为他们具有独特的技能，可以做出巨大的贡献。
 
@@ -18,7 +18,7 @@
 *   **可测试性**：一个类有一个责任，一个函数做一件事。简化系统可以创建可以测试的小型模块化代码。您编写自动化测试作为质量控制的衡量标准，以明确地证明代码执行其设计目的并检测您在进行更改时引入的任何回归。
 *   **可维护性**：上述行为导致了专业软件开发中可维护性最重要的因素之一。一个成功完成的软件项目将花费大部分时间用于维护。开发只是软件整体寿命的一小部分，维护是常态。我们通过使软件结构化，自动化，可重复和可测试来使软件可维护。
 
-[![software development](img/fbcade3d36a1ebc0f9e40380c0e7a2d8.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/software-development.jpg)
+![software development](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/software-development.jpg)
 
 照片归 [xJason.Rogersx](http://www.flickr.com/photos/restlessglobetrotter/128345994/sizes/o/) ，保留一些权利
 

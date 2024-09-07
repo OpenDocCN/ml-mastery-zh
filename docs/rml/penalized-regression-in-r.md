@@ -12,7 +12,7 @@
 
 我们开始吧。
 
-[![Penalized Regression](img/fca501128748943ade8c948a52631511.png)](https://machinelearningmastery.com/wp-content/uploads/2014/07/Penalized-Regression.jpg)
+![Penalized Regression](https://machinelearningmastery.com/wp-content/uploads/2014/07/Penalized-Regression.jpg)
 
 处罚回归
 图片由[湾区偏差](https://www.flickr.com/photos/bayareabias/5907585316/in/photolist-hcgaMV-H9Gde-coHJyw-hnbi1L-9ZZ6n6-9ZZ61i-9ZZ5De-a12Vif-9ZYPbi-cyxYZs-cyxTKY-cyxU1C-cyxZGQ-cyxZVU-cyxZf7-cyxZuf-coHuE7-coHHch-7ispTj-7esmd4-coHGZJ-5dFjX3-ayk99U-7c8t2x)提供，保留部分权利
@@ -37,7 +37,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, x, type="link")
 # summarize accuracy
-mse <- mean((y - predictions)^2)
+mse <- mean((y - predictions)²)
 print(mse)
 ```
 
@@ -63,7 +63,7 @@ best_step <- fit$df[which.min(fit$RSS)]
 # make predictions
 predictions <- predict(fit, x, s=best_step, type="fit")$fit
 # summarize accuracy
-mse <- mean((y - predictions)^2)
+mse <- mean((y - predictions)²)
 print(mse)
 ```
 
@@ -87,7 +87,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, x, type="link")
 # summarize accuracy
-mse <- mean((y - predictions)^2)
+mse <- mean((y - predictions)²)
 print(mse)
 ```
 
@@ -97,4 +97,4 @@ print(mse)
 
 在这篇文章中，你发现了 3 个 r 中惩罚回归的方法。
 
-惩罚是属性选择和提高预测模型准确率的有力方法。有关更多信息，请参见库恩和约翰逊的[应用预测建模](https://amzn.to/3iFPHhq)第 6 章，该章为初学者提供了关于 R 线性回归的出色介绍。
+惩罚是属性选择和提高预测模型准确率的有力方法。有关更多信息，请参见库恩和约翰逊的[应用预测建模](https://amzn.to/3iFPHhq)第六章，该章为初学者提供了关于 R 线性回归的出色介绍。

@@ -317,7 +317,7 @@ COCO 数据集上的对象分割示例
 ### 文章
 
 *   [这个形象是什么档次的？](https://rodrigob.github.io/are_we_there_yet/build/classification_datasets_results.html)
-*   [你需要了解的 9 篇深度学习论文(了解 CNNs 第 3 部分)](https://adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html)
+*   [你需要了解的 9 篇深度学习论文(了解 CNNs 第三部分)](https://adeshpande3.github.io/The-9-Deep-Learning-Papers-You-Need-To-Know-About.html)
 *   [GAN 论文列表及审核](https://spark-in.me/post/gan-paper-review)
 *   [2017 年深度学习语义分割指南](http://blog.qure.ai/notes/semantic-segmentation-deep-learning-review)。
 

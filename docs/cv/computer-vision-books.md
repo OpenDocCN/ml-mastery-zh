@@ -48,7 +48,7 @@
 
 本书由[理查德·斯泽斯基](http://szeliski.org/RichardSzeliski.htm)撰写，于 2010 年出版。
 
-[![Computer Vision: Algorithms and Applications](img/b790c196fd6d8e3d58086e098550671a.png)](https://amzn.to/2LcIt4J)
+![Computer Vision: Algorithms and Applications](https://amzn.to/2LcIt4J)
 
 计算机视觉:算法和应用
 
@@ -84,7 +84,7 @@
 
 本书由[西蒙·普林斯](http://www0.cs.ucl.ac.uk/external/s.prince/)执笔，2012 年出版。
 
-[![Computer Vision: Models, Learning, and Inference](img/e6e7024247307c4fbfa9a98558cebf53.png)](https://amzn.to/2rxrdOF)
+![Computer Vision: Models, Learning, and Inference](https://amzn.to/2rxrdOF)
 
 计算机视觉:模型、学习和推理
 
@@ -126,7 +126,7 @@
 
 本书由[大卫·福赛思](http://luthuli.cs.uiuc.edu/~daf/)和[让·庞塞](https://www.di.ens.fr/~ponce/)执笔，于 2011 年出版。
 
-[![Computer Vision: A Modern Approach](img/e18ecf16ca0e397db3438f2512a9f812.png)](https://amzn.to/2rv7AqJ)
+![Computer Vision: A Modern Approach](https://amzn.to/2rv7AqJ)
 
 计算机视觉:一种现代方法
 
@@ -178,7 +178,7 @@
 
 本书由[伊曼纽·特鲁科](https://www.dundee.ac.uk/computing/people/profile/emanuele-trucco.php)和[亚历山德罗·韦里](https://www.disi.unige.it/person/VerriA/)撰写，于 1998 年出版。
 
-[![Introductory Techniques for 3-D Computer Vision](img/a6a17b73710b70544d775be9c3d35e50.png)](https://amzn.to/2L9C2zF)
+![Introductory Techniques for 3-D Computer Vision](https://amzn.to/2L9C2zF)
 
 三维计算机视觉入门技术
 
@@ -209,7 +209,7 @@
 
 这本书由[理查德·哈特利](https://cecs.anu.edu.au/people/richard-hartley)和[安德鲁·齐塞曼](https://www.robots.ox.ac.uk/~az/)撰写，于 2004 年出版。
 
-[![Multiple View Geometry in Computer Vision](img/6933f3d03375d3c5eb8ce35111e34805.png)](https://amzn.to/2LfHLE8)
+![Multiple View Geometry in Computer Vision](https://amzn.to/2LfHLE8)
 
 计算机视觉中的多视角几何
 
@@ -227,7 +227,7 @@
 这本书的目录如下:
 
 *   1.介绍
-*   第 0 部分。背景:射影几何、变换和估计
+*   第零部分。背景:射影几何、变换和估计
     *   2.射影几何与 2D 变换
     *   3.射影几何与三维变换
     *   4.估计-2D 投影变换
@@ -275,7 +275,7 @@
 
 本书由[阿德里安·凯勒](https://www.linkedin.com/in/adriankaehler/)和[加里·布拉德斯基](https://www.linkedin.com/in/garybradski/)撰写，于 2017 年出版。这本书的副标题是“使用 OpenCV 库的 C++计算机视觉”
 
-[![Learning OpenCV 3](img/d78a531f82ecdf2480992b6a4f7ec6d1.png)](https://amzn.to/2EqF0Pv)
+![Learning OpenCV 3](https://amzn.to/2EqF0Pv)
 
 学习 OpenCV 3
 
@@ -322,7 +322,7 @@
 
 本书由[Jan Erik somar](https://www.janeriksolem.net/)撰写，于 2012 年出版。这本书的副标题是“分析图像的工具和算法。”
 
-[![Programming Computer Vision with Python](img/5c0eedf02f46934ab90bf1e7fd5e3b32.png)](https://amzn.to/2QKTaAL)
+![Programming Computer Vision with Python](https://amzn.to/2QKTaAL)
 
 用 Python 编程计算机视觉
 
@@ -354,7 +354,7 @@
 
 这本书由[库尔特·德马吉德](https://www.linkedin.com/in/kurtdemaagd/)、安东尼·奥利弗、[内森·奥斯滕多普](http://oostendorp.net/)、[凯瑟琳·斯科特](http://www.kscottz.com/)撰写，于 2012 年出版。这本书的副标题是“*让技术看到*的简单方法。”
 
-[![Practical Computer Vision with SimpleCV](img/7d2520079d098e98323727787aa0dfdb.png)](https://amzn.to/2QnFqMY)
+![Practical Computer Vision with SimpleCV](https://amzn.to/2QnFqMY)
 
 简单实用的计算机视觉
 

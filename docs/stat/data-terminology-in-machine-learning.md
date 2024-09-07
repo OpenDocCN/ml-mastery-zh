@@ -1,6 +1,6 @@
 # 如何在机器学习中谈论数据（统计学和计算机科学术语）
 
-> 原文： [https://machinelearningmastery.com/data-terminology-in-machine-learning/](https://machinelearningmastery.com/data-terminology-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/data-terminology-in-machine-learning/`](https://machinelearningmastery.com/data-terminology-in-machine-learning/)
 
 数据在机器学习中起着重要作用。
 

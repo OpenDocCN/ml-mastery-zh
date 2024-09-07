@@ -1,6 +1,6 @@
 # 用于人类活动识别的深度学习模型
 
-> 原文： [https://machinelearningmastery.com/deep-learning-models-for-human-activity-recognition/](https://machinelearningmastery.com/deep-learning-models-for-human-activity-recognition/)
+> 原文： [`machinelearningmastery.com/deep-learning-models-for-human-activity-recognition/`](https://machinelearningmastery.com/deep-learning-models-for-human-activity-recognition/)
 
 人类活动识别（HAR）是具有挑战性的时间序列分类任务。
 

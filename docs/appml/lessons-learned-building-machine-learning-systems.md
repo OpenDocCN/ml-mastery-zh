@@ -1,12 +1,12 @@
 # 建立机器学习系统的经验教训
 
-> 原文： [https://machinelearningmastery.com/lessons-learned-building-machine-learning-systems/](https://machinelearningmastery.com/lessons-learned-building-machine-learning-systems/)
+> 原文： [`machinelearningmastery.com/lessons-learned-building-machine-learning-systems/`](https://machinelearningmastery.com/lessons-learned-building-machine-learning-systems/)
 
-在 [MLConf](%20http://mlconf.com/) 最近的一次演讲中， [Xavier Amatriain](https://www.linkedin.com/in/xamatriain) 描述了他在 Netflix 的研究/工程经理建立机器学习系统时学到的 10 个课程。
+在 MLConf 最近的一次演讲中， [Xavier Amatriain](https://www.linkedin.com/in/xamatriain) 描述了他在 Netflix 的研究/工程经理建立机器学习系统时学到的 10 个课程。
 
 在这里，您将从他的演讲和幻灯片中总结发现这 10 节课。
 
-[![Lessons Learned from Building Machine Learning Systems](img/bb21a5fe2d34628dd22e4818f145844a.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Lessons-Learned-from-Building-Machine-Learning-Systems.png)
+![Lessons Learned from Building Machine Learning Systems](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Lessons-Learned-from-Building-Machine-Learning-Systems.png)
 
 建筑机器学习系统的经验教训摘自 [Xavier 的演讲](https://www.youtube.com/watch?v=WdzWPuazLA8)
 
@@ -81,7 +81,7 @@ Xavier 评论了对用户行为数据进行非规范化时可能存在的困难�
 
 Xavier 概述了所使用的在线离线测试过程。
 
-[![Offline Online Training Process](img/0323b2cc3ab0fb058f00a0c703828f34.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Offline-Online-Training-Process.png)
+![Offline Online Training Process](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Offline-Online-Training-Process.png)
 
 离线在线训练流程
 摘自 [Xavier 的演讲](http://www.slideshare.net/xamat/10-lessons-learned-from-building-machine-learning-systems)

@@ -1,6 +1,6 @@
 # Python 中使用长短期记忆网络的时间序列预测
 
-> 原文： [https://machinelearningmastery.com/time-series-forecasting-long-short-term-memory-network-python/](https://machinelearningmastery.com/time-series-forecasting-long-short-term-memory-network-python/)
+> 原文： [`machinelearningmastery.com/time-series-forecasting-long-short-term-memory-network-python/`](https://machinelearningmastery.com/time-series-forecasting-long-short-term-memory-network-python/)
 
 长期短期记忆复发神经网络有望学习长序列的观察。
 

@@ -1,6 +1,6 @@
 # 自然语言处理神经网络模型入门
 
-> 原文： [https://machinelearningmastery.com/primer-neural-network-models-natural-language-processing/](https://machinelearningmastery.com/primer-neural-network-models-natural-language-processing/)
+> 原文： [`machinelearningmastery.com/primer-neural-network-models-natural-language-processing/`](https://machinelearningmastery.com/primer-neural-network-models-natural-language-processing/)
 
 深度学习对自然语言处理领域产生巨大影响。
 
@@ -67,7 +67,7 @@
 
 最后，这本 2015 年的入门书已经变成 2017 年出版的一本书，名为“[自然语言处理的神经网络方法](http://amzn.to/2tXn2dZ)”。
 
-[![Amazon Image](img/82db93f4aeff9716b90238fbd979adea.jpg)](http://www.amazon.com/dp/1627052984?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1627052984?tag=inspiredalgor-20)
 
 如果您喜欢这本入门书并希望深入了解，我强烈推荐 Yoav 的书。
 

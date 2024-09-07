@@ -1,6 +1,6 @@
 # 使用小型目标项目深入了解机器学习工具
 
-> 原文： [https://machinelearningmastery.com/investigate-machine-learning-tools/](https://machinelearningmastery.com/investigate-machine-learning-tools/)
+> 原文： [`machinelearningmastery.com/investigate-machine-learning-tools/`](https://machinelearningmastery.com/investigate-machine-learning-tools/)
 
 选择机器学习工具后，您需要提高使用它的技能。
 

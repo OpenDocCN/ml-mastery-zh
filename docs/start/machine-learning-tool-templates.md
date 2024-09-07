@@ -1,6 +1,6 @@
 # 快速了解任何机器学习工具（即使您是初学者）
 
-> 原文： [https://machinelearningmastery.com/machine-learning-tool-templates/](https://machinelearningmastery.com/machine-learning-tool-templates/)
+> 原文： [`machinelearningmastery.com/machine-learning-tool-templates/`](https://machinelearningmastery.com/machine-learning-tool-templates/)
 
 您如何快速了解机器学习工具？
 

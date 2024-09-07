@@ -1,6 +1,6 @@
 # 面向程序员的机器学习
 
-> 原文： [https://machinelearningmastery.com/machine-learning-for-programmers/](https://machinelearningmastery.com/machine-learning-for-programmers/)
+> 原文： [`machinelearningmastery.com/machine-learning-for-programmers/`](https://machinelearningmastery.com/machine-learning-for-programmers/)
 
 ## 从开发人员跳到
 机器学习从业者
@@ -349,7 +349,7 @@
 
 **更新**：查看这个方便的思维导图，总结了这篇文章中的重要概念（感谢 Simeon 的建议！）。
 
-[![Machine Learning For Programmers Mind Map](img/4632f7778162d6c7347a340df3673d84.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/Machine-Learning-For-Programmers-Mind-Map.png)
+![Machine Learning For Programmers Mind Map](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/Machine-Learning-For-Programmers-Mind-Map.png)
 
 手绘思维导图，总结了本文中的重要概念。
 [点击图片放大]

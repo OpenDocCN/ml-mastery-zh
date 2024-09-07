@@ -14,7 +14,7 @@ longley 数据集描述了从 1947 年到 1962 年观察到的 7 个经济变量
 
 我们开始吧。
 
-[![decision tree](img/f59278946e14ff4676dac50727034291.png)](https://machinelearningmastery.com/wp-content/uploads/2014/07/decision-tree.jpg)
+![decision tree](https://machinelearningmastery.com/wp-content/uploads/2014/07/decision-tree.jpg)
 
 决策树
 图片作者[凯蒂·沃克](https://www.flickr.com/photos/eilonwy77/7229389076)，版权所有
@@ -37,7 +37,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley[,1:6])
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -61,7 +61,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley[,1:6])
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -85,7 +85,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley[,1:6])
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -109,7 +109,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley[,1:6])
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -133,7 +133,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley[,1:6])
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -155,7 +155,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley[,1:6])
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -177,7 +177,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley)
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -199,7 +199,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley[,1:6])
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -209,4 +209,4 @@ print(mse)
 
 在这篇文章中，你发现了 r 中非线性回归决策树的 8 个方法。每个方法都可以复制粘贴到你自己的工作空间中，并根据你的需要进行修改。
 
-有关更多信息，请参见库恩和约翰逊的[应用预测建模](https://amzn.to/3iFPHhq)第 8 章，该章为初学者提供了关于带有 R 的决策树的非线性回归的出色介绍。
+有关更多信息，请参见库恩和约翰逊的[应用预测建模](https://amzn.to/3iFPHhq)第八章，该章为初学者提供了关于带有 R 的决策树的非线性回归的出色介绍。

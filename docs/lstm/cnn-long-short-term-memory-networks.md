@@ -1,6 +1,6 @@
 # CNN 长短期记忆网络
 
-> 原文： [https://machinelearningmastery.com/cnn-long-short-term-memory-networks/](https://machinelearningmastery.com/cnn-long-short-term-memory-networks/)
+> 原文： [`machinelearningmastery.com/cnn-long-short-term-memory-networks/`](https://machinelearningmastery.com/cnn-long-short-term-memory-networks/)
 
 ### 使用示例 Python 代码轻松介绍 CNN LSTM 循环神经网络
 。

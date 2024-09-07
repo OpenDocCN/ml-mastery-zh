@@ -1,6 +1,6 @@
 # Python 中用于数据准备和时间序列预测的移动平均平滑
 
-> 原文： [https://machinelearningmastery.com/moving-average-smoothing-for-time-series-forecasting-python/](https://machinelearningmastery.com/moving-average-smoothing-for-time-series-forecasting-python/)
+> 原文： [`machinelearningmastery.com/moving-average-smoothing-for-time-series-forecasting-python/`](https://machinelearningmastery.com/moving-average-smoothing-for-time-series-forecasting-python/)
 
 移动平均平滑是时间序列预测中一种朴素有效的技术。
 
@@ -356,7 +356,7 @@ Test MSE: 61.379
 
 本节列出了一些平滑移动平均线的资源，可用于时间序列分析和时间序列预测。
 
-*   第 4 章，平滑方法， [R 实用时间序列预测：动手指南](http://www.amazon.com/dp/0997847913?tag=inspiredalgor-20)。
+*   第四章，平滑方法， [R 实用时间序列预测：动手指南](http://www.amazon.com/dp/0997847913?tag=inspiredalgor-20)。
 *   第 1.5.4 节平滑，[引入时间序列与 R](http://www.amazon.com/dp/0387886974?tag=inspiredalgor-20) 。
 *   第 2.4 节时间序列中的平滑，[时间序列分析及其应用：使用 R 实例](http://www.amazon.com/dp/144197864X?tag=inspiredalgor-20)。
 

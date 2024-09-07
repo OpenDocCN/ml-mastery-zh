@@ -1,6 +1,6 @@
 # 机器学习的最佳编程语言
 
-> 原文： [https://machinelearningmastery.com/best-programming-language-for-machine-learning/](https://machinelearningmastery.com/best-programming-language-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/best-programming-language-for-machine-learning/`](https://machinelearningmastery.com/best-programming-language-for-machine-learning/)
 
 我被问到的一个问题是：
 
@@ -18,13 +18,13 @@
 
 KDnuggets 永远进行了语言民意调查。最近的一项民意调查标题为“ [2013 年用于分析/数据挖掘/数据科学工作的编程/统计语言](http://www.kdnuggets.com/polls/2013/languages-analytics-data-mining-data-science.html)”。趋势几乎与上一年相同。结果表明大量使用 R 和 Python 以及 SQL 进行数据访问。 SAS 和 MATLAB 的排名高于我的预期。我希望 SAS 可以用于更大的企业（财富 500 强）数据分析和用于工程，研究和学生使用的 MATLAB。
 
-[![kdnuggets popular programming languages](img/5d8ea1d54012cbc4978cbc76115ffa98.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/kdnuggets-popular-programming-languages.png)
+![kdnuggets popular programming languages](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/kdnuggets-popular-programming-languages.png)
 
 最受欢迎的机器学习平台，取自 [KDnuggets 2013 民意调查](http://www.kdnuggets.com/polls/2013/languages-analytics-data-mining-data-science.html)。
 
 Kaggle 提供机器学习竞赛，并对参赛者在比赛中使用的工具和编程语言进行了调查。他们在 2011 年发布了名为 [Kagglers 的最爱工具](http://blog.kaggle.com/2011/11/27/kagglers-favorite-tools/)的结果（另见[论坛讨论](https://www.kaggle.com/forums/t/1099/data-analysis-tools-and-methods)）。结果表明 R 的使用量很大。结果也表明 MATLAB 和 SAS 的使用效果要低得多。我可以证明我更喜欢 R 而不是 Python 来进行竞争工作。只是感觉它在数据分析和算法选择方面有更多的优势。
 
-[![kaggle most popular tools](img/2440bc8410824bcbee2a7cb05b68dcb2.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/kaggle-most-popular-tools.png)
+![kaggle most popular tools](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/kaggle-most-popular-tools.png)
 
 [最受欢迎的工具，用于机器学习竞赛网站 Kaggle](http://blog.kaggle.com/2011/11/27/kagglers-favorite-tools/) 。
 
@@ -34,7 +34,7 @@ Ben 评论说 MATLAB / Octave 是一种很好的矩阵运算语言，在使用�
 
 Kaggle 首席执行官 Anthony Goldbloom 在 2011 年向 Bay Area R 用户组发表演讲，介绍 R 在 Kaggle 比赛中的受欢迎程度，题为[预测性建模竞赛：使数据科学成为一项运动](http://www.meetup.com/R-Users/events/16946398/)（参见 [powerpoint）幻灯片](http://files.meetup.com/1225993/Goldbloom%20-%20Predictive%20modeling%20competitions%20-%20April%202011.ppt)）。演示幻灯片提供了有关编程语言使用的更多细节，并建议了一个与 R 的使用一样大的其他类别。收集原始数据会很好（为什么不是把它发布到他们自己的数据社区，认真！？）。
 
-[![popular languages on kaggle](img/4546506115fb99b38b25b437e06f56d4.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/popular-languages-on-kaggle.png)
+![popular languages on kaggle](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/05/popular-languages-on-kaggle.png)
 
 Kaggle 上流行的编程语言，取自 [Kaggle 演示文稿](http://www.meetup.com/R-Users/events/16946398/)。
 

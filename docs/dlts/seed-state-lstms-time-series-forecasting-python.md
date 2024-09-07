@@ -1,6 +1,6 @@
 # 如何在 Python 和 LSTM 中为时间序列预测播种状态
 
-> 原文： [https://machinelearningmastery.com/seed-state-lstms-time-series-forecasting-python/](https://machinelearningmastery.com/seed-state-lstms-time-series-forecasting-python/)
+> 原文： [`machinelearningmastery.com/seed-state-lstms-time-series-forecasting-python/`](https://machinelearningmastery.com/seed-state-lstms-time-series-forecasting-python/)
 
 长短期记忆网络（LSTM）是一种强大的循环神经网络，能够学习长序列观察。
 

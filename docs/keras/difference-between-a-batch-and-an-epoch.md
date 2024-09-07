@@ -1,6 +1,6 @@
 # 神经网络中批量和周期之间的区别是什么？
 
-> 原文： [https://machinelearningmastery.com/difference-between-a-batch-and-an-epoch/](https://machinelearningmastery.com/difference-between-a-batch-and-an-epoch/)
+> 原文： [`machinelearningmastery.com/difference-between-a-batch-and-an-epoch/`](https://machinelearningmastery.com/difference-between-a-batch-and-an-epoch/)
 
 随机梯度下降是一种学习算法，具有许多超参数。
 

@@ -1,6 +1,6 @@
 # Python 机器学习库 Scikit-Learn 的温和介绍
 
-> 原文： [https://machinelearningmastery.com/a-gentle-introduction-to-scikit-learn-a-python-machine-learning-library/](https://machinelearningmastery.com/a-gentle-introduction-to-scikit-learn-a-python-machine-learning-library/)
+> 原文： [`machinelearningmastery.com/a-gentle-introduction-to-scikit-learn-a-python-machine-learning-library/`](https://machinelearningmastery.com/a-gentle-introduction-to-scikit-learn-a-python-machine-learning-library/)
 
 如果您是一名 Python 程序员，或者您正在寻找一个强大的库，您可以将机器学习带入生产系统，那么您需要认真考虑的库是 scikit-learn。
 
@@ -14,7 +14,7 @@ Scikit-learn 最初是由 David Cournapeau 在 2007 年开发的 Google 夏季�
 
 该项目目前有超过 30 个活跃的贡献者，并已经 [INRIA](http://www.inria.fr/en/) ，谷歌， [Tinyclues](http://www.tinyclues.com/) 和 [Python 软件基金会](https://www.python.org/psf/)支付了赞助费。
 
-[![Scikit-learn Homepage](img/39aef81addb2ef47ba89501e80de8452.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/scikit-learn.png)
+![Scikit-learn Homepage](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/scikit-learn.png)
 
 [Scikit-learn 主页](http://scikit-learn.org/stable/index.html)
 
@@ -43,7 +43,7 @@ SciPy 护理的扩展或模块通常命名为 [SciKits](http://scikits.appspot.c
 
 该库专注于建模数据。它不专注于加载，操作和汇总数据。有关这些功能，请参阅 NumPy 和 Pandas。
 
-[![mean-shift clustering algorithm](img/d4cccaa0dbd532c10d1f94d11b71eace.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/plot_mean_shift_1.png)
+![mean-shift clustering algorithm](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/plot_mean_shift_1.png)
 
 截图取自[平均移位聚类算法](http://scikit-learn.org/stable/auto_examples/cluster/plot_mean_shift.html)的演示
 
@@ -129,10 +129,10 @@ avg / total       1.00      1.00      1.00       150
 
 最终，scikit-learn 是一个库，API 参考将是完成工作的最佳文档。
 
-*   快速入门教程 [http://scikit-learn.org/stable/tutorial/basic/tutorial.html](http://scikit-learn.org/stable/tutorial/basic/tutorial.html)
-*   用户指南 [http://scikit-learn.org/stable/user_guide.html](http://scikit-learn.org/stable/user_guide.html)
-*   API 参考 [http://scikit-learn.org/stable/modules/classes.html](http://scikit-learn.org/stable/modules/classes.html)
-*   示例图库 [http://scikit-learn.org/stable/auto_examples/index.html](http://scikit-learn.org/stable/auto_examples/index.html)
+*   快速入门教程 [`scikit-learn.org/stable/tutorial/basic/tutorial.html`](http://scikit-learn.org/stable/tutorial/basic/tutorial.html)
+*   用户指南 [`scikit-learn.org/stable/user_guide.html`](http://scikit-learn.org/stable/user_guide.html)
+*   API 参考 [`scikit-learn.org/stable/modules/classes.html`](http://scikit-learn.org/stable/modules/classes.html)
+*   示例图库 [`scikit-learn.org/stable/auto_examples/index.html`](http://scikit-learn.org/stable/auto_examples/index.html)
 
 ### 文件
 

@@ -1,6 +1,6 @@
 # 机器学习入门的实用建议
 
-> 原文： [https://machinelearningmastery.com/practical-advice-for-getting-started-in-machine-learning/](https://machinelearningmastery.com/practical-advice-for-getting-started-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/practical-advice-for-getting-started-in-machine-learning/`](https://machinelearningmastery.com/practical-advice-for-getting-started-in-machine-learning/)
 
 [David Mimno](http://mimno.infosci.cornell.edu/) 是康奈尔大学[信息科学](http://infosci.cornell.edu/)系的助理教授。他具有自然语言处理（NLP）的背景和兴趣，特别是主题建模。值得注意的是，他是 [MALLET](http://mallet.cs.umass.edu/) 的主要维护者，这是一个基于 Java 的 NLP 库。
 
@@ -12,7 +12,7 @@
 
 大卫推荐一些非常高级的书籍作为介绍性文章。原因是他的学生都是研究生并且能够应对挑战。我自己不推荐这些文本。
 
-[![Amazon Image](img/ebad9df2010f0c32b969914f526cf6d5.jpg)](http://www.amazon.com/dp/0262018020?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0262018020?tag=inspiredalgor-20)
 
 不过，他建议的文字是：
 
@@ -27,7 +27,7 @@
 
 大卫评论说，你可以学到的关于线性代数，概率和统计学的任何东西都是有用的。
 
-[![Amazon Image](img/212ea3751f88d21d2102c3a0dac6d576.jpg)](http://www.amazon.com/dp/0980232716?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0980232716?tag=inspiredalgor-20)
 
 他接着建议了几本关键书：
 

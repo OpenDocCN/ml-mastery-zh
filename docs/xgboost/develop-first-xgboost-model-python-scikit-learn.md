@@ -1,6 +1,6 @@
 # 如何使用 Python 和 scikit-learn 开发您的第一个 XGBoost 模型
 
-> 原文： [https://machinelearningmastery.com/develop-first-xgboost-model-python-scikit-learn/](https://machinelearningmastery.com/develop-first-xgboost-model-python-scikit-learn/)
+> 原文： [`machinelearningmastery.com/develop-first-xgboost-model-python-scikit-learn/`](https://machinelearningmastery.com/develop-first-xgboost-model-python-scikit-learn/)
 
 XGBoost 是梯度提升决策树的一种实现，旨在提高机器学习竞赛速度和表现。
 

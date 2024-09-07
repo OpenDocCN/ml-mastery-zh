@@ -1,6 +1,6 @@
 # 了解 Keras 中 LSTM 的返回序列和返回状态之间的差异
 
-> 原文： [https://machinelearningmastery.com/return-sequences-and-return-states-for-lstms-in-keras/](https://machinelearningmastery.com/return-sequences-and-return-states-for-lstms-in-keras/)
+> 原文： [`machinelearningmastery.com/return-sequences-and-return-states-for-lstms-in-keras/`](https://machinelearningmastery.com/return-sequences-and-return-states-for-lstms-in-keras/)
 
 Keras 深度学习库提供了长期短期记忆或 LSTM 循环神经网络的实现。
 

@@ -1,6 +1,6 @@
 # 如何用 Scikit-Learn 调整算法参数
 
-> 原文： [https://machinelearningmastery.com/how-to-tune-algorithm-parameters-with-scikit-learn/](https://machinelearningmastery.com/how-to-tune-algorithm-parameters-with-scikit-learn/)
+> 原文： [`machinelearningmastery.com/how-to-tune-algorithm-parameters-with-scikit-learn/`](https://machinelearningmastery.com/how-to-tune-algorithm-parameters-with-scikit-learn/)
 
 机器学习模型被参数化，以便可以针对给定问题调整它们的行为。
 
@@ -10,7 +10,7 @@
 
 *   **2017 年 1 月更新**：已更新，以反映版本 0.18 中 scikit-learn API 的更改。
 
-[![fine tuning](img/7370d2ed53d2b7c4618d0e9ac63bad88.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/07/fine-tuning.jpg)
+![fine tuning](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/07/fine-tuning.jpg)
 
 调整像 [Katie Fricker](https://www.flickr.com/photos/frickfrack/6261857231) 调整钢琴
 照片的算法，保留一些权利

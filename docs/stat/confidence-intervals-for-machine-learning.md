@@ -1,6 +1,6 @@
 # 机器学习中的置信区间
 
-> 原文： [https://machinelearningmastery.com/confidence-intervals-for-machine-learning/](https://machinelearningmastery.com/confidence-intervals-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/confidence-intervals-for-machine-learning/`](https://machinelearningmastery.com/confidence-intervals-for-machine-learning/)
 
 许多机器学习涉及估计机器学习算法在看不见的数据上的表现。
 

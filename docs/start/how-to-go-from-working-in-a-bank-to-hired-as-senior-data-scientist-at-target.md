@@ -1,6 +1,6 @@
 # 如何从在银行工作到担任 Target 的高级数据科学家
 
-> 原文： [https://machinelearningmastery.com/how-to-go-from-working-in-a-bank-to-hired-as-senior-data-scientist-at-target/](https://machinelearningmastery.com/how-to-go-from-working-in-a-bank-to-hired-as-senior-data-scientist-at-target/)
+> 原文： [`machinelearningmastery.com/how-to-go-from-working-in-a-bank-to-hired-as-senior-data-scientist-at-target/`](https://machinelearningmastery.com/how-to-go-from-working-in-a-bank-to-hired-as-senior-data-scientist-at-target/)
 
 ### Santhosh Sharma 如何从
 _ 在银行贷款部门工作 _ 到

@@ -1,6 +1,6 @@
 # Python 中的 Keras 深度学习库的回归教程
 
-> 原文： [https://machinelearningmastery.com/regression-tutorial-keras-deep-learning-library-python/](https://machinelearningmastery.com/regression-tutorial-keras-deep-learning-library-python/)
+> 原文： [`machinelearningmastery.com/regression-tutorial-keras-deep-learning-library-python/`](https://machinelearningmastery.com/regression-tutorial-keras-deep-learning-library-python/)
 
 Keras 是一个深度学习库，包含高效的数字库 Theano 和 TensorFlow。
 

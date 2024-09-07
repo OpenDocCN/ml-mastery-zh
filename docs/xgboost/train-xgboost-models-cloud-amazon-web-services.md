@@ -1,6 +1,6 @@
 # 如何使用 Amazon Web Services 在云中训练 XGBoost 模型
 
-> 原文： [https://machinelearningmastery.com/train-xgboost-models-cloud-amazon-web-services/](https://machinelearningmastery.com/train-xgboost-models-cloud-amazon-web-services/)
+> 原文： [`machinelearningmastery.com/train-xgboost-models-cloud-amazon-web-services/`](https://machinelearningmastery.com/train-xgboost-models-cloud-amazon-web-services/)
 
 XGBoost 库提供了针对速度和表现而设计的梯度提升实现。
 

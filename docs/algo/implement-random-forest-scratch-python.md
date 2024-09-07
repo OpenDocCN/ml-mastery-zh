@@ -1,6 +1,6 @@
 # 如何在 Python 中从零开始实现随机森林
 
-> 原文： [https://machinelearningmastery.com/implement-random-forest-scratch-python/](https://machinelearningmastery.com/implement-random-forest-scratch-python/)
+> 原文： [`machinelearningmastery.com/implement-random-forest-scratch-python/`](https://machinelearningmastery.com/implement-random-forest-scratch-python/)
 
 决策树可能遭受高度变化，这使得它们的结果对于所使用的特定训练数据而言是脆弱的。
 

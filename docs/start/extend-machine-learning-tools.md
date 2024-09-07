@@ -1,6 +1,6 @@
 # 扩展机器学习工具并展示熟练度
 
-> 原文： [https://machinelearningmastery.com/extend-machine-learning-tools/](https://machinelearningmastery.com/extend-machine-learning-tools/)
+> 原文： [`machinelearningmastery.com/extend-machine-learning-tools/`](https://machinelearningmastery.com/extend-machine-learning-tools/)
 
 在您使用工具一段时间后，您将开发一种特定的工作方式。
 

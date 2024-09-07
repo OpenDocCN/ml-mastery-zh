@@ -1,6 +1,6 @@
 # BigML 教程：开发您的第一个决策树并做出预测
 
-> 原文： [https://machinelearningmastery.com/bigml-tutorial-develop-your-first-decision-tree-and-make-predictions/](https://machinelearningmastery.com/bigml-tutorial-develop-your-first-decision-tree-and-make-predictions/)
+> 原文： [`machinelearningmastery.com/bigml-tutorial-develop-your-first-decision-tree-and-make-predictions/`](https://machinelearningmastery.com/bigml-tutorial-develop-your-first-decision-tree-and-make-predictions/)
 
 BigML 是一家全新的，有趣的机器学习服务公司，总部位于美国俄勒冈州的 Corvallis。
 
@@ -12,7 +12,7 @@ BigML 是一家全新的，有趣的机器学习服务公司，总部位于美�
 
 在本教程中，我们将使用经过充分研究的 Iris 花卉数据集。该数据集由 150 个描述鸢尾花测量的实例组成，每个鸢尾花被归类为三种虹膜中的一种。属性是数字，问题是多分类问题。
 
-[![Sample of the Iris flower dataset](img/d5bf2d9a92922f6159afb16efbbd7a4f.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/iris-dataset-sample.png)
+![Sample of the Iris flower dataset](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/iris-dataset-sample.png)
 
 Iris 花卉数据集的样本，来自 [Wikipedia](http://en.wikipedia.org/wiki/Iris_flower_data_set) 的截图
 
@@ -30,11 +30,11 @@ Iris 花卉数据集的样本，来自 [Wikipedia](http://en.wikipedia.org/wiki/
 2.  单击“`Dashboard`”按钮转到 BigML 仪表板。
 3.  单击“`Source`”选项卡列出您帐户的所有数据源。
 4.  单击“链接”按钮以指定远程数据文件。
-5.  输入网址（ [http://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data](http://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data) ）和说明（“_ 鸢尾花数据源 _] “）用于 UCI 机器学习库中的 Iris 花数据集。
+5.  输入网址（ [`archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data`](http://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data) ）和说明（“_ 鸢尾花数据源 _] “）用于 UCI 机器学习库中的 Iris 花数据集。
 6.  单击“`Create`”按钮创建新数据源。
 7.  点击“_ 鸢尾花数据源 _”进行查看。
 
-[![BigML Data Source](img/b42317d54affb3d3c1fe0614eee3b0aa.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/bigml-data-source.png)
+![BigML Data Source](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/bigml-data-source.png)
 
 BigML 数据源
 
@@ -51,7 +51,7 @@ BigML 数据源
 5.  单击云按钮并选择“ _1 单击”训练“|测试 _“。
 6.  单击“_ 数据集 _”选项卡，查看我们创建的 3 个数据集。
 
-[![BigML Dataset](img/192e3433300ac6f084cc2a96c7c827b0.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/bigml-dataset.png)
+![BigML Dataset](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/bigml-dataset.png)
 
 BigML 数据集
 
@@ -69,7 +69,7 @@ BigML 数据集
 4.  单击“`Sunburst`”按钮打开模型的旭日视图并浏览决策树。
 5.  单击“_ 模型摘要报告 _”按钮以查看从决策树模型派生的规则的文本描述。
 
-[![BigML Predictive Model](img/4b96afd25e23a1f342469ed70a9e0441.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/bigml-predictive-model.png)
+![BigML Predictive Model](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/bigml-predictive-model.png)
 
 BigML 预测模型
 
@@ -84,7 +84,7 @@ BigML 预测模型
 5.  根据分类准确度，精确度，召回率，F 分数和 phi 分数来总结模型的准确率。我们可以看到准确率为 93.33％。
 6.  单击“_ 混淆矩阵 _”以查看模型预测的混淆矩阵。
 
-[![BigML Evaluate Predictive Model](img/90e0bf8578fdc098979e106ea1406e9a.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/bigml-evaluate-predictive-model-confusion-matrix.png)
+![BigML Evaluate Predictive Model](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/bigml-evaluate-predictive-model-confusion-matrix.png)
 
 BigML 评估预测模型，显示混淆矩阵
 
@@ -99,7 +99,7 @@ BigML 评估预测模型，显示混淆矩阵
 5.  单击“_ 预测 _”按钮
 6.  单击“_ 下载批量预测 _”文件，以获取测试数据集中每行的预测。
 
-[![BigML Download Model Predictions](img/cdd9665290fb0941f9f1479dc5c05d4c.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/bigml-download-predictions.png)
+![BigML Download Model Predictions](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/bigml-download-predictions.png)
 
 BigML 下载模型预测
 

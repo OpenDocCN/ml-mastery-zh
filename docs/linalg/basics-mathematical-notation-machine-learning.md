@@ -1,6 +1,6 @@
 # 机器学习中数学符号的基础知识
 
-> 原文： [https://machinelearningmastery.com/basics-mathematical-notation-machine-learning/](https://machinelearningmastery.com/basics-mathematical-notation-machine-learning/)
+> 原文： [`machinelearningmastery.com/basics-mathematical-notation-machine-learning/`](https://machinelearningmastery.com/basics-mathematical-notation-machine-learning/)
 
 在阅读机器学习方法的描述时，你无法避免数学符号。
 
@@ -121,7 +121,7 @@ c = ab
 符号被写为原始数字或基数，第二个数字或指数，显示为上标;例如：
 
 ```
-2^3
+2³
 ```
 
 这将被计算为 2 乘以其自身 3 次或立方：
@@ -133,7 +133,7 @@ c = ab
 一个被提升到 2 的力量据说是它的正方形。
 
 ```
-2^2 = 2 x 2 = 4
+2² = 2 x 2 = 4
 ```
 
 可以通过计算平方根来反转数字的平方。这是使用数字的符号和上面的勾号显示的，为简单起见，我将在这里使用“sqrt（）”函数。
@@ -151,7 +151,7 @@ sqrt(4) = 2
 例如，我们可以通过取立方根来反转数字的立方（注意，3 这里不是乘法，它是根符号的刻度之前的符号）：
 
 ```
-2^3 = 8
+2³ = 8
 3 sqrt(8) = 2
 ```
 
@@ -162,7 +162,7 @@ sqrt(4) = 2
 当我们将 10 提高到整数指数时，我们通常将其称为一个数量级。
 
 ```
-10^2 = 10 x 10 or 100
+10² = 10 x 10 or 100
 ```
 
 反转此操作的另一种方法是通过计算结果 100 的对数，假设基数为 10;在表示法中，这写为 log10（）。
@@ -176,7 +176,7 @@ log10(100) = 2
 这使我们可以非常轻松地上下移动数量级。考虑到使用计算机中使用的二进制算法，假设基数为 2 的对数也是常用的。例如：
 
 ```
-2^6 = 64
+2⁶ = 64
 log2(64) = 6
 ```
 
@@ -189,7 +189,7 @@ e = 2.71828...
 将 e 提升为幂称为自然指数函数：
 
 ```
-e^2 = 7.38905...
+e² = 7.38905...
 ```
 
 它可以使用自然对数反转，表示为 ln（）：

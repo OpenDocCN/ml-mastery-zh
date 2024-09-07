@@ -1,6 +1,6 @@
 # 如何用 Python 从零开始实现简单线性回归
 
-> 原文： [https://machinelearningmastery.com/implement-simple-linear-regression-scratch-python/](https://machinelearningmastery.com/implement-simple-linear-regression-scratch-python/)
+> 原文： [`machinelearningmastery.com/implement-simple-linear-regression-scratch-python/`](https://machinelearningmastery.com/implement-simple-linear-regression-scratch-python/)
 
 线性回归是一种超过 200 年的预测方法。
 
@@ -53,7 +53,7 @@ y = b0 + b1 * x
 简而言之，我们可以估算系数如下：
 
 ```py
-B1 = sum((x(i) - mean(x)) * (y(i) - mean(y))) / sum( (x(i) - mean(x))^2 )
+B1 = sum((x(i) - mean(x)) * (y(i) - mean(y))) / sum( (x(i) - mean(x))² )
 B0 = mean(y) - B1 * mean(x)
 ```
 
@@ -128,7 +128,7 @@ def mean(values):
 数字列表的差异可以计算为：
 
 ```py
-variance = sum( (x - mean(x))^2 )
+variance = sum( (x - mean(x))² )
 ```
 
 下面是一个名为 **variance（）**的函数，它计算数字列表的方差。它要求将列表的均值作为参数提供，这样我们就不必多次计算它。
@@ -259,7 +259,7 @@ Covariance: 8.000
 第一个是 B1，可以估算为：
 
 ```py
-B1 = sum((x(i) - mean(x)) * (y(i) - mean(y))) / sum( (x(i) - mean(x))^2 )
+B1 = sum((x(i) - mean(x)) * (y(i) - mean(y))) / sum( (x(i) - mean(x))² )
 ```
 
 我们已经学到了上面的一些东西，可以简化这个算法：

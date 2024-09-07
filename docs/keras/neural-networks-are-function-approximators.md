@@ -86,7 +86,7 @@
 
 在这种情况下，我们将使用输入的平方作为映射函数，定义为:
 
-*   y = x^2
+*   y = x²
 
 其中 *y* 为输出变量， *x* 为输入变量。
 
@@ -150,7 +150,7 @@ y = y.reshape((len(y), 1))
 
 接下来，我们需要缩放输入和输出。
 
-输入范围在-50 和 50 之间，而输出范围在-50^2 (2500)和 0^2 (0)之间。大的输入输出值会使[训练神经网络变得不稳定](https://machinelearningmastery.com/how-to-improve-neural-network-stability-and-modeling-performance-with-data-scaling/)，因此，先对数据进行缩放是个好主意。
+输入范围在-50 和 50 之间，而输出范围在-50² (2500)和 0² (0)之间。大的输入输出值会使[训练神经网络变得不稳定](https://machinelearningmastery.com/how-to-improve-neural-network-stability-and-modeling-performance-with-data-scaling/)，因此，先对数据进行缩放是个好主意。
 
 我们可以使用[最小最大缩放器](https://Sklearn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html)将输入值和输出值分别归一化为 0 到 1 之间的值。
 
@@ -249,7 +249,7 @@ pyplot.show()
 将这些联系在一起，完整的示例如下所示。
 
 ```py
-# example of fitting a neural net on x vs x^2
+# example of fitting a neural net on x vs x²
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from keras.models import Sequential

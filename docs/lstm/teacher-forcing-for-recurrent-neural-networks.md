@@ -1,6 +1,6 @@
 # 什么是循环神经网络的教师强制？
 
-> 原文： [https://machinelearningmastery.com/teacher-forcing-for-recurrent-neural-networks/](https://machinelearningmastery.com/teacher-forcing-for-recurrent-neural-networks/)
+> 原文： [`machinelearningmastery.com/teacher-forcing-for-recurrent-neural-networks/`](https://machinelearningmastery.com/teacher-forcing-for-recurrent-neural-networks/)
 
 教师强制是一种快速有效地训练循环神经网络模型的方法，该模型使用来自先前时间步长的输出作为输入。
 

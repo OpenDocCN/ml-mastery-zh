@@ -1,6 +1,6 @@
 # 使用 Python 和 Keras 的 LSTM 循环神经网络的序列分类
 
-> 原文： [https://machinelearningmastery.com/sequence-classification-lstm-recurrent-neural-networks-python-keras/](https://machinelearningmastery.com/sequence-classification-lstm-recurrent-neural-networks-python-keras/)
+> 原文： [`machinelearningmastery.com/sequence-classification-lstm-recurrent-neural-networks-python-keras/`](https://machinelearningmastery.com/sequence-classification-lstm-recurrent-neural-networks-python-keras/)
 
 序列分类是一种预测性建模问题，您可以在空间或时间上获得一些输入序列，任务是预测序列的类别。
 

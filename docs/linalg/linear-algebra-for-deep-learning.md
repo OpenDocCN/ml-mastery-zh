@@ -1,6 +1,6 @@
 # 深度学习中的线性代数
 
-> 原文： [https://machinelearningmastery.com/linear-algebra-for-deep-learning/](https://machinelearningmastery.com/linear-algebra-for-deep-learning/)
+> 原文： [`machinelearningmastery.com/linear-algebra-for-deep-learning/`](https://machinelearningmastery.com/linear-algebra-for-deep-learning/)
 
 线性代数是应用数学领域，是阅读和理解深度学习方法的形式描述的先决条件，例如论文和教科书。
 

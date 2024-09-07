@@ -1,6 +1,6 @@
 # 10 个用于 Amazon Web Services 深度学习的命令行秘籍
 
-> 原文： [https://machinelearningmastery.com/command-line-recipes-deep-learning-amazon-web-services/](https://machinelearningmastery.com/command-line-recipes-deep-learning-amazon-web-services/)
+> 原文： [`machinelearningmastery.com/command-line-recipes-deep-learning-amazon-web-services/`](https://machinelearningmastery.com/command-line-recipes-deep-learning-amazon-web-services/)
 
 在 Amazon Web Services EC2 上运行大型深度学习流程是学习和开发模型的一种廉价而有效的方法。
 

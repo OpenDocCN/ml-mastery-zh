@@ -1,6 +1,6 @@
 # 机器学习中的预测区间
 
-> 原文： [https://machinelearningmastery.com/prediction-intervals-for-machine-learning/](https://machinelearningmastery.com/prediction-intervals-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/prediction-intervals-for-machine-learning/`](https://machinelearningmastery.com/prediction-intervals-for-machine-learning/)
 
 从机器学习角度预测是隐藏该预测的不确定性的单一点。
 
@@ -136,7 +136,7 @@ yhat +/- z * sigma
 我们在实践中并不知道。我们可以如下计算预测标准偏差的无偏估计（取自 _ 用于估计模型输出 _ 的预测间隔的机器学习方法）：
 
 ```py
-stdev = sqrt(1 / (N - 2) * e(i)^2 for i to N)
+stdev = sqrt(1 / (N - 2) * e(i)² for i to N)
 ```
 
 `stdev`是预测分布的标准偏差的无偏估计，`n`是所做的总预测，而 _e（i）_ 是之间的差异。 ith 预测和实际价值。
@@ -251,7 +251,7 @@ yhat_out = yhat[0]
 接下来，我们可以估计预测方向上的标准偏差。
 
 ```py
-SE = sqrt(1 / (N - 2) * e(i)^2 for i to N)
+SE = sqrt(1 / (N - 2) * e(i)² for i to N)
 ```
 
 我们可以使用 NumPy 数组直接计算它，如下所示：

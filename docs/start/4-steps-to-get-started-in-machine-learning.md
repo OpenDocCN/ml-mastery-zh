@@ -1,6 +1,6 @@
 # 机器学习入门的四个步骤：初学者入门与实践的自上而下策略
 
-> 原文： [https://machinelearningmastery.com/4-steps-to-get-started-in-machine-learning/](https://machinelearningmastery.com/4-steps-to-get-started-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/4-steps-to-get-started-in-machine-learning/`](https://machinelearningmastery.com/4-steps-to-get-started-in-machine-learning/)
 
 入门比您想象的要容易得多。
 
@@ -12,7 +12,7 @@
 
 初学者对机器学习很感兴趣，但不知道如何迈出第一步。他们感到困惑，因为博客和课程中的材料几乎总是处于中间水平。
 
-[![machine learning](img/3bf77b3b9d862a837816cbcc76316d08.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/machine-learning.jpg)
+![machine learning](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/machine-learning.jpg)
 
 机器学习
 摄影： [Erik Charlton](http://www.flickr.com/photos/erikcharlton/2955613283/sizes/l/) ，保留一些权利。
@@ -27,7 +27,7 @@
 
 我对机器学习初学者的建议是采用自上而下的方法。
 
-[![Beginners are Different](img/54e47ebf8f5502522f6cef78112e1748.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/beginners-are-different.jpg)
+![Beginners are Different](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/beginners-are-different.jpg)
 
 初学者不同
 照 [mikebaird](http://www.flickr.com/photos/mikebaird/2128093018/sizes/l/) ，保留一些权利。
@@ -56,7 +56,7 @@
 5.  [改善结果](http://machinelearningmastery.com/how-to-improve-machine-learning-results/ "How to Improve Machine Learning Results")：利用结果开发更准确的模型。
 6.  [目前的结果](http://machinelearningmastery.com/how-to-use-machine-learning-results/ "How to Use Machine Learning Results")：描述问题和解决方案，以便第三方能够理解。
 
-[![Applied Machine Learning Process Overview](img/5e14bc0926788f2faea70d51751bc335.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/Process-Overview.png)
+![Applied Machine Learning Process Overview](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/Process-Overview.png)
 
 应用机器学习过程概述
 
@@ -74,7 +74,7 @@ Weka Machine Learning Workbench 是初学者入门时学习的软件平台。
 *   它是跨平台的，可在 Windows，Mac OS X 和 Linux 上运行（需要 Java 虚拟机）。
 *   它包含最先进的算法，具有令人印象深刻的决策树，基于规则的算法和集合方法，以及其他方法。
 
-[![Weka Explorer Interface with the Iris dataset loaded](img/ba8bd77b7cafc1ce4aaec936e068a9fb.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/weka-explorer.png)
+![Weka Explorer Interface with the Iris dataset loaded](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/02/weka-explorer.png)
 
 加载了 Iris 数据集的 Weka Explorer Interface
 
@@ -101,7 +101,7 @@ Weka 安装包括一个包含许多标准机器学习数据集的数据目录，
 
 您可以在结构化流程的每个步骤中选择自己的详细程度。我建议您在开始时每步花费不超过一小时。您可以使用 Weka 在一小时内完成并了解很多问题，尤其是在设计和运行实验时。这将使您的动力和项目速度保持高水平。
 
-[![lots of data](img/9132dd8277417f6751a581f7633c45cc.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/lots-of-data.jpg)
+![lots of data](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/lots-of-data.jpg)
 
 大量数据
 照片归功于 cibomahto，保留了一些权利

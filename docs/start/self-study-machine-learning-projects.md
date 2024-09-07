@@ -1,6 +1,6 @@
 # 4 个自学机器学习项目
 
-> 原文： [https://machinelearningmastery.com/self-study-machine-learning-projects/](https://machinelearningmastery.com/self-study-machine-learning-projects/)
+> 原文： [`machinelearningmastery.com/self-study-machine-learning-projects/`](https://machinelearningmastery.com/self-study-machine-learning-projects/)
 
 机器学习领域有很多途径，大部分都是从理论开始的。
 

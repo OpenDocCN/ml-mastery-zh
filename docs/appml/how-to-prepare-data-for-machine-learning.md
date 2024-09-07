@@ -1,12 +1,12 @@
 # 如何为机器学习准备数据
 
-> 原文： [https://machinelearningmastery.com/how-to-prepare-data-for-machine-learning/](https://machinelearningmastery.com/how-to-prepare-data-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/how-to-prepare-data-for-machine-learning/`](https://machinelearningmastery.com/how-to-prepare-data-for-machine-learning/)
 
 机器学习算法从数据中学习。您需要为要解决的问题提供正确的数据至关重要。即使您拥有良好的数据，也需要确保它具有有用的规模，格式，甚至包含有意义的功能。
 
 在这篇文章中，您将学习如何为机器学习算法准备数据。这是一个很大的主题，您将涵盖必需品。
 
-[![lots of data](img/9132dd8277417f6751a581f7633c45cc.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/lots-of-data.jpg)
+![lots of data](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/lots-of-data.jpg)
 
 大量数据
 照片归属于 [cibomahto](http://www.flickr.com/photos/cibomahto/4099422263/sizes/l/) ，部分版权所有
@@ -47,7 +47,7 @@
 
 您在数据上使用的机器学习工具很可能会影响您需要执行的预处理。您可能会重新访问此步骤。
 
-[![So much data](img/1064bb8b0aadcfb4a6860962d559fd07.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/So-much-data.jpg)
+![So much data](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/So-much-data.jpg)
 
 这么多数据
 照片归功于 [Marc_Smith](http://www.flickr.com/photos/marc_smith/1473557291/sizes/l/) ，保留一些权利
@@ -79,8 +79,8 @@
 如果您希望深入了解此主题，可以在以下资源中了解更多信息。
 
 *   [从数据挖掘到数据库中的知识发现](http://scholar.google.com/scholar?q=From+Data+Mining+to+Knowledge+Discovery+in+Databases)，1996
-*   [使用开源工具进行数据分析](http://www.amazon.com/dp/0596802358?tag=inspiredalgor-20)（会员链接），第 1 部分
-*   [黑客机器学习](http://www.amazon.com/dp/1449303714?tag=inspiredalgor-20)（会员链接），第 2 章：数据探索
-*   [数据挖掘：实用机器学习工具和技术](http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20)（会员链接），第 7 章：转换：设计输入和输出
+*   [使用开源工具进行数据分析](http://www.amazon.com/dp/0596802358?tag=inspiredalgor-20)（会员链接），第一部分
+*   [黑客机器学习](http://www.amazon.com/dp/1449303714?tag=inspiredalgor-20)（会员链接），第二章：数据探索
+*   [数据挖掘：实用机器学习工具和技术](http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20)（会员链接），第七章：转换：设计输入和输出
 
 您是否有一些数据准备过程提示和技巧。请留下评论并分享您的经验。

@@ -1,6 +1,6 @@
 # 如何使用 Keras 为深度学习准备文本数据
 
-> 原文： [https://machinelearningmastery.com/prepare-text-data-deep-learning-keras/](https://machinelearningmastery.com/prepare-text-data-deep-learning-keras/)
+> 原文： [`machinelearningmastery.com/prepare-text-data-deep-learning-keras/`](https://machinelearningmastery.com/prepare-text-data-deep-learning-keras/)
 
 您无法直接将原始文本提供给深度学习模型。
 

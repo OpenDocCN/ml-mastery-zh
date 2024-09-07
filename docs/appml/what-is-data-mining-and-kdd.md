@@ -1,12 +1,12 @@
 # 什么是数据挖掘和 KDD
 
-> 原文： [https://machinelearningmastery.com/what-is-data-mining-and-kdd/](https://machinelearningmastery.com/what-is-data-mining-and-kdd/)
+> 原文： [`machinelearningmastery.com/what-is-data-mining-and-kdd/`](https://machinelearningmastery.com/what-is-data-mining-and-kdd/)
 
 我对流程很感兴趣。我想知道做事的好方法，即使是最好的办法，如果可能的话。即使您没有技能或深刻理解，过程也可以帮到您。它可以引领方式，技能和深刻的理解可以遵循。至少，我用它来推动我的大部分工作。
 
 我认为研究数据挖掘是有用的，因为它是一个从数据中发现的过程。在这篇文章中，您将从教科书和论文中探索“数据挖掘”的权威定义。由于数据挖掘是一个过程，因此定义将包括对过程的许多解释。
 
-[![Gold Mine](img/95932ca94065f4f4b056804a8cc5b616.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/Gold-Mine.jpg)
+![Gold Mine](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/Gold-Mine.jpg)
 
 金矿
 照片来源 [GSofV](http://www.flickr.com/photos/gsofv/8554085816/sizes/l/) ，保留一些权利
@@ -17,13 +17,13 @@
 
 ### 数据挖掘：实用的机器学习工具和技术
 
-[![Amazon Image](img/483d36fccc87c2d89a30a5c319c2d300.jpg)](http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20) 这是 Ian Witten 和 Eibe Frank 的教科书。
+![Amazon Image](http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20) 这是 Ian Witten 和 Eibe Frank 的教科书。
 
 作者在前言中评论道：
 
 > “数据挖掘是从数据中提取隐含的，以前未知的，可能有用的信息。我们的想法是构建自动筛选数据库，寻求规律或模式的计算机程序。如果找到强有力的模式，可能会推广以对未来数据做出准确的预测。 ...机器学习为数据挖掘提供了技术基础。它用于从数据库中的原始数据中提取信息......“
 
-在本书的第 1 章中，作者写道：
+在本书的第一章中，作者写道：
 
 > “数据挖掘被定义为发现数据模式的过程。该过程必须是自动的（或更常见的）半自动的。发现的模式必须有意义，因为它会带来一些优势，通常是经济优势。数据总是大量存在。“
 
@@ -31,7 +31,7 @@
 
 ### 数据挖掘：概念和技术
 
-[![Amazon Image](img/63c414f3635cb62cf2b3fa250762621d.jpg)](http://www.amazon.com/dp/0123814790?tag=inspiredalgor-20) 这是 Jiawei Han 和 Micheline Kamber 的教科书。
+![Amazon Image](http://www.amazon.com/dp/0123814790?tag=inspiredalgor-20) 这是 Jiawei Han 和 Micheline Kamber 的教科书。
 
 在作者的序言中写道：
 
@@ -39,7 +39,7 @@
 
 这是 KDD 略有不同的定义，我认为这是该领域的标准。我相信 KDD 的首选定义是数据库中的知识发现。
 
-在第 1 章中，作者总结了 KDD 过程（第 7 页和第 8 页）：
+在第一章中，作者总结了 KDD 过程（第 7 页和第 8 页）：
 
 1.  **数据清理**，以消除噪音和不一致的数据。
 2.  **数据集成**，可以组合多个数据源。

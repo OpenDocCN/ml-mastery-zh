@@ -1,6 +1,6 @@
 # 如何建立机器学习算法的直觉
 
-> 原文： [https://machinelearningmastery.com/how-to-build-an-intuition-for-machine-learning-algorithms/](https://machinelearningmastery.com/how-to-build-an-intuition-for-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/how-to-build-an-intuition-for-machine-learning-algorithms/`](https://machinelearningmastery.com/how-to-build-an-intuition-for-machine-learning-algorithms/)
 
 机器学习算法很复杂。要善于应用给定的算法，您需要从多个角度进行研究：算法，数学和经验。
 
@@ -8,7 +8,7 @@
 
 在这篇文章中，我想鼓励你在开始和练习机器学习时使用小型内存数据集。
 
-[![Wrapping your head around data](img/251b455fd5015ada16e3e2ae7b228ade.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Wrapping-your-head-around-data.jpg)
+![Wrapping your head around data](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Wrapping-your-head-around-data.jpg)
 
 围绕数据
 照片由 [Nic McPhee](https://www.flickr.com/photos/nicmcphee/2217375343) 拍照，保留一些权利

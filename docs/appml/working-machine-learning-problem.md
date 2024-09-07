@@ -1,6 +1,6 @@
 # 所以，你正在研究机器学习问题......
 
-> 原文： [https://machinelearningmastery.com/working-machine-learning-problem/](https://machinelearningmastery.com/working-machine-learning-problem/)
+> 原文： [`machinelearningmastery.com/working-machine-learning-problem/`](https://machinelearningmastery.com/working-machine-learning-problem/)
 
 所以，你正在研究机器学习问题。
 

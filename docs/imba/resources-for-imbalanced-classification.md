@@ -71,7 +71,7 @@
 
 *   [不平衡学习:基础、算法和应用](https://amzn.to/32K9K6d)，2013。
 
-[![Imbalanced Learning - Foundations, Algorithms, and Applications](img/8688e435d08205649168eb0fc151e613.png)](https://amzn.to/32K9K6d)
+![Imbalanced Learning - Foundations, Algorithms, and Applications](https://amzn.to/32K9K6d)
 
 不平衡学习——基础、算法和应用
 
@@ -104,7 +104,7 @@
 
 *   [从不平衡数据集中学习](https://amzn.to/307Xlva)，2018。
 
-[![Learning from Imbalanced Data Sets](img/a80bb91eca3796b49a43810897436161.png)](https://amzn.to/307Xlva)
+![Learning from Imbalanced Data Sets](https://amzn.to/307Xlva)
 
 从不平衡数据集中学习
 
@@ -143,13 +143,13 @@
 
 *   [应用预测建模](https://amzn.to/32M80ta)，2013。
 
-[![Applied Predictive Modeling](img/330cf009d4b0c37b7c2d8e288ec5f7ce.png)](https://amzn.to/32M80ta)
+![Applied Predictive Modeling](https://amzn.to/32M80ta)
 
 应用预测建模
 
 虽然整本书读起来很棒，但这本书有一章专门讨论不平衡分类的问题。
 
-*   第 16 章:严重阶级失衡的补救措施
+*   第十六章:严重阶级失衡的补救措施
 
 本章的方法是对“[房车保单所有权](https://archive.ics.uci.edu/ml/datasets/Insurance+Company+Benchmark+(COIL+2000))”数据集的案例研究。作者通过这个问题展示了一套不同的实用技术来处理严重的阶级不平衡。
 

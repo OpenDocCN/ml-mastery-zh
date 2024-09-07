@@ -1,6 +1,6 @@
 # 机器学习中的线性代数中的矩阵类型简介
 
-> 原文： [https://machinelearningmastery.com/introduction-to-types-of-matrices-in-linear-algebra/](https://machinelearningmastery.com/introduction-to-types-of-matrices-in-linear-algebra/)
+> 原文： [`machinelearningmastery.com/introduction-to-types-of-matrices-in-linear-algebra/`](https://machinelearningmastery.com/introduction-to-types-of-matrices-in-linear-algebra/)
 
 许多线性代数涉及向量和矩阵的运算，并且存在许多不同类型的矩阵。
 

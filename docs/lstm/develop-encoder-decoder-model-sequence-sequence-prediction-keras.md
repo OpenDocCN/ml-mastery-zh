@@ -1,6 +1,6 @@
 # 如何在 Keras 中开发用于序列到序列预测的编解码器模型
 
-> 原文： [https://machinelearningmastery.com/develop-encoder-decoder-model-sequence-sequence-prediction-keras/](https://machinelearningmastery.com/develop-encoder-decoder-model-sequence-sequence-prediction-keras/)
+> 原文： [`machinelearningmastery.com/develop-encoder-decoder-model-sequence-sequence-prediction-keras/`](https://machinelearningmastery.com/develop-encoder-decoder-model-sequence-sequence-prediction-keras/)
 
 编解码器模型提供了使用循环神经网络来解决具有挑战性的序列到序列预测问题（例如机器翻译）的模式。
 

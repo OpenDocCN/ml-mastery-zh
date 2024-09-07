@@ -1,6 +1,6 @@
 # 如何像数据科学家一样解决问题
 
-> 原文： [https://machinelearningmastery.com/how-to-work-through-a-problem-like-a-data-scientist/](https://machinelearningmastery.com/how-to-work-through-a-problem-like-a-data-scientist/)
+> 原文： [`machinelearningmastery.com/how-to-work-through-a-problem-like-a-data-scientist/`](https://machinelearningmastery.com/how-to-work-through-a-problem-like-a-data-scientist/)
 
 在 2010 年的一篇文章中，Hilary Mason 和 Chris Wiggins 将 OSEMN 流程描述为数据科学家应该感到舒服的任务分类。
 
@@ -8,7 +8,7 @@
 
 在这篇文章中，我们仔细研究了解决数据问题的 OSEMN 流程。
 
-[![Work Through A Problem Like A Data Scientist](img/ee1f6a04ed3c8462c1a89b2df5c85be1.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Work-Through-A-Problem-Like-A-Data-Scientist.jpg)
+![Work Through A Problem Like A Data Scientist](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Work-Through-A-Problem-Like-A-Data-Scientist.jpg)
 
 像数据科学家一样解决问题
 照片来自[美国陆军 RDECOM](http://www.flickr.com/photos/rdecom/7336886600) ，保留一些权利

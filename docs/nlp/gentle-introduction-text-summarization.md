@@ -1,6 +1,6 @@
 # 文本摘要的温和介绍
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-text-summarization/](https://machinelearningmastery.com/gentle-introduction-text-summarization/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-text-summarization/`](https://machinelearningmastery.com/gentle-introduction-text-summarization/)
 
 文本摘要是创建较长文本文档的简短，准确和流畅摘要的问题。
 

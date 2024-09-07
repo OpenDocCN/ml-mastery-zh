@@ -1,6 +1,6 @@
 # 超越预测
 
-> 原文： [https://machinelearningmastery.com/going-beyond-predictions/](https://machinelearningmastery.com/going-beyond-predictions/)
+> 原文： [`machinelearningmastery.com/going-beyond-predictions/`](https://machinelearningmastery.com/going-beyond-predictions/)
 
 您使用预测模型进行的预测并不重要，而是使用那些重要的预测。
 
@@ -8,7 +8,7 @@
 
 在这篇文章中，您将发现 Howard 的动力传动系统方法以及如何使用它来构建系统的开发而不是做出预测。
 
-[![The Drivetrain Approach](img/7d35b5c7e6992228a41104f4f68c9ddf.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/drivetrain-approach.png)
+![The Drivetrain Approach](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/drivetrain-approach.png)
 
 动力传动系统方法
 图片来自 [O'Reilly](http://radar.oreilly.com/2012/03/drivetrain-approach-data-products.html) ，保留所有权利

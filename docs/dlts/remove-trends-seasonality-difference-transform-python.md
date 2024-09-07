@@ -1,6 +1,6 @@
 # 如何在 Python 中使用差分变换删除趋势和季节性
 
-> 原文： [https://machinelearningmastery.com/remove-trends-seasonality-difference-transform-python/](https://machinelearningmastery.com/remove-trends-seasonality-difference-transform-python/)
+> 原文： [`machinelearningmastery.com/remove-trends-seasonality-difference-transform-python/`](https://machinelearningmastery.com/remove-trends-seasonality-difference-transform-python/)
 
 时间序列数据集可能包含趋势和季节性，可能需要在建模之前将其删除。
 

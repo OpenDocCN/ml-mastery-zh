@@ -231,7 +231,7 @@ print(yhat[-100:])
 *   第 8.5 节 EM 算法，[统计学习的要素](https://amzn.to/2YVqu8s)，2016。
 *   第九章混合模型与 EM，[模式识别与机器学习](https://amzn.to/2JwHE7I)，2006。
 *   第 6.12 节 EM 算法，[机器学习](https://amzn.to/2jWd51p)，1997。
-*   第 11 章混合模型和 EM 算法，[机器学习:概率观点](https://amzn.to/2xKSTCP)，2012。
+*   第十一章混合模型和 EM 算法，[机器学习:概率观点](https://amzn.to/2xKSTCP)，2012。
 *   第 9.3 节聚类和概率密度估计，[数据挖掘:实用机器学习工具和技术](https://amzn.to/2lnW5S7)，第 4 版，2016。
 *   第 20.3 节带隐藏变量的学习:EM 算法，[人工智能:现代方法](https://amzn.to/2Y7yCpO)，第 3 版，2009。
 

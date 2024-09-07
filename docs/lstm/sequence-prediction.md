@@ -1,6 +1,6 @@
 # 使用序列做出预测
 
-> 原文： [https://machinelearningmastery.com/sequence-prediction/](https://machinelearningmastery.com/sequence-prediction/)
+> 原文： [`machinelearningmastery.com/sequence-prediction/`](https://machinelearningmastery.com/sequence-prediction/)
 
 序列预测不同于其他类型的监督学习问题。
 
@@ -95,7 +95,7 @@ For example:
 
 > 序列分类的目的是使用标记的数据集 D 建立分类模型，以便该模型可用于预测看不见的序列的类标签。
 
-- 第 14 章，[数据分类：算法和应用](http://www.amazon.com/dp/B00MOU4SC0?tag=inspiredalgor-20)，2015 年
+- 第十四章，[数据分类：算法和应用](http://www.amazon.com/dp/B00MOU4SC0?tag=inspiredalgor-20)，2015 年
 
 输入序列可以包括实数值或离散值。在后一种情况下，这些问题可以称为离散序列分类。
 
@@ -178,7 +178,7 @@ For example:
 *   [关于使用变量马尔可夫模型的预测](http://www.jair.org/media/1491/live-1491-2335-jair.pdf)，2004
 *   [序列预测简介](http://data-mining.philippe-fournier-viger.com/an-introduction-to-sequence-prediction/)，2016
 *   [序列学习：从识别和预测到顺序决策](http://www.sts.rpi.edu/~rsun/sun.expert01.pdf)，2001
-*   第 14 章，离散序列分类，[数据分类：算法和应用](http://amzn.to/2tkM723)，2015
+*   第十四章，离散序列分类，[数据分类：算法和应用](http://amzn.to/2tkM723)，2015
 *   [使用循环神经网络生成序列](https://arxiv.org/abs/1308.0850)，2013
 *   [Show and Tell：神经图像标题生成器](https://arxiv.org/abs/1411.4555)，2015
 *   [多任务序列到序列学习](https://arxiv.org/abs/1511.06114)，2016

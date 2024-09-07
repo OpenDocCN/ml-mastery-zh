@@ -1,6 +1,6 @@
 # 如何为长短期记忆网络准备单变量时间序列数据
 
-> 原文： [https://machinelearningmastery.com/prepare-univariate-time-series-data-long-short-term-memory-networks/](https://machinelearningmastery.com/prepare-univariate-time-series-data-long-short-term-memory-networks/)
+> 原文： [`machinelearningmastery.com/prepare-univariate-time-series-data-long-short-term-memory-networks/`](https://machinelearningmastery.com/prepare-univariate-time-series-data-long-short-term-memory-networks/)
 
 当您刚刚开始深度学习时，很难准备数据。
 

@@ -1,6 +1,6 @@
 # Python 中非参数统计显着性检验简介
 
-> 原文： [https://machinelearningmastery.com/nonparametric-statistical-significance-tests-in-python/](https://machinelearningmastery.com/nonparametric-statistical-significance-tests-in-python/)
+> 原文： [`machinelearningmastery.com/nonparametric-statistical-significance-tests-in-python/`](https://machinelearningmastery.com/nonparametric-statistical-significance-tests-in-python/)
 
 在应用机器学习中，我们经常需要确定两个数据样本是否具有相同或不同的分布。
 

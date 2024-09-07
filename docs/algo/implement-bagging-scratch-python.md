@@ -1,6 +1,6 @@
 # 如何用 Python 从零开始实现装袋
 
-> 原文： [https://machinelearningmastery.com/implement-bagging-scratch-python/](https://machinelearningmastery.com/implement-bagging-scratch-python/)
+> 原文： [`machinelearningmastery.com/implement-bagging-scratch-python/`](https://machinelearningmastery.com/implement-bagging-scratch-python/)
 
 决策树是一种简单而强大的预测性建模技术，但它们存在高度差异。
 

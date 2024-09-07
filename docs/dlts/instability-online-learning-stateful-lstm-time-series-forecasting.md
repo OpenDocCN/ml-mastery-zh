@@ -1,6 +1,6 @@
 # 用于时间序列预测的有状态 LSTM 在线学习的不稳定性
 
-> 原文： [https://machinelearningmastery.com/instability-online-learning-stateful-lstm-time-series-forecasting/](https://machinelearningmastery.com/instability-online-learning-stateful-lstm-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/instability-online-learning-stateful-lstm-time-series-forecasting/`](https://machinelearningmastery.com/instability-online-learning-stateful-lstm-time-series-forecasting/)
 
 一些神经网络配置可能导致模型不稳定。
 

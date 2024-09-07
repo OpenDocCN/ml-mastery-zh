@@ -71,7 +71,7 @@ x 轴是自变量或函数的输入。y 轴是因变量或函数的输出。我�
 
 我们可以通过添加指数在映射函数中添加曲线。例如，我们可以添加由另一个参数加权的输入的平方版本:
 
-*   y = a * x + b * x^2 + c
+*   y = a * x + b * x² + c
 
 这叫[多项式回归](https://en.wikipedia.org/wiki/Polynomial_regression)，平方项表示是二次多项式。
 
@@ -321,7 +321,7 @@ x, y = data[:, 4], data[:, -1]
 popt, _ = curve_fit(objective, x, y)
 # summarize the parameter values
 a, b, c = popt
-print('y = %.5f * x + %.5f * x^2 + %.5f' % (a, b, c))
+print('y = %.5f * x + %.5f * x² + %.5f' % (a, b, c))
 # plot input vs output
 pyplot.scatter(x, y)
 # define a sequence of inputs between the smallest and largest known inputs
@@ -336,7 +336,7 @@ pyplot.show()
 首先报告最佳参数。
 
 ```py
-y = 3.25443 * x + -0.01170 * x^2 + -155.02783
+y = 3.25443 * x + -0.01170 * x² + -155.02783
 ```
 
 接下来，创建一个图，显示在来自域的观察值的上下文中的线。

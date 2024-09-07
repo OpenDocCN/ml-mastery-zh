@@ -1,6 +1,6 @@
 # 基于循环神经网络的序列预测模型的简要介绍
 
-> 原文： [https://machinelearningmastery.com/models-sequence-prediction-recurrent-neural-networks/](https://machinelearningmastery.com/models-sequence-prediction-recurrent-neural-networks/)
+> 原文： [`machinelearningmastery.com/models-sequence-prediction-recurrent-neural-networks/`](https://machinelearningmastery.com/models-sequence-prediction-recurrent-neural-networks/)
 
 序列预测是涉及使用历史序列信息来预测序列中的下一个或多个值的问题。
 

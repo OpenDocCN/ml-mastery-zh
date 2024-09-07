@@ -1,6 +1,6 @@
 # 浅谈机器学习的奇异值分解
 
-> 原文： [https://machinelearningmastery.com/singular-value-decomposition-for-machine-learning/](https://machinelearningmastery.com/singular-value-decomposition-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/singular-value-decomposition-for-machine-learning/`](https://machinelearningmastery.com/singular-value-decomposition-for-machine-learning/)
 
 矩阵分解，也称为矩阵分解，涉及使用其组成元素描述给定矩阵。
 
@@ -456,10 +456,10 @@ print(result)
 
 ### 图书
 
-*   第 12 章，奇异值和 Jordan 分解，[线性代数和矩阵分析统计](http://amzn.to/2A9ceNv)，2014。
-*   第 4 章，奇异值分解和第 5 章，关于 SVD 的更多内容，[数值线性代数](http://amzn.to/2kjEF4S)，1997。
+*   第十二章，奇异值和 Jordan 分解，[线性代数和矩阵分析统计](http://amzn.to/2A9ceNv)，2014。
+*   第四章，奇异值分解和第五章，关于 SVD 的更多内容，[数值线性代数](http://amzn.to/2kjEF4S)，1997。
 *   第 2.4 节奇异值分解，[矩阵计算](http://amzn.to/2B9xnLD)，2012。
-*   第 7 章奇异值分解（SVD），[线性代数导论](http://amzn.to/2AZ7R8j)，第 5 版，2016 年。
+*   第七章奇异值分解（SVD），[线性代数导论](http://amzn.to/2AZ7R8j)，第 5 版，2016 年。
 *   第 2.8 节奇异值分解，[深度学习](http://amzn.to/2B3MsuU)，2016 年。
 *   第 7.D 节极性分解和奇异值分解，[线性代数完成权](http://amzn.to/2BGuEqI)，第三版，2015 年。
 *   第 3 讲奇异值分解，[数值线性代数](http://amzn.to/2BI9kRH)，1997。

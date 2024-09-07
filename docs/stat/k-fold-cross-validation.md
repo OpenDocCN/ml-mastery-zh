@@ -1,6 +1,6 @@
 # k 折交叉验证的温和介绍
 
-> 原文： [https://machinelearningmastery.com/k-fold-cross-validation/](https://machinelearningmastery.com/k-fold-cross-validation/)
+> 原文： [`machinelearningmastery.com/k-fold-cross-validation/`](https://machinelearningmastery.com/k-fold-cross-validation/)
 
 交叉验证是用于估计机器学习模型技能的统计方法。
 

@@ -1,6 +1,6 @@
 # 数据，学习和建模
 
-> 原文： [https://machinelearningmastery.com/data-learning-and-modeling/](https://machinelearningmastery.com/data-learning-and-modeling/)
+> 原文： [`machinelearningmastery.com/data-learning-and-modeling/`](https://machinelearningmastery.com/data-learning-and-modeling/)
 
 机器学习中的关键概念为理解该领域奠定了基础。
 

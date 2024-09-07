@@ -1,6 +1,6 @@
 # Python 机器学习迷你课程
 
-> 原文： [https://machinelearningmastery.com/python-machine-learning-mini-course/](https://machinelearningmastery.com/python-machine-learning-mini-course/)
+> 原文： [`machinelearningmastery.com/python-machine-learning-mini-course/`](https://machinelearningmastery.com/python-machine-learning-mini-course/)
 
 ### _14 天内从开发人员到机器学习从业者 _
 

@@ -1,6 +1,6 @@
 # 我是如何开始机器学习的
 
-> 原文： [https://machinelearningmastery.com/how-i-got-started-in-machine-learning/](https://machinelearningmastery.com/how-i-got-started-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/how-i-got-started-in-machine-learning/`](https://machinelearningmastery.com/how-i-got-started-in-machine-learning/)
 
 我收到很多电子邮件询问我对机器学习和我的背景感兴趣。
 
@@ -32,7 +32,7 @@
 
 如果你在 LinkedIn，[你可以联系我](http://www.linkedin.com/in/jasonbrownlee)并得到我已经完成的一些事情的详细分类。
 
-## 第 1 部分：计算机
+## 第一部分：计算机
 
 ### 计算机作为设备
 
@@ -42,7 +42,7 @@
 
 有些游戏需要系统的特殊配置。学习 DOS 以及加载驱动程序和内存管理的细节是由希望让特定游戏运行起来的。优化系统配置成为游戏，比游戏本身更具挑战性和乐趣。
 
-[![Disk Operating System](img/f6e87e6a064c2198a153890c468a9561.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/dos.jpg)
+![Disk Operating System](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/dos.jpg)
 
 DOSK Disketts
 照片由 [DBreg2007](https://www.flickr.com/photos/dbreg2007/4376127476/sizes/l) 拍摄，部分版权所有
@@ -57,12 +57,12 @@ DOSK Disketts
 
 这里的模式是我不是为了自己的利益而吸引到计算机，技术知识是作为一种特定目的而获得的手段，几乎普遍用于玩游戏。
 
-[![ethernet cables](img/2bd37964ede77772abe36a9c97e505b3.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/ethernet-cables.jpg)
+![ethernet cables](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/ethernet-cables.jpg)
 
 以太网电缆
 摄影： [GlennFleishman](https://www.flickr.com/photos/glennf/4975383/sizes/l) ，保留一些权利
 
-## 第 2 部分：程序员
+## 第二部分：程序员
 
 ### 游戏改编
 
@@ -74,7 +74,7 @@ DOSK Disketts
 
 我了解了可以打包和共享的半正式工作产品的重要性。我还了解到，如果我足够勇敢地分享它，其他人可以学习，评论甚至改进我的工作。对我的工作的评论导致其他机会，如媒体报道，[免费托管](https://web.archive.org/web/20011107135828/http://www.planetquake.com/humandebris/)的提供和与大师的合作。
 
-[![Quake3 Platform Game](img/630dbc8ee857700064763781db8370b6.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/magazinearticle.gif)
+![Quake3 Platform Game](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/magazinearticle.gif)
 
 我的 Quake 3 平台游戏修改的杂志文章（大约 2000 年）。
 
@@ -92,11 +92,11 @@ DOSK Disketts
 *   [生态系统：构建一个简单的自适应代理人自我维持的社会](http://www.scribd.com/doc/18650673/Ecosystem-Constructing-a-simple-self-perpetuating-society-of-adaptable-agents)（大约 2003 年的写作比赛）
 *   [Cellz 控制器设计竞赛](http://cswww.essex.ac.uk/staff/sml/gecco/CellzForGecco.html)，遗传和进化计算会议（第 1 名，大约 2003 年）
 
-[![agent ecosystem](img/acb4734f8060ecb1dfa97acbf9489b0e.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/seedsandherbivores.jpg)
+![agent ecosystem](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/seedsandherbivores.jpg)
 
 Quake II 中的药剂生态系统，显示食草动物，种子和有毒植物。
 
-## 第 3 部分：研究员
+## 第三部分：研究员
 
 ### 情
 
@@ -112,7 +112,7 @@ Quake II 中的药剂生态系统，显示食草动物，种子和有毒植物�
 *   [克隆选择作为自适应和分布式信息处理的灵感](http://scholar.google.com/scholar?hl=en&q=Clonal+selection+as+an+inspiration+for+adaptive+and+distributed+information+processing)（博士论文，大约 2008 年）
 *   [用于多目标和混合优化的免疫启发分布式学习环境](http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=1688352)（IEEE 论文）
 
-[![artificial immune system](img/3d1b7be6112d97db61479627ba2567cb.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/artificial-immune-system.png)
+![artificial immune system](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/artificial-immune-system.png)
 
 来自我 2006 年 IEEE CEC 论文的图片
 
@@ -130,11 +130,11 @@ Quake II 中的药剂生态系统，显示食草动物，种子和有毒植物�
 *   [Weka 分类算法](http://wekaclassalgos.sourceforge.net/)，Weka 的插件（大约 2002-2007）
 *   60 多项技术报告，复杂智能系统实验室（ [link1](http://scholar.google.com/citations?user=hVaJhRYAAAAJ&hl=en) ， [link2](http://scholar.google.com/citations?user=hVaJhRYAAAAJ&hl=en) ）
 
-[![optimization algorithm toolkit](img/e3dd6cd6074eba87bb7579955721f9e7.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/optimization-algorithm-toolkit.jpg)
+![optimization algorithm toolkit](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/optimization-algorithm-toolkit.jpg)
 
 我的优化算法工具包的截图
 
-## 第 4 部分：找到目的
+## 第四部分：找到目的
 
 ### 创业
 
@@ -163,11 +163,11 @@ Quake II 中的药剂生态系统，显示食草动物，种子和有毒植物�
 *   [聪明的算法：自然启发的编程秘籍](http://www.cleveralgorithms.com/nature-inspired/index.html)（大约 2011 年）
 *   [Kaggle Profile](https://www.kaggle.com/jasonbrownlee)
 
-[![clever algorithms](img/10053526ce8af9cc1e59fb3291f7236d.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/clever-algorithms.jpg)
+![clever algorithms](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/clever-algorithms.jpg)
 
 我 2011 年出版的书：Clever Algorithms
 
-## 第 5 部分任务
+## 第五部分任务
 
 我不是机器学习的专家，但我见过一些东西。我一直是感兴趣的程序员并实现了算法。我见过学术方面并获得了更高的学位。我咨询了从金融到初创企业的客户。我写过书，参加过现代比赛。现在我有兴趣回馈并帮助初学者。
 

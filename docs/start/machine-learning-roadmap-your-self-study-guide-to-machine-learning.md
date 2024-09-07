@@ -1,6 +1,6 @@
 # 自学机器学习的失落的路线图
 
-> 原文： [https://machinelearningmastery.com/machine-learning-roadmap-your-self-study-guide-to-machine-learning/](https://machinelearningmastery.com/machine-learning-roadmap-your-self-study-guide-to-machine-learning/)
+> 原文： [`machinelearningmastery.com/machine-learning-roadmap-your-self-study-guide-to-machine-learning/`](https://machinelearningmastery.com/machine-learning-roadmap-your-self-study-guide-to-machine-learning/)
 
 在这篇文章中，我列出了一个应用机器学习的具体自学路线图，您可以用它来定位自己并找出下一步。
 
@@ -8,7 +8,7 @@
 
 让我们跳进去......
 
-[![you are here](img/e7d318f64d740c00783b3d6cba6a57c9.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/you-are-here.jpg)
+![you are here](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/you-are-here.jpg)
 
 你在这里。
 摄影： [electricnerve](http://www.flickr.com/photos/electricnerve/2586195099/sizes/o/) ，保留一些权利
@@ -35,7 +35,7 @@
 
 机器学习是一门应用学科，就像编程一样。研究这个理论很重要，但你必须投入时间来应用这个理论。你必须练习。这很关键。您需要建立流程，算法和问题的直觉。
 
-[![self study](img/76a7235e541c96c0d25631fd96b2e9c1.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/self-study.jpg)
+![self study](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/self-study.jpg)
 
 自学是路径
 照 [scui3asteveo](http://www.flickr.com/photos/scubasteveo/296747958/sizes/l) ，保留一些权利
@@ -113,7 +113,7 @@
 *   您对机器学习或数据科学感兴趣。
 *   您可能正在使用机器学习和数据。
 
-[![machine learning is a journey](img/93427d4c2dd7f0e37a5c658a069df780.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/machine-learning-is-a-journey.jpg)
+![machine learning is a journey](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/machine-learning-is-a-journey.jpg)
 
 机器学习是一个旅程
 照片由 [GoodNCrazy](http://www.flickr.com/photos/goodncrazy/3794282940/sizes/l) ，保留一些权利

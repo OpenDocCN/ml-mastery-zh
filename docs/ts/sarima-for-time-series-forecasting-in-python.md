@@ -1,6 +1,6 @@
 # 使用 Python 为时间序列预测编写 SARIMA 
 
-> 原文： [https://machinelearningmastery.com/sarima-for-time-series-forecasting-in-python/](https://machinelearningmastery.com/sarima-for-time-series-forecasting-in-python/)
+> 原文： [`machinelearningmastery.com/sarima-for-time-series-forecasting-in-python/`](https://machinelearningmastery.com/sarima-for-time-series-forecasting-in-python/)
 
 自回归综合移动平均线（ARIMA）是用于单变量时间序列数据预测的最广泛使用的预测方法之一。
 
@@ -250,8 +250,8 @@ yhat = model_fit.predict(start=len(data), end=len(data))
 
 ### 图书
 
-*   第 8 章 ARIMA 模型，[预测：原则和实践](https://amzn.to/2xlJsfV)，2013。
-*   第 7 章，非平稳模型， [R](https://amzn.to/2smB9LR) 的入门时间序列，2009。
+*   第八章 ARIMA 模型，[预测：原则和实践](https://amzn.to/2xlJsfV)，2013。
+*   第七章，非平稳模型， [R](https://amzn.to/2smB9LR) 的入门时间序列，2009。
 
 ### API
 

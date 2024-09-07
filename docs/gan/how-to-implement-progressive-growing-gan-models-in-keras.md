@@ -193,13 +193,13 @@ g = AveragePooling2D()(g)
 # downsample the new larger image
 downsample = AveragePooling2D()(in_image)
 # connect old input processing to downsampled new input
-block_old = old_model.layers[1](downsample)
-block_old = old_model.layers[2](block_old)
+block_old = old_model.layers1
+block_old = old_model.layers2
 # fade in output of old model input layer with new input
 g = WeightedSum()([block_old, g])
 # skip the input, 1x1 and activation for the old model
 for i in range(3, len(old_model.layers)):
-	g = old_model.layers[i](g)
+	g = old_model.layersi
 # define straight-through model
 model = Model(in_image, g)
 # compile model
@@ -240,7 +240,7 @@ def add_discriminator_block(old_model, n_input_layers=3):
 	block_new = d
 	# skip the input, 1x1 and activation for the old model
 	for i in range(n_input_layers, len(old_model.layers)):
-		d = old_model.layers[i](d)
+		d = old_model.layersi
 	# define straight-through model
 	model1 = Model(in_image, d)
 	# compile model
@@ -248,13 +248,13 @@ def add_discriminator_block(old_model, n_input_layers=3):
 	# downsample the new larger image
 	downsample = AveragePooling2D()(in_image)
 	# connect old input processing to downsampled new input
-	block_old = old_model.layers[1](downsample)
-	block_old = old_model.layers[2](block_old)
+	block_old = old_model.layers1
+	block_old = old_model.layers2
 	# fade in output of old model input layer with new input
 	d = WeightedSum()([block_old, block_new])
 	# skip the input, 1x1 and activation for the old model
 	for i in range(n_input_layers, len(old_model.layers)):
-		d = old_model.layers[i](d)
+		d = old_model.layersi
 	# define straight-through model
 	model2 = Model(in_image, d)
 	# compile model
@@ -362,7 +362,7 @@ def add_discriminator_block(old_model, n_input_layers=3):
 	block_new = d
 	# skip the input, 1x1 and activation for the old model
 	for i in range(n_input_layers, len(old_model.layers)):
-		d = old_model.layers[i](d)
+		d = old_model.layersi
 	# define straight-through model
 	model1 = Model(in_image, d)
 	# compile model
@@ -370,13 +370,13 @@ def add_discriminator_block(old_model, n_input_layers=3):
 	# downsample the new larger image
 	downsample = AveragePooling2D()(in_image)
 	# connect old input processing to downsampled new input
-	block_old = old_model.layers[1](downsample)
-	block_old = old_model.layers[2](block_old)
+	block_old = old_model.layers1
+	block_old = old_model.layers2
 	# fade in output of old model input layer with new input
 	d = WeightedSum()([block_old, block_new])
 	# skip the input, 1x1 and activation for the old model
 	for i in range(n_input_layers, len(old_model.layers)):
-		d = old_model.layers[i](d)
+		d = old_model.layersi
 	# define straight-through model
 	model2 = Model(in_image, d)
 	# compile model
@@ -967,7 +967,7 @@ def add_discriminator_block(old_model, n_input_layers=3):
 	block_new = d
 	# skip the input, 1x1 and activation for the old model
 	for i in range(n_input_layers, len(old_model.layers)):
-		d = old_model.layers[i](d)
+		d = old_model.layersi
 	# define straight-through model
 	model1 = Model(in_image, d)
 	# compile model
@@ -975,13 +975,13 @@ def add_discriminator_block(old_model, n_input_layers=3):
 	# downsample the new larger image
 	downsample = AveragePooling2D()(in_image)
 	# connect old input processing to downsampled new input
-	block_old = old_model.layers[1](downsample)
-	block_old = old_model.layers[2](block_old)
+	block_old = old_model.layers1
+	block_old = old_model.layers2
 	# fade in output of old model input layer with new input
 	d = WeightedSum()([block_old, block_new])
 	# skip the input, 1x1 and activation for the old model
 	for i in range(n_input_layers, len(old_model.layers)):
-		d = old_model.layers[i](d)
+		d = old_model.layersi
 	# define straight-through model
 	model2 = Model(in_image, d)
 	# compile model

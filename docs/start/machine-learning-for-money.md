@@ -1,6 +1,6 @@
 # 机器学习与赚钱
 
-> 原文： [https://machinelearningmastery.com/machine-learning-for-money/](https://machinelearningmastery.com/machine-learning-for-money/)
+> 原文： [`machinelearningmastery.com/machine-learning-for-money/`](https://machinelearningmastery.com/machine-learning-for-money/)
 
 我被问到的一个问题是：
 

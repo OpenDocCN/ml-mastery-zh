@@ -1,6 +1,6 @@
 # 用于文本摘要的编解码器深度学习模型
 
-> 原文： [https://machinelearningmastery.com/encoder-decoder-deep-learning-models-text-summarization/](https://machinelearningmastery.com/encoder-decoder-deep-learning-models-text-summarization/)
+> 原文： [`machinelearningmastery.com/encoder-decoder-deep-learning-models-text-summarization/`](https://machinelearningmastery.com/encoder-decoder-deep-learning-models-text-summarization/)
 
 文本摘要是从较大的文本文档创建简短，准确和流畅的摘要的任务。
 

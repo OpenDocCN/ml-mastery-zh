@@ -1,6 +1,6 @@
 # 15 个 Python 中的统计假设检验（备忘单）
 
-> 原文： [https://machinelearningmastery.com/statistical-hypothesis-tests-in-python-cheat-sheet/](https://machinelearningmastery.com/statistical-hypothesis-tests-in-python-cheat-sheet/)
+> 原文： [`machinelearningmastery.com/statistical-hypothesis-tests-in-python-cheat-sheet/`](https://machinelearningmastery.com/statistical-hypothesis-tests-in-python-cheat-sheet/)
 
 #### 在
 应用机器学习中需要的 15 个统计假设检验的快速参考指南，以及 Python 中的示例代码。

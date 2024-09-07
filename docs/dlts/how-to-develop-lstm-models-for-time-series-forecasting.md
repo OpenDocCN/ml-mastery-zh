@@ -1,6 +1,6 @@
 # 如何开发用于时间序列预测的 LSTM 模型
 
-> 原文： [https://machinelearningmastery.com/how-to-develop-lstm-models-for-time-series-forecasting/](https://machinelearningmastery.com/how-to-develop-lstm-models-for-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/how-to-develop-lstm-models-for-time-series-forecasting/`](https://machinelearningmastery.com/how-to-develop-lstm-models-for-time-series-forecasting/)
 
 长短期记忆网络（简称 LSTM）可应用于时间序列预测。
 

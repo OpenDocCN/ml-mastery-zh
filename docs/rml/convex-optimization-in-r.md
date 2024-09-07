@@ -29,7 +29,7 @@
 ```py
 # define a 1D basin function, optima at f(0)=0
 basin <- function(x) {
-x[1]^2
+x[1]²
 }
 
 # locate the minimum of the function using a Golden Section Line Search
@@ -53,7 +53,7 @@ points(result$minimum, result$objective, col="red", pch=19)
 rect(result$minimum-0.3, result$objective-0.7, result$minimum+0.3, result$objective+0.7, lwd=2)
 ```
 
-[![Golden Section Search Results](img/2ce9eb4209f9f03024e624f73f9d58e7.png)](https://machinelearningmastery.com/wp-content/uploads/2014/08/Golden-Section-Search-Results.png)
+![Golden Section Search Results](https://machinelearningmastery.com/wp-content/uploads/2014/08/Golden-Section-Search-Results.png)
 
 黄金分割搜索结果
 
@@ -82,7 +82,7 @@ NelderMead 方法的信息处理目标是定位函数的极值。这是通过在
 ```py
 # definition of the 2D Rosenbrock function, optima is at (1,1)
 rosenbrock <- function(v) { 
-(1 - v[1])^2 + 100 * (v[2] - v[1]*v[1])^2
+(1 - v[1])² + 100 * (v[2] - v[1]*v[1])²
 }
 
 # locate the minimum of the function using the Nelder-Mead method
@@ -117,7 +117,7 @@ points(result$par[1], result$par[2], col="red", pch=19)
 rect(result$par[1]-0.2, result$par[2]-0.2, result$par[1]+0.2, result$par[2]+0.2, lwd=2)
 ```
 
-[![Nelder Mead Results](img/e973299e701cadbcca2408986551d998.png)](https://machinelearningmastery.com/wp-content/uploads/2014/08/Nelder-Mead-Results.png)
+![Nelder Mead Results](https://machinelearningmastery.com/wp-content/uploads/2014/08/Nelder-Mead-Results.png)
 
 内尔德·米德结果
 
@@ -144,7 +144,7 @@ rect(result$par[1]-0.2, result$par[2]-0.2, result$par[1]+0.2, result$par[2]+0.2,
 ```py
 # define a 2D basin function, optima is at (0,0)
 basin <- function(x) {
-x[1]^2 + x[2]^2
+x[1]² + x[2]²
 }
 
 # define the derivative for a 2D basin function
@@ -189,7 +189,7 @@ points(result[1], result[2], col="red", pch=19)
 rect(result[1]-0.2, result[2]-0.2, result[1]+0.2, result[2]+0.2, lwd=2)
 ```
 
-[![Gradient Descent Results](img/51e2730e354e69d0e32ec8fa86977271.png)](https://machinelearningmastery.com/wp-content/uploads/2014/08/Gradient-Descent-Results.png)
+![Gradient Descent Results](https://machinelearningmastery.com/wp-content/uploads/2014/08/Gradient-Descent-Results.png)
 
 梯度下降结果
 
@@ -215,7 +215,7 @@ rect(result[1]-0.2, result[2]-0.2, result[1]+0.2, result[2]+0.2, lwd=2)
 ```py
 # definition of the 2D Rosenbrock function, optima is at (1,1)
 rosenbrock <- function(v) { 
-(1 - v[1])^2 + 100 * (v[2] - v[1]*v[1])^2
+(1 - v[1])² + 100 * (v[2] - v[1]*v[1])²
 }
 
 # definition of the gradient of the 2D Rosenbrock function
@@ -251,7 +251,7 @@ points(result$par[1], result$par[2], col="red", pch=19)
 rect(result$par[1]-0.2, result$par[2]-0.2, result$par[1]+0.2, result$par[2]+0.2, lwd=2)
 ```
 
-[![Conjugate Gradient Results](img/db37393ed56109ac81b1b565e4cb453e.png)](https://machinelearningmastery.com/wp-content/uploads/2014/08/Conjugate-Gradient-Results.png)
+![Conjugate Gradient Results](https://machinelearningmastery.com/wp-content/uploads/2014/08/Conjugate-Gradient-Results.png)
 
 共轭梯度结果
 
@@ -285,7 +285,7 @@ BFGS 方法的信息处理目标是定位函数的极值。
 ```py
 # definition of the 2D Rosenbrock function, optima is at (1,1)
 rosenbrock <- function(v) { 
-(1 - v[1])^2 + 100 * (v[2] - v[1]*v[1])^2
+(1 - v[1])² + 100 * (v[2] - v[1]*v[1])²
 }
 
 # definition of the gradient of the 2D Rosenbrock function
@@ -319,7 +319,7 @@ points(result$par[1], result$par[2], col="red", pch=19)
 rect(result$par[1]-0.2, result$par[2]-0.2, result$par[1]+0.2, result$par[2]+0.2, lwd=2)
 ```
 
-[![BFGS Results](img/807f43955d8f8569a2290f4e7f77c9b3.png)](https://machinelearningmastery.com/wp-content/uploads/2014/08/BFGS-Results.png)
+![BFGS Results](https://machinelearningmastery.com/wp-content/uploads/2014/08/BFGS-Results.png)
 
 BFGS 结果
 
@@ -328,7 +328,7 @@ BFGS 结果
 *   它需要一个函数，函数梯度(一阶偏导数)可以在任意点计算。
 *   它不需要二阶导数，因为它近似黑森矩阵，与牛顿方法相比，计算成本更低。
 *   它需要相对较大的内存占用，因为它维护一个 *n*n* Hessian 矩阵，其中 *n* 是变量的数量。这是对方法可伸缩性的限制。
-*   收敛速度是超线性的，每次迭代的计算成本是 O(n^2).
+*   收敛速度是超线性的，每次迭代的计算成本是 O(n²).
 *   BFGS 的 L-BFGS 扩展是为具有大量参数(> 1000)的函数设计的。
 *   停止条件通常是响应的最小变化或最小梯度。
 *   就搜索方向而言，BFGS 有些稳健和自校正，因此在确定步长时不需要使用精确的线性搜索。

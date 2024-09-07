@@ -1,6 +1,6 @@
 # Keras 深度学习库的多分类教程
 
-> 原文： [https://machinelearningmastery.com/multi-class-classification-tutorial-keras-deep-learning-library/](https://machinelearningmastery.com/multi-class-classification-tutorial-keras-deep-learning-library/)
+> 原文： [`machinelearningmastery.com/multi-class-classification-tutorial-keras-deep-learning-library/`](https://machinelearningmastery.com/multi-class-classification-tutorial-keras-deep-learning-library/)
 
 Keras 是一个深度学习的 Python 库，它包含了高效的数值库 Theano 和 TensorFlow。
 

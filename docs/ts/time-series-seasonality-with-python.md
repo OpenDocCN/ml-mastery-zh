@@ -1,6 +1,6 @@
 # 如何使用 Python 识别和删除时间序列数据的季节性
 
-> 原文： [https://machinelearningmastery.com/time-series-seasonality-with-python/](https://machinelearningmastery.com/time-series-seasonality-with-python/)
+> 原文： [`machinelearningmastery.com/time-series-seasonality-with-python/`](https://machinelearningmastery.com/time-series-seasonality-with-python/)
 
 时间序列数据集可以包含季节性组件。
 
@@ -296,7 +296,7 @@ Time Index, Observation
 在这种情况下，我通过反复试验选择了 4 的订单。生成的模型采用以下形式：
 
 ```py
-y = x^4*b1 + x^3*b2 + x^2*b3 + x^1*b4 + b5
+y = x⁴*b1 + x³*b2 + x²*b3 + x¹*b4 + b5
 ```
 
 其中`y`是拟合值，`x`是时间指数（一年中的某一天），`b1`到`b5`是系数通过曲线拟合优化算法找到。
@@ -310,7 +310,7 @@ from pandas import Series
 from matplotlib import pyplot
 from numpy import polyfit
 series = Series.from_csv('daily-minimum-temperatures.csv', header=0)
-# fit polynomial: x^2*b1 + x*b2 + ... + bn
+# fit polynomial: x²*b1 + x*b2 + ... + bn
 X = [i%365 for i in range(0, len(series))]
 y = series.values
 degree = 4
@@ -350,7 +350,7 @@ from pandas import Series
 from matplotlib import pyplot
 from numpy import polyfit
 series = Series.from_csv('daily-minimum-temperatures.csv', header=0)
-# fit polynomial: x^2*b1 + x*b2 + ... + bn
+# fit polynomial: x²*b1 + x*b2 + ... + bn
 X = [i%365 for i in range(0, len(series))]
 y = series.values
 degree = 4

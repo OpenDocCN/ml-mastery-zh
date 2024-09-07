@@ -1,6 +1,6 @@
 # 编解码器循环神经网络的全局注意力的温和介绍
 
-> 原文： [https://machinelearningmastery.com/global-attention-for-encoder-decoder-recurrent-neural-networks/](https://machinelearningmastery.com/global-attention-for-encoder-decoder-recurrent-neural-networks/)
+> 原文： [`machinelearningmastery.com/global-attention-for-encoder-decoder-recurrent-neural-networks/`](https://machinelearningmastery.com/global-attention-for-encoder-decoder-recurrent-neural-networks/)
 
 编解码器模型提供了使用循环神经网络来解决具有挑战性的序列到序列预测问题（例如机器翻译）的模式。
 

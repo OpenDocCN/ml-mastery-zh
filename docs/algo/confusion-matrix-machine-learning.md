@@ -1,6 +1,6 @@
 # 什么是机器学习中的混淆矩阵
 
-> 原文： [https://machinelearningmastery.com/confusion-matrix-machine-learning/](https://machinelearningmastery.com/confusion-matrix-machine-learning/)
+> 原文： [`machinelearningmastery.com/confusion-matrix-machine-learning/`](https://machinelearningmastery.com/confusion-matrix-machine-learning/)
 
 ### 使混淆矩阵更容易混淆。
 
@@ -289,7 +289,7 @@ Prediction 0 1
 
 本报告中有大量信息，尤其是混淆矩阵本身。
 
-了解更多关于插入符号 API 文档 [PDF]中 [confusionMatrix（）函数的信息。](ftp://cran.r-project.org/pub/R/web/packages/caret/caret.pdf)
+了解更多关于插入符号 API 文档 [PDF]中 confusionMatrix（）函数的信息。
 
 ## 进一步阅读
 

@@ -1,6 +1,6 @@
 # 神经网络的权重为什么要随机初始化？
 
-> 原文： [https://machinelearningmastery.com/why-initialize-a-neural-network-with-random-weights/](https://machinelearningmastery.com/why-initialize-a-neural-network-with-random-weights/)
+> 原文： [`machinelearningmastery.com/why-initialize-a-neural-network-with-random-weights/`](https://machinelearningmastery.com/why-initialize-a-neural-network-with-random-weights/)
 
 人工神经网络的权重（weights）必须初始化为小的随机数。
 
@@ -137,7 +137,7 @@
 
 您可以在如下这篇文章中了解有关由 Keras 开发的使用固定随机种子（random seed) 来训练神经网络的更多信息：
 
-*   [如何用 Keras 得到可重现的结果]((https://machinelearningmastery.com/reproducible-results-neural-networks-keras/)
+*   如何用 Keras 得到可重现的结果
 
 ## 初始化方法
 
@@ -203,7 +203,7 @@
 *   [维基百科上的随机优化](https://en.wikipedia.org/wiki/Stochastic_optimization)
 *   [维基百科上的随机梯度下降](https://en.wikipedia.org/wiki/Stochastic_gradient_descent)
 *   [维基百科上的适应度景观](https://en.wikipedia.org/wiki/Fitness_landscape)
-*   [神经网络常见问题](ftp://ftp.sas.com/pub/neural/FAQ.html)
+*   神经网络常见问题
 *   [Keras 权重初始化](https://keras.io/initializers/)
 *   [了解深度前馈神经网络训练的难度](http://proceedings.mlr.press/v9/glorot10a.html)，2010。
 

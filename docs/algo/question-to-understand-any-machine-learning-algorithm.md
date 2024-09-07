@@ -1,6 +1,6 @@
 # 理解任何机器学习算法的 6 个问题
 
-> 原文： [https://machinelearningmastery.com/question-to-understand-any-machine-learning-algorithm/](https://machinelearningmastery.com/question-to-understand-any-machine-learning-algorithm/)
+> 原文： [`machinelearningmastery.com/question-to-understand-any-machine-learning-algorithm/`](https://machinelearningmastery.com/question-to-understand-any-machine-learning-algorithm/)
 
 有很多机器学习算法，每个算法都是一个研究的岛屿。
 

@@ -81,11 +81,11 @@ GBM 0.32690  0.3981 0.4638 0.4663  0.5213 0.6426    0
 SVM 0.21870  0.3889 0.4167 0.4520  0.5003 0.7638    0
 ```
 
-[![Box Plot Comparing Model Results](img/0f1c64ed528a7025cc85ef48b2a6aa18.png)](https://machinelearningmastery.com/wp-content/uploads/2014/09/boxplot_compare_models.png)
+![Box Plot Comparing Model Results](https://machinelearningmastery.com/wp-content/uploads/2014/09/boxplot_compare_models.png)
 
 使用 Caret 包比较模型结果的箱线图
 
-[![Dotplot Comparing Model Results using the Caret R Package](img/26c99859582d27a9cca89ea8f5c43dab.png)](https://machinelearningmastery.com/wp-content/uploads/2014/09/dotplot_compare_models.png)
+![Dotplot Comparing Model Results using the Caret R Package](https://machinelearningmastery.com/wp-content/uploads/2014/09/dotplot_compare_models.png)
 
 使用 Caret 包比较模型结果的点图
 

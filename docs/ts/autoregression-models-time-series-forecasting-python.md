@@ -1,6 +1,6 @@
 # Python 中用于时间序列预测的自回归模型
 
-> 原文： [https://machinelearningmastery.com/autoregression-models-time-series-forecasting-python/](https://machinelearningmastery.com/autoregression-models-time-series-forecasting-python/)
+> 原文： [`machinelearningmastery.com/autoregression-models-time-series-forecasting-python/`](https://machinelearningmastery.com/autoregression-models-time-series-forecasting-python/)
 
 自回归是一个时间序列模型，它使用以前时间步的观察值作为回归方程的输入，以预测下一个时间步的值。
 
@@ -427,7 +427,7 @@ Test MSE: 1.451
 
 *   维基百科上的 [Autocorrelation](https://en.wikipedia.org/wiki/Autocorrelation)
 *   维基百科上的 [Autoregressive](https://en.wikipedia.org/wiki/Autoregressive_model) 模型
-*   第 7 章 - 基于回归的模型：自相关和外部信息， [R 实用时间序列预测：动手指南](http://www.amazon.com/dp/0997847913?tag=inspiredalgor-20)。
+*   第七章 - 基于回归的模型：自相关和外部信息， [R 实用时间序列预测：动手指南](http://www.amazon.com/dp/0997847913?tag=inspiredalgor-20)。
 *   第 4.5 节 - 自回归模型，[引入时间序列与 R](http://www.amazon.com/dp/0387886974?tag=inspiredalgor-20) 。
 
 ## 摘要

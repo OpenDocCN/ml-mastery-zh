@@ -1,6 +1,6 @@
 # 什么是统计（为什么它在机器学习中很重要）？
 
-> 原文： [https://machinelearningmastery.com/what-is-statistics/](https://machinelearningmastery.com/what-is-statistics/)
+> 原文： [`machinelearningmastery.com/what-is-statistics/`](https://machinelearningmastery.com/what-is-statistics/)
 
 统计量是一组工具，可用于获取有关数据的重要问题的答案。
 

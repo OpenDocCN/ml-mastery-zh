@@ -1,6 +1,6 @@
 # 如何准备照片标题数据集来训练深度学习模型
 
-> 原文： [https://machinelearningmastery.com/prepare-photo-caption-dataset-training-deep-learning-model/](https://machinelearningmastery.com/prepare-photo-caption-dataset-training-deep-learning-model/)
+> 原文： [`machinelearningmastery.com/prepare-photo-caption-dataset-training-deep-learning-model/`](https://machinelearningmastery.com/prepare-photo-caption-dataset-training-deep-learning-model/)
 
 自动照片字幕是一个问题，其中模型必须在给定照片的情况下生成人类可读的文本描述。
 

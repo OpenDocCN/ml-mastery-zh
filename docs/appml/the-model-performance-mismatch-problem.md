@@ -1,6 +1,6 @@
 # 模型表现不匹配问题（以及如何处理）
 
-> 原文： [https://machinelearningmastery.com/the-model-performance-mismatch-problem/](https://machinelearningmastery.com/the-model-performance-mismatch-problem/)
+> 原文： [`machinelearningmastery.com/the-model-performance-mismatch-problem/`](https://machinelearningmastery.com/the-model-performance-mismatch-problem/)
 
 #### 如果模型测试结果比训练更糟，该怎么办
 

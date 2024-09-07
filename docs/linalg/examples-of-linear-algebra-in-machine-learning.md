@@ -1,6 +1,6 @@
 # 10 个机器学习中的线性代数示例
 
-> 原文： [https://machinelearningmastery.com/examples-of-linear-algebra-in-machine-learning/](https://machinelearningmastery.com/examples-of-linear-algebra-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/examples-of-linear-algebra-in-machine-learning/`](https://machinelearningmastery.com/examples-of-linear-algebra-in-machine-learning/)
 
 线性代数是涉及向量，矩阵和线性变换的数学子领域。
 

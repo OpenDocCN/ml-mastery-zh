@@ -1,6 +1,6 @@
 # 机器学习矩阵分解的温和介绍
 
-> 原文： [https://machinelearningmastery.com/introduction-to-matrix-decompositions-for-machine-learning/](https://machinelearningmastery.com/introduction-to-matrix-decompositions-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/introduction-to-matrix-decompositions-for-machine-learning/`](https://machinelearningmastery.com/introduction-to-matrix-decompositions-for-machine-learning/)
 
 使用有限的计算机精度无法有效地或稳定地解决许多复杂的矩阵运算。
 

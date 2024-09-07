@@ -1,6 +1,6 @@
 # 在机器学习中拥抱随机性
 
-> 原文： [https://machinelearningmastery.com/randomness-in-machine-learning/](https://machinelearningmastery.com/randomness-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/randomness-in-machine-learning/`](https://machinelearningmastery.com/randomness-in-machine-learning/)
 
 ### _ 为什么你会得到不同的结果 _
 _ 算法的不同运行 _ _ 具有相同的数据？_

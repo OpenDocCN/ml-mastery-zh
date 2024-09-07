@@ -1,6 +1,6 @@
 # 如何在 Linux 服务器上运行深度学习实验
 
-> 原文： [https://machinelearningmastery.com/run-deep-learning-experiments-linux-server/](https://machinelearningmastery.com/run-deep-learning-experiments-linux-server/)
+> 原文： [`machinelearningmastery.com/run-deep-learning-experiments-linux-server/`](https://machinelearningmastery.com/run-deep-learning-experiments-linux-server/)
 
 编写代码后，必须在具有大量 RAM，CPU 和 GPU 资源的大型计算机上运行深度学习实验，通常是云中的 Linux 服务器。
 

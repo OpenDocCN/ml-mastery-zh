@@ -1,6 +1,6 @@
 # 面向程序员的计算线性代数回顾
 
-> 原文： [https://machinelearningmastery.com/computational-linear-algebra-coders-review/](https://machinelearningmastery.com/computational-linear-algebra-coders-review/)
+> 原文： [`machinelearningmastery.com/computational-linear-algebra-coders-review/`](https://machinelearningmastery.com/computational-linear-algebra-coders-review/)
 
 数值线性代数关注在具有实际数据的计算机中实现和执行矩阵运算的实际意义。
 
@@ -49,7 +49,7 @@
 
 *   [3Blue 1Brown 线性代数本质](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab)，视频课程
 *   [沉浸式线性代数](http://immersivemath.com/ila/)，交互式教科书
-*   [深度学习第 2 章](http://www.deeplearningbook.org/contents/linear_algebra.html)，2016 年。
+*   [深度学习第二章](http://www.deeplearningbook.org/contents/linear_algebra.html)，2016 年。
 
 此外，在完成课程的过程中，根据需要提供参考。
 
@@ -78,7 +78,7 @@
 
 在本节中，我们将逐步介绍课程的 9 个部分，并总结其内容和主题，让您对所期待的内容有所了解，并了解它是否适​​合您。
 
-### 第 0 部分。课程后勤
+### 第零部分。课程后勤
 
 第一堂课不是课程的一部分。
 
@@ -99,7 +99,7 @@
 *   [计算线性代数 1：矩阵数学，精度，记忆，速度和＆amp;并行化](https://www.youtube.com/watch?v=8iGzBMboA0I&index=1&list=PLtmWHNX-gukIc92m1K0P6bIOnZb-mg0hY)
 *   [笔记本](https://nbviewer.jupyter.org/github/fastai/numerical-linear-algebra/blob/master/nbs/0.%20Course%20Logistics.ipynb)
 
-### 第 1 部分。为什么我们在这里？
+### 第一部分。为什么我们在这里？
 
 本部分介绍了本课程的动机，并介绍了矩阵分解的重要性：这些计算的表现和准确率以及一些示例应用程序的重要性。
 
@@ -123,7 +123,7 @@ Videos and Notebook:
 *   [计算线性代数 1：矩阵数学，精度，记忆，速度和＆amp;并行化](https://www.youtube.com/watch?v=8iGzBMboA0I&index=1&list=PLtmWHNX-gukIc92m1K0P6bIOnZb-mg0hY)
 *   [笔记本](http://nbviewer.jupyter.org/github/fastai/numerical-linear-algebra/blob/master/nbs/1.%20Why%20are%20we%20here.ipynb)
 
-### 第 2 部分。使用 NMF 和 SVD 进行主题建模
+### 第二部分。使用 NMF 和 SVD 进行主题建模
 
 本部分重点介绍矩阵分解在文本主题建模应用中的应用，特别是奇异值分解方法或 SVD。
 
@@ -146,7 +146,7 @@ Videos and Notebook:
 *   [计算线性代数 3：回顾，关于 NMF 的新观点，＆amp;随机 SVD](https://www.youtube.com/watch?v=C8KEtrWjjyo&index=3&list=PLtmWHNX-gukIc92m1K0P6bIOnZb-mg0hY)
 *   [笔记本](http://nbviewer.jupyter.org/github/fastai/numerical-linear-algebra/blob/master/nbs/2.%20Topic%20Modeling%20with%20NMF%20and%20SVD.ipynb)
 
-### 第 3 部分。使用强大的 PCA 去除背景
+### 第三部分。使用强大的 PCA 去除背景
 
 本部分重点介绍使用特征分解和多变量统计的主成分分析方法（PCA）。
 
@@ -174,7 +174,7 @@ Videos and Notebook:
 *   [计算线性代数 5：强大的 PCA＆amp; LU 分解](https://www.youtube.com/watch?v=O2x5KPJr5ag&list=PLtmWHNX-gukIc92m1K0P6bIOnZb-mg0hY&index=5)
 *   [笔记本](https://nbviewer.jupyter.org/github/fastai/numerical-linear-algebra/blob/master/nbs/3.%20Background%20Removal%20with%20Robust%20PCA.ipynb)
 
-### 第 4 部分。具有鲁棒回归的压缩感知
+### 第四部分。具有鲁棒回归的压缩感知
 
 这部分介绍了 NumPy 数组（和其他地方）中使用的广播的重要概念以及在机器学习中出现很多的稀疏矩阵。
 
@@ -195,7 +195,7 @@ Videos and Notebook:
 *   [计算线性代数 7：CT 扫描的压缩感知](https://www.youtube.com/watch?v=ZUGkvIM6ehM&list=PLtmWHNX-gukIc92m1K0P6bIOnZb-mg0hY&index=7)
 *   [笔记本](http://nbviewer.jupyter.org/github/fastai/numerical-linear-algebra/blob/master/nbs/4.%20Compressed%20Sensing%20of%20CT%20Scans%20with%20Robust%20Regression.ipynb#4.-Compressed-Sensing-of-CT-Scans-with-Robust-Regression)
 
-### 第 5 部分。使用线性回归预测健康结果
+### 第五部分。使用线性回归预测健康结果
 
 本部分重点介绍用 scikit-learn 演示的线性回归模型的开发。
 
@@ -215,7 +215,7 @@ Videos and Notebook:
 *   [计算线性代数 8：Numba，多项式特征，如何实现线性回归](https://www.youtube.com/watch?v=SjX55V8zDXI&index=8&list=PLtmWHNX-gukIc92m1K0P6bIOnZb-mg0hY)
 *   [笔记本](http://nbviewer.jupyter.org/github/fastai/numerical-linear-algebra/blob/master/nbs/5.%20Health%20Outcomes%20with%20Linear%20Regression.ipynb)
 
-### 第 6 部分。如何实现线性回归
+### 第六部分。如何实现线性回归
 
 本部分介绍如何使用一套不同的矩阵分解方法求解线性回归的线性最小二乘法。将结果与 scikit-learn 中的实现进行比较。
 
@@ -238,7 +238,7 @@ Videos and Notebook:
 *   [计算线性代数 8：Numba，多项式特征，如何实现线性回归](https://www.youtube.com/watch?v=SjX55V8zDXI&index=8&list=PLtmWHNX-gukIc92m1K0P6bIOnZb-mg0hY)
 *   [笔记本](http://nbviewer.jupyter.org/github/fastai/numerical-linear-algebra/blob/master/nbs/6.%20How%20to%20Implement%20Linear%20Regression.ipynb)
 
-### 第 7 部分。具有特征分解的 PageRank
+### 第七部分。具有特征分解的 PageRank
 
 本部分介绍了特征分解以及 PageRank 算法在 Wikipedia 链接数据集中的实现和应用。
 
@@ -259,7 +259,7 @@ Videos and Notebook:
 *   [计算线性代数 10：QR 算法查找特征值，实现 QR 分解](https://www.youtube.com/watch?v=1kw8bpA9QmQ&index=10&list=PLtmWHNX-gukIc92m1K0P6bIOnZb-mg0hY)
 *   [笔记本](http://nbviewer.jupyter.org/github/fastai/numerical-linear-algebra/blob/master/nbs/7.%20PageRank%20with%20Eigen%20Decompositions.ipynb)
 
-### 第 8 部分。实现 QR 分解
+### 第八部分。实现 QR 分解
 
 最后一部分介绍了从零开始实现 QR 分解的三种方法，并比较了每种方法的精度和表现。
 
@@ -315,7 +315,7 @@ Videos and Notebook:
 
 *   [3Blue 1Brown 线性代数本质，视频课程](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab)
 *   [沉浸式线性代数，交互式教科书](http://immersivemath.com/ila/)
-*   [深度学习第 2 章](http://www.deeplearningbook.org/contents/linear_algebra.html)
+*   [深度学习第二章](http://www.deeplearningbook.org/contents/linear_algebra.html)
 *   [数值线性代数](http://amzn.to/2CNOgZp)，1997。
 *   [数值方法](http://amzn.to/2CNfSxE)，2012。
 

@@ -1,6 +1,6 @@
 # 浅谈机器学习中的大数定律
 
-> 原文： [https://machinelearningmastery.com/a-gentle-introduction-to-the-law-of-large-numbers-in-machine-learning/](https://machinelearningmastery.com/a-gentle-introduction-to-the-law-of-large-numbers-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/a-gentle-introduction-to-the-law-of-large-numbers-in-machine-learning/`](https://machinelearningmastery.com/a-gentle-introduction-to-the-law-of-large-numbers-in-machine-learning/)
 
 我们有一种直觉，即更多观察更好。
 

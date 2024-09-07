@@ -1,6 +1,6 @@
 # 保存并加载您的 Keras 深度学习模型
 
-> 原文： [https://machinelearningmastery.com/save-load-keras-deep-learning-models/](https://machinelearningmastery.com/save-load-keras-deep-learning-models/)
+> 原文： [`machinelearningmastery.com/save-load-keras-deep-learning-models/`](https://machinelearningmastery.com/save-load-keras-deep-learning-models/)
 
 Keras 是一个简单而强大的 Python 库，用于深度学习。
 

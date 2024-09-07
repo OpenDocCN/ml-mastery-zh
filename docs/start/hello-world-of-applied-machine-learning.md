@@ -1,6 +1,6 @@
 # 应用机器学习的 Hello World
 
-> 原文： [https://machinelearningmastery.com/hello-world-of-applied-machine-learning/](https://machinelearningmastery.com/hello-world-of-applied-machine-learning/)
+> 原文： [`machinelearningmastery.com/hello-world-of-applied-machine-learning/`](https://machinelearningmastery.com/hello-world-of-applied-machine-learning/)
 
 大量的机器学习算法很容易让人不知所措。有很多可供选择，很难知道从哪里开始和尝试什么。
 
@@ -16,7 +16,7 @@
 
 这是一个简单的策略，即使是经验丰富的从业者也会因为它的简单而忽略或忘记它。
 
-[![Hello World of Machine Learning](img/cbd1d82739337c0169ba55d57eaf838e.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Hello-World-of-Machine-Learning.jpg)
+![Hello World of Machine Learning](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Hello-World-of-Machine-Learning.jpg)
 
 你好机器学习世界
 摄影： [Faris Algosaibi](http://www.flickr.com/photos/siraf72/11272718795) ，保留一些权利

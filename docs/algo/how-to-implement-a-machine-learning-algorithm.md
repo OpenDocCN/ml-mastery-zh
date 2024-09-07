@@ -1,6 +1,6 @@
 # 如何实现机器学习算法
 
-> 原文： [https://machinelearningmastery.com/how-to-implement-a-machine-learning-algorithm/](https://machinelearningmastery.com/how-to-implement-a-machine-learning-algorithm/)
+> 原文： [`machinelearningmastery.com/how-to-implement-a-machine-learning-algorithm/`](https://machinelearningmastery.com/how-to-implement-a-machine-learning-algorithm/)
 
 在代码中实现机器学习算法可以教会您很多关于算法及其工作原理的知识。
 
@@ -44,7 +44,7 @@
 
 您可以通过一个过程来加速您从零开始学习和实现机器学习算法的能力。您实现的算法越多，您获得的算法就越快，效率越高，您开发和定制自己的流程的次数就越多。
 
-[![Implement a Machine Leaning Algorithm](img/fad376caf6ed09f82aae89068f0c3fc3.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/Implement-a-Machine-Leaning-Algorithm.jpg)
+![Implement a Machine Leaning Algorithm](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/Implement-a-Machine-Leaning-Algorithm.jpg)
 
 实现机器学习算法
 照片由 Nic 的事件，保留一些权利

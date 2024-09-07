@@ -1,6 +1,6 @@
 # 如何在 Python 中从零开始计算主成分分析（PCA）
 
-> 原文： [https://machinelearningmastery.com/calculate-principal-component-analysis-scratch-python/](https://machinelearningmastery.com/calculate-principal-component-analysis-scratch-python/)
+> 原文： [`machinelearningmastery.com/calculate-principal-component-analysis-scratch-python/`](https://machinelearningmastery.com/calculate-principal-component-analysis-scratch-python/)
 
 降维的重要机器学习方法称为主成分分析。
 

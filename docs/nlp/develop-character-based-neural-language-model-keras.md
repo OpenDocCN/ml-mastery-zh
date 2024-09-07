@@ -1,6 +1,6 @@
 # 如何在 Keras 中开发基于字符的神经语言模型
 
-> 原文： [https://machinelearningmastery.com/develop-character-based-neural-language-model-keras/](https://machinelearningmastery.com/develop-character-based-neural-language-model-keras/)
+> 原文： [`machinelearningmastery.com/develop-character-based-neural-language-model-keras/`](https://machinelearningmastery.com/develop-character-based-neural-language-model-keras/)
 
 语言模型根据序列中前面的特定单词预测序列中的下一个单词。
 

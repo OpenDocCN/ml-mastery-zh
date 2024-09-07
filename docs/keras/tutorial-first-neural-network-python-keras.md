@@ -1,6 +1,6 @@
 # 使用 Python 和 Keras 逐步开发第一个神经网络
 
-> 原文： [https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/](https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/)
+> 原文： [`machinelearningmastery.com/tutorial-first-neural-network-python-keras/`](https://machinelearningmastery.com/tutorial-first-neural-network-python-keras/)
 
 Keras 是一个功能强大且易于使用的 Python 库，用于开发和评估[深度学习](http://machinelearningmastery.com/what-is-deep-learning/)模型。
 

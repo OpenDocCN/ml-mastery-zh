@@ -1,4 +1,4 @@
-# 案例研究：预测五年内糖尿病的发作（第 1 部分，共 3 部分）
+# 案例研究：预测五年内糖尿病的发作（第一部分，共 3 部分）
 
 > 原文：<https://machinelearningmastery.com/case-study-predicting-the-onset-of-diabetes-within-five-years-part-1-of-3/>
 
@@ -6,7 +6,7 @@
 
 这是我一直在辅导的聪明的年轻学生伊戈尔·什瓦尔策尔的客座博文。
 
-这篇文章是关于著名的皮马印第安人糖尿病数据集建模的 3 部分系列文章的第 1 部分，将介绍问题和数据。第 2 部分将研究特征选择和抽查算法，本系列的第 3 部分将研究分类准确率的改进和结果的最终呈现。
+这篇文章是关于著名的皮马印第安人糖尿病数据集建模的 3 部分系列文章的第一部分，将介绍问题和数据。第二部分将研究特征选择和抽查算法，本系列的第三部分将研究分类准确率的改进和结果的最终呈现。
 
 **用我的新书[用 Weka](https://machinelearningmastery.com/machine-learning-mastery-weka/) 启动你的项目**，包括*的分步教程*和清晰的*截图*所有示例。
 
@@ -16,7 +16,7 @@
 
 [糖尿病](https://en.wikipedia.org/wiki/Diabetes_mellitus)影响全球 3.82 亿人，每个国家的 2 型糖尿病患者人数都在增加。未经治疗，糖尿病会引起许多并发症。
 
-[![Diabetes](img/066077ce7959f24b2464854d7b923356.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/diabetes.jpg)
+![Diabetes](https://machinelearningmastery.com/wp-content/uploads/2014/03/diabetes.jpg)
 
 糖尿病测试
 图片由[维克托](https://www.flickr.com/photos/v1ctor/10871254373/)提供，版权所有。
@@ -52,7 +52,7 @@
 *   舒张压(毫米汞柱)
 *   三头肌皮肤褶皱厚度，单位为毫米(皮肤)
 *   2 小时血清胰岛素(单位:微克/毫升)
-*   体重指数以千克为单位(m)^2 的身高(质量))
+*   体重指数以千克为单位(m)² 的身高(质量))
 *   糖尿病谱系功能
 *   年龄(年龄)
 
@@ -68,7 +68,7 @@
 
 在检查类值的分布时，我注意到有 500 个负实例(65.1%)和 258 个正实例(34.9%)。
 
-[![Histograms of Attributes Showing the Class Distribution](img/56f068646950fcc9ffb6fcaaed0004f5.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/histograms.png)
+![Histograms of Attributes Showing the Class Distribution](https://machinelearningmastery.com/wp-content/uploads/2014/03/histograms.png)
 
 显示类别分布的属性直方图，截图来自 Weka
 
@@ -86,7 +86,7 @@
 *   这可能表明糖尿病不是遗传的，或者糖尿病谱系功能需要发挥作用。
 *   较大的 plas 值与较大的年龄、pedi、体重、胰岛素、皮肤、压力和妊娠值相结合，倾向于显示糖尿病检测阳性的可能性较大。
 
-[![Diabetes Data Scatterplot](img/d68ac88a8df7e4fb22d7bee894e53e0a.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/diabetes-data-scatterplot.png)
+![Diabetes Data Scatterplot](https://machinelearningmastery.com/wp-content/uploads/2014/03/diabetes-data-scatterplot.png)
 
 糖尿病数据散点图，截图来自 Weka
 
@@ -96,7 +96,7 @@
 *   结果可能受限于收集数据的时间(60 年代至 80 年代)。今天诊断糖尿病的医疗程序包括尿检和血红蛋白 A1c 检测，它显示了过去 3 个月的平均血糖水平。
 *   数据集相当小，这可能会限制某些算法的表现。
 
-[![Igor Shvartser](img/75114723c0d174193f86649fc180d82c.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/Igor-Shvartser-.png)
+![Igor Shvartser](https://machinelearningmastery.com/wp-content/uploads/2014/03/Igor-Shvartser-.png)
 
 伊戈尔·施瓦辛格
 
@@ -110,4 +110,4 @@
 
 ### 第二部分
 
-敬请关注[第 2 部分关于特征选择和算法抽查](https://machinelearningmastery.com/case-study-predicting-the-onset-of-diabetes-within-five-years-part-2-of-3/ "Case Study: Predicting the Onset of Diabetes Within Five Years (part 2 of 3)")。
+敬请关注[第二部分关于特征选择和算法抽查](https://machinelearningmastery.com/case-study-predicting-the-onset-of-diabetes-within-five-years-part-2-of-3/ "Case Study: Predicting the Onset of Diabetes Within Five Years (part 2 of 3)")。

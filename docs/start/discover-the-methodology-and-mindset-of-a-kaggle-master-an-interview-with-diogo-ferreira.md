@@ -1,6 +1,6 @@
 # 探索 Kaggle 大师的方法论和心态：对 Diogo Ferreira 的采访
 
-> 原文： [https://machinelearningmastery.com/discover-the-methodology-and-mindset-of-a-kaggle-master-an-interview-with-diogo-ferreira/](https://machinelearningmastery.com/discover-the-methodology-and-mindset-of-a-kaggle-master-an-interview-with-diogo-ferreira/)
+> 原文： [`machinelearningmastery.com/discover-the-methodology-and-mindset-of-a-kaggle-master-an-interview-with-diogo-ferreira/`](https://machinelearningmastery.com/discover-the-methodology-and-mindset-of-a-kaggle-master-an-interview-with-diogo-ferreira/)
 
 在机器学习竞赛中做得好怎么办？要真正深入研究这个问题，你需要挖掘那些做得好的人。
 
@@ -10,16 +10,16 @@
 
 采访分为四个部分：
 
-*   **第 1 部分**探讨了 Diogo 的问题解决背景和方法
-*   **第 2 部分**关于 Kaggle 国际象棋评级比赛
-*   **第 3 部分**潜入迪奥戈的国际象棋评级竞赛解决方案
-*   **第 4 部分**给我们留下了一些关于机器学习竞赛从业者的最终想法（最好的部分！）
+*   **第一部分**探讨了 Diogo 的问题解决背景和方法
+*   **第二部分**关于 Kaggle 国际象棋评级比赛
+*   **第三部分**潜入迪奥戈的国际象棋评级竞赛解决方案
+*   **第四部分**给我们留下了一些关于机器学习竞赛从业者的最终想法（最好的部分！）
 
 喝一杯，坐下来享受吧！
 
-## 第 1 部分：背景和方法
+## 第一部分：背景和方法
 
-[![Diogo Ferreira](img/295643de0d31ba9cba731e02dcb77364.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Diogo-Ferreira.jpg)
+![Diogo Ferreira](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Diogo-Ferreira.jpg)
 
 迪奥戈·费雷拉
 
@@ -123,9 +123,9 @@ Process Mining，我的研究领域，与商业智能和数据挖掘领域相关
 
 因为人们可能会花费大量时间进行调整，并且最终仍然受到原始模型假设的限制。比如说，通过调整可以获得 20％的改进，而使用新模型可以得到 50％。如果可能的话，突破性思维往往带来更多回报 - 至少这是我个人的感受。
 
-## 第 2 部分：国际象棋评级竞赛
+## 第二部分：国际象棋评级竞赛
 
-[![White vs Black](img/d5f4f4a6855e0b062f01b6155f3d5065.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/White-versus-Black.jpg)
+![White vs Black](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/White-versus-Black.jpg)
 
 白色与黑色
 摄影： [Gideon](https://www.flickr.com/photos/malias/73169727/) ，保留一些权利
@@ -217,9 +217,9 @@ Process Mining，我的研究领域，与商业智能和数据挖掘领域相关
 
 我在单独的文件中保存了每个提交的代码。但是，我有一个单独的参数调整程序，我没有保存它的每个版本。在如此多的提交中（最终 100 多个），有时我不确定我是否已经尝试过某些东西。
 
-## 第 3 部分：有关特定解决方案的问题
+## 第三部分：有关特定解决方案的问题
 
-[![graphs](img/87a5d52c47f700d58c5363905268238f.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/graphs.png)
+![graphs](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/graphs.png)
 
 我使用的时间加权函数的图，Diogo 的报告中对此进行了解释。
 
@@ -283,7 +283,7 @@ Process Mining，我的研究领域，与商业智能和数据挖掘领域相关
 
 在同一封电子邮件中，杰夫写道，当他从测试数据中拿走共享游戏时，我的方法就达到了第一位。
 
-## 第 4 部分：结局
+## 第四部分：结局
 
 **Jason** ：您参与国际象棋评级竞赛的一般问题解决方法有哪些变化？
 

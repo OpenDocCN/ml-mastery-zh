@@ -275,7 +275,7 @@ pyplot.show()
 
 首先，我们需要一个函数来计算这个函数的导数。
 
-x^2 的导数是 x * 2，下面的*导数()*函数实现了这一点。
+x² 的导数是 x * 2，下面的*导数()*函数实现了这一点。
 
 ```py
 # derivative of objective function

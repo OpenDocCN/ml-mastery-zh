@@ -1,6 +1,6 @@
 # 如何为时间序列预测使用 LSTM 网络的权重正则化
 
-> 原文： [https://machinelearningmastery.com/use-weight-regularization-lstm-networks-time-series-forecasting/](https://machinelearningmastery.com/use-weight-regularization-lstm-networks-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/use-weight-regularization-lstm-networks-time-series-forecasting/`](https://machinelearningmastery.com/use-weight-regularization-lstm-networks-time-series-forecasting/)
 
 长短期记忆（LSTM）模型是能够学习观察序列的循环神经网络。
 

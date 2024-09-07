@@ -1,6 +1,6 @@
 # 如何使用 Keras 将词嵌入层用于深度学习
 
-> 原文： [https://machinelearningmastery.com/use-word-embedding-layers-deep-learning-keras/](https://machinelearningmastery.com/use-word-embedding-layers-deep-learning-keras/)
+> 原文： [`machinelearningmastery.com/use-word-embedding-layers-deep-learning-keras/`](https://machinelearningmastery.com/use-word-embedding-layers-deep-learning-keras/)
 
 词嵌入提供了单词及其相对含义的密集表示。
 

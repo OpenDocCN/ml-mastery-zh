@@ -1,6 +1,6 @@
 # 机器学习中的偏方差权衡的温和介绍
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-to-the-bias-variance-trade-off-in-machine-learning/](https://machinelearningmastery.com/gentle-introduction-to-the-bias-variance-trade-off-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-to-the-bias-variance-trade-off-in-machine-learning/`](https://machinelearningmastery.com/gentle-introduction-to-the-bias-variance-trade-off-in-machine-learning/)
 
 通过偏方差权衡的镜头可以最好地理解有监督的机器学习算法。
 

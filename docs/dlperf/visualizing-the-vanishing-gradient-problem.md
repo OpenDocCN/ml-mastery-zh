@@ -621,12 +621,12 @@ plot_gradient(gradhistory, losshistory)
 格洛特和本吉奥的论文可在以下网站获得:
 
 *   “理解训练深度前馈神经网络的难度”，Xavier Glorot 和 Yoshua Bengio 著，2010 年。
-    ([https://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf](https://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf))
+    ([`proceedings.mlr.press/v9/glorot10a/glorot10a.pdf`](https://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf))
 
 梯度消失问题在机器学习中是众所周知的，许多书都涉及到了它。例如，
 
 *   *深度学习*，作者:伊恩·古德费勒，约斯华·本吉奥，亚伦·库维尔，2016。
-    ([https://www.amazon.com/dp/0262035618](https://www.amazon.com/dp/0262035618))
+    ([`www.amazon.com/dp/0262035618`](https://www.amazon.com/dp/0262035618))
 
 之前我们有关于梯度消失和爆炸的帖子:
 
@@ -636,7 +636,7 @@ plot_gradient(gradhistory, losshistory)
 您可能还会发现以下文档有助于解释我们上面使用的一些语法:
 
 *   Keras 中从零开始的训练循环:https://Keras . io/guides/writing _ a _ training _ loop _ from _ scratch/
-*   在 Keras 写自己的回调:[https://keras.io/guides/writing_your_own_callbacks/](https://keras.io/guides/writing_your_own_callbacks/)
+*   在 Keras 写自己的回调:[`keras.io/guides/writing_your_own_callbacks/`](https://keras.io/guides/writing_your_own_callbacks/)
 
 ## 摘要
 

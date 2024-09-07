@@ -1,6 +1,6 @@
 # 如何构建用于家庭用电的自回归预测模型
 
-> 原文： [https://machinelearningmastery.com/how-to-develop-an-autoregression-forecast-model-for-household-electricity-consumption/](https://machinelearningmastery.com/how-to-develop-an-autoregression-forecast-model-for-household-electricity-consumption/)
+> 原文： [`machinelearningmastery.com/how-to-develop-an-autoregression-forecast-model-for-household-electricity-consumption/`](https://machinelearningmastery.com/how-to-develop-an-autoregression-forecast-model-for-household-electricity-consumption/)
 
 鉴于智能电表的兴起以及太阳能电池板等发电技术的广泛采用，可提供大量的用电数据。
 

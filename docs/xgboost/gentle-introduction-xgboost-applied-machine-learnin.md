@@ -1,6 +1,6 @@
 # 应用机器学习的杀器：XGBoost 温和简介
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-xgboost-applied-machine-learning/](https://machinelearningmastery.com/gentle-introduction-xgboost-applied-machine-learning/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-xgboost-applied-machine-learning/`](https://machinelearningmastery.com/gentle-introduction-xgboost-applied-machine-learning/)
 
 XGBoost 是一种算法库，近年来在应用机器学习和 Kaggle 竞赛中占据统治地位，它专长于处理结构化数据或表格数据。
 

@@ -1,6 +1,6 @@
 # 用于测试简单的时间序列预测模型，以便不会欺骗自己
 
-> 原文： [https://machinelearningmastery.com/simple-time-series-forecasting-models/](https://machinelearningmastery.com/simple-time-series-forecasting-models/)
+> 原文： [`machinelearningmastery.com/simple-time-series-forecasting-models/`](https://machinelearningmastery.com/simple-time-series-forecasting-models/)
 
 重要的是要在时间序列预测问题上建立强大的绩效基准，并且不要愚弄自己认为复杂的方法是熟练的，而事实上它们并非如此。
 

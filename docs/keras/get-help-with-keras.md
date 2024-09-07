@@ -1,6 +1,6 @@
 # 在 Keras 深度学习中获得帮助的 9 种方法
 
-> 原文： [https://machinelearningmastery.com/get-help-with-keras/](https://machinelearningmastery.com/get-help-with-keras/)
+> 原文： [`machinelearningmastery.com/get-help-with-keras/`](https://machinelearningmastery.com/get-help-with-keras/)
 
 Keras 是一个 Python 深度学习库，可以使用高效的 Theano 或 TensorFlow 符号数学库作为后端。
 

@@ -1,6 +1,6 @@
 # 如何在 Keras 中定义神经机器翻译的编解码器序列到序列模型
 
-> 原文： [https://machinelearningmastery.com/define-encoder-decoder-sequence-sequence-model-neural-machine-translation-keras/](https://machinelearningmastery.com/define-encoder-decoder-sequence-sequence-model-neural-machine-translation-keras/)
+> 原文： [`machinelearningmastery.com/define-encoder-decoder-sequence-sequence-model-neural-machine-translation-keras/`](https://machinelearningmastery.com/define-encoder-decoder-sequence-sequence-model-neural-machine-translation-keras/)
 
 编解码器模型提供了使用循环神经网络来解决具有挑战性的序列到序列预测问题（例如机器翻译）的模式。
 

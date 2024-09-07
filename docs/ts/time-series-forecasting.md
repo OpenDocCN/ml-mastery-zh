@@ -1,6 +1,6 @@
 # 什么是时间序列预测？
 
-> 原文： [https://machinelearningmastery.com/time-series-forecasting/](https://machinelearningmastery.com/time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/time-series-forecasting/`](https://machinelearningmastery.com/time-series-forecasting/)
 
 时间序列预测是机器学习的一个重要领域，往往被忽视。
 

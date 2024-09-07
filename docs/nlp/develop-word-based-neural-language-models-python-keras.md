@@ -1,6 +1,6 @@
 # 如何用 Python 和 Keras 开发基于单词的神经语言模型
 
-> 原文： [https://machinelearningmastery.com/develop-word-based-neural-language-models-python-keras/](https://machinelearningmastery.com/develop-word-based-neural-language-models-python-keras/)
+> 原文： [`machinelearningmastery.com/develop-word-based-neural-language-models-python-keras/`](https://machinelearningmastery.com/develop-word-based-neural-language-models-python-keras/)
 
 语言建模涉及在已经存在的单词序列的情况下预测序列中的下一个单词。
 

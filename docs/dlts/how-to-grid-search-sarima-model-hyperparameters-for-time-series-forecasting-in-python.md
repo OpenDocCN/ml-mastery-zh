@@ -1,6 +1,6 @@
 # 如何在 Python 中为时间序列预测搜索 SARIMA 模型超参数
 
-> 原文： [https://machinelearningmastery.com/how-to-grid-search-sarima-model-hyperparameters-for-time-series-forecasting-in-python/](https://machinelearningmastery.com/how-to-grid-search-sarima-model-hyperparameters-for-time-series-forecasting-in-python/)
+> 原文： [`machinelearningmastery.com/how-to-grid-search-sarima-model-hyperparameters-for-time-series-forecasting-in-python/`](https://machinelearningmastery.com/how-to-grid-search-sarima-model-hyperparameters-for-time-series-forecasting-in-python/)
 
 季节性自回归整合移动平均线（SARIMA）模型是一种对可能包含趋势和季节性成分的单变量时间序列数据进行建模的方法。
 
@@ -1245,8 +1245,8 @@ done
 
 ### 图书
 
-*   第 8 章 ARIMA 模型，[预测：原则和实践](https://amzn.to/2xlJsfV)，2013。
-*   第 7 章，非平稳模型， [R](https://amzn.to/2smB9LR) 的入门时间序列，2009。
+*   第八章 ARIMA 模型，[预测：原则和实践](https://amzn.to/2xlJsfV)，2013。
+*   第七章，非平稳模型， [R](https://amzn.to/2smB9LR) 的入门时间序列，2009。
 
 ### API
 

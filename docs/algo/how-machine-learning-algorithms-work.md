@@ -1,6 +1,6 @@
 # 机器学习算法如何工作（他们学习输入到输出的映射）
 
-> 原文： [https://machinelearningmastery.com/how-machine-learning-algorithms-work/](https://machinelearningmastery.com/how-machine-learning-algorithms-work/)
+> 原文： [`machinelearningmastery.com/how-machine-learning-algorithms-work/`](https://machinelearningmastery.com/how-machine-learning-algorithms-work/)
 
 机器学习算法如何工作？
 

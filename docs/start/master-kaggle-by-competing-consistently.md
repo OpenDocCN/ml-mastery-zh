@@ -1,6 +1,6 @@
 # 通过持续的竞赛精通 Kaggle
 
-> 原文： [https://machinelearningmastery.com/master-kaggle-by-competing-consistently/](https://machinelearningmastery.com/master-kaggle-by-competing-consistently/)
+> 原文： [`machinelearningmastery.com/master-kaggle-by-competing-consistently/`](https://machinelearningmastery.com/master-kaggle-by-competing-consistently/)
 
 _ 你如何擅长 Kaggle 比赛？_
 
@@ -10,7 +10,7 @@ Triskelion 最近发表了一篇题为“ [_ 的文章，反映了一年的 Kagg
 
 在这篇文章中，我们将回顾 Triskelion 的一贯参与的教训，作为开始一个大师 Kaggle 的方法。
 
-[![compete consistently](img/1a7d77afe783adda3daed21af5377e31.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/compete-consistently.jpg)
+![compete consistently](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/compete-consistently.jpg)
 
 持续竞争
 [保罗](https://www.flickr.com/photos/vegaseddie/3309218023)的照片，保留一些权利

@@ -1,6 +1,6 @@
 # Keras 深度学习库的二分类教程
 
-> 原文： [https://machinelearningmastery.com/binary-classification-tutorial-with-the-keras-deep-learning-library/](https://machinelearningmastery.com/binary-classification-tutorial-with-the-keras-deep-learning-library/)
+> 原文： [`machinelearningmastery.com/binary-classification-tutorial-with-the-keras-deep-learning-library/`](https://machinelearningmastery.com/binary-classification-tutorial-with-the-keras-deep-learning-library/)
 
 Keras 是一个用于深度学习的 Python 库，它包含了高效的数值库 TensorFlow 和 Theano。
 

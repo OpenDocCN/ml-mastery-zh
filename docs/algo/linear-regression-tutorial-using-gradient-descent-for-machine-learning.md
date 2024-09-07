@@ -1,6 +1,6 @@
 # 机器学习中使用梯度下降的线性回归教程
 
-> 原文： [https://machinelearningmastery.com/linear-regression-tutorial-using-gradient-descent-for-machine-learning/](https://machinelearningmastery.com/linear-regression-tutorial-using-gradient-descent-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/linear-regression-tutorial-using-gradient-descent-for-machine-learning/`](https://machinelearningmastery.com/linear-regression-tutorial-using-gradient-descent-for-machine-learning/)
 
 随机梯度下降是机器学习中一种重要且广泛使用的算法。
 

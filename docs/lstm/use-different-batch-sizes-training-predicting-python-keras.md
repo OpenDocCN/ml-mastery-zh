@@ -1,6 +1,6 @@
 # 如何在将 LSTM 用于训练和预测时使用不同的批量大小
 
-> 原文： [https://machinelearningmastery.com/use-different-batch-sizes-training-predicting-python-keras/](https://machinelearningmastery.com/use-different-batch-sizes-training-predicting-python-keras/)
+> 原文： [`machinelearningmastery.com/use-different-batch-sizes-training-predicting-python-keras/`](https://machinelearningmastery.com/use-different-batch-sizes-training-predicting-python-keras/)
 
 Keras 使用快速符号数学库作为后端，例如 TensorFlow 和 Theano。
 

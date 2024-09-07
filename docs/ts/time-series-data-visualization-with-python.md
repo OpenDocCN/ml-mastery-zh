@@ -1,6 +1,6 @@
 # 将 Python 用于时间序列数据可视化
 
-> 原文： [https://machinelearningmastery.com/time-series-data-visualization-with-python/](https://machinelearningmastery.com/time-series-data-visualization-with-python/)
+> 原文： [`machinelearningmastery.com/time-series-data-visualization-with-python/`](https://machinelearningmastery.com/time-series-data-visualization-with-python/)
 
 #### 使用 Python 绘制时间序列数据的 6 种方法
 

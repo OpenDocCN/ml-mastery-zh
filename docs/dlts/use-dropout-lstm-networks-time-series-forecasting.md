@@ -1,6 +1,6 @@
 # 如何为时间序列预测使用 LSTM 网络的丢弃法
 
-> 原文： [https://machinelearningmastery.com/use-dropout-lstm-networks-time-series-forecasting/](https://machinelearningmastery.com/use-dropout-lstm-networks-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/use-dropout-lstm-networks-time-series-forecasting/`](https://machinelearningmastery.com/use-dropout-lstm-networks-time-series-forecasting/)
 
 长短期记忆（LSTM）模型是一种能够学习观察序列的循环神经网络。
 

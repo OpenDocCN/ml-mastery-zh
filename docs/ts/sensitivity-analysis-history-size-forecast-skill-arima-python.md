@@ -1,6 +1,6 @@
 # 基于 Python 和 ARIMA 的历史规模敏感性分析的预测技巧
 
-> 原文： [https://machinelearningmastery.com/sensitivity-analysis-history-size-forecast-skill-arima-python/](https://machinelearningmastery.com/sensitivity-analysis-history-size-forecast-skill-arima-python/)
+> 原文： [`machinelearningmastery.com/sensitivity-analysis-history-size-forecast-skill-arima-python/`](https://machinelearningmastery.com/sensitivity-analysis-history-size-forecast-skill-arima-python/)
 
 时间序列预测模型需要多少历史记录？
 

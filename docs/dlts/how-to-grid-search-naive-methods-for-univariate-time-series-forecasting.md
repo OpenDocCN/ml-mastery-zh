@@ -1,6 +1,6 @@
 # 如何为单变量时间序列预测网格搜索朴素方法
 
-> 原文： [https://machinelearningmastery.com/how-to-grid-search-naive-methods-for-univariate-time-series-forecasting/](https://machinelearningmastery.com/how-to-grid-search-naive-methods-for-univariate-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/how-to-grid-search-naive-methods-for-univariate-time-series-forecasting/`](https://machinelearningmastery.com/how-to-grid-search-naive-methods-for-univariate-time-series-forecasting/)
 
 简单的预测方法包括朴素地使用最后一个观测值作为预测或先前观测值的平均值。
 

@@ -1,6 +1,6 @@
 # 使用 Python 和 Keras 将卷积神经网络用于手写数字识别
 
-> 原文： [https://machinelearningmastery.com/handwritten-digit-recognition-using-convolutional-neural-networks-python-keras/](https://machinelearningmastery.com/handwritten-digit-recognition-using-convolutional-neural-networks-python-keras/)
+> 原文： [`machinelearningmastery.com/handwritten-digit-recognition-using-convolutional-neural-networks-python-keras/`](https://machinelearningmastery.com/handwritten-digit-recognition-using-convolutional-neural-networks-python-keras/)
 
 图像数据中的物体识别是深度学习技术的广泛示例。
 

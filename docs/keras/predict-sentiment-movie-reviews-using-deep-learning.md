@@ -1,6 +1,6 @@
 # 使用深度学习预测电影评论的情感
 
-> 原文： [https://machinelearningmastery.com/predict-sentiment-movie-reviews-using-deep-learning/](https://machinelearningmastery.com/predict-sentiment-movie-reviews-using-deep-learning/)
+> 原文： [`machinelearningmastery.com/predict-sentiment-movie-reviews-using-deep-learning/`](https://machinelearningmastery.com/predict-sentiment-movie-reviews-using-deep-learning/)
 
 [情感分析](https://en.wikipedia.org/wiki/Sentiment_analysis)是一种自然语言处理问题，其中理解文本并预测潜在意图。
 

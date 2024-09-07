@@ -1,6 +1,6 @@
 # 如何使用长短期记忆循环神经网络来打印随机整数
 
-> 原文： [https://machinelearningmastery.com/learn-echo-random-integers-long-short-term-memory-recurrent-neural-networks/](https://machinelearningmastery.com/learn-echo-random-integers-long-short-term-memory-recurrent-neural-networks/)
+> 原文： [`machinelearningmastery.com/learn-echo-random-integers-long-short-term-memory-recurrent-neural-networks/`](https://machinelearningmastery.com/learn-echo-random-integers-long-short-term-memory-recurrent-neural-networks/)
 
 长短期记忆（LSTM）循环神经网络能够学习长序列数据中的顺序依赖性。
 

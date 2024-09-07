@@ -1,6 +1,6 @@
 # 如何布局和管理您的机器学习项目
 
-> 原文： [https://machinelearningmastery.com/how-to-layout-and-manage-your-machine-learning-project/](https://machinelearningmastery.com/how-to-layout-and-manage-your-machine-learning-project/)
+> 原文： [`machinelearningmastery.com/how-to-layout-and-manage-your-machine-learning-project/`](https://machinelearningmastery.com/how-to-layout-and-manage-your-machine-learning-project/)
 
 项目布局对于机器学习项目至关重要，就像软件开发项目一样。我认为它像语言。项目布局组织思想并为您提供想法的背景，就像知道事物的名称为您提供思考的基础一样。
 

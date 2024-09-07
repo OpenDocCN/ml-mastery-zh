@@ -185,12 +185,12 @@
 
 *   第七章深度学习的正则化，[深度学习](https://amzn.to/2NJW3gE)，2016。
 *   第 5.5 节。神经网络中的正则化，[模式识别和机器学习](https://amzn.to/2Q2rEeP)，2006。
-*   第 16 章，提高泛化能力的启发式方法，[神经锻造:前馈人工神经网络中的监督学习](https://amzn.to/2Dxo4XU)，1999。
-*   第 9 章学习和推广，[用于模式识别的神经网络](https://amzn.to/2I9gNMP)，1995。
+*   第十六章，提高泛化能力的启发式方法，[神经锻造:前馈人工神经网络中的监督学习](https://amzn.to/2Dxo4XU)，1999。
+*   第九章学习和推广，[用于模式识别的神经网络](https://amzn.to/2I9gNMP)，1995。
 
 ### 文章
 
-*   [什么是过拟合，如何避免？神经网络常见问题](ftp://ftp.sas.com/pub/neural/FAQ3.html#A_over)。
+*   什么是过拟合，如何避免？神经网络常见问题。
 *   [正则化(数学)，维基百科](https://en.wikipedia.org/wiki/Regularization_(mathematics))。
 
 ## 摘要

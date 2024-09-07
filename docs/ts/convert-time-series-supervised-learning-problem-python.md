@@ -1,6 +1,6 @@
 # 如何将时间序列转换为 Python 中的监督学习问题
 
-> 原文： [https://machinelearningmastery.com/convert-time-series-supervised-learning-problem-python/](https://machinelearningmastery.com/convert-time-series-supervised-learning-problem-python/)
+> 原文： [`machinelearningmastery.com/convert-time-series-supervised-learning-problem-python/`](https://machinelearningmastery.com/convert-time-series-supervised-learning-problem-python/)
 
 深度学习等机器学习方法可用于时间序列预测。
 

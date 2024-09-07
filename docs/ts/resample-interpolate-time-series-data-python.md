@@ -1,6 +1,6 @@
 # 如何使用 Python 重采样和插值您的时间序列数据
 
-> 原文： [https://machinelearningmastery.com/resample-interpolate-time-series-data-python/](https://machinelearningmastery.com/resample-interpolate-time-series-data-python/)
+> 原文： [`machinelearningmastery.com/resample-interpolate-time-series-data-python/`](https://machinelearningmastery.com/resample-interpolate-time-series-data-python/)
 
 您可能会以错误的频率观察。
 

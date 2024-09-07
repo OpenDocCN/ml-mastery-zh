@@ -1,6 +1,6 @@
 # 如何用线性代数求解线性回归
 
-> 原文： [https://machinelearningmastery.com/solve-linear-regression-using-linear-algebra/](https://machinelearningmastery.com/solve-linear-regression-using-linear-algebra/)
+> 原文： [`machinelearningmastery.com/solve-linear-regression-using-linear-algebra/`](https://machinelearningmastery.com/solve-linear-regression-using-linear-algebra/)
 
 线性回归是一种用于对一个或多个自变量与因变量之间的关系进行建模的方法。
 
@@ -95,7 +95,7 @@ y = (y2)
 通常实现这种方法的方法是找到一种解决方案，其中模型中 b 的值最小化平方误差。这称为线性最小二乘法。
 
 ```
-||X . b - y||^2 = sum i=1 to m ( sum j=1 to n Xij . bj - yi)^2
+||X . b - y||² = sum i=1 to m ( sum j=1 to n Xij . bj - yi)²
 ```
 
 只要输入列是独立的（例如不相关的），该秘籍就具有独特的解决方案。
@@ -394,8 +394,8 @@ SVD 解对线性回归问题的散点图
 *   第 7.7 节最小二乘近似解。 [线性代数无废话指南](http://amzn.to/2k76D4)，2017 年。
 *   第 4.3 节最小二乘近似，[线性代数简介](http://amzn.to/2AZ7R8j)，第五版，2016 年。
 *   第 11 讲，最小二乘问题，[数值线性代数](http://amzn.to/2kjEF4S)，1997。
-*   第 5 章，正交化和最小二乘法，[矩阵计算](http://amzn.to/2B9xnLD)，2012。
-*   第 12 章，奇异值和 Jordan 分解，[线性代数和矩阵分析统计](http://amzn.to/2A9ceNv)，2014。
+*   第五章，正交化和最小二乘法，[矩阵计算](http://amzn.to/2B9xnLD)，2012。
+*   第十二章，奇异值和 Jordan 分解，[线性代数和矩阵分析统计](http://amzn.to/2A9ceNv)，2014。
 *   第 2.9 节 Moore-Penrose 伪逆，[深度学习](http://amzn.to/2B3MsuU)，2016。
 *   第 15.4 节一般线性最小二乘法，[数字秘籍：科学计算的艺术](http://amzn.to/2BezVEE)，第三版，2007 年。
 

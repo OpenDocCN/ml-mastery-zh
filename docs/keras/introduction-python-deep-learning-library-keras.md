@@ -1,6 +1,6 @@
 # Python 深度学习库 Keras 简介
 
-> 原文： [https://machinelearningmastery.com/introduction-python-deep-learning-library-keras/](https://machinelearningmastery.com/introduction-python-deep-learning-library-keras/)
+> 原文： [`machinelearningmastery.com/introduction-python-deep-learning-library-keras/`](https://machinelearningmastery.com/introduction-python-deep-learning-library-keras/)
 
 Python 中两个为深度学习研究和开发提供基础的顶级数字平台是 Theano 和 TensorFlow。
 

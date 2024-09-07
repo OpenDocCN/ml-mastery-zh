@@ -122,13 +122,13 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, shuffl
 
 下一步，我们创建两个回归模型。它们是二次的:
 
-$ y = c+b \乘以 x+a \乘以 x^2$
+$ y = c+b \乘以 x+a \乘以 x²$
 
 线性:
 
 $ y = b+ a \乘以 x$
 
-Sklearn 中没有多项式回归，但是我们可以利用`PolynomialFeatures`结合`LinearRegression`来实现。`PolynomialFeatures(2)`将输入$x$转换成$1,x,x^2$，对这三者进行线性回归，我们会发现上面公式中的系数$a，b，c$。
+Sklearn 中没有多项式回归，但是我们可以利用`PolynomialFeatures`结合`LinearRegression`来实现。`PolynomialFeatures(2)`将输入$x$转换成$1,x,x²$，对这三者进行线性回归，我们会发现上面公式中的系数$a，b，c$。
 
 ```py
 ...
@@ -204,7 +204,7 @@ print(polyscores["estimator"][0].steps[1][1].coef_)
 
 这意味着我们拟合的二次模型是:
 
-$ y =-0.0319+0.2082 \倍 x–0.0094 \倍 x^2$
+$ y =-0.0319+0.2082 \倍 x–0.0094 \倍 x²$
 
 线性回归在交叉验证的第一次迭代时的系数为
 

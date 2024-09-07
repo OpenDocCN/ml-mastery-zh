@@ -1,6 +1,6 @@
 # 构建生产环境的机器学习基础设施
 
-> 原文： [https://machinelearningmastery.com/building-a-production-machine-learning-infrastructure/](https://machinelearningmastery.com/building-a-production-machine-learning-infrastructure/)
+> 原文： [`machinelearningmastery.com/building-a-production-machine-learning-infrastructure/`](https://machinelearningmastery.com/building-a-production-machine-learning-infrastructure/)
 
 [Midwest.io](http://www.midwest.io/) 于 2014 年 7 月 14 日至 15 日在堪萨斯城召开。
 
@@ -55,7 +55,7 @@ Josh 说，与生产模式相比，分析模型中数据的使用方式非常低
 
 他说他探索了一种失败的 DSL 方法，但发现了数据模型的核心问题。他说，所需要的是根据固定属性和重复属性对用户实体进行建模。用户实体存储为非规范化，并且诸如事务和日志（重复属性）之类的用户数据存储在数组中。他以 JSON 格式给出了一个示例，并将其称为超新星模式。
 
-[![Supernova Schemas](img/1411b14b7f9d93391d486e249d21cfef.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Supernova-Schemas.png)
+![Supernova Schemas](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Supernova-Schemas.png)
 
 Supernova Schema
 来自 Josh Wills 2014 年 7 月在 Midwest.io 的演讲

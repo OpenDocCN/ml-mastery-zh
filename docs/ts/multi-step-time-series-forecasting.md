@@ -1,6 +1,6 @@
 # 多步时间序列预测的 4 种策略
 
-> 原文： [https://machinelearningmastery.com/multi-step-time-series-forecasting/](https://machinelearningmastery.com/multi-step-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/multi-step-time-series-forecasting/`](https://machinelearningmastery.com/multi-step-time-series-forecasting/)
 
 通常讨论时间序列预测，其中仅需要一步预测。
 

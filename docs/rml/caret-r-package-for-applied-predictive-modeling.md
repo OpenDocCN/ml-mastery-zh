@@ -14,7 +14,7 @@ R 中的脱字号套餐被称为“ *R 的竞争优势*”。它使得在 R 中�
 
 我们开始吧。
 
-[![Caret package in R](img/3536c9556d60967e606a9a2b78ffeeed.png)](https://machinelearningmastery.com/wp-content/uploads/2014/09/Caret-package-in-R.png)
+![Caret package in R](https://machinelearningmastery.com/wp-content/uploads/2014/09/Caret-package-in-R.png)
 
 R 中的 Caret 包
 

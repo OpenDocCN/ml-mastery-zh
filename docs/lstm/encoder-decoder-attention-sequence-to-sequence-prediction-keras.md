@@ -1,6 +1,6 @@
 # 如何在 Keras 中开发带有注意力的编解码器模型
 
-> 原文： [https://machinelearningmastery.com/encoder-decoder-attention-sequence-to-sequence-prediction-keras/](https://machinelearningmastery.com/encoder-decoder-attention-sequence-to-sequence-prediction-keras/)
+> 原文： [`machinelearningmastery.com/encoder-decoder-attention-sequence-to-sequence-prediction-keras/`](https://machinelearningmastery.com/encoder-decoder-attention-sequence-to-sequence-prediction-keras/)
 
 用于循环神经网络的编解码器架构被证明在诸如机器翻译和字幕生成之类的自然语言处理领域中的大量序列到序列预测问题上是强大的。
 

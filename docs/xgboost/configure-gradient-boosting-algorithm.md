@@ -1,6 +1,6 @@
 # 如何配置梯度提升算法
 
-> 原文： [https://machinelearningmastery.com/configure-gradient-boosting-algorithm/](https://machinelearningmastery.com/configure-gradient-boosting-algorithm/)
+> 原文： [`machinelearningmastery.com/configure-gradient-boosting-algorithm/`](https://machinelearningmastery.com/configure-gradient-boosting-algorithm/)
 
 梯度提升是应用机器学习最强大的技术之一，因此很快成为最受欢迎的技术之一。
 
@@ -45,7 +45,7 @@
 
 > 随机森林＆gt;套袋＆gt;单树
 
-第 10 章标题为“[统计学习要素：数据挖掘，推理和预测](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)”中的“提升和加性树”专门用于提升。在其中，它们提供了用于配置梯度提升的启发式方法以及一些实证研究。
+第十章标题为“[统计学习要素：数据挖掘，推理和预测](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)”中的“提升和加性树”专门用于提升。在其中，它们提供了用于配置梯度提升的启发式方法以及一些实证研究。
 
 他们评论说树中的节点数（J）的值很好，约为 6，通常在 4 到 8 的范围内有良好的值。
 

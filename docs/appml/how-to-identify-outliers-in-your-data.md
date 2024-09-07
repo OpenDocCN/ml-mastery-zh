@@ -1,6 +1,6 @@
 # 如何识别数据中的异常值
 
-> 原文： [https://machinelearningmastery.com/how-to-identify-outliers-in-your-data/](https://machinelearningmastery.com/how-to-identify-outliers-in-your-data/)
+> 原文： [`machinelearningmastery.com/how-to-identify-outliers-in-your-data/`](https://machinelearningmastery.com/how-to-identify-outliers-in-your-data/)
 
 Bojan Miletic 在使用机器学习算法时询问了有关数据集中异常值检测的问题。这篇文章是对他的问题的回答。
 
@@ -91,4 +91,4 @@ Aggarwal 评论说，异常模型的可解释性至关重要。对于特定数�
 有关数据挖掘社区对异常值的现代处理，请参阅：
 
 *   [异常分析](http://www.amazon.com/dp/1461463955?tag=inspiredalgor-20)（会员链接）由 Aggarwal 于 2013 年出版
-*   第 7 章，Irad Ben-Gal 在[数据挖掘与知识发现手册](http://www.amazon.com/dp/0387098224?tag=inspiredalgor-20)（会员链接）中编辑，由 Maimon 和 Rokach 编辑，于 2010 年出版
+*   第七章，Irad Ben-Gal 在[数据挖掘与知识发现手册](http://www.amazon.com/dp/0387098224?tag=inspiredalgor-20)（会员链接）中编辑，由 Maimon 和 Rokach 编辑，于 2010 年出版

@@ -1,6 +1,6 @@
 # 使用来自 UCI 机器学习库的数据集练习机器学习
 
-> 原文： [https://machinelearningmastery.com/practice-machine-learning-with-small-in-memory-datasets-from-the-uci-machine-learning-repository/](https://machinelearningmastery.com/practice-machine-learning-with-small-in-memory-datasets-from-the-uci-machine-learning-repository/)
+> 原文： [`machinelearningmastery.com/practice-machine-learning-with-small-in-memory-datasets-from-the-uci-machine-learning-repository/`](https://machinelearningmastery.com/practice-machine-learning-with-small-in-memory-datasets-from-the-uci-machine-learning-repository/)
 
 在哪里可以获得良好的数据集来练习机器学习？
 
@@ -59,7 +59,7 @@
 
 25 年来，它一直是需要数据集的机器学习研究人员和机器学习从业者的首选。
 
-[![UCI Machine Learning Repository](img/c37b3b5aff40c6a329e7e93b31dbb937.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/UCI-Machine-Learning-Repository.png)
+![UCI Machine Learning Repository](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/UCI-Machine-Learning-Repository.png)
 
 UCI 机器学习库
 
@@ -120,7 +120,7 @@ UCI 机器学习库
 4.  改善结果
 5.  写作结果
 
-[![Machine Learning for Programmers - Select a Systematic Process](img/9808919901691497af468a6cf9a89d8d.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/Machine-Learning-for-Programmers-Select-a-Systematic-Process-e1439699783406.png)
+![Machine Learning for Programmers - Select a Systematic Process](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/Machine-Learning-for-Programmers-Select-a-Systematic-Process-e1439699783406.png)
 
 选择一个系统且可重复的流程，您可以使用该流程始终如一地提供结果。
 

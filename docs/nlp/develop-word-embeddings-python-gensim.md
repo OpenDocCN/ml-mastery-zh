@@ -1,6 +1,6 @@
 # 如何使用 Python 和 Gensim 开发词嵌入
 
-> 原文： [https://machinelearningmastery.com/develop-word-embeddings-python-gensim/](https://machinelearningmastery.com/develop-word-embeddings-python-gensim/)
+> 原文： [`machinelearningmastery.com/develop-word-embeddings-python-gensim/`](https://machinelearningmastery.com/develop-word-embeddings-python-gensim/)
 
 词嵌入是一种在自然语言处理中表示文本的现代方法。
 

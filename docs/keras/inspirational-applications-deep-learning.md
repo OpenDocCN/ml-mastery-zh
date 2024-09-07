@@ -1,6 +1,6 @@
 # 8 个深度学习的鼓舞人心的应用
 
-> 原文： [https://machinelearningmastery.com/inspirational-applications-deep-learning/](https://machinelearningmastery.com/inspirational-applications-deep-learning/)
+> 原文： [`machinelearningmastery.com/inspirational-applications-deep-learning/`](https://machinelearningmastery.com/inspirational-applications-deep-learning/)
 
 如果说深度学习是在一系列复杂问题中实现最先进的结果，这种说法是有些夸张的。
 
@@ -72,7 +72,7 @@
 ### 文件
 
 *   [深色着色](http://www.cs.cityu.edu.hk/~qiyang/publications/iccv-15.pdf) [pdf]，2015
-*   [彩色图像着色](http://arxiv.org/pdf/1603.08511.pdf)[pdf]([网站](http://richzhang.github.io/colorization/)，2016
+*   [彩色图像着色](http://arxiv.org/pdf/1603.08511.pdf)pdf，2016
 *   [自动着色的学习表示](http://arxiv.org/pdf/1603.06668.pdf) [pdf]（[网站](http://people.cs.uchicago.edu/~larsson/colorization/)），2016
 *   [深度卷积神经网络的图像着色](http://cs231n.stanford.edu/reports2016/219_Report.pdf) [pdf]，2016
 

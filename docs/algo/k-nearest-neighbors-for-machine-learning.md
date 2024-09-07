@@ -1,6 +1,6 @@
 # 机器学习中的 K 最近邻
 
-> 原文： [https://machinelearningmastery.com/k-nearest-neighbors-for-machine-learning/](https://machinelearningmastery.com/k-nearest-neighbors-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/k-nearest-neighbors-for-machine-learning/`](https://machinelearningmastery.com/k-nearest-neighbors-for-machine-learning/)
 
 在这篇文章中，您将发现用于分类和回归的 K 最近邻（KNN）算法。阅读这篇文章后你会知道的。
 
@@ -116,10 +116,10 @@ KNN 适用于少量输入变量（p），但在输入数量非常大时会遇到
 
 以下是从预测性建模角度介绍 KNN 算法的一些优秀的机器学习文本。
 
-1.  [应用预测性建模](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20)，第 7 章用于回归，第 13 章用于分类。
+1.  [应用预测性建模](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20)，第七章用于回归，第十三章用于分类。
 2.  [数据挖掘：实用机器学习工具和技术](http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20)，第 76 和 128 页
 3.  [做数据科学：从前线直接谈话](http://www.amazon.com/dp/1449358659?tag=inspiredalgor-20)，第 71 页
-4.  [机器学习](http://www.amazon.com/dp/0070428077?tag=inspiredalgor-20)，第 8 章
+4.  [机器学习](http://www.amazon.com/dp/0070428077?tag=inspiredalgor-20)，第八章
 
 还可以在维基百科上查看 [K 最近邻](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm) 。
 

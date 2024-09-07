@@ -1,6 +1,6 @@
 # 如何使用 Anaconda 为机器学习和深度学习设置 Python 环境
 
-> 原文： [https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/](https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/)
+> 原文： [`machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/`](https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/)
 
 在某些平台上安装 Python 机器学习环境可能很困难。
 

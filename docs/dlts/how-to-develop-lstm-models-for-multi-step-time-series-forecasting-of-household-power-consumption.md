@@ -1,6 +1,6 @@
 # 如何开发用于家庭用电的多步时间序列预测的 LSTM 模型
 
-> 原文： [https://machinelearningmastery.com/how-to-develop-lstm-models-for-multi-step-time-series-forecasting-of-household-power-consumption/](https://machinelearningmastery.com/how-to-develop-lstm-models-for-multi-step-time-series-forecasting-of-household-power-consumption/)
+> 原文： [`machinelearningmastery.com/how-to-develop-lstm-models-for-multi-step-time-series-forecasting-of-household-power-consumption/`](https://machinelearningmastery.com/how-to-develop-lstm-models-for-multi-step-time-series-forecasting-of-household-power-consumption/)
 
 鉴于智能电表的兴起以及太阳能电池板等发电技术的广泛采用，可提供大量的用电数据。
 

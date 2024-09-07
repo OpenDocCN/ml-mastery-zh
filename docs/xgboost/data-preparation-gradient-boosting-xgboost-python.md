@@ -1,6 +1,6 @@
 # 使用 Python 和 XGBoost 为梯度提升准备数据
 
-> 原文： [https://machinelearningmastery.com/data-preparation-gradient-boosting-xgboost-python/](https://machinelearningmastery.com/data-preparation-gradient-boosting-xgboost-python/)
+> 原文： [`machinelearningmastery.com/data-preparation-gradient-boosting-xgboost-python/`](https://machinelearningmastery.com/data-preparation-gradient-boosting-xgboost-python/)
 
 XGBoost 因其速度和表现而成为 Gradient Boosting 的流行实现。
 

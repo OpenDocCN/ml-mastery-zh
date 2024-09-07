@@ -1,6 +1,6 @@
 # 如何转换数据来更好地拟合正态分布
 
-> 原文： [https://machinelearningmastery.com/how-to-transform-data-to-fit-the-normal-distribution/](https://machinelearningmastery.com/how-to-transform-data-to-fit-the-normal-distribution/)
+> 原文： [`machinelearningmastery.com/how-to-transform-data-to-fit-the-normal-distribution/`](https://machinelearningmastery.com/how-to-transform-data-to-fit-the-normal-distribution/)
 
 统计领域的很大一部分涉及假设高斯分布的方法：熟悉的钟形曲线。
 

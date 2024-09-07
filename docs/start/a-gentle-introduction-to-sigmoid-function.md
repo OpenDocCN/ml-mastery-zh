@@ -14,7 +14,7 @@
 
 我们开始吧。
 
-[![A Gentle Introduction to sigmoid function. Photo by Mehreen Saeed, some rights reserved.](img/445589d8177507dab56b988c6817063d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/fish.jpg)
+![A Gentle Introduction to sigmoid function. Photo by Mehreen Saeed, some rights reserved.](https://machinelearningmastery.com/wp-content/uploads/2021/08/fish.jpg)
 
 Sigmoid 函数简介。梅赫林·赛义德摄，版权所有。
 
@@ -37,7 +37,7 @@ sigmoid 函数是逻辑函数的一种特殊形式，通常用σ(x)或 sig(x)表
 
 sigmoid 函数的图形是一条 S 形曲线，如下图中的绿线所示。该图还以粉红色显示了导数的图形。右边显示了导数的表达式以及一些重要的性质。
 
-[![Graph of the sigmoid function and its derivative. Some important properties are also shown.](img/449a1d6e78ffc5df34965cf3970e1268.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/sigmoid.png)
+![Graph of the sigmoid function and its derivative. Some important properties are also shown.](https://machinelearningmastery.com/wp-content/uploads/2021/08/sigmoid.png)
 
 sigmoid 函数及其导数的图形。还显示了一些重要特性。
 
@@ -59,7 +59,7 @@ sigmoid 函数也被称为挤压函数，因为它的定义域是所有实数的
 
 sigmoid 函数用作神经网络中的激活函数。为了回顾什么是激活函数，下图显示了激活函数在神经网络的一层中的作用。输入的加权和通过激活函数传递，该输出作为下一层的输入。
 
-[![A sigmoid unit in a neural network](img/d376c073ecfdd9fcefb5d1f6af3e8a87.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/sigmoidUnit.png)
+![A sigmoid unit in a neural network](https://machinelearningmastery.com/wp-content/uploads/2021/08/sigmoidUnit.png)
 
 神经网络中的 sigmoid 单元
 
@@ -69,7 +69,7 @@ sigmoid 函数用作神经网络中的激活函数。为了回顾什么是激活
 
 假设我们有一个典型的分类问题，其中我们在空间中有一组点，每个点都被分配了一个类标签。如果一条直线(或者 n 维空间中的超平面)可以划分这两类，那么我们就有了一个线性可分问题。另一方面，如果一条直线不足以划分这两个类，那么我们就有一个非线性可分问题。下图显示了二维空间中的数据。每个点都分配有红色或蓝色的类别标签。左图显示了一个线性可分的问题，需要一个线性边界来区分这两个类。右图显示了一个非线性可分问题，其中需要一个非线性决策边界。
 
-[![Linera Vs. Non-Linearly separable problems](img/b72a0afbca1e3fcc77ef32670c4e1beb.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/linearvsnonlinear.png)
+![Linera Vs. Non-Linearly separable problems](https://machinelearningmastery.com/wp-content/uploads/2021/08/linearvsnonlinear.png)
 
 Linera 与非线性可分问题
 

@@ -1,6 +1,6 @@
 # 如何在 Python 中计算机器学习结果的自举置信区间
 
-> 原文： [https://machinelearningmastery.com/calculate-bootstrap-confidence-intervals-machine-learning-results-python/](https://machinelearningmastery.com/calculate-bootstrap-confidence-intervals-machine-learning-results-python/)
+> 原文： [`machinelearningmastery.com/calculate-bootstrap-confidence-intervals-machine-learning-results-python/`](https://machinelearningmastery.com/calculate-bootstrap-confidence-intervals-machine-learning-results-python/)
 
 重要的是既展示机器学习模型的预期技能，又展示该模型技能的置信区间。
 

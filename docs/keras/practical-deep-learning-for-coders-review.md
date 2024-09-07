@@ -42,8 +42,8 @@ fast.ai 是一个小型组织，提供关于实用机器学习和深度学习的
 
 在写这篇文章的时候，fast.ai 提供了四门课程；它们是:
 
-*   [面向程序员的实用深度学习，第 1 部分](https://course.fast.ai/)
-*   [面向程序员的前沿深度学习，第 2 部分](https://course.fast.ai/part2.html)
+*   [面向程序员的实用深度学习，第一部分](https://course.fast.ai/)
+*   [面向程序员的前沿深度学习，第二部分](https://course.fast.ai/part2.html)
 *   [面向编码人员的机器学习介绍](http://course18.fast.ai/ml.html)
 *   [编码器的计算线性代数](https://github.com/fastai/numerical-linear-algebra/blob/master/README.md)
 
@@ -159,7 +159,7 @@ fast.ai 是一个小型组织，提供关于实用机器学习和深度学习的
 
 如果您想更深入地了解这个主题，本节将提供更多资源。
 
-*   [面向程序员的实用深度学习，第 1 部分，主页](https://course.fast.ai/)。
+*   [面向程序员的实用深度学习，第一部分，主页](https://course.fast.ai/)。
 *   [深度学习证书第一部分，首页](https://www.usfca.edu/data-institute/certificates/deep-learning-part-one)。
 *   [Coders 1 实用深度学习，YouTube Playlist (2018)](https://www.youtube.com/playlist?list=PLfYUBJiXbdtS2UQRzyrxmyVHoGW0gmLSM) 。
 *   [面向程序员的实用深度学习，Python 笔记本](https://github.com/fastai/fastai/tree/master/courses/dl1)。

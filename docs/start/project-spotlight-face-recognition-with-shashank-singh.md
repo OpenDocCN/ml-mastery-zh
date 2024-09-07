@@ -1,6 +1,6 @@
 # 项目聚焦：Shashank Singh 的人脸识别
 
-> 原文： [https://machinelearningmastery.com/project-spotlight-face-recognition-with-shashank-singh/](https://machinelearningmastery.com/project-spotlight-face-recognition-with-shashank-singh/)
+> 原文： [`machinelearningmastery.com/project-spotlight-face-recognition-with-shashank-singh/`](https://machinelearningmastery.com/project-spotlight-face-recognition-with-shashank-singh/)
 
 Shashank Singh 是程序员和机器学习爱好者，这是一个项目聚焦。
 
@@ -8,7 +8,7 @@ Shashank Singh 是程序员和机器学习爱好者，这是一个项目聚焦�
 
 我做过计算机科学技术学士学位。我在 23 岁的时候共同创立了一家创业公司，在 26 岁生日时大获成功。在那之后，我感觉特别低，很长一段时间都没有灵感。
 
-[![Shashank Singh](img/5c3a9a14d80e94f1a0d9a8425aedf533.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/Shashank-Singh.jpg)
+![Shashank Singh](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/Shashank-Singh.jpg)
 
 Shashank Singh
 
@@ -20,7 +20,7 @@ Shashank Singh
 
 [Helping Faceless](http://www.helpingfaceless.com/) 项目（和 Android 应用程序）正试图通过使用最先进的人脸识别和数据分析来打击贩卖儿童的行为。
 
-[![Child Beggars](img/aa27e439b1022c484c6a7b8fbdce34ea.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/child-beggers.jpg)
+![Child Beggars](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/child-beggers.jpg)
 
 儿童乞丐
 
@@ -30,7 +30,7 @@ Shashank Singh
 
 为了保持日益复杂的检查，我们使用面向服务的架构，整个系统被分解为更小的模块化应用程序，在线上相互连接。所以最后我们使用最适合手头任务的语言或框架。
 
-[![Helping Faceless App](img/416db4700e98f262ccea58d47a8fd149.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/helping-faceless-app.jpg)
+![Helping Faceless App](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/helping-faceless-app.jpg)
 
 帮助匿名应用程序
 
@@ -82,10 +82,10 @@ Shashank Singh
 
 ## 学到更多
 
-*   App： [http://bit.ly/HelpingFacelessMInterview](http://bit.ly/HelpingFacelessMInterview)
-*   Facebook： [https://www.facebook.com/helpingfaceless](https://www.facebook.com/helpingfaceless)
-*   Twitter： [http://www.twitter.com/helpingfaceless](http://www.twitter.com/helpingfaceless)
-*   网站： [http://www.helpingfaceless.com](http://www.helpingfaceless.com)
+*   App： [`bit.ly/HelpingFacelessMInterview`](http://bit.ly/HelpingFacelessMInterview)
+*   Facebook： [`www.facebook.com/helpingfaceless`](https://www.facebook.com/helpingfaceless)
+*   Twitter： [`www.twitter.com/helpingfaceless`](http://www.twitter.com/helpingfaceless)
+*   网站： [`www.helpingfaceless.com`](http://www.helpingfaceless.com)
 
 **你有机器学习方面的项目吗？**
 

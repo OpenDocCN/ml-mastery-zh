@@ -1,6 +1,6 @@
 # 何时使用 MLP，CNN 和 RNN 神经网络
 
-> 原文： [https://machinelearningmastery.com/when-to-use-mlp-cnn-and-rnn-neural-networks/](https://machinelearningmastery.com/when-to-use-mlp-cnn-and-rnn-neural-networks/)
+> 原文： [`machinelearningmastery.com/when-to-use-mlp-cnn-and-rnn-neural-networks/`](https://machinelearningmastery.com/when-to-use-mlp-cnn-and-rnn-neural-networks/)
 > 
 > 校对：[linmeishang](https://github.com/linmeishang)
 

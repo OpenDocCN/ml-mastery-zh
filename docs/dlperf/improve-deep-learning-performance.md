@@ -58,7 +58,7 @@
 
 收益往往越低越小。例如，一个新的问题框架或更多的数据通常会给你更多的回报，而不是调整你的最佳算法的参数。不一定，但总的来说。
 
-我在博客中加入了许多教程的链接，相关网站的问题以及经典的[神经网络常见问题解答](ftp://ftp.sas.com/pub/neural/FAQ.html)上的问题。
+我在博客中加入了许多教程的链接，相关网站的问题以及经典的神经网络常见问题解答上的问题。
 
 有些想法是针对人工神经网络的，但许多是非常笼统的。足够一般，你可以用它们来激发用其他技术提高你的表现的想法。
 
@@ -122,7 +122,7 @@
 相关:
 
 *   [利用 Keras 进行深度学习的图像扩充](https://machinelearningmastery.com/image-augmentation-deep-learning-keras/)
-*   [什么是抖动？(带噪音训练)](ftp://ftp.sas.com/pub/neural/FAQ3.html#A_jitter)
+*   什么是抖动？(带噪音训练)
 
 ### 3)重新缩放您的数据
 
@@ -152,7 +152,7 @@
 
 相关:
 
-*   [我应该标准化输入变量(列向量)吗？](ftp://ftp.sas.com/pub/neural/FAQ2.html#A_std)
+*   我应该标准化输入变量(列向量)吗？
 *   [如何用 Sklearn 为 Python 机器学习准备数据](https://machinelearningmastery.com/prepare-data-machine-learning-python-Sklearn/)
 
 ### 4)转换您的数据
@@ -448,7 +448,7 @@
 相关:
 
 *   [用 Keras 在 Python 中为深度学习模型使用学习率计划](https://machinelearningmastery.com/using-learning-rate-schedules-deep-learning-models-python-keras/)
-*   [反向钻取应该使用什么学习率？](ftp://ftp.sas.com/pub/neural/FAQ2.html#A_learn_rate)
+*   反向钻取应该使用什么学习率？
 
 ### 4)激活功能
 
@@ -465,7 +465,7 @@
 例如，对于回归问题，将二分类的 sigmoid 切换为线性，然后对输出进行后处理。这可能还需要将损失函数更改为更合适的值。有关这些方面的更多想法，请参见数据转换部分。
 相关:
 
-*   [为什么要使用激活功能？](ftp://ftp.sas.com/pub/neural/FAQ2.html#A_act)
+*   为什么要使用激活功能？
 
 ### 5)网络拓扑
 
@@ -492,8 +492,8 @@
 
 这些链接会给你很多尝试的想法，它们确实适合我。
 
-*   [我应该使用多少隐藏层？](ftp://ftp.sas.com/pub/neural/FAQ3.html#A_hl)
-*   [我应该使用多少隐藏单位？](ftp://ftp.sas.com/pub/neural/FAQ3.html#A_hu)
+*   我应该使用多少隐藏层？
+*   我应该使用多少隐藏单位？
 
 ### 6)批次和时代
 
@@ -518,7 +518,7 @@
 
 有关系的
 
-*   [什么是批量、增量、在线…学习？](ftp://ftp.sas.com/pub/neural/FAQ2.html#A_styles)
+*   什么是批量、增量、在线…学习？
 *   [直观来看，小批量如何影响(随机)梯度下降的表现？](https://www.quora.com/Intuitively-how-does-mini-batch-size-affect-the-performance-of-stochastic-gradient-descent)
 
 ### 7)正规化
@@ -544,7 +544,7 @@ drop 在训练过程中随机跳过神经元，迫使层中的其他人捡起松
 相关:
 
 *   [基于 Keras 的深度学习模型中的丢弃正则化](https://machinelearningmastery.com/dropout-regularization-deep-learning-models-keras/)
-*   [什么是重量衰减？](ftp://ftp.sas.com/pub/neural/FAQ3.html#A_decay)
+*   什么是重量衰减？
 
 ### 8)优化和损失
 
@@ -572,7 +572,7 @@ drop 在训练过程中随机跳过神经元，迫使层中的其他人捡起松
 相关:
 
 *   [梯度下降优化算法概述](http://sebastianruder.com/optimizing-gradient-descent/)
-*   [什么是共轭梯度，Levenberg-Marquardt 等。？](ftp://ftp.sas.com/pub/neural/FAQ2.html#A_numanal)
+*   什么是共轭梯度，Levenberg-Marquardt 等。？
 *   [论深度学习的优化方法](http://ai.stanford.edu/~ang/papers/icml11-OptimizationForDeepLearning.pdf)，2011 [PDF]
 
 ### 9)提前停止
@@ -592,7 +592,7 @@ Checkpointing 允许你在不停止的情况下提前停止，让你在跑步结
 相关:
 
 *   [如何在 Keras 中检查点深度学习模型](https://machinelearningmastery.com/check-point-deep-learning-models-keras/)
-*   [什么是早停？](ftp://ftp.sas.com/pub/neural/FAQ3.html#A_stop)
+*   什么是早停？
 
 ## 4.使用集成提高表现
 
@@ -663,7 +663,7 @@ Checkpointing 允许你在不停止的情况下提前停止，让你在跑步结
 
 我将列出一些资源和相关的帖子，如果你想更深入地探讨，你可能会觉得有趣。
 
-*   [神经网络常见问题](ftp://ftp.sas.com/pub/neural/FAQ.html)
+*   神经网络常见问题
 *   [如何用 Keras 在 Python 中网格搜索深度学习模型的超参数](https://machinelearningmastery.com/grid-search-hyperparameters-deep-learning-models-python-keras/)
 *   [必须知道深层神经网络的技巧/诀窍](http://lamda.nju.edu.cn/weixs/project/CNNTricks/CNNTricks.html)
 *   [如何用深度神经网络提高验证准确率？](https://stackoverflow.com/questions/37020754/how-to-increase-validation-accuracy-with-deep-neural-net)

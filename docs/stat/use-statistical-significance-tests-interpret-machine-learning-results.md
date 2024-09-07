@@ -1,6 +1,6 @@
 # 如何使用统计显着性检验来解释机器学习结果
 
-> 原文： [https://machinelearningmastery.com/use-statistical-significance-tests-interpret-machine-learning-results/](https://machinelearningmastery.com/use-statistical-significance-tests-interpret-machine-learning-results/)
+> 原文： [`machinelearningmastery.com/use-statistical-significance-tests-interpret-machine-learning-results/`](https://machinelearningmastery.com/use-statistical-significance-tests-interpret-machine-learning-results/)
 
 在比较两种不同的机器学习算法或将相同算法与不同配置进行比较时，最好收集一组结果。
 

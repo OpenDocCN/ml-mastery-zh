@@ -1,6 +1,6 @@
 # 如何用 Python 从零开始实现基线机器学习算法
 
-> 原文： [https://machinelearningmastery.com/implement-baseline-machine-learning-algorithms-scratch-python/](https://machinelearningmastery.com/implement-baseline-machine-learning-algorithms-scratch-python/)
+> 原文： [`machinelearningmastery.com/implement-baseline-machine-learning-algorithms-scratch-python/`](https://machinelearningmastery.com/implement-baseline-machine-learning-algorithms-scratch-python/)
 
 在预测性建模问题上建立基线表现非常重要。
 

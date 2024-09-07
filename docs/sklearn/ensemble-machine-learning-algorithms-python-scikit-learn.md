@@ -1,6 +1,6 @@
 # 使用 Python 和 scikit-learn 的集成机器学习算法
 
-> 原文： [https://machinelearningmastery.com/ensemble-machine-learning-algorithms-python-scikit-learn/](https://machinelearningmastery.com/ensemble-machine-learning-algorithms-python-scikit-learn/)
+> 原文： [`machinelearningmastery.com/ensemble-machine-learning-algorithms-python-scikit-learn/`](https://machinelearningmastery.com/ensemble-machine-learning-algorithms-python-scikit-learn/)
 
 合奏可以提高数据集的准确率。
 

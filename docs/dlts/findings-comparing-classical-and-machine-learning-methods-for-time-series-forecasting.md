@@ -1,6 +1,6 @@
 # 比较时间序列预测的的经典和机器学习方法的结果
 
-> 原文： [https://machinelearningmastery.com/findings-comparing-classical-and-machine-learning-methods-for-time-series-forecasting/](https://machinelearningmastery.com/findings-comparing-classical-and-machine-learning-methods-for-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/findings-comparing-classical-and-machine-learning-methods-for-time-series-forecasting/`](https://machinelearningmastery.com/findings-comparing-classical-and-machine-learning-methods-for-time-series-forecasting/)
 
 通常报告机器学习和深度学习方法是所有预测性建模问题的关键解决方案。
 

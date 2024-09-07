@@ -1,6 +1,6 @@
 # 如何在 Python 中单热编码序列数据
 
-> 原文： [https://machinelearningmastery.com/how-to-one-hot-encode-sequence-data-in-python/](https://machinelearningmastery.com/how-to-one-hot-encode-sequence-data-in-python/)
+> 原文： [`machinelearningmastery.com/how-to-one-hot-encode-sequence-data-in-python/`](https://machinelearningmastery.com/how-to-one-hot-encode-sequence-data-in-python/)
 
 机器学习算法不能直接使用分类数据。
 

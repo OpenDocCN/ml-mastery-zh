@@ -1,6 +1,6 @@
 # Python 中使用长短期记忆网络的多步时间序列预测
 
-> 原文： [https://machinelearningmastery.com/multi-step-time-series-forecasting-long-short-term-memory-networks-python/](https://machinelearningmastery.com/multi-step-time-series-forecasting-long-short-term-memory-networks-python/)
+> 原文： [`machinelearningmastery.com/multi-step-time-series-forecasting-long-short-term-memory-networks-python/`](https://machinelearningmastery.com/multi-step-time-series-forecasting-long-short-term-memory-networks-python/)
 
 长期短期记忆网络或 LSTM 是一种可以学习和预测长序列的循环神经网络。
 

@@ -1,6 +1,6 @@
 # 浅谈机器学习的中心极限定理
 
-> 原文： [https://machinelearningmastery.com/a-gentle-introduction-to-the-central-limit-theorem-for-machine-learning/](https://machinelearningmastery.com/a-gentle-introduction-to-the-central-limit-theorem-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/a-gentle-introduction-to-the-central-limit-theorem-for-machine-learning/`](https://machinelearningmastery.com/a-gentle-introduction-to-the-central-limit-theorem-for-machine-learning/)
 
 中心极限定理是经常被引用但却被误解的统计和机器学习的支柱。
 

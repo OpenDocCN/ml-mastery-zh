@@ -1,6 +1,6 @@
 # 循环神经网络在时间序列预测中的应用
 
-> 原文： [https://machinelearningmastery.com/promise-recurrent-neural-networks-time-series-forecasting/](https://machinelearningmastery.com/promise-recurrent-neural-networks-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/promise-recurrent-neural-networks-time-series-forecasting/`](https://machinelearningmastery.com/promise-recurrent-neural-networks-time-series-forecasting/)
 
 循环神经网络是一种神经网络，它在输入观察中添加了对顺序的显式处理。
 

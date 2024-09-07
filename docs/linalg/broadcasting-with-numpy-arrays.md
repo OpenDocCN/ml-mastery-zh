@@ -1,6 +1,6 @@
 # NumPy 数组广播的温和介绍
 
-> 原文： [https://machinelearningmastery.com/broadcasting-with-numpy-arrays/](https://machinelearningmastery.com/broadcasting-with-numpy-arrays/)
+> 原文： [`machinelearningmastery.com/broadcasting-with-numpy-arrays/`](https://machinelearningmastery.com/broadcasting-with-numpy-arrays/)
 
 不能添加，减去或通常在算术中使用具有不同大小的数组。
 
@@ -318,7 +318,7 @@ ValueError: operands could not be broadcast together with shapes (2,3) (2,)
 
 ### 图书
 
-*   第 2 章，[深度学习](http://amzn.to/2CFmZZw)，2016 年。
+*   第二章，[深度学习](http://amzn.to/2CFmZZw)，2016 年。
 
 ### 用品
 

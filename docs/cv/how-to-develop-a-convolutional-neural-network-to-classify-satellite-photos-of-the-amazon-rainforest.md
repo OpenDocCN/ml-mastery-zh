@@ -549,7 +549,7 @@ F1 = 2 x (precision x recall) / (precision + recall)
 F-β度量是 F1 的推广，它允许引入一个名为*β*的术语，该术语衡量在计算平均值时，回忆与准确率相比有多重要
 
 ```py
-F-Beta = (1 + Beta^2) x (precision x recall) / (Beta^2 x precision + recall)
+F-Beta = (1 + Beta²) x (precision x recall) / (Beta² x precision + recall)
 ```
 
 beta 的一个常见值是 2，这是竞争中使用的值，召回的价值是准确率的两倍。这通常被称为 F2 分数。

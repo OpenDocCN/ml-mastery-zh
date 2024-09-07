@@ -1,6 +1,6 @@
 # 通过从零开始实现机器学习算法来理解它们（以及绕过坏代码的策略）
 
-> 原文： [https://machinelearningmastery.com/understand-machine-learning-algorithms-by-implementing-them-from-scratch/](https://machinelearningmastery.com/understand-machine-learning-algorithms-by-implementing-them-from-scratch/)
+> 原文： [`machinelearningmastery.com/understand-machine-learning-algorithms-by-implementing-them-from-scratch/`](https://machinelearningmastery.com/understand-machine-learning-algorithms-by-implementing-them-from-scratch/)
 
 从零开始实现机器学习算法似乎是程序员理解机器学习的好方法。
 
@@ -74,7 +74,7 @@
 
 这是我今年最喜欢的初学机器学习书籍之一。
 
-[![Amazon Image](img/540e454d081f9d11759a1831e9c18a8c.jpg)](http://www.amazon.com/dp/149190142X?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/149190142X?tag=inspiredalgor-20)
 
 ### 机器学习：Stephen Marsland 的算法视角
 
@@ -82,7 +82,7 @@
 
 我喜欢它，它提供了数学描述，伪代码以及工作源代码的混合。
 
-[![Amazon Image](img/bbd25613cb12b55b69497c7479119553.jpg)](http://www.amazon.com/dp/1466583282?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1466583282?tag=inspiredalgor-20)
 
 ### Peter Harrington 的“机器学习”
 
@@ -90,7 +90,7 @@
 
 我喜欢使用编号和箭头将代码与描述联系起来。
 
-[![Amazon Image](img/aa40eb3d905cec1b098596d57a0b3ac5.jpg)](http://www.amazon.com/dp/1617290181?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1617290181?tag=inspiredalgor-20)
 
 我是否错过了一本好书，它提供了从零开始实现机器学习算法的编程教程？
 

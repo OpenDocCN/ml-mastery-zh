@@ -1,6 +1,6 @@
 # 使用 Pandas 的快速和肮脏的数据分析
 
-> 原文： [https://machinelearningmastery.com/quick-and-dirty-data-analysis-with-pandas/](https://machinelearningmastery.com/quick-and-dirty-data-analysis-with-pandas/)
+> 原文： [`machinelearningmastery.com/quick-and-dirty-data-analysis-with-pandas/`](https://machinelearningmastery.com/quick-and-dirty-data-analysis-with-pandas/)
 
 在为建模选择和准备数据之前，您需要了解您必须从哪开始。
 
@@ -106,7 +106,7 @@ data.boxplot()
 
 此片段将绘制图形的样式（通过 matplotlib）更改为默认样式，该样式看起来更好。
 
-[![Attribute box and whisker plots](img/ae4cf6ed4618370d1c52e028eaf8b09a.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/boxplots.png)
+![Attribute box and whisker plots](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/boxplots.png)
 
 属性框和胡须图
 
@@ -120,7 +120,7 @@ data.hist()
 
 这使您可以记录属性分布的有趣属性，例如 pres 和 skin 等属性的可能正态分布。
 
-[![Attribute Histogram Matrix](img/7737b6bef61027998369b872c3d88ac4.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/histograms.png)
+![Attribute Histogram Matrix](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/histograms.png)
 
 属性直方图矩阵
 
@@ -140,11 +140,11 @@ data.groupby('class').hist()
 
 数据按类属性（两组）分组，然后为每个组中的属性创建直方图矩阵。结果是两个图像。
 
-[![Attribute Histogram Matrix for Class 0](img/08c26acb4ae51990fbeab711a5f84f48.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/histogram_class0.png)
+![Attribute Histogram Matrix for Class 0](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/histogram_class0.png)
 
 0 类的属性直方图矩阵
 
-[![Attribute Histogram Matrix for Class 1](img/b72de3d27d90ba3b41bc082e572d998b.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/histograpm_class1.png)
+![Attribute Histogram Matrix for Class 1](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/histograpm_class1.png)
 
 1 类属性直方图矩阵
 
@@ -158,7 +158,7 @@ data.groupby('class').plas.hist(alpha=0.4)
 
 这将按类别对数据进行分组，仅绘制等离子体的直方图，其中红色的类值为 0，蓝色的类值为 1。你可以看到一个类似形状的正态分布，但是一个转变。此属性可能有助于区分类。
 
-[![Overlapping Attribute Histograms for Each Class](img/8a245b6c3119bbcabaa4b57c1ffd5cf7.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/histogram_overlapping.png)
+![Overlapping Attribute Histograms for Each Class](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/histogram_overlapping.png)
 
 每个类的重叠属性直方图
 
@@ -179,7 +179,7 @@ scatter_matrix(data, alpha=0.2, figsize=(6, 6), diagonal='kde')
 
 这使用构建函数来创建所有属性与所有属性的散点图矩阵。每个属性相对于自身绘制的对角线显示了属性的核密度估计。
 
-[![Attribute Scatter Plot Matrix](img/a57faa20d8525cabcddc55c073ef9e7c.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/scatterplots.png)
+![Attribute Scatter Plot Matrix](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/06/scatterplots.png)
 
 属性散点图矩阵
 

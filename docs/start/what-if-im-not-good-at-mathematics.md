@@ -1,6 +1,6 @@
 # 如果我不擅长数学怎么办？
 
-> 原文： [https://machinelearningmastery.com/what-if-im-not-good-at-mathematics/](https://machinelearningmastery.com/what-if-im-not-good-at-mathematics/)
+> 原文： [`machinelearningmastery.com/what-if-im-not-good-at-mathematics/`](https://machinelearningmastery.com/what-if-im-not-good-at-mathematics/)
 
 实践科目的从业者可能会受到数学嫉妒的困扰。
 
@@ -10,7 +10,7 @@
 
 在这篇文章中，我想说服你，你可以开始并在机器学习方面取得很大进步，而不会在数学方面表现出色。
 
-[![What if I'm Not Good at Mathematics](img/dad7efd9347f7e4204039485fbf87197.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/What-if-Im-Not-Good-at-Mathematics.jpg)
+![What if I'm Not Good at Mathematics](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/What-if-Im-Not-Good-at-Mathematics.jpg)
 
 如果我不擅长数学怎么办
 [meneldur](http://www.flickr.com/photos/meneldur/59465632/sizes/l/) 的照片，保留一些权利

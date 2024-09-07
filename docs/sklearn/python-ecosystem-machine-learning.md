@@ -1,6 +1,6 @@
 # 机器学习中的 Python 生态系统
 
-> 原文： [https://machinelearningmastery.com/python-ecosystem-machine-learning/](https://machinelearningmastery.com/python-ecosystem-machine-learning/)
+> 原文： [`machinelearningmastery.com/python-ecosystem-machine-learning/`](https://machinelearningmastery.com/python-ecosystem-machine-learning/)
 
 Python 生态系统正在发展，可能成为机器学习的主要平台。
 

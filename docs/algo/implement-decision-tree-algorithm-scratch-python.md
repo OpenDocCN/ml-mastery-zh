@@ -1,6 +1,6 @@
 # 如何在 Python 中从零开始实现决策树算法
 
-> 原文： [https://machinelearningmastery.com/implement-decision-tree-algorithm-scratch-python/](https://machinelearningmastery.com/implement-decision-tree-algorithm-scratch-python/)
+> 原文： [`machinelearningmastery.com/implement-decision-tree-algorithm-scratch-python/`](https://machinelearningmastery.com/implement-decision-tree-algorithm-scratch-python/)
 
 决策树是一种强大的预测方法，非常受欢迎。
 

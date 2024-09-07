@@ -12,7 +12,7 @@
 
 我们开始吧。
 
-[![classification with decision trees](img/4cec4d88ec287c897967c86d177005a1.png)](https://machinelearningmastery.com/wp-content/uploads/2014/08/classification-with-decision-trees.jpg)
+![classification with decision trees](https://machinelearningmastery.com/wp-content/uploads/2014/08/classification-with-decision-trees.jpg)
 
 决策树分类
 图片由 [stwn](https://www.flickr.com/photos/stwn/14508509530) 提供，保留部分权利

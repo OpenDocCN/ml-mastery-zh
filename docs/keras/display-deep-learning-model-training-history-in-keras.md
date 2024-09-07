@@ -1,6 +1,6 @@
 # 在 Keras 中展示深度学习模型训练历史
 
-> 原文： [https://machinelearningmastery.com/display-deep-learning-model-training-history-in-keras/](https://machinelearningmastery.com/display-deep-learning-model-training-history-in-keras/)
+> 原文： [`machinelearningmastery.com/display-deep-learning-model-training-history-in-keras/`](https://machinelearningmastery.com/display-deep-learning-model-training-history-in-keras/)
 
 您可以通过观察他们在训练期间随时间的表现来学习很多关于神经网络和深度学习模型的知识。
 

@@ -1,6 +1,6 @@
 # 将 Keras 用于深度学习的图像增强
 
-> 原文： [https://machinelearningmastery.com/image-augmentation-deep-learning-keras/](https://machinelearningmastery.com/image-augmentation-deep-learning-keras/)
+> 原文： [`machinelearningmastery.com/image-augmentation-deep-learning-keras/`](https://machinelearningmastery.com/image-augmentation-deep-learning-keras/)
 
 使用神经网络和深度学习模型时，需要进行数据处理，更复杂的物体识别任务也需要越来越多数据增强。
 

@@ -1,6 +1,6 @@
 # 如何用 Python 从零开始实现机器学习算法指标
 
-> 原文： [https://machinelearningmastery.com/implement-machine-learning-algorithm-performance-metrics-scratch-python/](https://machinelearningmastery.com/implement-machine-learning-algorithm-performance-metrics-scratch-python/)
+> 原文： [`machinelearningmastery.com/implement-machine-learning-algorithm-performance-metrics-scratch-python/`](https://machinelearningmastery.com/implement-machine-learning-algorithm-performance-metrics-scratch-python/)
 
 在做出预测之后，你需要知道它们是否有用。
 
@@ -347,7 +347,7 @@ RMSE 计算为实际结果和预测之间的平方差异的平均值的平方根
 平方每个错误会强制值为正，并且均方误差的平方根将误差度量返回到原始单位以进行比较。
 
 ```py
-RMSE = sqrt( sum( (predicted_i - actual_i)^2 ) / total predictions)
+RMSE = sqrt( sum( (predicted_i - actual_i)² ) / total predictions)
 ```
 
 下面是一个名为 **rmse_metric（）**的函数的实现。它使用数学模块中的 **sqrt（）**函数，并使用**运算符将误差提高到 2 次幂。

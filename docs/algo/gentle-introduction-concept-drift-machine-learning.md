@@ -1,6 +1,6 @@
 # 浅谈机器学习中的概念漂移
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-concept-drift-machine-learning/](https://machinelearningmastery.com/gentle-introduction-concept-drift-machine-learning/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-concept-drift-machine-learning/`](https://machinelearningmastery.com/gentle-introduction-concept-drift-machine-learning/)
 
 数据可能会随时间而变化。这可能导致预测模型中的预测表现较差且降级，假设输入和输出变量之间存在静态关系。
 

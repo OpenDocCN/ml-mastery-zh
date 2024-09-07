@@ -1,6 +1,6 @@
 # 线性代数回顾的没有废话的指南
 
-> 原文： [https://machinelearningmastery.com/no-bullshit-guide-to-linear-algebra-review/](https://machinelearningmastery.com/no-bullshit-guide-to-linear-algebra-review/)
+> 原文： [`machinelearningmastery.com/no-bullshit-guide-to-linear-algebra-review/`](https://machinelearningmastery.com/no-bullshit-guide-to-linear-algebra-review/)
 
 有许多书籍介绍了线性代数领域。
 
@@ -29,7 +29,7 @@
 
 这本书是由 Ivan Savov 编写的，第二版于 2017 年发布.Ivan 拥有电气工程学士学位和硕士和博士学位。在物理学方面，他作为数学和物理学的私人导师在过去的 15 年里一直工作。他知道这个主题以及学生遇到困难的地方。
 
-[![Amazon Image](img/6d7cdfac767aacc713fa2457b5d6d258.jpg)](http://www.amazon.com/dp/0992001021?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0992001021?tag=inspiredalgor-20)
 
 ### 没有先决条件数学
 
@@ -71,7 +71,7 @@
 
 *   **概念图**。页面 v。在目录之后直接提供了思维导图类型图的集合，其中显示了书中的概念，以及实际上线性代数领域中的概念。如果您是视觉思考者，这些可能有助于将各个部分组合在一起。
 *   第 1.15 节，**载体**。在任何向量代数之前，简要介绍向量。有用的背景。
-*   第 2 章，**线性代数简介**。第 101-130 页。阅读整章。它涵盖：
+*   第二章，**线性代数简介**。第 101-130 页。阅读整章。它涵盖：
     *   线性代数中术语的定义。
     *   向量运算，如算术运算和向量范数。
     *   矩阵运算，如算术运算和点积运算。

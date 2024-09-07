@@ -1,6 +1,6 @@
 # 非参数统计的温和介绍
 
-> 原文： [https://machinelearningmastery.com/a-gentle-introduction-to-nonparametric-statistics/](https://machinelearningmastery.com/a-gentle-introduction-to-nonparametric-statistics/)
+> 原文： [`machinelearningmastery.com/a-gentle-introduction-to-nonparametric-statistics/`](https://machinelearningmastery.com/a-gentle-introduction-to-nonparametric-statistics/)
 
 统计和统计方法领域的很大一部分专用于已知分布的数据。
 

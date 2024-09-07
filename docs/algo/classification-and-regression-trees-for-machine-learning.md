@@ -1,6 +1,6 @@
 # 机器学习的分类和回归树
 
-> 原文： [https://machinelearningmastery.com/classification-and-regression-trees-for-machine-learning/](https://machinelearningmastery.com/classification-and-regression-trees-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/classification-and-regression-trees-for-machine-learning/`](https://machinelearningmastery.com/classification-and-regression-trees-for-machine-learning/)
 
 决策树是用于预测性建模机器学习的重要算法类型。
 
@@ -155,9 +155,9 @@ G =（（1 - （g1_1 ^ 2 + g1_2 ^ 2））*（ng1 / n））+（（1 - （g2_1 ^ 2
 
 下面是一些很好的机器学习文本，它们从机器学习的角度描述了 CART 算法。
 
-*   [统计学习简介：在 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) 中的应用，第 8 章
-*   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，第 8 章和第 14 章
-*   [数据挖掘：实用机器学习工具和技术](http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20)，第 6 章。
+*   [统计学习简介：在 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) 中的应用，第八章
+*   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，第八章和第十四章
+*   [数据挖掘：实用机器学习工具和技术](http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20)，第六章。
 
 ## 摘要
 

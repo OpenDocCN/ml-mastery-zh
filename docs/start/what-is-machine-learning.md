@@ -1,6 +1,6 @@
 # 什么是机器学习？
 
-> 原文： [https://machinelearningmastery.com/what-is-machine-learning/](https://machinelearningmastery.com/what-is-machine-learning/)
+> 原文： [`machinelearningmastery.com/what-is-machine-learning/`](https://machinelearningmastery.com/what-is-machine-learning/)
 
 你对机器学习很感兴趣，也许你会涉及到它。
 
@@ -82,7 +82,7 @@ Drew Conway [在 2010 年 9 月创造了一个很好的维恩图](http://drewcon
 
 在他的解释中，他评论说：机器学习=黑客+数学＆amp;统计
 
-[![Data Science Venn Diagram](img/2f66317997ae0c179292017a2348eb20.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/11/Data_Science_VD.png)
+![Data Science Venn Diagram](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/11/Data_Science_VD.png)
 
 数据科学维恩图。归功于 Drew Conway，Creative Commons 被许可为 Attribution-NonCommercial。
 

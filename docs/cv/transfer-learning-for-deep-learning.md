@@ -41,7 +41,7 @@
 
 > 迁移学习是通过从已经学习过的相关任务中转移知识来改进新任务中的学习。
 
-——[第 11 章:迁移学习](ftp://ftp.cs.wisc.edu/machine-learning/shavlik-group/torrey.handbook09.pdf)，[机器学习应用研究手册](https://amzn.to/2fgeVro)，2009。
+——第十一章:迁移学习，[机器学习应用研究手册](https://amzn.to/2fgeVro)，2009。
 
 迁移学习与多任务学习和概念漂移等问题有关，不仅仅是深度学习的研究领域。
 
@@ -180,7 +180,7 @@ Lisa Torrey 和 Jude Shavlik 在[他们关于迁移学习的章节](https://amzn
 ### 报纸
 
 *   [迁移学习调查](https://pdfs.semanticscholar.org/a25f/bcbbae1e8f79c4360d26aa11a3abf1a11972.pdf)，2010。
-*   [第 11 章:迁移学习](ftp://ftp.cs.wisc.edu/machine-learning/shavlik-group/torrey.handbook09.pdf)，[机器学习应用研究手册](https://amzn.to/2fgeVro)，2009。
+*   第十一章:迁移学习，[机器学习应用研究手册](https://amzn.to/2fgeVro)，2009。
 *   [深度神经网络中的特征是如何转移的？](https://arxiv.org/abs/1411.1792)
 
 ### 预训练模型

@@ -1,6 +1,6 @@
 # 如何使用编解码器 LSTM 来打印随机整数序列
 
-> 原文： [https://machinelearningmastery.com/how-to-use-an-encoder-decoder-lstm-to-echo-sequences-of-random-integers/](https://machinelearningmastery.com/how-to-use-an-encoder-decoder-lstm-to-echo-sequences-of-random-integers/)
+> 原文： [`machinelearningmastery.com/how-to-use-an-encoder-decoder-lstm-to-echo-sequences-of-random-integers/`](https://machinelearningmastery.com/how-to-use-an-encoder-decoder-lstm-to-echo-sequences-of-random-integers/)
 
 长短期记忆（LSTM）循环神经网络的一个强大功能是它们可以记住长序列间隔的观察结果。
 

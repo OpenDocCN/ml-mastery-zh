@@ -1,6 +1,6 @@
 # 机器学习的基本概念
 
-> 原文： [https://machinelearningmastery.com/basic-concepts-in-machine-learning/](https://machinelearningmastery.com/basic-concepts-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/basic-concepts-in-machine-learning/`](https://machinelearningmastery.com/basic-concepts-in-machine-learning/)
 
 机器学习的基本概念是什么？
 

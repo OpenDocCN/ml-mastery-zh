@@ -1,6 +1,6 @@
 # 如何在 Python 中对长短期记忆网络使用`TimeDistributed`层
 
-> 原文： [https://machinelearningmastery.com/timedistributed-layer-for-long-short-term-memory-networks-in-python/](https://machinelearningmastery.com/timedistributed-layer-for-long-short-term-memory-networks-in-python/)
+> 原文： [`machinelearningmastery.com/timedistributed-layer-for-long-short-term-memory-networks-in-python/`](https://machinelearningmastery.com/timedistributed-layer-for-long-short-term-memory-networks-in-python/)
 
 长期短期网络或 LSTM 是一种流行且功能强大的循环神经网络或 RNN。
 
@@ -155,8 +155,8 @@ for value in result:
 我们可以看到 LSTM 层有 140 个参数。这是根据输入数量（1）和输出数量（隐藏层中 5 个单位为 5）计算的，如下所示：
 
 ```py
-n = 4 * ((inputs + 1) * outputs + outputs^2)
-n = 4 * ((1 + 1) * 5 + 5^2)
+n = 4 * ((inputs + 1) * outputs + outputs²)
+n = 4 * ((1 + 1) * 5 + 5²)
 n = 4 * 35
 n = 140
 ```

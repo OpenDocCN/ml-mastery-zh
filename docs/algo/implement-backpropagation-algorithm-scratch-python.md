@@ -1,6 +1,6 @@
 # 如何在 Python 中从零开始实现反向传播算法
 
-> 原文： [https://machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/](https://machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/)
+> 原文： [`machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/`](https://machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/)
 
 反向传播算法是经典的前馈人工神经网络。
 

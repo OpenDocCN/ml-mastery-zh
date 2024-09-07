@@ -275,7 +275,7 @@
 
 ### 文章
 
-*   [神经网络常见问题](ftp://ftp.sas.com/pub/neural/FAQ.html)
+*   神经网络常见问题
 *   [必须知道深层神经网络的技巧/诀窍](http://lamda.nju.edu.cn/weixs/project/CNNTricks/CNNTricks.html)
 
 ## 摘要

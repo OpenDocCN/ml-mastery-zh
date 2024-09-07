@@ -1,6 +1,6 @@
 # 深度学习文档分类的最佳实践
 
-> 原文： [https://machinelearningmastery.com/best-practices-document-classification-deep-learning/](https://machinelearningmastery.com/best-practices-document-classification-deep-learning/)
+> 原文： [`machinelearningmastery.com/best-practices-document-classification-deep-learning/`](https://machinelearningmastery.com/best-practices-document-classification-deep-learning/)
 
 文本分类描述了一类问题，例如预测推文和电影评论的情感，以及将电子邮件分类为垃圾邮件。
 

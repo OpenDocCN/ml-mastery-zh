@@ -1,6 +1,6 @@
 # 编解码器循环神经网络中的注意力如何工作
 
-> 原文： [https://machinelearningmastery.com/how-does-attention-work-in-encoder-decoder-recurrent-neural-networks/](https://machinelearningmastery.com/how-does-attention-work-in-encoder-decoder-recurrent-neural-networks/)
+> 原文： [`machinelearningmastery.com/how-does-attention-work-in-encoder-decoder-recurrent-neural-networks/`](https://machinelearningmastery.com/how-does-attention-work-in-encoder-decoder-recurrent-neural-networks/)
 
 注意力是一种机制，旨在提高机器翻译中编解码器 RNN 的表现。
 

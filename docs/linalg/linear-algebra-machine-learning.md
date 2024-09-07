@@ -1,6 +1,6 @@
 # 机器学习中的线性代数
 
-> 原文： [https://machinelearningmastery.com/linear-algebra-machine-learning/](https://machinelearningmastery.com/linear-algebra-machine-learning/)
+> 原文： [`machinelearningmastery.com/linear-algebra-machine-learning/`](https://machinelearningmastery.com/linear-algebra-machine-learning/)
 
 在开始机器学习之前，您不需要学习线性代数，但在某些时候您可能希望深入学习。
 
@@ -10,7 +10,7 @@
 
 如果您已经了解了特征向量和 SVD 分解的方法，那么这篇文章可能不适合您。
 
-[![Linear Algebra For Machine Learning](img/c958e2f0633503a0882090f8b667b4bb.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Linear-Algebra-For-Machine-Learning.jpg)
+![Linear Algebra For Machine Learning](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Linear-Algebra-For-Machine-Learning.jpg)
 
 用于机器学习的线性代数
 照片由 [Sarah](http://www.flickr.com/photos/dichohecho/4456332671) 拍摄，保留一些权利。

@@ -1,6 +1,6 @@
 # 机器学习开发环境
 
-> 原文： [https://machinelearningmastery.com/machine-learning-development-environment/](https://machinelearningmastery.com/machine-learning-development-environment/)
+> 原文： [`machinelearningmastery.com/machine-learning-development-environment/`](https://machinelearningmastery.com/machine-learning-development-environment/)
 
 用于机器学习的开发环境可能与用于解决预测性建模问题的机器学习方法一样重要。
 

@@ -1,6 +1,6 @@
 # 为什么我的结果不如我想的那么好？你可能过拟合了
 
-> 原文： [https://machinelearningmastery.com/arent-results-good-thought-youre-probably-overfitting/](https://machinelearningmastery.com/arent-results-good-thought-youre-probably-overfitting/)
+> 原文： [`machinelearningmastery.com/arent-results-good-thought-youre-probably-overfitting/`](https://machinelearningmastery.com/arent-results-good-thought-youre-probably-overfitting/)
 
 我们都知道运行分析的满意度，并看到结果以我们希望的方式回归：80％的准确度; 85％; 90％？
 
@@ -10,7 +10,7 @@
 
 对于大多数机器学习算法，考虑如何生成这些结果非常重要：不仅仅是算法，而是数据集及其使用方式会对获得的结果产生重大影响。应用于太小数据集的复杂算法可能导致过拟合，从而导致误导性良好的结果。
 
-[![Light at the end of the tunnel](img/a57d86a876769874d5fb8e8bcf1b6b14.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Light-at-the-end-of-the-tunnel.jpg)
+![Light at the end of the tunnel](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Light-at-the-end-of-the-tunnel.jpg)
 
 在隧道尽头的光
 照片由 [darkday](http://www.flickr.com/photos/drainrat/14928494590) ，保留一些权利

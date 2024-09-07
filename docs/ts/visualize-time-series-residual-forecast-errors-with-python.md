@@ -1,6 +1,6 @@
 # 如何用 Python 可视化时间序列预测残差
 
-> 原文： [https://machinelearningmastery.com/visualize-time-series-residual-forecast-errors-with-python/](https://machinelearningmastery.com/visualize-time-series-residual-forecast-errors-with-python/)
+> 原文： [`machinelearningmastery.com/visualize-time-series-residual-forecast-errors-with-python/`](https://machinelearningmastery.com/visualize-time-series-residual-forecast-errors-with-python/)
 
 时间序列回归问题的预测误差称为残差或残差。
 

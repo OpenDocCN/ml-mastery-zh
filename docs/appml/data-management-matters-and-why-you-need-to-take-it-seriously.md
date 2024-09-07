@@ -1,6 +1,6 @@
 # 数据管理至关重要以及为什么需要认真对待它
 
-> 原文： [https://machinelearningmastery.com/data-management-matters-and-why-you-need-to-take-it-seriously/](https://machinelearningmastery.com/data-management-matters-and-why-you-need-to-take-it-seriously/)
+> 原文： [`machinelearningmastery.com/data-management-matters-and-why-you-need-to-take-it-seriously/`](https://machinelearningmastery.com/data-management-matters-and-why-you-need-to-take-it-seriously/)
 
 我们生活在一个淹没在数据中的世界。互联网跟踪，股票市场运动，基因组测序技术及其同类产品都会产生大量数据。
 
@@ -10,7 +10,7 @@
 
 无论您是生成自己的数据，还是使用公开数据，您的结果都必须是可重现的。分析的可重复性主要取决于数据管理。
 
-[![Data Management Matters](img/9c9ca6ffc37f57f327de68d8bedc24b8.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/data-management-matters.jpg)
+![Data Management Matters](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/data-management-matters.jpg)
 
 数据管理事项
 摄影： [Ken Teegardin](https://www.flickr.com/photos/teegardin/5537894072) ，保留一些权利

@@ -1,6 +1,6 @@
 # 如何使用 Python 对 ARIMA 做出样本外预测
 
-> 原文： [https://machinelearningmastery.com/make-sample-forecasts-arima-python/](https://machinelearningmastery.com/make-sample-forecasts-arima-python/)
+> 原文： [`machinelearningmastery.com/make-sample-forecasts-arima-python/`](https://machinelearningmastery.com/make-sample-forecasts-arima-python/)
 
 在开始使用时间序列数据时，进行样本外预测可能会令人困惑。
 

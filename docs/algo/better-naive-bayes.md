@@ -1,6 +1,6 @@
 # 更好的朴素贝叶斯：从朴素贝叶斯算法中收益最大的 12 个技巧
 
-> 原文： [https://machinelearningmastery.com/better-naive-bayes/](https://machinelearningmastery.com/better-naive-bayes/)
+> 原文： [`machinelearningmastery.com/better-naive-bayes/`](https://machinelearningmastery.com/better-naive-bayes/)
 
 Naive Bayes 是一种简单而强大的技术，您应该在分类问题上进行测试和使用。
 
@@ -10,7 +10,7 @@ Naive Bayes 是一种简单而强大的技术，您应该在分类问题上进�
 
 在这篇文章中，您将学习从 Naive Bayes 算法中获得最大收益的技巧和窍门。
 
-[![Better Naive Bayes](img/407cd2016e6e4e31481076cfa4675a2d.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Better-Naive-Bayes.jpg)
+![Better Naive Bayes](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Better-Naive-Bayes.jpg)
 
 更好的朴素贝叶斯
 摄影：[邓肯赫尔](https://www.flickr.com/photos/dullhunk/6097248541)，保留一些权利

@@ -1,6 +1,6 @@
 # 如何利用小实验在 Keras 中开发标题生成模型
 
-> 原文： [https://machinelearningmastery.com/develop-a-caption-generation-model-in-keras/](https://machinelearningmastery.com/develop-a-caption-generation-model-in-keras/)
+> 原文： [`machinelearningmastery.com/develop-a-caption-generation-model-in-keras/`](https://machinelearningmastery.com/develop-a-caption-generation-model-in-keras/)
 
 标题生成是一个具有挑战性的人工智能问题，其中必须为照片生成文本描述。
 

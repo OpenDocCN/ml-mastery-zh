@@ -1,6 +1,6 @@
 # 如何知道您的机器学习模型是否具有良好的表现
 
-> 原文： [https://machinelearningmastery.com/how-to-know-if-your-machine-learning-model-has-good-performance/](https://machinelearningmastery.com/how-to-know-if-your-machine-learning-model-has-good-performance/)
+> 原文： [`machinelearningmastery.com/how-to-know-if-your-machine-learning-model-has-good-performance/`](https://machinelearningmastery.com/how-to-know-if-your-machine-learning-model-has-good-performance/)
 
 在为预测性建模问题开发机器学习模型之后，您如何知道模型的表现是否良好？
 

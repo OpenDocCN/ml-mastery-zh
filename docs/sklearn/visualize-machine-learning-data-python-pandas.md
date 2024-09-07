@@ -1,6 +1,6 @@
 # 使用 Python 和 Pandas 可视化机器学习数据
 
-> 原文： [https://machinelearningmastery.com/visualize-machine-learning-data-python-pandas/](https://machinelearningmastery.com/visualize-machine-learning-data-python-pandas/)
+> 原文： [`machinelearningmastery.com/visualize-machine-learning-data-python-pandas/`](https://machinelearningmastery.com/visualize-machine-learning-data-python-pandas/)
 
 您必须了解您的数据才能从机器学习算法中获得最佳结果。
 

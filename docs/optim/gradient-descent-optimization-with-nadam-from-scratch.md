@@ -117,7 +117,7 @@ Nesterov 加速自适应矩估计，或称**纳达姆**算法，是自适应运�
 
 然后使用“ *nu* ”超参数更新第二个时刻。
 
-*   n(t)= nu * n(t-1)+(1–nu)* g(t)^2
+*   n(t)= nu * n(t-1)+(1–nu)* g(t)²
 
 接下来，使用 Nesterov 动量对第一个时刻进行偏差校正。
 
@@ -248,9 +248,9 @@ pyplot.show()
 
 首先，我们需要一个函数来计算这个函数的导数。
 
-*x^2* 的导数在每个维度上为 *x * 2* 。
+*x²* 的导数在每个维度上为 *x * 2* 。
 
-*   f(x) = x^2
+*   f(x) = x²
 *   f'(x) = x * 2
 
 导数()函数实现如下。
@@ -323,7 +323,7 @@ m[i] = mu * m[i] + (1.0 - mu) * g[i]
 
 ```py
 ...
-# n(t) = nu * n(t-1) + (1 - nu) * g(t)^2
+# n(t) = nu * n(t-1) + (1 - nu) * g(t)²
 n[i] = nu * n[i] + (1.0 - nu) * g[i]**2
 ```
 
@@ -382,7 +382,7 @@ def nadam(objective, derivative, bounds, n_iter, alpha, mu, nu, eps=1e-8):
 		for i in range(bounds.shape[0]):
 			# m(t) = mu * m(t-1) + (1 - mu) * g(t)
 			m[i] = mu * m[i] + (1.0 - mu) * g[i]
-			# n(t) = nu * n(t-1) + (1 - nu) * g(t)^2
+			# n(t) = nu * n(t-1) + (1 - nu) * g(t)²
 			n[i] = nu * n[i] + (1.0 - nu) * g[i]**2
 			# mhat = (mu * m(t) / (1 - mu)) + ((1 - mu) * g(t) / (1 - mu))
 			mhat = (mu * m[i] / (1.0 - mu)) + ((1 - mu) * g[i] / (1.0 - mu))
@@ -461,7 +461,7 @@ def nadam(objective, derivative, bounds, n_iter, alpha, mu, nu, eps=1e-8):
 		for i in range(bounds.shape[0]):
 			# m(t) = mu * m(t-1) + (1 - mu) * g(t)
 			m[i] = mu * m[i] + (1.0 - mu) * g[i]
-			# n(t) = nu * n(t-1) + (1 - nu) * g(t)^2
+			# n(t) = nu * n(t-1) + (1 - nu) * g(t)²
 			n[i] = nu * n[i] + (1.0 - nu) * g[i]**2
 			# mhat = (mu * m(t) / (1 - mu)) + ((1 - mu) * g(t) / (1 - mu))
 			mhat = (mu * m[i] / (1.0 - mu)) + ((1 - mu) * g[i] / (1.0 - mu))
@@ -543,7 +543,7 @@ def nadam(objective, derivative, bounds, n_iter, alpha, mu, nu, eps=1e-8):
 		for i in range(bounds.shape[0]):
 			# m(t) = mu * m(t-1) + (1 - mu) * g(t)
 			m[i] = mu * m[i] + (1.0 - mu) * g[i]
-			# n(t) = nu * n(t-1) + (1 - nu) * g(t)^2
+			# n(t) = nu * n(t-1) + (1 - nu) * g(t)²
 			n[i] = nu * n[i] + (1.0 - nu) * g[i]**2
 			# mhat = (mu * m(t) / (1 - mu)) + ((1 - mu) * g(t) / (1 - mu))
 			mhat = (mu * m[i] / (1.0 - mu)) + ((1 - mu) * g[i] / (1.0 - mu))
@@ -643,7 +643,7 @@ def nadam(objective, derivative, bounds, n_iter, alpha, mu, nu, eps=1e-8):
 		for i in range(bounds.shape[0]):
 			# m(t) = mu * m(t-1) + (1 - mu) * g(t)
 			m[i] = mu * m[i] + (1.0 - mu) * g[i]
-			# n(t) = nu * n(t-1) + (1 - nu) * g(t)^2
+			# n(t) = nu * n(t-1) + (1 - nu) * g(t)²
 			n[i] = nu * n[i] + (1.0 - nu) * g[i]**2
 			# mhat = (mu * m(t) / (1 - mu)) + ((1 - mu) * g(t) / (1 - mu))
 			mhat = (mu * m[i] / (1.0 - mu)) + ((1 - mu) * g[i] / (1.0 - mu))
@@ -705,7 +705,7 @@ pyplot.show()
 
 *   [将 Nesterov 动量融入亚当](https://openreview.net/forum?id=OM0jvwB8jIp57ZJjtNEZ)，2016。
 *   [将 Nesterov 动量融入亚当，斯坦福报告](http://cs229.stanford.edu/proj2015/054_report.pdf)，2015。
-*   [求解收敛速度为 O (1/k^2)](http://mpawankumar.info/teaching/cdt-big-data/nesterov83.pdf) 的凸规划问题的一种方法，1983。
+*   [求解收敛速度为 O (1/k²)](http://mpawankumar.info/teaching/cdt-big-data/nesterov83.pdf) 的凸规划问题的一种方法，1983。
 *   [亚当:一种随机优化的方法](https://arxiv.org/abs/1412.6980)，2014。
 *   [梯度下降优化算法概述](https://arxiv.org/abs/1609.04747)，2016。
 

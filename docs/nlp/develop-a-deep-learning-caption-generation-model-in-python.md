@@ -1,6 +1,6 @@
 # 如何从头开发深度学习图片标题生成器
 
-> 原文： [https://machinelearningmastery.com/develop-a-deep-learning-caption-generation-model-in-python/](https://machinelearningmastery.com/develop-a-deep-learning-caption-generation-model-in-python/)
+> 原文： [`machinelearningmastery.com/develop-a-deep-learning-caption-generation-model-in-python/`](https://machinelearningmastery.com/develop-a-deep-learning-caption-generation-model-in-python/)
 
 #### 开发一个深度学习模型自动
 用 Keras 逐步描述 Python 中的照片。

@@ -1,6 +1,6 @@
 # 使用 Python 和 XGBoost 的特征重要性和特征选择
 
-> 原文： [https://machinelearningmastery.com/feature-importance-and-feature-selection-with-xgboost-in-python/](https://machinelearningmastery.com/feature-importance-and-feature-selection-with-xgboost-in-python/)
+> 原文： [`machinelearningmastery.com/feature-importance-and-feature-selection-with-xgboost-in-python/`](https://machinelearningmastery.com/feature-importance-and-feature-selection-with-xgboost-in-python/)
 
 使用诸如梯度提升之类的决策树方法的集合的好处是它们可以从训练的预测模型自动提供特征重要性的估计。
 

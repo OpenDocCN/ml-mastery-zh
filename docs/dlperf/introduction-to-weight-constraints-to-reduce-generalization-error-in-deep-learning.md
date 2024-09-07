@@ -172,7 +172,7 @@ Jan Chorowski 等人在 2015 年发表的题为“基于注意力的语音识别
 ### 文章
 
 *   [Norm(数学)，Wikipedia](https://en.wikipedia.org/wiki/Norm_(mathematics)) 。
-*   [正则化，神经网络第 2 部分:设置数据和损失，用于视觉识别的卷积神经网络](https://cs231n.github.io/neural-networks-2/#reg)。
+*   [正则化，神经网络第二部分:设置数据和损失，用于视觉识别的卷积神经网络](https://cs231n.github.io/neural-networks-2/#reg)。
 
 ## 摘要
 

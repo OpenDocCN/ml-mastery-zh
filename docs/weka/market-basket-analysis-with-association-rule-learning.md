@@ -14,7 +14,7 @@
 
 我们开始吧。
 
-[![Market Basket Analysis](img/507d1273579513024742cb3e0164cfd0.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/market-basket-analysis.jpg)
+![Market Basket Analysis](https://machinelearningmastery.com/wp-content/uploads/2014/03/market-basket-analysis.jpg)
 
 菜篮子分析
 图片由[健康量表](https://www.flickr.com/photos/healthgauge/9669593604/sizes/o/)提供，保留部分权利。
@@ -35,7 +35,7 @@
 
 在之前的教程中，我们已经学习了[运行分类器](https://machinelearningmastery.com/how-to-run-your-first-classifier-in-weka/ "How to Run Your First Classifier in Weka")、[设计和运行实验](https://machinelearningmastery.com/design-and-run-your-first-experiment-in-weka/ "Design and Run your First Experiment in Weka")、[算法调整](https://machinelearningmastery.com/how-to-tune-a-machine-learning-algorithm-in-weka/ "How to Tune a Machine Learning Algorithm in Weka")和[集成方法](https://machinelearningmastery.com/improve-machine-learning-results-with-boosting-bagging-and-blending-ensemble-methods-in-weka/ "Improve Machine Learning Results with Boosting, Bagging and Blending Ensemble Methods in Weka")。如果你需要下载和安装 Weka 的帮助，请参考这些以前的帖子。
 
-[![Weka GUI Chooser](img/fba124929a0da99095d1a3de3149684b.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-loader.png)
+![Weka GUI Chooser](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-loader.png)
 
 Weka 图形用户界面选择器
 
@@ -47,7 +47,7 @@ Weka 图形用户界面选择器
 
 加载超市数据集(*数据/超市. arff* )。这是一个销售点信息数据集。数据是名义上的，每个实例代表一个超市的客户交易、购买的产品和涉及的部门。网上关于这个数据集的信息不多，不过你可以从收集数据的个人看到[这个评论(“使用 supermarket.arff 进行学术研究的问题”)](https://list.waikato.ac.nz/hyperkitty/list/wekalist@list.waikato.ac.nz/thread/M5Y6F2ZMYQFBWJTUHJNRHHRS27RWSNQL/)。
 
-[![Supermarket dataset loaded in the Weka Explorer](img/ad5c5f216c74a93cee5264c4498cd2f4.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/Screen-Shot-2014-03-09-at-1.36.59-PM.png)
+![Supermarket dataset loaded in the Weka Explorer](https://machinelearningmastery.com/wp-content/uploads/2014/03/Screen-Shot-2014-03-09-at-1.36.59-PM.png)
 
 在 Weka 浏览器中加载的超市数据集
 
@@ -67,7 +67,7 @@ Weka 图形用户界面选择器
 
 关联规则学习的真正工作是解释结果。
 
-[![Results for the Apriori Association Rule Learning in Weka](img/cfd8321015f3559bf5ba4fa3e37566d5.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/Screen-Shot-2014-03-09-at-1.43.39-PM.png)
+![Results for the Apriori Association Rule Learning in Weka](https://machinelearningmastery.com/wp-content/uploads/2014/03/Screen-Shot-2014-03-09-at-1.43.39-PM.png)
 
 Weka 先验关联规则学习的结果
 
@@ -98,7 +98,7 @@ Weka 先验关联规则学习的结果
 
 你必须非常小心地解释关联规则。它们是关联(认为相互关联)，不是必然的因果关系。此外，短先行词可能比长先行词更健壮，长先行词更脆弱。
 
-[![Increase Basket Size](img/df7147a9d97fea625682af420d99fab7.png)](https://machinelearningmastery.com/wp-content/uploads/2014/03/increase-basket-size.jpg)
+![Increase Basket Size](https://machinelearningmastery.com/wp-content/uploads/2014/03/increase-basket-size.jpg)
 
 增加篮筐尺寸
 图片由 [goosmurf](https://www.flickr.com/photos/goosmurf/2488276329/sizes/l/) 提供，保留部分权利。

@@ -1,6 +1,6 @@
 # 5 个使用 LSTM 循环神经网络的简单序列预测问题的示例
 
-> 原文： [https://machinelearningmastery.com/sequence-prediction-problems-learning-lstm-recurrent-neural-networks/](https://machinelearningmastery.com/sequence-prediction-problems-learning-lstm-recurrent-neural-networks/)
+> 原文： [`machinelearningmastery.com/sequence-prediction-problems-learning-lstm-recurrent-neural-networks/`](https://machinelearningmastery.com/sequence-prediction-problems-learning-lstm-recurrent-neural-networks/)
 
 序列预测不同于传统的分类和回归问题。
 

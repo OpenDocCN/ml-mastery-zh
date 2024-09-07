@@ -1,6 +1,6 @@
 # Keras 中使用深度学习的时间序列预测
 
-> 原文： [https://machinelearningmastery.com/time-series-prediction-with-deep-learning-in-python-with-keras/](https://machinelearningmastery.com/time-series-prediction-with-deep-learning-in-python-with-keras/)
+> 原文： [`machinelearningmastery.com/time-series-prediction-with-deep-learning-in-python-with-keras/`](https://machinelearningmastery.com/time-series-prediction-with-deep-learning-in-python-with-keras/)
 
 时间序列预测是框架和机器学习解决的难题。
 

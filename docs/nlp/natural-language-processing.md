@@ -1,6 +1,6 @@
 # 什么是自然语言处理？
 
-> 原文： [https://machinelearningmastery.com/natural-language-processing/](https://machinelearningmastery.com/natural-language-processing/)
+> 原文： [`machinelearningmastery.com/natural-language-processing/`](https://machinelearningmastery.com/natural-language-processing/)
 
 自然语言处理（简称 NLP）被广义地定义为通过软件自动操纵自然语言，如语音和文本。
 

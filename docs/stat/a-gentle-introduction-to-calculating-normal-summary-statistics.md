@@ -1,6 +1,6 @@
 # 浅谈计算正态汇总统计量
 
-> 原文： [https://machinelearningmastery.com/a-gentle-introduction-to-calculating-normal-summary-statistics/](https://machinelearningmastery.com/a-gentle-introduction-to-calculating-normal-summary-statistics/)
+> 原文： [`machinelearningmastery.com/a-gentle-introduction-to-calculating-normal-summary-statistics/`](https://machinelearningmastery.com/a-gentle-introduction-to-calculating-normal-summary-statistics/)
 
 数据样本是来自更广泛人群的快照，可以从域中获取或由过程生成。
 
@@ -298,7 +298,7 @@ pyplot.show()
 从高斯分布中提取的数据样本的方差计算为样本均值中样本中每个观察值的平均平方差：
 
 ```py
-variance = 1 / (length(data) - 1) * sum(data[i] - mean(data))^2
+variance = 1 / (length(data) - 1) * sum(data[i] - mean(data))²
 ```
 
 方差通常表示为 _s ^ 2_ ，清楚地显示度量的平方单位。您可以从观察数量中看到没有（ - 1）的等式，这是对总体而不是样本的方差的计算。
@@ -338,7 +338,7 @@ Variance: 24.939
 我们可以将方差计算包装在平方根中以直接计算标准偏差。
 
 ```py
-standard deviation = sqrt(1 / (length(data) - 1) * sum(data[i] - mean(data))^2)
+standard deviation = sqrt(1 / (length(data) - 1) * sum(data[i] - mean(data))²)
 ```
 
 标准偏差通常写为 s 或希腊小写字母 sigma。

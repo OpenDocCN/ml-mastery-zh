@@ -12,7 +12,7 @@
 
 我们开始吧。
 
-[![binary classification](img/52a79b22ba070fca260bb8e599a45c53.png)](https://machinelearningmastery.com/wp-content/uploads/2014/07/binary-classification.jpg)
+![binary classification](https://machinelearningmastery.com/wp-content/uploads/2014/07/binary-classification.jpg)
 
 罗伯特·库塞-贝克拍摄的红色 vs 蓝色
 照片，保留部分权利

@@ -1,6 +1,6 @@
 # 从零开始实现机器学习算法的好处
 
-> 原文： [https://machinelearningmastery.com/benefits-of-implementing-machine-learning-algorithms-from-scratch/](https://machinelearningmastery.com/benefits-of-implementing-machine-learning-algorithms-from-scratch/)
+> 原文： [`machinelearningmastery.com/benefits-of-implementing-machine-learning-algorithms-from-scratch/`](https://machinelearningmastery.com/benefits-of-implementing-machine-learning-algorithms-from-scratch/)
 
 入门时机器学习很难理解。有许多规定和使用的算法和过程，许多难以渗透解释工作的方式和原因。
 
@@ -10,7 +10,7 @@
 
 在本文中，您将了解从零开始实现机器学习算法的优势和局限性，以及如何通过完成算法教程来加速此过程。
 
-[![Follow Tutorials to Implement Machine Learning Algorithms](img/f8a3ba83b77e6650418b843c89b38d56.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/Follow-Tutorials-to-Implement-Machine-Learning-Algorithms.jpg)
+![Follow Tutorials to Implement Machine Learning Algorithms](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/Follow-Tutorials-to-Implement-Machine-Learning-Algorithms.jpg)
 
 按照教程实现机器学习算法
 照 [ucdaviscoe](https://www.flickr.com/photos/ucdaviscoe/6046652813) ，保留一些权利

@@ -1,6 +1,6 @@
 # 如何使用置信区间报告分类器表现
 
-> 原文： [https://machinelearningmastery.com/report-classifier-performance-confidence-intervals/](https://machinelearningmastery.com/report-classifier-performance-confidence-intervals/)
+> 原文： [`machinelearningmastery.com/report-classifier-performance-confidence-intervals/`](https://machinelearningmastery.com/report-classifier-performance-confidence-intervals/)
 
 为分类问题选择机器学习算法后，需要向利益相关者报告模型的表现。
 
@@ -108,7 +108,7 @@ error +/- const * sqrt( (error * (1 - error)) / n)
 
 ## 进一步阅读
 
-*   第 5 章，[机器学习](http://www.amazon.com/dp/1259096955?tag=inspiredalgor-20)，1997
+*   第五章，[机器学习](http://www.amazon.com/dp/1259096955?tag=inspiredalgor-20)，1997
 *   维基百科上的[二项式比例置信区间](https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval)
 *   维基百科上的[置信区间](https://en.wikipedia.org/wiki/Confidence_interval)
 

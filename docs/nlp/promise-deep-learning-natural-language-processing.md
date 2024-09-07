@@ -1,6 +1,6 @@
 # 用于自然语言处理的深度学习的承诺
 
-> 原文： [https://machinelearningmastery.com/promise-deep-learning-natural-language-processing/](https://machinelearningmastery.com/promise-deep-learning-natural-language-processing/)
+> 原文： [`machinelearningmastery.com/promise-deep-learning-natural-language-processing/`](https://machinelearningmastery.com/promise-deep-learning-natural-language-processing/)
 
 在自然语言处理领域深度学习的承诺是模型的更好表现，这些模型可能需要更多数据但是训练和操作的语言专业知识更少。
 

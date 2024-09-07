@@ -1,6 +1,6 @@
 # 如何用 Python 从零开始实现学习向量量化
 
-> 原文： [https://machinelearningmastery.com/implement-learning-vector-quantization-scratch-python/](https://machinelearningmastery.com/implement-learning-vector-quantization-scratch-python/)
+> 原文： [`machinelearningmastery.com/implement-learning-vector-quantization-scratch-python/`](https://machinelearningmastery.com/implement-learning-vector-quantization-scratch-python/)
 
 [k-最近邻居](http://machinelearningmastery.com/k-nearest-neighbors-for-machine-learning/)的限制是您必须保留一个大型训练样例数据库才能做出预测。
 
@@ -76,7 +76,7 @@
 我们可以使用欧几里德距离测量来计算两个向量之间的直线距离。它被计算为两个向量之间的平方差之和的平方根。
 
 ```py
-distance = sqrt( sum( (x1_i - x2_i)^2 )
+distance = sqrt( sum( (x1_i - x2_i)² )
 ```
 
 其中 **x1** 是第一行数据， **x2** 是第二行数据， **i** 是特定列的索引，因为我们对所有列求和。

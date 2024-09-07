@@ -1,6 +1,6 @@
 # 如何使用 Python 从零开始创建算法测试工具
 
-> 原文： [https://machinelearningmastery.com/create-algorithm-test-harness-scratch-python/](https://machinelearningmastery.com/create-algorithm-test-harness-scratch-python/)
+> 原文： [`machinelearningmastery.com/create-algorithm-test-harness-scratch-python/`](https://machinelearningmastery.com/create-algorithm-test-harness-scratch-python/)
 
 我们无法知道哪种算法最适合给定的问题。
 

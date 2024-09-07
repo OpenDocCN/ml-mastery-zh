@@ -1,6 +1,6 @@
 # 如何使用预训练的 VGG 模型分类照片中的物体
 
-> 原文： [https://machinelearningmastery.com/use-pre-trained-vgg-model-classify-objects-photographs/](https://machinelearningmastery.com/use-pre-trained-vgg-model-classify-objects-photographs/)
+> 原文： [`machinelearningmastery.com/use-pre-trained-vgg-model-classify-objects-photographs/`](https://machinelearningmastery.com/use-pre-trained-vgg-model-classify-objects-photographs/)
 
 卷积神经网络现在能够在某些计算机视觉任务上胜过人类，例如分类图像。
 

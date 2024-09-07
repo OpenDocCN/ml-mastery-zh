@@ -1,6 +1,6 @@
 # 如何在 Python 中保存 ARIMA 时间序列预测模型
 
-> 原文： [https://machinelearningmastery.com/save-arima-time-series-forecasting-model-python/](https://machinelearningmastery.com/save-arima-time-series-forecasting-model-python/)
+> 原文： [`machinelearningmastery.com/save-arima-time-series-forecasting-model-python/`](https://machinelearningmastery.com/save-arima-time-series-forecasting-model-python/)
 
 自回归整合移动平均模型（ARIMA）是一种流行的时间序列分析和预测线性模型。
 

@@ -1,6 +1,6 @@
 # 机器学习中向量范数的温和介绍
 
-> 原文： [https://machinelearningmastery.com/vector-norms-machine-learning/](https://machinelearningmastery.com/vector-norms-machine-learning/)
+> 原文： [`machinelearningmastery.com/vector-norms-machine-learning/`](https://machinelearningmastery.com/vector-norms-machine-learning/)
 
 计算向量的长度或幅度通常需要直接作为机器学习中的正则化方法，或作为更宽的向量或矩阵运算的一部分。
 
@@ -102,7 +102,7 @@ L2 范数计算向量坐标距向量空间原点的距离。因此，它也被�
 L2 范数被计算为平方向量值之和的平方根。
 
 ```
-||v||2 = sqrt(a1^2 + a2^2 + a3^2)
+||v||2 = sqrt(a1² + a2² + a3²)
 ```
 
 可以使用带有默认参数的 norm（）函数在 NumPy 中计算向量的 L2 范数。
@@ -189,7 +189,7 @@ Max norm 也被用作机器学习中的正则化，例如神经网络权重，�
 ### 图书
 
 *   [线性代数](http://amzn.to/2j2J0g4)简介，2016 年。
-*   第 2 章，线性代数，[深度学习](http://amzn.to/2j4oKuP)，2016。
+*   第二章，线性代数，[深度学习](http://amzn.to/2j4oKuP)，2016。
 
 ### API
 

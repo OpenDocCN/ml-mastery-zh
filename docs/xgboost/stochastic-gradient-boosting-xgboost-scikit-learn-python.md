@@ -1,6 +1,6 @@
 # 使用 Python、XGBoost 和 scikit-learn 的随机梯度提升
 
-> 原文： [https://machinelearningmastery.com/stochastic-gradient-boosting-xgboost-scikit-learn-python/](https://machinelearningmastery.com/stochastic-gradient-boosting-xgboost-scikit-learn-python/)
+> 原文： [`machinelearningmastery.com/stochastic-gradient-boosting-xgboost-scikit-learn-python/`](https://machinelearningmastery.com/stochastic-gradient-boosting-xgboost-scikit-learn-python/)
 
 用于集合决策树的简单技术涉及在训练数据集的子样本上训练树。
 

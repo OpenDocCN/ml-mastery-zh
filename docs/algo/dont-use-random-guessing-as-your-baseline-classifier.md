@@ -1,6 +1,6 @@
 # 不要使用随机猜测作为基线分类器
 
-> 原文： [https://machinelearningmastery.com/dont-use-random-guessing-as-your-baseline-classifier/](https://machinelearningmastery.com/dont-use-random-guessing-as-your-baseline-classifier/)
+> 原文： [`machinelearningmastery.com/dont-use-random-guessing-as-your-baseline-classifier/`](https://machinelearningmastery.com/dont-use-random-guessing-as-your-baseline-classifier/)
 
 我最近通过电子邮件收到了以下问题：
 

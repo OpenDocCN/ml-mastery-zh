@@ -1,6 +1,6 @@
 # 如何开始深度学习自然语言处理（7 天迷你课程）
 
-> 原文： [https://machinelearningmastery.com/crash-course-deep-learning-natural-language-processing/](https://machinelearningmastery.com/crash-course-deep-learning-natural-language-processing/)
+> 原文： [`machinelearningmastery.com/crash-course-deep-learning-natural-language-processing/`](https://machinelearningmastery.com/crash-course-deep-learning-natural-language-processing/)
 
 ## NLP 速成课的深度学习。
 

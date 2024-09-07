@@ -1,6 +1,6 @@
 # 深度学习课程
 
-> 原文： [https://machinelearningmastery.com/deep-learning-courses/](https://machinelearningmastery.com/deep-learning-courses/)
+> 原文： [`machinelearningmastery.com/deep-learning-courses/`](https://machinelearningmastery.com/deep-learning-courses/)
 
 深入学习可能很难开始。
 
@@ -59,8 +59,8 @@
 *   [深度学习讲座 1：简介](https://www.youtube.com/watch?v=PlhFWT7vAEw&list=PLE6Wd9FR--EfW8dtjAuPoTuPcqmOV53Fu&index=16)
 *   [深度学习讲座 2：线性模型](https://www.youtube.com/watch?v=DHspIG64CVM&index=5&list=PLE6Wd9FR--EfW8dtjAuPoTuPcqmOV53Fu)
 *   [深度学习讲座 3：最大可能性和信息](https://www.youtube.com/watch?v=kPrHqQzCkg0&list=PLE6Wd9FR--EfW8dtjAuPoTuPcqmOV53Fu&index=6)
-*   [深度学习第 4 讲：正则化，模型复杂性和数据复杂性（第 1 部分）](https://www.youtube.com/watch?v=VR0W_PNwLGw&index=7&list=PLE6Wd9FR--EfW8dtjAuPoTuPcqmOV53Fu)
-*   [深度学习第五讲：正则化，模型复杂性和数据复杂性（第 2 部分）](https://www.youtube.com/watch?v=qz9bKfOqd0Y&index=8&list=PLE6Wd9FR--EfW8dtjAuPoTuPcqmOV53Fu)
+*   [深度学习第 4 讲：正则化，模型复杂性和数据复杂性（第一部分）](https://www.youtube.com/watch?v=VR0W_PNwLGw&index=7&list=PLE6Wd9FR--EfW8dtjAuPoTuPcqmOV53Fu)
+*   [深度学习第五讲：正则化，模型复杂性和数据复杂性（第二部分）](https://www.youtube.com/watch?v=qz9bKfOqd0Y&index=8&list=PLE6Wd9FR--EfW8dtjAuPoTuPcqmOV53Fu)
 *   [深度学习第六讲：优化](https://www.youtube.com/watch?v=0qUAb94CpOw&list=PLE6Wd9FR--EfW8dtjAuPoTuPcqmOV53Fu&index=9)
 *   [深度学习第 7 讲：逻辑回归，Torch 实现](https://www.youtube.com/watch?v=FYgsztDxSvE&index=11&list=PLE6Wd9FR--EfW8dtjAuPoTuPcqmOV53Fu)
 *   [深度学习第 8 讲：模块化反向传播，逻辑回归和 Torch](https://www.youtube.com/watch?v=-YRB0eFxeQA&list=PLE6Wd9FR--EfW8dtjAuPoTuPcqmOV53Fu&index=10)
@@ -127,7 +127,7 @@
 
 许多（所有？）谈话都在视频下方提供了 PDF 幻灯片的下载链接，更多信息可从官方网站的日程页面获得。
 
-以下是讲座主题的完整列表，其中包含视频链接。我试图将相关视频列在一起（例如，第 1 部分，第 2 部分）。
+以下是讲座主题的完整列表，其中包含视频链接。我试图将相关视频列在一起（例如，第一部分，第二部分）。
 
 *   [机器学习简介](http://videolectures.net/deeplearning2015_vincent_machine_learning/)
 *   [深度学习：理论动机](http://videolectures.net/deeplearning2015_bengio_theoretical_motivations/)
@@ -223,9 +223,9 @@ YouTube 播放列表的文件名称很差，而且有些缺少讲座， 2016 年
 *   [第 1 讲 引言及历史背景](https://www.youtube.com/watch?v=F-g0-6_RRUA&index=1&list=PLLvH2FwAQhnpj1WEB-jHmPuUeQ8mX-XXG)
 *   [第 2 讲 数据驱动方法，kNN，线性分类 1](https://www.youtube.com/watch?v=ZM4umP6F1Jc&index=2&list=PLLvH2FwAQhnpj1WEB-jHmPuUeQ8mX-XXG)
 *   [第 3 讲 线性分类 2，优化](https://www.youtube.com/watch?v=Q_UWHTY_TEQ&index=4&list=PLLvH2FwAQhnpj1WEB-jHmPuUeQ8mX-XXG)
-*   [第 4 讲 神经网络第 1 部分，反向传播](https://www.youtube.com/watch?v=jhUZ800C650&index=5&list=PLLvH2FwAQhnpj1WEB-jHmPuUeQ8mX-XXG)
-*   [第 5 讲 神经网络第 2 部分](https://www.youtube.com/watch?v=jhUZ800C650&index=5&list=PLLvH2FwAQhnpj1WEB-jHmPuUeQ8mX-XXG)
-*   [第 6 讲 神经网络第 3 部分,卷积介绍](https://www.youtube.com/watch?v=egPTd9zZzec&index=6&list=PLLvH2FwAQhnpj1WEB-jHmPuUeQ8mX-XXG)
+*   [第 4 讲 神经网络第一部分，反向传播](https://www.youtube.com/watch?v=jhUZ800C650&index=5&list=PLLvH2FwAQhnpj1WEB-jHmPuUeQ8mX-XXG)
+*   [第 5 讲 神经网络第二部分](https://www.youtube.com/watch?v=jhUZ800C650&index=5&list=PLLvH2FwAQhnpj1WEB-jHmPuUeQ8mX-XXG)
+*   [第 6 讲 神经网络第三部分,卷积介绍](https://www.youtube.com/watch?v=egPTd9zZzec&index=6&list=PLLvH2FwAQhnpj1WEB-jHmPuUeQ8mX-XXG)
 *   [第 7 讲 卷积神经网络](https://www.youtube.com/watch?v=sHyIqu_S5Ks&index=7&list=PLLvH2FwAQhnpj1WEB-jHmPuUeQ8mX-XXG)
 *   [第 8 讲 定位和检测](https://www.youtube.com/watch?v=sHyIqu_S5Ks&index=7&list=PLLvH2FwAQhnpj1WEB-jHmPuUeQ8mX-XXG)
 *   [第 9 讲 可视化，深度梦想，神经风格，对抗性实例](https://www.youtube.com/watch?v=ASdbG_7KMhc&index=9&list=PLLvH2FwAQhnpj1WEB-jHmPuUeQ8mX-XXG)

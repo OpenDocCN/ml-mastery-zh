@@ -1,6 +1,6 @@
 # 使用 Python 和预测区间理解时间序列预测的不确定性
 
-> 原文： [https://machinelearningmastery.com/time-series-forecast-uncertainty-using-confidence-intervals-python/](https://machinelearningmastery.com/time-series-forecast-uncertainty-using-confidence-intervals-python/)
+> 原文： [`machinelearningmastery.com/time-series-forecast-uncertainty-using-confidence-intervals-python/`](https://machinelearningmastery.com/time-series-forecast-uncertainty-using-confidence-intervals-python/)
 
 时间序列预测模型既可以做出预测，也可以为这些预测提供置信区间。
 

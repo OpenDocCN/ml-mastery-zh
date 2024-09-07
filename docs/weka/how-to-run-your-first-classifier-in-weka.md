@@ -30,7 +30,7 @@ Weka 需要 Java。您可能已经安装了 [Java](https://java.com) ，如果�
 
 Weka 图形用户界面选择器允许您选择资源管理器、实验器、知识管理器和简单命令行界面(命令行界面)之一。
 
-[![Weka GUI Chooser](img/fba124929a0da99095d1a3de3149684b.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-loader.png)
+![Weka GUI Chooser](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-loader.png)
 
 Weka 图形用户界面选择器
 
@@ -46,7 +46,7 @@ Weka 提供了许多小的通用机器学习数据集，你可以用来练习。
 
 选择“**”文件加载虹膜数据集。**
 
-**[![Weka Explorer Interface with the Iris dataset loaded](img/864dc1ea6a777ac55c1be13bcb543f86.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-explorer.png)
+**![Weka Explorer Interface with the Iris dataset loaded](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-explorer.png)
 
 加载虹膜数据集的 Weka 浏览器界面
 
@@ -62,13 +62,13 @@ Weka 提供了许多小的通用机器学习数据集，你可以用来练习。
 
 点击 ***开始*** 按钮运行该算法。
 
-[![Weka Results for the ZeroR algorithm on the Iris flower dataset](img/36ff653e6843e33a6422468eddc57132.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-zeror.png)
+![Weka Results for the ZeroR algorithm on the Iris flower dataset](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-zeror.png)
 
 鸢尾花数据集上零陷算法的 Weka 结果
 
 ZeroR 算法选择数据集中的多数类(所有三种虹膜在数据中都同样存在，所以它选择第一种:setosa)，并使用它来进行所有预测。这是数据集的基线，也是可以用来比较所有算法的度量。结果是 33%，正如预期的那样(3 个类，每个类代表相等，为每个预测结果分配三个中的一个，分类准确率为 33%)。
 
-您还会注意到，默认情况下，测试选项选择 10 倍交叉验证。这意味着数据集被分成 10 部分:前 9 部分用于训练算法，第 10 部分用于评估计法。重复这一过程，允许分割数据集的 10 个部分中的每个部分都有机会成为保留的测试集。你可以[在这里](https://en.wikipedia.org/wiki/Cross-validation_(statistics))阅读更多关于交叉验证的内容。
+您还会注意到，默认情况下，测试选项选择 10 倍交叉验证。这意味着数据集被分成 10 部分:前 9 部分用于训练算法，第十部分用于评估计法。重复这一过程，允许分割数据集的 10 个部分中的每个部分都有机会成为保留的测试集。你可以[在这里](https://en.wikipedia.org/wiki/Cross-validation_(statistics))阅读更多关于交叉验证的内容。
 
 ZeroR 算法很重要，但很无聊。
 
@@ -78,7 +78,7 @@ ZeroR 算法很重要，但很无聊。
 
 点击 ***开始*** 按钮运行算法。
 
-[![Weka J48 algorithm results on the iris flower dataset](img/b32e73e643606ae704d55b2deeacbbb0.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-j48.png)
+![Weka J48 algorithm results on the iris flower dataset](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-j48.png)
 
 Weka J48 算法在鸢尾花数据集上的结果
 
@@ -88,7 +88,7 @@ Weka J48 算法在鸢尾花数据集上的结果
 
 该算法以 10 倍交叉验证运行:这意味着它有机会对数据集的每个实例进行预测(使用不同的训练折叠)，并且呈现的结果是这些预测的总结。
 
-[![Just the results of the J48 algorithm on the Iris flower dataset in Weka](img/e266a0b91dd34934a5057b184b942cb5.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-results.png)
+![Just the results of the J48 algorithm on the Iris flower dataset in Weka](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-results.png)
 
 只是在 Weka 的鸢尾花数据集上的 J48 算法的结果
 

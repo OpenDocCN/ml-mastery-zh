@@ -26,7 +26,7 @@ Weka 需要 Java。您可能已经安装了 Java，如果没有，下载页面�
 
 启动 Weka。这可能需要在程序启动器中找到它，或者双击 weka.jar 文件。这将启动 Weka 图形用户界面选择器。
 
-[![Weka GUI Chooser](img/fba124929a0da99095d1a3de3149684b.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-loader.png)
+![Weka GUI Chooser](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-loader.png)
 
 Weka 图形用户界面选择器
 
@@ -61,7 +61,7 @@ J48 ( [C4.8](https://en.wikipedia.org/wiki/C4.5) )是一种强大的决策树方
 
 让我们从将 J48 算法添加到实验开始，这样我们就可以将其结果与该算法的集成版本进行比较。
 
-[![Add the J48 algorithm to the Weka Experimenter.](img/77bee7357ea55a9d893d1caaa599e957.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-25-at-5.25.05-AM1.png)
+![Add the J48 algorithm to the Weka Experimenter.](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-25-at-5.25.05-AM1.png)
 
 将 J48 算法添加到 Weka 实验者中。
 
@@ -100,7 +100,7 @@ bagging([Bootstrap aggregation](https://en.wikipedia.org/wiki/Bootstrap_aggregat
 
 J48 和 IBk (k 近邻)是非常不同的算法，我们希望在我们的混合中包含“好的”(可以对问题做出有意义的预测)和多种多样(对问题有不同的观点，进而做出不同的有用预测)的算法。逻辑回归是一个很好的可靠和简单的方法来学习如何结合这两种方法的预测，并且非常适合这个二分类问题，因为它本身会产生二元输出。
 
-[![Configuring and adding the Stacking algorithm that blends J48 and IBk to the Weka Experimenter.](img/bd8b087d38eab68d65b0a1077f0a0094.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-25-at-5.28.51-AM.png)
+![Configuring and adding the Stacking algorithm that blends J48 and IBk to the Weka Experimenter.](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-25-at-5.28.51-AM.png)
 
 配置并将混合 J48 和 IBk 的堆叠算法添加到 Weka 实验者。
 
@@ -138,7 +138,7 @@ J48 和 IBk (k 近邻)是非常不同的算法，我们希望在我们的混合�
 
 排名表显示了每种算法相对于数据集中所有其他算法的统计显著优势。一次胜利意味着比另一种算法的准确率更高的准确率，并且差异具有统计学意义。
 
-[![Algorithm ranking when analyzing results in the Weka Experimenter](img/cdab3456f0be64680cff89d02b8213f7.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-25-at-5.30.54-AM.png)
+![Algorithm ranking when analyzing results in the Weka Experimenter](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-25-at-5.30.54-AM.png)
 
 在 Weka 实验器中分析结果时的算法排名
 
@@ -152,7 +152,7 @@ J48 和 IBk (k 近邻)是非常不同的算法，我们希望在我们的混合�
 2.  单击“显示标准”旁边的复选框。偏差”。
 3.  现在点击*执行测试*按钮。
 
-[![Algorithm mean accuracy and statistical significance in the Weka Experimenter.](img/a1d88b4d8172dd93d688577feabecb6a.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-25-at-5.38.18-AM.png)
+![Algorithm mean accuracy and statistical significance in the Weka Experimenter.](https://machinelearningmastery.com/wp-content/uploads/2014/02/Screen-Shot-2014-02-25-at-5.38.18-AM.png)
 
 Weka 实验者的算法平均准确率和统计意义。
 

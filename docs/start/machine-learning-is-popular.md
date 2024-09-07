@@ -1,6 +1,6 @@
 # 机器学习现在很受欢迎
 
-> 原文： [https://machinelearningmastery.com/machine-learning-is-popular/](https://machinelearningmastery.com/machine-learning-is-popular/)
+> 原文： [`machinelearningmastery.com/machine-learning-is-popular/`](https://machinelearningmastery.com/machine-learning-is-popular/)
 
 重要的是要知道什么是特殊的，以使机器学习成为一个有吸引力的研究领域。知道为什么它现在流行起来就像一个指南，以及该领域所做出的承诺的知识。它可以突出显示增长领域的开放式问题和方法，以及为什么会出现这种情况。
 
@@ -25,7 +25,7 @@
 现在有大量数据，正在收集和存储的数据正在增长。
 短语如“[信息超载](http://en.wikipedia.org/wiki/Information_overload)”对普通人可获得的信息发表评论。我们通过电子邮件，社交网络，博客，RSS 和播客提供了大量信息。跟不上是很难的。缺少有用内容的担忧以及查找和跟踪最佳内容的压力是非常真实的。机器学习方法提供了用于定位和推荐最相关内容的工具，以克服信息过载。
 
-[![Data Abundance](img/82602b6feb1698a4408edc626645b138.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/data.jpg)
+![Data Abundance](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/data.jpg)
 
 照片记入 [k0a1a.net](http://www.flickr.com/photos/binary_koala/4100679811/sizes/l/) ，保留一些权利
 
@@ -41,7 +41,7 @@
 
 计算量充足且价格便宜。这就是为什么有大量数据以及为什么我们有更强大的机器学习方法。
 
-[![Abundant Computation](img/c2b1cdff1bfafce5084bf91f6b69a76a.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/Abundant-Computation.jpg)
+![Abundant Computation](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/Abundant-Computation.jpg)
 
 照片归 [torkildr](http://www.flickr.com/photos/torkildr/3462607995/sizes/l/) 所有，保留一些权利
 

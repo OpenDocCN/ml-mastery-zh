@@ -1,6 +1,6 @@
 # 找到你的机器学习部落
 
-> 原文： [https://machinelearningmastery.com/machine-learning-tribe/](https://machinelearningmastery.com/machine-learning-tribe/)
+> 原文： [`machinelearningmastery.com/machine-learning-tribe/`](https://machinelearningmastery.com/machine-learning-tribe/)
 
 ### _ 入门并避免得到错误的建议 _
 
@@ -20,7 +20,7 @@
 
 你在哪里适合？发表评论并告诉我。
 
-[![Find Your Machine Learning Tribe](img/e0ebd13c19bf49005b7472eb89925705.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/Find-Your-Machine-Learning-Tribe.jpg)
+![Find Your Machine Learning Tribe](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/08/Find-Your-Machine-Learning-Tribe.jpg)
 
 找到你的机器学习部落
 [照片](https://www.flickr.com/photos/130625175@N03/17466998874)，保留一些权利。
@@ -118,7 +118,7 @@ Gartner 高级分析平台的魔力象限来自 [Gartner](http://www.gartner.com
 *   [商业数据科学：您需要了解的数据挖掘和数据分析思考](http://www.amazon.com/dp/1449361323?tag=inspiredalgor-20)
 *   [Data Smart：利用数据科学将信息转化为洞察力](http://www.amazon.com/dp/111866146X?tag=inspiredalgor-20)
 
-[![Amazon Image](img/1e5e23c34e00d066d9e5022e49b1d746.jpg)](http://www.amazon.com/dp/1118356853?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1118356853?tag=inspiredalgor-20)
 
 ### 学术部落
 
@@ -190,7 +190,7 @@ Gartner 高级分析平台的魔力象限来自 [Gartner](http://www.gartner.com
 *   [机器学习在行动](http://www.amazon.com/dp/1617290181?tag=inspiredalgor-20)
 *   [机器学习：算法视角](http://www.amazon.com/dp/1466583282?tag=inspiredalgor-20)
 
-[![Amazon Image](img/bbd25613cb12b55b69497c7479119553.jpg)](http://www.amazon.com/dp/1466583282?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1466583282?tag=inspiredalgor-20)
 
 #### 7）开发人员有兴趣提供一次性预测
 
@@ -220,7 +220,7 @@ Gartner 高级分析平台的魔力象限来自 [Gartner](http://www.gartner.com
 *   [实用数据科学与 R](http://www.amazon.com/dp/1617291560?tag=inspiredalgor-20)
 *   [R 机器学习](http://www.amazon.com/dp/1784393908?tag=inspiredalgor-20)
 
-[![Amazon Image](img/9d0c93a673e18a64f270b395e5fba9ae.jpg)](http://www.amazon.com/dp/1784393908?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1784393908?tag=inspiredalgor-20)
 
 另外，查看帖子“[构建生产机器学习基础设施](http://machinelearningmastery.com/building-a-production-machine-learning-infrastructure/)”。
 

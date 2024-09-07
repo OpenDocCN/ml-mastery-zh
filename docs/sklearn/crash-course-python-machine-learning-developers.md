@@ -1,6 +1,6 @@
 # 面向机器学习开发人员的 Python 速成课
 
-> 原文： [https://machinelearningmastery.com/crash-course-python-machine-learning-developers/](https://machinelearningmastery.com/crash-course-python-machine-learning-developers/)
+> 原文： [`machinelearningmastery.com/crash-course-python-machine-learning-developers/`](https://machinelearningmastery.com/crash-course-python-machine-learning-developers/)
 
 您不需要成为 Python 开发人员就可以开始使用 Python 生态系统进行机器学习。
 

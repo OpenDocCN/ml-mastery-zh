@@ -80,7 +80,7 @@ Let’s get started.![Gradient Descent With Nesterov Momentum From Scratch](img/
 
 Nesterov 动量是梯度下降优化算法的扩展。
 
-Yuri nesterov 在他 1983 年发表的题为“[一种求解具有收敛速度 O(1/k^2 的凸规划问题的方法”](http://mpawankumar.info/teaching/cdt-big-data/nesterov83.pdf)的论文中描述了这种方法(并以其命名)
+Yuri nesterov 在他 1983 年发表的题为“[一种求解具有收敛速度 O(1/k² 的凸规划问题的方法”](http://mpawankumar.info/teaching/cdt-big-data/nesterov83.pdf)的论文中描述了这种方法(并以其命名)
 
 [Ilya Sutskever](https://en.wikipedia.org/wiki/Ilya_Sutskever) 等人负责推广 Nesterov 动量在具有随机梯度下降的神经网络的训练中的应用，这在他们 2013 年的论文“[关于初始化和动量在深度学习中的重要性](http://proceedings.mlr.press/v28/sutskever13.html)中进行了描述。”他们称这种方法为“T4”Nesterov 加速梯度“T5”，简称 NAG。
 
@@ -263,7 +263,7 @@ pyplot.show()
 
 首先，我们需要一个函数来计算这个函数的导数。
 
-x^2 的导数在每个维度上都是 x * 2，下面的*导数()*函数实现了这一点。
+x² 的导数在每个维度上都是 x * 2，下面的*导数()*函数实现了这一点。
 
 ```py
 # derivative of objective function
@@ -666,7 +666,7 @@ pyplot.show()
 
 ### 报纸
 
-*   [一种求解具有收敛速度的凸规划问题的方法 O(1/k^2)](http://mpawankumar.info/teaching/cdt-big-data/nesterov83.pdf) ，1983。
+*   [一种求解具有收敛速度的凸规划问题的方法 O(1/k²)](http://mpawankumar.info/teaching/cdt-big-data/nesterov83.pdf) ，1983。
 *   [论深度学习中初始化和动量的重要性](http://proceedings.mlr.press/v28/sutskever13.html)，2013。
 
 ### 书

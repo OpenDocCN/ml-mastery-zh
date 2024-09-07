@@ -997,7 +997,7 @@ RMSProp 和 Adam 都表现出了相似的表现，在 50 个训练期内有效�
 ### 书
 
 *   第八章:深度模型训练优化，[深度学习](https://amzn.to/2NJW3gE)，2016。
-*   第 6 章:学习率和动量，[神经锻造:前馈人工神经网络中的监督学习](https://amzn.to/2S8qRdI)，1999。
+*   第六章:学习率和动量，[神经锻造:前馈人工神经网络中的监督学习](https://amzn.to/2S8qRdI)，1999。
 *   第 5.7 节:梯度下降，[用于模式识别的神经网络](https://amzn.to/2S8qdwt)，1995。
 
 ### 应用程序接口
@@ -1009,7 +1009,7 @@ RMSProp 和 Adam 都表现出了相似的表现，在 50 个训练期内有效�
 ### 文章
 
 *   [随机梯度下降，维基百科](https://en.wikipedia.org/wiki/Stochastic_gradient_descent)。
-*   [反向钻取应该使用什么学习率？，神经网络常见问题](ftp://ftp.sas.com/pub/neural/FAQ2.html#A_learn_rate)。
+*   反向钻取应该使用什么学习率？，神经网络常见问题。
 
 ## 摘要
 

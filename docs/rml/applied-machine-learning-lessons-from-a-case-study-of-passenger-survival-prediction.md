@@ -36,7 +36,7 @@ Curt 研究缺失的数据，创建一个图(来自 [Amelia 包](https://cran.r-
 
 Curt 孤立地研究属性的分布，查看名义属性的直方图。他提取一般趋势并解释数据，评论它们在领域背景下的意义，如年龄和阶级。
 
-[![Attribute Distributions](img/7b85ddb885d3e75b1d715a1c878b12d0.png)](https://machinelearningmastery.com/wp-content/uploads/2014/07/Attribute-Distributions.jpeg)
+![Attribute Distributions](https://machinelearningmastery.com/wp-content/uploads/2014/07/Attribute-Distributions.jpeg)
 
 属性分布
 由[科特·韦赫利](https://github.com/wehrley/wehrley.github.io/blob/master/SOUPTONUTS.md)创建的图形
@@ -49,7 +49,7 @@ Curt 孤立地研究属性的分布，查看名义属性的直方图。他提取
 
 有一个有用的模式需要注意，那就是可视化、解释和确认。这种确认是通过另一种主观的方法进行的，但是假设也可以很容易地在过程的后期进行建模。
 
-[![Passenger Fate by Traveling Class](img/3a2eb03018e338d14bdaebf90ee14e1d.png)](https://machinelearningmastery.com/wp-content/uploads/2014/07/Passenger-Fate-by-Traveling-Class.jpeg)
+![Passenger Fate by Traveling Class](https://machinelearningmastery.com/wp-content/uploads/2014/07/Passenger-Fate-by-Traveling-Class.jpeg)
 
 由[科特·韦赫利](https://github.com/wehrley/wehrley.github.io/blob/master/SOUPTONUTS.md)创建的按旅行等级划分的乘客命运图
 
@@ -87,7 +87,7 @@ Curt 没有盲目地运行模型，而是使用 Caret 包的特性来调整每�
 
 Curt 评估问题上的每个模型，并准备一个混淆矩阵来总结结果。他对这些结果提供了一些细微的解释，为更深入的分析留下了很大的空间。
 
-[![ROC Curves of Model Performance](img/d636f31d64d5bb61fb78d3a46293805c.png)](https://machinelearningmastery.com/wp-content/uploads/2014/07/ROC-curves-for-different-models.jpeg)
+![ROC Curves of Model Performance](https://machinelearningmastery.com/wp-content/uploads/2014/07/ROC-curves-for-different-models.jpeg)
 
 柯特·韦赫利绘制的模型表现的 ROC 曲线
 图
@@ -96,7 +96,7 @@ Curt 评估问题上的每个模型，并准备一个混淆矩阵来总结结果
 
 Curt 还使用点图、方框图和触须图来比较每个模型的 ROC 分数。他评论说，所有四个模型在预测死亡人数方面都比存活人数更好，如果他必须选择一个模型来应用，他会选择逻辑回归。
 
-[![Dot Plots of Model Performance](img/132f9faae00491fa3c9e3f74ab27d0a3.png)](https://machinelearningmastery.com/wp-content/uploads/2014/07/Dot-Plots-of-Model-Performance.jpeg)
+![Dot Plots of Model Performance](https://machinelearningmastery.com/wp-content/uploads/2014/07/Dot-Plots-of-Model-Performance.jpeg)
 
 科特·韦赫利绘制的模型表现点图
 图

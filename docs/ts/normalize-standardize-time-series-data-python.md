@@ -1,6 +1,6 @@
 # 如何在 Python 中规范化和标准化时间序列数据
 
-> 原文： [https://machinelearningmastery.com/normalize-standardize-time-series-data-python/](https://machinelearningmastery.com/normalize-standardize-time-series-data-python/)
+> 原文： [`machinelearningmastery.com/normalize-standardize-time-series-data-python/`](https://machinelearningmastery.com/normalize-standardize-time-series-data-python/)
 
 如果您的时间序列数据具有一致的比例或分布，则某些机器学习算法将获得更好的表现。
 
@@ -175,7 +175,7 @@ mean = sum(x) / count(x)
 `standard_deviation`计算如下：
 
 ```py
-standard_deviation = sqrt( sum( (x - mean)^2 ) / count(x))
+standard_deviation = sqrt( sum( (x - mean)² ) / count(x))
 ```
 
 例如，我们可以绘制最低每日温度数据集的直方图，如下所示：

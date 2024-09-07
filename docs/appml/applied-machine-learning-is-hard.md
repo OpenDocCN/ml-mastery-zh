@@ -1,6 +1,6 @@
 # 为什么应用机器学习很难
 
-> 原文： [https://machinelearningmastery.com/applied-machine-learning-is-hard/](https://machinelearningmastery.com/applied-machine-learning-is-hard/)
+> 原文： [`machinelearningmastery.com/applied-machine-learning-is-hard/`](https://machinelearningmastery.com/applied-machine-learning-is-hard/)
 
 #### 如何处理应用机器学习的难以解决的问题。
 
@@ -27,7 +27,7 @@
 
 ## 概观
 
-这篇文章分为 6 个部分，灵感来自 [Tom Mitchell 的](http://www.cs.cmu.edu/~tom/)优秀的 1997 年书[机器学习](http://amzn.to/2yclAGZ)的第 1 章;他们是：
+这篇文章分为 6 个部分，灵感来自 [Tom Mitchell 的](http://www.cs.cmu.edu/~tom/)优秀的 1997 年书[机器学习](http://amzn.to/2yclAGZ)的第一章;他们是：
 
 1.  良好的学习问题
 2.  选择训练数据
@@ -183,7 +183,7 @@ Mitchell 帮助澄清了这一点，并描述了设计学习系统以进行跳�
 
 如果您希望深入了解，本节将提供有关该主题的更多资源。
 
-*   第 1 章，[机器学习](http://amzn.to/2yclAGZ)，1997。
+*   第一章，[机器学习](http://amzn.to/2yclAGZ)，1997。
 *   [Tom Mitchell 的主页](http://www.cs.cmu.edu/~tom/)
 *   [维基百科问题很好](https://en.wikipedia.org/wiki/Well-posed_problem)
 *   [维基百科上的难以理解](https://en.wikipedia.org/wiki/Computational_complexity_theory#Intractability)

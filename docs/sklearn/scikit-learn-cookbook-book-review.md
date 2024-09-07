@@ -1,6 +1,6 @@
 # scikit-learn 秘籍的书评
 
-> 原文： [https://machinelearningmastery.com/scikit-learn-cookbook-book-review/](https://machinelearningmastery.com/scikit-learn-cookbook-book-review/)
+> 原文： [`machinelearningmastery.com/scikit-learn-cookbook-book-review/`](https://machinelearningmastery.com/scikit-learn-cookbook-book-review/)
 
 scikit-learn 库是 Python 中机器学习的首选库。
 
@@ -40,11 +40,11 @@ scikit-learn 库是 Python 中机器学习的首选库。
 
 这本书由 50 个秘籍组成？ （如果我相信目录和我自己的计数，可能有 57 个秘籍）分为 5 章。
 
-*   第 1 章：预编程工作流程
-*   第 2 章：使用线性模型
-*   第 3 章：使用距离度量建立模型
-*   第 4 章：使用 scikit-learn 对数据进行分类
-*   第 5 章：Postmodel 工作流程
+*   第一章：预编程工作流程
+*   第二章：使用线性模型
+*   第三章：使用距离度量建立模型
+*   第四章：使用 scikit-learn 对数据进行分类
+*   第五章：Postmodel 工作流程
 
 这些章节通常映射到标准数据科学项目的工作流程：
 
@@ -62,7 +62,7 @@ scikit-learn 库是 Python 中机器学习的首选库。
 
 在本节中，我们将详细介绍五章中的每个章节。
 
-### 第 1 章：预编程工作流程
+### 第一章：预编程工作流程
 
 本章重点介绍数据准备。这是重新格式化数据以最好地将问题的结构暴露给我们可能选择稍后使用的机器学习算法。
 
@@ -78,7 +78,7 @@ scikit-learn 库是 Python 中机器学习的首选库。
 
 我想更多和单独的缩放方法的秘籍。我发现自己在使用它们之前会对数据集进行大量扩展。这可能是获得良好结果所需的最常见的预处理步骤。
 
-### 第 2 章：使用线性模型
+### 第二章：使用线性模型
 
 本章的重点是线性模型。这个较短的章节包含 9 个秘籍。
 
@@ -93,7 +93,7 @@ scikit-learn 库是 Python 中机器学习的首选库。
 
 我想我觉得线性模型的重点可以进一步扩展到 LDA，Perceptron 和平台支持的其他模型，而不仅限于回归。
 
-### 第 3 章：使用距离度量建立模型
+### 第三章：使用距离度量建立模型
 
 许多算法确实在其核心使用距离测量。
 
@@ -105,7 +105,7 @@ scikit-learn 库是 Python 中机器学习的首选库。
 
 此外，我最好注意我的偏见，因为我根本不使用聚类方法，我发现它们对于预测性建模完全没用。
 
-### 第 4 章：使用 scikit-learn 对数据进行分类
+### 第四章：使用 scikit-learn 对数据进行分类
 
 从标题来看，本章是关于分类算法的。
 
@@ -117,11 +117,11 @@ scikit-learn 库是 Python 中机器学习的首选库。
 *   朴素贝叶斯
 *   其他（半监督学习，梯度下降等）
 
-我会把 LDA 和 QDA 放在线性模型章节（第 2 章）中，我会添加更多的算法。 scikit-learn 的一大好处是它提供了许多开箱即用的算法。
+我会把 LDA 和 QDA 放在线性模型章节（第二章）中，我会添加更多的算法。 scikit-learn 的一大好处是它提供了许多开箱即用的算法。
 
 本章涉及的那些算法很好，我所说的是我会将数字增加一倍或三倍，并使算法的秘籍成为本书的重点。
 
-### 第 5 章：Postmodel 工作流程
+### 第五章：Postmodel 工作流程
 
 本章包含 11 个关于一般岗位建模任务的方法。
 
@@ -138,7 +138,7 @@ scikit-learn 库是 Python 中机器学习的首选库。
 
 通常，我会在 k-fold 交叉验证的上下文中介绍每种算法，因为对于大多数用例，以任何其他方式评估算法可能不是一个好主意。
 
-我也很惊讶地看到这本书的特色选择如此晚。我原本预计会出现在第 1 章中。它属于数据准备工作。
+我也很惊讶地看到这本书的特色选择如此晚。我原本预计会出现在第一章中。它属于数据准备工作。
 
 ## 对书的思考
 
@@ -168,7 +168,7 @@ scikit-learn 库是 Python 中机器学习的首选库。
 
 在这篇文章中，你发现了 Trent Hauck 的书 [Scikit-Learn Cookbook](http://www.amazon.com/dp/1783989483?tag=inspiredalgor-20) 。
 
-[![Amazon Image](img/896a66322bc4e8e71e0a39d67d553c2e.jpg)](http://www.amazon.com/dp/1783989483?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1783989483?tag=inspiredalgor-20)
 
 您了解到这是一本包含 50 多种使用 scikit-learn 主题的秘籍的书，例如：
 

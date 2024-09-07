@@ -1,6 +1,6 @@
 # Python 中概率评分方法的简要介绍
 
-> 原文： [https://machinelearningmastery.com/how-to-score-probability-predictions-in-python/](https://machinelearningmastery.com/how-to-score-probability-predictions-in-python/)
+> 原文： [`machinelearningmastery.com/how-to-score-probability-predictions-in-python/`](https://machinelearningmastery.com/how-to-score-probability-predictions-in-python/)
 
 #### 如何评估 Python 中的概率预测和
 为不同的度量标准开发直觉。

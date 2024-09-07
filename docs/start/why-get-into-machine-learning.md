@@ -1,6 +1,6 @@
 # 为什么要入门机器学习？
 
-> 原文： [https://machinelearningmastery.com/why-get-into-machine-learning/](https://machinelearningmastery.com/why-get-into-machine-learning/)
+> 原文： [`machinelearningmastery.com/why-get-into-machine-learning/`](https://machinelearningmastery.com/why-get-into-machine-learning/)
 
 ## _ 发现你的个人原因和 _
 _ 终于搞砸 _
@@ -63,7 +63,7 @@ _ 终于搞砸 _
 
 该表按域分为两行：_ 机器学习 _ 和 _ 其他 _ 域的域（如分析化学，石油开采或运输分析）。该表按角色分为两列：_ 从业者 _ 和 _ 研究员 _。每个框都有该域 - 角色交集的任务类型，_ 解决问题 _ 或 _ 扩展字段 _。表格中的每个单元格列出了对该任务感兴趣的人可能感兴趣的资源类型。
 
-[![Why get into machine learning](img/7d8913d78150b9b47a058d58b5487c44.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/11/Why-get-into-machine-learning.png)
+![Why get into machine learning](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/11/Why-get-into-machine-learning.png)
 
 地图显示了进入机器学习的 4 个原因。
 

@@ -1,6 +1,6 @@
 # 机器学习中的线性判别分析
 
-> 原文： [https://machinelearningmastery.com/linear-discriminant-analysis-for-machine-learning/](https://machinelearningmastery.com/linear-discriminant-analysis-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/linear-discriminant-analysis-for-machine-learning/`](https://machinelearningmastery.com/linear-discriminant-analysis-for-machine-learning/)
 
 逻辑回归是一种传统上仅限于两类分类问题的分类算法。
 
@@ -117,9 +117,9 @@ Dk（x）是给定输入 x 的类 k 的判别函数，muk，sigma ^ 2 和 PIk �
 
 ### 图书
 
-*   [统计学习导论：应用于 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) ，第 4 章，第 138 页。
-*   [现代多元统计技术：回归，分类和流形学习](http://www.amazon.com/dp/0387781889?tag=inspiredalgor-20)，第 8 章
-*   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，第 12 章，第 287 页
+*   [统计学习导论：应用于 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) ，第四章，第 138 页。
+*   [现代多元统计技术：回归，分类和流形学习](http://www.amazon.com/dp/0387781889?tag=inspiredalgor-20)，第八章
+*   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，第十二章，第 287 页
 
 ### 其他
 

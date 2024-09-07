@@ -115,7 +115,7 @@ Adam 旨在加速优化过程，例如减少达到最优所需的函数求值次
 
 然后使用平方梯度和超参数*β2*更新第二个时刻。
 
-*   v(t)=β2 * v(t-1)+(1–β2)* g(t)^2
+*   v(t)=β2 * v(t-1)+(1–β2)* g(t)²
 
 第一和第二矩是有偏差的，因为它们是用零值初始化的。
 
@@ -264,10 +264,10 @@ pyplot.show()
 
 首先，我们需要一个函数来计算这个函数的导数。
 
-*   f(x) = x^2
+*   f(x) = x²
 *   f'(x) = x * 2
 
-x^2 的导数在每个维度上都是 x * 2。导数()函数实现如下。
+x² 的导数在每个维度上都是 x * 2。导数()函数实现如下。
 
 ```py
 # derivative of objective function
@@ -345,7 +345,7 @@ m[i] = beta1 * m[i] + (1.0 - beta1) * g[i]
 
 ```py
 ...
-# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)^2
+# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)²
 v[i] = beta2 * v[i] + (1.0 - beta2) * g[i]**2
 ```
 
@@ -400,7 +400,7 @@ def adam(objective, derivative, bounds, n_iter, alpha, beta1, beta2, eps=1e-8):
 		for i in range(x.shape[0]):
 			# m(t) = beta1 * m(t-1) + (1 - beta1) * g(t)
 			m[i] = beta1 * m[i] + (1.0 - beta1) * g[i]
-			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)^2
+			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)²
 			v[i] = beta2 * v[i] + (1.0 - beta2) * g[i]**2
 			# mhat(t) = m(t) / (1 - beta1(t))
 			mhat = m[i] / (1.0 - beta1**(t+1))
@@ -474,7 +474,7 @@ def adam(objective, derivative, bounds, n_iter, alpha, beta1, beta2, eps=1e-8):
 		for i in range(x.shape[0]):
 			# m(t) = beta1 * m(t-1) + (1 - beta1) * g(t)
 			m[i] = beta1 * m[i] + (1.0 - beta1) * g[i]
-			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)^2
+			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)²
 			v[i] = beta2 * v[i] + (1.0 - beta2) * g[i]**2
 			# mhat(t) = m(t) / (1 - beta1(t))
 			mhat = m[i] / (1.0 - beta1**(t+1))
@@ -556,7 +556,7 @@ def adam(objective, derivative, bounds, n_iter, alpha, beta1, beta2, eps=1e-8):
 		for i in range(bounds.shape[0]):
 			# m(t) = beta1 * m(t-1) + (1 - beta1) * g(t)
 			m[i] = beta1 * m[i] + (1.0 - beta1) * g[i]
-			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)^2
+			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)²
 			v[i] = beta2 * v[i] + (1.0 - beta2) * g[i]**2
 			# mhat(t) = m(t) / (1 - beta1(t))
 			mhat = m[i] / (1.0 - beta1**(t+1))
@@ -655,7 +655,7 @@ def adam(objective, derivative, bounds, n_iter, alpha, beta1, beta2, eps=1e-8):
 		for i in range(bounds.shape[0]):
 			# m(t) = beta1 * m(t-1) + (1 - beta1) * g(t)
 			m[i] = beta1 * m[i] + (1.0 - beta1) * g[i]
-			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)^2
+			# v(t) = beta2 * v(t-1) + (1 - beta2) * g(t)²
 			v[i] = beta2 * v[i] + (1.0 - beta2) * g[i]**2
 			# mhat(t) = m(t) / (1 - beta1(t))
 			mhat = m[i] / (1.0 - beta1**(t+1))

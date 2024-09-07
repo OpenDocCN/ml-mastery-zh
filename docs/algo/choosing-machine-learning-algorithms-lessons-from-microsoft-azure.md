@@ -1,6 +1,6 @@
 # 选择机器学习算法：Microsoft Azure 的经验教训
 
-> 原文： [https://machinelearningmastery.com/choosing-machine-learning-algorithms-lessons-from-microsoft-azure/](https://machinelearningmastery.com/choosing-machine-learning-algorithms-lessons-from-microsoft-azure/)
+> 原文： [`machinelearningmastery.com/choosing-machine-learning-algorithms-lessons-from-microsoft-azure/`](https://machinelearningmastery.com/choosing-machine-learning-algorithms-lessons-from-microsoft-azure/)
 
 微软最近在其 Azure 云计算平台上推出了对机器学习的支持。
 

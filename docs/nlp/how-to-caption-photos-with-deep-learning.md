@@ -1,6 +1,6 @@
 # 如何利用深度学习自动生成照片的文本描述
 
-> 原文： [https://machinelearningmastery.com/how-to-caption-photos-with-deep-learning/](https://machinelearningmastery.com/how-to-caption-photos-with-deep-learning/)
+> 原文： [`machinelearningmastery.com/how-to-caption-photos-with-deep-learning/`](https://machinelearningmastery.com/how-to-caption-photos-with-deep-learning/)
 
 字幕图像涉及在给定图像（例如照片）的情况下生成人类可读的文本描述。
 

@@ -1,6 +1,6 @@
 # 机器学习很有意思
 
-> 原文： [https://machinelearningmastery.com/machine-learning-is-fascinating/](https://machinelearningmastery.com/machine-learning-is-fascinating/)
+> 原文： [`machinelearningmastery.com/machine-learning-is-fascinating/`](https://machinelearningmastery.com/machine-learning-is-fascinating/)
 
 好奇心是一个强大的动力，你可以为你工作。
 
@@ -25,7 +25,7 @@
 
 根据您收集的数据，机器学习方法可以自动分析和学习已存在于该数据中的结构，以便为您要解决的问题提供解决方案。
 
-[![Programs that Learn from Data](img/03b99f65bdb5f55f58fe06765f850b42.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/code.jpg)
+![Programs that Learn from Data](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/code.jpg)
 
 照片归 [Riebart](http://www.flickr.com/photos/riebart/4466482623/sizes/l/) 所有，保留一些权利
 

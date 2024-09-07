@@ -1,6 +1,6 @@
 # R 时间序列预测热门书籍
 
-> 原文： [https://machinelearningmastery.com/books-on-time-series-forecasting-with-r/](https://machinelearningmastery.com/books-on-time-series-forecasting-with-r/)
+> 原文： [`machinelearningmastery.com/books-on-time-series-forecasting-with-r/`](https://machinelearningmastery.com/books-on-time-series-forecasting-with-r/)
 
 时间序列预测是一个难题。
 
@@ -46,7 +46,7 @@
 
 ## 1.带 R 的入门时间序列
 
-[![Amazon Image](img/bba3b571950fbd77bfa7fead65132a32.jpg)](http://www.amazon.com/dp/0387886974?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0387886974?tag=inspiredalgor-20)
 
 [点击了解更多信息。](http://www.amazon.com/dp/0387886974?tag=inspiredalgor-20)
 
@@ -86,7 +86,7 @@
 
 ## 2.时间序列分析及其应用
 
-[![Amazon Image](img/7dc592af5e44b82ca48cb15c7c364763.jpg)](http://www.amazon.com/dp/144197864X?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/144197864X?tag=inspiredalgor-20)
 
 [点击了解更多信息。](http://www.amazon.com/dp/144197864X?tag=inspiredalgor-20)
 
@@ -118,7 +118,7 @@
 
 ## 3.时间序列分析：应用于 R
 
-[![Amazon Image](img/44c0579a0e1e5ad39baf1fc376895d31.jpg)](http://www.amazon.com/dp/0387759581?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0387759581?tag=inspiredalgor-20)
 
 [点击了解更多信息。](http://www.amazon.com/dp/0387759581?tag=inspiredalgor-20)
 
@@ -154,7 +154,7 @@
 
 ## 4.多变量时间序列分析
 
-[![Amazon Image](img/a9a3d6b812ed9e172c468e8cabcf3d65.jpg)](http://www.amazon.com/dp/1118617908?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1118617908?tag=inspiredalgor-20)
 
 [点击了解更多](http://www.amazon.com/dp/1118617908?tag=inspiredalgor-20)
 
@@ -182,7 +182,7 @@
 
 ## 5.用 R 实际时间序列预测
 
-[![Amazon Image](img/33a97ba1df3ba94944224619c4f9c8d9.jpg)](http://www.amazon.com/dp/0997847913?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0997847913?tag=inspiredalgor-20)
 
 [点击了解更多](http://www.amazon.com/dp/0997847913?tag=inspiredalgor-20)
 

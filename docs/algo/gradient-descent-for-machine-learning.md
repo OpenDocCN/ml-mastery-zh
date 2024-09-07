@@ -1,6 +1,6 @@
 # 机器学习中的梯度下降
 
-> 原文： [https://machinelearningmastery.com/gradient-descent-for-machine-learning/](https://machinelearningmastery.com/gradient-descent-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/gradient-descent-for-machine-learning/`](https://machinelearningmastery.com/gradient-descent-for-machine-learning/)
 
 优化是机器学习的重要组成部分。几乎每种机器学习算法都有一个优化算法。
 

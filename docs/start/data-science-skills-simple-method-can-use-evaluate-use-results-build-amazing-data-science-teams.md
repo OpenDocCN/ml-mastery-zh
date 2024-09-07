@@ -1,6 +1,6 @@
 # 像数据科学家一样评估自己
 
-> 原文： [https://machinelearningmastery.com/data-science-skills-simple-method-can-use-evaluate-use-results-build-amazing-data-science-teams/](https://machinelearningmastery.com/data-science-skills-simple-method-can-use-evaluate-use-results-build-amazing-data-science-teams/)
+> 原文： [`machinelearningmastery.com/data-science-skills-simple-method-can-use-evaluate-use-results-build-amazing-data-science-teams/`](https://machinelearningmastery.com/data-science-skills-simple-method-can-use-evaluate-use-results-build-amazing-data-science-teams/)
 
 成为数据科学家需要哪些技能？
 
@@ -40,7 +40,7 @@
 
 本书第 11 页对 Rachel 完成评估的一个例子如下：
 
-[![Data Science Profile](img/38452387219e06e0f8fed5538819f620.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Data-Science-Profile.png)
+![Data Science Profile](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Data-Science-Profile.png)
 
 数据科学概况
 摘自“数据科学”第 11 页
@@ -55,7 +55,7 @@
 
 作者如下图所示（摘自本书第 12 页）
 
-[![Profile of a Data Science Team](img/7abf0a1bef94fb5c40a00d79824b3c2a.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Profile-of-a-Data-Science-Team.png)
+![Profile of a Data Science Team](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Profile-of-a-Data-Science-Team.png)
 
 数据科学团队简介
 摘自“做数据科学”第 12 页
@@ -68,7 +68,7 @@
 
 请参阅下面的我自我评估的尝试。
 
-[![Jasons Subjective Skill Assessment](img/ce28c1f592e605af0784c1d94c52fa6e.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Jasons-Subjective-Skill-Assessment.png)
+![Jasons Subjective Skill Assessment](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Jasons-Subjective-Skill-Assessment.png)
 
 杰森的主观技能评估
 

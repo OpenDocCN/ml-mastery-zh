@@ -1,6 +1,6 @@
 # 将 Keras 深度学习模型和 Python Scikit-Learn 一起使用
 
-> 原文： [https://machinelearningmastery.com/use-keras-deep-learning-models-scikit-learn-python/](https://machinelearningmastery.com/use-keras-deep-learning-models-scikit-learn-python/)
+> 原文： [`machinelearningmastery.com/use-keras-deep-learning-models-scikit-learn-python/`](https://machinelearningmastery.com/use-keras-deep-learning-models-scikit-learn-python/)
 
 Keras 是用于研究和开发的 Python 中最受欢迎的深度学习库之一，因为它简单易用。
 

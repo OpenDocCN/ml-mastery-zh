@@ -1,6 +1,6 @@
 # 如何在 Python 中开发可重复使用的采样检查算法框架
 
-> 译文： [https://machinelearningmastery.com/spot-check-machine-learning-algorithms-in-python/](https://machinelearningmastery.com/spot-check-machine-learning-algorithms-in-python/)
+> 译文： [`machinelearningmastery.com/spot-check-machine-learning-algorithms-in-python/`](https://machinelearningmastery.com/spot-check-machine-learning-algorithms-in-python/)
 
 [采样检查算法](https://machinelearningmastery.com/spot-check-classification-machine-learning-algorithms-python-scikit-learn/)是一种应用机器学习技术，旨在快速客观地为新的预测性建模问题提供第一组结果。
 

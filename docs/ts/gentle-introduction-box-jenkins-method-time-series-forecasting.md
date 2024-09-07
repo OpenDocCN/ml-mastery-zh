@@ -1,6 +1,6 @@
 # 用于时间序列预测的 Box-Jenkins 方法简介
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-box-jenkins-method-time-series-forecasting/](https://machinelearningmastery.com/gentle-introduction-box-jenkins-method-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-box-jenkins-method-time-series-forecasting/`](https://machinelearningmastery.com/gentle-introduction-box-jenkins-method-time-series-forecasting/)
 
 自回归整合移动平均模型（简称 ARIMA）是时间序列预测和分析的标准统计模型。
 

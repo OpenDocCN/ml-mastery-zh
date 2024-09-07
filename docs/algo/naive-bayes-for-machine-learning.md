@@ -1,6 +1,6 @@
 # 机器学习中的朴素贝叶斯
 
-> 原文： [https://machinelearningmastery.com/naive-bayes-for-machine-learning/](https://machinelearningmastery.com/naive-bayes-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/naive-bayes-for-machine-learning/`](https://machinelearningmastery.com/naive-bayes-for-machine-learning/)
 
 Naive Bayes 是一种简单但令人惊讶的强大的预测性建模算法。
 
@@ -203,7 +203,7 @@ go-out = P（pdf（天气）| class = go-out）* P（pdf（car）| class = go-ou
 *   [数据挖掘：实用机器学习工具和技术](http://www.amazon.com/dp/0123748569?tag=inspiredalgor-20)，第 88 页
 *   [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) ，第 353 页
 *   [人工智能：现代方法](http://www.amazon.com/dp/0136042597?tag=inspiredalgor-20)，第 808 页
-*   [机器学习](http://www.amazon.com/dp/0070428077?tag=inspiredalgor-20)，第 6 章
+*   [机器学习](http://www.amazon.com/dp/0070428077?tag=inspiredalgor-20)，第六章
 
 ## 摘要
 

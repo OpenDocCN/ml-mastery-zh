@@ -229,7 +229,7 @@ p >> n 问题的一个常见例子是[基因表达阵列](https://en.wikipedia.o
 ### 书
 
 *   [图案分类](https://amzn.to/2RlneT5)，2000。
-*   第 18 章，高维问题:p >> N，[统计学习的要素:数据挖掘、推理和预测](https://amzn.to/3aD4dDd)，2016。
+*   第十八章，高维问题:p >> N，[统计学习的要素:数据挖掘、推理和预测](https://amzn.to/3aD4dDd)，2016。
 *   [R](https://amzn.to/2NNJfaT)中应用的统计学习导论，2017。
 
 ### 文章

@@ -145,7 +145,7 @@ GANs 是一种训练生成模型的聪明方法，它通过两个子模型将问
 4.  使用[批量标准化](https://machinelearningmastery.com/how-to-accelerate-learning-of-deep-neural-networks-with-batch-normalization/)(例如激活后标准化层输出)。
 5.  使用高斯权重初始化(例如，平均值为 0.0，标准偏差为 0.02)。
 6.  使用[亚当随机梯度下降](https://machinelearningmastery.com/adam-optimization-algorithm-for-deep-learning/)(例如学习率 0.0002，beta 1 0.5)。
-7.  [将图像](https://machinelearningmastery.com/how-to-manually-scale-image-pixel-data-for-deep-learning/)缩放至范围[-1，1](例如，在发生器的输出中使用 tanh)。
+7.  [将图像](https://machinelearningmastery.com/how-to-manually-scale-image-pixel-data-for-deep-learning/)缩放至范围-1，1。
 
 这些试探法是从业者在一系列问题上测试和评估数百或数千个配置操作组合来之不易的。
 

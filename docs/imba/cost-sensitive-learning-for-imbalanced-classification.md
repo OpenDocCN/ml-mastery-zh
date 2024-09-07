@@ -351,7 +351,7 @@ Sklearn 库通过以下分类器上的 *class_weight* 参数提供了这些成�
 
 *   [成本敏感学习，机器学习百科](https://amzn.to/2PamKhX)，2010。
 *   [成本敏感型机器学习](https://amzn.to/2qFgswK)，2011。
-*   [第 4 章成本敏感学习，从不平衡数据集学习](https://amzn.to/307Xlva)，2018。
+*   [第四章成本敏感学习，从不平衡数据集学习](https://amzn.to/307Xlva)，2018。
 *   [不平衡学习:基础、算法和应用](https://amzn.to/32K9K6d)，2013。
 
 ### 文章

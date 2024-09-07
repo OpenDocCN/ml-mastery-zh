@@ -1,6 +1,6 @@
 # 机器学习很重要
 
-> 原文： [https://machinelearningmastery.com/machine-learning-matters/](https://machinelearningmastery.com/machine-learning-matters/)
+> 原文： [`machinelearningmastery.com/machine-learning-matters/`](https://machinelearningmastery.com/machine-learning-matters/)
 
 重要的是要知道机器学习的重要性，以便您了解该领域的内在价值以及该领域的方法和开放式问题。
 
@@ -36,7 +36,7 @@
 
 您如何编写程序来过滤电子邮件，因为它们进入您的电子邮件帐户并决定是将它们放入垃圾邮件文件夹还是收件箱文件夹？
 
-[![Spam/Non-Spam Discrimination](img/e87219d496d280f7f8e1731ebece8ac6.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/spam-nonspam.jpg)
+![Spam/Non-Spam Discrimination](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/spam-nonspam.jpg)
 
 照片归功于 balise42，保留一些权利
 

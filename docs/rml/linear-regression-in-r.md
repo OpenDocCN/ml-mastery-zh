@@ -12,7 +12,7 @@
 
 我们开始吧。
 
-[![ordinary least squares regression](img/7382f4e57a481f1cddf5551b18d1391b.png)](https://machinelearningmastery.com/wp-content/uploads/2014/07/ordinary-least-squares-regression.png)
+![ordinary least squares regression](https://machinelearningmastery.com/wp-content/uploads/2014/07/ordinary-least-squares-regression.png)
 
 普通最小二乘回归
 [版权所有](https://en.wikipedia.org/wiki/File:Linear_regression.svg)
@@ -33,7 +33,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley)
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -57,7 +57,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley)
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -79,7 +79,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley, ncomp=6)
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -101,7 +101,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley, ncomp=6)
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -111,4 +111,4 @@ print(mse)
 
 在这篇文章中，你发现了在 R 中创建线性回归模型并使用这些模型进行预测的 4 个方法。
 
-库恩和约翰逊的[应用预测建模](https://amzn.to/3iFPHhq)的第 6 章为初学者提供了一个关于 R 线性回归的极好的介绍。[实用回归和方差分析使用 R](https://cran.r-project.org/doc/contrib/Faraway-PRA.pdf) (PDF)由遥远提供了一个更深入的治疗。
+库恩和约翰逊的[应用预测建模](https://amzn.to/3iFPHhq)的第六章为初学者提供了一个关于 R 线性回归的极好的介绍。[实用回归和方差分析使用 R](https://cran.r-project.org/doc/contrib/Faraway-PRA.pdf) (PDF)由遥远提供了一个更深入的治疗。

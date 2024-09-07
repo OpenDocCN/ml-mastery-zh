@@ -1,6 +1,6 @@
 # BigML 评论：发现机器学习即服务平台的聪明功能
 
-> 原文： [https://machinelearningmastery.com/bigml-review-discover-the-clever-features-in-this-machine-learning-as-a-service-platform/](https://machinelearningmastery.com/bigml-review-discover-the-clever-features-in-this-machine-learning-as-a-service-platform/)
+> 原文： [`machinelearningmastery.com/bigml-review-discover-the-clever-features-in-this-machine-learning-as-a-service-platform/`](https://machinelearningmastery.com/bigml-review-discover-the-clever-features-in-this-machine-learning-as-a-service-platform/)
 
 机器学习已经商品化为服务。这是最近的一种趋势，看起来它将像商品化存储和虚拟化一样发展成为主流。这是自然的下一步。
 
@@ -10,7 +10,7 @@
 
 BigML 由一群五人共同创立于 2011 年。 [Francisco Martin](http://www.linkedin.com/in/cisko) 似乎积极参与社区评论和推出内容。在撰写本文时，它是一家私人控股公司，[在 2013 年中期的一轮融资](https://angel.co/bigml)中获得了 130 万美元。我还可以看到一项名为“[方法和设备的可视化和与决策树](https://www.google.com/patents/US20130117280)进行交互，这是一个很好的迹象，表明他们正在推动这项技术的极限。
 
-[![BigML and the promise of machine learning as a service](img/b10beae7620f790adfd0806515bf70ed.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-logo1.png)
+![BigML and the promise of machine learning as a service](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-logo1.png)
 
 BigML 和机器学习即服务的承诺
 
@@ -24,7 +24,7 @@ BigML 和机器学习即服务的承诺
 
 该服务可用于生产模式或开发模式。开发模式是免费的，但可以完成的任务大小有限。生产模式是付费模式，并且可以在块或订阅的基础上临时购买积分。这是来自其他基于云的服务（如存储或计算服务器）的熟悉模式。
 
-[![BigML Interactive Decision Tree](img/9201339dae39c27755ad066f401d4656.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-decision-tree.png)
+![BigML Interactive Decision Tree](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-decision-tree.png)
 
 BigML 交互式决策树
 
@@ -41,21 +41,21 @@ Web 界面呈现为一系列步骤。您可以根据要查找的内容选择要�
 *   **数据来源**：这些是正在研究的问题的原始数据。它可能是您上载的原始 CSV 文件，您通过 URL 指定的远程数据文件或指向 Amazon S3 的数据存储。您可以描述属性，为它们命名，并通常管理数据源的解析和呈现方式。
 *   **数据集**：这些是数据源的视图，您可以将其用作构建模型的基础。数据集指定目标属性（分类中的类或回归中的输出）。数据用条形图和五个数字摘要汇总。您还可以将数据集拆分为训练，然后测试模型表现的受控评估。
 
-[![BigML Dataset](img/9d322c7db389a5bad3dbb2a3c1015c1f.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-dataset.png)
+![BigML Dataset](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-dataset.png)
 
 BigML 数据集
 
 *   **模型**：这些是从数据集创建的决策树。决策树模型是交互式的。您可以在每个节点的模型中看到反映在训练数据中的信心和支持。您可以通过树的方式工作，并查看前面构建的规则，这是模型的巧妙和干净的表示。可以使用您喜欢的语言下载模型，可以查看其规则并提供其他可视化，例如 sunburst 视图。
 *   **合奏**：这些是由子模型组成的模型。对于描述性模型，集合不太有用，对预测性更有用，理想情况下，从问题域的不同角度对预测组合提供更高的准确率。
 
-[![BigML Ensemble Models](img/229dab248edc9c56669695b179ac3c20.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-ensemble-models.png)
+![BigML Ensemble Models](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-ensemble-models.png)
 
 BigML 合奏模型
 
 *   **预测**：模型可用于生成预测。这可以通过构建的决策树模型的分支（如决策支持时间），通过用于指定输入实例的滑块，一次一个，以及通过批量预测来提出问题，其结果可以是被下载到文件。
 *   **评估**：评估表示基于数据集的模型表现的估计。如果将数据集拆分为训练和测试，则可以使用分类准确度，精度，召回等度量来估计模型对看不见的数据的能力。表现也总结在图表中。模型（合奏或其他）的表现也可以并排比较。
 
-[![BigML Model Evaluation](img/ec12e1926fd211ddb4c58a68ffd98423.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-model-evaluation1.png)
+![BigML Model Evaluation](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-model-evaluation1.png)
 
 BigML 模型评估
 
@@ -71,7 +71,7 @@ Web 界面非常灵敏，并且清楚地使用现代界面设计技术。在使�
 
 *   **1 - 单击**：您可以一键完成有用的任务，如宏。这让我想起亚马逊的一键购买，聪明的营销。例如，您可以从选定的数据集中单击创建模型，集合或将数据集拆分为训练集和测试集。这种命名惯例渗透易用性。
 
-[![BigML 1-Click Everything](img/7dbf5ae707c70085daaed7074451c6f5.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-one-click-everything.png)
+![BigML 1-Click Everything](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-one-click-everything.png)
 
 BigML 1-Click Everything
 
@@ -79,13 +79,13 @@ BigML 1-Click Everything
 *   **可下载树**：您可以使用您选择的编程语言下载模型或树本身的规则。非常聪明。可以在 BigML 中创建描述性或预测性模型，下载代码并将其用于您的应用程序（如网站或决策支持工具）。这很有用，我喜欢它。
 *   **Sunburst View** ：模型的旭日视图提供了一种创新（至少对我而言）思考和探索决策树中开发的规则的方式。
 
-[![BigML Sunburst Visualization](img/98d7b529d79a8a9ed2a3a5b303c61d18.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-sunburst.png)
+![BigML Sunburst Visualization](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-sunburst.png)
 
 BigML Sunburst 可视化
 
 *   **图库**：任何模型（可能是任何对象）都可以在[图库](https://bigml.com/gallery/models)中公开获取。您可以探索和使用自己开发的其他人员模型和开放数据。可以对模型进行评论，也可以出售对图库中对象的访问，这是一个引人入胜的想法。这是非常聪明且超前的时间，我喜欢它，但我担心像 [IBM 的许多眼睛](http://www.manyeyes.com/software/analytics/manyeyes/)将被利用。如果它是私人的并且在组织内策划，它可能具有更多价值。
 
-[![BigML Model Gallery](img/e975a3b2b662a5d5a5950568c8d94029.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-gallery.png)
+![BigML Model Gallery](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/bigml-gallery.png)
 
 BigML 模型库
 

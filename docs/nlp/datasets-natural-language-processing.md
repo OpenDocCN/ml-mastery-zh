@@ -1,6 +1,6 @@
 # 自然语言处理的数据集
 
-> 原文： [https://machinelearningmastery.com/datasets-natural-language-processing/](https://machinelearningmastery.com/datasets-natural-language-processing/)
+> 原文： [`machinelearningmastery.com/datasets-natural-language-processing/`](https://machinelearningmastery.com/datasets-natural-language-processing/)
 
 在开始深入学习自然语言处理任务时，您需要数据集来练习。
 

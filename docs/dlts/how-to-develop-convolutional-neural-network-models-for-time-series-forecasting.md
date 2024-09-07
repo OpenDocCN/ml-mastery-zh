@@ -1,6 +1,6 @@
 # 如何开发用于时间序列预测的卷积神经网络模型
 
-> 原文： [https://machinelearningmastery.com/how-to-develop-convolutional-neural-network-models-for-time-series-forecasting/](https://machinelearningmastery.com/how-to-develop-convolutional-neural-network-models-for-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/how-to-develop-convolutional-neural-network-models-for-time-series-forecasting/`](https://machinelearningmastery.com/how-to-develop-convolutional-neural-network-models-for-time-series-forecasting/)
 
 卷积神经网络模型（简称 CNN）可以应用于时间序列预测。
 

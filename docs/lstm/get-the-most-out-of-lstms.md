@@ -1,6 +1,6 @@
 # 在序列预测问题上充分利用 LSTM
 
-> 原文： [https://machinelearningmastery.com/get-the-most-out-of-lstms/](https://machinelearningmastery.com/get-the-most-out-of-lstms/)
+> 原文： [`machinelearningmastery.com/get-the-most-out-of-lstms/`](https://machinelearningmastery.com/get-the-most-out-of-lstms/)
 
 长短期记忆（LSTM）循环神经网络是一种强大的深度学习类型，适用于序列预测问题。
 

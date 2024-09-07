@@ -1,6 +1,6 @@
 # 使用 Python 和 XGBoost 调整决策树的数量和大小
 
-> 原文： [https://machinelearningmastery.com/tune-number-size-decision-trees-xgboost-python/](https://machinelearningmastery.com/tune-number-size-decision-trees-xgboost-python/)
+> 原文： [`machinelearningmastery.com/tune-number-size-decision-trees-xgboost-python/`](https://machinelearningmastery.com/tune-number-size-decision-trees-xgboost-python/)
 
 梯度提升包括顺序创建和添加决策树，每个尝试纠正前面的学习器的错误。
 

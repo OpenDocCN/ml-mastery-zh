@@ -1,6 +1,6 @@
 # 如何在 Python 中使用和删除时间序列数据中的趋势信息
 
-> 原文： [https://machinelearningmastery.com/time-series-trends-in-python/](https://machinelearningmastery.com/time-series-trends-in-python/)
+> 原文： [`machinelearningmastery.com/time-series-trends-in-python/`](https://machinelearningmastery.com/time-series-trends-in-python/)
 
 我们的时间序列数据集可能包含趋势。
 

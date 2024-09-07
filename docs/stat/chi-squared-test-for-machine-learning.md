@@ -1,6 +1,6 @@
 # 浅谈机器学习的卡方测试
 
-> 原文： [https://machinelearningmastery.com/chi-squared-test-for-machine-learning/](https://machinelearningmastery.com/chi-squared-test-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/chi-squared-test-for-machine-learning/`](https://machinelearningmastery.com/chi-squared-test-for-machine-learning/)
 
 应用机器学习中的常见问题是确定输入特征是否与要预测的结果相关。
 
@@ -228,8 +228,8 @@ Independent (fail to reject H0)
 
 ### 图书
 
-*   第 14 章，独立卡方检验，[简明英语统计](http://amzn.to/2IFyS4P)，第 3 版，2010 年。
-*   第 28 章，卡方检验，[统计](http://amzn.to/2u44zll)，第四版，2007 年。
+*   第十四章，独立卡方检验，[简明英语统计](http://amzn.to/2IFyS4P)，第 3 版，2010 年。
+*   第二十八章，卡方检验，[统计](http://amzn.to/2u44zll)，第四版，2007 年。
 
 ### API
 

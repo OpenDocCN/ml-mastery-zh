@@ -1,6 +1,6 @@
 # Python NumPy 的 N 维数组的温和介绍
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-n-dimensional-arrays-python-numpy/](https://machinelearningmastery.com/gentle-introduction-n-dimensional-arrays-python-numpy/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-n-dimensional-arrays-python-numpy/`](https://machinelearningmastery.com/gentle-introduction-n-dimensional-arrays-python-numpy/)
 
 数组是机器学习中使用的主要数据结构。
 

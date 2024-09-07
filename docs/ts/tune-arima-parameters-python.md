@@ -1,6 +1,6 @@
 # 如何在 Python 中调整 ARIMA 参数
 
-> 原文： [https://machinelearningmastery.com/tune-arima-parameters-python/](https://machinelearningmastery.com/tune-arima-parameters-python/)
+> 原文： [`machinelearningmastery.com/tune-arima-parameters-python/`](https://machinelearningmastery.com/tune-arima-parameters-python/)
 
 在 Python 中使用 Statsmodels 配置 ARIMA 模型时，需要考虑许多参数。
 

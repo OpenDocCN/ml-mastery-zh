@@ -1,6 +1,6 @@
 # 如何在 Keras 中重塑长短期存储网络的输入数据
 
-> 原文： [https://machinelearningmastery.com/reshape-in​​put-data-long-short-term-memory-networks-keras/](https://machinelearningmastery.com/reshape-input-data-long-short-term-memory-networks-keras/)
+> 原文： [`machinelearningmastery.com/reshape-in​​put-data-long-short-term-memory-networks-keras/`](https://machinelearningmastery.com/reshape-input-data-long-short-term-memory-networks-keras/)
 
 可能很难理解如何准备序列数据以输入 LSTM 模型。
 

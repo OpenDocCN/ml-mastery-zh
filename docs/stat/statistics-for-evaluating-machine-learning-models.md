@@ -1,6 +1,6 @@
 # 评估机器学习模型的统计量
 
-> 原文： [https://machinelearningmastery.com/statistics-for-evaluating-machine-learning-models/](https://machinelearningmastery.com/statistics-for-evaluating-machine-learning-models/)
+> 原文： [`machinelearningmastery.com/statistics-for-evaluating-machine-learning-models/`](https://machinelearningmastery.com/statistics-for-evaluating-machine-learning-models/)
 
 Tom Mitchell 1997 年出版的经典着作“_ 机器学习 _”提供了一章专门用于评估机器学习模型的统计方法。
 
@@ -25,11 +25,11 @@ Tom Mitchell 1997 年出版的经典着作“_ 机器学习 _”提供了一章�
 
 [Tom Mitchell](http://www.cs.cmu.edu/~tom/) 撰写了可能是应用机器学习的经典教科书，名为“[机器学习](https://amzn.to/2Jja7vF)”并于 1997 年发布。
 
-[![Amazon Image](img/9957ad99bbe056d124bb46e652d997f6.jpg)](http://www.amazon.com/dp/0071154671?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0071154671?tag=inspiredalgor-20)
 
-在书中，他将整章专门用于评估机器学习模型和算法所需的统计方法。具体来说，第 5 章标题为“_ 评估假设 _”。
+在书中，他将整章专门用于评估机器学习模型和算法所需的统计方法。具体来说，第五章标题为“_ 评估假设 _”。
 
-> 第 5 章介绍了统计和估算理论的基本概念，重点是使用有限的数据样本评估假设的准确率。这包括计算用于估计假设准确度的置信区间和用于比较学习方法的准确率的方法。
+> 第五章介绍了统计和估算理论的基本概念，重点是使用有限的数据样本评估假设的准确率。这包括计算用于估计假设准确度的置信区间和用于比较学习方法的准确率的方法。
 
 - 第 16 页，[机器学习](https://amzn.to/2Jja7vF)，1997。
 
@@ -37,7 +37,7 @@ Tom Mitchell 1997 年出版的经典着作“_ 机器学习 _”提供了一章�
 
 值得注意的是，当米切尔提到假设时，他指的是学习模型，即在数据集上运行学习算法的结果。评估和比较假设意味着比较学习模型，这与评估和比较机器学习算法不同，机器学习算法可以针对来自相同问题或不同问题的不同样本进行训练。
 
-第 5 章评估假设分为 7 个部分;他们如下：
+第五章评估假设分为 7 个部分;他们如下：
 
 *   5.1。动机
 *   5.2。估计假设的准确率

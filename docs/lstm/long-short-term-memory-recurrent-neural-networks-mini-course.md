@@ -1,6 +1,6 @@
 # Keras 长短期记忆循环神经网络的迷你课程
 
-> 原文： [https://machinelearningmastery.com/long-short-term-memory-recurrent-neural-networks-mini-course/](https://machinelearningmastery.com/long-short-term-memory-recurrent-neural-networks-mini-course/)
+> 原文： [`machinelearningmastery.com/long-short-term-memory-recurrent-neural-networks-mini-course/`](https://machinelearningmastery.com/long-short-term-memory-recurrent-neural-networks-mini-course/)
 
 长期短期记忆（LSTM）复现神经网络是目前最有趣的深度学习类型之一。
 

@@ -1,6 +1,6 @@
 # 如何计算 McNemar 检验来比较两种机器学习分类器
 
-> 原文： [https://machinelearningmastery.com/mcnemars-test-for-machine-learning/](https://machinelearningmastery.com/mcnemars-test-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/mcnemars-test-for-machine-learning/`](https://machinelearningmastery.com/mcnemars-test-for-machine-learning/)
 
 统计假设检验的选择对于解释机器学习结果是一个具有挑战性的开放性问题。
 
@@ -128,7 +128,7 @@ McNemar 的测试是检查两个案件之间的分歧是否匹配。从技术上
 McNemar 的检验统计量计算如下：
 
 ```py
-statistic = (Yes/No - No/Yes)^2 / (Yes/No + No/Yes)
+statistic = (Yes/No - No/Yes)² / (Yes/No + No/Yes)
 ```
 
 其中 Yes / No 是 Classifier1 正确且 Classifier2 不正确的测试实例的数量，No / Yes 是 Classifier1 不正确且 Classifier2 正确的测试实例的计数。

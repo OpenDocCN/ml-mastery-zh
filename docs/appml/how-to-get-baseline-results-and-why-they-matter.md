@@ -1,6 +1,6 @@
 # 如何获得基线结果及其重要性
 
-> 原文： [https://machinelearningmastery.com/how-to-get-baseline-results-and-why-they-matter/](https://machinelearningmastery.com/how-to-get-baseline-results-and-why-they-matter/)
+> 原文： [`machinelearningmastery.com/how-to-get-baseline-results-and-why-they-matter/`](https://machinelearningmastery.com/how-to-get-baseline-results-and-why-they-matter/)
 
 在我的课程和指南中，我在深入研究现场检查算法之前教授基线结果的准备。
 
@@ -16,7 +16,7 @@
 
 在本文中，您将了解为什么我们创建基线预测结果，如何创建基线以及特定问题类型，以及如何使用它来通知您可用的数据和您正在使用的算法。
 
-[![Baseline Machine Learning Results](img/0f07eecc60c827c4570c9722d470020f.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Baseline-Machine-Learning-Results.jpg)
+![Baseline Machine Learning Results](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/Baseline-Machine-Learning-Results.jpg)
 
 基线机器学习结果
 照片由[特雷西惊人](http://www.flickr.com/photos/tracy_the_astonishing/7226371136)，保留一些权利

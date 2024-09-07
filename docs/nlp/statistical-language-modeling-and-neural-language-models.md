@@ -1,6 +1,6 @@
 # 统计语言建模和神经语言模型的简要介绍
 
-> 原文： [https://machinelearningmastery.com/statistical-language-modeling-and-neural-language-models/](https://machinelearningmastery.com/statistical-language-modeling-and-neural-language-models/)
+> 原文： [`machinelearningmastery.com/statistical-language-modeling-and-neural-language-models/`](https://machinelearningmastery.com/statistical-language-modeling-and-neural-language-models/)
 
 语言建模是许多重要的自然语言处理任务的核心。
 
@@ -162,9 +162,9 @@
 
 ### 图书
 
-*   第 9 章语言建模，[自然语言处理中的神经网络方法](http://amzn.to/2vStiIS)，2017。
-*   第 22 章，自然语言处理，[人工智能现代方法](http://amzn.to/2fDPfF3)，2009。
-*   第 12 章，信息检索的语言模型，[信息检索简介](http://amzn.to/2vAavQd)，2008。
+*   第九章语言建模，[自然语言处理中的神经网络方法](http://amzn.to/2vStiIS)，2017。
+*   第二十二章，自然语言处理，[人工智能现代方法](http://amzn.to/2fDPfF3)，2009。
+*   第十二章，信息检索的语言模型，[信息检索简介](http://amzn.to/2vAavQd)，2008。
 
 ### 文件
 

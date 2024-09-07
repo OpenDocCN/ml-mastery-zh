@@ -1,6 +1,6 @@
 # 机器学习项目中常见的陷阱
 
-> 原文： [https://machinelearningmastery.com/common-pitfalls-machine-learning-projects/](https://machinelearningmastery.com/common-pitfalls-machine-learning-projects/)
+> 原文： [`machinelearningmastery.com/common-pitfalls-machine-learning-projects/`](https://machinelearningmastery.com/common-pitfalls-machine-learning-projects/)
 
 在最近的一次演讲中， [Ben Hamner](https://www.linkedin.com/pub/ben-hamner/12/597/987) 描述了他和他的同事在 Kaggle 比赛期间观察到的机器学习项目的常见缺陷。
 
@@ -12,7 +12,7 @@
 
 在演讲的早期，Ben 介绍了端到端地处理机器学习问题的过程。
 
-[![Machine Learning Process](img/998899258133eac8dd50bad4c8b81238.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Machine-Learning-Process.png)
+![Machine Learning Process](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Machine-Learning-Process.png)
 
 机器学习过程
 取自 Ben Hamner 的“机器学习小鬼”
@@ -37,7 +37,7 @@
 
 Ben 提出了一个案例研究问题，用于建造一个自动猫门，可以让猫进来并让狗出门。这是一个有启发性的例子，因为它涉及到处理数据问题时的一些关键问题。
 
-[![Discriminating Dogs and Cats](img/9021592e933f483325488a2245a5f0c8.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Discriminating-Dogs-and-Cats.png)
+![Discriminating Dogs and Cats](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Discriminating-Dogs-and-Cats.png)
 
 辨别狗和猫
 取自 Ben Hamner 的“机器学习小鬼”
@@ -60,7 +60,7 @@ Ben 提出了一个案例研究问题，用于建造一个自动猫门，可以�
 
 虽然这些问题很常见，但他指出可以相对容易地识别和解决这些问题。
 
-[![Overfitting](img/fdfb6540917cf5d696956e3fd516df67.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Overfitting.png)
+![Overfitting](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/Overfitting.png)
 
 过拟合
 取自 Ben Hamner 的“机器学习小鬼”

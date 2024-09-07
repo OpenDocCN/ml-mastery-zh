@@ -1,6 +1,6 @@
 # AlvaroLemos 如何在数据科学团队中获得机器学习实习
 
-> 原文： [https://machinelearningmastery.com/student-got-machine-learning-internship-job-data-science-team/](https://machinelearningmastery.com/student-got-machine-learning-internship-job-data-science-team/)
+> 原文： [`machinelearningmastery.com/student-got-machine-learning-internship-job-data-science-team/`](https://machinelearningmastery.com/student-got-machine-learning-internship-job-data-science-team/)
 
 学生和开发人员如何开始应用机器学习的故事是一个灵感。
 
@@ -97,5 +97,5 @@
 
 ## 问：读者如何与您联系？
 
-*   GitHub： [https://github.com/alvarolemos](https://github.com/alvarolemos)
-*   LinkedIn： [https://www.linkedin.com/in/alvarolemos](https://www.linkedin.com/in/alvarolemos)
+*   GitHub： [`github.com/alvarolemos`](https://github.com/alvarolemos)
+*   LinkedIn： [`www.linkedin.com/in/alvarolemos`](https://www.linkedin.com/in/alvarolemos)

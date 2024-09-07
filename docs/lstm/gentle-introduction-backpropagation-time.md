@@ -1,6 +1,6 @@
 # 沿时间反向传播的温和介绍
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-backpropagation-time/](https://machinelearningmastery.com/gentle-introduction-backpropagation-time/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-backpropagation-time/`](https://machinelearningmastery.com/gentle-introduction-backpropagation-time/)
 
 Backpropagation Through Time 或 BPTT 是用于更新 LSTM 等循环神经网络中权重的训练算法。
 

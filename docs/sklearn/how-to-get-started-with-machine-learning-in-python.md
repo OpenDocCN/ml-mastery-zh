@@ -1,6 +1,6 @@
 # 如何开始将 Python 用于机器学习
 
-> 原文： [https://machinelearningmastery.com/how-to-get-started-with-machine-learning-in-python/](https://machinelearningmastery.com/how-to-get-started-with-machine-learning-in-python/)
+> 原文： [`machinelearningmastery.com/how-to-get-started-with-machine-learning-in-python/`](https://machinelearningmastery.com/how-to-get-started-with-machine-learning-in-python/)
 
 Python 会议 [PyCon2014](https://us.pycon.org/2014/) 最近举行，会议的视频在线。
 
@@ -20,7 +20,7 @@ Melanie 以机器学习的伟大[定义开始，指向](http://machinelearningma
 
 Melanie 将四个主要的数据科学角色描述为数据主管，数据创意，数据开发人员和数据研究人员，并使用图表来指示每个角色执行的机器学习量。她还描述了一个数据科学项目工作流程。
 
-[![data science project flow](img/62e4f5ac09380837d28adecb0b00a5d0.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/data-science-project-flow.png)
+![data science project flow](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/04/data-science-project-flow.png)
 
 Melanie Warrick 的数据科学项目流程。
 

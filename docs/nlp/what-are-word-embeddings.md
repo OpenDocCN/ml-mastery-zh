@@ -1,6 +1,6 @@
 # 什么是用于文本的词嵌入？
 
-> 原文： [https://machinelearningmastery.com/what-are-word-embeddings/](https://machinelearningmastery.com/what-are-word-embeddings/)
+> 原文： [`machinelearningmastery.com/what-are-word-embeddings/`](https://machinelearningmastery.com/what-are-word-embeddings/)
 
 词嵌入是一种单词表示，允许具有相似含义的单词具有相似的表示。
 

@@ -1,6 +1,6 @@
 # 如何成为数据科学家
 
-> 原文： [https://machinelearningmastery.com/become-data-scientist/](https://machinelearningmastery.com/become-data-scientist/)
+> 原文： [`machinelearningmastery.com/become-data-scientist/`](https://machinelearningmastery.com/become-data-scientist/)
 
 你是如何成为数据科学家的？
 
@@ -8,7 +8,7 @@
 
 尽管如此，DataCamp [最近发布了一个信息图](http://blog.datacamp.com/how-to-become-a-data-scientist-in-8-easy-steps-the-infographic/)，描述了成为数据科学家的 8 个简单步骤。在这篇文章中，我想强调并回顾一下 DataCamp 的信息图。
 
-[![How to become a data scientist](img/b8bbc67ed1519b80ec2e50ea5a14d2dc.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/How-to-become-a-data-scientist.png)
+![How to become a data scientist](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/How-to-become-a-data-scientist.png)
 
 如何成为数据科学家 [DataCamp 博客](http://blog.datacamp.com/how-to-become-a-data-scientist-in-8-easy-steps-the-infographic/)上发布的信息图的一部分
 

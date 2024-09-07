@@ -1,6 +1,6 @@
 # 如何使用 Python 和 Scikit-Learn 为机器学习准备数据
 
-> 原文： [https://machinelearningmastery.com/prepare-data-machine-learning-python-scikit-learn/](https://machinelearningmastery.com/prepare-data-machine-learning-python-scikit-learn/)
+> 原文： [`machinelearningmastery.com/prepare-data-machine-learning-python-scikit-learn/`](https://machinelearningmastery.com/prepare-data-machine-learning-python-scikit-learn/)
 
 许多机器学习算法都会对您的数据做出假设。
 

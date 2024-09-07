@@ -1,6 +1,6 @@
 # 浅谈机器学习的梯度提升算法
 
-> 原文： [https://machinelearningmastery.com/gentle-introduction-gradient-boosting-algorithm-machine-learning/](https://machinelearningmastery.com/gentle-introduction-gradient-boosting-algorithm-machine-learning/)
+> 原文： [`machinelearningmastery.com/gentle-introduction-gradient-boosting-algorithm-machine-learning/`](https://machinelearningmastery.com/gentle-introduction-gradient-boosting-algorithm-machine-learning/)
 
 梯度提升是构建预测模型的最强大技术之一。
 
@@ -244,7 +244,7 @@ AdaBoost 和相关算法首先由 Breiman 称之为 ARCing 算法的统计框架
 *   第 8.6 节 Boosting，第 203 页，[应用预测性建模](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20)。
 *   第 14.5 节“随机梯度提升”，第 390 页，[应用预测性建模](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20)。
 *   第 16.4 节 Boosting，第 556 页，[机器学习：概率视角](http://www.amazon.com/dp/0262018020?tag=inspiredalgor-20)
-*   第 10 章 Boosting 和 Additive 树，第 337 页，[统计学习的要素：数据挖掘，推理和预测](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)
+*   第十章 Boosting 和 Additive 树，第 337 页，[统计学习的要素：数据挖掘，推理和预测](http://www.amazon.com/dp/0387848576?tag=inspiredalgor-20)
 
 ### Gradient Boosting Papers
 

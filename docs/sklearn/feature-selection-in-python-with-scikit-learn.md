@@ -1,6 +1,6 @@
 # 使用 Python 和 Scikit-Learn 的特征选择
 
-> 原文： [https://machinelearningmastery.com/feature-selection-in-python-with-scikit-learn/](https://machinelearningmastery.com/feature-selection-in-python-with-scikit-learn/)
+> 原文： [`machinelearningmastery.com/feature-selection-in-python-with-scikit-learn/`](https://machinelearningmastery.com/feature-selection-in-python-with-scikit-learn/)
 
 并非所有数据属性都是相同的。对于数据集中的属性或列，更多并不总是更好。
 
@@ -10,7 +10,7 @@
 
 *   [Python 机器学习的特征选择](http://machinelearningmastery.com/feature-selection-machine-learning-python/)
 
-[![feature selection](img/17392bfd8704b46a8fe5e5c53f82378b.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/07/feature-selection.jpg)
+![feature selection](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/07/feature-selection.jpg)
 
 通过功能选择减少您的选项
 照片由 [Josh Friedman](https://www.flickr.com/photos/joshfriedmantravel/4935712614) ，保留一些权利

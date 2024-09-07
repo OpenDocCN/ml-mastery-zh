@@ -45,7 +45,7 @@ data(iris)
 featurePlot(x=iris[,1:4], y=iris[,5], plot="pairs", auto.key=list(columns=3))
 ```
 
-[![Scatterplot Matrix of the Iris dataset using the Caret R package](img/8612278817a81c54bd53013c5c2e7a14.png)](https://machinelearningmastery.com/wp-content/uploads/2014/09/scatterplot_matrix.png)
+![Scatterplot Matrix of the Iris dataset using the Caret R package](https://machinelearningmastery.com/wp-content/uploads/2014/09/scatterplot_matrix.png)
 
 使用 Caret 包的虹膜数据集散点图矩阵
 
@@ -66,7 +66,7 @@ data(iris)
 featurePlot(x=iris[,1:4], y=iris[,5], plot="density", scales=list(x=list(relation="free"), y=list(relation="free")), auto.key=list(columns=3))
 ```
 
-[![Density Plot of the iris dataset using the Caret R package](img/9f98c0d99fb6b8ca3d6c8b82acaa20d7.png)](https://machinelearningmastery.com/wp-content/uploads/2014/09/density_plots.png)
+![Density Plot of the iris dataset using the Caret R package](https://machinelearningmastery.com/wp-content/uploads/2014/09/density_plots.png)
 
 使用 Caret 包绘制虹膜数据集的密度图
 
@@ -87,7 +87,7 @@ data(iris)
 featurePlot(x=iris[,1:4], y=iris[,5], plot="box", scales=list(x=list(relation="free"), y=list(relation="free")), auto.key=list(columns=3))
 ```
 
-[![Box plots of the iris dataset using the Caret R package](img/64ac04f5797a0fce3782a0cc8b92c3b3.png)](https://machinelearningmastery.com/wp-content/uploads/2014/09/boxplots.png)
+![Box plots of the iris dataset using the Caret R package](https://machinelearningmastery.com/wp-content/uploads/2014/09/boxplots.png)
 
 使用 Caret 包绘制虹膜数据集的方框图
 

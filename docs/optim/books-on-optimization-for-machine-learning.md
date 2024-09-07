@@ -43,7 +43,7 @@ Let’s get started.![Books on Optimization for Machine Learning](img/b164e218e7
 
 本书由[梅克尔·科钦德费尔](https://mykel.kochenderfer.com/)[蒂姆·惠勒](http://timallanwheeler.com/)撰写，于 2019 年出版。
 
-[![Algorithms for Optimization](img/b06da2dc01119ad8a77c8c408e344c00.png)](https://amzn.to/3jq8tJU)
+![Algorithms for Optimization](https://amzn.to/3jq8tJU)
 
 优化算法
 
@@ -69,17 +69,17 @@ Let’s get started.![Books on Optimization for Machine Learning](img/b164e218e7
 *   第八章:随机方法
 *   第九章:人口方法
 *   第十章:制约因素
-*   第 11 章:线性约束优化
-*   第 12 章:多目标优化
-*   第 13 章:采样计划
-*   第 14 章:代理模型
-*   第 15 章:概率代理模型
-*   第 16 章:代理优化
-*   第 17 章:不确定性下的优化
-*   第 18 章:不确定性传播
-*   第 19 章:离散优化
-*   第 20 章:表达式优化
-*   第 21 章:多学科优化
+*   第十一章:线性约束优化
+*   第十二章:多目标优化
+*   第十三章:采样计划
+*   第十四章:代理模型
+*   第十五章:概率代理模型
+*   第十六章:代理优化
+*   第十七章:不确定性下的优化
+*   第十八章:不确定性传播
+*   第十九章:离散优化
+*   第二十章:表达式优化
+*   第二十一章:多学科优化
 
 我很喜欢这本书；它充满了宝贵的实用建议。我强烈推荐！
 
@@ -91,7 +91,7 @@ Let’s get started.![Books on Optimization for Machine Learning](img/b164e218e7
 
 本书由[Jorge Nocedal](https://en.wikipedia.org/wiki/Jorge_Nocedal)[斯蒂芬·赖特](http://pages.cs.wisc.edu/~swright/)撰写，于 2006 年出版。
 
-[![Numerical Optimization](img/1c0287040953febaf58e6b78889004e6.png)](https://amzn.to/3lCRqX9)
+![Numerical Optimization](https://amzn.to/3lCRqX9)
 
 数值优化
 
@@ -110,22 +110,22 @@ Let’s get started.![Books on Optimization for Machine Learning](img/b164e218e7
 *   第一章:引言
 *   第二章:无约束优化基础
 *   第三章:行搜索方法
-*   第 4 章:信任区域方法
+*   第四章:信任区域方法
 *   第五章:共轭梯度法
 *   第六章:拟牛顿方法
 *   第七章:大规模无约束优化
 *   第八章:计算导数
 *   第九章:无导数优化
 *   第十章:最小二乘问题
-*   第 11 章:非线性方程
-*   第 12 章:约束优化理论
+*   第十一章:非线性方程
+*   第十二章:约束优化理论
 *   第十三章:线性规划:单纯形法
-*   第 14 章:线性规划:内点法
-*   第 15 章:非线性约束优化算法基础
-*   第 16 章:二次规划
-*   第 17 章:惩罚和增广拉格朗日方法
-*   第 18 章:序列二次规划
-*   第 19 章:非线性规划的内点方法
+*   第十四章:线性规划:内点法
+*   第十五章:非线性约束优化算法基础
+*   第十六章:二次规划
+*   第十七章:惩罚和增广拉格朗日方法
+*   第十八章:序列二次规划
+*   第十九章:非线性规划的内点方法
 
 这是一本关于最优化的扎实的教科书。
 
@@ -139,7 +139,7 @@ Let’s get started.![Books on Optimization for Machine Learning](img/b164e218e7
 
 本书由 [Andries Engelbrecht](https://engel.pages.cs.sun.ac.za/) 撰写，于 2007 年出版。
 
-[![Computational Intelligence: An Introduction](img/4e19641fe62c82c4d8215c7a28eb6906.png)](https://amzn.to/2YQZGJ3)
+![Computational Intelligence: An Introduction](https://amzn.to/2YQZGJ3)
 
 计算智能:导论
 
@@ -168,20 +168,20 @@ Let’s get started.![Books on Optimization for Machine Learning](img/b164e218e7
     *   第八章:进化计算导论
     *   第九章:遗传算法
     *   第十章:基因编程
-    *   第 11 章:进化编程
-    *   第 12 章:进化策略
-    *   第 13 章:差分进化
-    *   第 14 章:文化算法
-    *   第 15 章:共同进化
+    *   第十一章:进化编程
+    *   第十二章:进化策略
+    *   第十三章:差分进化
+    *   第十四章:文化算法
+    *   第十五章:共同进化
 *   第四部分计算群体智能
-    *   第 16 章:粒子群优化
-    *   第 17 章:蚂蚁算法
+    *   第十六章:粒子群优化
+    *   第十七章:蚂蚁算法
 *   第五部分人工免疫系统
     *   第十八章:自然免疫系统
-    *   第 19 章:人工免疫模型
+    *   第十九章:人工免疫模型
 *   第六部分模糊系统
-    *   第 20 章:模糊集
-    *   第 21 章:模糊逻辑和推理
+    *   第二十章:模糊集
+    *   第二十一章:模糊逻辑和推理
 
 我是这本书的粉丝，推荐一下。
 

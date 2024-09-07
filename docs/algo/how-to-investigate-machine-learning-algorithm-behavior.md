@@ -1,6 +1,6 @@
 # 如何研究机器学习算法行为
 
-> 原文： [https://machinelearningmastery.com/how-to-investigate-machine-learning-algorithm-behavior/](https://machinelearningmastery.com/how-to-investigate-machine-learning-algorithm-behavior/)
+> 原文： [`machinelearningmastery.com/how-to-investigate-machine-learning-algorithm-behavior/`](https://machinelearningmastery.com/how-to-investigate-machine-learning-algorithm-behavior/)
 
 机器学习算法是需要学习才能理解的复杂系统。
 
@@ -12,7 +12,7 @@
 
 您会发现，机器学习实验不仅适用于学术，也可以实现，并且在掌握的过程中需要进行实验，因为您将获得的经验因果知识在其他任何地方都无法获得。
 
-[![Investigate Machine Learning Algorithm Behavior](img/1ec819a6ee908b974563dd5606c0a672.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Investigate-Machine-Learning-Algorithm-Behavior.jpg)
+![Investigate Machine Learning Algorithm Behavior](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Investigate-Machine-Learning-Algorithm-Behavior.jpg)
 
 调查机器学习算法行为
 照片由[美国陆军 RDECOM](http://www.flickr.com/photos/rdecom/7222825892) ，保留一些权利

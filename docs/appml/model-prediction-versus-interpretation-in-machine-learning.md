@@ -1,6 +1,6 @@
 # 模型预测准确率与机器学习中的解释
 
-> 原文： [https://machinelearningmastery.com/model-prediction-versus-interpretation-in-machine-learning/](https://machinelearningmastery.com/model-prediction-versus-interpretation-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/model-prediction-versus-interpretation-in-machine-learning/`](https://machinelearningmastery.com/model-prediction-versus-interpretation-in-machine-learning/)
 
 在他们的书 [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) 中，Kuhn 和 Johnson 早期就模型预测准确率与模型解释的权衡进行了评论。
 
@@ -8,7 +8,7 @@
 
 在这篇文章中，您将发现并考虑这一重要的权衡。
 
-[![model accuracy](img/89023cffaa133151ce41aa191077b5ce.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/07/model-accuracy.jpg)
+![model accuracy](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/07/model-accuracy.jpg)
 
 模型准确率与可解释性
 摄影：Donald Hobern，保留一些权利

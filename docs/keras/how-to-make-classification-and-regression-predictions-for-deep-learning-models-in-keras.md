@@ -1,6 +1,6 @@
 # 如何用 Keras 做出预测
 
-> 原文： [https://machinelearningmastery.com/how-to-make-classification-and-regression-predictions-for-deep-learning-models-in-keras/](https://machinelearningmastery.com/how-to-make-classification-and-regression-predictions-for-deep-learning-models-in-keras/)
+> 原文： [`machinelearningmastery.com/how-to-make-classification-and-regression-predictions-for-deep-learning-models-in-keras/`](https://machinelearningmastery.com/how-to-make-classification-and-regression-predictions-for-deep-learning-models-in-keras/)
 
 一旦您在 Keras 中选择并拟合了最终的深度学习模型，您就可以使用它来对新数据实例做出预测。
 

@@ -60,7 +60,7 @@
 
 这本书温和地介绍了使用 Keras 深度学习库的 GANs。
 
-[![GANs in Action](img/1d4c52a166504b6b2c4c42e4ba75a6f3.png)](https://amzn.to/2Igu0Ul)
+![GANs in Action](https://amzn.to/2Igu0Ul)
 
 行动中的甘斯
 
@@ -70,17 +70,17 @@
 
 ### 目录
 
-*   第 1 章:GANs 简介
-*   第 2 章:自动编码器作为 GANs 的路径
+*   第一章:GANs 简介
+*   第二章:自动编码器作为 GANs 的路径
 *   第三章:你的第一个 GAN:生成手写数字
 *   第四章:深度卷积神经网络
-*   第 5 章:培训和常见挑战:为成功而组织
-*   第 6 章:与 GANs 一起进步
+*   第五章:培训和常见挑战:为成功而组织
+*   第六章:与 GANs 一起进步
 *   第七章:半监督 GAN
 *   第八章:条件 GAN
 *   第九章:循环干
 *   第十章:对抗性例子
-*   第 11 章:GANs 的实际应用
+*   第十一章:GANs 的实际应用
 *   第十二章:展望未来
 
 ## 2.生成性深度学习
@@ -89,7 +89,7 @@
 
 [大卫·福斯特](https://www.linkedin.com/in/davidtfoster/)执笔，2019 年出版。
 
-[![Generative Deep Learning](img/5c73b4f250469babd18d0d1fbe0b5e50.png)](https://amzn.to/2F0njFt)
+![Generative Deep Learning](https://amzn.to/2F0njFt)
 
 生成性深度学习
 
@@ -105,7 +105,7 @@
     *   第二章。深度学习
     *   第三章。可变自动编码器
     *   第四章。生成对抗网络
-*   第 2 部分:教机器绘画、写作、作曲和演奏
+*   第二部分:教机器绘画、写作、作曲和演奏
     *   第五章。颜料
     *   第六章。写
     *   第七章。构成
@@ -120,7 +120,7 @@
 
 这本书是关于更一般的主题的高级深度学习与 Keras，允许覆盖自动编码器，变分自动编码器，和深度强化学习。然而，这本书有四章是关于 GAN 的，我认为这是一本 GAN 的书。
 
-[![Advanced Deep Learning with Keras](img/69ed139ba45312a9c380978ed416d67e.png)](https://amzn.to/2Wt1p7G)
+![Advanced Deep Learning with Keras](https://amzn.to/2Wt1p7G)
 
 通过 Keras 进行高级深度学习
 
@@ -130,16 +130,16 @@
 
 ### 目录
 
-*   第 1 章:用 Kera 介绍高级深度学习
-*   第 2 章:深度神经网络
-*   第 3 章:自动编码器
+*   第一章:用 Kera 介绍高级深度学习
+*   第二章:深度神经网络
+*   第三章:自动编码器
 *   第四章:生成对抗网络
-*   第 5 章:改进的 GANs
-*   第 6 章:解开代理问题
-*   第 7 章:跨域 GANs
+*   第五章:改进的 GANs
+*   第六章:解开代理问题
+*   第七章:跨域 GANs
 *   第八章:可变自动编码器
-*   第 9 章:深度强化学习
-*   第 10 章:政策梯度方法
+*   第九章:深度强化学习
+*   第十章:政策梯度方法
 
 ## 4.学习生成对抗网络
 
@@ -149,7 +149,7 @@
 
 这本书对 GANs 做了非常简单的介绍。这本书可能已经被 Packt 删除或取消出版，并被视频课程取代。
 
-[![Learning Generative Adversarial Networks](img/c5ec1f5ca6e44537acb760cd06ef422f.png)](https://amzn.to/2MavhS3)
+![Learning Generative Adversarial Networks](https://amzn.to/2MavhS3)
 
 学习生成对抗网络
 
@@ -158,12 +158,12 @@
 
 ### 目录
 
-*   第 1 章:深度学习介绍
+*   第一章:深度学习介绍
 *   第二章:无监督学习
-*   第 3 章:跨不同领域传递图像风格
+*   第三章:跨不同领域传递图像风格
 *   第四章:从你的文本中构建真实的图像
-*   第 5 章:使用各种生成模型生成图像
-*   第 6 章:将机器学习带入生产
+*   第五章:使用各种生成模型生成图像
+*   第六章:将机器学习带入生产
 
 ## 5.生成对抗网络项目
 
@@ -173,7 +173,7 @@
 
 这本书用 Keras 中的代码示例总结了一系列 GANs。
 
-[![Generative Adversarial Networks Projects](img/509ead061c4abc34c5975aafe1641b99.png)](https://amzn.to/2YYdBLh)
+![Generative Adversarial Networks Projects](https://amzn.to/2YYdBLh)
 
 生成对抗网络项目
 
@@ -184,14 +184,14 @@
 ### 目录
 
 *   第一章:生成对抗网络导论
-*   第 2 章:三维甘-使用甘生成形状
+*   第二章:三维甘-使用甘生成形状
 *   第三章:基于条件遗传神经网络的人脸衰老
-*   第 4 章:使用 DCGANs 生成动漫角色
-*   第 5 章:使用 SRGANs 生成照片级真实感图像
-*   第 6 章:层叠–文本到照片的真实感图像合成
+*   第四章:使用 DCGANs 生成动漫角色
+*   第五章:使用 SRGANs 生成照片级真实感图像
+*   第六章:层叠–文本到照片的真实感图像合成
 *   第七章:循环干——把绘画变成照片
-*   第 8 章:条件 GAN——使用条件性对抗网络的图像到图像转换
-*   第 9 章:预测 GANs 的未来
+*   第八章:条件 GAN——使用条件性对抗网络的图像到图像转换
+*   第九章:预测 GANs 的未来
 
 ## 6.生成对抗网络秘籍
 
@@ -199,7 +199,7 @@
 
 作者[乔希·卡琳](https://www.linkedin.com/in/josh-kalin-96b6152b/)，2018 年出版。
 
-[![Generative Adversarial Networks Cookbook](img/eeea9953d5d5bebec97e0dcf90524c04.png)](https://amzn.to/2MgzNyJ)
+![Generative Adversarial Networks Cookbook](https://amzn.to/2MgzNyJ)
 
 生成对抗网络秘籍
 
@@ -210,13 +210,13 @@
 ### 目录
 
 *   第一章:什么是生成对抗网络
-*   第 2 章:数据优先、轻松的环境和数据准备
+*   第二章:数据优先、轻松的环境和数据准备
 *   第三章:我在百行以下的第一个 GAN
 *   第四章:梦想用 DCGAN 建造新的户外建筑
-*   第 5 章:Pix2Pix 图像到图像的翻译
+*   第五章:Pix2Pix 图像到图像的翻译
 *   第六章:用 CycleGAN 风格传递你的形象
 *   第七章:用模拟图像创建逼真的眼球
-*   第 8 章:使用 GANs 从图像到三维模型
+*   第八章:使用 GANs 从图像到三维模型
 
 ## 7.用 Keras 实践生成对抗网络
 
@@ -226,7 +226,7 @@
 
 这可能是最好的 Packt 出版的书籍之一，因为代码看起来质量更好，覆盖了更广泛的 GANs。
 
-[![Hands-On Generative Adversarial Networks with Keras](img/4c09588f48d536a86077d8a3c7ca7e91.png)](https://amzn.to/2VThkrv)
+![Hands-On Generative Adversarial Networks with Keras](https://amzn.to/2VThkrv)
 
 用 Keras 实践生成对抗网络
 
@@ -236,21 +236,21 @@
 
 ### 目录
 
-*   第 1 部分:简介和环境设置
-    *   第 1 章:深度学习基础和环境设置
+*   第一部分:简介和环境设置
+    *   第一章:深度学习基础和环境设置
     *   第二章:生成模型介绍
-*   第 2 部分:培训全球网络
+*   第二部分:培训全球网络
     *   第三章:培训甘斯
     *   第四章:评估你的第一个 GAN
     *   第五章:提高你的第一个 GAN
 *   第三部分:GANS 在计算机视觉、自然语言处理和音频中的应用
-    *   第 6 章:用 GANs 合成和操作图像
+    *   第六章:用 GANs 合成和操作图像
     *   第七章:肝的渐进式增长
-    *   第 8 章:使用 GANs 生成离散序列
-    *   第 9 章:用 GANs 进行文本到图像的合成
-    *   第 10 章:使用 GANs 进行语音增强
-    *   第 11 章:龙舌兰酒——鉴别 GAN 样品
-    *   第 12 章:GANs 的下一步是什么
+    *   第八章:使用 GANs 生成离散序列
+    *   第九章:用 GANs 进行文本到图像的合成
+    *   第十章:使用 GANs 进行语音增强
+    *   第十一章:龙舌兰酒——鉴别 GAN 样品
+    *   第十二章:GANs 的下一步是什么
 
 ## 其他书中的甘斯
 
@@ -268,7 +268,7 @@
 
 如果能看到古德费勒在未来某个时候就这个话题写一本专门的教科书，那就太好了。
 
-[![Deep Learning](img/53e276880bb127a7acaf288d282466d1.png)](https://amzn.to/2MmZNbH)
+![Deep Learning](https://amzn.to/2MmZNbH)
 
 深度学习
 
@@ -282,7 +282,7 @@ Francois Chollet 在 2017 年出版的名为《用 Python 进行深度学习》�
 
 *   [图书源代码](https://github.com/fchollet/deep-learning-with-python-notebooks)。
 
-[![Deep Learning with Python](img/e97ec2817cbea5d2c7c6d6ae5f00f5d4.png)](https://amzn.to/2QEg9v3)
+![Deep Learning with Python](https://amzn.to/2QEg9v3)
 
 使用 Python 进行深度学习
 

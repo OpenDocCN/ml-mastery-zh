@@ -1,6 +1,6 @@
 # 如何在 Python 中从零开始实现重采样方法
 
-> 原文： [https://machinelearningmastery.com/implement-resampling-methods-scratch-python/](https://machinelearningmastery.com/implement-resampling-methods-scratch-python/)
+> 原文： [`machinelearningmastery.com/implement-resampling-methods-scratch-python/`](https://machinelearningmastery.com/implement-resampling-methods-scratch-python/)
 
 预测性建模的目标是创建能够对新数据进行良好预测的模型。
 

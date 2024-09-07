@@ -1,6 +1,6 @@
 # RNN 展开的温和介绍
 
-> 原文： [https://machinelearningmastery.com/rnn-unrolling/](https://machinelearningmastery.com/rnn-unrolling/)
+> 原文： [`machinelearningmastery.com/rnn-unrolling/`](https://machinelearningmastery.com/rnn-unrolling/)
 
 循环神经网络是一种神经网络，其中来自先前时间步长的输出作为输入馈送到当前时间步长。
 
@@ -68,7 +68,7 @@ RNN 适合并在许多时间步骤上做出预测。我们可以通过在输入�
 
 > 正如[反向传播到时间]的标准，网络随着时间的推移展开，因此到达层的连接被视为来自前一个时间步。
 
-- [具有双向 LSTM 和其他神经网络架构的逐帧音素分类](ftp://ftp.idsia.ch/pub/juergen/nn_2005.pdf)，2005
+- 具有双向 LSTM 和其他神经网络架构的逐帧音素分类，2005
 
 重要的是，给定时间步长的误差反向传播取决于先前时间步骤的网络激活。
 
@@ -93,7 +93,7 @@ RNN 适合并在许多时间步骤上做出预测。我们可以通过在输入�
 ### 文件
 
 *   [具有连接主义时间分类的循环神经网络的在线序列训练](https://arxiv.org/abs/1511.06841)，2015
-*   [具有双向 LSTM 和其他神经网络架构的帧式音素分类](ftp://ftp.idsia.ch/pub/juergen/nn_2005.pdf)，2005
+*   具有双向 LSTM 和其他神经网络架构的帧式音素分类，2005
 *   [带循环神经网络的监督序列标记](http://amzn.to/2upsSJ9)，2008
 *   [深度学习，自然](https://www.nature.com/articles/nature14539.epdf)，2015
 

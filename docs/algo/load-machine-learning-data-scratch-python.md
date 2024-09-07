@@ -1,6 +1,6 @@
 # 如何在 Python 中从零开始加载机器学习数据
 
-> 原文： [https://machinelearningmastery.com/load-machine-learning-data-scratch-python/](https://machinelearningmastery.com/load-machine-learning-data-scratch-python/)
+> 原文： [`machinelearningmastery.com/load-machine-learning-data-scratch-python/`](https://machinelearningmastery.com/load-machine-learning-data-scratch-python/)
 
 您必须知道如何加载数据，然后才能使用它来训练机器学习模型。
 

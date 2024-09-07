@@ -1,6 +1,6 @@
 # 如何使用 Python 差分时间序列数据集
 
-> 原文： [https://machinelearningmastery.com/difference-time-series-dataset-python/](https://machinelearningmastery.com/difference-time-series-dataset-python/)
+> 原文： [`machinelearningmastery.com/difference-time-series-dataset-python/`](https://machinelearningmastery.com/difference-time-series-dataset-python/)
 
 差分是时间序列中流行且广泛使用的数据变换。
 

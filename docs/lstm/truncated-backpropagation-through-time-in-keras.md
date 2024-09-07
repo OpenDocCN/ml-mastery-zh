@@ -1,6 +1,6 @@
 # 如何在 Keras 中为截断 BPTT 准备序列预测
 
-> 原文： [https://machinelearningmastery.com/truncated-backpropagation-through-time-in-keras/](https://machinelearningmastery.com/truncated-backpropagation-through-time-in-keras/)
+> 原文： [`machinelearningmastery.com/truncated-backpropagation-through-time-in-keras/`](https://machinelearningmastery.com/truncated-backpropagation-through-time-in-keras/)
 
 循环神经网络能够在序列预测问题中学习跨越多个时间步的时间依赖性。
 

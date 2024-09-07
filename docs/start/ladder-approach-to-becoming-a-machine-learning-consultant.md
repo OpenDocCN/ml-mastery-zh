@@ -1,6 +1,6 @@
 # 应用机器学习获得回报
 
-> 原文： [https://machinelearningmastery.com/ladder-approach-to-becoming-a-machine-learning-consultant/](https://machinelearningmastery.com/ladder-approach-to-becoming-a-machine-learning-consultant/)
+> 原文： [`machinelearningmastery.com/ladder-approach-to-becoming-a-machine-learning-consultant/`](https://machinelearningmastery.com/ladder-approach-to-becoming-a-machine-learning-consultant/)
 
 ### _ 您可以用来成为
 机器学习顾问的阶梯方法 _
@@ -13,7 +13,7 @@
 
 这不容易，你必须在舒适区之外努力工作。你将不得不在现实世界中与真实的人交谈！
 
-[![Ladder Approach to Machine Learning](img/4bda358861b3d4cca58a2b88f151515c.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/03/Ladder-Approach-to-Machine-Learning.jpg)
+![Ladder Approach to Machine Learning](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2015/03/Ladder-Approach-to-Machine-Learning.jpg)
 
 机器学习的阶梯方法
 照片由 [Jake Stimpson](https://www.flickr.com/photos/128539140@N03/15517408110) ，保留一些权利

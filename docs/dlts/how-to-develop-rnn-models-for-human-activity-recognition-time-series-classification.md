@@ -1,6 +1,6 @@
 # 如何为人类活动识别时间序列分类开发 RNN 模型
 
-> 原文： [https://machinelearningmastery.com/how-to-develop-rnn-models-for-human-activity-recognition-time-series-classification/](https://machinelearningmastery.com/how-to-develop-rnn-models-for-human-activity-recognition-time-series-classification/)
+> 原文： [`machinelearningmastery.com/how-to-develop-rnn-models-for-human-activity-recognition-time-series-classification/`](https://machinelearningmastery.com/how-to-develop-rnn-models-for-human-activity-recognition-time-series-classification/)
 
 人类活动识别是将由专用线束或智能电话记录的加速度计数据序列分类为已知的明确定义的运动的问题。
 

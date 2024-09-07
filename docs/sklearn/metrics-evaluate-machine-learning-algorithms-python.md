@@ -1,6 +1,6 @@
 # 用于评估 Python 中机器学习算法的度量标准
 
-> 原文： [https://machinelearningmastery.com/metrics-evaluate-machine-learning-algorithms-python/](https://machinelearningmastery.com/metrics-evaluate-machine-learning-algorithms-python/)
+> 原文： [`machinelearningmastery.com/metrics-evaluate-machine-learning-algorithms-python/`](https://machinelearningmastery.com/metrics-evaluate-machine-learning-algorithms-python/)
 
 您选择用于评估机器学习算法的指标非常重要。
 
@@ -332,7 +332,7 @@ R ^ 2（或 R Squared）度量提供了一组预测与实际值的拟合优度�
 下面的示例提供了计算一组预测的平均 R ^ 2 的演示。
 
 ```
-# Cross Validation Regression R^2
+# Cross Validation Regression R²
 import pandas
 from sklearn import model_selection
 from sklearn.linear_model import LinearRegression
@@ -347,13 +347,13 @@ kfold = model_selection.KFold(n_splits=10, random_state=seed)
 model = LinearRegression()
 scoring = 'r2'
 results = model_selection.cross_val_score(model, X, Y, cv=kfold, scoring=scoring)
-print("R^2: %.3f (%.3f)") % (results.mean(), results.std())
+print("R²: %.3f (%.3f)") % (results.mean(), results.std())
 ```
 
 您可以看到预测与实际值的拟合度较差，其值接近零且小于 0.5。
 
 ```
-R^2: 0.203 (0.595)
+R²: 0.203 (0.595)
 ```
 
 ## 摘要

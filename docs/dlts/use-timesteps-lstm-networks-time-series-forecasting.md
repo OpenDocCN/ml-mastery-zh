@@ -1,6 +1,6 @@
 # 如何将 LSTM 网络用于时间序列预测
 
-> 原文： [https://machinelearningmastery.com/use-timesteps-lstm-networks-time-series-forecasting/](https://machinelearningmastery.com/use-timesteps-lstm-networks-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/use-timesteps-lstm-networks-time-series-forecasting/`](https://machinelearningmastery.com/use-timesteps-lstm-networks-time-series-forecasting/)
 
 Keras 的长短期记忆（LSTM）网络支持时间步骤。
 

@@ -12,7 +12,7 @@
 
 我们开始吧。
 
-[![non-linear regression](img/71ddcf91361ff41c2e034084f160f40b.png)](https://machinelearningmastery.com/wp-content/uploads/2014/07/non-linear-regression.jpg)
+![non-linear regression](https://machinelearningmastery.com/wp-content/uploads/2014/07/non-linear-regression.jpg)
 
 非线性回归
 史蒂夫·朱韦森摄，版权所有
@@ -37,7 +37,7 @@ evimp(fit)
 # make predictions
 predictions <- predict(fit, longley)
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -59,7 +59,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley)
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -81,7 +81,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, longley[,1:6])
 # summarize accuracy
-mse <- mean((longley$Employed - predictions)^2)
+mse <- mean((longley$Employed - predictions)²)
 print(mse)
 ```
 
@@ -105,7 +105,7 @@ summary(fit)
 # make predictions
 predictions <- predict(fit, x, type="raw")
 # summarize accuracy
-mse <- mean((y - predictions)^2)
+mse <- mean((y - predictions)²)
 print(mse)
 ```
 
@@ -115,4 +115,4 @@ print(mse)
 
 在这篇文章中，你发现了 4 种非线性回归方法，你可以复制粘贴它们来解决你自己的问题。
 
-有关更多信息，请参见库恩和约翰逊的[应用预测建模](https://amzn.to/3iFPHhq)第 7 章，该章为初学者提供了非线性回归的优秀介绍。
+有关更多信息，请参见库恩和约翰逊的[应用预测建模](https://amzn.to/3iFPHhq)第七章，该章为初学者提供了非线性回归的优秀介绍。

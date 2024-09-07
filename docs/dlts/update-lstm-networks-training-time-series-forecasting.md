@@ -1,6 +1,6 @@
 # 如何在时间序列预测训练期间更新 LSTM 网络
 
-> 原文： [https://machinelearningmastery.com/update-lstm-networks-training-time-series-forecasting/](https://machinelearningmastery.com/update-lstm-networks-training-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/update-lstm-networks-training-time-series-forecasting/`](https://machinelearningmastery.com/update-lstm-networks-training-time-series-forecasting/)
 
 使用神经网络模型进行时间序列预测的好处是可以在新数据可用时更新权重。
 

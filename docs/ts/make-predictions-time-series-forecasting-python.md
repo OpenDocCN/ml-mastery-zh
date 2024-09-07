@@ -1,6 +1,6 @@
 # 如何用 Python 预测时间序列
 
-> 原文： [https://machinelearningmastery.com/make-predictions-time-series-forecasting-python/](https://machinelearningmastery.com/make-predictions-time-series-forecasting-python/)
+> 原文： [`machinelearningmastery.com/make-predictions-time-series-forecasting-python/`](https://machinelearningmastery.com/make-predictions-time-series-forecasting-python/)
 
 选择时间序列预测模型只是一个开始。
 

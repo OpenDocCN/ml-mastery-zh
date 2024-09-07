@@ -1,6 +1,6 @@
 # 深度学习的循环神经网络算法之旅
 
-> 原文： [https://machinelearningmastery.com/recurrent-neural-network-algorithms-for-deep-learning/](https://machinelearningmastery.com/recurrent-neural-network-algorithms-for-deep-learning/)
+> 原文： [`machinelearningmastery.com/recurrent-neural-network-algorithms-for-deep-learning/`](https://machinelearningmastery.com/recurrent-neural-network-algorithms-for-deep-learning/)
 
 循环神经网络（RNN）是一种人工神经网络，其向网络添加额外的权重以在网络图中创建循环以努力维持内部状态。
 
@@ -138,7 +138,7 @@ Schmidhuber 在 1991 年首次报告了一个非常深入的学习器，他能�
 
 LSTM 循环神经网络最有趣的应用是语言处理工作。有关全面的描述，请参阅 Gers 的工作。
 
-*   F. Gers 和 J. Schmidhuber， [LSTM Recurrent Networks 学习简单的上下文无关和上下文敏感语言](ftp://ftp.idsia.ch/pub/juergen/L-IEEE.pdf)，2001。
+*   F. Gers 和 J. Schmidhuber， LSTM Recurrent Networks 学习简单的上下文无关和上下文敏感语言，2001。
 *   F. Gers，[循环神经网络中的长短期记忆](http://www.felixgers.de/papers/phd.pdf)，博士。论文，2001 年。
 
 ### LSTM 限制

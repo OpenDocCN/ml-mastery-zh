@@ -1,6 +1,6 @@
 # NumPy 期望值，方差和协方差的简要介绍
 
-> 原文： [https://machinelearningmastery.com/introduction-to-expected-value-variance-and-covariance/](https://machinelearningmastery.com/introduction-to-expected-value-variance-and-covariance/)
+> 原文： [`machinelearningmastery.com/introduction-to-expected-value-variance-and-covariance/`](https://machinelearningmastery.com/introduction-to-expected-value-variance-and-covariance/)
 
 基础统计量是应用机器学习中的有用工具，可以更好地理解您的数据。
 
@@ -137,19 +137,19 @@ Var[X]
 方差计算为分布中每个值与预期值的平均平方差。或者与预期值的预期平方差异。
 
 ```
-Var[X] = E[(X - E[X])^2]
+Var[X] = E[(X - E[X])²]
 ```
 
 假设已经计算了变量的期望值（E [X]），则可以将随机变量的方差计算为每个示例的平方差与期望值乘以该值的概率之和。
 
 ```
-Var[X] = sum (p(x1) . (x1 - E[X])^2, p(x2) . (x2 - E[X])^2, ..., p(x1) . (xn - E[X])^2)
+Var[X] = sum (p(x1) . (x1 - E[X])², p(x2) . (x2 - E[X])², ..., p(x1) . (xn - E[X])²)
 ```
 
 如果分布中每个示例的概率相等，则方差计算可以降低个体概率，并将平方差的总和乘以分布中的示例数的倒数。
 
 ```
-Var[X] = sum ((x1 - E[X])^2, (x2 - E[X])^2, ...,(xn - E[X])^2) . 1/n
+Var[X] = sum ((x1 - E[X])², (x2 - E[X])², ...,(xn - E[X])²) . 1/n
 ```
 
 在统计中，可以从从域中抽取的示例的样本来估计方差。
@@ -157,7 +157,7 @@ Var[X] = sum ((x1 - E[X])^2, (x2 - E[X])^2, ...,(xn - E[X])^2) . 1/n
 在摘要中，样本方差由小写西格玛表示，其中 2 上标表示单位是平方的，而不是必须对最终值求平方。将平方差的总和乘以实例数的倒数减 1 以校正偏差。
 
 ```
-sigma^2 = sum from 1 to n ( (xi - mu)^2 ) . 1 / (n - 1)
+sigma² = sum from 1 to n ( (xi - mu)² ) . 1 / (n - 1)
 ```
 
 在 NumPy 中，可以使用 var（）函数计算向量或矩阵的方差。默认情况下，var（）函数计算总体方差。要计算样本方差，必须将 ddof 参数设置为值 1。
@@ -210,7 +210,7 @@ print(row_mean)
 标准偏差计算为方差的平方根，并表示为小写“s”。
 
 ```
-s = sqrt(sigma^2)
+s = sqrt(sigma²)
 ```
 
 为了保持这种表示法，有时方差表示为 s ^ 2，其中 2 表示为上标，再次表明单位是平方的。
@@ -401,8 +401,8 @@ print(Sigma)
 
 *   [应用多变量统计分析](http://amzn.to/2AUcEc5)，2012。
 *   [应用多变量统计分析](http://amzn.to/2AWIViz)，2015 年。
-*   第 12 章概率中的线性代数＆amp;统计学，[线性代数导论](http://amzn.to/2AZ7R8j)，第五版，2016 年。
-*   第 3 章，概率论和信息论，[深度学习](http://amzn.to/2j4oKuP)，2016 年。
+*   第十二章概率中的线性代数＆amp;统计学，[线性代数导论](http://amzn.to/2AZ7R8j)，第五版，2016 年。
+*   第三章，概率论和信息论，[深度学习](http://amzn.to/2j4oKuP)，2016 年。
 
 ### API
 

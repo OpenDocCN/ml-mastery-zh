@@ -1,6 +1,6 @@
 # Keras 中文本摘要的编解码器模型
 
-> 原文： [https://machinelearningmastery.com/encoder-decoder-models-text-summarization-keras/](https://machinelearningmastery.com/encoder-decoder-models-text-summarization-keras/)
+> 原文： [`machinelearningmastery.com/encoder-decoder-models-text-summarization-keras/`](https://machinelearningmastery.com/encoder-decoder-models-text-summarization-keras/)
 
 文本摘要是自然语言处理中的一个问题，即创建源文档的简短，准确和流畅的摘要。
 

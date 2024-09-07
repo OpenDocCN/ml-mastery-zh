@@ -1,6 +1,6 @@
 # 项目聚焦：将 Mahout 和 Konstantin Slisenko 用于 StackExchange 聚类
 
-> 原文： [https://machinelearningmastery.com/project-spotlight-stack-exchange-clustering-using-mahout-with-konstantin-slisenko/](https://machinelearningmastery.com/project-spotlight-stack-exchange-clustering-using-mahout-with-konstantin-slisenko/)
+> 原文： [`machinelearningmastery.com/project-spotlight-stack-exchange-clustering-using-mahout-with-konstantin-slisenko/`](https://machinelearningmastery.com/project-spotlight-stack-exchange-clustering-using-mahout-with-konstantin-slisenko/)
 
 这是一个项目聚焦，Konstantin Slisenko 是程序员和机器学习爱好者。
 
@@ -8,7 +8,7 @@
 
 我的名字是 Konstantin Slisenko，我来自[白俄罗斯](http://en.wikipedia.org/wiki/Belarus)。我毕业于[白俄罗斯国立信息学和无线电电子学](http://www.bsuir.by/index.jsp?lang=en)。我目前正在修读硕士课程。
 
-[![Konstantin Slisenko](img/f56c3ffce7e1d763cbc059c83b5c3365.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/konstantin-slisenko.png)
+![Konstantin Slisenko](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/konstantin-slisenko.png)
 
 Konstantin Slisenko
 
@@ -20,7 +20,7 @@ Konstantin Slisenko
 
 目标是对 stackoverflow 问题和答案进行分组。分组后，您可以看到栈溢出数据的常见图片以及问题之间的关系。如果您想进行市场调查或撰写有关特定问题的文章（或活动手册），这可能会有所帮助。
 
-[![Stackexchange clustering using Mahout Tags](img/82e009380c84081b07654cb0038a03a1.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/Stackexchange-clustering-using-Mahout-tags.png)
+![Stackexchange clustering using Mahout Tags](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/Stackexchange-clustering-using-Mahout-tags.png)
 
 使用 Mahout 标记进行 Stackexchange 聚类
 
@@ -46,7 +46,7 @@ Konstantin Slisenko
 
 群集质量取决于您执行数据准备的方式。在此步骤中，您必须非常注意应删除的停用词。
 
-[![Stack Exchange Clustering using Mahout by Konstantin Slisenko](img/bea95becffcd97609771221e9ba400ef.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/Stack-Exchange-Clustering-using-Mahout.png)
+![Stack Exchange Clustering using Mahout by Konstantin Slisenko](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/Stack-Exchange-Clustering-using-Mahout.png)
 
 使用 Konstantin Slisenko 的 Mahout StackExchange 群集
 

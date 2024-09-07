@@ -1,6 +1,6 @@
 # 通往最佳机器学习算法的简单三步法
 
-> 原文： [https://machinelearningmastery.com/steps-to-the-best-machine-learning-algorithm/](https://machinelearningmastery.com/steps-to-the-best-machine-learning-algorithm/)
+> 原文： [`machinelearningmastery.com/steps-to-the-best-machine-learning-algorithm/`](https://machinelearningmastery.com/steps-to-the-best-machine-learning-algorithm/)
 
 您如何为数据集选择最佳算法？
 

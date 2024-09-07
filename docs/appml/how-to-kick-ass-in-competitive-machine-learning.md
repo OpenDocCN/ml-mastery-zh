@@ -1,12 +1,12 @@
 # 如何在机器学习竞赛中胜出
 
-> 原文： [https://machinelearningmastery.com/how-to-kick-ass-in-competitive-machine-learning/](https://machinelearningmastery.com/how-to-kick-ass-in-competitive-machine-learning/)
+> 原文： [`machinelearningmastery.com/how-to-kick-ass-in-competitive-machine-learning/`](https://machinelearningmastery.com/how-to-kick-ass-in-competitive-machine-learning/)
 
 [David Kofoed Wind](http://www.davidwind.dk/) 在 Kaggle 博客 No Free Hunch 上发表了一篇文章，名为“ [_ 从最好的 _](http://blog.kaggle.com/2014/08/01/learning-from-the-best/) 中学习”。在这篇文章中，大卫总结了 6 个与参与机器学习竞赛相关的关键领域，以及来自表现最好的 kagglers 的报价。
 
 在这篇文章中，您将发现从该帖子中提取的竞争性机器学习中做得好的关键启发式方法。
 
-[![learning from the best](img/c8930d6c3604e4e41341aa2933d638fd.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/learning-from-the-best.jpg)
+![learning from the best](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/learning-from-the-best.jpg)
 
 从[利达](https://www.flickr.com/photos/lidarose/267681376/)的最佳
 照片中学习，保留一些权利

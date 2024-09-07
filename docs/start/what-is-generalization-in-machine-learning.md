@@ -1,6 +1,6 @@
 # 为什么机器学习算法会处理以前从未见过的数据？
 
-> 原文： [https://machinelearningmastery.com/what-is-generalization-in-machine-learning/](https://machinelearningmastery.com/what-is-generalization-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/what-is-generalization-in-machine-learning/`](https://machinelearningmastery.com/what-is-generalization-in-machine-learning/)
 
 机器学习的超级大国是概括。
 

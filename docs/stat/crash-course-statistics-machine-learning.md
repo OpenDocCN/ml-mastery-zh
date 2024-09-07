@@ -1,6 +1,6 @@
 # 机器学习中的统计学速成课
 
-> 原文： [https://machinelearningmastery.com/crash-course-statistics-machine-learning/](https://machinelearningmastery.com/crash-course-statistics-machine-learning/)
+> 原文： [`machinelearningmastery.com/crash-course-statistics-machine-learning/`](https://machinelearningmastery.com/crash-course-statistics-machine-learning/)
 
 在开始学习和应用机器学习之前，您不需要了解统计量。你可以从今天开始。
 
@@ -8,7 +8,7 @@
 
 在这篇文章中，您将从统计量中发现一些关键概念，这些概念将为您提供入门和在机器学习方面取得进步所需的信心。
 
-[![crash course in statistics](img/0bdd01fcd212585369be22ce8b0d3c46.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/crash-course-in-statistics.jpg)
+![crash course in statistics](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/11/crash-course-in-statistics.jpg)
 
 机器学习统计学中的速成课
 摄影： [Rob Ireton](http://www.flickr.com/photos/aoisakana/3292469847) ，保留一些权利。
@@ -86,7 +86,7 @@
 
 不要急于购买本科生的统计学教科书，至少目前还没有。这太快了，太快了。
 
-如果您正在寻找更多信息，我建议您首先阅读机器学习书籍中有关统计量的介绍部分，例如：[做数据科学的第 2 章：从前线直接谈话](http://www.amazon.com/dp/1449358659?tag=inspiredalgor-20)，来自哪篇文章受到了启发。
+如果您正在寻找更多信息，我建议您首先阅读机器学习书籍中有关统计量的介绍部分，例如：[做数据科学的第二章：从前线直接谈话](http://www.amazon.com/dp/1449358659?tag=inspiredalgor-20)，来自哪篇文章受到了启发。
 
 有关更多信息，请考虑查看一些链接的维基百科文章。
 

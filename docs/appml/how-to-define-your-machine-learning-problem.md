@@ -1,12 +1,12 @@
 # 如何定义机器学习问题
 
-> 原文： [https://machinelearningmastery.com/how-to-define-your-machine-learning-problem/](https://machinelearningmastery.com/how-to-define-your-machine-learning-problem/)
+> 原文： [`machinelearningmastery.com/how-to-define-your-machine-learning-problem/`](https://machinelearningmastery.com/how-to-define-your-machine-learning-problem/)
 
 任何项目的第一步都是定义您的问题。您可以使用最强大，最闪亮的算法，但如果您正在解决错误的问题，结果将毫无意义。
 
 在这篇文章中，您将学习在开始之前深入思考问题的过程。这无疑是应用机器学习的最重要方面。
 
-[![What is the problem?](img/728f17058ab4cb5e7538644838484248.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/question.jpg)
+![What is the problem?](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/question.jpg)
 
 问题是什么？
 照片归属于 [Eleaf](http://www.flickr.com/photos/eleaf/2536358399/sizes/l/) ，保留一些权利
@@ -58,7 +58,7 @@ For example:
 *   转推的数量可能对模型有影响。
 *   较早的推文比最近的推文更不具有预测性。
 
-[![question everything](img/c1ad17e98216756c24376c6529da4c02.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/question-everything.jpg)
+![question everything](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/question-everything.jpg)
 
 质疑一切！
 照片归于 [dullhunk](http://www.flickr.com/photos/dullhunk/202872717/sizes/l/) ，保留一些权利

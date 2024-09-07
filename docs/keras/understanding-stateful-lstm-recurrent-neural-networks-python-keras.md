@@ -1,6 +1,6 @@
 # 使用 Python 和 Keras 理解有状态 LSTM 循环神经网络
 
-> 原文： [https://machinelearningmastery.com/understanding-stateful-lstm-recurrent-neural-networks-python-keras/](https://machinelearningmastery.com/understanding-stateful-lstm-recurrent-neural-networks-python-keras/)
+> 原文： [`machinelearningmastery.com/understanding-stateful-lstm-recurrent-neural-networks-python-keras/`](https://machinelearningmastery.com/understanding-stateful-lstm-recurrent-neural-networks-python-keras/)
 
 强大且流行的递归神经网络是长期短期模型网络或 LSTM。
 

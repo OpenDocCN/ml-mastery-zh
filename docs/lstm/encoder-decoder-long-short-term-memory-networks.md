@@ -1,6 +1,6 @@
 # 编解码器长短期记忆网络
 
-> 原文： [https://machinelearningmastery.com/encoder-decoder-long-short-term-memory-networks/](https://machinelearningmastery.com/encoder-decoder-long-short-term-memory-networks/)
+> 原文： [`machinelearningmastery.com/encoder-decoder-long-short-term-memory-networks/`](https://machinelearningmastery.com/encoder-decoder-long-short-term-memory-networks/)
 
 ### 使用示例 Python 代码，轻松介绍
 序列到序列预测的编解码器 LSTM。

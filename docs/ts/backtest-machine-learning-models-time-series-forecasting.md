@@ -1,6 +1,6 @@
 # 如何为时间序列预测回测机器学习模型
 
-> 原文： [https://machinelearningmastery.com/backtest-machine-learning-models-time-series-forecasting/](https://machinelearningmastery.com/backtest-machine-learning-models-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/backtest-machine-learning-models-time-series-forecasting/`](https://machinelearningmastery.com/backtest-machine-learning-models-time-series-forecasting/)
 
 ### k-fold 交叉验证不适用于时间序列数据和您可以使用的
 技术。

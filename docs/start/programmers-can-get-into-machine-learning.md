@@ -1,6 +1,6 @@
 # 程序员可以入门机器学习
 
-> 原文： [https://machinelearningmastery.com/programmers-can-get-into-machine-learning/](https://machinelearningmastery.com/programmers-can-get-into-machine-learning/)
+> 原文： [`machinelearningmastery.com/programmers-can-get-into-machine-learning/`](https://machinelearningmastery.com/programmers-can-get-into-machine-learning/)
 
 在这篇文章中，我想向您展示程序员可以进入机器学习。
 
@@ -8,7 +8,7 @@
 
 我们首先将学习机器学习与学习编程进行比较，这可能是一个更大的挑战。
 
-[![Equation](img/a56b97e87d9d82c2bdbf5c3f8d9e34f6.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/11/equation.jpg)
+![Equation](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/11/equation.jpg)
 
 图像许可 [iwannt](http://www.flickr.com/photos/iwannt/) 保留一些权利
 

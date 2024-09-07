@@ -1,6 +1,6 @@
 # 如何利用 Python 从零开始实现逻辑回归
 
-> 原文： [https://machinelearningmastery.com/implement-logistic-regression-stochastic-gradient-descent-scratch-python/](https://machinelearningmastery.com/implement-logistic-regression-stochastic-gradient-descent-scratch-python/)
+> 原文： [`machinelearningmastery.com/implement-logistic-regression-stochastic-gradient-descent-scratch-python/`](https://machinelearningmastery.com/implement-logistic-regression-stochastic-gradient-descent-scratch-python/)
 
 逻辑回归是两类问题的首选线性分类算法。
 

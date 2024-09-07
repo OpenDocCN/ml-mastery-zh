@@ -1,6 +1,6 @@
 # Python 中基于时间序列数据的基本特征工程
 
-> 原文： [https://machinelearningmastery.com/basic-feature-engineering-time-series-data-python/](https://machinelearningmastery.com/basic-feature-engineering-time-series-data-python/)
+> 原文： [`machinelearningmastery.com/basic-feature-engineering-time-series-data-python/`](https://machinelearningmastery.com/basic-feature-engineering-time-series-data-python/)
 
 在我们开始使用机器学习算法之前，必须将时间序列数据重新构建为监督学习数据集。
 

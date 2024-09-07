@@ -1,6 +1,6 @@
 # 如何训练最终的机器学习模型
 
-> 原文： [https://machinelearningmastery.com/train-final-machine-learning-model/](https://machinelearningmastery.com/train-final-machine-learning-model/)
+> 原文： [`machinelearningmastery.com/train-final-machine-learning-model/`](https://machinelearningmastery.com/train-final-machine-learning-model/)
 
 我们用来对新数据做出预测的机器学习模型称为最终模型。
 

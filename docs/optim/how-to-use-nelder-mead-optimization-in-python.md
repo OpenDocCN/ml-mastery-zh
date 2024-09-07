@@ -103,7 +103,7 @@ print('Solution: %s' % result['x'])
 
 我们可以在一个表现良好的函数上演示 NelderMead 优化算法，以表明它可以快速有效地找到最优解，而无需使用函数的任何导数信息。
 
-在这种情况下，我们将使用二维的 x^2 函数，在-5.0 到 5.0 的范围内定义，已知的 optima 为[0.0，0.0]。
+在这种情况下，我们将使用二维的 x² 函数，在-5.0 到 5.0 的范围内定义，已知的 optima 为[0.0，0.0]。
 
 我们可以在下面定义*目标()*函数。
 
@@ -206,7 +206,7 @@ NelderMead 优化算法适用于一系列具有挑战性的非线性和不可微
 
 我们可以通过在评估之前向输入中添加小的高斯随机数来人为地制造一个有噪声的目标函数。
 
-例如，我们可以定义一维版本的 x^2 函数，并使用 [randn()函数](https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html)将均值为 0.0、标准差为 0.3 的小高斯随机数添加到输入中。
+例如，我们可以定义一维版本的 x² 函数，并使用 [randn()函数](https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html)将均值为 0.0、标准差为 0.3 的小高斯随机数添加到输入中。
 
 ```py
 # objective function

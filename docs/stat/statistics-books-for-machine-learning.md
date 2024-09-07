@@ -1,6 +1,6 @@
 # 机器学习中的统计书籍
 
-> 原文： [https://machinelearningmastery.com/statistics-books-for-machine-learning/](https://machinelearningmastery.com/statistics-books-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/statistics-books-for-machine-learning/`](https://machinelearningmastery.com/statistics-books-for-machine-learning/)
 
 统计方法用于应用机器学习项目的每个步骤。
 
@@ -45,7 +45,7 @@
 
 ### [赤裸统计：从数据中剥离恐惧](http://amzn.to/2t7yXdV)
 
-[![Amazon Image](img/885a89dd0140346bfecb03834b125ecf.jpg)](http://www.amazon.com/dp/039334777X?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/039334777X?tag=inspiredalgor-20)
 
 由 Charles Wheelan 撰写。
 
@@ -53,7 +53,7 @@
 
 ### [醉汉的行走：随机性如何规范我们的生活](http://amzn.to/2CT4rUD)
 
-[![Amazon Image](img/24b77286615896fbab08773c1235f6cd.jpg)](http://www.amazon.com/dp/0307275175?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0307275175?tag=inspiredalgor-20)
 
 由 Leonard Mlodinow 撰写。
 
@@ -61,7 +61,7 @@
 
 ### [信号和噪音：为什么这么多预言都会失败 - 但有些人不会](http://amzn.to/2FQdYyX)
 
-[![Amazon Image](img/72a850149edf2326c9a3fcaffa3fadd9.jpg)](http://www.amazon.com/dp/0143125087?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0143125087?tag=inspiredalgor-20)
 
 由 Nate Silver 撰写。
 
@@ -84,7 +84,7 @@
 
 ### [所有统计量：统计推断的简明课程](http://amzn.to/2tbJJQC)
 
-[![Amazon Image](img/c7e51ab82557465bf6d6381d2c810eb3.jpg)](http://www.amazon.com/dp/0387402721?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0387402721?tag=inspiredalgor-20)
 
 由 Larry Wasserman 撰写。
 
@@ -92,7 +92,7 @@
 
 ### [普通英语统计](http://amzn.to/2t3Nt6q)
 
-[![Amazon Image](img/5a98c9db9f0cdc5c70270eb00ca67c97.jpg)](http://www.amazon.com/dp/1138838349?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1138838349?tag=inspiredalgor-20)
 
 由 Timothy C. Urdan 撰写。
 
@@ -100,7 +100,7 @@
 
 ### [数据科学家实用统计：50 个基本概念](http://amzn.to/2F6WT6L)
 
-[![Amazon Image](img/597e561b72ab33c893276d9b204f376a.jpg)](http://www.amazon.com/dp/1491952962?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1491952962?tag=inspiredalgor-20)
 
 由 Peter Bruce 和 Andrew Bruce 撰写（作者）
 
@@ -125,15 +125,15 @@
 
 ### [人工智能的经验方法](http://amzn.to/2GTFRWi)
 
-[![Amazon Image](img/65e0043914eb14513ee5774aa90daa3d.jpg)](http://www.amazon.com/dp/0262032252?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0262032252?tag=inspiredalgor-20)
 
 由 Paul R. Cohen 撰写。
 
-与其他科学一样，计算机科学和人工智能尤其没有研究方法的课程。本书介绍了研究复杂计算机程序的经验方法：帮助查找数据模式的探索工具，实验设计和假设测试工具，以帮助数据令人信服地说话，以及建模工具以帮助解释数据。虽然这些技术中有许多是统计学的，但本书在更广泛的实证企业的背景下讨论了统计学。前三章介绍了经验问题，探索性数据分析和实验设计。对统计假设检验的直接询问推迟到第 4 章和第 5 章，分别介绍了经典参数方法和计算机密集型（Monte Carlo）重采样方法。这是以精确，可访问的方式呈现这些新的，灵活的重采样技术的少数书籍之一。
+与其他科学一样，计算机科学和人工智能尤其没有研究方法的课程。本书介绍了研究复杂计算机程序的经验方法：帮助查找数据模式的探索工具，实验设计和假设测试工具，以帮助数据令人信服地说话，以及建模工具以帮助解释数据。虽然这些技术中有许多是统计学的，但本书在更广泛的实证企业的背景下讨论了统计学。前三章介绍了经验问题，探索性数据分析和实验设计。对统计假设检验的直接询问推迟到第四章和第五章，分别介绍了经典参数方法和计算机密集型（Monte Carlo）重采样方法。这是以精确，可访问的方式呈现这些新的，灵活的重采样技术的少数书籍之一。
 
 ### [统计研究方法：非统计学家指南](http://amzn.to/2teW5Yf)
 
-[![Amazon Image](img/89a95bccbdc217f024c9ba753ce5fc22.jpg)](http://www.amazon.com/dp/1461487072?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/1461487072?tag=inspiredalgor-20)
 
 由 Roy Sabo 和 Edward Boone 撰写。
 
@@ -141,7 +141,7 @@
 
 ### [实验者统计：设计，创新和发现](http://amzn.to/2t66qFD)
 
-[![Amazon Image](img/b14afa2820fec7cb54efaa5ba5962e9c.jpg)](http://www.amazon.com/dp/0471718130?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0471718130?tag=inspiredalgor-20)
 
 由 George E. P. Box，J。Stuart Hunter 和 William G. Hunter 撰写。
 

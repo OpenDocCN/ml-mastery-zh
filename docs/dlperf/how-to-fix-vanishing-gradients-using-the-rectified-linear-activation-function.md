@@ -513,7 +513,7 @@ python -m tensorboard.main --logdir=/code/logs/
 
 接下来，打开您的网络浏览器并输入以下网址:
 
-*   [http://localhost:6006](http://localhost:6006)
+*   [`localhost:6006`](http://localhost:6006)
 
 如果一切顺利，你会看到 TensorBoard 的网页界面。
 

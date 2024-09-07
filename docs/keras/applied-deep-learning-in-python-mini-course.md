@@ -1,6 +1,6 @@
 # Python 迷你课程中的应用深度学习
 
-> 原文： [https://machinelearningmastery.com/applied-deep-learning-in-python-mini-course/](https://machinelearningmastery.com/applied-deep-learning-in-python-mini-course/)
+> 原文： [`machinelearningmastery.com/applied-deep-learning-in-python-mini-course/`](https://machinelearningmastery.com/applied-deep-learning-in-python-mini-course/)
 
 深度学习是一个迷人的研究领域，这些技术在一系列具有挑战性的机器学习问题中取得了世界一流的成果。
 

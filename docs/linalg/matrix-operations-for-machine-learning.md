@@ -1,6 +1,6 @@
 # 机器学习中的矩阵运算的温和介绍
 
-> 原文： [https://machinelearningmastery.com/matrix-operations-for-machine-learning/](https://machinelearningmastery.com/matrix-operations-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/matrix-operations-for-machine-learning/`](https://machinelearningmastery.com/matrix-operations-for-machine-learning/)
 
 矩阵运算用于许多机器学习算法的描述中。
 

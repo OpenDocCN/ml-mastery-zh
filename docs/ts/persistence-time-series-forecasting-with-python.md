@@ -1,6 +1,6 @@
 # 如何利用 Python 为时间序列预测做出基线预测
 
-> 原文： [https://machinelearningmastery.com/persistence-time-series-forecasting-with-python/](https://machinelearningmastery.com/persistence-time-series-forecasting-with-python/)
+> 原文： [`machinelearningmastery.com/persistence-time-series-forecasting-with-python/`](https://machinelearningmastery.com/persistence-time-series-forecasting-with-python/)
 
 在任何时间序列预测问题上建立基线都是必不可少的。
 

@@ -1,6 +1,6 @@
 # 学习使用编解码器 LSTM 循环神经网络相加数字
 
-> 原文： [https://machinelearningmastery.com/learn-add-numbers-seq2seq-recurrent-neural-networks/](https://machinelearningmastery.com/learn-add-numbers-seq2seq-recurrent-neural-networks/)
+> 原文： [`machinelearningmastery.com/learn-add-numbers-seq2seq-recurrent-neural-networks/`](https://machinelearningmastery.com/learn-add-numbers-seq2seq-recurrent-neural-networks/)
 
 长短期记忆（LSTM）网络是一种循环神经网络（RNN），能够学习输入序列中元素之间的关系。
 
@@ -1055,7 +1055,7 @@ Expected=12, Predicted=12
 *   [Keras 加法示例](https://github.com/fchollet/keras/blob/master/examples/addition_rnn.py)
 *   [烤宽面条中的加法示例](https://github.com/Lasagne/Lasagne/blob/master/examples/recurrent.py)
 *   [RNN 加成（一年级）](http://projects.rajivshah.com/blog/2016/04/05/rnn_addition/)和[笔记本](https://gist.github.com/rajshah4/aa6c67944f4a43a7c9a1204301788e0c)
-*   [任何人都可以学习用 Python 编写 LSTM-RNN（第 1 部分：RNN）](https://iamtrask.github.io/2015/11/15/anyone-can-code-lstm/)
+*   [任何人都可以学习用 Python 编写 LSTM-RNN（第一部分：RNN）](https://iamtrask.github.io/2015/11/15/anyone-can-code-lstm/)
 *   [Tensorflow 中 50 行 LSTM 的简单实现](https://gist.github.com/nivwusquorum/b18ce332bde37e156034e5d3f60f8a23)
 
 ## 摘要

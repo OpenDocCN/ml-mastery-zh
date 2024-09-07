@@ -1,6 +1,6 @@
 # Python 中用于时间序列预测的特征选择
 
-> 原文： [https://machinelearningmastery.com/feature-selection-time-series-forecasting-python/](https://machinelearningmastery.com/feature-selection-time-series-forecasting-python/)
+> 原文： [`machinelearningmastery.com/feature-selection-time-series-forecasting-python/`](https://machinelearningmastery.com/feature-selection-time-series-forecasting-python/)
 
 在时间序列数据上使用机器学习方法需要特征工程。
 

@@ -1,6 +1,6 @@
 # 如何使用 Keras 获得可重现的结果
 
-> 原文： [https://machinelearningmastery.com/reproducible-results-neural-networks-keras/](https://machinelearningmastery.com/reproducible-results-neural-networks-keras/)
+> 原文： [`machinelearningmastery.com/reproducible-results-neural-networks-keras/`](https://machinelearningmastery.com/reproducible-results-neural-networks-keras/)
 
 神经网络算法是随机的。
 

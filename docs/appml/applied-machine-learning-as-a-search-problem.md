@@ -1,6 +1,6 @@
 # 作为搜索问题的应用机器学习的温和介绍
 
-> 原文： [https://machinelearningmastery.com/applied-machine-learning-as-a-search-problem/](https://machinelearningmastery.com/applied-machine-learning-as-a-search-problem/)
+> 原文： [`machinelearningmastery.com/applied-machine-learning-as-a-search-problem/`](https://machinelearningmastery.com/applied-machine-learning-as-a-search-problem/)
 
 应用机器学习具有挑战性，因为针对给定问题设计完美的学习系统是棘手的。
 
@@ -177,9 +177,9 @@ yhat = fprime(Xhat)
 
 如果您希望深入了解，本节将提供有关该主题的更多资源。
 
-*   [第 2 章，机器学习](http://amzn.to/2yclAGZ)，1997。
+*   [第二章，机器学习](http://amzn.to/2yclAGZ)，1997。
 *   [作为搜索的泛化](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.121.5764&rep=rep1&type=pdf)，1982。
-*   [第 1 章，数据挖掘：实用机器学习工具和技术](http://amzn.to/2wvHUPq)，2016。
+*   [第一章，数据挖掘：实用机器学习工具和技术](http://amzn.to/2wvHUPq)，2016。
 *   [关于算法选择，应用于组合搜索问题](https://research-repository.st-andrews.ac.uk/handle/10023/2841)，2012。
 *   维基百科上的[算法选择](https://en.wikipedia.org/wiki/Algorithm_Selection)
 

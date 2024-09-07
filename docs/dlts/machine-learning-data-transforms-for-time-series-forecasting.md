@@ -1,6 +1,6 @@
 # 用于时间序列预测的 4 种通用机器学习数据变换
 
-> 原文： [https://machinelearningmastery.com/machine-learning-data-transforms-for-time-series-forecasting/](https://machinelearningmastery.com/machine-learning-data-transforms-for-time-series-forecasting/)
+> 原文： [`machinelearningmastery.com/machine-learning-data-transforms-for-time-series-forecasting/`](https://machinelearningmastery.com/machine-learning-data-transforms-for-time-series-forecasting/)
 
 时间序列数据通常需要在使用机器学习算法建模之前进行一些准备。
 

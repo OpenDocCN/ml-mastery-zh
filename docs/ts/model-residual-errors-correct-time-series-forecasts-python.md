@@ -1,6 +1,6 @@
 # 如何利用 Python 建模残差来纠正时间序列预测
 
-> 原文： [https://machinelearningmastery.com/model-residual-errors-correct-time-series-forecasts-python/](https://machinelearningmastery.com/model-residual-errors-correct-time-series-forecasts-python/)
+> 原文： [`machinelearningmastery.com/model-residual-errors-correct-time-series-forecasts-python/`](https://machinelearningmastery.com/model-residual-errors-correct-time-series-forecasts-python/)
 
 时间序列预测中的残差提供了我们可以建模的另一个信息来源。
 

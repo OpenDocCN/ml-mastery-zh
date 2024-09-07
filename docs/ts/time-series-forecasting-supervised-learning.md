@@ -1,6 +1,6 @@
 # 作为监督学习的时间序列预测
 
-> 原文： [https://machinelearningmastery.com/time-series-forecasting-supervised-learning/](https://machinelearningmastery.com/time-series-forecasting-supervised-learning/)
+> 原文： [`machinelearningmastery.com/time-series-forecasting-supervised-learning/`](https://machinelearningmastery.com/time-series-forecasting-supervised-learning/)
 
 时间序列预测可以被视为监督学习问题。
 

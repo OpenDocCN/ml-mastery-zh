@@ -1,6 +1,6 @@
 # 如何使用 scikit-learn 为机器学习准备文本数据
 
-> 原文： [https://machinelearningmastery.com/prepare-text-data-machine-learning-scikit-learn/](https://machinelearningmastery.com/prepare-text-data-machine-learning-scikit-learn/)
+> 原文： [`machinelearningmastery.com/prepare-text-data-machine-learning-scikit-learn/`](https://machinelearningmastery.com/prepare-text-data-machine-learning-scikit-learn/)
 
 文本数据需要特殊准备才能开始使用它做出预测性建模。
 

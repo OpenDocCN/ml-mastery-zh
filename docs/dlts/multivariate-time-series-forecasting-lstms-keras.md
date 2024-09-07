@@ -1,6 +1,6 @@
 # Keras 中使用 LSTM 的多变量时间序列预测
 
-> 原文： [https://machinelearningmastery.com/multivariate-time-series-forecasting-lstms-keras/](https://machinelearningmastery.com/multivariate-time-series-forecasting-lstms-keras/)
+> 原文： [`machinelearningmastery.com/multivariate-time-series-forecasting-lstms-keras/`](https://machinelearningmastery.com/multivariate-time-series-forecasting-lstms-keras/)
 
 像长短期记忆（LSTM）循环神经网络这样的神经网络能够几乎无缝地模拟多个输入变量的问题。
 

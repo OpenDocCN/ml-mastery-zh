@@ -1,6 +1,6 @@
 # 机器学习需要多少训练数据？
 
-> 原文： [https://machinelearningmastery.com/much-training-data-required-machine-learning/](https://machinelearningmastery.com/much-training-data-required-machine-learning/)
+> 原文： [`machinelearningmastery.com/much-training-data-required-machine-learning/`](https://machinelearningmastery.com/much-training-data-required-machine-learning/)
 
 您需要的数据量取决于问题的复杂程度和所选算法的复杂程度。
 

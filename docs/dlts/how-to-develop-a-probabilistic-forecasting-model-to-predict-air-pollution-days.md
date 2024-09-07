@@ -1,6 +1,6 @@
 # 如何建立预测大气每日污染的概率预测模型
 
-> 原文： [https://machinelearningmastery.com/how-to-develop-a-probabilistic-forecasting-model-to-predict-air-pollution-days/](https://machinelearningmastery.com/how-to-develop-a-probabilistic-forecasting-model-to-predict-air-pollution-days/)
+> 原文： [`machinelearningmastery.com/how-to-develop-a-probabilistic-forecasting-model-to-predict-air-pollution-days/`](https://machinelearningmastery.com/how-to-develop-a-probabilistic-forecasting-model-to-predict-air-pollution-days/)
 
 空气污染的特点是地面臭氧浓度。
 

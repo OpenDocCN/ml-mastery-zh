@@ -1,6 +1,6 @@
 # 如何配置神经机器翻译的编解码器模型
 
-> 原文： [https://machinelearningmastery.com/configure-encoder-decoder-model-neural-machine-translation/](https://machinelearningmastery.com/configure-encoder-decoder-model-neural-machine-translation/)
+> 原文： [`machinelearningmastery.com/configure-encoder-decoder-model-neural-machine-translation/`](https://machinelearningmastery.com/configure-encoder-decoder-model-neural-machine-translation/)
 
 用于循环神经网络的编解码器架构在标准机器翻译基准上实现了最先进的结果，并且正在用于工业翻译服务的核心。
 

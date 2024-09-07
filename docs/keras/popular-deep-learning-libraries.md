@@ -1,6 +1,6 @@
 # 流行的深度学习库
 
-> 原文： [https://machinelearningmastery.com/popular-deep-learning-libraries/](https://machinelearningmastery.com/popular-deep-learning-libraries/)
+> 原文： [`machinelearningmastery.com/popular-deep-learning-libraries/`](https://machinelearningmastery.com/popular-deep-learning-libraries/)
 
 有很多深度学习库可供选择。
 

@@ -1,6 +1,6 @@
 # 如何在 Python 中从零开始实现朴素贝叶斯
 
-> 原文： [https://machinelearningmastery.com/naive-bayes-classifier-scratch-python/](https://machinelearningmastery.com/naive-bayes-classifier-scratch-python/)
+> 原文： [`machinelearningmastery.com/naive-bayes-classifier-scratch-python/`](https://machinelearningmastery.com/naive-bayes-classifier-scratch-python/)
 
 朴素贝叶斯算法简单有效，应该是您尝试分类问题的第一种方法之一。
 
@@ -9,7 +9,7 @@
 *   **更新**：查看关于使用朴素贝叶斯算法的提示的后续内容：“ [Better Naive Bayes：从 Naive Bayes 算法中获取最多的 12 个技巧](http://machinelearningmastery.com/better-naive-bayes/ "Better Naive Bayes: 12 Tips To Get The Most From The Naive Bayes Algorithm")”。
 *   **更新 March / 2018** ：添加了备用链接以下载数据集，因为原始图像已被删除。
 
-[![naive bayes classifier](img/e6a92a6bcab0d5c51968019190f71f21.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/naive-bayes-classifier.jpg)
+![naive bayes classifier](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/12/naive-bayes-classifier.jpg)
 
 朴素贝叶斯分类器
 摄影： [Matt Buck](https://www.flickr.com/photos/mattbuck007/3676624894) ，保留一些权利
@@ -661,8 +661,8 @@ Accuracy: 76.3779527559%
 *   [黑客机器学习](http://www.amazon.com/dp/1449303714?tag=inspiredalgor-20)，第 78 页
 *   [统计学习简介：在 R](http://www.amazon.com/dp/1461471370?tag=inspiredalgor-20) 中的应用，第 138 页
 *   [机器学习：算法视角](http://www.amazon.com/dp/1420067184?tag=inspiredalgor-20)，第 171 页
-*   [机器学习在行动](http://www.amazon.com/dp/1617290181?tag=inspiredalgor-20)，第 61 页（第 4 章）
-*   [机器学习](http://www.amazon.com/dp/0070428077?tag=inspiredalgor-20)，第 177 页（第 6 章）
+*   [机器学习在行动](http://www.amazon.com/dp/1617290181?tag=inspiredalgor-20)，第 61 页（第四章）
+*   [机器学习](http://www.amazon.com/dp/0070428077?tag=inspiredalgor-20)，第 177 页（第六章）
 
 ## 下一步
 

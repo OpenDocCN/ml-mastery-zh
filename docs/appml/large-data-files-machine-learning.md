@@ -1,6 +1,6 @@
 # 处理机器学习的大数据文件的 7 种方法
 
-> 原文： [https://machinelearningmastery.com/large-data-files-machine-learning/](https://machinelearningmastery.com/large-data-files-machine-learning/)
+> 原文： [`machinelearningmastery.com/large-data-files-machine-learning/`](https://machinelearningmastery.com/large-data-files-machine-learning/)
 
 将机器学习算法探索并应用于太大而无法放入内存的数据集非常常见。
 

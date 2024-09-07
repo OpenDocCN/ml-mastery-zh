@@ -1,6 +1,6 @@
 # 浅谈自举法
 
-> 原文： [https://machinelearningmastery.com/a-gentle-introduction-to-the-bootstrap-method/](https://machinelearningmastery.com/a-gentle-introduction-to-the-bootstrap-method/)
+> 原文： [`machinelearningmastery.com/a-gentle-introduction-to-the-bootstrap-method/`](https://machinelearningmastery.com/a-gentle-introduction-to-the-bootstrap-method/)
 
 引导方法是一种重采样技术，用于通过对替换的数据集进行采样来估计总体的统计量。
 

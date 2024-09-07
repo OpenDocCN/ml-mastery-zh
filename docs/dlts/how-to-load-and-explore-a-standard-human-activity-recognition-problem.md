@@ -1,6 +1,6 @@
 # 一个标准的人类活动识别问题的温和介绍
 
-> 原文： [https://machinelearningmastery.com/how-to-load-and-explore-a-standard-human-activity-recognition-problem/](https://machinelearningmastery.com/how-to-load-and-explore-a-standard-human-activity-recognition-problem/)
+> 原文： [`machinelearningmastery.com/how-to-load-and-explore-a-standard-human-activity-recognition-problem/`](https://machinelearningmastery.com/how-to-load-and-explore-a-standard-human-activity-recognition-problem/)
 
 人类活动识别是将由专用线束或智能电话记录的加速度计数据序列分类为已知的明确定义的运动的问题。
 

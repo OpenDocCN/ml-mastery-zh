@@ -1,6 +1,6 @@
 # 在实现机器学习算法时，不要从开源代码开始
 
-> 原文： [https://machinelearningmastery.com/dont-start-with-open-source-code-when-implementing-machine-learning-algorithms/](https://machinelearningmastery.com/dont-start-with-open-source-code-when-implementing-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/dont-start-with-open-source-code-when-implementing-machine-learning-algorithms/`](https://machinelearningmastery.com/dont-start-with-open-source-code-when-implementing-machine-learning-algorithms/)
 
 [Edward Raff](https://www.linkedin.com/pub/edward-raff/40/920/99) 是 Java 机器学习库的作者，名为 [JSAT](https://code.google.com/p/java-statistical-analysis-tool/) （Java 统计分析工具的首字母缩写）。
 
@@ -8,7 +8,7 @@ Edward 在创建这个库时实现了很多算法，最近我和他联系并询�
 
 在这篇文章中，我们将介绍基于 Edwards 建议实现机器学习算法的技巧。
 
-[![Implement Machine Learning Algorithms from Scratch](img/ee2d2be174f6f3355360894c7cc4cd86.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Implement-Machine-Learning-Algorithms-from-Scratch.jpg)
+![Implement Machine Learning Algorithms from Scratch](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/10/Implement-Machine-Learning-Algorithms-from-Scratch.jpg)
 
 从零开始实现机器学习算法
 照 [hackNY.org](http://www.flickr.com/photos/hackny/7036401939) ，保留一些权利

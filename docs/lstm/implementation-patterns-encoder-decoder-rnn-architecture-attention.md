@@ -1,6 +1,6 @@
 # 带有注意力的编解码器 RNN 架构的实现模式
 
-> 原文： [https://machinelearningmastery.com/implementation-patterns-encoder-decoder-rnn-architecture-attention/](https://machinelearningmastery.com/implementation-patterns-encoder-decoder-rnn-architecture-attention/)
+> 原文： [`machinelearningmastery.com/implementation-patterns-encoder-decoder-rnn-architecture-attention/`](https://machinelearningmastery.com/implementation-patterns-encoder-decoder-rnn-architecture-attention/)
 
 用于循环神经网络的编解码器架构被证明在自然语言处理领域中的一系列序列到序列预测问题上是强大的。
 

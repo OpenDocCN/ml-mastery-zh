@@ -1,6 +1,6 @@
 # 一年内掌握机器学习
 
-> 原文： [https://machinelearningmastery.com/machine-learning-year/](https://machinelearningmastery.com/machine-learning-year/)
+> 原文： [`machinelearningmastery.com/machine-learning-year/`](https://machinelearningmastery.com/machine-learning-year/)
 
 ### 从开发人员到机器学习从业者，
 _ 你也可以！_

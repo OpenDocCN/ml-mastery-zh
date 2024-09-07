@@ -1,14 +1,14 @@
 # 通过数据预处理提高模型准确率
 
-> 原文： [https://machinelearningmastery.com/improve-model-accuracy-with-data-pre-processing/](https://machinelearningmastery.com/improve-model-accuracy-with-data-pre-processing/)
+> 原文： [`machinelearningmastery.com/improve-model-accuracy-with-data-pre-processing/`](https://machinelearningmastery.com/improve-model-accuracy-with-data-pre-processing/)
 
 数据准备可以决定您模型的预测能力。
 
-在他们的书 [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) 的第 3 章中，Kuhn 和 Johnson 介绍了数据准备过程。他们将其称为训练集数据的添加，删除或转换。
+在他们的书 [Applied Predictive Modeling](http://www.amazon.com/dp/1461468485?tag=inspiredalgor-20) 的第三章中，Kuhn 和 Johnson 介绍了数据准备过程。他们将其称为训练集数据的添加，删除或转换。
 
 在这篇文章中，您将发现可用于提高模型预测能力的数据预处理步骤。
 
-[![i love spreadsheets](img/84c77fdf69a2470d46af5e265d672573.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/i-love-spreadsheets.jpg)
+![i love spreadsheets](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/i-love-spreadsheets.jpg)
 
 我喜欢电子表格
 照片由 [Craig Chew-Molding](https://www.flickr.com/photos/craigmoulding/8399214678) ，保留一些权利

@@ -1,6 +1,6 @@
 # 通过寻找地标开始机器学习
 
-> 原文： [https://machinelearningmastery.com/find-machine-learning-landmarks/](https://machinelearningmastery.com/find-machine-learning-landmarks/)
+> 原文： [`machinelearningmastery.com/find-machine-learning-landmarks/`](https://machinelearningmastery.com/find-machine-learning-landmarks/)
 
 你从哪里开始机器学习？
 

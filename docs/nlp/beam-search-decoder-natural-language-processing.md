@@ -1,6 +1,6 @@
 # 如何实现自然语言处理的集束搜索解码器
 
-> 原文： [https://machinelearningmastery.com/beam-search-decoder-natural-language-processing/](https://machinelearningmastery.com/beam-search-decoder-natural-language-processing/)
+> 原文： [`machinelearningmastery.com/beam-search-decoder-natural-language-processing/`](https://machinelearningmastery.com/beam-search-decoder-natural-language-processing/)
 
 自然语言处理任务，例如字幕生成和机器翻译，涉及生成单词序列。
 

@@ -1,6 +1,6 @@
 # 估计随机机器学习算法的实验重复次数
 
-> 原文： [https://machinelearningmastery.com/estimate-number-experiment-repeats-stochastic-machine-learning-algorithms/](https://machinelearningmastery.com/estimate-number-experiment-repeats-stochastic-machine-learning-algorithms/)
+> 原文： [`machinelearningmastery.com/estimate-number-experiment-repeats-stochastic-machine-learning-algorithms/`](https://machinelearningmastery.com/estimate-number-experiment-repeats-stochastic-machine-learning-algorithms/)
 
 许多随机机器学习算法的问题在于，对相同数据的相同算法的不同运行返回不同的结果。
 
@@ -403,7 +403,7 @@ pyplot.show()
 
 如果这篇文章对你感兴趣，我强烈推荐这本书。
 
-[![Amazon Image](img/65e0043914eb14513ee5774aa90daa3d.jpg)](http://www.amazon.com/dp/0262032252?tag=inspiredalgor-20)
+![Amazon Image](http://www.amazon.com/dp/0262032252?tag=inspiredalgor-20)
 
 以下是您可能会发现有用的其他一些文章：
 

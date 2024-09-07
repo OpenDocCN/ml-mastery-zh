@@ -1,6 +1,6 @@
 # 机器学习适合哪里？
 
-> 原文： [https://machinelearningmastery.com/where-does-machine-learning-fit-in/](https://machinelearningmastery.com/where-does-machine-learning-fit-in/)
+> 原文： [`machinelearningmastery.com/where-does-machine-learning-fit-in/`](https://machinelearningmastery.com/where-does-machine-learning-fit-in/)
 
 机器学习是一个多学科领域，当您开始将机器学习与人工智能和数据挖掘这些密切相关的领域区分开来时，它可能会非常混乱。
 
@@ -14,7 +14,7 @@
 
 概率论领域是研究随机事件可能性的特征。概率论是数学的一个分支，为统计学领域提供了基础。
 
-[![probability](img/88efae28e2604ffab863bc5cd691ad1f.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/dice.jpg)
+![probability](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2013/12/dice.jpg)
 
 照片归功于 [topher76](http://www.flickr.com/photos/topher76/293277608/sizes/l/) ，保留一些权利。
 

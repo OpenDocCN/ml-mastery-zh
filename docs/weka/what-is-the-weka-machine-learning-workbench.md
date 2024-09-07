@@ -16,7 +16,7 @@
 
 [Weka 机器学习工作台](https://waikato.github.io/weka-wiki/)是一个现代化的应用机器学习平台。Weka 是一个缩写，代表怀卡托知识分析环境。这也是一种新西兰鸟“T2”的名字。
 
-[![weka](img/d959fe814bbb275fe4e22a0a77dfe4d8.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka.png)
+![weka](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka.png)
 
 我喜欢宣传的 Weka 的五个特点是:
 
@@ -32,7 +32,7 @@
 
 现在我想展示一下图形用户界面，并鼓励您下载并与 Weka 一起玩。工作台提供了三种解决问题的主要方法:**探索者**用于玩游戏和尝试，而**实验者**用于受控实验，而**知识流**用于为你的问题图形化地设计一个管道。
 
-[![Weka Loader Interface](img/fba124929a0da99095d1a3de3149684b.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-loader.png)
+![Weka Loader Interface](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-loader.png)
 
 Weka 加载器接口
 
@@ -40,7 +40,7 @@ Weka 加载器接口
 
 探索者是你处理你的数据，思考什么样的转换应用到你的数据，什么样的算法你想在实验中运行的地方。
 
-[![weka explorer](img/864dc1ea6a777ac55c1be13bcb543f86.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-explorer.png)
+![weka explorer](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-explorer.png)
 
 Weka 浏览器界面
 
@@ -57,7 +57,7 @@ Weka 浏览器界面
 
 这个界面用于设计你选择的算法和数据集的实验，运行实验和分析结果。
 
-[![Weka Experimenter Interface](img/b8bfd7a9a0b5f677e57ccde0e96fdd1b.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-experimenter.png)
+![Weka Experimenter Interface](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-experimenter.png)
 
 Weka 实验者界面
 
@@ -67,7 +67,7 @@ Weka 实验者界面
 
 应用机器学习是一个过程，知识流界面允许您以图形方式设计该过程，并运行您创建的设计。这包括输入数据的加载和转换、算法的运行和结果的呈现。
 
-[![Weka Knowledge Flow Interface](img/b6db538d2b1bc5d3722a65c5211e9754.png)](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-knowledge-flow.png)
+![Weka Knowledge Flow Interface](https://machinelearningmastery.com/wp-content/uploads/2014/02/weka-knowledge-flow.png)
 
 Weka 知识流界面
 

@@ -1,6 +1,6 @@
 # 一种选择机器学习算法的数据驱动方法
 
-> 原文： [https://machinelearningmastery.com/a-data-driven-approach-to-machine-learning/](https://machinelearningmastery.com/a-data-driven-approach-to-machine-learning/)
+> 原文： [`machinelearningmastery.com/a-data-driven-approach-to-machine-learning/`](https://machinelearningmastery.com/a-data-driven-approach-to-machine-learning/)
 
 ### _ 如果您知道要使用哪种算法或算法配置，
 您不需要使用机器学习 _
@@ -23,7 +23,7 @@
 
 在这篇文章中，我想鼓励你摆脱这种心态，掌握一种数据驱动的方法，这种方法将改变你接近机器学习的方式。
 
-[![data driven approach to machine learning](img/27fdd33b6b9f0f76050031b085e7dbeb.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/data-driven-approach-to-machine-learning.jpg)
+![data driven approach to machine learning](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/data-driven-approach-to-machine-learning.jpg)
 
 数据驱动的机器学习方法
 摄影： [James Cullen](https://www.flickr.com/photos/tlgjaymz/467195251) ，保留一些权利

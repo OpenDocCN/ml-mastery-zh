@@ -1,6 +1,6 @@
 # 7 个机器学习的时间序列数据集
 
-> 原文： [https://machinelearningmastery.com/time-series-datasets-for-machine-learning/](https://machinelearningmastery.com/time-series-datasets-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/time-series-datasets-for-machine-learning/`](https://machinelearningmastery.com/time-series-datasets-for-machine-learning/)
 
 机器学习可以应用于时间序列数据集。
 

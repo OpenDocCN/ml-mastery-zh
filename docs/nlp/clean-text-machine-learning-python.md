@@ -1,6 +1,6 @@
 # 如何用 Python 为机器学习清理文本
 
-> 原文： [https://machinelearningmastery.com/clean-text-machine-learning-python/](https://machinelearningmastery.com/clean-text-machine-learning-python/)
+> 原文： [`machinelearningmastery.com/clean-text-machine-learning-python/`](https://machinelearningmastery.com/clean-text-machine-learning-python/)
 
 你不能直接从原始文本到适合机器学习或深度学习模型。
 
@@ -543,7 +543,7 @@ Tomas Mikolov 是 word2vec 的开发者之一，word2vec 是一种流行的嵌�
 *   [Franz Kafka 对 Project Gutenberg 的变形](http://www.gutenberg.org/ebooks/5200)
 *   [nltk.tokenize 包 API](http://www.nltk.org/api/nltk.tokenize.html)
 *   [nltk.stem 包 API](http://www.nltk.org/api/nltk.stem.html)
-*   [第 3 章：使用 Python 处理原始文本，自然语言处理](http://www.nltk.org/book/ch03.html)
+*   [第三章：使用 Python 处理原始文本，自然语言处理](http://www.nltk.org/book/ch03.html)
 
 ## 摘要
 

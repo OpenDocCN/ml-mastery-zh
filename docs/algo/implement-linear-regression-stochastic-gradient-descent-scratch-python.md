@@ -1,6 +1,6 @@
 # 如何利用 Python 从零开始实现线性回归
 
-> 原文： [https://machinelearningmastery.com/implement-linear-regression-stochastic-gradient-descent-scratch-python/](https://machinelearningmastery.com/implement-linear-regression-stochastic-gradient-descent-scratch-python/)
+> 原文： [`machinelearningmastery.com/implement-linear-regression-stochastic-gradient-descent-scratch-python/`](https://machinelearningmastery.com/implement-linear-regression-stochastic-gradient-descent-scratch-python/)
 
 许多机器学习算法的核心是优化。
 

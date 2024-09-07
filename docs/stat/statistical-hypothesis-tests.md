@@ -1,6 +1,6 @@
 # 统计假设检验的温和介绍
 
-> 原文： [https://machinelearningmastery.com/statistical-hypothesis-tests/](https://machinelearningmastery.com/statistical-hypothesis-tests/)
+> 原文： [`machinelearningmastery.com/statistical-hypothesis-tests/`](https://machinelearningmastery.com/statistical-hypothesis-tests/)
 
 必须解释数据以增加含义。
 

@@ -1,6 +1,6 @@
 # 浅谈机器学习中的转导
 
-> 原文： [https://machinelearningmastery.com/transduction-in-machine-learning/](https://machinelearningmastery.com/transduction-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/transduction-in-machine-learning/`](https://machinelearningmastery.com/transduction-in-machine-learning/)
 
 转导或转导学习是您在应用机器学习中可能遇到的术语。
 

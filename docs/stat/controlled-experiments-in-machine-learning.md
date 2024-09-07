@@ -1,6 +1,6 @@
 # 机器学习中的对照试验
 
-> 原文： [https://machinelearningmastery.com/controlled-experiments-in-machine-learning/](https://machinelearningmastery.com/controlled-experiments-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/controlled-experiments-in-machine-learning/`](https://machinelearningmastery.com/controlled-experiments-in-machine-learning/)
 
 系统实验是应用机器学习的关键部分。
 

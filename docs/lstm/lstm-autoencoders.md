@@ -1,6 +1,6 @@
 # LSTM 自编码器的温和介绍
 
-> 原文： [https://machinelearningmastery.com/lstm-autoencoders/](https://machinelearningmastery.com/lstm-autoencoders/)
+> 原文： [`machinelearningmastery.com/lstm-autoencoders/`](https://machinelearningmastery.com/lstm-autoencoders/)
 
 LSTM 自编码器是使用编解码器 LSTM 架构的用于序列数据的自编码器的实现。
 

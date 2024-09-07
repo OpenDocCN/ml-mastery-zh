@@ -1,6 +1,6 @@
 # 机器学习中的统计（7 天迷你课程）
 
-> 原文： [https://machinelearningmastery.com/statistics-for-machine-learning-mini-course/](https://machinelearningmastery.com/statistics-for-machine-learning-mini-course/)
+> 原文： [`machinelearningmastery.com/statistics-for-machine-learning-mini-course/`](https://machinelearningmastery.com/statistics-for-machine-learning-mini-course/)
 
 ### 机器学习速成课程统计。
 

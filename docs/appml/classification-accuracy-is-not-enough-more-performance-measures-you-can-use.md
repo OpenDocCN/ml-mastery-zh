@@ -1,6 +1,6 @@
 # 分类准确率不够：可以使用更多表现测量
 
-> 原文： [https://machinelearningmastery.com/classification-accuracy-is-not-enough-more-performance-measures-you-can-use/](https://machinelearningmastery.com/classification-accuracy-is-not-enough-more-performance-measures-you-can-use/)
+> 原文： [`machinelearningmastery.com/classification-accuracy-is-not-enough-more-performance-measures-you-can-use/`](https://machinelearningmastery.com/classification-accuracy-is-not-enough-more-performance-measures-you-can-use/)
 
 当您为分类问题构建模型时，您几乎总是希望将该模型的准确率视为所有预测所做的正确预测的数量。
 
@@ -10,7 +10,7 @@
 
 一旦你拥有一个你认为可以做出强有力预测的模型，你需要确定它是否足以解决你的问题。单独的分类准确率通常不足以做出此决定。
 
-[![Classification Accuracy](img/7a329bed5d17347b0e270df35266f1fe.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/classification-accuracy.jpg)
+![Classification Accuracy](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/classification-accuracy.jpg)
 
 分类准确度
 摄影：Nina Matthews 摄影，保留一些权利
@@ -49,7 +49,7 @@ CART 或[分类和回归树](http://en.wikipedia.org/wiki/Predictive_analytics#C
 
 对于二分类问题，该表有 2 行 2 列。顶部是观察到的类标签，而旁边是预测的类标签。每个单元格包含落入该单元格的分类器所做的预测数量。
 
-[![Truth Table Confusion Matrix](img/77dddc6647d29c6f5b500f602293112c.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/truth_table.png)
+![Truth Table Confusion Matrix](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/truth_table.png)
 
 真相表混淆矩阵
 
@@ -63,7 +63,7 @@ CART 或[分类和回归树](http://en.wikipedia.org/wiki/Predictive_analytics#C
 
 混淆矩阵突出显示大量假阴性（85）。
 
-[![All No Recurrence Confusion Matrix](img/68da7b948431f37954013a9140484934.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/no_recurrence_confusion_matrix.png)
+![All No Recurrence Confusion Matrix](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/no_recurrence_confusion_matrix.png)
 
 所有无复发混淆矩阵
 
@@ -71,7 +71,7 @@ CART 或[分类和回归树](http://en.wikipedia.org/wiki/Predictive_analytics#C
 
 混淆矩阵突出了大量（201）的误报。
 
-[![All Recurrence Confusion Matrix](img/1e9aa8d22b023c09637f4ba6b747c4f0.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/recurrence_confusion_matrix.png)
+![All Recurrence Confusion Matrix](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/recurrence_confusion_matrix.png)
 
 所有递归混淆矩阵
 
@@ -79,7 +79,7 @@ CART 或[分类和回归树](http://en.wikipedia.org/wiki/Predictive_analytics#C
 
 这看起来像一个更有价值的分类器，因为它正确地预测了 10 个重复事件以及 188 个没有重复事件。该模型还显示了适度数量的假阴性（75）和假阳性（13）。
 
-[![CART Confusion Matrix](img/a0eba0e35ba562edceef57a31926c486.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/cart_confusion_matrix.png)
+![CART Confusion Matrix](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/03/cart_confusion_matrix.png)
 
 CART 混淆矩阵
 

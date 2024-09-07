@@ -1,12 +1,12 @@
 # 5 个程序员在机器学习中的错误
 
-> 原文： [https://machinelearningmastery.com/mistakes-programmers-make-when-starting-in-machine-learning/](https://machinelearningmastery.com/mistakes-programmers-make-when-starting-in-machine-learning/)
+> 原文： [`machinelearningmastery.com/mistakes-programmers-make-when-starting-in-machine-learning/`](https://machinelearningmastery.com/mistakes-programmers-make-when-starting-in-machine-learning/)
 
 没有正确的方法进入机器学习。我们都学习略有不同的方式，并且对我们想要做的事情或机器学习有不同的目标。
 
 一个共同的目标是快速提高机器学习效率。如果这是你的目标那么这篇文章强调了程序员在快速成为高效机器学习从业者的道路上所犯的五个常见错误。
 
-[![Mistakes Programmers Make when Starting in Machine Learning](img/378094d7ee7ea8fb10a8ba5a9930ca7e.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/Mistakes-Programmers-Make-when-Starting-in-Machine-Learning.jpg)
+![Mistakes Programmers Make when Starting in Machine Learning](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/Mistakes-Programmers-Make-when-Starting-in-Machine-Learning.jpg)
 
 程序员在机器学习中开始犯错误
 照片归 [aarontait](http://www.flickr.com/photos/aarontait/3661306617/sizes/l/) 所有，保留一些权利。
@@ -47,7 +47,7 @@
 *   你必须从零开始实现吗？您可以编写审查，学习或移植现有的开源实现吗？
 *   您是否必须解释规范算法描述？您可以查看和学习其他书籍，论文，论文或博客文章中的算法描述吗？
 
-[![Reinvent Solutions to Common Problems](img/5b8e562971591f84858b54cef1484eca.jpg)](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/Reinvent-Solutions-to-Common-Problems.jpg)
+![Reinvent Solutions to Common Problems](https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/01/Reinvent-Solutions-to-Common-Problems.jpg)
 
 照片归功于 [justgrimes](http://www.flickr.com/photos/notbrucelee/6884703709/sizes/l/) ，保留一些权利
 

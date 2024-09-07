@@ -1,6 +1,6 @@
 # 机器学习中的 NumPy 张量的温和介绍
 
-> 原文： [https://machinelearningmastery.com/introduction-to-tensors-for-machine-learning/](https://machinelearningmastery.com/introduction-to-tensors-for-machine-learning/)
+> 原文： [`machinelearningmastery.com/introduction-to-tensors-for-machine-learning/`](https://machinelearningmastery.com/introduction-to-tensors-for-machine-learning/)
 
 在深度学习中，通常会将围绕张量的大量讨论视为基础数据结构。
 
@@ -407,7 +407,7 @@ print(C)
 ### 图书
 
 *   [学生向量和张量指南](http://amzn.to/2kmUvvF)，2011。
-*   第 12 章，专题，[矩阵计算](http://amzn.to/2B9xnLD)，2012。
+*   第十二章，专题，[矩阵计算](http://amzn.to/2B9xnLD)，2012。
 *   [Tensor Algebra 和 Tensor Analysis for Engineers](http://amzn.to/2C6gzCu) ，2015。
 
 ### API
