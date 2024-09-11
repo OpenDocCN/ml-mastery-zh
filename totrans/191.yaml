@@ -1,257 +1,388 @@
 - en: Inferencing the Transformer Model
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 推断 Transformer 模型
 - en: 原文：[https://machinelearningmastery.com/inferencing-the-transformer-model/](https://machinelearningmastery.com/inferencing-the-transformer-model/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/inferencing-the-transformer-model/](https://machinelearningmastery.com/inferencing-the-transformer-model/)
 - en: We have seen how to [train the Transformer model](https://machinelearningmastery.com/training-the-transformer-model/)
     on a dataset of English and German sentence pairs and how to [plot the training
     and validation loss curves](https://machinelearningmastery.com/?p=13879&preview=true)
     to diagnose the model’s learning performance and decide at which epoch to run
     inference on the trained model. We are now ready to run inference on the trained
     Transformer model to translate an input sentence.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经了解了如何在英语和德语句子对的数据集上[训练 Transformer 模型](https://machinelearningmastery.com/training-the-transformer-model/)，以及如何[绘制训练和验证损失曲线](https://machinelearningmastery.com/?p=13879&preview=true)来诊断模型的学习性能，并决定在第几个
+    epoch 上对训练好的模型进行推断。我们现在准备对训练好的 Transformer 模型进行推断，以翻译输入句子。
 - en: In this tutorial, you will discover how to run inference on the trained Transformer
     model for neural machine translation.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现如何对训练好的 Transformer 模型进行推断，以实现神经机器翻译。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解到：
 - en: How to run inference on the trained Transformer model
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何对训练好的 Transformer 模型进行推断
 - en: How to generate text translations
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何生成文本翻译
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书籍** [《使用注意力构建 Transformer 模型》](https://machinelearningmastery.com/transformer-models-with-attention/)
+    **启动你的项目**。它提供了带有**可操作代码**的**自学教程**，指导你构建一个完全可用的 Transformer 模型，该模型可以'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将句子从一种语言翻译成另一种语言*...'
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/fded4026d0b6b47179cdeb33f286c6e7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/10/karsten-wurth-algc0FKHeMA-unsplash-scaled.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/fded4026d0b6b47179cdeb33f286c6e7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/10/karsten-wurth-algc0FKHeMA-unsplash-scaled.jpg)'
 - en: Inferencing the Transformer model
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 推断 Transformer 模型
 - en: Photo by [Karsten Würth](https://unsplash.com/photos/algc0FKHeMA), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Karsten Würth](https://unsplash.com/photos/algc0FKHeMA) 提供，版权所有。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是：
 - en: Recap of the Transformer Architecture
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 架构的回顾
 - en: Inferencing the Transformer Model
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 推断 Transformer 模型
 - en: Testing Out the Code
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 测试代码
 - en: '**Prerequisites**'
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**先决条件**'
 - en: 'For this tutorial, we assume that you are already familiar with:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设你已经熟悉：
 - en: '[The theory behind the Transformer model](https://machinelearningmastery.com/the-transformer-model/)'
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 模型背后的理论](https://machinelearningmastery.com/the-transformer-model/)'
 - en: '[An implementation of the Transformer model](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking/)'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 模型的实现](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking/)'
 - en: '[Training the Transformer model](https://machinelearningmastery.com/training-the-transformer-model/)'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[训练 Transformer 模型](https://machinelearningmastery.com/training-the-transformer-model/)'
 - en: '[Plotting the training and validation loss curves for the Transformer model](https://machinelearningmastery.com/?p=13879&preview=true)'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[绘制 Transformer 模型的训练和验证损失曲线](https://machinelearningmastery.com/?p=13879&preview=true)'
 - en: '**Recap of the Transformer Architecture**'
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Transformer 架构的回顾**'
 - en: '[Recall](https://machinelearningmastery.com/the-transformer-model/) having
     seen that the Transformer architecture follows an encoder-decoder structure. The
     encoder, on the left-hand side, is tasked with mapping an input sequence to a
     sequence of continuous representations; the decoder, on the right-hand side, receives
     the output of the encoder together with the decoder output at the previous time
     step to generate an output sequence.'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '[回忆](https://machinelearningmastery.com/the-transformer-model/) Transformer
+    架构遵循编码器-解码器结构。左侧的编码器负责将输入序列映射到一系列连续表示；右侧的解码器接收编码器的输出以及前一步的解码器输出，以生成输出序列。'
 - en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
 - en: The encoder-decoder structure of the Transformer architecture
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 架构的编码器-解码器结构
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 摘自“[Attention Is All You Need](https://arxiv.org/abs/1706.03762)”
 - en: In generating an output sequence, the Transformer does not rely on recurrence
     and convolutions.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在生成输出序列时，Transformer 不依赖于递归和卷积。
 - en: You have seen how to implement the complete Transformer model and subsequently
     train it on a dataset of English and German sentence pairs. Let’s now proceed
     to run inference on the trained model for neural machine translation.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 你已经了解了如何实现完整的 Transformer 模型，并随后在英语和德语句子对的数据集上训练它。现在让我们继续对训练好的模型进行神经机器翻译推理。
 - en: '**Inferencing the Transformer Model**'
+  id: totrans-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**推理 Transformer 模型**'
 - en: Let’s start by creating a new instance of the `TransformerModel` class that
     was previously implemented in [this tutorial](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking/).
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从创建一个新的 `TransformerModel` 类实例开始，该类之前在[这个教程](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking/)中实现过。
 - en: 'You will feed into it the relevant input arguments as specified in the paper
     of [Vaswani et al. (2017)](https://arxiv.org/abs/1706.03762) and the relevant
     information about the dataset in use:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将向其中输入论文中[Vaswani et al. (2017)](https://arxiv.org/abs/1706.03762)所指定的相关输入参数以及有关使用的数据集的信息：
 - en: Python
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Here, note that the last input being fed into the `TransformerModel` corresponded
     to the dropout rate for each of the `Dropout` layers in the Transformer model.
     These `Dropout` layers will not be used during model inferencing (you will eventually
     set the `training` argument to `False`), so you may safely set the dropout rate
     to 0.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，请注意，最后输入到 `TransformerModel` 中的输入对应于 Transformer 模型中每个 `Dropout` 层的丢弃率。这些
+    `Dropout` 层在模型推理过程中将不会被使用（你最终会将 `training` 参数设置为 `False`），所以你可以安全地将丢弃率设置为 0。
 - en: Furthermore, the `TransformerModel` class was already saved into a separate
     script named `model.py`. Hence, to be able to use the `TransformerModel` class,
     you need to include `from model import TransformerModel`.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，`TransformerModel` 类已经保存到一个名为 `model.py` 的单独脚本中。因此，为了能够使用 `TransformerModel`
+    类，你需要包含 `from model import TransformerModel`。
 - en: 'Next, let’s create a class, `Translate`, that inherits from the `Module` base
     class in Keras and assign the initialized inferencing model to the variable `transformer`:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，让我们创建一个类 `Translate`，该类继承自 Keras 的 `Module` 基类，并将初始化的推理模型分配给变量 `transformer`：
 - en: Python
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: When you [trained the Transformer model](https://machinelearningmastery.com/training-the-transformer-model/),
     you saw that you first needed to tokenize the sequences of text that were to be
     fed into both the encoder and decoder. You achieved this by creating a vocabulary
     of words and replacing each word with its corresponding vocabulary index.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你[训练 Transformer 模型](https://machinelearningmastery.com/training-the-transformer-model/)时，你看到你首先需要对要输入到编码器和解码器的文本序列进行分词。你通过创建一个词汇表来实现这一点，并用相应的词汇表索引替换每个单词。
 - en: You will need to implement a similar process during the inferencing stage before
     feeding the sequence of text to be translated into the Transformer model.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 在将待翻译的文本序列输入到 Transformer 模型之前，你需要在推理阶段实现类似的过程。
 - en: 'For this purpose, you will include within the class the following `load_tokenizer`
     method, which will serve to load the encoder and decoder tokenizers that [you
     would have generated and saved during the training stage](https://machinelearningmastery.com/?p=13879&preview=true):'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，你将在类中包含以下 `load_tokenizer` 方法，该方法将用于加载在[训练阶段生成并保存的编码器和解码器分词器](https://machinelearningmastery.com/?p=13879&preview=true)：
 - en: Python
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: It is important that you tokenize the input text at the inferencing stage using
     the same tokenizers generated at the training stage of the Transformer model since
     these tokenizers would have already been trained on text sequences similar to
     your testing data.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 在推理阶段使用与 Transformer 模型训练阶段生成的相同分词器对输入文本进行分词是非常重要的，因为这些分词器已经在与你的测试数据类似的文本序列上进行了训练。
 - en: 'The next step is to create the class method, `call()`, that will take care
     to:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一步是创建 `call()` 类方法，该方法将负责：
 - en: 'Append the start (<START>) and end-of-string (<EOS>) tokens to the input sentence:'
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将开始（<START>）和结束符号（<EOS>）令牌添加到输入句子中：
 - en: Python
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Load the encoder and decoder tokenizers (in this case, saved in the `enc_tokenizer.pkl`
     and `dec_tokenizer.pkl` pickle files, respectively):'
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 加载编码器和解码器分词器（在本例中，分别保存在 `enc_tokenizer.pkl` 和 `dec_tokenizer.pkl` pickle 文件中）：
 - en: Python
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Prepare the input sentence by tokenizing it first, then padding it to the maximum
     phrase length, and subsequently converting it to a tensor:'
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备输入句子，首先进行标记化，然后填充到最大短语长度，最后转换为张量：
 - en: Python
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Repeat a similar tokenization and tensor conversion procedure for the <START>
     and <EOS> tokens at the output:'
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 对输出中的<START>和<EOS>标记重复类似的标记化和张量转换过程：
 - en: Python
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Prepare the output array that will contain the translated text. Since you do
     not know the length of the translated sentence in advance, you will initialize
     the size of the output array to 0, but set its `dynamic_size` parameter to `True`
     so that it may grow past its initial size. You will then set the first value in
     this output array to the <START> token:'
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备一个输出数组来包含翻译后的文本。由于你事先不知道翻译句子的长度，因此你将输出数组的大小初始化为0，但将其`dynamic_size`参数设置为`True`，以便它可以超过初始大小。然后你将把这个输出数组中的第一个值设置为<START>标记：
 - en: Python
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Iterate, up to the decoder sequence length, each time calling the Transformer
     model to predict an output token. Here, the `training` input, which is then passed
     on to each of the Transformer’s `Dropout` layers, is set to `False` so that no
@@ -259,232 +390,321 @@
     then selected and written at the next available index of the output array. The
     `for` loop is terminated with a `break` statement as soon as an <EOS> token is
     predicted:'
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 迭代直到解码器序列长度，每次调用Transformer模型来预测一个输出标记。在这里，`training`输入被设置为`False`，然后传递到每个Transformer的`Dropout`层，以便在推断期间不丢弃任何值。然后选择得分最高的预测，并写入输出数组的下一个可用索引。当预测到<EOS>标记时，`for`循环将通过`break`语句终止：
 - en: Python
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Decode the predicted tokens into an output list and return it:'
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将预测的标记解码成输出列表并返回：
 - en: Python
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'The complete code listing, so far, is as follows:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 迄今为止的完整代码清单如下：
 - en: Python
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-72
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始构建带有注意力机制的Transformer模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费12天电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费PDF电子书版本。
 - en: '**Testing Out the Code**'
+  id: totrans-75
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**测试代码**'
 - en: In order to test out the code, let’s have a look at the `test_dataset.txt` file
     that you would have saved when [preparing the dataset for training](https://machinelearningmastery.com/?p=13879&preview=true).
     This text file contains a set of English-German sentence pairs that have been
     reserved for testing, from which you can select a couple of sentences to test.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了测试代码，让我们查看你在[准备训练数据集](https://machinelearningmastery.com/?p=13879&preview=true)时保存的`test_dataset.txt`文件。这个文本文件包含了一组英语-德语句子对，已保留用于测试，你可以从中选择几句进行测试。
 - en: 'Let’s start with the first sentence:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从第一句开始：
 - en: Python
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'The corresponding ground truth translation in German for this sentence, including
     the <START> and <EOS> decoder tokens, should be: `<START> ich bin durstig <EOS>`.'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这一句的对应德语原文翻译，包括<START>和<EOS>解码器标记，应为：`<START> ich bin durstig <EOS>`。
 - en: If you have a look at the [plotted training and validation loss curves](https://machinelearningmastery.com/?p=13879&preview=true)
     for this model (here, you are training for 20 epochs), you may notice that the
     validation loss curve slows down considerably and starts plateauing at around
     epoch 16.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你查看这个模型的[绘制训练和验证损失曲线](https://machinelearningmastery.com/?p=13879&preview=true)（在这里你正在训练20轮），你可能会注意到验证损失曲线显著减缓，并在第16轮左右开始趋于平稳。
 - en: 'So let’s proceed to load the saved model’s weights at the 16th epoch and check
     out the prediction that is generated by the model:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们加载第16轮的保存模型权重，并查看模型生成的预测：
 - en: Python
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE12]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'Running the lines of code above produces the following translated list of words:'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行上面的代码行会生成以下翻译后的单词列表：
 - en: Python
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE13]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Which is equivalent to the ground truth German sentence that was expected (always
     keep in mind that since you are training the Transformer model from scratch, you
     may arrive at different results depending on the random initialization of the
     model weights).
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 这等同于期望的德语原文句子（请始终记住，由于你是从头开始训练Transformer模型，结果可能会因为模型权重的随机初始化而有所不同）。
 - en: 'Let’s check out what would have happened if you had, instead, loaded a set
     of weights corresponding to a much earlier epoch, such as the 4th epoch. In this
     case, the generated translation is the following:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
 - en: Python
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'In English, this translates to: *I in not not*, which is clearly far off from
     the input English sentence, but which is expected since, at this epoch, the learning
     process of the Transformer model is still at the very early stages.'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s try again with a second sentence from the test dataset:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
 - en: Python
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'The corresponding ground truth translation in German for this sentence, including
     the <START> and <EOS> decoder tokens, should be: `<START> sind wir dann durch
     <EOS>`.'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
 - en: 'The model’s translation for this sentence, using the weights saved at epoch
     16, is:'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
 - en: Python
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'Which, instead, translates to: *I was ready*. While this is also not equal
     to the ground truth, it is *close* to its meaning.'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
 - en: What the last test suggests, however, is that the Transformer model might have
     required many more data samples to train effectively. This is also corroborated
     by the validation loss at which the validation loss curve plateaus remain relatively
     high.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
 - en: Indeed, Transformer models are notorious for being very data hungry. [Vaswani
     et al. (2017)](https://arxiv.org/abs/1706.03762), for example, trained their English-to-German
     translation model using a dataset containing around 4.5 million sentence pairs.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
 - en: '*We trained on the standard WMT 2014 English-German dataset consisting of about
     4.5 million sentence pairs…For English-French, we used the significantly larger
     WMT 2014 English-French dataset consisting of 36M sentences…*'
+  id: totrans-103
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: ''
+  id: totrans-104
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  id: totrans-105
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: They reported that it took them 3.5 days on 8 P100 GPUs to train the English-to-German
     translation model.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
 - en: In comparison, you have only trained on a dataset comprising 10,000 data samples
     here, split between training, validation, and test sets.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
 - en: So the next task is actually for you. If you have the computational resources
     available, try to train the Transformer model on a much larger set of sentence
     pairs and see if you can obtain better results than the translations obtained
     here with a limited amount of data.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
 - en: '**Further Reading**'
+  id: totrans-109
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
 - en: '**Books**'
+  id: totrans-111
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019'
+  id: totrans-112
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
     2021'
+  id: totrans-113
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Papers**'
+  id: totrans-114
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
+  id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Summary**'
+  id: totrans-116
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: In this tutorial, you discovered how to run inference on the trained Transformer
     model for neural machine translation.
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
 - en: 'Specifically, you learned:'
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
 - en: How to run inference on the trained Transformer model
+  id: totrans-119
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: How to generate text translations
+  id: totrans-120
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Do you have any questions?
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL

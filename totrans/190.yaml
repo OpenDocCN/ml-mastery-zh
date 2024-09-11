@@ -292,27 +292,32 @@
   id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个例子是将一个问题作为第一句话，将文本（例如，一个段落）作为第二句话，然后第二句话中的输出标记可以标记出问题答案所在的位置。它有效的原因是每个标记的输出在整个输入的上下文中揭示了有关该标记的一些信息。
 - en: Using Pre-Trained BERT Model for Summarization
   id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用预训练的 BERT 模型进行摘要
 - en: A transformer model takes a long time to train from scratch. The BERT model
     would take even longer. But the purpose of BERT is to create one model that can
     be reused for many different tasks.
   id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 从头开始训练一个 Transformer 模型需要很长时间。BERT 模型则需要更长的时间。但 BERT 的目的是创建一个可以用于多种不同任务的模型。
 - en: 'There are pre-trained BERT models that you can use readily. In the following,
     you will see a few use cases. The text used in the following example is from:'
   id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一些预训练的 BERT 模型可以直接使用。接下来，你将看到一些使用案例。以下示例使用的文本来自：
 - en: '[https://www.project-syndicate.org/commentary/bank-of-england-gilt-purchases-necessary-but-mistakes-made-by-willem-h-buiter-and-anne-c-sibert-2022-10](https://www.project-syndicate.org/commentary/bank-of-england-gilt-purchases-necessary-but-mistakes-made-by-willem-h-buiter-and-anne-c-sibert-2022-10)'
   id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://www.project-syndicate.org/commentary/bank-of-england-gilt-purchases-necessary-but-mistakes-made-by-willem-h-buiter-and-anne-c-sibert-2022-10](https://www.project-syndicate.org/commentary/bank-of-england-gilt-purchases-necessary-but-mistakes-made-by-willem-h-buiter-and-anne-c-sibert-2022-10)'
 - en: Theoretically, a BERT model is an encoder that maps each input token to an output
     vector, which can be extended to an infinite length sequence of tokens. In practice,
     there are limitations imposed in the implementation of other components that limit
@@ -324,6 +329,8 @@
   id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 理论上，BERT 模型是一个编码器，将每个输入标记映射到一个输出向量，这可以扩展到无限长度的标记序列。在实践中，其他组件的实现会施加限制，限制输入大小。通常，几百个标记应该是可以的，因为并非所有实现都能一次处理数千个标记。你可以将整篇文章保存为
+    `article.txt`（一个副本可以在[这里](https://machinelearningmastery.com/wp-content/uploads/2022/10/article.txt)获取）。如果你的模型需要更小的文本，你可以只使用其中的几个段落。
 - en: First, let’s explore the task for summarization. Using BERT, the idea is to
     *extract* a few sentences from the original text that represent the entire text.
     You can see this task is similar to next sentence prediction, in which if given
@@ -331,10 +338,12 @@
   id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们探讨摘要任务。使用 BERT 的想法是从原始文本中 *提取* 几句话，这些句子代表整个文本。你可以看到这个任务类似于下一句预测，其中如果给定一句话和文本，你希望分类它们是否相关。
 - en: To do that, you need to use the Python module `bert-extractive-summarizer`
   id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，你需要使用 Python 模块 `bert-extractive-summarizer`
 - en: '[PRE0]'
   id: totrans-52
   prefs: []
@@ -346,11 +355,14 @@
   id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一些 Hugging Face 模型的包装器，用于提供摘要任务流水线。Hugging Face 是一个允许你发布机器学习模型的平台，主要用于 NLP
+    任务。
 - en: 'Once you have installed `bert-extractive-summarizer`, producing a summary is
     just a few lines of code:'
   id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你安装了 `bert-extractive-summarizer`，生成摘要只需要几行代码：
 - en: '[PRE1]'
   id: totrans-55
   prefs: []
@@ -360,6 +372,7 @@
   id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将产生以下输出：
 - en: '[PRE2]'
   id: totrans-57
   prefs: []
@@ -373,6 +386,8 @@
   id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是完整的代码！在幕后，spaCy 被用于一些预处理，而 Hugging Face 被用于启动模型。使用的模型名为 `distilbert-base-uncased`。DistilBERT
+    是一个简化版的 BERT 模型，可以更快运行并使用更少的内存。该模型是一个“uncased”模型，这意味着输入文本中的大写或小写在转换为嵌入向量后被视为相同。
 - en: The output from the summarizer model is a string. As you specified `num_sentences=3`
     in invoking the model, the summary is three selected sentences from the text.
     This approach is called the **extractive summary**. The alternative is an **abstractive
@@ -381,35 +396,42 @@
   id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 摘要模型的输出是一个字符串。由于你在调用模型时指定了`num_sentences=3`，因此摘要是从文本中选择的三句话。这种方法称为**提取式摘要**。另一种方法是**抽象式摘要**，其中摘要是生成的，而不是从文本中提取的。这需要不同于BERT的模型。
 - en: Want to Get Started With Building Transformer Models with Attention?
   id: totrans-60
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始构建带有注意力机制的变换器模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
   id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费12天电子邮件速成课程（附样本代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
   id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: Using Pre-Trained BERT Model for Question-Answering
   id: totrans-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用预训练BERT模型进行问答
 - en: The other example of using BERT is to match questions to answers. You will give
     both the question and the text to the model and look for the output of the beginning
     *and* the end of the answer from the text.
   id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用BERT的另一个示例是将问题与答案匹配。你将问题和文本都提供给模型，并从文本中寻找答案的开始 *和* 结束位置的输出。
 - en: 'A quick example would be just a few lines of code as follows, reusing the same
     example text as in the previous example:'
   id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个快速的示例就是如下几行代码，重用前面示例中的相同文本：
 - en: '[PRE3]'
   id: totrans-66
   prefs: []
@@ -421,6 +443,7 @@
   id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，直接使用了Hugging Face。如果你已经安装了前面示例中使用的模块，那么Hugging Face Python模块是你已经安装的依赖项。否则，你可能需要用`pip`进行安装：
 - en: '[PRE4]'
   id: totrans-68
   prefs: []
@@ -431,6 +454,7 @@
   id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 而且为了实际使用Hugging Face模型，你还应该安装**both** PyTorch和TensorFlow：
 - en: '[PRE5]'
   id: totrans-70
   prefs: []
@@ -440,6 +464,7 @@
   id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码的输出是一个Python字典，如下所示：
 - en: '[PRE6]'
   id: totrans-72
   prefs: []
@@ -452,6 +477,7 @@
   id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，你可以找到答案（即输入文本中的一句话），以及这个答案在标记顺序中的起始和结束位置。这个分数可以被视为模型对答案适合问题的置信度分数。
 - en: Behind the scenes, what the model did was generate a probability score for the
     best beginning in the text that answers the question, as well as the text for
     the best ending. Then the answer is extracted by finding the location of the highest
@@ -459,59 +485,71 @@
   id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 在后台，模型所做的是生成一个概率分数，用于确定文本中回答问题的最佳起始位置，以及最佳结束位置。然后通过查找最高概率的位置来提取答案。
 - en: '**Further Reading**'
   id: totrans-75
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
   id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: '**Papers**'
   id: totrans-77
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
   id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762)，2017'
 - en: '[BERT: Pretraining of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/abs/1810.04805),
     2019'
   id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[BERT：深度双向变换器语言理解的预训练](https://arxiv.org/abs/1810.04805)，2019'
 - en: '[DistilBERT, a distilled version of BERT: smaller, faster, cheaper, and lighter](https://arxiv.org/abs/1910.01108),
     2019'
   id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[DistilBERT，BERT的精简版本：更小、更快、更便宜、更轻](https://arxiv.org/abs/1910.01108)，2019'
 - en: '**Summary**'
   id: totrans-81
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered what BERT is and how to use a pre-trained BERT
     model.
   id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了BERT是什么以及如何使用预训练的BERT模型。
 - en: 'Specifically, you learned:'
   id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How is BERT created as an extension to Transformer models
   id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: BERT如何作为对变换器模型的扩展创建
 - en: How to use pre-trained BERT models for extractive summarization and question
     answering
   id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用预训练BERT模型进行提取式摘要和问答
