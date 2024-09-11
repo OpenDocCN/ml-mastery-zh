@@ -1,0 +1,336 @@
+- en: 'Testing Assumptions in Real Estate: A Dive into Hypothesis Testing with the
+    Ames Housing Dataset'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-dive-into-hypothesis-testing/](https://machinelearningmastery.com/a-dive-into-hypothesis-testing/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In doing inferential statistics, you often want to test your assumptions. Indeed
+    there is a way to quantitatively test an assumption that you thought of. Using
+    the Ames Housing dataset, you’ll delve deep into the concept of hypothesis testing
+    and explore if the presence of an air conditioner affects the sale price of a
+    house.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/fb0e5f1e872bec7b992b0838d7ea098d.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Testing Assumptions in Real Estate: A Dive into Hypothesis Testing with the
+    Ames Housing Dataset'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Alex Staudinger](https://www.pexels.com/photo/sun-piercing-of-brown-concrete-house-near-sea-1732414/).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post unfolds through the following segments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Role of Hypothesis Testing in Inferential Statistics.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How does Hypothesis Testing work?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Does Air Conditioning Affect Sale Price?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Role of Hypothesis Testing in Inferential Statistics
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Inferential Statistics uses a sample of data to make inferences about the population
+    from which it was drawn. Hypothesis testing, a fundamental component of inferential
+    statistics, is crucial when making informed decisions about a population based
+    on sample data, especially when studying the entire population is unfeasible.
+    Hypothesis testing is a way to make a statement about the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Imagine you’ve come across a claim stating that houses with air conditioners
+    sell at a higher price than those without. To verify this claim, you’d gather
+    data on house sales and analyze if there’s a significant difference in prices
+    based on the presence of air conditioning. This process of testing claims or assumptions
+    about a population using sample data is known as hypothesis testing. In essence,
+    hypothesis testing allows us to make an informed decision (either rejecting or
+    failing to reject a starting assumption) based on evidence from the sample and
+    the likelihood that the observed effect occurred by chance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How does Hypothesis Testing work?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Hypothesis Testing is a methodological approach in inferential statistics where
+    you start with an initial claim (hypothesis) about a population parameter. You
+    then use sample data to determine whether or not there’s enough evidence to reject
+    this initial claim. The components of hypothesis testing include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Null Hypothesis ($H_0$):** The **default state** of no effect or no different.
+    A statement that you aim to test against.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Alternative Hypothesis ($H_a$):** What you want to prove. It is what you
+    believe if the null hypothesis is wrong.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Test Statistic:** A value computed from the sample data that’s used to test
+    the null hypothesis.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**P-value:** The probability that the observed effect in the sample occurred
+    by random chance under the null hypothesis situation.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Performing hypothesis testing is like a detective: Ordinarily, you assume something
+    should happen ($H_0$), but you suspect something else is actually happening ($H_1$).
+    Then you collect your evidence (the test statistic) to argue why $H_0$ is not
+    reasonable; hence $H_1$ should be the truth.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a typical hypothesis test:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You state the null and alternative hypotheses. You should carefully design these
+    hypotheses to reflect a reasonable assumption about the reality.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You choose a significance level ($\alpha$); it is common to use $\alpha=0.05$
+    in statistical hypothesis tests.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You collect and analyze the data to get our test statistic and p-value, based
+    on the situation of $H_0$.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'You make a decision based on the p-value: You reject the null hypothesis and
+    accept the alternative hypothesis if and only if the p-value is less than $\alpha$.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Let’s see an example on how these steps are carried out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Does Air Conditioning Affect Sales Price?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Based on the [Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv),
+    we want to know if the presence of air conditioning can affect the price.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To explore the impact of air conditioning on sales prices, you’ll set our hypotheses
+    as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '$H_0$: The average sales price of houses with air conditioning is the same
+    as those without.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$H_a$: The average sales price of houses with air conditioning is not the same
+    as those without.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Before performing the hypothesis test, let’s visualize our data to get a preliminary
+    understanding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/9aea6a0ea0f94b92fc92cb63564163c8.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Overlapped histogram to compare the sales prices
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The code above called `plt.hist()` twice with different data to show two overlapped
+    histograms, one for the distribution of sales price with air conditioning (AC)
+    and one without. Here are a few observations that can be made from the visual:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Distinct Peaks:** Both distributions exhibit a **distinct** peak, which indicates
+    the most frequent sale prices in their respective categories.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Mean Sale Price:** The mean sale price of houses with AC is higher than that
+    of houses without AC, as indicated by the vertical dashed lines.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Spread and Skewness:** The distribution of sale prices for houses with AC
+    appears slightly right-skewed, indicating that while most houses are sold at a
+    lower price, there are some properties with significantly higher prices. In contrast,
+    the distribution for houses without AC is more compact, with a smaller range of
+    prices.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Overlap:** Despite the differences in means, there’s an overlap in the price
+    range of houses with and without AC. This suggests that while AC may influence
+    price, other factors are also at play in determining a house’s value.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Given these insights, the presence of AC seems to be associated with a higher
+    sale price. The next step would be to perform the hypothesis test to numerically
+    determine if this difference is significant.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The p-value is less than $\alpha$. The p-value says that it is very unlikely,
+    under $H_0$, that the difference in the price is by chance. This indicates that
+    there’s a statistically significant difference in the average sale prices of houses
+    with air conditioning compared to those without. This aligns with our visual observations
+    from the histogram. Thus, the presence of an air conditioner does seem to have
+    a significant effect on the sale price of houses in the Ames dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This p-value is computed using t-test. It is a statistic aimed at comparing
+    the **means of two groups**. There are many statistics available, and t-test is
+    a suitable one here because our hypotheses $H_0$, $H_a$ are about the average
+    sales price.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note that the alternative hypothesis $H_a$ defined above can be changed. You
+    can make it mean “the average sales price of houses with air conditioning is **less
+    than** those without”; however, this is counter-intuitive to the reality.  You
+    can also make it mean “the average sales price of houses with air conditioning
+    is **more than** those without”; which you should change the t-test in the code
+    to include the extra argument `alternative=''greater''`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This changes the two-sided t-test to one-sided t-test, but the resulting outcome
+    is the same. Switching from a two-sided to a one-sided t-test but arriving at
+    the same conclusion implies that we had a clear expectation of the direction of
+    the difference from the start, or the data strongly supported one direction of
+    difference, making the outcome consistent across both test types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The setup of the null hypothesis ($H_0$) and alternative hypothesis ($H_a$)
+    is fundamental to the design of statistical tests, influencing the test’s directionality
+    (one-sided vs. two-sided), the interpretation of results (how we understand p-values
+    and evidence), and decision-making processes (especially when the p-value is close
+    to the significance level $\alpha$). This framework determines not only what we
+    are testing for but also how we interpret and act on the statistical evidence
+    obtained.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Beginner's Guide to Data Science?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Online
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Hypothesis Testing Tutorial](https://www.khanacademy.org/math/statistics-probability/significance-tests-one-sample)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[scipy.stats.ttest_ind](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Student’s t-test](https://en.wikipedia.org/wiki/Student%27s_t-test) in Wikipedia'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Resources
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this exploration, you delved into the world of hypothesis testing using the
+    Ames Housing dataset. You examined how the presence of an air conditioner might
+    impact the sale price of a house. Through rigorous statistical testing, you found
+    that houses with air conditioning tend to have a higher sale price than those
+    without, a result that holds statistical significance. This not only underscores
+    the importance of amenities like air conditioning in the real estate market but
+    also showcases the power of hypothesis testing in making informed decisions based
+    on data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The importance of hypothesis testing within inferential statistics.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to set up and evaluate null and alternative hypothesis using detailed methods
+    of hypothesis testing.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The practical implications of hypothesis testing in real-world scenarios, exemplified
+    by the presence of air conditioning on property values in the Ames housing market.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

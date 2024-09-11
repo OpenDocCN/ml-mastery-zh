@@ -1,0 +1,512 @@
+- en: Joining the Transformer Encoder and Decoder Plus Masking
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking/](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: We have arrived at a point where we have implemented and tested the Transformer
+    [encoder](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)
+    and [decoder](https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras)
+    separately, and we may now join the two together into a complete model. We will
+    also see how to create padding and look-ahead masks by which we will suppress
+    the input values that will not be considered in the encoder or decoder computations.
+    Our end goal remains to apply the complete model to Natural Language Processing
+    (NLP).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover how to implement the complete Transformer
+    model and create padding and look-ahead masks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to create a padding mask for the encoder and decoder
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create a look-ahead mask for the decoder
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to join the Transformer encoder and decoder into a single model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to print out a summary of the encoder and decoder layers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/52e6d5d2d85b424ddde866069d042527.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/model_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Joining the Transformer encoder and decoder and Masking
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [John O’Nolan](https://unsplash.com/photos/ykeLTANUQyE), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recap of the Transformer Architecture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Masking
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a Padding Mask
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a Look-Ahead Mask
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Joining the Transformer Encoder and Decoder
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating an Instance of the Transformer Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Printing Out a Summary of the Encoder and Decoder Layers
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you are already familiar with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[The Transformer model](https://machinelearningmastery.com/the-transformer-model/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Transformer encoder](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Transformer decoder](https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Recap of the Transformer Architecture**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Recall](https://machinelearningmastery.com/the-transformer-model/) having
+    seen that the Transformer architecture follows an encoder-decoder structure. The
+    encoder, on the left-hand side, is tasked with mapping an input sequence to a
+    sequence of continuous representations; the decoder, on the right-hand side, receives
+    the output of the encoder together with the decoder output at the previous time
+    step to generate an output sequence.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The encoder-decoder structure of the Transformer architecture
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: In generating an output sequence, the Transformer does not rely on recurrence
+    and convolutions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You have seen how to implement the Transformer encoder and decoder separately.
+    In this tutorial, you will join the two into a complete Transformer model and
+    apply padding and look-ahead masking to the input values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s start first by discovering how to apply masking.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Masking**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**Creating a Padding Mask**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You should already be familiar with the importance of masking the input values
+    before feeding them into the encoder and decoder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you will see when you proceed to [train the Transformer model](https://machinelearningmastery.com/training-the-transformer-model),
+    the input sequences fed into the encoder and decoder will first be zero-padded
+    up to a specific sequence length. The importance of having a padding mask is to
+    make sure that these zero values are not processed along with the actual input
+    values by both the encoder and decoder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s create the following function to generate a padding mask for both the
+    encoder and decoder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Upon receiving an input, this function will generate a tensor that marks by
+    a value of *one* wherever the input contains a value of *zero*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Hence, if you input the following array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then the output of the `padding_mask` function would be the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Creating a Look-Ahead Mask**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A look-ahead mask is required to prevent the decoder from attending to succeeding
+    words, such that the prediction for a particular word can only depend on known
+    outputs for the words that come before it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this purpose, let’s create the following function to generate a look-ahead
+    mask for the decoder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You will pass to it the length of the decoder input. Let’s make this length
+    equal to 5, as an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then the output that the `lookahead_mask` function returns is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Again, the *one* values mask out the entries that should not be used. In this
+    manner, the prediction of every word only depends on those that come before it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Joining the Transformer Encoder and Decoder**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s start by creating the class, `TransformerModel`, which inherits from
+    the `Model` base class in Keras:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our first step in creating the `TransformerModel` class is to initialize instances
+    of the `Encoder` and `Decoder` classes implemented earlier and assign their outputs
+    to the variables, `encoder` and `decoder`, respectively. If you saved these classes
+    in separate Python scripts, do not forget to import them. I saved my code in the
+    Python scripts *encoder.py* and *decoder.py*, so I need to import them accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will also include one final dense layer that produces the final output,
+    as in the Transformer architecture of [Vaswani et al. (2017)](https://arxiv.org/abs/1706.03762).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, you shall create the class method, `call()`, to feed the relevant inputs
+    into the encoder and decoder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A padding mask is first generated to mask the encoder input, as well as the
+    encoder output, when this is fed into the second self-attention block of the decoder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A padding mask and a look-ahead mask are then generated to mask the decoder
+    input. These are combined together through an element-wise `maximum` operation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, the relevant inputs are fed into the encoder and decoder, and the Transformer
+    model output is generated by feeding the decoder output into one final dense layer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Combining all the steps gives us the following complete code listing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that you have performed a small change to the output that is returned by
+    the `padding_mask` function. Its shape is made broadcastable to the shape of the
+    attention weight tensor that it will mask when you train the Transformer model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Creating an Instance of the Transformer Model**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You will work with the parameter values specified in the paper, [Attention
+    Is All You Need](https://arxiv.org/abs/1706.03762), by Vaswani et al. (2017):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As for the input-related parameters, you will work with dummy values for now
+    until you arrive at the stage of [training the complete Transformer model](https://machinelearningmastery.com/training-the-transformer-model).
+    At that point, you will use actual sentences:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can now create an instance of the `TransformerModel` class as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The complete code listing is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Printing Out a Summary of the Encoder and Decoder Layers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'You may also print out a summary of the encoder and decoder blocks of the Transformer
+    model. The choice to print them out separately will allow you to be able to see
+    the details of their individual sub-layers. In order to do so, add the following
+    line of code to the `__init__()` method of both the `EncoderLayer` and `DecoderLayer`
+    classes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then you need to add the following method to the `EncoderLayer` class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And the following method to the `DecoderLayer` class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This results in the `EncoderLayer` class being modified as follows (the three
+    dots under the `call()` method mean that this remains the same as the one that
+    was implemented [here](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Similar changes can be made to the `DecoderLayer` class too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you have the necessary changes in place, you can proceed to create instances
+    of the `EncoderLayer` and `DecoderLayer` classes and print out their summaries
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The resulting summary for the encoder is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'While the resulting summary for the decoder is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
+    2021'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered how to implement the complete Transformer model
+    and create padding and look-ahead masks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to create a padding mask for the encoder and decoder
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create a look-ahead mask for the decoder
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to join the Transformer encoder and decoder into a single model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to print out a summary of the encoder and decoder layers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

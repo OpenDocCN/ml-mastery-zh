@@ -1,0 +1,279 @@
+- en: Understand Model Behavior During Training by Visualizing Metrics
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/understand-model-behavior-during-training-by-visualizing-metrics/](https://machinelearningmastery.com/understand-model-behavior-during-training-by-visualizing-metrics/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'You can learn a lot about neural networks and deep learning models by observing
+    their performance over time during training. For example, if you see the training
+    accuracy went worse with training epochs, you know you have issue with the optimization.
+    Probably your learning rate is too fast. In this post, you will discover how you
+    can review and visualize the performance of PyTorch models over time during training.
+    After completing this post, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What metrics to collect during training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to plot the metrics on training and validation datasets from training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to interpret the plot to tell about the model and training progress
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/b2859a3ed041bcffaae754c3450932ce.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understand Model Behavior During Training by Visualizing Metrics
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Alison Pang](https://unsplash.com/photos/bnEgE5Aigns). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This chapter is in two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Collecting Metrics from a Training Loop
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Plotting the Training History
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Collecting Metrics from a Training Loop
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In deep learning, training a model with gradient descent algorithm means to
+    take a forward pass to infer loss metric from the input using the model and a
+    loss function, then a backward pass to compute the gradient from the loss metric,
+    and a update process to apply the gradient to update the model parameters. While
+    these are the basic steps you must take, you can do a bit more along the process
+    to collect additional information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A model that trained correctly should expect the loss metric to decrease, as
+    the loss is the objective to optimize. The loss metric to use should depends on
+    the problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For regression problems, the closer the model’s prediction to the actual value
+    the better. Therefore you want to keep track on the mean square error (MSE), or
+    sometimes root mean square error (RMSE), mean absolute error (MAE), or mean absolute
+    percentage error (MAPE). Although not used as a loss metric, you may also interested
+    in the maximum error produced by your model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For classification problems, usually the loss metric is cross entropy. But the
+    value of cross entropy is not very intuitive. Therefore you may also want to keep
+    track on the accuracy of prediction, true positive rate, precision, recall, F1
+    scores, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Collecting these metrics from a training loop is trivial. Let’s start with
+    a basic regression example of deep learning using PyTorch with the California
+    housing dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This implementation is primitive, but you obtained `loss` as a tensor in each
+    step in the process which provides hints to the optimizer to improve the model.
+    To know about the progress of the training, you can, of course, print this loss
+    metric at every step. But you can also save this value so you can visualize it
+    later. When you do that, beware that you do not want to save a tensor but simply
+    its value. It is because the PyTorch tensor here remembers how it comes with its
+    value so automatic differentiation can be done. These additional data are occupying
+    memory but you do not need them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Hence you can modify the training loop to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In training a model, you should evaluate it with a test set which is segregated
+    from the training set. Usually it is done once in an epoch, after all the training
+    steps in that epoch. The test result can also be saved for visualization later.
+    In fact, you can obtain multiple metrics from the test set if you want to. Hence
+    you can add to the training loop as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can define your own function to compute the metrics or use one that already
+    implemented from PyTorch library. It is a good practice to switch the model to
+    evaluation mode on evaluation. It is also good practice to run the evaluation
+    under the `no_grad()` context, in which you explicitly tell PyTorch that you have
+    no intention to run automatic differentiation on the tensors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, there is a problem in the code above: The MSE from training set is
+    computed once per training step based on one batch while the metrics from the
+    test set are computed once per epoch and based on the entire test set. They are
+    not directly comparable. In fact, if you look a the MSE from training steps, you
+    will find it **very noisy**. The better way is to summarize the MSE from the same
+    epoch to one number (e.g., their mean) so you can compare to the test set’s data.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Making this change, following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plotting the Training History
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In the code above, you collected metrics in a Python list, one each per epoch.
+    Therefore, it is trivial to plot them into a line graph using matplotlib. Below
+    is an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: It plots, for example, the following:![](../Images/9f6b4d8f55086d40c8f9d874b05c7c7c.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Plots like this can provide an indication of useful things about the training
+    of the model, such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Its speed of convergence over epochs (slope)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Whether the model may have already converged (plateau of the line)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Whether the model may be over-learning the training data (inflection for validation
+    line)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In a regression example like the above, the metrics MAE and MSE should both
+    decrease if the model gets better. In a classification example, however, accuracy
+    metric should increase while the cross entropy loss should decrease as more training
+    has been done. This is what you are expected to see from the plot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These curves should eventually flatten, meaning you cannot improve the model
+    any further based on the current dataset, model design, and algorithms. You want
+    this to happen as soon as possible, so your model **converge** faster as your
+    training is efficient. You also want the metric to flatten at a high accuracy
+    or low loss region, so your model is effective in prediction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The other property to watch for in the plots is how different are the metrics
+    from training and validation. In the above, you see the training set’s RMSE is
+    higher than test set’s RMSE at the beginning but very soon, the curves crossed
+    and the test set’s RMSE is higher at the end. This is expected, as eventually
+    the model will fit better to the training set but it is the test set that can
+    predict how the model performs on future, unseen data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You need to be careful to interpret the curves or metrics in a microscopic scale.
+    In the plot above, you see that the training set’s RMSE is extremely large compare
+    to that of test set’s in epoch 0\. Their difference may not be that drastic, but
+    since you collected the training set’s RMSE by taking the MSE of each steps during
+    the first epoch, your model probably not doing well in the first few steps but
+    much better at the last few steps of the epoch. Taking average across all the
+    steps may not be a fair comparison as the MSE from test set is based on the model
+    after the last step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your model is **overfit** if you see the training set’s metric is much better
+    than that from test set. This can hint that you should stop your training at an
+    earlier epoch or your model’s design need some regularization, such as dropout
+    layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the plot above, while you collected mean square error (MSE) for the regression
+    problem but you plotted root mean square error (RMSE) instead, so you can compare
+    to the mean absolute error (MAE) in the same scale. Probably you should also collect
+    the MAE of the training set as well. The two MAE curves should behave similarly
+    to that of the RMSE curves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[nn.L1Loss](https://pytorch.org/docs/stable/generated/torch.nn.L1Loss.html)
+    from PyTorch documentation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[nn.MSELoss](https://pytorch.org/docs/stable/generated/torch.nn.MSELoss.html)
+    from PyTorch documentation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this chapter, you discovered the importance of collecting and reviewing
+    metrics while training your deep learning models. You learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What metrics to look for during model training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to compute and collect metrics in a PyTorch training loop
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to visualize the metrics from a training loop
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to interpret the metrics to infer details about the training experience
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

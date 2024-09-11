@@ -1,0 +1,455 @@
+- en: The Bahdanau Attention Mechanism
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/the-bahdanau-attention-mechanism/](https://machinelearningmastery.com/the-bahdanau-attention-mechanism/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Conventional encoder-decoder architectures for machine translation encoded every
+    source sentence into a fixed-length vector, regardless of its length, from which
+    the decoder would then generate a translation. This made it difficult for the
+    neural network to cope with long sentences, essentially resulting in a performance
+    bottleneck.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Bahdanau attention was proposed to address the performance bottleneck of
+    conventional encoder-decoder architectures, achieving significant improvements
+    over the conventional approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover the Bahdanau attention mechanism for neural
+    machine translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where the Bahdanau attention derives its name from and the challenge it addresses
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The role of the different components that form part of the Bahdanau encoder-decoder
+    architecture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The operations performed by the Bahdanau attention algorithm
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/c8a989f14f362b9b362099dbcec133b2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/bahdanau_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Bahdanau attention mechanism
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Sean Oulashin](https://unsplash.com/photos/KMn4VEeEPR8), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduction to the Bahdanau Attention
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Bahdanau Architecture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Encoder
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Decoder
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Bahdanau Attention Algorithm
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you are already familiar with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Recurrent Neural Networks (RNNs)](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The encoder-decoder RNN architecture](https://machinelearningmastery.com/encoder-decoder-recurrent-neural-network-models-neural-machine-translation/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The concept of attention](https://machinelearningmastery.com/what-is-attention/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The attention mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Introduction to the Bahdanau Attention**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Bahdanau attention mechanism inherited its name from the first author of
+    the paper in which it was published.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It follows the work of [Cho et al. (2014)](https://arxiv.org/abs/1406.1078)
+    and [Sutskever et al. (2014)](https://arxiv.org/abs/1409.3215), who also employed
+    an RNN encoder-decoder framework for neural machine translation, specifically
+    by encoding a variable-length source sentence into a fixed-length vector. The
+    latter would then be decoded into a variable-length target sentence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Bahdanau et al. (2014)](https://arxiv.org/abs/1409.0473) argued that this
+    encoding of a variable-length input into a fixed-length vector *squashes* the
+    information of the source sentence, irrespective of its length, causing the performance
+    of a basic encoder-decoder model to deteriorate rapidly with an increasing length
+    of the input sentence. The approach they proposed replaces the fixed-length vector
+    with a variable-length one to improve the translation performance of the basic
+    encoder-decoder model.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The most important distinguishing feature of this approach from the basic
+    encoder-decoder is that it does not attempt to encode a whole input sentence into
+    a single fixed-length vector. Instead, it encodes the input sentence into a sequence
+    of vectors and chooses a subset of these vectors adaptively while decoding the
+    translation.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
+    2014.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Bahdanau Architecture**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The main components in use by the Bahdanau encoder-decoder architecture are
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $\mathbf{s}_{t-1}$ is the *hidden decoder state* at the previous time step,
+    $t-1$.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $\mathbf{c}_t$ is the *context vector* at time step, $t$. It is uniquely generated
+    at each decoder step to generate a target word, $y_t$.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $\mathbf{h}_i$ is an *annotation* that captures the information contained in
+    the words forming the entire input sentence, $\{ x_1, x_2, \dots, x_T \}$, with
+    strong focus around the $i$-th word out of $T$ total words.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $\alpha_{t,i}$ is a *weight* value assigned to each annotation, $\mathbf{h}_i$,
+    at the current time step, $t$.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $e_{t,i}$ is an *attention score* generated by an alignment model, $a(.)$, that
+    scores how well $\mathbf{s}_{t-1}$ and $\mathbf{h}_i$ match.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'These components find their use at different stages of the Bahdanau architecture,
+    which employs a bidirectional RNN as an encoder and an RNN decoder, with an attention
+    mechanism in between:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/d1493932911ca344b8f22c6cc7eda5f1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/bahdanau_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Bahdanau architecture
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Encoder**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The role of the encoder is to generate an annotation, $\mathbf{h}_i$, for every
+    word, $x_i$, in an input sentence of length $T$ words.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this purpose, Bahdanau et al. employ a bidirectional RNN, which reads the
+    input sentence in the forward direction to produce a forward hidden state, $\overrightarrow{\mathbf{h}_i}$,
+    and then reads the input sentence in the reverse direction to produce a backward
+    hidden state, $\overleftarrow{\mathbf{h}_i}$. The annotation for some particular
+    word, $x_i$, concatenates the two states:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\mathbf{h}_i = \left[ \overrightarrow{\mathbf{h}_i^T} \; ; \; \overleftarrow{\mathbf{h}_i^T}
+    \right]^T$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: The idea behind generating each annotation in this manner was to capture a summary
+    of both the preceding and succeeding words.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*In this way, the annotation $\mathbf{h}_i$ contains the summaries of both
+    the preceding words and the following words.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
+    2014.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The generated annotations are then passed to the decoder to generate the context
+    vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Decoder**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The role of the decoder is to produce the target words by focusing on the most
+    relevant information contained in the source sentence. For this purpose, it makes
+    use of an attention mechanism.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Each time the proposed model generates a word in a translation, it (soft-)searches
+    for a set of positions in a source sentence where the most relevant information
+    is concentrated. The model then predicts a target word based on the context vectors
+    associated with these source positions and all the previous generated target words.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
+    2014.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The decoder takes each annotation and feeds it to an alignment model, $a(.)$,
+    together with the previous hidden decoder state, $\mathbf{s}_{t-1}$. This generates
+    an attention score:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$e_{t,i} = a(\mathbf{s}_{t-1}, \mathbf{h}_i)$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: The function implemented by the alignment model here combines $\mathbf{s}_{t-1}$
+    and $\mathbf{h}_i$ using an addition operation. For this reason, the attention
+    mechanism implemented by Bahdanau et al. is referred to as *additive attention*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This can be implemented in two ways, either (1) by applying a weight matrix,
+    $\mathbf{W}$, over the concatenated vectors, $\mathbf{s}_{t-1}$ and $\mathbf{h}_i$,
+    or (2) by applying the weight matrices, $\mathbf{W}_1$ and $\mathbf{W}_2$, to
+    $\mathbf{s}_{t-1}$ and $\mathbf{h}_i$ separately:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$a(\mathbf{s}_{t-1}, \mathbf{h}_i) = \mathbf{v}^T \tanh(\mathbf{W}[\mathbf{h}_i
+    \; ; \; \mathbf{s}_{t-1}])$$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$a(\mathbf{s}_{t-1}, \mathbf{h}_i) = \mathbf{v}^T \tanh(\mathbf{W}_1 \mathbf{h}_i
+    + \mathbf{W}_2 \mathbf{s}_{t-1})$$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Here, $\mathbf{v}$ is a weight vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The alignment model is parametrized as a feedforward neural network and jointly
+    trained with the remaining system components.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Subsequently, a softmax function is applied to each attention score to obtain
+    the corresponding weight value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\alpha_{t,i} = \text{softmax}(e_{t,i})$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: The application of the softmax function essentially normalizes the annotation
+    values to a range between 0 and 1; hence, the resulting weights can be considered
+    probability values. Each probability (or weight) value reflects how important
+    $\mathbf{h}_i$ and $\mathbf{s}_{t-1}$ are in generating the next state, $\mathbf{s}_t$,
+    and the next output, $y_t$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Intuitively, this implements a mechanism of attention in the decoder. The
+    decoder decides parts of the source sentence to pay attention to. By letting the
+    decoder have an attention mechanism, we relieve the encoder from the burden of
+    having to encode all information in the source sentence into a fixed-length vector.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
+    2014.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'This is finally followed by the computation of the context vector as a weighted
+    sum of the annotations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\mathbf{c}_t = \sum^T_{i=1} \alpha_{t,i} \mathbf{h}_i$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Bahdanau Attention Algorithm**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In summary, the attention algorithm proposed by Bahdanau et al. performs the
+    following operations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The encoder generates a set of annotations, $\mathbf{h}_i$, from the input sentence.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: These annotations are fed to an alignment model and the previous hidden decoder
+    state. The alignment model uses this information to generate the attention scores,
+    $e_{t,i}$.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A softmax function is applied to the attention scores, effectively normalizing
+    them into weight values, $\alpha_{t,i}$, in a range between 0 and 1\.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Together with the previously computed annotations, these weights are used to
+    generate a context vector, $\mathbf{c}_t$, through a weighted sum of the annotations.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The context vector is fed to the decoder together with the previous hidden decoder
+    state and the previous output to compute the final output, $y_t$.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Steps 2-6 are repeated until the end of the sequence.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Bahdanau et al. tested their architecture on the task of English-to-French translation.
+    They reported that their model significantly outperformed the conventional encoder-decoder
+    model, regardless of the sentence length.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There have been several improvements over the Bahdanau attention proposed, such
+    as those of [Luong et al. (2015)](https://arxiv.org/abs/1508.04025), which we
+    shall review in a separate tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
+    2014.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered the Bahdanau attention mechanism for neural
+    machine translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where the Bahdanau attention derives its name from and the challenge it addresses.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The role of the different components that form part of the Bahdanau encoder-decoder
+    architecture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The operations performed by the Bahdanau attention algorithm
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,353 @@
+- en: How to Evaluate the Performance of PyTorch Models
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/how-to-evaluate-the-performance-of-pytorch-models/](https://machinelearningmastery.com/how-to-evaluate-the-performance-of-pytorch-models/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Designing a deep learning model is sometimes an art. There are a lot of decision
+    points, and it is not easy to tell what is the best. One way to come up with a
+    design is by trial and error and evaluating the result on real data. Therefore,
+    it is important to have a scientific method to evaluate the performance of your
+    neural network and deep learning models. In fact, it is also the same method to
+    compare any kind of machine learning models on a particular usage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this post, you will discover the received workflow to robustly evaluate
+    model performance. In the examples, we will use PyTorch to build our models, but
+    the method can also be applied to other models. After completing this post, you
+    will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to evaluate a PyTorch model using a verification dataset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to evaluate a PyTorch model with k-fold cross-validation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/1dbc3c45767bd37c79ffc70d5105b3ec.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to evaluate the performance of PyTorch models
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Kin Shing Lai](https://unsplash.com/photos/7qUtO7iNZ4M). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This chapter is in four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Empirical Evaluation of Models
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Data Splitting
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training a PyTorch Model with Validation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: k-Fold Cross Validation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Empirical Evaluation of Models
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In designing and configuring a deep learning model from scratch, there are a
+    lot of decisions to make. This includes design decisions such as how many layers
+    to use in a deep learning model, how big is each layer, and what kind of layers
+    or activation functions to use. It can also be the choice of the loss function,
+    optimization algorithm, number of epochs to train, and the interpretation of the
+    model output. Luckily, sometimes, you can copy the structure of other people’s
+    networks. Sometimes, you can just make up your choice using some heuristics. To
+    tell if you made a good choice or not, the best way is to compare multiple alternatives
+    by empirically evaluating them with actual data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deep learning is often used on problems that have very large datasets. That
+    is tens of thousands or hundreds of thousands of data samples. This provides ample
+    data for testing. But you need to have a robust test strategy to estimate the
+    performance of your model on unseen data. Based on that, you can have a metric
+    to compare among different model configurations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data Splitting
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you have a dataset of tens of thousands of samples or even more, you don’t
+    always need to give everything to your model for training. This will unnecessarily
+    increase the complexity and lengthen the training time. More is not always better.
+    You may not get the best result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you have a large amount of data, you should take a portion of it as the
+    **training set** that is fed into the model for training. Another portion is kept
+    as a **test set** to hold back from the training but verified with a trained or
+    partially trained model as an evaluation. This step is usually called “train-test
+    split.”
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s consider the [Pima Indians Diabetes dataset](https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.csv).
+    You can load the data using NumPy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There are 768 data samples. It is not a lot but is enough to demonstrate the
+    split. Let’s consider the first 66% as the training set and the remaining as the
+    test set. The easiest way to do so is by slicing an array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The choice of 66% is arbitrary, but you do not want the training set too small.
+    Sometimes you may use 70%-30% split. But if the dataset is huge, you may even
+    use a 30%-70% split if 30% of training data is large enough.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you split the data in this way, you’re suggesting the datasets are shuffled
+    so that the training set and the test set are equally diverse. If you find the
+    original dataset is sorted and take the test set only at the end, you may find
+    you have all the test data belonging to the same class or carrying the same value
+    in one of the input features. That’s not ideal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Of course, you can call `np.random.shuffle(data)` before the split to avoid
+    that. But many machine learning engineers usually use scikit-learn for this. See
+    this example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But more commonly, it is done after you separate the input feature and output
+    labels. Note that this function from scikit-learn can work not only on NumPy arrays
+    but also on PyTorch tensors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Training a PyTorch Model with Validation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s revisit the code for building and training a deep learning model on this
+    dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this code, one batch is extracted from the training set in each iteration
+    and sent to the model in the forward pass. Then you compute the gradient in the
+    backward pass and update the weights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While, in this case, you used binary cross entropy as the loss metric in the
+    training loop, you may be more concerned with the prediction accuracy. Calculating
+    accuracy is easy. You round off the output (in the range of 0 to 1) to the nearest
+    integer so you can get a binary value of 0 or 1\. Then you count how much percentage
+    your prediction matched the label; this gives you the accuracy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But what is your prediction? It is `y_pred` above, which is the prediction
+    by your current model on `X_batch`. Adding accuracy to the training loop becomes
+    this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, the `X_batch` and `y_batch` is used by the optimizer, and the optimizer
+    will fine-tune your model so that it can predict `y_batch` from `X_batch`. And
+    now you’re using accuracy to check if `y_pred` match with `y_batch`. It is like
+    cheating because if your model somehow remembers the solution, it can just report
+    to you the `y_pred` and get perfect accuracy without actually inferring `y_pred`
+    from `X_batch`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Indeed, a deep learning model can be so convoluted that you cannot know if
+    your model simply remembers the answer or is inferring the answer. Therefore,
+    the best way is **not** to calculate accuracy from `X_batch` or anything from
+    `X_train`but from something else: your test set. Let’s add an accuracy measurement
+    **after** each epoch using `X_test`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this case, the `acc` in the inner for-loop is just a metric showing the progress.
+    Not much difference in displaying the loss metric, except it is not involved in
+    the gradient descent algorithm. And you expect the accuracy to improve as the
+    loss metric also improves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the outer for-loop, at the end of each epoch, you calculate the accuracy
+    from `X_test`. The workflow is similar: You give the test set to the model and
+    ask for its prediction, then count the number of matched results with your test
+    set labels. But this accuracy is the one you should care about. It should improve
+    as the training progresses, but if you do not see it improve (i.e., accuracy increase)
+    or even deteriorates, you have to interrupt the training as it seems to start
+    overfitting. Overfitting is when the model started to remember the training set
+    rather than learning to infer the prediction from it. A sign of that is the accuracy
+    from the training set keeps increasing while the accuracy from the test set decreases.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is the complete code to implement everything above, from data
+    splitting to validation using the test set:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above will print the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: k-Fold Cross Validation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the above example, you calculated the accuracy from the test set. It is used
+    as a **score** for the model as you progressed in the training. You want to stop
+    at the point where this score is at its maximum. In fact, by merely comparing
+    the score from this test set, you know your model works best after epoch 21 and
+    starts to overfit afterward. Is that right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you built two models of different designs, should you just compare these
+    models’ accuracy on the same test set and claim one is better than another?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Actually, you can argue that the test set is not representative enough even
+    after you have shuffled your dataset before extracting the test set. You may also
+    argue that, by chance, one model fits better to this particular test set but not
+    always better. To make a stronger argument on which model is better independent
+    of the selection of the test set, you can try **multiple test sets** and average
+    the accuracy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is what a k-fold cross validation does. It is a progress to decide on which
+    **design** works better. It works by repeating the training process from scratch
+    for $k$ times, each with a different composition of the training and test sets.
+    Because of that, you will have $k$ models and $k$ accuracy scores from their respective
+    test set. You are not only interested in the average accuracy but also the standard
+    deviation. The standard deviation tells whether the accuracy score is consistent
+    or if some test set is particularly good or bad in a model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since k-fold cross validation trains the model from scratch a few times, it
+    is best to wrap around the training loop in a function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The code above is deliberately not printing anything (with `disable=True` in
+    `tqdm`) to keep the screen less cluttered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also from scikit-learn, you have a function for k-fold cross validation. You
+    can make use of it to produce a robust estimate of model accuracy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running this prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: In scikit-learn, there are multiple k-fold cross validation functions, and the
+    one used here is stratified k-fold. It assumes `y` are class labels and takes
+    into account of their values such that it will provide a balanced class representation
+    in the splits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code above used $k=5$ or 5 splits. It means splitting the dataset into five
+    equal portions, picking one of them as the test set and combining the rest into
+    a training set. There are five ways of doing that, so the for-loop above will
+    have five iterations. In each iteration, you call the `model_train()` function
+    and obtain the accuracy score in return. Then you save it into a list, which will
+    be used to calculate the mean and standard deviation at the end.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `kfold` object will return to you the **indices**. Hence you do not need
+    to run the train-test split in advance but use the indices provided to extract
+    the training set and test set on the fly when you call the `model_train()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The result above shows the model is moderately good, at 64% average accuracy.
+    And this score is stable since the standard deviation is at 3%. This means that
+    most of the time, you expect the model accuracy to be 61% to 67%. You may try
+    to change the model above, such as adding or removing a layer, and see how much
+    change you have in the mean and standard deviation. You may also try to increase
+    the number of epochs used in training and observe the result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The mean and standard deviation from the k-fold cross validation is what you
+    should use to benchmark a model design.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Tying it all together, below is the complete code for k-fold cross validation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you discovered the importance of having a robust way to estimate
+    the performance of your deep learning models on unseen data, and you learned how
+    to do that. You saw:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to split data into training and test sets using scikit-learn
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to do k-fold cross validation with the help of scikit-learn
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to modify the training loop in a PyTorch model to incorporate test set validation
+    and cross validation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

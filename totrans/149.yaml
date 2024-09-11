@@ -1,0 +1,268 @@
+- en: Initializing Weights for Deep Learning Models
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/initializing-weights-for-deep-learning-models/](https://machinelearningmastery.com/initializing-weights-for-deep-learning-models/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In order to build a classifier that accurately classifies the data samples and
+    performs well on test data, you need to initialize the weights in a way that the
+    model converges well. Usually we randomized the weights. But when we use mean
+    square error (MSE) as loss for training a logistic regression model, we may sometimes
+    face a few problems. Before we get into further details, note that the methodology
+    used here also applies to classification models other than logistic regression
+    and it will be used in the upcoming tutorials.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our model can converge well if the weights are initialized in a proper region.
+    However, if we started the model weights in an unfavorable region, we may see
+    the model difficult to converge or very slow to converge. In this tutorial you’ll
+    learn what happens to the model training if you use MSE loss and model weights
+    are adversely initialized. Particularly, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How bad initialization can affect training of a logistic regression model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train a logistic regression model with PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How badly initialized weights with MSE loss can significantly reduce the accuracy
+    of the model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: So, let’s get started.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/5f22cfe68592c3485a4e47004638df0c.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Initializing Weights for Deep Learning Models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Priscilla Serneo](https://unsplash.com/photos/kvCTQkcbWAc). Some
+    rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing the Data and Building a Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Effect of Initial Values of Model Weights
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Appropriate Weight Initialization
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing the Data and Building a Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, let’s prepare some synthetic data for training and evaluating the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The data will be predicting a value of 0 or 1 based on a single variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: With this `Dataset` class, we can create a dataset object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s build a custom module with `nn.Module` for our logistic regression
+    model. As explained in our previous tutorials, you are going to use the methods
+    and attributes from `nn.Module` package to build custom modules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: You’ll create a model object for logistic regression, as follows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Effect of Initial Values of Model Weights
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to prove the point, let’s replace the randomly initialized model weights
+    with other values (or predetermined bad values) that will not let the model converge.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the randomly initialized parameters have been replaced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will train this model with stochastic gradient descent and set the learning
+    rate at 2\. As you have to check how badly initialized values with MSE loss may
+    impact the model performance, you’ll set this criterion to check the model loss.
+    In training, the data is provided by the dataloader with a batch size of 2.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s train our model for 50 epochs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'while the model is trained, you will see the progress of each epoch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the loss during training remains constant and there isn’t any
+    improvements. This indicates that the model is not learning and it won’t perform
+    well on test data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s also visualize the plot for model training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: You shall see the following:![](../Images/93a425471065e967769debf2947a89d7.png)The
+    graph also tells us the same story that there wasn’t any change or reduction in
+    the model loss during training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While our model didn’t do well during training, let’s get the predictions for
+    test data and measure the overall accuracy of the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: which gives
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The accuracy of the model is around 57 percent only, which isn’t what you would
+    expect. That’s how badly initialized weights with MSE loss may impact the model
+    accuracy. In order to reduce this error, we apply maximum likelihood estimation
+    and cross entropy loss, which will be covered in the next tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Appropriate Weight Initialization
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: By default, the initialized weight from PyTorch should give you the correct
+    model. If you modify the code above to comment out the two lines that overwrote
+    the model weigths before training and re-run it, you should see the result works
+    quite well. The reason it works horribly above is because the weights are too
+    far off from the optimal weights, and the use of MSE as loss function in logistic
+    regression problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The nature of optimization algorithms such as stochastic gradient descent does
+    not guarantee it to work in all cases. In order to make the optimization algorithms
+    to find the solution, i.e., the model to converge, it is best to have the model
+    weights located at the proximity of the solution. Of course, we would not know
+    where is the proximity before the model converge. But research has found that
+    we should prefer the weights be set such that in a batch of the sample data,
+  prefs: []
+  type: TYPE_NORMAL
+- en: the mean of activation is zero
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: the variance of the the activation is comparable to the variance of a layer’s
+    input
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: One popular method is to initialize model weights using Xavier initialization,
+    i.e., set weights randomly according to a Uniform distribution, $U[-\frac{1}{\sqrt{n}},
+    \frac{1}{\sqrt{n}}]$, where $n$ is the number of input to the layer (in our case
+    is 1).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another method is normalized Xavier initialization, which is to use the distribution
+    $U[-\sqrt{\frac{6}{n+m}}, \sqrt{\frac{6}{n+m}}]$, for $n$ and $m$ the number of
+    inputs and outputs to the layer. In our case, both are 1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we prefer not to use uniform distribution, He initialization suggested to
+    use Gaussian distribution with mean 0 and variance $\sqrt{2/n}$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can see more about weight initialization at the post, [Weight Initialization
+    for Deep Learning Neural Networks](https://machinelearningmastery.com/weight-initialization-for-deep-learning-neural-networks/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned how bad weights may reduce the model performance.
+    Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How bad initialization can affect training of a logistic regression model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train a logistic regression model with PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How badly initialized weights values with MSE loss can significantly reduce
+    the accuracy of the model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,462 @@
+- en: A Guide to Obtaining Time Series Datasets in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-guide-to-obtaining-time-series-datasets-in-python/](https://machinelearningmastery.com/a-guide-to-obtaining-time-series-datasets-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Datasets from real-world scenarios are important for building and testing machine
+    learning models. You may just want to have some data to experiment with an algorithm.
+    You may also want to evaluate your model by setting up a benchmark or determining
+    its weaknesses using different sets of data. Sometimes, you may also want to create
+    synthetic datasets, where you can test your algorithms under controlled conditions
+    by adding noise, correlations, or redundant information to the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, we’ll illustrate how you can use Python to fetch some real-world
+    time-series data from different sources. We’ll also create synthetic time-series
+    data using Python’s libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use the `pandas_datareader`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to call a web data server’s APIs using the `requests` library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to generate synthetic time-series data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.[![Picture of sea waves and a bird](../Images/8afd3fb3afbbb8c2bf99d5530ec64b67.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/IMG_0628-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Guide to Working With Datasets in Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by Mehreen Saeed, some rights reserved
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using `pandas_datareader`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Using the `requests` library to fetch data using the remote server’s APIs
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Generate synthetic time-series data
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Loading Data Using pandas-datareader
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post will depend on a few libraries. If you haven’t installed them in
+    your system, you may install them using `pip`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `pandas_datareader` library allows you to [fetch data from different sources,](https://pandas-datareader.readthedocs.io/en/latest/readers/index.html)
+    including Yahoo Finance for financial market data, World Bank for global development
+    data, and St. Louis Fed for economic data. In this section, we’ll show how you
+    can load data from different sources.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Behind the scene, `pandas_datareader` pulls the data you want from the web in
+    real time and assembles it into a pandas DataFrame. Because of the vastly different
+    structure of web pages, each data source needs a different reader. Hence, pandas_datareader
+    only supports reading from a limited number of sources, mostly related to financial
+    and economic time series.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fetching data is simple. For example, we know that the stock ticker for Apple
+    is AAPL, so we can get the daily historical prices of Apple stock from Yahoo Finance
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The call to `DataReader()` requires the first argument to specify the ticker
+    and the second argument the data source. The above code prints the DataFrame:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We may also fetch the stock price history from multiple companies with the
+    tickers in a list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and the result would be a DataFrame with multi-level columns:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Because of the structure of DataFrames, it is convenient to extract part of
+    the data. For example, we can plot only the daily close price on some dates using
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/3a8ff2424899b5e433bb929c61f62270.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Multiple shares fetched from Yahoo Finance
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The syntax for reading from another data source using pandas-datareader is similar.
+    For example, we can read an economic time series from the [Federal Reserve Economic
+    Data (FRED)](https://fred.stlouisfed.org/). Every time series in FRED is identified
+    by a symbol. For example, the consumer price index for all urban consumers is
+    [CPIAUCSL](https://fred.stlouisfed.org/series/CPIAUCSL), the consumer price index
+    for all items less food and energy is [CPILFESL,](https://fred.stlouisfed.org/series/CPILFESL)
+    and personal consumption expenditure is [PCE](https://fred.stlouisfed.org/series/PCE).
+    You can search and look up the symbols from FRED’s webpage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Below is how we can obtain two consumer price indices, CPIAUCSL and CPILFESL,
+    and show them in a plot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/a24165e267eec61782aae6a54ca27092.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Plot of Consumer Price Index
+  prefs: []
+  type: TYPE_NORMAL
+- en: Obtaining data from World Bank is also similar, but we have to understand that
+    the data from World Bank is more complicated. Usually, a data series, such as
+    population, is presented as a time series and also has the countries dimension.
+    Therefore, we need to specify more parameters to obtain the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using `pandas_datareader`, we have a specific set of APIs for the World Bank.
+    The symbol for an indicator can be looked up from [World Bank Open Data](https://data.worldbank.org/) or
+    searched using the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `search()` function accepts a regular expression string (e.g., `.*` above
+    means string of any length). This will print:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: where the `id` column is the symbol for the time series.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can read data for specific countries by specifying the ISO-3166-1 country
+    code. But World Bank also contains non-country aggregates (e.g., South Asia),
+    so while `pandas_datareader` allows us to use the string “`all`” for all countries,
+    usually we do not want to use it. Below is how we can get a list of all countries
+    and aggregates from the World Bank:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Below is how we can get the population of all countries in 2020 and show the
+    top 25 countries in a bar chart. Certainly, we can also get the population data
+    across years by specifying a different `start` and `end` year:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/65dc3d1bc4e7adfcb14cacb657c62458.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Bar chart of total population of different countries
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fetching Data Using Web APIs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Instead of using `the pandas_datareader` library, sometimes you have the option
+    to fetch data directly from a web data server by calling its web APIs without
+    any authentication needed. It can be done in Python using the standard library
+    `urllib.requests`, or you may also use the `requests` library for an easier interface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'World Bank is an example where web APIs are freely available, so we can easily
+    read data in different formats, such as JSON, XML, or plain text. The page on
+    [the World Bank data repository’s API](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589-developer-information)
+    describes various APIs and their respective parameters. To repeat what we did
+    in the previous example without using `pandas_datareader`, we first construct
+    a URL to read a list of all countries so we can find the country code that is
+    not an aggregate. Then, we can construct a query URL with the following arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`country` argument with value = `all`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`indicator` argument with value = `SP.POP.TOTL`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`date` argument with value = `2020`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '`format` argument with value = `json`'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Of course, you can experiment with different [indicators](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation).
+    By default, the World Bank returns 50 items on a page, and we need to query for
+    one page after another to exhaust the data. We can enlarge the page size to get
+    all data in one shot. Below is how we get the list of countries in JSON format
+    and collect the country codes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It will print the HTTP status code, the header, and the list of country codes
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'From the header, we can verify that we exhausted the data (page 1 out of 1).
+    Then we can get all population data as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should check the World Bank API documentation for details on how to construct
+    the URL. For example, the date syntax of `2020:2021` would mean the start and
+    end years, and the extra parameter `page=3` will give you the third page in a
+    multi-page result. With the data fetched, we can filter for only those non-aggregate
+    countries, make it into a pandas DataFrame for sorting, and then plot the bar
+    chart:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: The figure should be precisely the same as before. But as you can see, using
+    `pandas_datareader` helps make the code more concise by hiding the low-level operations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Creating Synthetic Data Using NumPy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Sometimes, we may not want to use real-world data for our project because we
+    need something specific that may not happen in reality. One particular example
+    is to test out a model with ideal time-series data. In this section, we will see
+    how we can create synthetic autoregressive (AR) time-series data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The [numpy.random](https://numpy.org/doc/1.16/reference/routines.random.html)
+    library can be used to create random samples from different distributions. The
+    `randn()` method generates data from a standard normal distribution with zero
+    mean and unit variance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the AR($n$) model of order $n$, the value $x_t$ at time step $t$ depends
+    upon the values at the previous $n$ time steps. That is,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: x_t = b_1 x_{t-1} + b_2 x_{t-2} + … + b_n x_{t-n} + e_t
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: with model parameters $b_i$ as coefficients to different **lags** of $x_t$,
+    and the error term $e_t$ is expected to follow normal distribution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Understanding the formula, we can generate an AR(3) time series in the example
+    below. We first use `randn()` to generate the first 3 values of the series and
+    then iteratively apply the above formula to generate the next data point. Then,
+    an error term is added using `the randn()` function again, subject to the predefined
+    `noise_level`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above will create the following plot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/395a5291a0d23c7080eec1631d5a21c1.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'But we can further add the time axis by first converting the data into a pandas
+    DataFrame and then adding the time as an index:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'after which we will have the following plot instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/ef298ff88cb9d03a3b2ce3f86c75651a.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Plot of synthetic time series
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using similar techniques, we can generate pure random noise (i.e., AR(0) series),
+    ARIMA time series (i.e., with coefficients to error terms), or Brownian motion
+    time series (i.e., running sum of random noise) as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Libraries
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[pandas-datareader](https://pandas-datareader.readthedocs.io/en/latest/index.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Python requests](https://docs.python-requests.org/en/latest/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Data source
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Yahoo! Finance](https://finance.yahoo.com/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[St. Louis Fed Federal Research Economic Data](https://fred.stlouisfed.org/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[World Bank Open Data](https://data.worldbank.org/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[World Bank Data API documentation](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589-developer-information)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Think Python: How to Think Like a Computer Scientist](https://greenteapress.com/thinkpython/html/index.html)
+    by Allen B. Downey'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Programming in Python 3: A Complete Introduction to the Python Language](https://www.amazon.com/dp/B001OFK2DK/)
+    by Mark Summerfield'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Python for Data Analysis](https://www.amazon.com/dp/1491957662/), 2nd edition,
+    by Wes McKinney'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered various options for fetching data or generating
+    synthetic time-series data in Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use `pandas_datareader` and fetch financial data from different data
+    sources
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to call APIs to fetch data from different web servers using `the requests`
+    library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to generate synthetic time-series data using NumPy’s random number generator
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions about the topics discussed in this post? Ask your
+    questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

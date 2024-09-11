@@ -1,0 +1,219 @@
+- en: Visualizing a PyTorch Model
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/visualizing-a-pytorch-model/](https://machinelearningmastery.com/visualizing-a-pytorch-model/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'PyTorch is a deep learning library. You can build very sophisticated deep learning
+    models with PyTorch. However, there are times you want to have a graphical representation
+    of your model architecture. In this post, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to save your PyTorch model in an exchange format
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use Netron to create a graphical representation.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/efea4b2258dc7e93cdff3b26bcbc6afc.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Visualizing a PyTorch Model
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Ken Cheung](https://unsplash.com/photos/10py7Mvmf1g). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This post is divided into two parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Graphical Representation of a PyTorch Model is Hard
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to Use Netron to Create a Model Graph
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Why Graphical Represetnation of a PyTorch Model is Hard
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'PyTorch is a very flexible library for deep learning. Strictly speaking, it
+    never mandates how you should build your model as long as it works like a function
+    that can transform an input tensor into output tensor. This is a problem: With
+    a model, you never knows how it works unless you follows the input tensor and
+    collect the trace until you get the output tensor. Therefore it is not trivial
+    to convert a PyTorch model into a picture.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are multiple libraries to solve this problem. But in general, there are
+    only two ways to solve it: You can follow a tensor on the forward pass and see
+    what operation (i.e., layers) are applied, or follow a tensor on the backward
+    pass and see how the gradient propagated to the input. You can only find clues
+    about the structure inside a model in this manner.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to Use Netron to Create a Model Graph
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When you save a PyTorch model, you are saving its states. You can get the model
+    states using `model.state_dict()`. While the weight tensors have names so it helps
+    you to restore them to a model, you do not have the clues on how the weights are
+    connected to each other. The only way you can connect tensors and find out their
+    relationship is to get the tensor gradient: When you run a model and get an output,
+    the calculations involved, including the dependencies to other tensors, are remembered
+    by each intermediate tensors so automatic differentiation can be performed.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Indeed, if you want to know the algorithm behind a PyTorch model, this is also
+    the way to go. There are only a few tools to create graphics from a PyTorch model.
+    In below, you will learn about the tool Netron. It is a “deep learning model viewer”.
+    It is a software that you can install and run on macOS, Linux, and Windows. You
+    can visit the page below and download the software for your platform:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/lutzroeder/netron/releases](https://github.com/lutzroeder/netron/releases)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There is also an [online version](https://netron.app/) available, that you can
+    see your model by uploading a model file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Netron cannot visualize a PyTorch model from the saved states because there’s
+    not enough clues to tell about the structure of the model. However, PyTorch allows
+    you to convert the model to an exchange format, ONNX, that Netron can understand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s start with an example. In below you created a simple model to classify
+    the iris dataset. It is a classification problem with three classes. Therefore
+    the model should output a vector of three values. A complete code that you would
+    create for this problem is as follows, which the dataset is obtained from scikit-learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running the above produces the following, for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So you know that `model` is a PyTorch model that can take a tensor and return
+    a tensor. You can **convert** this model into ONNX format using the `torch.onnx.export()`
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Running this will create a file `iris.onnx` at the local directory. You need
+    to provide a **sample tensor** that works with the model as input (`X_test` in
+    the example above). This is because during the conversion, it needs to follow
+    this sample tensor to understand what operations shall be applied so you can convert
+    the algorithm step by step into ONNX format. Every weight in a PyTorch model is
+    a tensor and there is a name assigned to them. But the input and output tensors
+    are not named usually, hence you need to provide a name to them when you run `export()`.
+    These names should be provided as a list of strings because in general, a model
+    can take multiple tensors and return multiple tensors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Usually you should run `export()` after the training loop. It is because the
+    ONNX model created contains a complete model that you can run without the PyTorch
+    library. You want to save the optimized weight to it. However, for the purpose
+    of visualizing a model in Netron, the quality of the model is not a concern. You
+    can run `export()` as soon as the PyTorch model is created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After you launched Netron, you can open the saved ONNX file. In this example,
+    you should see the following screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/c42c718ae5cd2d16240ae1be9ef59569.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: It shows how the input tensor connected to the output tensor via different operations
+    in the deep learning model. The name of the input and output tensors you provided
+    to the `export()` function is used in the visualization. Clicking on a box will
+    give you more details about that particular tensor or operation. The names of
+    operations as you can see in Netron may be different from what you call them in
+    PyTorch, however. In the screen above, you see the `nn.Linear()` layer becomes
+    “Gemm”, which stands for “general matrix multiply” operation. You can even examine
+    the weights on a layer with Netron by a few points and clicks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you would like to keep a copy of this visualization, you can export it into
+    PNG format in Netron.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Netron is an open source project which you can find its source code in Github:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/lutzroeder/netron](https://github.com/lutzroeder/netron)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'An online version of Netron is available below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://netron.app/](https://netron.app/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Another library for visualization is torchviz, but unlike the example you saw
+    above, it traces the model from a backward pass:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/szagoruyko/pytorchviz](https://github.com/szagoruyko/pytorchviz)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you learned how to visualize a model. In particular, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why visualizing a PyTorch model is difficult
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to convert a PyTorch model into ONNX format
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use Netron to visualize a ONNX model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,620 @@
+- en: Training the Transformer Model
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/training-the-transformer-model/](https://machinelearningmastery.com/training-the-transformer-model/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: We have put together the [complete Transformer model](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking),
+    and now we are ready to train it for neural machine translation. We shall use
+    a training dataset for this purpose, which contains short English and German sentence
+    pairs. We will also revisit the role of masking in computing the accuracy and
+    loss metrics during the training process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover how to train the Transformer model for neural
+    machine translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to prepare the training dataset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply a padding mask to the loss and accuracy computations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train the Transformer model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/4ace004bc710a167c5763a7079a32a33.png)](https://machinelearningmastery.com/wp-content/uploads/2022/05/training_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training the transformer model
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [v2osk](https://unsplash.com/photos/PGExULGintM), some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recap of the Transformer Architecture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing the Training Dataset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying a Padding Mask to the Loss and Accuracy Computations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training the Transformer Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you are already familiar with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[The theory behind the Transformer model](https://machinelearningmastery.com/the-transformer-model/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[An implementation of the Transformer model](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Recap of the Transformer Architecture**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Recall](https://machinelearningmastery.com/the-transformer-model/) having
+    seen that the Transformer architecture follows an encoder-decoder structure. The
+    encoder, on the left-hand side, is tasked with mapping an input sequence to a
+    sequence of continuous representations; the decoder, on the right-hand side, receives
+    the output of the encoder together with the decoder output at the previous time
+    step to generate an output sequence.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The encoder-decoder structure of the Transformer architecture
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: In generating an output sequence, the Transformer does not rely on recurrence
+    and convolutions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You have seen how to implement the complete Transformer model, so you can now
+    proceed to train it for neural machine translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s start first by preparing the dataset for training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Preparing the Training Dataset**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this purpose, you can refer to a previous tutorial that covers material
+    about [preparing the text data](https://machinelearningmastery.com/develop-neural-machine-translation-system-keras/)
+    for training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will also use a dataset that contains short English and German sentence
+    pairs, which you may download [here](https://github.com/Rishav09/Neural-Machine-Translation-System/blob/master/english-german-both.pkl).
+    This particular dataset has already been cleaned by removing non-printable and
+    non-alphabetic characters and punctuation characters, further normalizing all
+    Unicode characters to ASCII, and changing all uppercase letters to lowercase ones.
+    Hence, you can skip the cleaning step, which is typically part of the data preparation
+    process. However, if you use a dataset that does not come readily cleaned, you
+    can refer to this [this previous tutorial](https://machinelearningmastery.com/develop-neural-machine-translation-system-keras/)
+    to learn how to do so.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s proceed by creating the `PrepareDataset` class that implements the following
+    steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loads the dataset from a specified filename.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Selects the number of sentences to use from the dataset. Since the dataset is
+    large, you will reduce its size to limit the training time. However, you may explore
+    using the full dataset as an extension to this tutorial.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Appends start (<START>) and end-of-string (<EOS>) tokens to each sentence. For
+    example, the English sentence, `i like to run`, now becomes, `<START> i like to
+    run <EOS>`. This also applies to its corresponding translation in German, `ich
+    gehe gerne joggen`, which now becomes, `<START> ich gehe gerne joggen <EOS>`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Shuffles the dataset randomly.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Splits the shuffled dataset based on a pre-defined ratio.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Creates and trains a tokenizer on the text sequences that will be fed into the
+    encoder and finds the length of the longest sequence as well as the vocabulary
+    size.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tokenizes the sequences of text that will be fed into the encoder by creating
+    a vocabulary of words and replacing each word with its corresponding vocabulary
+    index. The <START> and <EOS> tokens will also form part of this vocabulary. Each
+    sequence is also padded to the maximum phrase length.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Creates and trains a tokenizer on the text sequences that will be fed into the
+    decoder, and finds the length of the longest sequence as well as the vocabulary
+    size.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Repeats a similar tokenization and padding procedure for the sequences of text
+    that will be fed into the decoder.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The complete code listing is as follows (refer to [this previous tutorial](https://machinelearningmastery.com/develop-neural-machine-translation-system-keras/)
+    for further details):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Before moving on to train the Transformer model, let’s first have a look at
+    the output of the `PrepareDataset` class corresponding to the first sentence in
+    the training dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '(Note: Since the dataset has been randomly shuffled, you will likely see a
+    different output.)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can see that, originally, you had a three-word sentence (*did tom tell
+    you*) to which you appended the start and end-of-string tokens. Then you proceeded
+    to vectorize (you may notice that the <START> and <EOS> tokens are assigned the
+    vocabulary indices 1 and 2, respectively). The vectorized text was also padded
+    with zeros, such that the length of the end result matches the maximum sequence
+    length of the encoder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can similarly check out the corresponding target data that is fed into
+    the decoder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, the length of the end result matches the maximum sequence length of the
+    decoder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Applying a Padding Mask to the Loss and Accuracy Computations**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Recall](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras)
+    seeing that the importance of having a padding mask at the encoder and decoder
+    is to make sure that the zero values that we have just appended to the vectorized
+    inputs are not processed along with the actual input values.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This also holds true for the training process, where a padding mask is required
+    so that the zero padding values in the target data are not considered in the computation
+    of the loss and accuracy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s have a look at the computation of loss first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This will be computed using a sparse categorical cross-entropy loss function
+    between the target and predicted values and subsequently multiplied by a padding
+    mask so that only the valid non-zero values are considered. The returned loss
+    is the mean of the unmasked values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For the computation of accuracy, the predicted and target values are first
+    compared. The predicted output is a tensor of size (*batch_size*, *dec_seq_length*,
+    *dec_vocab_size*) and contains probability values (generated by the softmax function
+    on the decoder side) for the tokens in the output. In order to be able to perform
+    the comparison with the target values, only each token with the highest probability
+    value is considered, with its dictionary index being retrieved through the operation:
+    `argmax(prediction, axis=2)`. Following the application of a padding mask, the
+    returned accuracy is the mean of the unmasked values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Training the Transformer Model**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s first define the model and training parameters as specified by [Vaswani
+    et al. (2017)](https://arxiv.org/abs/1706.03762):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: '(Note: Only consider two epochs to limit the training time. However, you may
+    explore training the model further as an extension to this tutorial.)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You also need to implement a learning rate scheduler that initially increases
+    the learning rate linearly for the first *warmup_steps* and then decreases it
+    proportionally to the inverse square root of the step number. Vaswani et al. express
+    this by the following formula:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\text{learning_rate} = \text{d_model}^{−0.5} \cdot \text{min}(\text{step}^{−0.5},
+    \text{step} \cdot \text{warmup_steps}^{−1.5})$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'An instance of the `LRScheduler` class is subsequently passed on as the `learning_rate`
+    argument of the Adam optimizer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next,  split the dataset into batches in preparation for training:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is followed by the creation of a model instance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: In training the Transformer model, you will write your own training loop, which
+    incorporates the loss and accuracy functions that were implemented earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The default runtime in Tensorflow 2.0 is *eager execution*, which means that
+    operations execute immediately one after the other. Eager execution is simple
+    and intuitive, making debugging easier. Its downside, however, is that it cannot
+    take advantage of the global performance optimizations that run the code using
+    the *graph execution*. In graph execution, a graph is first built before the tensor
+    computations can be executed, which gives rise to a computational overhead. For
+    this reason, the use of graph execution is mostly recommended for large model
+    training rather than for small model training, where eager execution may be more
+    suited to perform simpler operations. Since the Transformer model is sufficiently
+    large, apply the graph execution to train it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to do so, you will use the `@function` decorator as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: With the addition of the `@function` decorator, a function that takes tensors
+    as input will be compiled into a graph. If the `@function` decorator is commented
+    out, the function is, alternatively, run with eager execution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next step is implementing the training loop that will call the `train_step`
+    function above. The training loop will iterate over the specified number of epochs
+    and the dataset batches. For each batch, the `train_step` function computes the
+    training loss and accuracy measures and applies the optimizer to update the trainable
+    model parameters. A checkpoint manager is also included to save a checkpoint after
+    every five epochs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: An important point to keep in mind is that the input to the decoder is offset
+    by one position to the right with respect to the encoder input. The idea behind
+    this offset, combined with a look-ahead mask in the first multi-head attention
+    block of the decoder, is to ensure that the prediction for the current token can
+    only depend on the previous tokens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*This masking, combined with fact that the output embeddings are offset by
+    one position, ensures that the predictions for position i can depend only on the
+    known outputs at positions less than i.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'It is for this reason that the encoder and decoder inputs are fed into the
+    Transformer model in the following manner:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`encoder_input = train_batchX[:, 1:]`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`decoder_input = train_batchY[:, :-1]`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting together the complete code listing produces the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running the code produces a similar output to the following (you will likely
+    see different loss and accuracy values because the training is from scratch, whereas
+    the training time depends on the computational resources that you have available
+    for training):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: It takes 155.13s for the code to run using eager execution alone on the same
+    platform that is making use of only a CPU, which shows the benefit of using graph
+    execution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
+    2021'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Writing a training loop from scratch in Keras: [https://keras.io/guides/writing_a_training_loop_from_scratch/](https://keras.io/guides/writing_a_training_loop_from_scratch/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered how to train the Transformer model for neural
+    machine translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to prepare the training dataset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply a padding mask to the loss and accuracy computations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train the Transformer model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

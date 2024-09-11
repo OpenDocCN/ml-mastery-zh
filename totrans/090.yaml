@@ -1,0 +1,460 @@
+- en: A First Course on Deploying Python Projects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-first-course-on-deploying-python-projects/](https://machinelearningmastery.com/a-first-course-on-deploying-python-projects/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: After all the hard work developing a project in Python, we want to share our
+    project with other people. It can be your friends or your colleagues. Maybe they
+    are not interested in your code, but they want to run it and make some real use
+    of it. For example, you create a regression model that can predict a value based
+    on input features. Your friend wants to provide their own feature and see what
+    value your model predicts. But as your Python project gets larger, it is not as
+    simple as sending your friend a small script. There can be many supporting files,
+    multiple scripts, and also dependencies on a list of libraries. Getting all these
+    right can be a challenge.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After finishing this tutorial, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to harden your code for easier deployment by making it a module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create a package for your module so we can rely on `pip` to manage the
+    dependencies
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use a venv module to create reproducible running environments
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started!![](../Images/6c832d8443a1f25dddb3bb7e7d7cde92.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: A First Course on Deploying Python Projects
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Kelly L](https://www.pexels.com/photo/tanker-ship-unloading-containers-in-port-6595774/).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: From development to deployment
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating modules
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: From module to package
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using venv for your project
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: From Development to Deployment
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When we finish a project in Python, occasionally, we don’t want to shelve it
+    but want to make it a routine job. We may finish training a machine learning model
+    and actively use the trained model for prediction. We may build a time series
+    model and use it for next-step prediction. However, new data comes in every day,
+    so we need to re-train it to adapt to the development and keep future predictions
+    accurate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Whatever the reason, we need to make sure the program will run as expected.
+    However, this can be harder than we thought. A simple Python script may not be
+    a difficult issue, but as our program gets larger with more dependencies, many
+    things can go wrong. For example, a newer version of a library that we used can
+    break the workflow. Or our Python script might run some external program, and
+    that may cease to work after an upgrade of our OS. Another case is when the program
+    depends on some files located at a specific path, but we may accidentally delete
+    or rename a file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is always a way for our program to fail to execute. But we have some techniques
+    to make it more robust and more reliable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating Modules
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In a previous post, we demonstrated that we could check a code snippet’s time
+    to finish with the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the same time, we can also use it as part of a script and do the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `import` statement in Python allows you to reuse functions defined in another
+    file by considering it as a module. You may wonder how we can make a module not
+    only provide functions but also become an executable program. This is the first
+    step to help deploy our code. If we can make our module executable, the users
+    would not need to understand how our code is structured to use it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If our program is large enough to have multiple files, it is better to package
+    it as a module. A module in Python is usually a folder of Python scripts with
+    a clear entry point. Hence it is more convenient to send to other people and easier
+    to understand the flow. Moreover, we can add versions to the module and let `pip`
+    keep track of the version installed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A simple, single file program can be written as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we save this as `randomsample.py` in the local directory, we can either
+    run it with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'or:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And we can reuse the functions in another script with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This works because the magic variable `__name__` will be `"__main__"` only
+    if the script is run as the main program but not when imported from another script.
+    With this, your machine learning project can probably be packaged as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, `regressor` is a directory with those five files in it. And `__init__.py` is
+    an **empty file**, just to signal that this directory is a Python module that
+    you can `import`. The script `train.py` is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The script for `predict.py` is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, we can run the following under the parent directory of `regressor/` to
+    load the data and train a linear regression model. Then we can save the model
+    with pickle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we move this pickle file into the `regressor/` directory, we can also do
+    the following in a command line to run the model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here the numerical arguments are a vector of input features to the model. If
+    we further move out the `if` block, namely, create a file `regressor/__main__.py` with
+    the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we can run the model directly from the module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note the line `form .predict import predict` in the example above uses Python’s
+    [relative import syntax](https://docs.python.org/3/reference/import.html#package-relative-imports).
+    This should be used inside a module to import components from other scripts of
+    the same module.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From Module to Package
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you want to distribute your Python project as a final product, it is convenient
+    to be able to install your project as a package with the `pip install` command.
+    This can be done easily. As you already created a module from your project, what
+    you need to supplement is some simple setup instructions. Now you need to create
+    a project directory and put your module in it with a `pyproject.toml` file, a `setup.cfg` file,
+    and a `MANIFEST.in` file. The file structure would be like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We will use `setuptools` as it has become a standard for this task. The file `pyproject.toml` is
+    to specify `setuptools`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The key information is provided in `setup.cfg`. We need to specify the name
+    of the module, the version, some optional description, what to include, and what
+    to depend on, such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `MANIFEST.in` is just to specify what extra file we need to include. In
+    projects that do not have a non-Python script included, this file can be omitted.
+    But in our case, we need to include the trained model and the data file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then in the project directory, we can install it as a module into our Python
+    system with the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Afterward, the following code works **anywhere** as `regressor` is a module
+    accessible in our Python installation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There are a few details worth explaining in the `setup.cfg`: The `metadata`
+    section is for the `pip` system. Hence we named our package `mlm_demo`, which
+    you can see in the output of the `pip list` command. However, Python’s module
+    system will recognize the module name as `regressor` as specified in the `options`
+    section. Therefore, this is the name you should use in the `import` statement.
+    Often, these two names are the same for the convenience of the users, and that’s
+    why people use the names “package” and “module” interchangeably. Similarly, version
+    0.0.1 appears in `pip` but is not known from the code. It is a convention to put
+    this in `__init__.py` in the module directory, so you can check the version in
+    another script that uses it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `install_requires` part in the `options` section is the key to making our
+    project run. It means that when we install this module, we also need to install
+    those other modules at those versions (if specified). This may create a tree of
+    dependencies, but `pip` will take care of it when you run the `pip install` command.
+    As you can expect, we are using Python’s comparison operator `==` for a specific
+    version. But if we can accept multiple versions, we use a comma (`,`) to separate
+    the conditions, such as in the case of `numpy` above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now you can ship the entire project directory to other people (e.g., in a ZIP
+    file). They can install it with `pip install` in the project directory and then
+    run your code with `python -m regressor` given the appropriate command line argument
+    provided.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A final note: Perhaps you heard of the `requirements.txt` file in a Python
+    project. It is just a text file, usually placed in a directory with a Python module
+    or some Python scripts. It has a format similar to the dependency specification
+    mentioned above. For example, it may look like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'What is aimed for is that you **do not** want to make your project into a package
+    but still want to give hints on the libraries and their versions that your project
+    expects. This file can be understood by `pip`, and we can make it set up our system
+    to prepare for the project:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: But this is just for a project in development, and that’s all the convenience
+    the `requirements.txt` can provide.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using venv for Your Project
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The above is probably the most efficient way to ship and deploy a project since
+    you include only the most essential files. This is also the recommended way because
+    it is platform-agnostic. This still works if we change our Python version or move
+    to a different OS (unless some specific dependency forbids us).
+  prefs: []
+  type: TYPE_NORMAL
+- en: But there are cases where we may want to reproduce an exact environment for
+    our project to run. For example, instead of requiring some packages installed,
+    we want some that **must not** be installed. Also, there are cases where after
+    we installed a package with `pip`, the version dependency breaks after another
+    package is installed. We can solve this problem with the `venv` module in Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `venv` module is from Python’s standard library to allow us to create a
+    **virtual environment**. It is not a virtual machine or virtualization like Docker
+    can provide; instead, it heavily modifies the path location that Python operates.
+    For example, we can install multiple versions of Python in our OS, but a virtual
+    environment always assumes the `python` command means a particular version. Another
+    example is that within one virtual environment, we can run `pip install` to set
+    up some packages in a virtual environment directory that will not interfere with
+    the system outside.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To start with `venv`, we can simply find a good location and run the command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then there will be a directory named `myproject` created. A virtual environment
+    is supposed to operate in a shell (so the environment variables can be manipulated).
+    To **activate** a virtual environment, we execute the activation shell script
+    with the following command (e.g., under bash or zsh in Linux and macOS):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: And afterward, you’re under the Python virtual environment. The command `python`
+    will be the command you created in the virtual environment (in case you have multiple
+    Python versions installed in your OS). And the packages installed will be located
+    under `myproject/lib/python3.9/site-packages` (assuming Python 3.9). When you
+    run `pip install` or `pip list`, you only see the packages under the virtual environment.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To leave the virtual environment, we run **deactivate** in the shell command
+    line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is defined as a shell function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using virtual environments could be particularly useful if you have multiple
+    projects in development and they require different versions of packages (such
+    as different versions of TensorFlow). You can simply create a virtual environment,
+    activate it, install the correct versions of all the libraries you need using
+    the `pip install` command, then put your project code inside the virtual environment.
+    Your virtual environment directory can be huge in size (e.g., just installing
+    TensorFlow with its dependencies will consume almost 1GB of disk space). But afterward,
+    shipping the entire virtual environment directory to others can guarantee the
+    exact environment to execute your code. This can be an alternative to the Docker
+    container if you prefer not to run the Docker server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Indeed, some other tools exist that help us deploy our projects neatly. Docker
+    mentioned above can be one. The `zipapp` package from Python’s standard library
+    is also an interesting tool. Below are resources on the topic if you are looking
+    to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Python tutorial, [Chapter 6, modules](https://docs.python.org/3/tutorial/modules.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Distributing Python Modules](https://docs.python.org/3/distributing/index.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[How to package your Python code](https://python-packaging.readthedocs.io/en/latest/index.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Question about various venv-related packages](https://stackoverflow.com/questions/41573587)
+    on StackOverflow'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: APIs and software
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Setuptools](https://setuptools.pypa.io/en/latest/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[venv](https://docs.python.org/3/library/venv.html) from Python standard library'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you’ve seen how we can confidently wrap up our project and
+    deliver it to another user to run it. Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The minimal change to a folder of Python scripts to make them a module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to convert a module into a package for `pip`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is a virtual environment in Python, and how to use it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,361 @@
+- en: Using Learning Rate Schedule in PyTorch Training
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/using-learning-rate-schedule-in-pytorch-training/](https://machinelearningmastery.com/using-learning-rate-schedule-in-pytorch-training/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Training a neural network or large deep learning model is a difficult optimization
+    task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The classical algorithm to train neural networks is called [stochastic gradient
+    descent](https://machinelearningmastery.com/gradient-descent-for-machine-learning/).
+    It has been well established that you can achieve increased performance and faster
+    training on some problems by using a [learning rate](https://machinelearningmastery.com/learning-rate-for-deep-learning-neural-networks/)
+    that changes during training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, you will discover what is learning rate schedule and how you can
+    use different learning rate schedules for your neural network models in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After reading this post, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The role of learning rate schedule in model training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use learning rate schedule in PyTorch training loop
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to set up your own learning rate schedule
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/7a13d9fa39a1b8fc273f193425bc5a11.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Learning Rate Schedule in PyTorch Training
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Cheung Yin](https://unsplash.com/photos/A_lVW8yIQM0). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This post is divided into three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Learning Rate Schedule for Training Models
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying Learning Rate Schedule in PyTorch Training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom Learning Rate Schedules
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learning Rate Schedule for Training Models
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Gradient descent is an algorithm of numerical optimization. What it does is
+    to update parameters using the formula:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: w := w – \alpha \dfrac{dy}{dw}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this formula, $w$ is the parameter, e.g., the weight in a neural network,
+    and $y$ is the objective, e.g., the loss function. What it does is to move $w$
+    to the direction that you can minimize $y$. The direction is provided by the differentiation,
+    $\dfrac{dy}{dw}$, but how much you should move $w$ is controlled by the **learning
+    rate** $\alpha$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An easy start is to use a constant learning rate in gradient descent algorithm.
+    But you can do better with a **learning rate schedule**. A schedule is to make
+    learning rate adaptive to the gradient descent optimization procedure, so you
+    can increase performance and reduce training time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the neural network training process, data is feed into the network in batches,
+    with many batches in one epoch. Each batch triggers one training step, which the
+    gradient descent algorithm updates the parameters once. However, usually the learning
+    rate schedule is updated once for each [training epoch](https://machinelearningmastery.com/difference-between-a-batch-and-an-epoch/)
+    only.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can update the learning rate as frequent as each step but usually it is
+    updated once per epoch because you want to know how the network performs in order
+    to determine how the learning rate should update. Regularly, a model is evaluated
+    with validation dataset once per epoch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are multiple ways of making learning rate adaptive. At the beginning of
+    training, you may prefer a larger learning rate so you improve the network coarsely
+    to speed up the progress. In a very complex neural network model, you may also
+    prefer to gradually increasse the learning rate at the beginning because you need
+    the network to explore on the different dimensions of prediction. At the end of
+    training, however, you always want to have the learning rate smaller. Since at
+    that time, you are about to get the best performance from the model and it is
+    easy to overshoot if the learning rate is large.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Therefore, the simplest and perhaps most used adaptation of the learning rate
+    during training are techniques that reduce the learning rate over time. These
+    have the benefit of making large changes at the beginning of the training procedure
+    when larger learning rate values are used and decreasing the learning rate so
+    that a smaller rate and, therefore, smaller training updates are made to weights
+    later in the training procedure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This has the effect of quickly learning good weights early and fine-tuning them
+    later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, let’s look at how you can set up learning rate schedules in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying Learning Rate Schedules in PyTorch Training
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In PyTorch, a model is updated by an optimizer and learning rate is a parameter
+    of the optimizer. Learning rate schedule is an algorithm to update the learning
+    rate in an optimizer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Below is an example of creating a learning rate schedule:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are many learning rate scheduler provided by PyTorch in `torch.optim.lr_scheduler`
+    submodule. All the scheduler needs the optimizer to update as first argument.
+    Depends on the scheduler, you may need to provide more arguments to set up one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s start with an example model. In below, a model is to solve the [ionosphere
+    binary classification problem](http://archive.ics.uci.edu/ml/datasets/Ionosphere).
+    This is a small dataset that you can [download from the UCI Machine Learning repository](http://archive.ics.uci.edu/ml/machine-learning-databases/ionosphere/ionosphere.data).
+    Place the data file in your working directory with the filename `ionosphere.csv`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The ionosphere dataset is good for practicing with neural networks because all
+    the input values are small numerical values of the same scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A small neural network model is constructed with a single hidden layer with
+    34 neurons, using the ReLU activation function. The output layer has a single
+    neuron and uses the sigmoid activation function in order to output probability-like
+    values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plain stochastic gradient descent algorithm is used, with a fixed learning rate
+    0.1\. The model is trained for 50 epochs. The state parameters of an optimizer
+    can be found in `optimizer.param_groups`; which the learning rate is a floating
+    point value at `optimizer.param_groups[0]["lr"]`. At the end of each epoch, the
+    learning rate from the optimizer is printed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The complete example is listed below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running this model produces:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can confirm that the learning rate didn’t change over the entire training
+    process. Let’s make the training process start with a larger learning rate and
+    end with a smaller rate. To introduce a learning rate scheduler, you need to run
+    its `step()` function in the training loop. The code above is modified into the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above, `LinearLR()` is used. It is a linear rate scheduler and it takes
+    three additional parameters, the `start_factor`, `end_factor`, and `total_iters`.
+    You set `start_factor` to 1.0, `end_factor` to 0.5, and `total_iters` to 30, therefore
+    it will make a multiplicative factor decrease from 1.0 to 0.5, in 10 equal steps.
+    After 10 steps, the factor will stay at 0.5\. This factor is then multiplied to
+    the original learning rate at the optimizer. Hence you will see the learning rate
+    decreased from $0.1\times 1.0 = 0.1$ to $0.1\times 0.5 = 0.05$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Besides `LinearLR()`, you can also use `ExponentialLR()`, its syntax is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you replaced `LinearLR()` with this, you will see the learning rate updated
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: In which the learning rate is updated by multiplying with a constant factor
+    `gamma` in each scheduler update.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom Learning Rate Schedules
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There is no general rule that a particular learning rate schedule works the
+    best. Sometimes, you like to have a special learning rate schedule that PyTorch
+    didn’t provide. A custom learning rate schedule can be defined using a custom
+    function. For example, you want to have a learning rate that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: lr_n = \dfrac{lr_0}{1 + \alpha n}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'on epoch $n$, which $lr_0$ is the initial learning rate, at epoch 0, and $\alpha$
+    is a constant. You can implement a function that given the epoch $n$ calculate
+    learning rate $lr_n$:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, you can set up a `LambdaLR()` to update the learning rate according to
+    this function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Modifying the previous example to use `LambdaLR()`, you have the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Which produces:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that although the function provided to `LambdaLR()` assumes an argument
+    `epoch`, it is not tied to the epoch in the training loop but simply counts how
+    many times you invoked `scheduler.step()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tips for Using Learning Rate Schedules
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section lists some tips and tricks to consider when using learning rate
+    schedules with neural networks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Increase the initial learning rate**. Because the learning rate will very
+    likely decrease, start with a larger value to decrease from. A larger learning
+    rate will result in a lot larger changes to the weights, at least in the beginning,
+    allowing you to benefit from the fine-tuning later.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Use a large momentum**. Many optimizers can consider momentum. Using a larger
+    momentum value will help the optimization algorithm continue to make updates in
+    the right direction when your learning rate shrinks to small values.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Experiment with different schedules**. It will not be clear which learning
+    rate schedule to use, so try a few with different configuration options and see
+    what works best on your problem. Also, try schedules that change exponentially
+    and even schedules that respond to the accuracy of your model on the training
+    or test datasets.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Below is the documentation for more details on using learning rates in PyTorch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[How to adjust learning rate](https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate),
+    from PyTorch documentation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you discovered learning rate schedules for training neural network
+    models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After reading this post, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How learning rate affects your model training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to set up learning rate schedule in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create a custom learning rate schedule
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

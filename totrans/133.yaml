@@ -1,0 +1,254 @@
+- en: Save and Load Your PyTorch Models
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/save-and-load-your-pytorch-models/](https://machinelearningmastery.com/save-and-load-your-pytorch-models/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'A deep learning model is a mathematical abstraction of data, in which a lot
+    of parameters are involved. Training these parameters can take hours, days, and
+    even weeks but afterward, you can make use of the result to apply on new data.
+    This is called inference in machine learning. It is important to know how we can
+    preserve the trained model in disk and later, load it for use in inference. In
+    this post, you will discover how to save your PyTorch models to files and load
+    them up again to make predictions. After reading this chapter, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are states and parameters in a PyTorch model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to save model states
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to load model states
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/b616b0be4904ab3e5846c25d2e4373fc.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Save and Load Your PyTorch Models
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Joseph Chan](https://unsplash.com/photos/Wwtq9Lvk_ZE). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This post is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Build an Example Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What’s Inside a PyTorch Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Accessing `state_dict` of a Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build an Example Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s start with a very simple model in PyTorch. It is a model based on the
+    iris dataset. You will load the dataset using scikit-learn (which the targets
+    are integer labels 0, 1, and 2) and train a neural network for this multiclass
+    classification problem. In this model, you used log softmax as the output activation
+    so you can combine with the negative log likelihood loss function. It is equivalent
+    to no output activation combined with cross entropy loss function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With such a simple model and small dataset, it shouldn’t take a long time to
+    finish training. Afterwards, we can confirm that this model works, by evaluating
+    it with the test set:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: It prints, for example,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What’s Inside a PyTorch Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: PyTorch model is an object in Python. It holds some deep learning building blocks
+    such as various kinds of layers and activation functions. It also knows how to
+    connect them so it can produce you an output from your input tensors. The algorithm
+    of a model is fixed at the time you created it, however, it has trainable parameters
+    that is supposed to be modified during training loop so the model can be more
+    accurate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You saw how to get the model parameters when you set up the optimizer for your
+    training loop, namely,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The function `model.parameters()` give you a generator that reference to each
+    layers’ trainable parameters in turn in the form of PyTorch tensors. Therefore,
+    it is possible for you to make a copy of them or overwrite them, for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Which the result should be exactly the same as before since you essentially
+    made the two models identical by copying the parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, this is not always the case. Some models has **non-trainable parameters**.
+    One example is the batch normalization layer that is common in many convolution
+    neural networks. What it does is to apply normalization on tensors that produced
+    by its previous layer and pass on the normalized tensor to its next layer. It
+    has two parameters: The mean and standard deviation, which are learned from your
+    input data during training loop but not trainable by the optimizer. Therefore
+    these are not part of `model.parameters()` but equally important.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accessing `state_dict` of a Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To access all parameters of a model, trainable or not, you can get it from
+    `state_dict()` function. From the model above, this is what you can get:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The model above produces the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is called `state_dict` because all state variables of a model are here. It
+    is an `OrderedDict` object from Python’s built-in `collections` module. All components
+    from a PyTorch model has a name and so as the parameters therein. The `OrderedDict`
+    object allows you to map the weights back to the parameters correctly by matching
+    their names.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is how you should save and load the model: Fetch the model states into
+    an `OrderedDict`, serialize and save it to disk. For inference, you create a model
+    first (without training), and load the states. In Python, the native format for
+    serialization is pickle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: You know it works because the model you didn’t train produced the same result
+    as the one you trained.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Indeed, the recommended way is to use the PyTorch API to save and load the
+    states, instead of using pickle manually:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `*.pth` file is indeed a zip file of some pickle files created by PyTorch.
+    It is recommended because PyTorch can store additional information in it. Note
+    that you stored only the states but not the model. You still need to create the
+    model using Python code and load the states into it. If you wish to store the
+    model as well, you can pass in the entire model instead of the states:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But remember, due to the nature of Python language, doing so does not relieve
+    you from keeping the code of the model. The `newmodel` object above is an instance
+    of `Multiclass` class that you defined before. When you load the model from disk,
+    Python need to know in detail how this class is defined. If you run a script with
+    just the line `torch.load()`, you will see the following error message:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: That’s why it is recommended to save only the state dict rather than the entire
+    model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code to demonstrate
+    how to create a model, train it, and save to disk:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And the following is how to load the model from disk and run it for inference:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Saving and loading models](https://pytorch.org/tutorials/beginner/saving_loading_models.html)
+    from PyTorch tutorial'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you learned how to keep a copy of your trained PyTorch model in
+    disk and how to reuse it. In particular, you learned
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are parameters and states in a PyTorch model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to save all necessary states from a model to disk
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to rebuild a working model from the saved states
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

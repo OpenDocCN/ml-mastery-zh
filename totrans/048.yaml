@@ -1,0 +1,293 @@
+- en: 'Feature Relationships 101: Lessons from the Ames Housing Data'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/feature-relationships-101/](https://machinelearningmastery.com/feature-relationships-101/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In the realm of real estate, understanding the intricacies of property features
+    and their impact on sale prices is paramount. In this exploration, we’ll dive
+    deep into the Ames Housing dataset, shedding light on the relationships between
+    various features and their correlation with the sale price. Harnessing the power
+    of data visualization, we’ll unveil patterns, trends, and insights that can guide
+    stakeholders from homeowners to real estate developers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/9ff9df9b842e10d8c54dacf73e85ef53.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Feature Relationships 101: Lessons from the Ames Housing Data'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Andraz Lazic](https://unsplash.com/photos/white-feather-on-body-of-water-in-shallow-focus-64sgR8HV_68).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unraveling Correlations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Visualizing with Heatmaps
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Dissecting Feature Relationships through Scatter Plots
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Unraveling Correlations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Correlation is a statistical measure that illustrates the extent to which two
+    variables change together. A positive correlation indicates that as one variable
+    increases, the other also tends to increase, and vice versa. Conversely, a negative
+    correlation implies that as one variable increases, the other tends to decrease.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'From the Ames Housing dataset, the top features most correlated with housing
+    prices are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**OverallQual:** Overall Quality of the house, rated on a scale from 1 (Very
+    Poor) to 10 (Very Excellent).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**GrLivArea:** Above Ground Living Area, measured in square feet. It encompasses
+    the living area that is not in the basement.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**TotalBsmtSF:** Total Basement Area, represented in square feet. This combines
+    both the finished and unfinished areas of the basement.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**1stFlrSF:** First Floor Square Feet, indicating the size of the first floor
+    of the house.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**GarageCars:** Size of Garage in terms of car capacity. This represents the
+    number of cars that can fit into the garage.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**GarageArea:** Size of Garage, measured in square feet. It gives a sense of
+    the total area covered by the garage.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**YearBuilt:** Original Construction Date, indicating the year when the primary
+    construction of the house was completed.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**FullBath:** Full Bathrooms Above Grade. This counts the number of full bathrooms
+    (i.e., with a sink, toilet, and either a tub or shower) that are not in the basement.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**GarageYrBlt:** Year Garage was Built. This specifies the year the garage
+    was constructed. For houses without a garage, this feature can be null.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**YearRemodAdd:** Remodel Date. It indicates the year of remodeling or addition,
+    with the same year as construction if no remodeling or additions.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Features most correlated are the features with best predictive power. If you
+    build a model to predict housing prices, these are the subset of input features
+    with a high possibility of success. Correlated features may also caused by some
+    other common factor, which itself is a topic in data science that you would like
+    to investigate and elaborate on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code above prints `correlations[1:11]` because `correlations[0]` is the
+    SalesPrice, which by definition is 1.0\. From a feature selection perspective,
+    you should also check `correlations[-10:]` for the most negatively correlated
+    features, which may also be powerful in explaining the prices. This is not the
+    case in this particular dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Visualizing with Heatmaps
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Heatmaps provide a powerful visual tool to represent data in a two-dimensional
+    space, with colors indicating magnitudes or frequencies. In the context of correlations,
+    a heatmap can beautifully illustrate the strength and direction of relationships
+    between multiple features. Let’s dive into a heatmap showcasing the correlations
+    among the top features most correlated with *SalePrice*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/393837109cc95c56c2a476eb37077581.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/Figure_1.png)'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Heatmaps are a fantastic way to visualize the strength and direction of relationships
+    between multiple variables simultaneously. The color intensity in each cell of
+    the heatmap corresponds to the magnitude of the correlation, with warmer colors
+    representing positive correlations and cooler colors indicating negative correlations.
+    There is no blue in the heatmap above because only the 10 most positively correlated
+    columns are concerned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the heatmap above, we can observe the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**OverallQual**, representing the overall quality of the house, has the strongest
+    positive correlation with **SalePrice**, with a correlation coefficient of approximately
+    0.79\. This implies that as the quality of the house increases, the sale price
+    also tends to increase.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**GrLivArea** and **TotalBsmtSF**, representing the above-ground living area
+    and total basement area respectively, also show strong positive correlations with
+    the sale price.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Most of the features have a positive correlation with **SalePrice**, which indicates
+    that as these features increase or improve, the sale price of the house also tends
+    to go up.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: It’s worth noting some features are correlated with each other. For example,
+    **GarageCars** and **GarageArea** are strongly correlated, which makes sense as
+    a larger garage can accommodate more cars.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Such insights can be invaluable for various stakeholders in the real estate
+    sector. For instance, real estate developers can focus on improving specific features
+    in homes to increase their market value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Below is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Dissecting Feature Relationships through Scatter Plots
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While correlations provide a preliminary understanding of relationships, it’s
+    crucial to visualize these relationships further. Scatter plots, for instance,
+    can paint a clearer picture of how two features interact with each other. Moreover,
+    it’s essential to discern between correlation and causation. A high correlation
+    does not necessarily imply that one variable causes changes in another. It merely
+    indicates a relationship.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/7a484df73acf6df72588dfdad9cd396d.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/Figure_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The scatter plots emphasize the strong positive relationships between sale
+    price and key features. As the overall quality, ground living area, basement area,
+    and first floor area increase, houses generally fetch higher prices. However,
+    some exceptions and outliers suggest that other factors also influence the final
+    sale price. One particular example is from the “House Prices vs. Ground Living
+    Area” scatter plot above: At 2500 sq. ft. and above, the dots are dispersed, suggesting
+    that there is a wide range in the house price in which the area is not strongly
+    correlated or not effectively explained.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Beginner's Guide to Data Science?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Resources**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In exploring the Ames Housing dataset, we embarked on a journey to understand
+    the relationships between various property features and their correlation with
+    sale prices. Through heatmaps and scatter plots we unveiled patterns and insights
+    that can significantly impact real estate stakeholders.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The importance of correlation and its significance in understanding relationships
+    between property features and sale prices.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The utility of heatmaps in visually representing correlations among multiple
+    features.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The depth added by scatter plots, emphasizing the importance of dissecting individual
+    feature dynamics beyond mere correlation coefficients.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,444 @@
+- en: Setting Breakpoints and Exception Hooks in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/setting-breakpoints-and-exception-hooks-in-python/](https://machinelearningmastery.com/setting-breakpoints-and-exception-hooks-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: There are different ways of debugging code in Python, one of which is to introduce
+    breakpoints into the code at points where one would like to invoke a Python debugger.
+    The statements used to enter a debugging session at different call sites depend
+    on the version of the Python interpreter that one is working with, as we shall
+    see in this tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover various ways of setting breakpoints in different
+    versions of Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to invoke the `pdb` debugger in earlier versions of Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the new, built-in breakpoint() function introduced in Python 3.7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to write your own breakpoint() function to simplify the debugging process
+    in earlier versions of Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use a post-mortem debugger
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.[![](../Images/6c268bb93ba4caacd3cfda25018bb1a7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/cover_breakpoints-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting Breakpoints in Different Versions of Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Josh Withers](https://unsplash.com/photos/OfBDvcXuA88), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting Breakpoints in Python Code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Invoking the pdb Debugger in Earlier Versions of Python
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the `breakpoint()` Function in Python 3.7
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Writing One’s Own `breakpoint()` Function for Earlier Versions of Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Limitations of the `breakpoint()` Function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Setting Breakpoints in Python Code**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[We have previously seen](https://machinelearningmastery.com/python-debugging-tools/)
+    that one way of debugging a Python script is to run it in the command line with
+    the Python debugger.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to do so, we would need to use the -m  pdb command that loads the pdb
+    module before executing the Python script. In the same command-line interface,
+    we would then follow this by a specific debugger command of choice, such as n
+    to move to the next line or s if we intend to step into a function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This method could become cumbersome quickly as the length of the code increases.
+    One way to address this problem and gain better control over where to break your
+    code is to insert a breakpoint directly into the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Invoking the pdb Debugger in Earlier Versions of Python**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Invoking the pdb debugger prior to Python 3.7 would require you to import  pdb
+    and call pdb.set_trace() at the point in your code where you would like to enter
+    an interactive debugging session.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we reconsider, as an example, the code for [implementing the general attention
+    mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/),
+    we can break into the code as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Executing the script now opens up the `pdb` debugger right before we compute
+    the variable `scores`, and we can proceed to issue any debugger commands of choice,
+    such as n to move to the next line or c to continue execution:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Although functional, this is not the most elegant and intuitive approach of
+    inserting a breakpoint into your code. Python 3.7 implements a more straightforward
+    way of doing so, as we shall see next.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Using the breakpoint() Function in Python 3.7 **'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Python 3.7 comes with a built-in breakpoint() function that enters the Python
+    debugger at the call site (or the point in the code at which the breakpoint() statement
+    is placed).
+  prefs: []
+  type: TYPE_NORMAL
+- en: When called, the default implementation of the breakpoint() function will call
+    sys.breakpointhook(), which in turn calls the pdb.set_trace() function. This is
+    convenient because we will not need to import  pdb and call pdb.set_trace() explicitly
+    ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s reconsider the code for implementing the general attention mechanism
+    and now introduce a breakpoint via the breakpoint() statement:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: One advantage of using the breakpoint() function is that, in calling the default
+    implementation of sys.breakpointhook(), the value of a new environment variable,
+    PYTHONBREAKPOINT, is consulted. This environment variable can take various values,
+    based on which different operations can be performed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, setting the value of PYTHONBREAKPOINT to 0 disables all breakpoints.
+    Hence, your code could contain as many breakpoints as necessary, but these can
+    be easily stopped from halting the execution of the code without having to remove
+    them physically. If (for example) the name of the script containing the code is
+    *main.py*, we would disable all breakpoints by calling it in the command line
+    interface as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Otherwise, we can achieve the same outcome by setting the environment variable
+    in the code itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The value of PYTHONBREAKPOINT is consulted every time that sys.breakpointhook()
+    is called. This means that the value of this environment variable can be changed
+    during the code execution, and the breakpoint() function would respond accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The PYTHONBREAKPOINT environment variable can also be set to other values,
+    such as the name of a callable. Say, for instance, that we’d like to use a different
+    Python debugger other than pdb, such as ipdb (run pip install ipdb first if the
+    debugger has not yet been installed). In this case, we would call the *main.py*
+    script in the command line interface and hook the debugger without making any
+    changes to the code itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In doing so, the breakpoint() function enters the ipdb debugger at the next
+    call site:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The function can also take input arguments as breakpoint(*args,  **kws), which
+    are then passed on to sys.breakpointhook(). This is because any callable (such
+    as a third-party debugger module) might accept optional arguments, which can be
+    passed through the breakpoint() function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Writing Your Own breakpoint() Function in Earlier Versions of Python**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s return to the fact that versions of Python earlier than v3.7 do not come
+    with the breakpoint() function readily built in. We can write our own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similarly to how the breakpoint() function is implemented from Python 3.7 onwards,
+    we can implement a function that checks the value of an environment variable and:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Skips all breakpoints in the code if the value of the environment variable is
+    set to 0.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Enters into the default Python pdb debugger if the environment variable is an
+    empty string.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Enters into another debugger as specified by the value of the environment variable.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can include this function into the code and run it (using a Python 2.7 interpreter,
+    in this case). If we set the value of the environment variable to an empty string,
+    we find that the pdb debugger stops at the point in the code at which we have
+    placed our breakpoint() function. We can then issue debugger commands into the
+    command line from there onwards:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similarly, if we set the environment variable to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The breakpoint() function that we have implemented now enters the ipdb debugger
+    and stops at the call site:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Setting the environment variable to 0 simply skips all breakpoints, and the
+    computed attention output is returned in the command line, as expected:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This facilitates the process of breaking into the code for Python versions earlier
+    than v3.7 because it now becomes a matter of setting the value of an environment
+    variable rather than having to manually introduce (or remove) the import  pdb;  pdb.set_trace() statement
+    at different call sites in the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Limitations of the `breakpoint()` Function
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `breakpoint()` function allows you to bring in the debugger at some point
+    in the program. You need to find the exact position that you need the debugger
+    to put the breakpoint into it. If you consider the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will bring you the debugger when the function `func()` raised exceptions.
+    It can be triggered by the function itself or deep inside some other functions
+    that it calls. But the debugger will start at the line `print("exception!")` above,
+    which may not be very useful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The way that we can bring up the debugger at the point of exception is called
+    the **post-mortem debugger**. It works by asking Python to register the debugger
+    `pdb.pm()` as the exception handler when an uncaught exception is raised. When
+    it is called, it will look for the last exception raised and start the debugger
+    at that point. To use the post-mortem debugger, we just need to add the following
+    code before the program is run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is handy because nothing else needs to be changed in the program. For
+    example, assume we want to evaluate the average of $1/x$ using the following program.
+    It is quite easy to overlook some corner cases, but we can catch the issue when
+    an exception is raised:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When we run the above program, the program may terminate, or it may raise a
+    division by zero exception, depending on whether the random number generator ever
+    produces zero in the loop. In that case, we may see the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: where we found the exception is raised at which line, and we can check the value
+    of the variables as we can usually do in `pdb`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In fact, it is more convenient to print the traceback and the exception when
+    the post-mortem debugger is launched:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And the debugger session will be started as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Python pdb module, [https://docs.python.org/3/library/pdb.html](https://docs.python.org/3/library/pdb.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python built-in breakpoint(), [https://www.python.org/dev/peps/pep-0553/](https://www.python.org/dev/peps/pep-0553/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered various ways of setting breakpoints in different
+    versions of Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to invoke the pdb debugger in earlier versions of Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make use of the new, built-in breakpoint() function introduced in Python
+    3.7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to write your own breakpoint() function to simplify the debugging process
+    in earlier versions of Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

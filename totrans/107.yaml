@@ -1,0 +1,399 @@
+- en: Python Debugging Tools
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/python-debugging-tools/](https://machinelearningmastery.com/python-debugging-tools/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In all programming exercises, it is difficult to go far and deep without a handy
+    debugger. The built-in debugger, `pdb`, in Python is a mature and capable one
+    that can help us a lot if you know how to use it. In this tutorial, we are going
+    to see what the `pdb` can do for you as well as some of its alternatives.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What a debugger can do
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to control a debugger
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The limitation of Python’s pdb and its alternatives
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/65633c08afe79c993b2b94e190c42481.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python debugging tools
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Thomas Park](https://unsplash.com/photos/AF2k44m22-I). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in 4 parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: The concept of running a debugger
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Walk-through of using a debugger
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Debugger in Visual Studio Code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using GDB on a running Python program
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The concept of running a debugger
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The purpose of a debugger is to provide you with a slow-motion button to control
+    the flow of a program. It also allows you to freeze the program at a certain time
+    and examine the state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The simplest operation under a debugger is to **step through** the code. That
+    is to run one line of code at a time and wait for your acknowledgment before proceeding
+    to the next. The reason we want to run the program in a stop-and-go fashion is
+    to allow us to check the logic and value or verify the algorithm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For a larger program, we may not want to step through the code from the beginning
+    as it may take a long time before we reach the line that we are interested in.
+    Therefore, debuggers also provide a **breakpoint** feature that will kick in when
+    a specific line of code is reached. From that point onward, we can step through
+    it line by line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Walk-through of using a debugger
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s see how we can make use of a debugger with an example. The following
+    is the Python code for showing the [particle swarm optimization](https://machinelearningmastery.com/a-gentle-introduction-to-particle-swarm-optimization/)
+    in an animation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The particle swarm optimization is done by executing the `update()` function
+    a number of times. Each time it runs, we are closer to the optimal solution to
+    the objective function. We are using matplotlib’s `FuncAnimation()` function instead
+    of a loop to run `update()`, so we can capture the position of the particles at
+    each iteration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Assume this program is saved as `pso.py`. To run this program in the command
+    line simply requires entering:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The solution will be printed to the screen, and the animation will be saved
+    as `PSO.gif`. But if we want to run it with the Python debugger, we enter the
+    following in the command line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `-m pdb` part will load the `pdb` module and let the module execute the
+    file `pso.py` for you. When you run this command, you will be welcomed with the
+    `pdb` prompt as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the prompt, you can type in the debugger commands. To show the list of supported
+    commands, we can use `h`. And to show the details of the specific command (such
+    as `list`), we can use `h list`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the beginning of a debugger session, we start with the first line of the
+    program. Normally, a Python program would start with a few lines of `import`.
+    We can use `n` to move to the next line or `s` to step into a function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: In `pdb`, the line of code will be printed before the prompt. Usually, the `n`
+    command is what we would prefer as it executes that line of code and moves the
+    flow at the **same level** without drilling down deeper. When we are at a line
+    that calls a function (such as line 11 of the above program, that runs `z = f(x,
+    y)`), we can use `s` to **step into** the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the above example, we first step into the `f()` function, then another step
+    to execute the computation, and finally, collect the return value from the function
+    to give it back to the line that invoked the function. We see there are multiple
+    `s` commands needed for a function as simple as one line because finding the function
+    from the statement, calling the function, and returning it each takes one step.
+    We can also see that in the body of the function, we called `np.sin()` like a
+    function, but the debugger’s `s` command does not go into it. It is because the
+    `np.sin()` function is not implemented in Python but in C. The `pdb` does not
+    support compiled code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If the program is long, it is quite boring to use the `n` command many times
+    to move to somewhere we are interested. We can use the `until` command with a
+    line number to let the debugger run the program until that line is reached:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A command similar to `until` is `return`, which will execute the current function
+    until the point that it is about to return. You can consider that as `until` with
+    the line number equal to the last line of the current function. The `until` command
+    is a one-off, meaning it will bring you to that line only. If you want to stop
+    at a particular line **whenever** it is being run, we can make a **breakpoint** on
+    it. For example, if we are interested in how each iteration of the optimization
+    algorithm moves the solution, we can set a breakpoint right after the update is
+    applied:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: After we set a breakpoint with the `b` command, we can let the debugger run
+    our program until the breakpoint is hit. The `c` command means to **continue**
+    until a trigger is met. At any point, we can use the `bt` command to show the
+    traceback to check how we reached that point. We can also use the `p` command
+    to print the variables (or an expression) to check what value they are holding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Indeed, we can place a breakpoint with a condition so that it will stop only
+    if the condition is met. The below will impose a condition that the first random
+    number (`r1`) is greater than 0.5:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Indeed, we can also try to manipulate variables while we are debugging.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above, we use the `l` command to list the code around the current statement
+    (identified by the arrow `->`). In the listing, we can also see the breakpoint
+    (marked with `B`) is set at line 40\. As we can see the current value of `V` and
+    `r1`, we can modify `r1` from 0.54 to 0.2 and run the statement on `V` again by
+    using `j` (jump) to line 38\. And as we see after we execute the statement with
+    the `n` command, the value of `V` is changed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we use a breakpoint and find something unexpected, chances are that it was
+    caused by issues in a different level of the call stack. Debuggers allow you to
+    navigate to different levels:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above, the first `bt` command gives the call stack when we are at the
+    bottom frame, i.e., the deepest of the call stack. We can see that we are about
+    to execute the statement `X = X + V`. Then the `up` command moves our focus to
+    one level up on the call stack, which is the line running the `update()` function
+    (as we see at the line preceded with `>`). Since our focus is changed, the list
+    command `l` will print a different fragment of code, and the `p` command can examine
+    a variable in a different scope.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The above covers most of the useful commands in the debugger. If we want to
+    terminate the debugger (which also terminates the program), we can use the `q`
+    command to quit or hit Ctrl-D if your terminal supports it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Debugger in Visual Studio Code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you are not very comfortable running the debugger in command line, you can
+    rely on the debugger from your IDE. Almost always, the IDE will provide you with
+    some debugging facility. In Visual Studio Code, for example, you can launch the
+    debugger in the “Run” menu.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The screen below shows Visual Studio Code during a debugging session. The buttons
+    at the center top correspond to the `pdb` commands `continue`, `next`, `step`,
+    `return`, `restart`, and `quit`, respectively. A breakpoint can be created by
+    clicking on the line number, and a red dot will be appeared to identify that.
+    The bonus of using an IDE is that the variables are shown immediately at each
+    debugging step. We can also watch for an express and show the call stack. These
+    are on the left side of the screen below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/a5bac4be6701fa2a2b5daf898bdf1f87.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using GDB on a running Python program
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `pdb` from Python is suitable only for programs running from scratch. If
+    we have a program already running but is stuck, we cannot use pdb to **hook into**
+    it to check what’s going on. The Python extension from GDB, however, can do this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To demonstrate, let’s consider a GUI application. It will wait until the user’s
+    action before the program can end. Hence it is a perfect example of how we can
+    use `gdb` to hook into a running process. The code below is a “hello world” program
+    using PyQt5 that just creates an empty window and waits for the user to close
+    it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let’s save this program as `simpleqt.py` and run it using the following in
+    Linux under  an X window environment:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The final `&` will make it run in the background. Now we can check for its
+    process ID using the `ps` command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `ps` command will tell you the process ID in the first column. If you have
+    `gdb` installed with a Python extension, we can run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and it will bring you into the GDB’s prompt:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: GDB is supposed to be a debugger for compiled programs (usually from C or C++).
+    The Python extension allows you to check the code (written in Python) being run
+    by the Python interpreter (written in C). It is less feature-rich than Python’s
+    `PDB` in terms of handling Python code but valuable when you need to hook it into
+    a running process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The commands supported under GDB are `py-list`, `py-bt`, `py-up`, `py-down`,
+    and `py-print`. They are comparable to the same commands in `pdb` without the
+    `py-` prefix.
+  prefs: []
+  type: TYPE_NORMAL
+- en: GDB is useful if your Python code uses a library compiled from C (such as numpy),
+    and you want to investigate how it runs. It is also helpful to learn why your
+    program is frozen by checking the call stack in run time. However, it may be rare
+    that you need to use GDB to debug your machine learning project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Python `pdb` module’s document is at
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://docs.python.org/3/library/pdb.html](https://docs.python.org/3/library/pdb.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'But `pdb` is not the only debugger available. Some third-party tools are listed
+    in:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Python Debugging Tools wiki page](https://wiki.python.org/moin/PythonDebuggingTools)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For GDB with Python extension, it is best used in a Linux environment. Please
+    see the following for more details on its usage:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Easier Python Debugging](https://fedoraproject.org/wiki/Features/EasierPythonDebugging)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Debugging with GDB](https://wiki.python.org/moin/DebuggingWithGdb)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The command interface of `pdb` is influenced by that of GDB. Hence we can learn
+    the technique of debugging a program in general from the latter. A good primer
+    on how to use a debugger would be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[The Art of Debugging with GDB, DDD, and Eclipse](https://www.amazon.com/dp/B00HQ1L78K),
+    by Norman Matloff (2008)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered the features of Python’s `pdb`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What can `pdb` do and how to use it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The limitation and alternatives of `pdb`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In the next post, we will see that `pdb` is also a Python function that can
+    be called inside a Python program.
+  prefs: []
+  type: TYPE_NORMAL

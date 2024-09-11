@@ -1,0 +1,500 @@
+- en: Leveraging ANOVA and Kruskal-Wallis Tests to Analyze the Impact of the Great
+    Recession on Housing Prices
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/leveraging-anova-and-kruskal-wallis-tests-to-analyze-the-impact-of-the-great-recession-on-housing-prices/](https://machinelearningmastery.com/leveraging-anova-and-kruskal-wallis-tests-to-analyze-the-impact-of-the-great-recession-on-housing-prices/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In the world of real estate, numerous factors influence property prices. The
+    economy, market demand, location, and even the year a property is sold can play
+    significant roles. The years 2007 to 2009 marked a tumultuous time for the US
+    housing market. This period, often referred to as the Great Recession, saw a drastic
+    decline in home values, a surge in foreclosures, and widespread financial market
+    turmoil. The impact of the recession on housing prices was profound, with many
+    homeowners finding themselves in homes that were worth less than their mortgages.
+    The ripple effect of this downturn was felt across the country, with some areas
+    experiencing sharper declines and slower recoveries than others.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Given this backdrop, it’s particularly intriguing to analyze housing data from
+    Ames, Iowa, as the dataset spans from 2006 to 2010, encapsulating the height and
+    aftermath of the Great Recession. Does the year of sale, amidst such economic
+    volatility, influence the sales price in Ames? In this post, you’ll delve deep
+    into the Ames Housing dataset to explore this query using Exploratory Data Analysis
+    (EDA) and two statistical tests: ANOVA and the Kruskal-Wallis Test.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/ecd9c55889ddd98de74ed6aeb02bb03b.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Leveraging ANOVA and Kruskal-Wallis Tests to Analyze the Impact of the Great
+    Recession on Housing Prices
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Sharissa Johnson](https://unsplash.com/photos/brown-rock-formation-on-sea-during-daytime-t0uKpnS2SIg).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'EDA: Visual Insights'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Assessing Variability in Sales Prices Across Years Using ANOVA
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Kruskal-Wallis Test: A Non-Parametric Alternative to ANOVA'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'EDA: Visual Insights'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To begin, let’s load the [Ames Housing dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)
+    and compare different years of sale against the dependent variable: the sales
+    price.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/014eb9c949387baae02790f1a09af710.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Comparing the trend of sales prices
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the boxplot, you can observe that the sales prices were quite consistent
+    across different years because each year looks alike. Let’s take a closer look
+    using the `groupby` function in pandas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'From the table, you can make the following observations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The **mean** sales price was the highest in 2009 at approximately \$180,388,
+    while it was the lowest in 2010 at around \$173,972.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The **median** sales price was the highest in 2008 at \$162,700 and the lowest
+    in 2006 at \$157,000.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Even though the mean and median sales prices are close in value for each year,
+    there are slight variations. This suggests that while there might be some outliers
+    influencing the mean, they are not extremely skewed.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Over the five years, there doesn’t seem to be a consistent upward or downward
+    trend in sales prices, which is interesting given the larger economic context
+    (the Great Recession) during this period.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This table, combined with the boxplot, gives a comprehensive view of the distribution
+    and central tendency of sales prices across the years. It sets the stage for deeper
+    statistical analysis to determine if the observed differences (or lack thereof)
+    are statistically significant.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Assessing Variability in Sales Prices Across Years Using ANOVA
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: ANOVA (Analysis of Variance) helps us test if there are any statistically significant
+    differences **between the means** of three or more independent groups. Its null
+    hypothesis is that the means of all groups are equal. This can be considered as
+    a version of t-test to support more than two groups. It makes use of the F-test
+    statistic to check if the variance ($\sigma^2$) is different within each group
+    compared to across all groups.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The hypothesis setup is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '$H_0$: The means of sales price for all years are equal.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$H_1$: At least one year has a different mean sales price.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'You can run your test using the `scipy.stats` library as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The two values are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The results of the ANOVA test are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**F-value:** 0.4479'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**p-value:** 0.7740'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Given the high *p-value* (greater than a common significance level of 0.05),
+    you cannot reject the null hypothesis ($H_0$). This suggests that there are no
+    statistically significant differences between the means of sales price for the
+    different years present in the dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While your ANOVA results provide insights into the equality of means across
+    different years, it’s essential to ensure that the assumptions underlying the
+    test have been met. Let’s delve into verifying the 3 assumptions of ANOVA tests
+    to validate your findings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Assumption 1: Independence of Observations.** Since each observation (house
+    sale) is independent of another, this assumption is met.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Assumption 2: Normality of the Residuals.** For ANOVA to be valid, the residuals
+    from the model should approximately follow a **normal distribution** since this
+    is the model behind F-test. You can check this both visually and statistically.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Visual assessment can be done using a QQ plot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/c8120b314d1b06e14d92597615bb8c24.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_2-3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The QQ Plot presented above serves as a valuable visual tool to assess the
+    normality of your dataset’s residuals, offering insights into how well the observed
+    data aligns with the theoretical expectations of a normal distribution. In this
+    plot, each point represents a pair of quantiles: one from the residuals of your
+    data and the other from the standard normal distribution. Ideally, if your data
+    perfectly followed a normal distribution, all the points on the QQ Plot would
+    fall precisely along the red 45-degree reference line. The plot illustrates deviations
+    from the 45-degree reference line, suggesting potential deviations from normality.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Statistical assessment can be done using the Shapiro-Wilk Test, which provides
+    a formal method to test for normality. The null hypothesis of the test is that
+    the data follows a normal distribution. This test also available in SciPy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A low p-value (typically *p* < 0.05) suggests rejecting the null hypothesis,
+    indicating that the residuals do not follow a normal distribution. This indicates
+    a violation of the second assumption of ANOVA, which requires that the residuals
+    be normally distributed. Both the QQ plot and the Shapiro-Wilk test converge on
+    the same conclusion: the residuals do not strictly adhere to a normal distribution.
+    Hence, the result of the ANOVA may not be valid.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Assumption 3: Homogeneity of Variances.** The variances of the groups (years)
+    should be approximately equal. This happens to be the null hypothesis of Levene’s
+    test. Hence you can use it to verify:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Given the high p-value of 0.909 from Levene’s test, you cannot reject the null
+    hypothesis, indicating that the variances of sales prices across different years
+    are statistically homogeneous, satisfying the third key assumption for ANOVA.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting all together, the following code runs the ANOVA test and verifies the
+    three assumptions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Kruskal-Wallis Test: A Non-Parametric Alternative to ANOVA'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Kruskal-Wallis test is a non-parametric method used to compare the median
+    values of three or more independent groups, making it a suitable alternative to
+    the one-way ANOVA (especially when assumptions of ANOVA are not met).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Non-parametric statistics are a class of statistical methods that do not make
+    explicit assumptions about the underlying distribution of the data. In contrast
+    to *parametric* tests, which assume a specific distribution (e.g., normal distribution
+    in assumption 2 above), *non-parametric* tests are more flexible and can be applied
+    to data that may not meet the stringent assumptions of parametric methods. Non-parametric
+    tests are particularly useful when dealing with ordinal or nominal data, as well
+    as data that might exhibit skewness or heavy tails. These tests focus on the order
+    or rank of values rather than the specific values themselves. Non-parametric tests,
+    including the Kruskal-Wallis test, offer a flexible and distribution-free approach
+    to statistical analysis, making them suitable for a wide range of data types and
+    situations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The hypothesis setup under Kruskal-Wallis test is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '$H_0$: The distributions of the sales price for all years are identical.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$H_1$: At least one year has a different distribution of sales price.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'You can run Kruskal-Wallis test using SciPy, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The results of the Kruskal-Wallis test are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**H-Statistic:** 2.133'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**p-value:** 0.7113'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Note**: The Kruskal-Wallis test doesn’t specifically test for differences
+    in means (like ANOVA does), but rather for differences in distributions. This
+    can include differences in medians, shapes, and spreads.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Given the high *p-value* (greater than a common significance level of 0.05),
+    you cannot reject the null hypothesis. This suggests that there are no statistically
+    significant differences in the median sales prices for the different years present
+    in the dataset when using the Kruskal-Wallis test. Let’s delve into verifying
+    the 3 assumptions of the Kruskal-Wallis test to validate your findings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Assumption 1: Independence of Observations.** This remains the same as for
+    ANOVA; each observation is independent of another.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Assumption 2: The Response Variable Should be Ordinal, Interval, or Ratio.**
+    The sales price is a ratio variable, so this assumption is met.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Assumption 3: The Distributions of the Response Variable Should be the Same
+    for All Groups.** This can be validated using both visual and numerical methods.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/7f43551a4866b31650c7046cf6766098.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Distribution of sales prices of different years
+  prefs: []
+  type: TYPE_NORMAL
+- en: The stacked histograms indicate consistent distributions of sales prices across
+    the years, with each year displaying a similar range and peak despite slight variations
+    in frequency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Furthermore, you can conduct pairwise Kolmogorov-Smirnov tests, which is a
+    non-parametric test to compare the similarity of two probability distributions.
+    It is available in SciPy. You can use the version that the null hypothesis is
+    the two distributions equal, and the alternative hypothesis is not equal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This shows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: While we satisfied only 2 out of the 3 assumptions for ANOVA, we have met all
+    the necessary criteria for the Kruskal-Wallis test. The pairwise Kolmogorov-Smirnov
+    tests indicate that the distributions of sales prices across different years are
+    remarkably consistent. Specifically, the high p-values (all greater than the common
+    significance level of 0.05) imply that there isn’t enough evidence to reject the
+    hypothesis that the sales prices for each year come from the same distribution.
+    These findings satisfy the assumption for the Kruskal-Wallis Test that the distributions
+    of the response variable should be the same for all groups. This underscores the
+    stability in the sales price distributions from 2006 to 2010 in Ames, Iowa, despite
+    the broader economic context.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Beginner's Guide to Data Science?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Online
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[ANOVA | Statistic Solutions](https://www.statisticssolutions.com/anova-analysis-of-variance/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Kruskal-Wallis H Test in Python](https://machinelearningmastery.com/nonparametric-statistical-significance-tests-in-python/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Analysis of variance](https://en.wikipedia.org/wiki/Analysis_of_variance)
+    on Wikipedia'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[scipy.stats.f_oneway](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.f_oneway.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[scipy.stats.shapiro](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[scipy.stats.levene](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[scipy.stats.kruskal](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kruskal.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[scipy.stats.ks_2samp](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ks_2samp.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Resources**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the multi-dimensional world of real estate, several factors, including the
+    year of sale, can potentially influence property prices. The US housing market
+    experienced considerable turbulence during the Great Recession between 2007 and
+    2009\. The study focuses on housing data from Ames, Iowa, spanning 2006 to 2010,
+    aiming to determine if the year of sale affected the sales price, particularly
+    during this tumultuous period.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The analysis employed both the ANOVA and Kruskal-Wallis tests to gauge variations
+    in sales prices across different years. While ANOVA’s findings were instructive,
+    not all its underlying assumptions were satisfied, notably the normality of residuals.
+    Conversely, the Kruskal-Wallis test met all its criteria, suggesting more reliable
+    insights. Therefore, relying solely on the ANOVA could have been misleading without
+    the corroborative perspective of the Kruskal-Wallis test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Both the one-way ANOVA and the Kruskal-Wallis test yielded consistent results,
+    indicating no statistically significant differences in sales prices across the
+    different years. This outcome is particularly fascinating given the turbulent
+    economic backdrop from 2006 to 2010\. The findings demonstrate that property prices
+    in Ames were very stable and influenced mainly by local conditions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The importance of validating the assumptions of statistical tests, as seen with
+    the ANOVA’s residuals normality challenge.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The significance and application of both parametric (ANOVA) and non-parametric
+    (Kruskal-Wallis) tests in comparing data distributions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How local factors can insulate property markets, like that of Ames, Iowa, from
+    broader economic downturns, emphasizing the nuanced nature of real estate pricing.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

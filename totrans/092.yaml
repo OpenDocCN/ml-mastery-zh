@@ -1,0 +1,432 @@
+- en: Web Crawling in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/web-crawling-in-python/](https://machinelearningmastery.com/web-crawling-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In the old days, it was a tedious job to collect data, and it was sometimes
+    very expensive. Machine learning projects cannot live without data. Luckily, we
+    have a lot of data on the web at our disposal nowadays. We can copy data from
+    the web to create our dataset. We can manually download files and save them to
+    the disk. But we can do it more efficiently by automating the data harvesting.
+    There are several tools in Python that can help the automation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After finishing this tutorial, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use the requests library to read online data using HTTP
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to read tables on web pages using pandas
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use Selenium to emulate browser operations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started!![](../Images/014f73ed74ab693ef2bb8ea377287b7c.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web Crawling in Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Ray Bilcliff](https://www.pexels.com/photo/black-and-red-spider-on-web-in-close-up-photography-4805619/).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the requests library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading tables on the web using pandas
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading dynamic content with Selenium
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the Requests Library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When we talk about writing a Python program to read from the web, it is inevitable
+    that we can’t avoid the `requests` library. You need to install it (as well as
+    BeautifulSoup and lxml that we will cover later):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: It provides you with an interface that allows you to interact with the web easily.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The very simple use case would be to read a web page from a URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you’re familiar with HTTP, you can probably recall that a status code of
+    200 means the request is successfully fulfilled. Then we can read the response.
+    In the above, we read the textual response and get the HTML of the web page. Should
+    it be a CSV or some other textual data, we can get them in the `text` attribute
+    of the response object. For example, this is how we can read a CSV from the Federal
+    Reserve Economics Data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If the data is in the form of JSON, we can read it as text or even let `requests`
+    decode it for you. For example, the following is to pull some data from GitHub
+    in JSON format and convert it into a Python dictionary:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But if the URL gives you some binary data, such as a ZIP file or a JPEG image,
+    you need to get them in the `content` attribute instead, as this would be the
+    binary data. For example, this is how we can download an image (the logo of Wikipedia):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Given we already obtained the web page, how should we extract the data? This
+    is beyond what the `requests` library can provide to us, but we can use a different
+    library to help. There are two ways we can do it, depending on how we want to
+    specify the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first way is to consider the HTML as a kind of XML document and use the
+    XPath language to extract the element. In this case, we can make use of the `lxml` library
+    to first create a document object model (DOM) and then search by XPath:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: XPath is a string that specifies how to find an element. The lxml object provides
+    a function `xpath()` to search the DOM for elements that match the XPath string,
+    which can be multiple matches. The XPath above means to find an HTML element anywhere
+    with the `<span>` tag and with the attribute `data-testid` matching “`TemperatureValue`”
+    and `class` beginning with “`CurrentConditions`.” We can learn this from the developer
+    tools of the browser (e.g., the Chrome screenshot below) by inspecting the HTML
+    source.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/d516cc11a5a97395c96129cf51860901.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: This example is to find the temperature of New York City, provided by this particular
+    element we get from this web page. We know the first element matched by the XPath
+    is what we need, and we can read the text inside the `<span>` tag.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The other way is to use CSS selectors on the HTML document, which we can make
+    use of the BeautifulSoup library:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above, we first pass our HTML text to BeautifulSoup. BeautifulSoup supports
+    various HTML parsers, each with different capabilities. In the above, we use the
+    `lxml` library as the parser as recommended by BeautifulSoup (and it is also often
+    the fastest). CSS selector is a different mini-language, with pros and cons compared
+    to XPath. The selector above is identical to the XPath we used in the previous
+    example. Therefore, we can get the same temperature from the first matched element.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is a complete code to print the current temperature of New York
+    according to the real-time information on the web:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can imagine, you can collect a time series of the temperature by running
+    this script on a regular schedule. Similarly, we can collect data automatically
+    from various websites. This is how we can obtain data for our machine learning
+    projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading Tables on the Web Using Pandas
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Very often, web pages will use tables to carry data. If the page is simple
+    enough, we may even skip inspecting it to find out the XPath or CSS selector and
+    use pandas to get all tables on the page in one shot. It is simple enough to be
+    done in one line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `read_html()` function in pandas reads a URL and finds all the tables on
+    the page. Each table is converted into a pandas DataFrame and then returns all
+    of them in a list. In this example, we are reading the various interest rates
+    from the Federal Reserve, which happens to have only one table on this page. The
+    table columns are identified by pandas automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Chances are that not all tables are what we are interested in. Sometimes, the
+    web page will use a table merely as a way to format the page, but pandas may not
+    be smart enough to tell. Hence we need to test and cherry-pick the result returned
+    by the `read_html()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading Dynamic Content With Selenium
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A significant portion of modern-day web pages is full of JavaScripts. This
+    gives us a fancier experience but becomes a hurdle to use as a program to extract
+    data. One example is Yahoo’s home page, which, if we just load the page and find
+    all news headlines, there are far fewer than what we can see on the browser:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is because web pages like this rely on JavaScript to populate the content.
+    Famous web frameworks such as AngularJS or React are behind powering this category.
+    The Python library, such as `requests`, does not understand JavaScript. Therefore,
+    you will see the result differently. If the data you want to fetch from the web
+    is one of them, you can study how the JavaScript is invoked and mimic the browser’s
+    behavior in your program. But this is probably too tedious to make it work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The other way is to ask a real browser to read the web page rather than using `requests`.
+    This is what Selenium can do. Before we can use it, we need to install the library:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: But Selenium is only a framework to control browsers. You need to have the browser
+    installed on your computer as well as the driver to connect Selenium to the browser.
+    If you intend to use Chrome, you need to download and install [ChromeDriver](https://chromedriver.chromium.org/downloads)
+    too. You need to put the driver in the executable path so that Selenium can invoke
+    it like a normal command. For example, in Linux, you just need to get the `chromedriver`
+    executable from the ZIP file downloaded and put it in `/usr/local/bin`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, if you’re using Firefox, you need the [GeckoDriver](https://github.com/mozilla/geckodriver/releases/).
+    For more details on setting up Selenium, you should refer to [its documentation](https://www.selenium.dev/downloads/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Afterward, you can use a Python script to control the browser behavior. For
+    example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The above code works as follows. We first launch the browser in headless mode,
+    meaning we ask Chrome to start but not display on the screen. This is important
+    if we want to run our script remotely as there may not be any GUI support. Note
+    that every browser is developed differently, and thus the options syntax we used
+    is specific to Chrome. If we use Firefox, the code would be this instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: After we launch the browser, we give it a URL to load. But since it takes time
+    for the network to deliver the page, and the browser will take time to render
+    it, we should wait until the browser is ready before we proceed to the next operation.
+    We detect if the browser has finished rendering by using JavaScript. We make Selenium
+    run a JavaScript code for us and tell us the result using the `execute_script()` function.
+    We leverage Selenium’s `WebDriverWait` tool to run it until it succeeds or until
+    a 30-second timeout. As the page is loaded, we scroll to the bottom of the page
+    so the JavaScript can be triggered to load more content. Then we wait for one
+    second unconditionally to make sure the browser triggered the JavaScript, then
+    wait until the page is ready again. Afterward, we can extract the news headline
+    element using XPath (or alternatively using a CSS selector). Because the browser
+    is an external program, we are responsible for closing it in our script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Selenium is different from using the `requests` library in several aspects.
+    First, you never have the web content in your Python code directly. Instead, you
+    refer to the browser’s content whenever you need it. Hence the web elements returned
+    by the `find_elements()` function refer to objects inside the external browser,
+    so we must not close the browser before we finish consuming them. Secondly, all
+    operations should be based on browser interaction rather than network requests.
+    Thus you need to control the browser by emulating keyboard and mouse movements.
+    But in return, you have the full-featured browser with JavaScript support. For
+    example, you can use JavaScript to check the size and position of an element on
+    the page, which you will know only after the HTML elements are rendered.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are a lot more functions provided by the Selenium framework that we can
+    cover here. It is powerful, but since it is connected to the browser, using it
+    is more demanding than the `requests` library and much slower. Usually, this is
+    the last resort for harvesting information from the web.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Another famous web crawling library in Python that we didn’t cover above is
+    Scrapy. It is like combining the `requests` library with BeautifulSoup into one.
+    The web protocol is complex. Sometimes we need to manage web cookies or provide
+    extra data to the requests using the POST method. All these can be done with the
+    requests library with a different function or extra arguments. The following are
+    some resources for you to go deeper:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[An overview of HTTP from MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[XPath from MDN](https://developer.mozilla.org/en-US/docs/Web/XPath)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[XPath tutorial from W3Schools](https://www.w3schools.com/xml/xpath_intro.asp)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[CSS Selector Reference from W3Schools](https://www.w3schools.com/cssref/css_selectors.asp)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Selenium Python binding](https://www.selenium.dev/selenium/docs/api/py/index.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: API documentation
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Requests library](https://docs.python-requests.org/en/latest/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[lxml.etree](https://lxml.de/api.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Selenium Python API](https://selenium-python.readthedocs.io/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Scrapy](https://docs.scrapy.org/en/latest/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Python Web Scraping](https://www.amazon.com/dp/1786462583), 2nd Edition, by
+    Katharine Jarmul and Richard Lawson'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Web Scraping with Python](https://www.amazon.com/dp/1491985577/), 2nd Edition,
+    by Ryan Mitchell'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Learning Scrapy](https://www.amazon.com/dp/1784399787/), by Dimitrios Kouzis-Loukas'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Python Testing with Selenium](https://www.amazon.com/dp/1484262484/), by Sujay
+    Raghavendra'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Hands-On Web Scraping with Python](https://www.amazon.com/dp/1789533392),
+    by Anish Chapagain'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you saw the tools we can use to fetch content from the web.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use the requests library to send the HTTP request and extract data from
+    its response
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build a document object model from HTML so we can find some specific
+    information on a web page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to read tables on a web page quickly and easily using pandas
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use Selenium to control a browser to tackle dynamic content on a web
+    page
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

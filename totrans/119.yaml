@@ -1,0 +1,214 @@
+- en: Training Logistic Regression with Cross-Entropy Loss in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/training-logistic-regression-with-cross-entropy-loss-in-pytorch/](https://machinelearningmastery.com/training-logistic-regression-with-cross-entropy-loss-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In the previous session of our PyTorch series, we demonstrated how badly initialized
+    weights can impact the accuracy of a classification model when mean square error
+    (MSE) loss is used. We noticed that the model didn’t converge during training
+    and its accuracy was also significantly reduced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following, you will see what happens if you randomly initialize the weights
+    and use cross-entropy as loss function for model training. This loss function
+    fits logistic regression and other categorical classification problems better.
+    Therefore, cross-entropy loss is used for most of the classification problems
+    today.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you will train a logistic regression model using cross-entropy
+    loss and make predictions on test data. Particularly, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to train a logistic regression model with Cross-Entropy loss in Pytorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How Cross-Entropy loss can influence the model accuracy.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/3f1dd51c1dfa683e51e61e81c344ff43.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training Logistic Regression with Cross-Entropy Loss in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Y K](https://unsplash.com/photos/qD2BYEkp3ns). Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing the Data and Building a Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Model Training with Cross-Entropy
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Verifying with Test Data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing the Data and the Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Just like the previous tutorials, you will build a class to get the dataset
+    to perform the experiments. This dataset will be split into train and test samples.
+    The test samples are an unseen data used to measure the performance of the trained
+    model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, we make a `Dataset` class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, instantiate the dataset object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, you’ll build a custom module for our logistic regression model. It will
+    be based on the attributes and methods from PyTorch’s `nn.Module`. This package
+    allows us to build sophisticated custom modules for our deep learning models and
+    makes the overall process a lot easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The module consist of only one linear layer, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s create the model object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This model should have randomized weights. You can check this by printing its
+    states:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You may see:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Model Training with Cross-Entropy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Recall that this model didn’t converge when you used these parameter values
+    with MSE loss in the previous tutorial. Let’s see what happens when cross-entropy
+    loss is used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since you are performing logistic regression with one output, it is a classification
+    problem with two classes. In other words, it is a binary classification problem
+    and hence we are using binary cross-entropy. You set up the optimizer and the
+    loss function as follows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we prepare a `DataLoader` and train the model for 50 epochs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output during training would be like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the loss reduces during the training and converges to a minimum.
+    Let’s also plot the training graph.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: You shall see the following:![](../Images/5b7b7c1e1605d88e7dfb475651be6bb7.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Verifying with Test Data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The plot above shows that the model learned well on the training data. Lastly,
+    let’s check how the model performs on unseen data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: which gives
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: When the model is trained on MSE loss, it didn’t do well. It was around 57%
+    accurate previously. But here, we get a perfect prediction. Partially because
+    the model is simple, a one-variable logsitic function. Partially because we set
+    up the training correctly. Hence the cross-entropy loss significantly improves
+    the model accuracy over MSE loss as we demonstrated in our experiments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned how cross-entropy loss can influence the performance
+    of a classification model. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to train a logistic regression model with cross-entropy loss in Pytorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How Cross-Entropy loss can influence the model accuracy.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,259 @@
+- en: Building an Image Classifier with a Single-Layer Neural Network in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/building-an-image-classifier-with-a-single-layer-neural-network-in-pytorch/](https://machinelearningmastery.com/building-an-image-classifier-with-a-single-layer-neural-network-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: A single-layer neural network, also known as a single-layer perceptron, is the
+    simplest type of neural network. It consists of only one layer of neurons, which
+    are connected to the input layer and the output layer. In case of an image classifier,
+    the input layer would be an image and the output layer would be a class label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To build an image classifier using a single-layer neural network in PyTorch,
+    you’ll first need to prepare your data. This typically involves loading the images
+    and labels into a PyTorch dataloader, and then splitting the data into training
+    and validation sets. Once your data is prepared, you can define your neural network.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, you can use PyTorch’s built-in functions to train the network on your
+    training data and evaluate its performance on your validation data. You’ll also
+    need to pick an optimizer such as stochastic gradient descent (SGD) and a loss
+    function like cross-entropy loss.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that a single layer neural network might not be ideal for every task, but
+    it can be good as simple classifier and also can be helpful for you to understand
+    the inner workings of the neural network and to be able to debug it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, let’s build our image classifier. In the process you’ll learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use and preprocess built-in datasets in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build and train custom neural networks in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build a step-by-step image classifier in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make predictions using the trained model in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/2600987b2a58294128d9d401684d275c.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Building an Image Classifier with a Single-Layer Neural Network in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Alex Fung](https://unsplash.com/photos/sKnJ84lF0gY). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing the Dataset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build the Model Architecture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Train the Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing the Dataset
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you will use the CIFAR-10 dataset. It is a dataset for image
+    classification, consisting of 60,000 color images of 32×32 pixels in 10 classes,
+    with 6,000 images per class. There are 50,000 training images and 10,000 test
+    images. The classes include airplanes, cars, birds, cats, deer, dogs, frogs, horses,
+    ships, and trucks. CIFAR-10 is a popular dataset for machine learning and computer
+    vision research, as it is relatively small and simple, yet challenging enough
+    to require the use of deep learning methods. This dataset can be easily imported
+    into PyTorch library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here is how you do that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you never downloaded the dataset before, you may see this code show you
+    where the images are downloaded from:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: You specified the `root` directory where the dataset should be downloaded, and
+    setting `train=True` to import the training set, and `train=False` to import the
+    test set. The `download=True` argument will download the dataset if it’s not already
+    present in the specified `root` directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building the Neural Network Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s define a simple neural network `SimpleNet` that inherits from `torch.nn.Module`.
+    The network has two fully connected (fc) layers, `fc1` and `fc2`, defined in the
+    `__init__` method. The first fully connected layer `fc1` takes in the image as
+    input and has 100 hidden neurons. Similarly, the second fully connected layer
+    `fc2` has 100 input neurons and `num_classes` output neurons. The `num_classes`
+    parameter defaults to 10 as there are 10 classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moreover, the `forward` method defines the forward pass of the network, where
+    the input `x` is passed through the layers defined in the `__init__` method. The
+    method first reshapes the input tensor `x` to have a desired shape using the `view`
+    method. The input then passes through the fully connected layers along with their
+    activation functions and, finally, an output tensor is returned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here is the code for all explained above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: And, write a function to visualize this data, which will also be useful when
+    you train the model later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s instantiate the model object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training the Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You will create two instances of PyTorch’s `DataLoader` class, for training
+    and testing respectively. In `train_loader`, you set the batch size at 64 and
+    shuffle the training data randomly by setting `shuffle=True`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, you will define the functions for cross entropy loss and Adam optimizer
+    for training the model. You set the learning rate at 0.001 for the optimizer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is similar for `test_loader`, except we don’t need to shuffle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, let’s set a training loop to train our model for a few epochs. You
+    will define some empty lists to store the values of the loss and accuracy metrices
+    for loss and accuracy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running this loop will print you the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the single-layer classifier is trained for only 20 epochs and
+    it achieved a validation accuracy of around 47 percent. Train it for more epochs
+    and you may get a decent accuracy. Similarly, our model had only a single layer
+    with 100 hidden neurons. If you add some more layers, the accuracy may significantly
+    improve.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, let’s plot loss and accuracy matrices to see how they look like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The loss plot is like:![](../Images/66f02e96b6e334e81a89a63cdf35257b.png)And
+    the accuracy plot is the following:![](../Images/841646d4fce1d2ec0dbf8bcc3ee8e85d.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here is how you can see how the model make predictions against the true labels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The printed labels are as following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'These labels are to correspond to the following images:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/5654d46c7d8d7fdeb06d556ab747cf04.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned how you can build an image classifier using only
+    a single-layer neural network. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use and preprocess built-in datasets in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build and train custom neural networks in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build a step-by-step image classifier in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make predictions using the trained model in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,362 @@
+- en: A Gentle Introduction to the Laplacian
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-the-laplacian/](https://machinelearningmastery.com/a-gentle-introduction-to-the-laplacian/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The Laplace operator was first applied to the study of celestial mechanics,
+    or the motion of objects in outer space, by Pierre-Simon de Laplace, and as such
+    has been named after him.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Laplace operator has since been used to describe many different phenomena,
+    from electric potentials, to the diffusion equation for heat and fluid flow, and
+    quantum mechanics. It has also been recasted to the discrete space, where it has
+    been used in applications related to image processing and spectral clustering.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover a gentle introduction to the Laplacian.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The definition of the Laplace operator and how it relates to divergence.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the Laplace operator relates to the Hessian.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the continuous Laplace operator has been recasted to discrete-space, and
+    applied to image processing and spectral clustering.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/bd996487ef7c4122daab549f82bc3d51.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Gentle Introduction to the Laplacian
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Aziz Acharki](https://unsplash.com/photos/7nsqPSnYCoY), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Laplacian
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Concept of Divergence
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Continuous Laplacian
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Discrete Laplacian
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you already know what are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[The gradient of a function](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Higher-order derivatives](https://machinelearningmastery.com/?p=12675&preview=true)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Multivariate functions](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Hessian matrix](https://machinelearningmastery.com/a-gentle-introduction-to-hessian-matrices)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can review these concepts by clicking on the links given above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Laplacian**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Laplace operator (or Laplacian, as it is often called) is the divergence
+    of the gradient of a function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to comprehend the previous statement better, it is best that we start
+    by understanding the concept of *divergence*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Concept of Divergence**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Divergence is a vector operator that operates on a vector field. The latter
+    can be thought of as representing a flow of a liquid or gas, where each vector
+    in the vector field represents a velocity vector of the moving fluid.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Roughly speaking, divergence measures the tendency of the fluid to collect
+    or disperse at a point …*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 432, [Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
+    2020.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '[![](../Images/e7c4e529d00b185f6e353d992269d7a1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Part of the Vector Field of (sin *y*, cos *x*)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using the nabla (or del) operator, ∇, the divergence is denoted by ∇ **^.**
+    and produces a scalar value when applied to a vector field, measuring the quantity
+    of *fluid* at each point. In Cartesian coordinates, the divergence of a vector
+    field, **F** = ⟨*f*, *g*, *h*⟩, is given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/bf7190d04b03baaec2d7152e626520e4.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Although the divergence computation involves the application of the divergence
+    operator (rather than a multiplication operation), the dot in its notation is
+    reminiscent of the dot product, which involves the multiplication of the components
+    of two equal-length sequences (in this case, ∇ and **F**) and the summation of
+    the resulting terms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Continuous Laplacian**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Let’s return back to the definition of the Laplacian.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Recall](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)
+    that the gradient of a two-dimensional function, *f*, is given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/b478275de077ba1f44c1769b95109c16.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then, the Laplacian (that is, the divergence of the gradient) of *f* can be
+    defined by the sum of unmixed [second partial derivatives](https://machinelearningmastery.com/?p=12675&preview=true):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/14431e223e5953efbd50695b96269b30.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It can, equivalently, be considered as the trace (tr) of the function’s [Hessian](https://machinelearningmastery.com/a-gentle-introduction-to-hessian-matrices),
+    *H*(*f*). The trace defines the sum of the elements on the main diagonal of a
+    square *n*×*n* matrix, which in this case is the Hessian, and also the sum of
+    its *eigenvalues*. Recall that the Hessian matrix contains the [own](https://machinelearningmastery.com/?p=12675&preview=true)
+    (or unmixed) second partial derivatives on the diagonal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/f07bac3b896f61248a5fc138f44f483c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_5.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An important property of the trace of a matrix is its invariance to a *change
+    of basis*. We have already defined the Laplacian in Cartesian coordinates. In
+    polar coordinates, we would define it as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/8568c474d2fda0219e433886fd251007.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_6.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The invariance of the trace to a change of basis means that the Laplacian can
+    be defined in different coordinate spaces, but it would give the same value at
+    some point (*x*, *y*) in the Cartesian coordinate space, and at the same point
+    (*r*, *θ*) in the polar coordinate space.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recall that we had also mentioned that the second derivative can provide us
+    with information regarding the curvature of a function. Hence, intuitively, we
+    can consider the Laplacian to also provide us with information regarding the local
+    curvature of a function, through this summation of second derivatives.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The continuous Laplace operator has been used to describe many physical phenomena,
+    such as electric potentials, and the diffusion equation for heat flow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Discrete Laplacian**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Analogous to the continuous Laplace operator, is the discrete one, so formulated
+    in order to be applied to a discrete grid of, say, pixel values in an image, or
+    to a graph.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s have a look at how the Laplace operator can be recasted for both applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In image processing, the Laplace operator is realized in the form of a digital
+    filter that, when applied to an image, can be used for edge detection. In a sense,
+    we can consider the Laplacian operator used in image processing to, also, provide
+    us with information regarding the manner in which the function curves (or *bends*)
+    at some particular point, (*x*, *y*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this case, the discrete Laplacian operator (or filter) is constructed by
+    combining two, one-dimensional second derivative filters, into a single two-dimensional
+    one:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/0b502d64cc2f6df26aed276a77ea7224.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_7.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In machine learning, the information provided by the discrete Laplace operator
+    as derived from a graph can be used for the purpose of data clustering.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a graph, *G* = (*V*, *E*), having a finite number of *V* vertices
+    and *E* edges. Its Laplacian matrix, *L*, can be defined in terms of the degree
+    matrix, *D*, containing information about the connectivity of each vertex, and
+    the adjacency matrix, *A*, which indicates pairs of vertices that are adjacent
+    in the graph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*L* = *D* – *A*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Spectral clustering can be carried out by applying some standard clustering
+    method (such as *k*-means) on the eigenvectors of the Laplacian matrix, hence
+    partitioning the graph nodes (or the data points) into subsets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One issue that can arise in doing so relates to a problem of scalability with
+    large datasets, where the eigen-decomposition (or the extraction of the eigenvectors)
+    of the Laplacian matrix may be prohibitive. The use of deep learning has been
+    [proposed](https://arxiv.org/pdf/1801.01587.pdf) to address this problem, where
+    a deep neural network is trained such that its outputs approximate the eigenvectors
+    of the graph Laplacian. The neural network, in this case, is trained using a constrained
+    optimization approach, to enforce the orthogonality of the network outputs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Handbook of Image and Video Processing](https://www.amazon.com/Handbook-Processing-Communications-Networking-Multimedia-dp-0121197921/dp/0121197921/ref=mt_other?_encoding=UTF8&me=&qid=1626692109),
+    2005.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Articles**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Laplace operator, Wikipedia](https://en.wikipedia.org/wiki/Laplace_operator).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Divergence, Wikipedia](https://en.wikipedia.org/wiki/Divergence).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Discrete Laplace operator, Wikipedia](https://en.wikipedia.org/wiki/Discrete_Laplace_operator).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Laplacian matrix, Wikipedia](https://en.wikipedia.org/wiki/Laplacian_matrix).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Spectral clustering, Wikipedia](https://en.wikipedia.org/wiki/Spectral_clustering).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[SpectralNet: Spectral Clustering Using Deep Neural Networks](https://arxiv.org/pdf/1801.01587.pdf),
+    2018.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered a gentle introduction to the Laplacian.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The definition of the Laplace operator and how it relates to divergence.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the Laplace operator relates to the Hessian.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the continuous Laplace operator has been recasted to discrete-space, and
+    applied to image processing and spectral clustering.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

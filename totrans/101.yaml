@@ -1,0 +1,481 @@
+- en: A Gentle Introduction to Serialization for Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-serialization-for-python/](https://machinelearningmastery.com/a-gentle-introduction-to-serialization-for-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Serialization refers to the process of converting a data object (e.g., Python
+    objects, Tensorflow models) into a format that allows us to store or transmit
+    the data and then recreate the object when needed using the reverse process of
+    deserialization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are different formats for the serialization of data, such as JSON, XML,
+    HDF5, and Python’s pickle, for different purposes. JSON, for instance, returns
+    a human-readable string form, while Python’s pickle library can return a byte
+    array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, you will discover how to use two common serialization libraries
+    in Python to serialize data objects (namely pickle and HDF5) such as dictionaries
+    and Tensorflow models in Python for storage and transmission.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Serialization libraries in Python such as pickle and h5py
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Serializing objects such as dictionaries and Tensorflow models in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use serialization for memoization to reduce function calls
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started!![](../Images/5402df89ca73300f99566925bf47d5e0.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Gentle Introduction to Serialization for Python. Photo by [little plant](https://unsplash.com/photos/TZw891-oMio).
+    Some rights reserved
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The tutorial is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is serialization, and why do we serialize?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Python’s pickle library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using HDF5 in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Comparison between different serialization methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What Is Serialization, and Why Should We Care?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Think about storing an integer; how would you store that in a file or transmit
+    it? That’s easy! We can just write the integer to a file and store or transmit
+    that file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But now, what if we think about storing a Python object (e.g., a Python dictionary
+    or a Pandas DataFrame), which has a complex structure and many attributes (e.g.,
+    the columns and index of the DataFrame, and the data type of each column)? How
+    would you store it as a file or transmit it to another computer?
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is where serialization comes in!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Serialization** is the process of converting the object into a format that
+    can be stored or transmitted. After transmitting or storing the serialized data,
+    we are able to reconstruct the object later and obtain the exact same structure/object,
+    which makes it really convenient for us to continue using the stored object later
+    on instead of reconstructing the object from scratch.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Python, there are many different formats for serialization available. One
+    common example of hash maps (Python dictionaries) that works across many languages
+    is the JSON file format which is human-readable and allows us to store the dictionary
+    and recreate it with the same structure. But JSON can only store basic structures
+    such as a list and dictionary, and it can only keep strings and numbers. We cannot
+    ask JSON to remember the data type (e.g., numpy float32 vs. float64). It also
+    cannot distinguish between Python tuples and lists.
+  prefs: []
+  type: TYPE_NORMAL
+- en: More powerful serialization formats exist. In the following, we will explore
+    two common serialization libraries in Python, namely pickle and h5py.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Python’s Pickle Library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `pickle` module is part of the Python standard library and implements methods
+    to serialize (pickling) and deserialize (unpickling) Python objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get started with `pickle`, import it in Python:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Afterward, to serialize a Python object such as a dictionary and store the byte
+    stream as a file, we can use pickle’s `dump()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The byte stream representing `test_dict` is now stored in the file “`test.pickle`”!
+  prefs: []
+  type: TYPE_NORMAL
+- en: To recover the original object, we read the serialized byte stream from the
+    file using pickle’s `load()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Warning:** Only unpickle data from sources you trust, as it is possible for
+    arbitrary malicious code to be executed during the unpickling process.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting them together, the following code helps you to verify that pickle can
+    recover the same object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Besides writing the serialized object into a pickle file, we can also obtain
+    the object serialized as a bytes-array type in Python using pickle’s `dumps()`
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similarly, we can use pickle’s load method to convert from a bytes-array type
+    back to the original object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'One useful thing about pickle is that it can serialize almost any Python object,
+    including user-defined ones, such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above will print the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that the print statement in the class’ constructor is not executed at the
+    time `pickle.loads()` is invoked. This is because it reconstructed the object,
+    not recreated it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Pickle can even serialize Python functions since functions are first-class
+    objects in Python:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Therefore, we can make use of pickle to save our work. For example, a trained
+    model from Keras or scikit-learn can be serialized by pickle and loaded later
+    instead of re-training the model every time we use it. The following shows you
+    how we can build a LeNet5 model to recognize the MNIST handwritten digits using
+    Keras, then serialize the trained model using pickle. Afterward, we can reconstruct
+    the model without training it again, and it should produce exactly the same result
+    as the original model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The above code will produce the output as follows. Note that the evaluation
+    scores from the original and reconstructed models are tied out perfectly in the
+    last two lines:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: While pickle is a powerful library, it still does have its own limitations to
+    what can be pickled. For example, live connections such as database connections
+    and opened file handles cannot be pickled. This issue arises because reconstructing
+    these objects requires pickle to re-establish the connection with the database/file,
+    which is something pickle cannot do for you (because it needs appropriate credentials
+    and is out of the scope of what pickle is intended for).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using HDF5 in Python
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Hierarchical Data Format 5 (HDF5) is a binary data format. The `h5py` package
+    is a Python library that provides an interface to the HDF5 format. From `h5py`
+    docs, HDF5 “lets you store huge amounts of numerical data, and easily manipulate
+    that data from Numpy.”
+  prefs: []
+  type: TYPE_NORMAL
+- en: What HDF5 can do better than other serialization formats is store data in a
+    file system-like hierarchy. You can store multiple objects or datasets in HDF5,
+    like saving multiple files in the file system. You can also read a particular
+    dataset from HDF5, like reading one file from the file system without concerning
+    the other. If you’re using pickle for this, you will need to read and write everything
+    each time you load or create the pickle file. Hence HDF5 is advantageous for huge
+    amounts of data that can’t fit entirely into memory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get started with `h5py`, you first need to install the `h5py` library, which
+    you can do using:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Or, if you are using a conda environment:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can then get started with creating our first dataset!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This creates a new dataset in the file `test.hdf5` named “`test_dataset`,” with
+    a shape of (100, ) and a type int32\. `h5py` datasets follow a Numpy syntax so
+    that you can do slicing, retrieval, get shape, etc., similar to Numpy arrays.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To retrieve a specific index:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To get a slice from index 0 to index 10 of a dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you initialized the `h5py` file object outside of a `with` statement, remember
+    to close the file as well!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To read from a previously created HDF5 file, you can open the file in “`r`”
+    for read mode or “`r+`” for read/write mode:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To organize your HDF5 file, you can use groups:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Another way to create groups and files is by specifying the path to the dataset
+    you want to create, and `h5py` will create the groups on that path as well (if
+    they don’t exist):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: The two snippets of code both create `group1` if it has not been created previously
+    and then a `dataset1` within `group1`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: HDF5 in Tensorflow
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To save a model in Tensorflow Keras using HDF5 format, we can use the `save()`
+    function of the model with a filename having extension `.h5`, like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To load the stored HDF5 model, we can also use the function from Keras directly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'One reason we don’t want to use pickle for a Keras model is that we need a
+    more flexible format that does not tie to a particular version of Keras. If we
+    upgraded our Tensorflow version, the model object might change, and pickle may
+    fail to give us a working model. Another reason is to keep only the essential
+    data for our model. For example, if we check the HDF5 file `my_model.h5` created
+    in the above, we see these are stored:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Hence Keras selected only the data that are essential to reconstruct the model.
+    A trained model will contain more datasets, namely, there are `/optimizer_weights/`
+    besides `/model_weights/`. Keras will reconstruct the model and restore the weights
+    appropriately to give us a model that functions the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Take the example above, for example. We have our model saved in `my_model.h5`.
+    Our model is a single dense layer, and we can dig out the kernel of the layer
+    by the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As we didn’t train our network for anything, it will give us the random matrix
+    that initialized the layer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And in HDF5, the metadata is stored alongside the data. Keras stored the network’s
+    architecture in a JSON format in the metadata. Hence we can reproduce our network
+    architecture as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This produces:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: The model config (i.e., the architecture of our neural network) and training
+    config (i.e., the parameters we passed into the `compile()` function) are stored
+    as a JSON string. In the code above, we use the `json` module to reformat it to
+    make it easier to read. It is recommended to save your model as HDF5 rather than
+    just your Python code because, as we can see above, it contains more detailed
+    information than the code on how the network was constructed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Comparing Between Different Serialization Methods
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the above, we saw how pickle and h5py can help serialize our Python data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can use pickle to serialize almost any Python object, including user-defined
+    ones and functions. But pickle is not language agnostic. You cannot unpickle it
+    outside Python. There are even 6 versions of pickle developed so far, and older
+    Python may not be able to consume the newer version of pickle data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the contrary, HDF5 is cross-platform and works well with other language such
+    as Java and C++. In Python, the `h5py` library implemented the Numpy interface
+    to make it easier to manipulate the data. The data can be accessed in a different
+    language because the HDF5 format supports only the Numpy data types such as float
+    and strings. We cannot store arbitrary objects such as a Python function into
+    HDF5.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Serialization from C# programming guide, [https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/serialization/](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/serialization/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Save and load Keras models, [https://www.tensorflow.org/guide/keras/save_and_serialize](https://www.tensorflow.org/guide/keras/save_and_serialize)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Libraries
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: pickle, [https://docs.python.org/3/library/pickle.html](https://docs.python.org/3/library/pickle.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: h5py, [https://docs.h5py.org/en/stable/](https://docs.h5py.org/en/stable/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Tensorflow tf.keras.layers.serialize, [https://www.tensorflow.org/api_docs/python/tf/keras/layers/serialize](https://www.tensorflow.org/api_docs/python/tf/keras/layers/serialize)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tensorflow tf.keras.models.load_model, [https://www.tensorflow.org/api_docs/python/tf/keras/models/load_model](https://www.tensorflow.org/api_docs/python/tf/keras/models/load_model)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tensorflow tf.keras.models.save_model, [https://www.tensorflow.org/api_docs/python/tf/keras/models/save_model](https://www.tensorflow.org/api_docs/python/tf/keras/models/save_model)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you discovered what serialization is and how to use libraries
+    in Python to serialize Python objects such as dictionaries and Tensorflow Keras
+    models. You have also learned the advantages and disadvantages of two Python libraries
+    for serialization (pickle, h5py).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: what is serialization, and why it is useful
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: how to get started with pickle and h5py serialization libraries in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: pros and cons of different serialization methods
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

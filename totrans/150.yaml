@@ -1,0 +1,253 @@
+- en: Making Predictions with Logistic Regression in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/making-predictions-with-logistic-regression-in-pytorch/](https://machinelearningmastery.com/making-predictions-with-logistic-regression-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Logistic regression is a statistical technique for modeling the probability
+    of an event. It is often used in machine learning for making predictions. We apply
+    logistic regression when a categorical outcome needs to be predicted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In PyTorch, the construction of logistic regression is similar to that of linear
+    regression. They both applied to linear inputs. But logistic regression is specifically
+    classification problems, such as classifying into one of the two outcomes (0 or
+    1).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this tutorial, we’ll focus on making predictions with logistic regression.
+    We’ll learn how some of the useful packages in the PyTorch library can help easily
+    create a logistic regression model. Particularly, we’ll learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to make predictions with logistic regression in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The logistic function and its implementation on tensors.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build a logistic regression model with `nn.Sequential`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build a custom module for logistic regression.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/457c0f3b051171ebdac81b5c3ccf40da.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making Predictions with Logistic Regression in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Manson Yim](https://unsplash.com/photos/O-hXklfVxOo). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in four parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create Data Class
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build the Model with `nn.Module`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Train with Mini-Batch Gradient Descent
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Plot the Progress
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is a Logistic Function?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When class of a certain point in a dataset is calculated using a linear function,
+    we get a positive or a negative number such as $-3$, $2$, $4$, etc. When we build
+    a classifier, or specifically a binary classifier, we wish it can return either
+    0 or 1\. A sigmoid or logistic function can be used in this case as this function
+    always return a value between 0 and 1\. Usually we will set a threshold, such
+    as 0.5, to round up or round down the result to designate the output to one class
+    or another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In PyTorch, the logistic function is implemented by the `nn.Sigmoid()` method.
+    Let’s define a tensor by using the `range()` method in PyTorch and apply the logistic
+    function to observe the output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s see how the plot looks like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/4c9e9cf96e0d95b2e9e4ea434eb7aefa.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Logistic function
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can see in the plot, the values of a logistic function range between
+    0 and 1, with the transition happen mostly around 0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Logistic Regression Model via `nn.Sequential`
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `nn.Sequential` package in PyTorch enables us to build logistic regression
+    model just like we can build our linear regression models. We simply need to define
+    a tensor for input and process it through the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s define a Logistic Regression model object that takes one-dimensional tensor
+    as input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This model has a linear function layer. The output from the linear function
+    is passed on to the logistic function that makes the prediction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can check the list of model parameters using `parameters()` method. The parameters
+    should be randomly initialized in this case but we can see the shape match what
+    we specified in the model above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here’s what the output looks like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s define a one-dimensional tensor `x` and make predictions with our
+    logistic regression model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: We force the tensor to be in `float32` type because this is what our model expects.
+    Feeding this samples of data into the model, we will get the following predictions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Its output is like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Custom Module for Logistic Regression
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Knowing how to build custom modules is necessary when you work on advanced deep
+    learning solutions. We can try out the syntax and build our custom logistic regerssion
+    module. This should work identically to the `nn.Sequential` model above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We’ll define the class and inherit all the methods and attributes from the `nn.Module`
+    package. In the `forward()` function of the class, we’ll use `sigmoid()` method
+    which takes the output from the linear function of the class and makes the prediction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can instantiate the class object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s make predictions for the tensor `x` we defined above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output would be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, our custom model for Logistic Regression works exactly like
+    the `nn.Sequential` version above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned some basics of Logistic Regression and how it
+    can be implemented in PyTorch. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to make predictions with Logistic Regression in Pytroch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: About the Logistic Function and its implementation on tensors.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build a Logistic Regression model with `nn.Sequential`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build a custom module for Logistic Regression.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

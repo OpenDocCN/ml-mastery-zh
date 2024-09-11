@@ -1,0 +1,416 @@
+- en: Developing a Python Program Using Inspection Tools
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/developing-a-python-program-using-inspection-tools/](https://machinelearningmastery.com/developing-a-python-program-using-inspection-tools/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Python is an interpreting language. It means there is an interpreter to run
+    our program, rather than compiling the code and running natively. In Python, a
+    REPL (read-eval-print loop) can run commands line by line. Together with some
+    inspection tools provided by Python, it helps to develop codes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following, you will see how to make use of the Python interpreter to
+    inspect an object and develop a program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After finishing this tutorial, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to work in the Python interpreter
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the inspection functions in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to develop a solution step by step with the help of inspection functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started!![](../Images/6aa46dadfb52f5e53446d8edd5b2df2c.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Developing a Python Program Using Inspection Tools.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Tekton](https://unsplash.com/photos/kzlxOJwD6i8). Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is in four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: PyTorch and TensorFlow
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Looking for Clues
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Learning from the Weights
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Making a Copier
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: PyTorch and TensorFlow
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: PyTorch and TensorFlow are the two biggest neural network libraries in Python.
+    Their code is different, but the things they can do are similar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the classic MNIST handwritten digit recognition problem; you can build
+    a LeNet-5 model to classify the digits as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is a simplified code that does not need any validation or testing. The
+    counterpart in TensorFlow is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Running this program would give you the file `lenet5.pt` from the PyTorch code
+    and `lenet5.h5` from the TensorFlow code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Looking for Clues
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you understand what the above neural networks are doing, you should be able
+    to tell that there is nothing but many multiply and add calculations in each layer.
+    Mathematically, there is a matrix multiplication between the input and the **kernel**
+    of each fully-connected layer before adding the **bias** to the result. In the
+    convolutional layers, there is the element-wise multiplication of the kernel to
+    a portion of the input matrix before taking the sum of the result and adding the
+    bias as one output element of the feature map.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While developing the same LeNet-5 model using two different frameworks, it should
+    be possible to make them work identically if their weights are the same. How can
+    you copy over the weight from one model to another, given their architectures
+    are identical?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can load the saved models as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This probably does not tell you much. But if you run `python` in the command
+    line without any parameters, you launch the REPL, in which you can type in the
+    above code (you can leave the REPL with `quit()`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Nothing shall be printed in the above. But you can check the two models that
+    were loaded using the `type()` built-in command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So here you know they are neural network models from PyTorch and Keras, respectively.
+    Since they are trained models, the weight must be stored inside. So how can you
+    find the weights in these models? Since they are objects, the easiest way is to
+    use `dir()` built-in function to inspect their members:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There are a lot of members in each object. Some are attributes, and some are
+    methods of the class. By convention, those that begin with an underscore are internal
+    members that you are not supposed to access in normal circumstances. If you want
+    to see more of each member, you can use the `getmembers()` function from the `inspect`
+    module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The output of the `getmembers()` function is a list of tuples, in which each
+    tuple is the name of the member and the member itself. From the above, for example,
+    you know that `__call__` is a “bound method,” i.e., a member method of a class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By carefully looking at the members’ names, you can see that in the PyTorch
+    model, the “state” should be your interest, while in the Keras model, you have
+    some member with the name “weights.” To shortlist the names of them, you can do
+    the following in the interpreter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This might take some time in trial and error. But it’s not too difficult, and
+    you may discover that you can see the weight with `state_dict` in the torch model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For the TensorFlow/Keras model, you can find the weights with `get_weights()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here it is also with the attribute `weights`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here,  you can observe the following: In the PyTorch model, the function `state_dict()`
+    gives an `OrderedDict`, which is a dictionary with the key in a specified order.
+    There are keys such as `0.weight`, and they are mapped to a tensor value. In the
+    Keras model, the `get_weights()` function returns a list. Each element in the
+    list is a NumPy array. The `weight` attribute also holds a list, but the elements
+    are `tf.Variable` type.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can know more by checking the shape of each tensor or array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'While you do not see the name of the layers from the Keras model above, in
+    fact, you can use similar reasoning to find the layers and get their name:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Learning from the Weights
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: By comparing the result of `state_dict()` from the PyTorch model and that of
+    `get_weights()` from the Keras model, you can see that they both contain 10 elements.
+    From the shape of the PyTorch tensors and NumPy arrays, you can further notice
+    that they are in similar shapes. This is probably because both frameworks recognize
+    a model in the order from input to output. You can further confirm that from the
+    key of the `state_dict()` output compared to the layer names from the Keras model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can check how you can manipulate a PyTorch tensor by extracting one and
+    inspecting:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'From the output of `dir()` on a PyTorch tensor, you found a member named `numpy`,
+    and by calling that function, it seems to convert a tensor into a NumPy array.
+    You can be quite confident about that because you see the numbers match and the
+    shape matches. In fact, you can be more confident by looking at the documentation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `help()` function will show you the docstring of a function, which usually
+    is its documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since this is the kernel of the first convolution layer, by comparing the shape
+    of this kernel to that of the Keras model, you can note their shapes are different:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Know that the input to the first layer is a 28×28×1 image array while the output
+    is 6 feature maps. It is natural to correspond the 1 and 6 in the kernel shape
+    to be the number of channels in the input and output. Also, from our understanding
+    of the mechanism of a convolutional layer, the kernel should be a 5×5 matrix.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At this point, you probably guessed that in the PyTorch convolutional layer,
+    the kernel is represented as (output × input × height × width), while in Keras,
+    it is represented as (height × width × input × output).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similarly, you also see in the fully-connected layers that PyTorch presents
+    the kernel as (output × input) while Keras is in (input × output):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Matching the weights and tensors and showing their shapes side by side should
+    make these clearer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And we can also match the name of the Keras weights and PyTorch tensors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Making a Copier
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Since you learned what the weights look like in each model, it doesn’t seem
+    difficult to create a program to copy weights from one to another. The key is
+    to answer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to set the weights in each model
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What the weights are supposed to look like (shape and data type) in each model
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The first question can be answered from the previous inspection using the `dir()`
+    built-in function. You saw the `load_state_dict` member in the PyTorch model,
+    and it seems to be the tool. Similarly, in the Keras model, you saw a member named
+    `set_weight` that is exactly the counterpart name for `get_weight`. You can further
+    confirm it is the case by checking their documentation online or via the `help()`
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: You confirmed that these are both functions, and their documentation explained
+    they are what you believed them to be. From the documentation, you further learned
+    that the `load_state_dict()` function of the PyTorch model expects the argument
+    to be the same format as that returned from the `state_dict()` function; the `set_weights()`
+    function of the Keras model expects the same format as returned from the `get_weights()`
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now you have finished your adventure with the Python REPL (you can enter `quit()`
+    to leave).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By researching a bit on how to **reshape** the weights and **cast** from one
+    data type to another, you come up with the following program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: And the other way around, copying weights from the PyTorch model to the Keras
+    model can be done similarly,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, you can verify they work the same by passing a random array as input,
+    in which you can expect the output tied out exactly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In our case, the output is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: This agrees with each other at sufficient precision. Note that your result may
+    not be exactly the same due to the random nature of training. Also, due to the
+    nature of floating point calculation, the PyTorch and TensorFlow/Keras model would
+    not produce the exact same output even if the weights were the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, the objective here is to show you how you can make use of Python’s
+    inspection tools to understand something you didn’t know and develop a solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[inspect](https://docs.python.org/3/library/inspect.html) module in Python
+    Standard Libraries'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[dir](https://docs.python.org/3/library/functions.html#dir) built-in function'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[What is a `state_dict` in PyTorch](https://pytorch.org/tutorials/recipes/recipes/what_is_state_dict.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[TensorFlow `get_weights` method](https://www.tensorflow.org/api_docs/python/tf/keras/layers/Layer#get_weights)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to work under the Python REPL and use the
+    inspection functions to develop a solution. Specifically,
+  prefs: []
+  type: TYPE_NORMAL
+- en: You learned how to use the inspection functions in REPL to learn the internal
+    members of an object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You learned how to use REPL to experiment with Python code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As a result, you developed a program converting between a PyTorch and a Keras
+    model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

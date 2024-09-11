@@ -1,0 +1,422 @@
+- en: How to Implement Scaled Dot-Product Attention from Scratch in TensorFlow and
+    Keras
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras/](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Having familiarized ourselves with the theory behind the [Transformer model](https://machinelearningmastery.com/the-transformer-model/)
+    and its [attention mechanism](https://machinelearningmastery.com/the-transformer-attention-mechanism/),
+    we’ll start our journey of implementing a complete Transformer model by first
+    seeing how to implement the scaled-dot product attention. The scaled dot-product
+    attention is an integral part of the multi-head attention, which, in turn, is
+    an important component of both the Transformer encoder and decoder. Our end goal
+    will be to apply the complete Transformer model to Natural Language Processing
+    (NLP).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover how to implement scaled dot-product attention
+    from scratch in TensorFlow and Keras.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The operations that form part of the scaled dot-product attention mechanism
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement the scaled dot-product attention mechanism from scratch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/8a5d9b579cb4921e621da8a05c7dd42b.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/dotproduct_cover.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to implement scaled dot-product attention from scratch in TensorFlow and
+    Keras
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Sergey Shmidt](https://unsplash.com/photos/koy6FlCCy5s), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recap of the Transformer Architecture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Transformer Scaled Dot-Product Attention
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Implementing the Scaled Dot-Product Attention From Scratch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Testing Out the Code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you are already familiar with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[The concept of attention](https://machinelearningmastery.com/what-is-attention/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The attention mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Transfomer attention mechanism](https://machinelearningmastery.com/the-transformer-attention-mechanism)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Transformer model](https://machinelearningmastery.com/the-transformer-model/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Recap of the Transformer Architecture**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Recall](https://machinelearningmastery.com/the-transformer-model/) having
+    seen that the Transformer architecture follows an encoder-decoder structure. The
+    encoder, on the left-hand side, is tasked with mapping an input sequence to a
+    sequence of continuous representations; the decoder, on the right-hand side, receives
+    the output of the encoder together with the decoder output at the previous time
+    step to generate an output sequence.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The encoder-decoder structure of the Transformer architecture
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: In generating an output sequence, the Transformer does not rely on recurrence
+    and convolutions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You have seen that the decoder part of the Transformer shares many similarities
+    in its architecture with the encoder. One of the core components that both the
+    encoder and decoder share within their multi-head attention blocks is the *scaled
+    dot-product attention*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Transformer Scaled Dot-Product Attention**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: First, [recall](https://machinelearningmastery.com/the-transformer-attention-mechanism/)
+    the queries, keys, and values as the important components you will work with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the encoder stage, they each carry the same input sequence after this has
+    been embedded and augmented by positional information. Similarly, on the decoder
+    side, the queries, keys, and values fed into the first attention block represent
+    the same target sequence after this would have also been embedded and augmented
+    by positional information. The second attention block of the decoder receives
+    the encoder output in the form of keys and values and the normalized output of
+    the first attention block as the queries. The dimensionality of the queries and
+    keys is denoted by $d_k$, whereas the dimensionality of the values is denoted
+    by $d_v$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The scaled dot-product attention receives these queries, keys, and values as
+    inputs and first computes the dot-product of the queries with the keys. The result
+    is subsequently scaled by the square root of $d_k$, producing the attention scores.
+    They are then fed into a softmax function, obtaining a set of attention weights.
+    Finally, the attention weights are used to scale the values through a weighted
+    multiplication operation. This entire process can be explained mathematically
+    as follows, where $\mathbf{Q}$, $\mathbf{K}$ and $\mathbf{V}$ denote the queries,
+    keys, and values, respectively:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\text{attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax} \left(
+    \frac{\mathbf{Q} \mathbf{K}^\mathsf{T}}{\sqrt{d_k}} \right) \mathbf{V}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Each multi-head attention block in the Transformer model implements a scaled
+    dot-product attention operation as shown below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/4d8487f6c824c4eeb7ce4a062b8c6e14.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/dotproduct_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaled dot-product attention and multi-head attention
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may note that the scaled dot-product attention can also apply a mask to
+    the attention scores before feeding them into the softmax function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the word embeddings are zero-padded to a specific sequence length, a *padding
+    mask* needs to be introduced in order to prevent the zero tokens from being processed
+    along with the input in both the encoder and decoder stages. Furthermore, a *look-ahead
+    mask* is also required to prevent the decoder from attending to succeeding words,
+    such that the prediction for a particular word can only depend on known outputs
+    for the words that come before it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These look-ahead and padding masks are applied inside the scaled dot-product
+    attention set to -$\infty$ all the values in the input to the softmax function
+    that should not be considered. For each of these large negative inputs, the softmax
+    function will, in turn, produce an output value that is close to zero, effectively
+    masking them out. The use of these masks will become clearer when you progress
+    to the implementation of the [encoder](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)
+    and [decoder](https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras)
+    blocks in separate tutorials.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the time being, let’s see how to implement the scaled dot-product attention
+    from scratch in TensorFlow and Keras.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Implementing the Scaled Dot-Product Attention from Scratch**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this purpose, you will create a class called `DotProductAttention` that
+    inherits from the `Layer` base class in Keras.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In it, you will create the class method, `call()`, that takes as input arguments
+    the queries, keys, and values, as well as the dimensionality, $d_k$, and a mask
+    (that defaults to `None`):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The first step is to perform a dot-product operation between the queries and
+    the keys, transposing the latter. The result will be scaled through a division
+    by the square root of $d_k$. You will add the following line of code to the `call()`
+    class method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, you will check whether the `mask` argument has been set to a value that
+    is not the default `None`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The mask will contain either `0` values to indicate that the corresponding
+    token in the input sequence should be considered in the computations or a `1` to
+    indicate otherwise. The mask will be multiplied by -1e9 to set the `1` values
+    to large negative numbers (remember having mentioned this in the previous section),
+    subsequently applied to the attention scores:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The attention scores will then be passed through a softmax function to generate
+    the attention weights:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The final step weights the values with the computed attention weights through
+    another dot-product operation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The complete code listing is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Testing Out the Code**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You will be working with the parameter values specified in the paper, [Attention
+    Is All You Need](https://arxiv.org/abs/1706.03762), by Vaswani et al. (2017):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As for the sequence length and the queries, keys, and values, you will be working
+    with dummy data for the time being until you arrive at the stage of [training
+    the complete Transformer model](https://machinelearningmastery.com/training-the-transformer-model)
+    in a separate tutorial, at which point you will use actual sentences. Similarly,
+    for the mask,  leave it set to its default value for the time being:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the complete Transformer model, values for the sequence length and the queries,
+    keys, and values will be obtained through a process of word tokenization and embedding.
+    You will be covering this in a separate tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Returning to the testing procedure, the next step is to create a new instance
+    of the `DotProductAttention` class, assigning its output to the `attention` variable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since the `DotProductAttention` class inherits from the `Layer` base class,
+    the `call()` method of the former will be automatically invoked by the magic `__call()__`
+    method of the latter. The final step is to feed in the input arguments and print
+    the result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Tying everything together produces the following code listing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Running this code produces an output of shape (*batch size*, *sequence length*,
+    *values dimensionality*). Note that you will likely see a different output due
+    to the random initialization of the queries, keys, and values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
+    2021'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered how to implement scaled dot-product attention
+    from scratch in TensorFlow and Keras.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The operations that form part of the scaled dot-product attention mechanism
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement the scaled dot-product attention mechanism from scratch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

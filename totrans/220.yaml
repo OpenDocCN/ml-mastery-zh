@@ -1,0 +1,447 @@
+- en: 'Calculus in Action: Neural Networks'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/calculus-in-action-neural-networks/](https://machinelearningmastery.com/calculus-in-action-neural-networks/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: An artificial neural network is a computational model that approximates a mapping
+    between inputs and outputs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is inspired by the structure of the human brain, in that it is similarly
+    composed of a network of interconnected neurons that propagate information upon
+    receiving sets of stimuli from neighbouring neurons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training a neural network involves a process that employs the backpropagation
+    and gradient descent algorithms in tandem. As we will be seeing, both of these
+    algorithms make extensive use of calculus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover how aspects of calculus are applied in neural
+    networks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An artificial neural network is organized into layers of neurons and connections,
+    where the latter are attributed a weight value each.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each neuron implements a nonlinear function that maps a set of inputs to an
+    output activation.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In training a neural network, calculus is used extensively by the backpropagation
+    and gradient descent algorithms.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/c943918fb26ecdd5530552ea67e22bc1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Calculus in Action: Neural Networks'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Tomoe Steineck](https://unsplash.com/photos/T1Wru10gKhg), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An Introduction to the Neural Network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Mathematics of a Neuron
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training the Network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you already know what are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Function approximation](https://machinelearningmastery.com/neural-networks-are-function-approximators/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Rate of change](https://machinelearningmastery.com/key-concepts-in-calculus-rate-of-change/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Partial derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The chain rule](https://machinelearningmastery.com/?p=12720&preview=true)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The chain rule on more functions](https://machinelearningmastery.com/?p=12732&preview=true)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Gradient descent](https://machinelearningmastery.com/a-gentle-introduction-to-gradient-descent-procedure/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can review these concepts by clicking on the links given above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**An Introduction to the Neural Network**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Artificial neural networks can be considered as function approximation algorithms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a supervised learning setting, when presented with many input observations
+    representing the problem of interest, together with their corresponding target
+    outputs, the artificial neural network will seek to approximate the mapping that
+    exists between the two.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*A neural network is a computational model that is inspired by the structure
+    of the human brain.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 65, [Deep Learning](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_11?dchild=1&keywords=deep+learning&qid=1627991691&sr=8-11),
+    2019.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The human brain consists of a massive network of interconnected neurons (around
+    one hundred billion of them), with each comprising a cell body, a set of fibres
+    called dendrites, and an axon:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/a36ac67380bb5a415df1ce97f20b7127.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Neuron in the Human Brain
+  prefs: []
+  type: TYPE_NORMAL
+- en: The dendrites act as the input channels to a neuron, whereas the axon acts as
+    the output channel. Therefore, a neuron would receive input signals through its
+    dendrites, which in turn would be connected to the (output) axons of other neighbouring
+    neurons. In this manner, a sufficiently strong electrical pulse (also called an
+    action potential) can be transmitted along the axon of one neuron, to all the
+    other neurons that are connected to it. This permits signals to be propagated
+    along the structure of the human brain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*So, a neuron acts as an all-or-none switch, that takes in a set of inputs
+    and either outputs an action potential or no output. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 66, [Deep Learning](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_11?dchild=1&keywords=deep+learning&qid=1627991691&sr=8-11),
+    2019.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: An artificial neural network is analogous to the structure of the human brain,
+    because (1) it is similarly composed of a large number of interconnected neurons
+    that, (2) seek to propagate information across the network by, (3) receiving sets
+    of stimuli from neighbouring neurons and mapping these to outputs, to be fed to
+    the next layer of neurons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The structure of an artificial neural network is typically organised into layers
+    of neurons ([recall](https://machinelearningmastery.com/?p=12720&preview=true)
+    the depiction of a tree diagram). For example, the following diagram illustrates
+    a fully-connected  neural network, where all the neurons in one layer are connected
+    to all the neurons in the next layer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/3e46e8325a0497372613d60f625f4839.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_21.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Fully-Connected, Feedforward Neural Network
+  prefs: []
+  type: TYPE_NORMAL
+- en: The inputs are presented on the left hand side of the network, and the information
+    propagates (or flows) rightward towards the outputs at the opposite end. Since
+    the information is, hereby, propagating in the *forward* direction through the
+    network, then we would also refer to such a network as a *feedforward neural network*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The layers of neurons in between the input and output layers are called *hidden*
+    layers, because they are not directly accessible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each connection (represented by an arrow in the diagram) between two neurons
+    is attributed a weight, which acts on the data flowing through the network, as
+    we will see shortly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Mathematics of a Neuron**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: More specifically, let’s say that a particular artificial neuron (or a *perceptron*,
+    as Frank Rosenblatt had initially named it) receives *n* inputs, [*x*[1], …, *x*[n]],
+    where each connection is attributed a corresponding weight, [*w*[1], …, *w*[n]].
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first operation that is carried out multiplies the input values by their
+    corresponding weight, and adds a bias term, *b*, to their sum, producing an output,
+    *z*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*z* = ((*x*[1] × *w*[1]) + (*x*[2] × *w*[2]) + … + (*x*[n] × *w*[n])) + *b*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can, alternatively, represent this operation in a more compact form as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/c5772f48da8251cfc7a2e3fcac969a0f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_5.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This weighted sum calculation that we have performed so far is a linear operation.
+    If every neuron had to implement this particular calculation alone, then the neural
+    network would be restricted to learning only linear input-output mappings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*However, many of the relationships in the world that we might want to model
+    are nonlinear, and if we attempt to model these relationships using a linear model,
+    then the model will be very inaccurate. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 77, [Deep Learning](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_11?dchild=1&keywords=deep+learning&qid=1627991691&sr=8-11),
+    2019.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Hence, a second operation is performed by each neuron that transforms the weighted
+    sum by the application of a nonlinear activation function, *a*(.):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/6210c55c3400231a53a7cd6efdfce77e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_6.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can represent the operations performed by each neuron even more compactly,
+    if we had to integrate the bias term into the sum as another weight, *w*[0] (notice
+    that the sum now starts from 0):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/13c58fc2adb48e1b7e859205b5c3b076.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_7.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The operations performed by each neuron can be illustrated as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/cfd7af5a999b605f09c16c0f5e062e37.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nonlinear Function Implemented by a Neuron
+  prefs: []
+  type: TYPE_NORMAL
+- en: Therefore, each neuron can be considered to implement a nonlinear function that
+    maps a set of inputs to an output activation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Training the Network**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Training an artificial neural network involves the process of searching for
+    the set of weights that model best the patterns in the data. It is a process that
+    employs the backpropagation and gradient descent algorithms in tandem. Both of
+    these algorithms make extensive use of calculus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each time that the network is traversed in the forward (or rightward) direction,
+    the error of the network can be calculated as the difference between the output
+    produced by the network and the expected ground truth, by means of a loss function
+    (such as the sum of squared errors (SSE)). The backpropagation algorithm, then,
+    calculates the gradient (or the rate of change) of this error to changes in the
+    weights. In order to do so, it requires the use of the chain rule and partial
+    derivatives.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For simplicity, consider a network made up of two neurons connected by a single
+    path of activation. If we had to break them open, we would find that the neurons
+    perform the following operations in cascade:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/63c0a794e2b450482a8396ab72e09c83.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Operations Performed by Two Neurons in Cascade
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first application of the chain rule connects the overall error of the network
+    to the input, *z*[2], of the activation function *a*[2] of the second neuron,
+    and subsequently to the weight, *w*[2], as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/100a9c7564696760ab6d36aa245e3bcc.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_8.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You may notice that the application of the chain rule involves, among other
+    terms, a multiplication by the partial derivative of the neuron’s activation function
+    with respect to its input, *z*[2]. There are different activation functions to
+    choose from, such as the sigmoid or the logistic functions. If we had to take
+    the logistic function as an example, then its partial derivative would be computed
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/344a5101574611b3c5098e2d74f99a3e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_9.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Hence, we can compute ????[2] as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/5d6ad863ffab43e0cf7796e004150573.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_10.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, *t*[2] is the expected activation, and in finding the difference between
+    *t*[2] and *a*[2] we are, therefore, computing the error between the activation
+    generated by the network and the expected ground truth.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since we are computing the derivative of the activation function, it should,
+    therefore, be continuous and differentiable over the entire space of real numbers.
+    In the case of deep neural networks, the error gradient is propagated backwards
+    over a large number of hidden layers. This can cause the error signal to rapidly
+    diminish to zero, especially if the maximum value of the derivative function is
+    already small to begin with (for instance, the inverse of the logistic function
+    has a maximum value of 0.25). This is known as the *vanishing gradient problem*.
+    The ReLU function has been so popularly used in deep learning to alleviate this
+    problem, because its derivative in the positive portion of its domain is equal
+    to 1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next weight backwards is deeper into the network and, hence, the application
+    of the chain rule can similarly be extended to connect the overall error to the
+    weight, *w*[1], as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/1a6c819c27eff3c1afa55aca30ff8469.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_11.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we take the logistic function again as the activation function of choice,
+    then we would compute ????[1] as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/8b87ee2770c239ec81e586aab65e2d5d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_12.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once we have computed the gradient of the network error with respect to each
+    weight, then the gradient descent algorithm can be applied to update each weight
+    for the next *forward propagation* at time, *t*+1\. For the weight, *w*[1], the
+    weight update rule using gradient descent would be specified as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/2568402f23c0819e9e2e36f79d27c2c3.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/neural_networks_13.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even though we have hereby considered a simple network, the process that we
+    have gone through can be extended to evaluate more complex and deeper ones, such
+    convolutional neural networks (CNNs).
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the network under consideration is characterised by multiple branches coming
+    from multiple inputs (and possibly flowing towards multiple outputs), then its
+    evaluation would involve the summation of different derivative chains for each
+    path, similarly to how we have previously derived the generalized chain rule.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_11?dchild=1&keywords=deep+learning&qid=1627991691&sr=8-11),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Pattern Recognition and Machine Learning](https://www.amazon.com/Pattern-Recognition-Learning-Information-Statistics/dp/1493938436/ref=sr_1_2?dchild=1&keywords=Pattern+Recognition+and+Machine+Learning&qid=1627991645&sr=8-2),
+    2016.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered how aspects of calculus are applied in neural
+    networks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An artificial neural network is organized into layers of neurons and connections,
+    where the latter are each attributed a weight value.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each neuron implements a nonlinear function that maps a set of inputs to an
+    output activation.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In training a neural network, calculus is used extensively by the backpropagation
+    and gradient descent algorithms.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

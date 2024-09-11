@@ -1,0 +1,350 @@
+- en: A Gentle Introduction To Hessian Matrices
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-hessian-matrices/](https://machinelearningmastery.com/a-gentle-introduction-to-hessian-matrices/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Hessian matrices belong to a class of mathematical structures that involve second
+    order derivatives. They are often used in machine learning and data science algorithms
+    for optimizing a function of interest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover Hessian matrices, their corresponding discriminants,
+    and their significance. All concepts are illustrated via an example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hessian matrices
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discriminants computed via Hessian matrices
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What information is contained in the discriminant
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Picture of a waterfall close to Murree. Photo by Beenish Fatima, some rights
+    reserved.](../Images/e25a4d6a81b18bd557b9b885630d6fe1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/beenish-2.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Gentle Introduction to Hessian Matrices. Photo by Beenish Fatima, some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Definition of a function’s Hessian matrix and the corresponding discriminant
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Example of computing the Hessian matrix, and the discriminant
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What the Hessian and discriminant tell us about the function of interest
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you already know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Derivative of functions](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Function of several variables, partial derivatives and gradient vectors](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Higher order derivatives](https://machinelearningmastery.com/higher-order-derivatives/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can review these concepts by clicking on the links given above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**What Is A Hessian Matrix?**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Hessian matrix is a matrix of second order partial derivatives. Suppose
+    we have a function f of n variables, i.e.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '$$f: R^n \rightarrow R$$'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Hessian of f is given by the following matrix on the left. The Hessian for
+    a function of two variables is also shown below on the right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Hessian a function of n variables (left). Hessian of f(x,y) (right)](../Images/e0e62b0e1ad1dd5688f1c7d29652a548.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/hessian1-1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hessian a function of n variables (left). Hessian of f(x,y) (right)
+  prefs: []
+  type: TYPE_NORMAL
+- en: We already know from our tutorial on gradient vectors that the gradient is a
+    vector of first order partial derivatives. The Hessian is similarly, a matrix
+    of second order partial derivatives formed from all pairs of variables in the
+    domain of f.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**What Is The Discriminant?**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The **determinant** of the Hessian is also called the discriminant of f. For
+    a two variable function f(x, y), it is given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/702495e11689b3d6411687e0eed9fef9.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/hessian2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Discriminant of f(x, y)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Examples of Hessian Matrices And Discriminants**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Suppose we have the following function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: g(x, y) = x^3 + 2y^2 + 3xy^2
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then the Hessian H_g and the discriminant D_g are given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Hessian and discriminant of g(x, y) = x^3 + 2y^2 + 3xy^2](../Images/05f313f13e85a1f22b5dc1a58b0bc800.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/hessian3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hessian and discriminant of g(x, y) = x^3 + 2y^2 + 3xy^2
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s evaluate the discriminant at different points:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: D_g(0, 0) = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: D_g(1, 0) = 36 + 24 = 60
+  prefs: []
+  type: TYPE_NORMAL
+- en: D_g(0, 1) = -36
+  prefs: []
+  type: TYPE_NORMAL
+- en: D_g(-1, 0) = 12
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**What Do The Hessian And Discriminant Signify?**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The Hessian and the corresponding discriminant are used to determine the local
+    extreme points of a function. Evaluating them helps in the understanding of a
+    function of several variables. Here are some important rules for a point (a,b)
+    where the discriminant is D(a, b):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The function f has a **local minimum** if f_xx(a, b) > 0 and the discriminant
+    D(a,b) > 0
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The function f has a **local maximum** if f_xx(a, b) < 0 and the discriminant
+    D(a,b) > 0
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The function f has a saddle point if D(a, b) < 0
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We cannot draw any conclusions if D(a, b) = 0 and need more tests
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Example: g(x, y)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For the function g(x,y):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We cannot draw any conclusions for the point (0, 0)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: f_xx(1, 0) = 6 > 0 and D_g(1, 0) = 60 > 0, hence (1, 0) is a local minimum
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The point (0,1) is a saddle point as D_g(0, 1) < 0
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: f_xx(-1,0) = -6 < 0 and D_g(-1, 0) = 12 > 0, hence (-1, 0) is a local maximum
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The figure below shows a graph of the function g(x, y) and its corresponding
+    contours.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/aaaba8cc81a1c5470349595c66ae4901.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/hessian4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Graph of g(x,y) and contours of g(x,y)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Why Is The Hessian Matrix Important In Machine Learning?**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Hessian matrix plays an important role in many machine learning algorithms,
+    which involve optimizing a given function. While it may be expensive to compute,
+    it holds some key information about the function being optimized. It can help
+    determine the saddle points, and the local extremum of a function. It is used
+    extensively in training neural networks and deep learning architectures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Extensions**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section lists some ideas for extending the tutorial that you may wish to
+    explore.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Optimization
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Eigen values of the Hessian matrix
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Inverse of Hessian matrix and neural network training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you explore any of these extensions, I’d love to know. Post your findings
+    in the comments below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorials**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Gradient descent for machine learning](https://machinelearningmastery.com/gradient-descent-for-machine-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[What is gradient in machine learning](https://machinelearningmastery.com/gradient-in-machine-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Partial derivatives and gradient vectors](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Higher order derivatives](https://machinelearningmastery.com/higher-order-derivatives/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[How to choose an optimization algorithm](https://machinelearningmastery.com/tour-of-optimization-algorithms/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Resources**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Additional resources on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Thomas’ Calculus](https://amzn.to/35Yeolv), 14th edition, 2017\. (based on
+    the original works of George B. Thomas, revised by Joel Hass, Christopher Heil,
+    Maurice Weir)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US),
+    3rd Edition, 2017\. (Gilbert Strang)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://amzn.to/3kS9I52), 8th edition, 2015\. (James Stewart)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you discovered what are Hessian matrices. Specifically, you
+    learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hessian matrix
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discriminant of a function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Do you have any questions?**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

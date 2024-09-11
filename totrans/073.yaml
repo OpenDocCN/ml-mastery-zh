@@ -1,0 +1,344 @@
+- en: How to Transform Images and Create Video with OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/how-to-transform-images-and-create-video-with-opencv/](https://machinelearningmastery.com/how-to-transform-images-and-create-video-with-opencv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When you work with OpenCV, you most often work with images. However, you may
+    find it useful to create animation from multiple images. Chances are that showing
+    images in rapid succession may give you different insight or it is easier to visualize
+    your work by introducing a time axis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this post, you will see how to create a video clip in OpenCV. As an example,
+    you will also learn some basic image manipulation techniques to create the images.
+    In particular, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to manipulate images as numpy array
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to manipulate images using OpenCV functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create video file in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/131a94182e4a8bf20db4d9fd07f527c8.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to Transform Images and Create Video with OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [KAL VISUALS](https://unsplash.com/photos/man-in-black-shirt-holding-video-camera-I-nd-LSCY04).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ken Burns Effect
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Writing Video
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ken Burns Effect
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You are going to create a lot of images by following other posts. Maybe it
+    is to visualize some progress of your machine learning project, or to show how
+    a computer vision technique is manipulating your image. To make things simpler,
+    you are going to do the simplest manipulation to an input image: cropping.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The task in this post is to create **Ken Burns effect**. It is a panning and
+    zooming technique named after the filmmaker Ken Burns:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Instead of showing a large static photo on screen, the Ken Burns effect crops
+    to a detail, then pans across the image.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: — Wikipedia, “Ken Burns effect”
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Let’s see how you can create the Ken Burns effect in Python code using OpenCV.
+    We start with an image, for example the bird picture below that you can download
+    from Wikipedia:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://upload.wikimedia.org/wikipedia/commons/b/b7/Hooded_mountain_tanager_%28Buthraupis_montana_cucullata%29_Caldas.jpg](https://upload.wikimedia.org/wikipedia/commons/b/b7/Hooded_mountain_tanager_%28Buthraupis_montana_cucullata%29_Caldas.jpg)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '![](../Images/f165edf1ba488d20835a3b5d9463f747.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: A picture of *Buthraupis montana cucullata*. Photo by Charles J. Sharp. (CC-BY-SA)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This picture is in 4563×3042 pixels. Opening this picture with OpenCV is easy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The image read by OpenCV, `img`, is indeed a numpy array of shape (3042, 4563,
+    3) and in the data type `uint8` (8-bit unsigned integer) for it is a colored image
+    which each pixel is represented as BGR values between 0 and 255.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Ken Burns effect is to zoom and pan. Each frame in the video is a crop of the
+    original image (and then zoom to fill the screen). To crop the image given a numpy
+    array is easy, since numpy already provided the slicing syntax for you:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The image is a three-dimensional numpy array. The first two dimensions are for
+    height and width, respectively (same as how to set a coordinate for a matrix).
+    Hence you can use the numpy slicing syntax to take pixels $y_0$ to $y_1$ in the
+    vertical direction and pixels $x_0$ to $x_1$ in the horizontal direction (remember
+    that in matrix, coordinates are numbered from top to bottom and from left to right).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cropping a picture means to take a picture of dimension $W\times H$ into a smaller
+    dimension $W’\times H’$. In order to make a video, you want to create frames of
+    a fixed dimension. The cropped dimension $W’\times H’$ would need to be resized.
+    Moreover, to avoid distortion, the cropped image also needs to be at a predefined
+    aspect ratio.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To resize an image, you can define a new numpy array, then calculate and fill
+    in the pixel values one by one. There are many ways to calculate pixel value,
+    such as using linear interpolation or simply copy over the nearest pixel. If you
+    try to implement the resize operation, you will find it not hard but still quite
+    cumbersome. Hence the easier way is to use OpenCV’s native function, such as the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The function `cv2.resize()` takes an image and the target dimension as a tuple
+    of (width, height) in pixel size and returns a new numpy array. You can specify
+    the algorithm for resizing. The above is using linear interpolation and it looks
+    good in most cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These are basically all ways you can manipulate an image in OpenCV, namely:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Manipulate the numpy array directly. This works well for simple tasks where
+    you want to work at the pixel level
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using OpenCV functions. This is more suitable for complex tasks where you need
+    to consider the entire image or it is too inefficient to manipulate each pixel.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'With these, you can build your Ken Burns animation. The flow is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Given an image (preferably a high-resolution one), you want to define pan by
+    specifying the starting and ending focus coordinates. You also want to define
+    the starting and ending zoom ratio.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You have a predefined video duration and the FPS (frame per second). The total
+    number of frames in the video is the duration multiplied by the FPS.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: For each frame, calculate the crop coordinates. Then resize the cropped image
+    to the target resolution of the video
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: With all the frames prepared, you write to the video file.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Let’s start with the constants: Assume we are going to create a two-second
+    720p video (resolution 1280×720) at 25 FPS (which is quite low but visually acceptable).
+    The pan will start at the center at 40% from left and 60% from top of the image,
+    and end at the center at 50% from left and 50% from top of the image. The zoom
+    will be start from 70% of the original image, then zoom out to 100%.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You are going to crop the image a lot of times to create frames (precisely,
+    there are 2×25=50 frames). Therefore it is beneficial to create a function for
+    cropping:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This cropping function takes an image, the tentative center position in pixel
+    coordinate, and the width and height in number of pixels. The cropping will ensure
+    it will not start beyond the image border, hence the two `max()` functions are
+    used. Cropping is done using numpy slicing syntax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you consider that the current point of time is at $\alpha$% of the entire
+    duration, you can use affine transform to calculate the exact level of zoom and
+    the position of pan. In terms of the relative position of the pan center (in terms
+    of percentage of original width and height), the affine transform gives
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: where `alpha` is between 0 and 1\. Similarly, the zoom level is
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Given the original image size and the scale, you can calculate the size of
+    cropped image by multiplication. But since the aspect ratio of the image may not
+    be the same as the video, you should adjust the cropped dimension to fit the video
+    aspect ratio. Assume the image numpy array is `img`, and the zoom level as `scale`
+    calculated above, the cropped size can be calculated as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above is to compare the aspect ratio (width divided by height) between the
+    image and video, and the zoom level is used for the more limited edge and calculates
+    the other edge based on the target aspect ratio.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you know how many frames you needed, you can use a for-loop to create
+    each frame with a different affine parameter `alpha`, which can be obtained using
+    a numpy function `linspace()`. The complete code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The last few lines is how you use OpenCV to write a video. You create a `VideoWriter`
+    object with the FPS and resolution specified. Then you write the frames one by
+    one, and release the object to close the written file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The created video is one like the [this](https://machinelearningmastery.com/wp-content/uploads/2023/10/output.mp4).
+    A preview is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: <https://machinelearningmastery.com/wp-content/uploads/2023/10/output.webm?_=1>
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://machinelearningmastery.com/wp-content/uploads/2023/10/output.webm](https://machinelearningmastery.com/wp-content/uploads/2023/10/output.webm)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preview of the created video. Viewing this requires a supported browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Writing Video
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'From the example in the previous section, you saw how we create a `VideoWriter`
+    object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Unlike how you may write an image file (such as JPEG or PNG), the format of
+    the video that OpenCV created is not inferred from the filename. It is the second
+    parameter to specify the video format, namely, the **FourCC**, which is a code
+    of four characters. You can find the FourCC code and the corresponding video format
+    from the list at the following URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://fourcc.org/codecs.php](https://fourcc.org/codecs.php)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'However, not all FourCC code can be used. It is because OpenCV create the video
+    using the FFmpeg tool. You can find the list of supported video format using the
+    command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Be sure that the `ffmpeg` command is same as what OpenCV used. Also note that,
+    the output of the above command only tells you what format ffmpeg supported, not
+    the corresponding FourCC code. You need to lookup the code elsewhere, such as
+    from the abovementioned URL.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To check if you can use a particular FourCC code, you must try it out and see
+    if OpenCV raise an exception:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you learned how to create a video in OpenCV. The video created
+    is built from a sequence of frames (i.e., no audio). Each frame is an image of
+    a fixed size. As an example, you learned how to apply the Ken Burns effect to
+    a picture, which in particular, you applied:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The technique of cropping an image using numpy slicing syntax
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The technique of resizing an image using OpenCV functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using affine transform to calculate the parameters of zoom and pan, and create
+    frames of the video
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: And finally, you write the frames into a video file using the `VideoWriter`
+    object in OpenCV.
+  prefs: []
+  type: TYPE_NORMAL

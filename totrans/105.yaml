@@ -1,0 +1,416 @@
+- en: Comments, Docstrings, and Type Hints in Python Code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/comments-docstrings-and-type-hints-in-python-code/](https://machinelearningmastery.com/comments-docstrings-and-type-hints-in-python-code/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The source code of a program should be readable to humans. Making it run correctly
+    is only half of its purpose. Without a properly commenting code, it would be difficult
+    for one, including the future you, to understand the rationale and intent behind
+    the code. It would also make the code impossible to maintain. In Python, there
+    are multiple ways to add descriptions to the code to make it more readable or
+    make the intent more explicit. In the following, we will see how we should properly
+    use comments, docstrings, and type hints to make our code easier to understand.
+    After finishing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is the proper way of using comments in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How string literal or docstring can replace comments in some cases
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What are type hints in Python, and how they can help us understand the code
+    better
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/376dbd33f3cff1575c682e181db413ae.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Comments, Docstrings, and Type Hints in Python Code. Photo by [Rhythm Goyal](https://unsplash.com/photos/_-Ofoh09q_o).
+    Some rights reserved
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is in three parts, they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding comments to Python code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using docstrings
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using type hints in Python code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding Comments to Python Code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Almost all programming languages have dedicated syntax for comments. Comments
+    are to be ignored by compilers or interpreters, and hence they have no effect
+    on the programming flow or logic. But with comments, it is easier to read the
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In languages like C++, we can add “inline comments” with a leading double slash
+    (`//`) or add comment blocks enclosed by `/*` and `*/`. However, in Python, we
+    only have the “inline” version, and they are introduced by the leading hash character
+    (`#`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is quite easy to write comments to explain every line of code, but that
+    is usually a waste. When people read the source code, comments often easily catch
+    their attention, and hence putting too many comments would distract the reading.
+    For example, the following is unnecessary and distracting:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Comments like these are merely repeating what the code does. Unless the code
+    is obscure, these comments add no value to the code. The example below might be
+    a marginal case in which the name “ppf” (percentage point function) is less well-known
+    than the term “CDF” (cumulative distribution function):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Good comments should tell why we are doing something. Let’s look at the following
+    example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The function above is implementing the AdaDelta algorithm. In the first line,
+    when we assign something to the variable `solution`, we do not write comments
+    like “a random interpolation between bounds[:,0] and bounds[:,1]” because that
+    is just repeating the code. We say the intent of this line is to “generate an
+    initial point.” Similarly, for the other comments in the function, we mark one
+    of the for-loops as the gradient descent algorithm rather than just saying iterate
+    for certain times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One important issue we want to remember when writing the comment or modifying
+    code is to make sure the comment accurately describes the code. If they contradict,
+    it would be confusing to the readers. So should we not have put the comment on
+    the first line of the above example to “set initial solution to the lowerbound”
+    while the code obviously randomizes the initial solution, or vice versa. If this
+    is what you intended to do, you should update the comment and the code at the
+    same time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An exception would be the “to-do” comments. From time to time, when we have
+    an idea on how to improve the code but have not yet changed it, we may put to-do
+    comments on the code. We can also use it to mark incomplete implementations. For
+    example,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a common practice, and many IDE will highlight the comment block differently
+    when the keyword `TODO` is found. However, it’s supposed to be temporary, and
+    we should not abuse it as an issue-tracking system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In summary, some common “best practices” on commenting code are listed as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Comments should not restate the code but explain it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Comments should not cause confusion but eliminate it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Put comments on code that is not trivial to understand; for example, state the
+    unidiomatic use of syntax, name the algorithm being used, or explain the intent
+    or assumptions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Comments should be concise and simple
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Keep a consistent style and use of language in commenting
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Always prefer to have a better-written code that needs no additional comments
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Docstrings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In C++, we may write a large block of comments such as in the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: C++
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But in Python, we do not have an equivalent to the delimiters `/*` and `*/`,
+    but we can write multi-line comments using the following instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This works because Python supports declaring a string literal spanning across
+    multiple lines if it is delimited with triple quotation marks (`"""`). And a string
+    literal in the code is merely a string declared with no impact. Therefore it is
+    functionally no different than the comments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One reason we want to use string literals is to comment out a large block of
+    code. For example,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above is a sample code that we may develop by experimenting with a machine
+    learning problem. While we generated a dataset randomly at the beginning (the
+    call to `make_classification()` above), we may want to switch to a different dataset
+    and repeat the same process at a later time (e.g., the pickle part above). Rather
+    than removing the block of code, we may simply comment on those lines so that
+    we can store the code later. It is not in good shape for the finalized code but
+    convenient while developing our solution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The string literal in Python as a comment has a special purpose if it is in
+    the first line under a function. The string literal, in that case, is called the
+    “docstring” of the function. For example,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can see the first line under the function is a literal string, and it serves
+    the same purpose as a comment. It makes the code more readable, but at the same
+    time, we can retrieve it from the code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Because of the special status of the docstring, there are several conventions
+    on how to write a proper one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In C++, we may use Doxygen to generate code documentation from comments, and
+    similarly, we have Javadoc for Java code. The closest match in Python would be
+    the tool “autodoc” from Sphinx or pdoc. Both will try to parse the docstring to
+    generate documentation automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There is no standard way of making docstrings, but generally, we expect they
+    will explain the purpose of a function (or a class or module) as well as the arguments
+    and the return values. One common style is like the one above, which is advocated
+    by Google. A different style is from NumPy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tools such as autodoc can parse these docstrings and generate the API documentation.
+    But even if it is not the purpose, having a docstring describing the nature of
+    the function, the data types of the function arguments and return values can surely
+    make your code easier to read. This is particularly true since Python, unlike
+    C++ or Java, is a **duck-typing** language in which variables and function arguments
+    are not declared with a particular type. We can make use of docstrings to spell
+    out the assumptions of the data type so people can more easily follow or use your
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Type Hints in Python Code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Since Python 3.5, type hint syntax is allowed. As the name implies, its purpose
+    is to hint at the type and nothing else. Hence even if it looks to bring Python
+    closer to Java, it does not mean to restrict the data to be stored in a variable.
+    The example above can be rewritten with a type hint:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In a function, the arguments can be followed by a `: type` syntax to spell
+    out the *intended* types. The return value of a function is identified by the `->
+    type` syntax before the colon. In fact, a type hint can be declared for variables
+    too, e.g.,'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The benefit of a type hint is twofold: We can use it to eliminate some comments
+    if we need to describe explicitly the data type being used. We can also help *static
+    analyzers* understand our code better so they can help identify potential issues
+    in the code.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Sometimes the type can be complex, and therefore Python provided the `typing` module
+    in its standard library to help clean up the syntax. For example, we can use `Union[int,float]` to
+    mean `int` type or `float` type, `List[str]` to mean a list that every element
+    is a string, and use `Any` to mean anything. Like as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, it is important to remember that type hints are *hints* only. It does
+    not impose any restrictions on the code. Hence the following is confusing to the
+    reader but perfectly fine:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Using type hints may improve the readability of the code. However, the most
+    important benefit of type hints is to allow a *static analyzer* such as mypy to
+    tell us whether our code has any potential bugs. If you process the above lines
+    of code with mypy, we will see the following error:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: The use of static analyzers will be covered in another post.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To illustrate the use of comments, docstrings, and type hints, below is an example
+    to define a generator function that samples a pandas DataFrame on fixed-width
+    windows. It is useful for training an LSTM network, in which a few consecutive
+    time steps should be provided. In the function below, we start from a random row
+    on the DataFrame and clip a few rows following it. As long as we can successfully
+    get one full window, we take it as a sample. Once we’ve collected enough samples
+    to make a batch, the batch is dispatched.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You should see that it is clearer if we can provide type hints on the function
+    arguments, so we know, for example, that `data` is supposed to be a pandas DataFrame.
+    But we describe further that it is expected to carry a datetime index in the docstring.
+    We describe the algorithm on how to exact a window of rows from the input data
+    as well as the intention of the “if” block in the inner while-loop using comments.
+    In this way, the code is much easier to understand and much easier to maintain
+    or modify for other use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Best practices for writing code comments, [https://stackoverflow.blog/2021/12/23/best-practices-for-writing-code-comments/](https://stackoverflow.blog/2021/12/23/best-practices-for-writing-code-comments/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: PEP483, the theory of type hints, [https://www.python.org/dev/peps/pep-0483/](https://www.python.org/dev/peps/pep-0483/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Google Python Style Guide, [https://google.github.io/styleguide/pyguide.html](https://google.github.io/styleguide/pyguide.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Software
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Sphinx documentation, [https://www.sphinx-doc.org/en/master/index.html](https://www.sphinx-doc.org/en/master/index.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Napoleon module of Sphinx, [https://sphinxcontrib-napoleon.readthedocs.io/en/latest/index.html](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/index.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Google-style docstring example: [https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'NumPy-style docstring example: [https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html)'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: pdoc, [https://pdoc.dev/](https://pdoc.dev/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: typing module, [https://docs.python.org/3/library/typing.html](https://docs.python.org/3/library/typing.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you’ve seen how we should use the comments, docstrings, and
+    type hints in Python. Specifically, you now know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to write a good, useful comment
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The conventions in explaining a function using docstrings
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use type hints to address the readability weakness of duck-typing in
+    Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

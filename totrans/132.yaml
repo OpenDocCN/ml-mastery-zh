@@ -1,0 +1,383 @@
+- en: Using Activation Functions in Deep Learning Models
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/using-activation-functions-in-deep-learning-models/](https://machinelearningmastery.com/using-activation-functions-in-deep-learning-models/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: A deep learning model in its simplest form are layers of perceptrons connected
+    in tandem. Without any activation functions, they are just matrix multiplications
+    with limited power, regardless how many of them. Activation is the magic why neural
+    network can be an approximation to a wide variety of non-linear function. In PyTorch,
+    there are many activation functions available for use in your deep learning models.
+    In this post, you will see how the choice of activation functions can impact the
+    model. Specifically,
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are the common activation functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What are the nature of activation functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the different activation functions impact the learning rate
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the selection of activation function can solve the vanishing gradient problem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/5db87074ce76a05c9126e567ecdf33d9.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Activation Functions in Deep Learning Models
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [SHUJA OFFICIAL](https://unsplash.com/photos/JVCozvGeKNs). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This post is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Toy Model of Binary Classification
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Why Nonlinear Functions?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Effect of Activation Functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A Toy Model of Binary Classification
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s start with a simple example of binary classification. Here you use the
+    `make_circle()` function from scikit-learn to create a synthetic dataset for binary
+    classification. This dataset has two features: The x- and y-coordinate of points.
+    Each point belongs to one of the two classes. You can generate 1000 data points
+    and visualize them as below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The dataset is visualized as follows:![](../Images/541c1a4dd2df4eca7f4b93cebb0838d2.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This dataset is special because it is simple but not linearly separable: It
+    is impossible to find a straight line to separate two classes. How can your neural
+    network figure out there’s a circle boundary between the classes is a challenge.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s create a deep learning model for this problem. To make things simple,
+    you do not do cross validation. You may find the neural network overfit the data
+    but it doesn’t affect the discussion below. The model has 4 hidden layers and
+    the output layer gives a sigmodal value (0 to 1) for binary classification. The
+    model accepts a parameter at its constructor to specify what is the activation
+    to use in the hidden layers. You implement the training loop in a function as
+    you will run this for several times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The implementation is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the end of each epoch in the training function, you evaluate the model with
+    the entire dataset. The evaluation result is returned when the training finished.
+    In the following, you create a model, train it, and plot the training history.
+    The activation function you use is **rectified linear unit** or ReLU, which is
+    the most common activation function nowadays:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running this give you the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: and this plot:![](../Images/c099345f8f114e75edf6ebb67b7e9c5f.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This model works great. After 300 epochs, it can achieve 90% accuracy. However,
+    ReLU is not the only activation function. Historically, sigmoid function and hyperbolic
+    tangents were common in neural networks literatures. If you’re curious, below
+    are how you can compare these three activation functions, using matplotlib:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/4cfca3967a36544399f38d362d46246d.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: ReLU is called rectified linear unit because it is a linear function $y=x$ at
+    positive $x$ but remains zero if $x$ is negative. Mathematically, it is $y=\max(0,
+    x)$. Hyperbolic tangent ($y=\tanh(x)=\dfrac{e^x – e^{-x}}{e^x+e^{-x}}$) goes from
+    -1 to +1 smoothly while sigmoid function ($y=\sigma(x)=\dfrac{1}{1+e^{-x}}$) goes
+    from 0 to +1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you try to differentiate these functions, you will find that ReLU is the
+    easiest: The gradient is 1 at positive region and 0 otherwise. Hyperbolic tangent
+    has a steeper slope therefore its gradient is greater than that of sigmoid function.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: All these functions are increasing. Therefore, their gradients are never negative.
+    This is one of the criteria for an activation function suitable to use in neural
+    networks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Nonlinear Functions?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You might be wondering, why all this hype about nonlinear activation functions?
+    Or why can’t we just use an identity function after the weighted linear combination
+    of activations from the previous layer? Using multiple linear layers is basically
+    the same as using a single linear layer. This can be seen through a simple example.
+    Let’s say you have a one hidden layer neural network, each with two hidden neurons.![](../Images/a576e5e59dd9da8e2208cc3163c61344.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can then rewrite the output layer as a linear combination of the original
+    input variable if you used a linear hidden layer. If you had more neurons and
+    weights, the equation would be a lot longer with more nesting and more multiplications
+    between successive layer weights. However, the idea remains the same: You can
+    represent the entire network as a single linear layer. To make the network represent
+    more complex functions, you would need nonlinear activation functions.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Effect of Activation Functions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To explain how much impact the activation function can bring to your model,
+    let’s modify the training loop function to capture more data: The gradients in
+    each training step. You model has four hidden layers and one output layer. In
+    each step, the backward pass calculates the gradient of the weights of each layer
+    and the weight update is done by the optimizer based on the result of the backward
+    pass. You should observe how the gradient changes as the training progressed.
+    Therefore, the training loop function is modified to collect the mean absolute
+    value of the gradient in each layer in each step, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: At the end of the inner for-loop, the gradients of the layer weights are computed
+    by the backward process earlier and you can access to the gradient using `model.layer0.weight.grad`.
+    Like the weights, the gradients are tensors. You take the absolute value of each
+    element and then compute the mean over all elements. This value depends on the
+    batch and can be very noisy. Thus you summarize all such mean absolute value over
+    the same epoch at the end.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note that you have five layers in the neural network (hidden and output layers
+    combined). So you can see the pattern of each layer’s gradient across the epochs
+    if you visualize them. In below, you run the training loop as before and plot
+    both the cross entropy and accuracy as well as the mean absolute gradient of each
+    layer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running the above produces the following plot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/37587ebd9602e865d8a674c2328e9664.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the plot above, you can see how the accuracy increases and the cross entropy
+    loss decreases. At the same time, you can see the gradient of each layer is fluctuating
+    in a similar range, especially you should pay attention to the line corresponding
+    to the first layer and the last layer. This behavior is ideal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s repeat the same with a sigmoid activation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: which the plot is as follows:![](../Images/f2544e6f3276a2b3f59adf8921a884d3.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can see that after 300 epochs, the final result is much worse than ReLU
+    activation. Indeed, you may need much more epochs for this model to converge.
+    The reason can be easily found on the graph at right, which you can see the gradient
+    is significant only for the output layer while all the hidden layers’ gradients
+    are virtually zero. This is the **vanishing gradient effect** which is the problem
+    of many neural network models with sigmoid activation function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The hyperbolic tangent function has a similar shape as sigmoid function but
+    its curve is steeper. Let’s see how it behaves:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Which is:![](../Images/f73df1d606790ef6e4d6151fb939c71a.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The result looks better than sigmoid activation but still worse then ReLU. In
+    fact, from the gradient plot, you can notice that the gradients at the hidden
+    layers are significant but the gradient at the first hidden layer is obviously
+    at an order of magnitude less than that at the output layer. Thus the backward
+    process is not very effective at propagating the gradient to the input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the reason you see ReLU activation in every neural network model today.
+    Not only because ReLU is simpler and computing the differentiation of it is much
+    faster than the other activation function, but also because it can make the model
+    converge faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Indeed, you can do better than ReLU sometimes. In PyTorch, you have a number
+    of ReLU variations. Let’s look at two of them. You can compare these three varation
+    of ReLU as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/a4fa00edaea43bb7555fda944a2de8c8.png)First is the ReLU6, which
+    is ReLU but cap the function at 6.0 if the input to the function is more than
+    6.0:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/bafd4a9b6e77a3448c8f266c4a04b1d9.png)Next is leaky ReLU, which
+    the negative half of ReLU is no longer flat but a gently slanted line. The rationale
+    behind is to keep a small positive gradient at that region.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/b514bb555cb354c013cf3fc37c862d28.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'You can see that all these variations can give you similar accuracy after 300
+    epochs but from the history curve, you know some are faster to reach a high accuracy
+    than another. This is because of the interaction between the gradient of an activation
+    function with the optimizer. There’s no golden rule that a single activation function
+    works best but the design helps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: in backpropagation, passing the loss metric from the output layer all the way
+    to the input layer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: maintaining stable gradient calculation under specific condition, e.g., limiting
+    floating point precision
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: providing enough contrast on different input such that the backward pass can
+    determine accurate adjustment to the parameter
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The following is the complete code to generate all the plots above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[nn.Sigmoid](https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html)
+    from PyTorch documentation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[nn.Tanh](https://pytorch.org/docs/stable/generated/torch.nn.Tanh.html) from
+    PyTorch documentation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[nn.ReLU](https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html) from
+    PyTorch documentation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[nn.ReLU6](https://pytorch.org/docs/stable/generated/torch.nn.ReLU6.html) from
+    PyTorch documentation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[nn.LeakyReLU](https://pytorch.org/docs/stable/generated/torch.nn.LeakyReLU.html)
+    from PyTorch documentation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Vanishing gradient problem](https://en.wikipedia.org/wiki/Vanishing_gradient_problem),
+    Wikipedia'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this chapter, you discovered how to select activation functions for your
+    PyTorch model. You learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are the common activation functions and how they look like
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use activation functions in your PyTorch model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is vanishing gradient problem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The impact of activation function to the performance of your model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

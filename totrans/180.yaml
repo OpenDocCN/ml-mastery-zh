@@ -1,0 +1,376 @@
+- en: Using OpenPose with Stable Diffusion
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/openpose-with-stable-diffusion/](https://machinelearningmastery.com/openpose-with-stable-diffusion/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: We have just learned about ControlNet. Now, let’s explore the most effective
+    way to control your character based on human pose. OpenPose is a great tool that
+    can detect body keypoint locations in images and video. By integrating OpenPose
+    with Stable Diffusion, we can guide the AI in generating images that match specific
+    poses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this post, you will learn about ControlNet’s OpenPose and how to use it
+    to generate similar pose characters. Specifically, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is Openpose, and how does it work?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use ControlNet Hugging Face Spaces to generate precise images using the
+    reference image.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to set up OpenPose in Stable Diffusion WebUI and use it to create high-quality
+    images.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Various OpenPose processors focus on certain parts of the body.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
+    Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/3606e61ba6df95141b1126b5f32b458e.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using OpenPose with Stable Diffusion
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [engin akyurt](https://unsplash.com/photos/brown-wooden-figurine-on-red-wooden-surface-udh1F6tuOr8).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is in four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is ControlNet OpenPose?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ControlNet in Hugging Face Space
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: OpenPose Editor in Stable Diffusion Web UI
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Image to Image Generation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is ControlNet OpenPose?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: OpenPose is a deep learning model to detect human pose from an image. Its output
+    are the positions of several **keypoints** (such as elbows, wrists, and knees)
+    of the human in the picture. The OpenPose model in ControlNet is to accept the
+    keypoints as the additional conditioning to the diffusion model and produce the
+    output image with human aligned with those keypoints. Once you can specify the
+    precise position of keypoints, it allows you to generate realistic images of human
+    poses based on a skeleton image. You can use it to create artistic photos, animations,
+    or illustrations of different poses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ControlNet in Hugging Face Spaces
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To try out the capability of ControlNet OpenPose model, you can use the free
+    online demo on Hugging Face Spaces:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://hf.co/spaces/hysts/ControlNet-v1-1](https://hf.co/spaces/hysts/ControlNet-v1-1)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: To start, you need to create the pose keypoints. This can be done easily by
+    uploading an image and let the OpenPose model to detect them. First, you can download
+    [Yogendra Singh](https://www.pexels.com/photo/dancing-man-wearing-pants-and-long-sleeved-shirt-1701194/)‘s
+    photo and then upload it to the ControlNet Spaces. This ControlNet helps you to
+    pin down the pose, but you still need to provide a text prompt to generate a picture.
+    Let’s write the simple prompt “A woman is dancing in the rain.” and press the
+    run button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/8410b1e5c81d06b59d90f605a984a48c.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using OpenPose ControlNet model on Hugging Face Spaces
+  prefs: []
+  type: TYPE_NORMAL
+- en: Due to the random nature of image generation, you may want to do multiple attempts.
+    You may also polish the prompt to give more details, such as the lighting, the
+    scene, and the outfit that the woman is wearing. You can even expand the “Advanced
+    options” panel at the bottom to provide more settings, such as negative prompts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/69642440b5561e212027d88f4db558a3.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Settings in the “Advanced options” panel
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the example above, you can see that a high quality image of a woman dancing
+    in the rain from a skeleton image is generated, in the similar pose as your uploaded
+    image. Below are three other generations under the same prompt, all are exceptional
+    and accurately follow the pose of the reference image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/ca2b3dbe3be2f5e251bfa3c185ac4fa6.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Other generated images from the same prompt
+  prefs: []
+  type: TYPE_NORMAL
+- en: OpenPose Editor from Stable Diffusion Web UI
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can also use the OpenPose ControlNet model from the Stable Diffusion Web
+    UI. Indeed, not only you can upload an image to get the pose, you can edit the
+    pose before applying to the diffusion model. In this section, you will learn how
+    to set up OpenPose locally and generate images using OpenPose Editor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before you start using the OpenPose editor, you have to install it and download
+    the model file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Make sure you have installed the ControlNet extension, if not please check the
+    previous post.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Install OpenPose Editor extension: At the “Extensions” tab on WebUI,  click
+    on “Install from URL” and enter the following URL to install:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: https://github.com/fkunn1326/openpose-editor
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Go to Hugging Face repository: [https://hf.co/lllyasviel/ControlNet-v1-1/tree/main](https://hf.co/lllyasviel/ControlNet-v1-1/tree/main)'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Download the OpenPose model “[control_v11p_sd15_openpose.pth](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_openpose.pth)”
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Put the model file in the the SD WebUI directory in stable-diffusion-webui/extensions/sd-webui-controlnet/models
+    or stable-diffusion-webui/models/ControlNet
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Now that you have everything set up and a new tab named “OpenPose Editor” is
+    added to the Web UI. Navigate to the “OpenPose Editor” tab and adjust the canvas
+    width and height to your preference. Next, you can start modifying the skeleton
+    image on the right using your mouse. It’s a straightforward process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s try to create a picture of a man carrying a large gun. You can make changes
+    to the skeleton image to make it looks like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/f457dd5e4e12f3425c110256c1693677.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Creating a pose with the OpenPose Editor
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, click on the “Send to text2img” button. It will take you to text2img with
+    the skeleton image added to the ControlNet panel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/2c06ba12b0b0c0354ef90c988b663830.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The created pose on the ControlNet panel
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, select “Enable” for this ControlNet model and make sure the “OpenPose”
+    option is checked. You can also check “Low VRAM” and “Pixel Perfect”. The former
+    is useful if your computer does not have enough memory on the GPU and the latter
+    is to ask the ControlNet model to use the optimal resolution to match the output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, you set up the positive and negative prompt, make changes to the size
+    of the output image, the sampling method, and sampling steps. For example, the
+    positive prompt can be
+  prefs: []
+  type: TYPE_NORMAL
+- en: detailed, masterpiece, best quality, Astounding, Enchanting, Striking, tom clancy’s
+    the division, man_holding_gun, us_marine, beach background
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: and the negative prompt can be
+  prefs: []
+  type: TYPE_NORMAL
+- en: worst quality, low quality, lowres, monochrome, greyscale, multiple views, comic,
+    sketch, bad anatomy, deformed, disfigured, watermark, multiple_views, mutation
+    hands, watermark, bad facial
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The image below, using size 912×512 and sampler DDIM for 30 steps, turned out
+    to be perfectly matching the similar pose, with good details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/18199b4bcb421afb2ac7c46dedaa3345.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Output using OpenPose ControlNet model
+  prefs: []
+  type: TYPE_NORMAL
+- en: Image to Image Generation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you tried the ControlNet model in the Web UI, you should notice there are
+    multiple OpenPose preprocessors. In the following, let’s explore some of them
+    to focus on the face and upper body.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will use [the photo by Andrea Piacquadio](https://www.pexels.com/photo/woman-in-white-blazer-holding-tablet-computer-789822/)
+    from Pexels.com as a reference image. In the Web UI, let’s switch to the “img2img”
+    tab and upload the reference image. Then at the ControlNet panel, enable and select
+    “OpenPose” as the control type. By default in img2img, you will share the reference
+    image with ControlNet. Next, change the Preprocessor to “openpose_face” in the
+    ControNet panel, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/c3c92ab6adea486406ccc31de9e89e94.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using “openpose_face” as the preprocessor
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Afterward, set the positive prompt to match the style of the reference image
+    and generate the image. Instead of a picture holding a tablet, let’s make the
+    woman holding a phone:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: detailed, best quality, Astounding, Enchanting, Striking, new_york, buildings,
+    city, phone on the ear
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Below is what you might get:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/0cea84197b9246661d5f40ff6962ee8a.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Image generated with img2img
+  prefs: []
+  type: TYPE_NORMAL
+- en: We got a high quality result with the similar pose. You have to play around
+    the prompt to match the pose. The preprocessor used here is “openpose_face” which
+    means the pose as well as the face. Therefore, the generated picture matched the
+    reference in the limb positions as well as facial expression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s change the Preprocessor to “openpose_faceonly” to focus on facial features
+    only. In this way, only the keypoints on the face are recognized and no information
+    about the body pose will be applied from the ControlNet model. Now, set the prompt
+    to
+  prefs: []
+  type: TYPE_NORMAL
+- en: detailed, best quality, Astounding, Enchanting, Striking, new_york, buildings,
+    city
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'An improved result is generated accurately by following each keyword in the
+    prompt, but the body pose is vastly different from the previous:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/c8d056c474f104ed7845ca78c61509c7.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Image generated with the ControlNet provided only the facial keypoints
+  prefs: []
+  type: TYPE_NORMAL
+- en: To understand why this is the case, you can check the output image from the
+    **preprocessor**, as follows. The top image was generated using the “openpose_face”
+    preprocessor, while the bottom image was generated using “openpose_faceonly”.
+    Similarly, you can understand the output of various preprocessors by analyzing
+    both skeleton structures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/6a8ce4fcfff7bd56d07814d7370cbbc3.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Keypoints generated from different OpenPose preprocessors
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[OpenPose: Realtime Multi-Person 2D Pose Estimation using Part Affinity Fields](https://arxiv.org/abs/1812.08008)
+    by Cao et al (2019)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) on GitHub'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Controlnet – Human Pose Version](https://huggingface.co/lllyasviel/sd-controlnet-openpose)
+    on Hugging Face'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Openpose Controlnets (V1.1): Using poses and generating new ones](https://civitai.com/articles/157/openpose-controlnets-v11-using-poses-and-generating-new-ones)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, we delved deeper into the world of ControlNet OpenPose and how
+    we can use it to get precise results. Specifically, we covered:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is OpenPose, and how can it generate images immediately without setting
+    up anything?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use Stable Diffusion WebUI and OpenPose Editor to generate an image of
+    a custom pose by modifying the prompt and skeleton image.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Multiple OpenPose preprocessors to generate the image using full-face and face-only
+    preprocessors in Stable Diffusion WebUI.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

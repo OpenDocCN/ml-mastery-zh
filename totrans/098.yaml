@@ -1,0 +1,679 @@
+- en: Data Visualization in Python with matplotlib, Seaborn, and Bokeh
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/data-visualization-in-python-with-matplotlib-seaborn-and-bokeh/](https://machinelearningmastery.com/data-visualization-in-python-with-matplotlib-seaborn-and-bokeh/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Data visualization is an important aspect of all AI and machine learning applications.
+    You can gain key insights into your data through different graphical representations.
+    In this tutorial, we’ll talk about a few options for data visualization in Python.
+    We’ll use the MNIST dataset and the Tensorflow library for number crunching and
+    data manipulation. To illustrate various methods for creating different types
+    of graphs, we’ll use Python’s graphing libraries, namely matplotlib, Seaborn,
+    and Bokeh.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to visualize images in matplotlib
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make scatter plots in matplotlib, Seaborn, and Bokeh
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make multiline plots in matplotlib, Seaborn, and Bokeh
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.[![Picture of Istanbul taken from airplane](../Images/88c24030d7a26d93073142de26a88852.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/IMG_0570-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data Visualization in Python With matplotlib, Seaborn, and Bokeh
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by Mehreen Saeed, some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into seven parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparation of scatter data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Figures in matplotlib
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Scatter plots in matplotlib and Seaborn
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Scatter plots in Bokeh
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparation of line plot data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Line plots in matplotlib, Seaborn, and Bokeh
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: More on visualization
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparation of Scatter Data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, we will use matplotlib, Seaborn, and Bokeh. They are all external
+    libraries that need to be installed. To install them using `pip`, run the following
+    command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For demonstration purposes, we will also use the MNIST handwritten digits dataset.
+    We will load it from TensorFlow and run the PCA algorithm on it. Hence we will
+    also need to install TensorFlow and pandas:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code afterward will assume the following imports are executed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: We load the MNIST dataset from the `keras.datasets` library. To keep things
+    simple, we’ll retain only the subset of data containing the first three digits.
+    We’ll also ignore the test set for now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Figures in matplotlib
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Seaborn is indeed an add-on to matplotlib. Therefore, you need to understand
+    how matplotlib handles plots even if using Seaborn.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Matplotlib calls its canvas the figure. You can divide the figure into several
+    sections called subplots, so you can put two visualizations side-by-side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, let’s visualize the first 16 images of our MNIST dataset using
+    matplotlib. We’ll create 2 rows and 8 columns using the `subplots()` function.
+    The `subplots()` function will create the **axes** objects for each unit. Then
+    we will display each image on each axes object using the `imshow()` method. Finally,
+    the figure will be shown using the `show()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![First 16 images of the training dataset displayed in 2 rows and 8 columns](../Images/2194463e522602d959517efc2e4ca8f8.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/output_8_0.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: First 16 images of the training dataset displayed in 2 rows and 8 columns
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here we can see a few properties of matplotlib. There is a default figure and
+    default axes in matplotlib. There are a number of functions defined in matplotlib
+    under the `pyplot` submodule for plotting on the default axes. If we want to plot
+    on a particular axis, we can use the plotting function under the axes objects.
+    The operations to manipulate a figure are procedural. Meaning, there is a data
+    structure remembered internally by matplotlib, and our operations will mutate
+    it. The `show()` function simply displays the result of a series of operations.
+    Because of that, we can gradually fine-tune a lot of details in the figure. In
+    the example above, we hid the “ticks” (i.e., the markers on the axes) by setting
+    `xticks` and `yticks` to empty lists.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scatter Plots in matplotlib and Seaborn
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One common visualization we use in machine learning projects is the scatter
+    plot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, we apply PCA to the MNIST dataset and extract the first three components
+    of each image. In the code below, we compute the eigenvectors and eigenvalues
+    from the dataset, then project the data of each image along the direction of the
+    eigenvectors and store the result in `x_pca`. For simplicity, we didn’t normalize
+    the data to zero mean and unit variance before computing the eigenvectors. This
+    omission does not affect our purpose of visualization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The eigenvalues printed are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The array `x_pca` is in the shape 18623 x 784\. Let’s consider the last two
+    columns as the x- and y-coordinates and make the point of each row in the plot.
+    We can further color the point according to which digit it corresponds to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following code generates a scatter plot using matplotlib. The plot is created
+    using the axes object’s `scatter()` function, which takes the x- and y-coordinates
+    as the first two arguments. The `c` argument to the `scatter()` method specifies
+    a value that will become its color. The `s` argument specifies its size. The code
+    also creates a legend and adds a title to the plot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![2D scatter plot generated using Matplotlib](../Images/839d5c2be51875def79983dd23937875.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/output_13_0.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2D scatter plot generated using matplotlib
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting the above altogether, the following is the complete code to generate
+    the 2D scatter plot using matplotlib:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Matplotlib also allows a 3D scatter plot to be produced. To do so, you need
+    to create an axes object with 3D projection first. Then the 3D scatter plot is
+    created with the `scatter3D()` function, with the x-, y-, and z-coordinates as
+    the first three arguments. The code below uses the data projected along the eigenvectors
+    corresponding to the three largest eigenvalues. Instead of creating a legend,
+    this code creates a color bar:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![3D scatter plot generated using Matplotlib](../Images/06c84632c960514059046c22d190f8a7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/output_15_0.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 3D scatter plot generated using matplotlib
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `scatter3D()` function just puts the points onto the 3D space. Afterward,
+    we can still modify how the figure displays, such as the label of each axis and
+    the background color. But in 3D plots, one common tweak is the **viewport**, namely,
+    the angle we look at the 3D space. The viewport is controlled by the `view_init()`
+    function in the axes object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The viewport is controlled by the elevation angle (i.e., angle to the horizon
+    plane) and the azimuthal angle (i.e., rotation on the horizon plane). By default,
+    matplotlib uses 30-degree elevation and -60-degree azimuthal, as shown above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code to create the
+    3D scatter plot in matplotlib:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Creating scatter plots in Seaborn is similarly easy. The `scatterplot()` method
+    automatically creates a legend and uses different symbols for different classes
+    when plotting the points. By default, the plot is created on the “current axes”
+    from matplotlib, unless the axes object is specified by the `ax` argument.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![2D scatter plot generated using Seaborn](../Images/66304f59167ddf0225a2ed8b7c8c17be.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/output_17_0.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2D scatter plot generated using Seaborn
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The benefit of Seaborn over matplotlib is twofold: First, we have a polished
+    default style. For example, if we compare the point style in the two scatter plots
+    above, the Seaborn one has a border around the dot to prevent the many points
+    from being smudged together. Indeed, if we run the following line before calling
+    any matplotlib functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can still use the matplotlib functions but get a better looking figure by
+    using Seaborn’s style. Secondly, it is more convenient to use Seaborn if we are
+    using a pandas DataFrame to hold our data. As an example, let’s convert our MNIST
+    data from a tensor into a pandas DataFrame:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, the DataFrame looks like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, we can reproduce the Seaborn’s scatter plot with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: We do not pass in arrays as coordinates to the `scatterplot()` function but
+    use column names for the `data` argument instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is the complete code to generate a scatter plot using Seaborn
+    with the data stored in pandas:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Seaborn, as a wrapper to some matplotlib functions, is not replacing matplotlib
+    entirely. Plotting in 3D, for example, is not supported by Seaborn, and we still
+    need to resort to matplotlib functions for such purposes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scatter Plots in Bokeh
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The plots created by matplotlib and Seaborn are static images. If you need to
+    zoom in, pan, or toggle the display of some part of the plot, you should use Bokeh
+    instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating scatter plots in Bokeh is also easy. The following code generates a
+    scatter plot and adds a legend. The `show()` method from the Bokeh library opens
+    a new browser window to display the image. You can interact with the plot by scaling,
+    zooming, scrolling, and more using options that are shown in the toolbar next
+    to the rendered plot. You can also hide part of the scatter by clicking on the
+    legend.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Bokeh will produce the plot in HTML with Javascript. All your actions to control
+    the plot are handled by some Javascript functions. Its output will look like the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![2D scatter plot generated using Bokeh in a new browser window. Note the
+    various options on the right for interacting with the plot.](../Images/11d472c349f69e4d8c964a242c6d6f5a.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/bokeh_scatter.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2D scatter plot generated using Bokeh in a new browser window. Note the various
+    options on the right for interacting with the plot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is the complete code to generate the above scatter plot using
+    Bokeh:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you are rendering the Bokeh plot in a Jupyter notebook, you may see the
+    plot is produced in a new browser window. To put the plot in the Jupyter notebook,
+    you need to tell Bokeh that you are under the notebook environment by running
+    the following before the Bokeh functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Also, note that we create the scatter plot of the three digits in a loop, one
+    digit at a time. This is required to make the legend interactive since each time
+    `scatter()` is called, a new object is created. If we create all scatter points
+    at once, like the following, clicking on the legend will hide and show everything
+    instead of only the points of one of the digits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Preparation of Line Plot Ddata
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we move on to show how we can visualize line plot data, let’s generate
+    some data for illustration. Below is a simple classifier using the Keras library,
+    which we train to learn the handwritten digit classification. The history object
+    returned by the `fit()` method is a dictionary that contains all the learning
+    history of the training stage. For simplicity, we’ll train the model using only
+    10 epochs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above will produce a dictionary with keys `loss`, `accuracy`, `val_loss`,
+    and `val_accuracy`, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Line Plots in matplotlib, Seaborn, and Bokeh
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s look at various options for visualizing the learning history obtained
+    from training our classifier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a multi-line plot in matplotlib is as trivial as the following. We
+    obtain the list of values of the training and validation accuracies from the history,
+    and by default, matplotlib will consider that as sequential data (i.e., x-coordinates
+    are integers counting from 0 onward).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![Multi-line plot using Matplotlib](../Images/fb7108a0260c5e4fee908d78671e8482.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/lineplot1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multi-line plot using Matplotlib
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete code for creating the multi-line plot is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similarly, we can do the same in Seaborn. As we have seen in the case of scatter
+    plots, we can pass in the data to Seaborn as a series of values explicitly or
+    through a pandas DataFrame. Let’s plot the training loss and validation loss in
+    the following using a pandas DataFrame:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It will print the following table, which is the DataFrame we created from the
+    history:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And the plot it generated is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Multi-line plot using Seaborn](../Images/1a7c613acf8ce296c0d0fb4363c59f56.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/lineplot2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multi-line plot using Seaborn
+  prefs: []
+  type: TYPE_NORMAL
+- en: By default, Seaborn will understand the column labels from the DataFrame and
+    use them as a legend. In the above, we provide a new label for each plot. Moreover,
+    the x-axis of the line plot is taken from the index of the DataFrame by default,
+    which is an integer running from 0 to 9 in our case, as we can see above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete code of producing the plot in Seaborn is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can expect, we can also provide arguments `x` and `y` together with `data`
+    to our call to `lineplot()` as in our example of the Seaborn scatter plot above
+    if we want to control the x- and y-coordinates precisely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bokeh can also generate multi-line plots, as illustrated in the code below.
+    As we saw in the scatter plot example, we need to provide the x- and y-coordinates
+    explicitly and do one line at a time. Again, the `show()` method opens a new browser
+    window to display the plot, and you can interact with it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![Multi-line plot using Bokeh. Note the options for user interaction shown
+    on the toolbar on the right.](../Images/8444204aa3b5ebb1da14627fbf7c0780.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/lineplot3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multi-line plot using Bokeh. Note the options for user interaction shown on
+    the toolbar on the right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete code for making the Bokeh plot is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: More on Visualization
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Each of the tools we introduced above has a lot more functions for us to control
+    the bits and pieces of the details in the visualization. It is important to search
+    their respective documentation to find how you can polish your plots. It is equally
+    important to check out the example code in their documentation to learn how you
+    can possibly make your visualization better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Without providing too much detail, here are some ideas that you may want to
+    add to your visualization:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Add auxiliary lines, such as to mark the training and validation dataset on
+    a time series data. The `axvline()` function from matplotlib can make a vertical
+    line on plots for this purpose.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Add annotations, such as arrows and text labels, to identify key points on the
+    plot. See the `annotate()` function in matplotlib axes objects.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Control the transparency level in case of overlapping graphic elements. All
+    plotting functions we introduced above allow an `alpha` argument to provide a
+    value between 0 and 1 for how much we can see through the graph.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If the data is better illustrated this way, we may show some of the axes in
+    log scale. It is usually called the log plot or semilog plot.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Before we conclude this post, the following is an example to create a side-by-side
+    visualization in matplotlib, where one of them is created using Seaborn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/3bb3fd2a032ee31d47de2d67b0c35b6f.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Side-by-side visualization created using matplotlib and Seaborn
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The equivalent in Bokeh is to create each subplot separately and then specify
+    the layout when we show it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/1a58106cdf91b36d6e7e7ec780cba930.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Side-by-side plot created in Bokeh
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Think Python: How to Think Like a Computer Scientist](https://greenteapress.com/thinkpython/html/index.html)
+    by Allen B. Downey'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Programming in Python 3: A Complete Introduction to the Python Language](https://www.amazon.com/dp/B001OFK2DK/)
+    by Mark Summerfield'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Python Programming: An Introduction to Computer Science](https://www.amazon.com/dp/1590282418/)
+    by John Zelle'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Python for Data Analysis](https://www.amazon.com/dp/1491957662), 2nd edition,
+    by Wes McKinney'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[A Gentle Introduction to Data Visualization Methods in Python](https://machinelearningmastery.com/data-visualization-methods-in-python/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[How to use Seaborn Data Visualization for Machine Learning](https://machinelearningmastery.com/seaborn-data-visualization-for-machine-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: API Reference
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[matplotlib.pyplot.scatter](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.scatter.html#matplotlib.pyplot.scatter)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[matplotlib.pyplot.plot](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[seaborn.scatterplot](https://seaborn.pydata.org/generated/seaborn.scatterplot.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[seaborn.lineplot](https://seaborn.pydata.org/generated/seaborn.lineplot.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Bokeh plotting with basic glyphs](https://docs.bokeh.org/en/latest/docs/user_guide/plotting.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Bokeh scatter plots](https://docs.bokeh.org/en/latest/docs/reference/plotting/figure.html#bokeh.plotting.Figure.scatter)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Bokeh line charts](https://docs.bokeh.org/en/latest/docs/first_steps/first_steps_1.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered various options for data visualization in Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to create subplots in different rows and columns
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to render images using matplotlib
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to generate 2D and 3D scatter plots using matplotlib
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create 2D plots using Seaborn and Bokeh
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create multi-line plots using matplotlib, Seaborn, and Bokeh
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions about the data visualization options discussed in
+    this post? Ask your questions in the comments below, and I will do my best to
+    answer.
+  prefs: []
+  type: TYPE_NORMAL

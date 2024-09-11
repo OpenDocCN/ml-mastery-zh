@@ -1,0 +1,224 @@
+- en: Fine-Tuning Stable Diffusion with LoRA
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/fine-tuning-stable-diffusion-with-lora/](https://machinelearningmastery.com/fine-tuning-stable-diffusion-with-lora/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Stable Diffusion can generate an image based on your input. There are many models
+    that are similar in architecture and pipeline, but their output can be quite different.
+    There are many ways to adjust their behavior, such as when you give a prompt,
+    the output will be in a certain style by default. LoRA is one technique that does
+    not require you to recreate a large model. In this post, you will see how you
+    can create a LoRA on your own.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After finishing this post, you will learn
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to prepare and train a LoRA model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the trained LoRA in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
+    Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/995f329f4e69f8321a2ac32530d3a5bd.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Fine-tuning Stable Diffusion with LoRA
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Thimo Pedersen](https://unsplash.com/photos/red-and-white-ladybug-toy-on-white-and-yellow-book-dip9IIwUK6w).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This post is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparation for Training a LoRA
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training a LoRA with Diffusers Library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Your Trained LoRA
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparation for Training a LoRA
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We covered the idea of using LoRA in the Web UI in a [previous post](https://machinelearningmastery.com/using-lora-in-stable-diffusion/).
+    If you want to create your own LoRA, a plugin in the Web UI allows you to do that,
+    or you can create one using your own program. Since all training will be computationally
+    intensive, be sure you have a machine with GPU to continue.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will use the training script from the example directory of the diffusers
+    library. Before you start, you have to set up the environment by installing the
+    required Python libraries, using the following commands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The first command is to install the `diffusers` library from GitHub, which will
+    be the development version. This is required because you will use the training
+    script from GitHub, hence you should use the matching version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The last command above confirmed you have installed the `accelerate` library
+    and detect what GPU you have on your computer. You have downloaded and installed
+    many libraries. You can try to run the Python statements below to confirm that
+    all are installed correctly and that you have no import error:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You will use the LoRA training script from the examples of diffusers. Let’s
+    download the script first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Training a LoRA with Diffusers Library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For fine-tuning, you will be using the [Pokémon BLIP captions with English and
+    Chinese dataset](https://huggingface.co/datasets/svjack/pokemon-blip-captions-en-zh)
+    on the base model `runwayml/stable-diffusion-v1-5` (the official Stable Diffusion
+    v1.5 model). You can adjust hyperparameters to suit your specific use case, but
+    you can start with the following Linux shell commands.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Running this command will take hours to complete, even with a high-end GPU.
+    But let’s look closer at what this does.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The accelerate command helps you to launch the training across multiple GPUs.
+    It does no harm if you have just one. Many modern GPUs support the “Brain Float
+    16” floating point introduced by the Google Brain project. If it is supported,
+    the option `--mixed_precision="bf16"` will save memory and run faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The command script downloads the dataset from the Hugging Face Hub and uses
+    it to train a LoRA model. The batch size, training steps, learning rate, and so
+    on are the hyperparameters for the training. The trained model will be checkpointed
+    once every 500 steps to the output directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training a LoRA requires a dataset with images (pixels) and corresponding captions
+    (text). The caption text describes the image, and the trained LoRA will understand
+    that these captions should mean those images. If you check out the dataset on
+    Hugging Face Hub, you will see the caption name was `en_text`, and that is set
+    to `--caption_column` above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you are providing your own dataset instead (e.g., manually create captions
+    for the images you gathered), you should create a CSV file `metadata.csv` with
+    first column named `file_name` and second column to be your text captions, like
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: and keep this CSV together with all your images (matching the `file_name` column)
+    in the same directory, and use the directory name as your dataset name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There will be many subdirectories and files created under the directory as assigned
+    to `OUTPUT_DIR` in the script above. Each checkpoint will contain the full Stable
+    Diffusion model weight, and extracted LoRA safetensors. Once you finish the training,
+    you can delete all of them except the final LoRA file, `pytorch_lora_weights.safetensors`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Your Trained LoRA
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Running a Stable Diffusion pipeline with LoRA just require a small modification
+    to your Python code. An example would be the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above downloaded a LoRA from the Hugging Face Hub repository `pcuenq/pokemon-lora`
+    and attach it to the pipeline using the line `pipe.unet.load_attn_procs(model_path)`.
+    The rest is just as usual. The image generated may look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/9bdee499d4377ef93bbb00b2885ed4f6.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Green pokemon as generated
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the more verbose way of using the LoRA since you have to know that this
+    particular LoRA should be loaded to the attention process of the pipeline’s `unet`
+    part. Such details should be found in the model card in the repository.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An easier way of using the LoRA would be to use the auto pipeline, from which
+    the model architecture is inferred from the model file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The parameters to `load_lora_weights()` is the directory name and the file name
+    to your trained LoRA file. This works for other LoRA files, such as those you
+    downloaded from Civitai.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'LoRA training: [https://huggingface.co/docs/diffusers/en/training/lora](https://huggingface.co/docs/diffusers/en/training/lora)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Stable Diffusion text2image pipeline: [https://huggingface.co/docs/diffusers/v0.29.0/en/api/pipelines/stable_diffusion/text2img](https://huggingface.co/docs/diffusers/v0.29.0/en/api/pipelines/stable_diffusion/text2img)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you saw how to create your own LoRA model, given a set of images
+    and the description text. This is a time-consuming process, but the result is
+    that you have a small weight file that can modify the behavior of the diffusion
+    model. You learned how to run the training of LoRA using `diffusers` library.
+    You also saw how to use a LoRA weight in your Stable Diffusion pipeline code.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,464 @@
+- en: Profiling Python Code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/profiling-python-code/](https://machinelearningmastery.com/profiling-python-code/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Profiling is a technique to figure out how time is spent in a program. With
+    these statistics, we can find the “hot spot” of a program and think about ways
+    of improvement. Sometimes, a hot spot in an unexpected location may hint at a
+    bug in the program as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this tutorial, we will see how we can use the profiling facility in Python.
+    Specifically, you will see:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How we can compare small code fragments using the `timeit` module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How we can profile the entire program using the `cProfile` module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How we can invoke a profiler inside an existing program
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What the profiler cannot do
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/a86cb6c3738bf1a81ce1f210bfb00fd5.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Profiling Python Code. Photo by [Prashant Saini](https://unsplash.com/photos/BeoRcYyVgxE).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is in four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Profiling small fragments
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The profile module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using profiler inside code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Caveats
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Profiling Small Fragments
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When you are asked about the different ways of doing the same thing in Python,
+    one perspective is to check which one is more efficient. In Python’s standard
+    library, we have the `timeit` module that allows us to do some simple profiling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, to concatenate many short strings, we can use the `join()` function
+    from strings or the `+` operator. So, how do we know which is faster? Consider
+    the following Python code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will produce a long string `012345....` in the variable `longstr`. An
+    alternative way to write this is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To compare the two, we can do the following at the command line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'These two commands will produce the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The above commands are to load the `timeit` module and pass on a single line
+    of code for measurement. In the first case, we have two lines of statements, and
+    they are passed on to the `timeit` module as two separate arguments. In the same
+    rationale, the first command can also be presented as three lines of statements
+    (by breaking the for-loop into two lines), but the indentation of each line needs
+    to be quoted correctly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The output of `timeit` is to find the best performance among multiple runs (default
+    to be 5). Each run is to run the provided statements a few times (which is dynamically
+    determined). The time is reported as the average to execute the statements once
+    in the best run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While it is true that the join function is faster than the `+` operator for
+    string concatenation, the timing above is not a fair comparison. It is because
+    we use `str(x)` to make short strings on the fly during the loop. The better way
+    to do this is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'which produces:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `-s` option allows us to provide the “setup” code, which is executed before
+    the profiling and not timed. In the above, we create the list of short strings
+    before starting the loop. Hence the time to create those strings is not measured
+    in the “per loop” timing. The above shows that the `join()` function is two orders
+    of magnitude faster than the `+` operator. The more common use of the `-s` option
+    is to import the libraries. For example, we can compare the square root function
+    from Python’s math module from NumPy and use the exponential operator `**` as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The above produces the following measurement, which we see that `math.sqrt()`
+    is fastest while `numpy.sqrt()` is slowest in this particular example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you wonder why NumPy is the slowest, it is because NumPy is optimized for
+    arrays. You will see its exceptional speed in the following alternative:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'where the result is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you prefer, you can also run `timeit` in Python code. For example, the following
+    will be similar to the above but give you the total raw timing for each run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the above, each run is to execute the statement 10,000 times; the result
+    is as follows. You can see the result of roughly 98 usec per loop in the best
+    run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Profile Module
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Focusing on a statement or two for performance is from a microscopic perspective.
+    Chances are, we have a long program and want to see what is causing it to run
+    slow. That happens before we can consider alternative statements or algorithms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A program running slow can generally be due to two reasons: A part is running
+    slow, or a part is running too many times, adding up and taking too much time.
+    We call these “performance hogs” the hot spot. Let’s look at an example. Consider
+    the following program that uses a hill-climbing algorithm to find hyperparameters
+    for a perceptron model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Assume we saved this program in the file `hillclimb.py`, we can run the profiler
+    in the command line as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and the output will be the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: The normal output of the program will be printed first, and then the profiler’s
+    statistics will be printed. From the first row, we see that the function `objective()`
+    in our program has run 101 times and took 4.89 seconds. But these 4.89 seconds
+    are mostly spent on the functions it called, which the total time spent on that
+    function is merely 0.001 seconds. The functions from dependent modules are also
+    profiled. Hence you see a lot of NumPy functions above too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The above output is long and may not be useful to you as it can be difficult
+    to tell which function is the hot spot. Indeed we can sort the above output. For
+    example, to see which function is called the most number of times, we can sort
+    by `ncalls`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Its output is as follows: It says the `get()` function from a Python dict is
+    the most used function (but it only consumed 0.03 seconds in total out of the
+    5.6 seconds to finish the program):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The other sort options are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Sort string | Meaning |'
+  prefs: []
+  type: TYPE_TB
+- en: '| --- | --- |'
+  prefs: []
+  type: TYPE_TB
+- en: '| calls | Call count |'
+  prefs: []
+  type: TYPE_TB
+- en: '| cumulative | Cumulative time |'
+  prefs: []
+  type: TYPE_TB
+- en: '| cumtime | Cumulative time |'
+  prefs: []
+  type: TYPE_TB
+- en: '| file | File name |'
+  prefs: []
+  type: TYPE_TB
+- en: '| filename | File name |'
+  prefs: []
+  type: TYPE_TB
+- en: '| module | File name |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ncalls | Call count |'
+  prefs: []
+  type: TYPE_TB
+- en: '| pcalls | Primitive call count |'
+  prefs: []
+  type: TYPE_TB
+- en: '| line | Line number |'
+  prefs: []
+  type: TYPE_TB
+- en: '| name | Function name |'
+  prefs: []
+  type: TYPE_TB
+- en: '| nfl | Name/file/line |'
+  prefs: []
+  type: TYPE_TB
+- en: '| stdname | Standard name |'
+  prefs: []
+  type: TYPE_TB
+- en: '| time | Internal time |'
+  prefs: []
+  type: TYPE_TB
+- en: '| tottime | Internal time |'
+  prefs: []
+  type: TYPE_TB
+- en: 'If the program takes some time to finish, it is not reasonable to run the program
+    many times just to find the profiling result in a different sort order. Indeed,
+    we can save the profiler’s statistics for further processing as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similar to the above, it will run the program. But this will not print the
+    statistics to the screen but save them into a file. Afterward, we can use the
+    `pstats` module like the following to open up the statistics file and provide
+    us a prompt to manipulate the data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For example, we can use the sort command to change the sort order and use stats
+    to print what we saw above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: You will notice that the `stats` command above allows us to provide an extra
+    argument. The argument can be a regular expression to search for the functions
+    such that only those matched will be printed. Hence it is a way to provide a search
+    string to filter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This `pstats` browser allows us to see more than just the table above. The
+    `callers` and `callees` commands show us which function calls which function,
+    how many times it is called, and how much time is spent. Hence we can consider
+    that as a breakdown of the function-level statistics. It is useful if you have
+    a lot of functions that call each other and want to know how the time is spent
+    in different scenarios. For example, this shows that the `objective()` function
+    is called only by the `hillclimbing()` function, but the `hillclimbing()` function
+    calls several other functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using Profiler Inside Code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The above example assumes you have the complete program saved in a file and
+    profile the entire program. Sometimes, we focus on only a part of the entire program.
+    For example, if we load a large module, it takes time to bootstrap, and we want
+    to remove this from the profiler. In this case, we can invoke the profiler only
+    for certain lines. An example is as follows, which is modified from the program
+    above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It will output the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Caveats
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using profiler with Tensorflow models may not produce what you would expect,
+    especially if you have written your own custom layer or custom function for the
+    model. If you did it correctly, Tensorflow is supposed to build the computation
+    graph before your model is executed, and hence the logic will be changed. The
+    profiler output will therefore not show your custom classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s the same for some advanced modules that involve binary code. The profiler
+    can see you called some functions and marked them as “built-in” methods, but it
+    cannot go any further into the compiled code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Below is a short code of the LeNet5 model for the MNIST classification problem.
+    If you try to profile it and print the top 15 rows, you will see that a wrapper
+    is occupying the majority of the time, and nothing can be shown beyond that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the result below, the `TFE_Py_Execute` is marked as a “built-in” method,
+    and it consumes 30.1 sec out of the total run time of 39.6 sec. Note that the
+    tottime is the same as the cumtime, meaning from the profiler’s perspective, it
+    seems all time is spent at this function, and it doesn’t call any other functions.
+    This illustrates the limitation of Python’s profiler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, Python’s profiler gives you only the statistics on time but not memory
+    usage. You may need to look for another library or tools for this purpose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The standard library modules `timeit`, `cProfile`, and `pstats` have their
+    documentation in Python’s documentation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`timeit` module: [https://docs.python.org/3/library/timeit.html](https://docs.python.org/3/library/timeit.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`cProfile` module and `pstats` module: [https://docs.python.org/3/library/profile.html](https://docs.python.org/3/library/profile.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The standard library’s profiler is very powerful but not the only one. If you
+    want something more visual, you can try out the Python Call Graph module. It can
+    produce a picture of how functions call each other using the GraphViz tool:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Python Call Graph: [https://pycallgraph.readthedocs.io/en/master/](https://pycallgraph.readthedocs.io/en/master/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The limitation of not being able to dig into the compiled code can be solved
+    by not using Python’s profiler but instead using one for compiled programs. My
+    favorite is Valgrind:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Valgrind: [https://valgrind.org/](https://valgrind.org/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: But to use it, you may need to recompile your Python interpreter to turn on
+    debugging support.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, we learned what a profiler is and what it can do. Specifically,
+  prefs: []
+  type: TYPE_NORMAL
+- en: We know how to compare small code with the `timeit` module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We see Python’s `cProfile` module can provide us with detailed statistics on
+    how time is spent
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We learned to use the `pstats` module against the output of `cProfile` to sort
+    or filter
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,1055 @@
+- en: Building Transformer Models with Attention Crash Course. Build a Neural Machine
+    Translator in 12 Days
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/building-transformer-models-with-attention-crash-course-build-a-neural-machine-translator-in-12-days/](https://machinelearningmastery.com/building-transformer-models-with-attention-crash-course-build-a-neural-machine-translator-in-12-days/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Transformer is a recent breakthrough in neural machine translation. Natural
+    languages are complicated. A word in one language can be translated into multiple
+    words in another, depending on the **context**. But what exactly a context is,
+    and how you can teach the computer to understand the context was a big problem
+    to solve. The invention of the attention mechanism solved the problem of how to
+    encode a context into a word, or in other words, how you can present a word **and**
+    its context together in a numerical vector. Transformer brings this to one level
+    higher so that we can build a neural network for natural language translation
+    using only the attention mechanism but no recurrent structure. This not only makes
+    the network simpler, easier to train, and parallelizable in algorithm but also
+    allows a more complicated language model to be built. As a result, we can see
+    computer-translated sentences almost flawlessly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Indeed, such a powerful deep learning model is not difficult to build. In TensorFlow
+    and Keras, you have almost all the building blocks readily available, and training
+    a model is only a matter of several hours. It is fun to see a transformer model
+    built and trained. It is even more fun to see a trained model to translate sentences
+    from one language to another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this crash course, you will build a transformer model in the similar design
+    as the original research paper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a big and important post. You might want to bookmark it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/a4c1293188ef944df5d17458c0f5f1de.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Building Transformer Models with Attention (12-day Mini-Course).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Norbert Braun](https://unsplash.com/photos/uU8n5LuzpTc), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Who Is This Crash-Course For?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before you get started, let’s make sure you are in the right place.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This course is for developers who are already familiar with TensorFlow/Keras.
+    The lessons in this course do assume a few things about you, such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You know how to build a custom model, including the Keras functional API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You know how to train a deep learning model in Keras
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You know how to use a trained model for inference
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'You do NOT need to be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A natural language processing expert
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A speaker of many languages
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This crash course can help you get a deeper understanding of what a transformer
+    model is and what it can do.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This crash course assumes you have a working TensorFlow 2.10 environment installed.
+    If you need help with your environment, you can follow the step-by-step tutorial
+    here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[How to Set Up Your Python Environment for Machine Learning With Anaconda](https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Crash-Course Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This crash course is broken down into 12 lessons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You could complete one lesson per day (recommended) or complete all of the lessons
+    in one day (hardcore). It really depends on the time you have available and your
+    level of enthusiasm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Below is a list of the 12 lessons that will get you started and learn about
+    the construction of a transformer model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 01: Obtaining Data'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Lesson 02: Text Normalization'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Lesson 03: Vectorization and Making Datasets'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Lesson 04: Positional Encoding Matrix'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Lesson 05: Positional Encoding Layer'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Lesson 06: Transformer Building Blocks'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Lesson 07: Transformer Encoder and Decoder'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Lesson 08: Building a Transformer'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Lesson 09: Preparing the Transformer Model for Training'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Lesson 10: Training the Transformer'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Lesson 11: Inference from the Transformer Model'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Lesson 12: Improving the Model'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each lesson could take you between 15 and up to 60 minutes. Take your time and
+    complete the lessons at your own pace. Ask questions, and even post results in
+    the comments online.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The lessons might expect you to go off and find out how to do things. This guide
+    will give you hints, but even if you just follow the code in the lesson, you can
+    finish a transformer model that works quite well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Post your results in the comments**; I’ll cheer you on!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hang in there; don’t give up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 01: Obtaining Data'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As you are building a neural machine translator, you need data for training
+    and testing. Let’s build a sentence-based English-to-French translator. There
+    are many resources on the Internet. An example would be the user-contributed data
+    for the flash card app Anki. You can download some data files at [https://ankiweb.net/shared/decks/french](https://ankiweb.net/shared/decks/french).
+    The data file would be a ZIP file containing a SQLite database file, from which
+    you can extract the English-French sentence pairs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, you may find it more convenient to have a text file version, which
+    you can find it at [https://www.manythings.org/anki/](https://www.manythings.org/anki/).
+    Google hosts a mirror of this file as
+  prefs: []
+  type: TYPE_NORMAL
+- en: well, which we will be using.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The code below will download the compressed data file and extract it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The data file will be a plaintext file named `fra.txt`. Its format would be
+    lines of:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Try to run the above code and open the file extracted. You should verify that
+    the format of each line is like the above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will process this file and prepare the dataset suitable
+    for training and testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 02: Text Normalization'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Just like all NLP tasks, you need to normalize the text before you use it. French
+    letters have accents which would be represented as Unicode characters, but such
+    representation is not unique in Unicode. Therefore, you will convert the string
+    into NFKC (compatibility and composition normal form).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, you will tokenize the sentences. Each word should be a separate token
+    as well as each punctuation mark. However, the punctuation used in contractions
+    such as *don’t*, *va-t-il*, or *c’est* are not separated from the words. Also,
+    convert everything into lowercase in the expectation that this will reduce the
+    number of distinct words in the vocabulary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Normalization and tokenization can go a lot deeper, such as subword tokenization,
+    stemming, and lemmatization. But to keep things simple, you do not do these in
+    this project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Starting from scratch, the code to normalize the text is below. You will use
+    the Python module `unicodedata` to convert a Unicode string into NFKC normal form.
+    Then you will use regular expression to add space around punctuation marks. Afterward,
+    you will wrap the French sentences (i.e., the target language) with sentinels
+    `[start]` and `[end]`. You will see the purpose of the sentinels in later lessons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When you run this, you should see the result from a few samples, such as these:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: We saved the normalized sentence pairs in a pickle file, so we can reuse it
+    in subsequent steps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you use it for your model, you want to know some statistics about this
+    dataset. In particular, you want to see how many distinct tokens (words) in each
+    language and how long the sentences are. You can figure these out as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Run the above code. See not only the sample sentences but also the statistics
+    you collected. Remember the output as they will be useful for your next lesson.
+    Besides, knowing the maximum length of sentences is not as useful as knowing their
+    distribution. You should plot a histogram for that. Try out this to produce the
+    following chart:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/303e1f8813a0d5d652d6a6971077a74b.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Sentence lengths in different languages
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will vectorize this normalized text data and create
+    datasets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 03: Vectorization and Making Datasets'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the previous lesson, you cleaned up the sentences, but they are still text.
+    Neural networks can handle only numbers. One way to convert the text into numbers
+    is through vectorization. What this means is to transform the tokens from the
+    text into an integer. Hence a sentence with $n$ tokens (words) will become a **vector**
+    of $n$ integers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can build your own vectorizer. Simply build a mapping table of each unique
+    token to a unique integer. When it is used, you look up the token one by one in
+    the table and return the integers in the form of a vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Keras, you have `TextVectorization` layer to save us the effort of building
+    a vectorizer. It supports padding, i.e., integer 0 is reserved to mean “empty.”
+    This is useful when you give a sentence of $m < n$ tokens but want the vectorizer
+    always to return a fixed length $n$ vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will first split the sentence pair into training, validation, and testing
+    sets as you need them for the model training. Then, create a `TextVectorization`
+    layer and adapt it to the training set only (because you should not peek into
+    the validation or testing dataset until the model training is completed).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that the parameter `max_tokens` to `TextVectorization` object can be omitted
+    to let the vectorizer figure it out. But if you set them to a value smaller than
+    the total vocabulary (such as this case), you limit the the vectorizer to learn
+    only the more frequent words and make the rare words as **out-of-vocabulary**
+    (OOV). This may be useful to skip the words of little value or with spelling mistakes.
+    You also fix the output length of the vectorizer. We assumed that a sentence should
+    have no more than 20 tokens in the above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next step would be to make use of the vectorizer and create a TensorFlow
+    Dataset object. This will be helpful in your later steps to train our model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: You will reuse this code later to make the `train_ds` and `val_ds` dataset objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Run the above code. Verify that you can see an output similar to the below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The exact vector may not be the same, but you should see that the shape should
+    all be (*batch size*, *sequence length*). Some code above is borrowed from the
+    tutorial by François Chollet, [English-to-Spanish translation with a sequence-to-sequence
+    Transformer](https://keras.io/examples/nlp/neural_machine_translation_with_transformer/).
+    You may also want to see how his implementation of transformer is different from
+    this mini-course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will move to the topic of position encoding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 04: Positional Encoding Matrix'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When a sentence is vectorized, you get a vector of integers, where each integer
+    represents a word. The integer here is only a label. We cannot assume two integers
+    closer to each other means the words they represent are related.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to understand the meaning of words and hence quantify how two words
+    are related to each other, you will use the technique **word embeddings**. But
+    to understand the context, you also need to know the position of each word in
+    a sentence. This is done by **positional encoding**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the paper [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf),
+    positional encoding represents each token position with a vector. The elements
+    of the vector are values of the different phase and frequency of sine waves. Precisely,
+    at position $k=0, 1, \cdots, L-1$, the positional encoding vector (of length $d$)
+    is
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[P(k,0), P(k,1), \cdots, P(k,d-2), P(k,d-1)]'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: where for $i=0, 1, \cdots, d/2$,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: P(k, 2i) &= \sin\Big(\frac{k}{n^{2i/d}}\Big) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: P(k, 2i+1) &= \cos\Big(\frac{k}{n^{2i/d}}\Big)
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the paper, they used $n=10000$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing the positional encoding is not difficult, especially if you can
+    use vector functions from NumPy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see that we created a function to generate the positional encoding.
+    We tested it out with $L=2048$ and $d=512$ above. The output would be a $2048\times
+    512$ matrix. We also plot the encoding in a heatmap. This should look like the
+    following.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/80121f4ffaa84888976884f691fb00a7.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Heatmap representation of the positional encoding matrix
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The heatmap above may not be very appealing to you. A better way to visualize
+    it is to separate the sine curves from the cosine curves. Try out the code below
+    to reuse the pickled positional encoding matrix and obtain a clearer visualization:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you wish, you may check that the different “depth” in the matrix represents
+    a sine curve of different frequency. An example to visualize them is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But if you visualize one “position” of the matrix, you see an interesting curve:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'which shows you this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/c63a26964e15e4b7c17717435899a686.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: One encoding vector
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The encoding matrix is useful in the sense that, when you compare two encoding
+    vectors, you can tell how far apart their positions are. The dot-product of two
+    normalized vectors is 1 if they are identical and drops quickly as they move apart.
+    This relationship can be visualized below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/c100472938c63436bbd1463812abcf70.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Dot-product of normalized positional encoding vectors
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will make use of the positional encoding matrix to build
+    a positional encoding layer in Keras.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 05: Positional Encoding Layer'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '![](../Images/fc1e4d7b9ab803c6ae6c1c8da35d116b.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The transformer model
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The transformer model from the paper [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf)
+    is illustrated below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The positional encoding layer is at the entry point of a transformer model.
+    However, the Keras library does not provide us one. You can create a custom layer
+    to implement the positional encoding, as follows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: This layer is indeed combining an embedding layer with position encoding. The
+    embedding layer creates word embeddings, namely, converting an integer token label
+    from the vectorized sentence into a vector that can carry the meaning of the word.
+    With the embedding, you can tell how close in meaning the two different words
+    are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The embedding output depends on the tokenized input sentence. But the positional
+    encoding is a constant matrix as it depends only on the position. Hence you create
+    a constant tensor for that at the time you created this layer. TensorFlow is smart
+    enough to match the dimensions when you add the embedding output to the positional
+    encoding matrix, in the `call()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Two additional functions are defined in the layer above. The `compute_mask()`
+    function is passed on to the embedding layer. This is needed to tell which positions
+    of the output are padded. This will be used internally by Keras. The `get_config()`
+    function is defined to remember all the config parameters of this layer. This
+    is a standard practice in Keras so that you remember all the parameters you passed
+    on to the constructor and return them in `get_config()`, so the model can be saved
+    and loaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Combine the above code together with the dataset `train_ds` created in Lesson
+    03 and the code snippet below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should see the output like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see that the first tensor printed above is one batch (64 samples) of
+    the vectorized input sentences, padded with zero to length 20\. Each token is
+    an integer but will be converted into an embedding of dimension 512\. Hence the
+    shape of `en_emb` above is `(64, 20, 512)`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The last tensor printed above is the mask used. This essentially matches the
+    input where the position is not zero. When you compute the accuracy, you have
+    to remember the padded locations should not be counted.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will complete the other building block of the transformer
+    model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 06: Transformer Building Blocks'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Reviewing the diagram of transformer in Lesson 05, you will see that beyond
+    the embedding and positional encoding, you have the encoder (left half of the
+    figure) and decoder (right half of the figure). They share some similarities.
+    Most notably, they have a multi-head attention block at the beginning and a feed
+    forward block at the end.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It would be easier if you create each building block as separate submodels and
+    later combine them into a bigger model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First, you create the **self-attention model**. It is in the part of the diagram
+    that is at the bottom of both encoder and decoder. A multi-head attention layer
+    will take three inputs, namely, the key, the value, and the query. If all three
+    inputs are the same, we call this multi-head attention layer self-attention. This
+    submodel will have an **add & norm** layer with **skip connection** to normalize
+    the output of the attention layer. Its implementation is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The function defined above is generic for both encoder and decoder. The decoder
+    will set the option `mask=True` to apply **causal mask** to the input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Set some parameters and create a model. The model plotted would look like the
+    following.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/3ee0bd0cd6890d56f4cebbda67e3783d.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Self-attention architecture with key dimension=128
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the decoder, you have a **cross-attention model** that takes input from
+    the self-attention model as well as the encoder. In this case, the value and key
+    are the output from the encoder whereas the query is the output from the self-attention
+    model. At the high level, it is based on what the encoder understands about the
+    context of the source sentence, and takes the partial sentence at the decoder’s
+    input as the query (which can be empty), to predict how to complete the sentence.
+    This is the only difference from the self-attention model; hence the code is very
+    similar:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: The model plotted would look like the following. Note that there are two inputs
+    in this model, one for the **context** and another for the input from self-attention.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/4da6f6fe47cf8db86f12412ae25e8bea.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Cross-attention architecture with key dimension=128
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, there are feed forward models at the output of both encoder and decoder.
+    It is implemented as `Dense` layers in Keras:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: The model plotted would look like the following. Note that the first `Dense`
+    layer uses ReLU activation and the second has no activation. A dropout layer is
+    then appended for regularization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/1659b00be6198b7697b7cd48eb7f5c47.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Feed-forward submodel
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Run the above code and verify you see the same model diagram. It is important
+    you match the layout as the final transformer model depends on them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the code above, Keras functional API is used. In Keras, you can build a model
+    using sequential API, functional API, or subclass the `Model` class. Subclassing
+    can also be used here, but sequential API cannot. Can you tell why?
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will make use of these building block to create the
+    encoder and decoder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 07: Transformer Encoder and Decoder'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Look again at the diagram of the transformer in Lesson 05\. You will see that
+    the encoder is the self-attention submodel connected to the feed-forward submodel.
+    The decoder, on the other hand, is a self-attention submodel, a cross-attention
+    submodel, and a feed-forward submodel connected in tandem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making an encoder and a decoder is therefore not difficult once you have these
+    submodels as building blocks. Firstly, you have the encoder. It is simple enough
+    that you can build an encoder model using Keras sequential API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Plotting the model would see that it is simple as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/02cc2087f24e808f5cb0985d8533bd65.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Encoder submodel
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The decoder is a bit complicated because the cross-attention block takes input
+    from the encoder as well; hence it is a model that takes two input. It is implemented
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The model will look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/3b547c34ab19f16d9019f19a0d729dc6.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Decoder submodel
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Copy over the three building block functions from Lesson 06 and run the above
+    code to make sure you see the same layout as shown, in both the encoder and decoder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will complete the transformer model with the building
+    block you have created so far.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 08: Building a Transformer'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Indeed, a transformer has encoder and decoder parts, and each part is not one
+    but a series of encoders or decoders. It sounds complicated but not if you have
+    the building block submodels to hide the details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Refer to the figure in Lesson 05, and you see the encoder and decoder parts
+    are just a chain of encoder and decoder blocks. Only the output of the final encoder
+    block is used as input to the decoder blocks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Therefore, the complete transformer model can be built as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `try`–`except` block in the code is to handle a bug in certain versions
+    of TensorFlow that may cause the training error calculated erroneously. The model
+    plotted above would be like the following. Not very simple, but the architecture
+    is still tractable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/4ca6fa7ca12defc6a1c8e5bdfcdbbf7b.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Transformer with 4 layers in encoder and 4 layers in decoder
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Copy over the three building block functions from Lessons 05, 06, and 07, so
+    you can run the above code and generate the same diagram. You will reuse this
+    model in the subsequent lessons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will set up the other training parameters for this model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 09: Prepare the Transformer Model for Training'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before you can train your transformer, you need to decide how you should train
+    it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: According to the paper [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf),
+    you are using Adam as the optimizer but with a custom learning rate schedule,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\text{LR} = \frac{1}{\sqrt{d_{\text{model}}}} \min\big(\frac{1}{\sqrt{n}},
+    \frac{n}{\sqrt{m^3}}\big)$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is implemented as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The learning rate schedule is designed in such a way that it learns slowly
+    at the beginning but accelerates as it learns. This helps because the model is
+    totally random at the beginning, and you cannot even trust the output much. But
+    as you train the model enough, the result should be sufficiently sensible and
+    thus you can learn faster to help convergence. The learning rate as plotted would
+    look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/d9e961b1139a64f8f714751c4cbe6353.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Customized learning rate schedule
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, you also need to define the loss metric and accuracy metric for training.
+    This model is special because you need to apply a mask to the output to calculate
+    the loss and accuracy only on the non-padding elements. Borrow the implementation
+    from TensorFlow’s tutorial [Neural machine translation with a Transformer and
+    Keras](https://www.tensorflow.org/text/tutorials/transformer):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With all these, you can now **compile** your Keras model as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: If you have implemented everything correctly, you should be able to provide
+    all building block functions to make the above code run. Try to keep everything
+    you made so far in one Python script or one Jupyter notebook and run it once to
+    ensure no errors produced and no exceptions are raised.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If everything run smoothly, you should see the `summary()` above prints the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Moreover, when you look at the diagram of the transformer model and your implementation
+    here, you should notice the diagram shows a softmax layer at the output, but we
+    omitted that. The softmax is indeed added in this lesson. Do you see where is
+    it?
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will train this compiled model, on 14 million parameters
+    as we can see in the summary above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 10: Training the Transformer'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Training the transformer depends on everything you created in all previous lessons.
+    Most importantly, the vectorizer and dataset from Lesson 03 must be saved as they
+    will be reused in this and the next lessons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: That’s it!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Running this script will take several hours, but once it is finished, you will
+    have the model saved and the loss and accuracy plotted. It should look like the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/c1d0c0963087d4467470e7987dec3eac.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Loss and accuracy history from the training
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In the training set up above, we did not make use of the early stopping and
+    checkpoint callbacks in Keras. Before you run it, try to modify the code above
+    to add these callbacks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The early stopping callback can help you interrupt the training when no progress
+    is made. The checkpoint callback can help you keep the best-score model rather
+    than return to you only the final model at the last epoch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will load this trained model and test it out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 11: Inference from the Transformer Model'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In Lesson 03, you split the original dataset into training, validation, and
+    test sets in the ratio of 70%-15%-15%. You used the training and validation dataset
+    in the training of the transformer model in Lesson 10\. And in this lesson, you
+    are going to use the test set to see how good your trained model is.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You saved your transformer model in the previous lesson. Because you have some
+    custom made layers and functions in the model, you need to create a **custom object
+    scope** to load your saved model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The transformer model can give you a token index. You need the vectorizer to
+    look up the word that this index represents. You have to reuse the same vectorizer
+    that you used in creating the dataset to maintain consistency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a loop to scan the generated tokens. In other words, do not use the model
+    to generate the entire translated sentence but consider only the next generated
+    word in the sentence until you see the end sentinel. The first generated word
+    would be the one generated by the start sentinel. It is the reason you processed
+    the target sentences this way in Lesson 02.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'First, try to run this code and observe the inference result. Some examples
+    are below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: The second line of each test is the expected output while the third line is
+    the output from the transformer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The token `[UNK]` means “unknown” or out-of-vocabulary, which should appear
+    rarely. Comparing the output, you should see the result is quite accurate. It
+    will not be perfect. For example, *they* in English can map to *ils* or *elles*
+    in French depending on the gender, and the transformer cannot always distinguish
+    that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You generated the translated sentence word by word, but indeed the transformer
+    outputs the entire sentence in one shot. You should try to modify the program
+    to decode the entire transformer output `pred` in the for-loop to see how the
+    transformer gives you a better sentence as you provide more leading words in `dec_tokens`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will review what you did so far and see if any improvements
+    can be made.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 12: Improving the Model'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You did it!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s go back and review what you did and what can be improved. You made a transformer
+    model that takes an entire English sentence and a partial French sentence (up
+    to the $k$-th token) to predict the next (the $(k+1)$-th) token.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In training, you observed that the accuracy is at 70% to 80% at the best. How
+    can you improve it? Here are some ideas, but surely, not exhaustive:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You used a simple tokenizer for your text input. Libraries such as NLTK can
+    provide better tokenizers. Also, you didn’t use subword tokenization. It is less
+    a problem for English but problematic for French. That’s why you have vastly larger
+    vocabulary size in French in your model (e.g., *l’air* (the air) and *d’air* (of
+    air) would become distinct tokens).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You trained your own word embeddings with an embedding layer. There are pre-trained
+    embeddings (such as GloVe) readily available, and they usually provide better
+    quality embeddings. This may help your model to understand the **context** better.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You designed the transformer with some parameters. You used 8 heads for multi-head
+    attention, output vector dimension is 128, sentence length was limited to 20 tokens,
+    drop out rate is 0.1, and so on. Tuning these parameters will surely impact the
+    transformer one way or another. Similarly important are the training parameters
+    such as number of epochs, learning rate schedule, and loss function.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Figure out how to change the code to accomodate the above changes. But if we
+    test it out, do you know the right way to tell if one model is better than another?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Post your answer in the comments below. I would love to see what you come up
+    with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This was the final lesson.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The End! (*Look How Far You Have Come*)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You made it. Well done!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Take a moment and look back at how far you have come.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You learned how to take a plaintext sentence, process it, and vectorize it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You analyzed the building block of a transformer model according to the paper
+    [Attention Is All You Need](https://arxiv.org/pdf/1706.03762.pdf), and implemented
+    each building block using Keras
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You connected the building blocks into a complete transformer model, and train
+    it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finally, you can witness the trained model to translate English sentences into
+    French with high accuracy
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**How did you do with the mini-course?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Did you enjoy this crash course?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Do you have any questions? Were there any sticking points?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let me know. Leave a comment below.
+  prefs: []
+  type: TYPE_NORMAL

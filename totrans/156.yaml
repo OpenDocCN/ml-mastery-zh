@@ -1,0 +1,298 @@
+- en: Using Optimizers from PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/using-optimizers-from-pytorch/](https://machinelearningmastery.com/using-optimizers-from-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Optimization is a process where we try to find the best possible set of parameters
+    for a deep learning model. Optimizers generate new parameter values and evaluate
+    them using some criterion to determine the best option. Being an important part
+    of neural network architecture, optimizers help in determining best weights, biases
+    or other hyper-parameters that will result in the desired output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many kinds of optimizers available in PyTorch, each with its own strengths
+    and weaknesses. These include Adagrad, Adam, RMSProp and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the previous tutorials, we implemented all necessary steps of an optimizer
+    to update the weights and biases during training. Here, you’ll learn about some
+    PyTorch packages that make the implementation of the optimizers even easier. Particularly,
+    you’ll learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How optimizers can be implemented using some packages in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can import linear class and loss function from PyTorch’s ‘nn’ package.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How Stochastic Gradient Descent and Adam (most commonly used optimizer) can
+    be implemented using ‘optim’ package in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can customize weights and biases of the model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note that we’ll use the same implementation steps in our subsequent tutorials
+    of our PyTorch series.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/3daa381da11dd812966375615e472a74.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Optimizers from PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Jean-Daniel Calame](https://unsplash.com/photos/vK8a67HU7To). Some
+    rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in five parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing Data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build the Model and Loss Function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Train a Model with Stochastic Gradient Descent
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Train a Model with Adam Optimizer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Plotting Graphs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing Data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s start by importing the libraries we’ll use in this tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: We will use a custom data class. The data is a line with values from $-5$ to
+    $5$ having slope and bias of $-5$ and $1$ respectively. Also, we’ll add the noise
+    with same values as `x` and train our model to estimate this line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now let’s use it to create our dataset object and plot the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/c10d8ca1946b09d916bfef58395b7e15.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Data from the custom dataset object
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code to create the
+    plot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Build the Model and Loss Function
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the previous tutorials, we created some functions for our linear regression
+    model and loss function. PyTorch allows us to do just that with only a few lines
+    of code. Here’s how we’ll import our built-in linear regression model and its
+    loss criterion from PyTorch’s `nn` package.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The model parameters are randomized at creation. We can verify this with the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: which prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: While PyTorch will randomly initialize the model parameters, we can also customize
+    them to use our own. We can set our weights and bias as follows. Note that we
+    rarely need to do this in practice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Before we start the training, let’s create a `DataLoader` object to load our
+    dataset into the pipeline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Train a Model with Stochastic Gradient Descent
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To use the optimizer of our choice, we can import the `optim` package from PyTorch.
+    It includes several state-of-the-art parameter optimization algorithms that can
+    be implemented with only a single line of code. As an example, stochastic gradient
+    descent (SGD) is available as follows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: As an input, we provided `model.parameters()` to the constructor to denote what
+    to optimize. We also defined the step size or learning rate (`lr`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: To help visualize the optimizer’s progress later, we create an empty list to
+    store the loss and let our model train for 20 epochs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: In above, we feed the data samples into the model for prediction and calculate
+    the loss. Gradients are computed during the backward pass, and parameters are
+    optimized. While in previous sessions we used some extra lines of code to update
+    the parameters and zero the gradients, PyTorch features `zero_grad()` and `step()`
+    methods from the optimizer to make the process concise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may increase the `batch_size` argument in the `DataLoader` object above
+    for mini-batch gradient descent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Together, the complete code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Train the Model with Adam Optimizer
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Adam is one of the most used optimizers for training deep learning models. It
+    is fast and quite efficient when you have a lot of data for training. Adam is
+    an optimizer with **momentum** that can perform better than SGD when the model
+    is complex, as in most cases of deep learning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In PyTorch, replacing the SGD optimizer above with Adam optimizer is as simple
+    as follows. While all other steps would be the same, we only need to replace `SGD()`
+    method with `Adam()` to implement the algorithm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Similarly, we’ll define number of iterations and an empty list to store the
+    model loss. Then we can run our training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Putting everything together, the following is the complete code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Plotting Graphs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We have successfully implemented the SGD and Adam optimizers for model training.
+    Let’s visualize how the model loss decreases in both algorithms during training
+    process, which are stored in the lists `loss_SGD` and `loss_Adam`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/2670f3bd5a6e3af1b22dce51466785f5.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can see that SGD converges faster than Adam in the above examples. This
+    is because we are training a linear regression model, in which the algorithm provided
+    by Adam is overkilled.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Putting everything together, the following is the complete code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you implemented optimization algorithms using some built-in
+    packages in PyTorch. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How optimizers can be implemented using some packages in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can import linear class and loss function from PyTorch’s `nn` package.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How Stochastic Gradient Descent and Adam (the most commonly used optimizer)
+    can be implemented using `optim` package in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can customize weights and biases of the model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

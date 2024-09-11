@@ -1,0 +1,255 @@
+- en: The Ultimate Beginner’s Guide to Docker
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/the-ultimate-beginners-guide-to-docker/](https://machinelearningmastery.com/the-ultimate-beginners-guide-to-docker/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '![The Ultimate Beginner''s Guide to Docker](../Images/cef09e3ffe17525f7f0adbcbfac4c1cc.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Image created by Editor using Midjourney
+  prefs: []
+  type: TYPE_NORMAL
+- en: Today’s digital landscape has never been so diverse. Every individual and company
+    selects their preferred tools and operating systems, creating a diverse technological
+    system. However, this diversity often leads to compatibility issues, making it
+    hard to ensure application performance across different environments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is where Docker plays a key role as an indispensable tool for application
+    development and deployment. Docker enables us to package any application within
+    a container, building all its dependencies and isolating them from the host operating
+    system. This isolation is precisely its best property – it ensures that the application
+    runs consistently, regardless of where it is deployed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This article aims to be a beginner’s guide to the Docker world. So let’s explore
+    it together.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Use Docker?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Docker shines in its ability to run applications consistently on any hardware.
+    By containerizing your application, you create a portable and reproducible environment
+    that can be deployed anywhere, eliminating the classic “it works on my machine”
+    problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To understand Docker, there are three basic concepts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Docker process from dockerfile to docker container](../Images/b586b1ef7dc8d1707b407551ef445211.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Image by Author
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Docker file: It is a script containing a set of instructions on how to build
+    an image.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Docker image: It is a template for running applications created from the Docker
+    file. It serves to launch containers.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Docker container: A running instance of the Docker image. It is a lightweight,
+    stand-alone, and executable software package that includes everything needed to
+    run your application.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: To put it simply, a Dockerfile defines the steps to create a Docker image, which
+    acts as a template for initiating processes known as containers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Easy, right?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now let’s learn how to perform this process with our own application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing Docker
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To begin with Docker, you’ll need to install it on your machine. Docker provides
+    installation packages for different operating systems, including Windows, macOS,
+    and various Linux distributions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can follow the installation guides available on [the Docker website to set
+    up Docker on your system, it is quite easy to install.](https://www.docker.com/)
+    Once it is installed, you will have the docker hub on your local machine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Docker Basics
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To dockerize an app we always start with a dockerfile in our environment. This
+    file describes the environment in which your application runs and the steps to
+    build it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s imagine we have a simple application that first asks the user for a number
+    and then returns its squared number. I know this application is quite simple,
+    but it is perfect to understand how Docker works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: When setting up this application, the first thing we need to know is that it
+    runs on Python. So, wherever we deploy it, Python must be our base image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Moreover, this app also relies on NumPy. As NumPy isn’t a default Python library,
+    we need to ensure it’s available whenever the app runs. In summary, there are
+    two main dependencies:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Base image: Python'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Dependency: NumPy'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Even though it is not necessary, it is a good practice to always have a requirements.txt
+    with all the libraries that our script requires. In this case, we would only add
+    the numpy library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So now, let’s understand how to containerize this script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Step 1 – Define the dockerfile
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To define a Dockerfile, it’s important to understand the structure of your application.
+    Typically, I place the Dockerfile at the same level as my main script and the
+    requirements.txt file. However, for more complex applications, you might need
+    to organise your files into different directories. In such cases, it’s crucial
+    to consider these directory levels when specifying file locations in the Dockerfile.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this Dockerfile:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '“FROM python:3.9-slim”: This line specifies the base image, in this case, Python
+    3.9, which Docker pulls from Docker Hub.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '“ADD requirements.txt and main.py .” : This command adds the main.py file to
+    the container.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '“RUN pip install requests”: This installs the requests library inside the container.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '“ENTRYPOINT [“python”, “./main.py”]”: This command runs the application.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Each line in a Dockerfile represents a layer, and to optimise processing, Docker
+    caches layers that remain unchanged. This means that to leverage this caching
+    mechanism, it’s best to place layers that change infrequently at the beginning
+    of the Dockerfile.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This way, Docker can reuse these cached layers, speeding up the build process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now that we already have the Dockerfile, we need to run our local docker hub
+    and proceed to the second step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Step 2 – Building and Running Docker Images
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Once you have your Dockerfile ready, you can build and run your Docker image
+    by executing the following command on your terminal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '“-t my-python-app” : Tags the image with the name my-python-app.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '“.” : Indicates the current directory as the build context.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you check your docker hub, a new image will appear under the name you used
+    in the previous command. In my case, I called it sqrt-calculator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Screenshot of the docker hub](../Images/82cc1e9b8fe3f84ac52e21b92adeaf42.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Screenshot of the Docker Desktop Interface
+  prefs: []
+  type: TYPE_NORMAL
+- en: Step 3 – Running the Docker Container
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To run the Docker image you’ve just created, use the following command in the
+    terminal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command starts a container from the my-python-app image and runs the application.
+    Although the necessary libraries are not installed in your local environment,
+    you can still execute the code within the Docker container, as it includes all
+    the dependencies needed for the application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Brief
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Docker’s Role and Importance: Docker addresses compatibility issues in a diverse
+    technological environment by containerizing applications and ensuring consistent
+    performance across different systems.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Core Components: A Dockerfile contains instructions to build a Docker image,
+    which serves as a template to run containers. Containers are instances that package
+    everything needed to run the application.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Building and Running Containers: To use Docker, create a Dockerfile defining
+    your application’s environment and dependencies, build the Docker image with docker
+    build -t app-name ., and run the container with docker run app-name, allowing
+    your application to run consistently regardless of local library installations.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you want to check my code, you can find it [in the following GitHub repo.](https://github.com/rfeers/Articles/tree/main/Docker-beginner-guide)
+  prefs: []
+  type: TYPE_NORMAL

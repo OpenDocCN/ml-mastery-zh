@@ -1,0 +1,417 @@
+- en: Using Kaggle in Machine Learning Projects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/using-kaggle-in-machine-learning-projects/](https://machinelearningmastery.com/using-kaggle-in-machine-learning-projects/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: You’ve probably heard of Kaggle data science competitions, but did you know
+    that Kaggle has many other features that can help you with your next machine learning
+    project? For people looking for datasets for their next machine learning project,
+    Kaggle allows you to access public datasets by others and share your own datasets.
+    For those looking to build and train their own machine learning models, Kaggle
+    also offers an in-browser notebook environment and some free GPU hours. You can
+    also look at other people’s public notebooks as well!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other than the website, Kaggle also has a command-line interface (CLI) which
+    you can use within the command line to access and download datasets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s dive right in and explore what Kaggle has to offer!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is Kaggle?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can use Kaggle as part of your machine learning pipeline
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Kaggle API’s Command Line Interface (CLI)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started!![](../Images/9fa78f4ce40291046ce558c63d368f74.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Kaggle in Machine Learning Projects
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Stefan Widua](https://unsplash.com/photos/kOuaZs7jDZE). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is split into five parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is Kaggle?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting up Kaggle Notebooks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Kaggle Notebooks with GPUs/TPUs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Kaggle Datasets with Kaggle Notebooks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Kaggle Datasets with Kaggle CLI tool
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What Is Kaggle?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Kaggle is probably most well known for the data science competitions that it
+    hosts, with some of them offering 5-figure prize pools and seeing hundreds of
+    teams participating. Besides these competitions, Kaggle also allows users to publish
+    and search for datasets, which they can use for their machine learning projects.
+    To use these datasets, you can use Kaggle notebooks within your browser or Kaggle’s
+    public API to download their datasets which you can then use for your machine
+    learning projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/1efc2048ec43492716704fce368f9915.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/kaggle_featured_competitions.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Kaggle Competitions
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to that, Kaggle also offers some courses and a discussions page
+    for you to learn more about machine learning and talk with other machine learning
+    practitioners!
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the rest of this article, we’ll focus on how we can use Kaggle’s datasets
+    and notebooks to help us when working on our own machine learning projects or
+    finding new projects to work on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up Kaggle Notebooks
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To get started with Kaggle Notebooks, you’ll need to create a Kaggle account
+    either using an existing Google account or creating one using your email.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, go to the “Code” page.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/64426c2bb866fd5d74ff563c35b01678.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/kaggle_sidebar_notebook.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Left Sidebar of Kaggle Home Page, Code Tab
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will then be able to see your own notebooks as well as public notebooks
+    by others. To create your own notebook, click on New Notebook.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/04274a873bbfa260fa621c4e59dcb00a.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/kaggle_code_page.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Kaggle Code Page
+  prefs: []
+  type: TYPE_NORMAL
+- en: This will create your new notebook, which looks like a Jupyter notebook, with
+    many similar commands and shortcuts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/260a24470940cdbbf11ae361c101772d.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/kaggle_empty_notebook.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Kaggle Notebook
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also toggle between a notebook editor and script editor by going to
+    File -> Editor Type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/37ef11f04671ce4b61439c2111b069e4.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/kaggle_toggle_script.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing Editor Type in Kaggle Notebook
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Changing the editor type to script shows this instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/ad1c7b273d57b0d0d6c22abf70b6b659.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/kaggle_empty_script.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Kaggle Notebook Script Editor Type
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Kaggle with GPUs/TPUs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Who doesn’t love free GPU time for machine learning projects? GPUs can help
+    to massively speed up the training and inference of machine learning models, especially
+    with deep learning models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Kaggle comes with some free allocation of GPUs and TPUs, which you can use for
+    your projects. At the time of this writing, the availability is 30 hours a week
+    for GPUs and 20 hours a week for TPUs after verifying your account with a phone
+    number.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To attach an accelerator to your notebook, go to Settings ▷ Environment ▷ Preferences.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/4058109acac06fb4201653e04e2c36b1.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/kaggle_environment_preferences.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Changing Kaggle Notebook Environment preferences
+  prefs: []
+  type: TYPE_NORMAL
+- en: You’ll be asked to verify your account with a phone number.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/bb2fd2f0c028e1e6e14eb21f32bc7e26.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/verify_phone.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Verify phone number
+  prefs: []
+  type: TYPE_NORMAL
+- en: And then presented with this page which lists the amount of availability you
+    have left and mentions that turning on GPUs will reduce the number of CPUs available,
+    so it’s probably only a good idea when doing training/inference with neural networks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/26a5c2e6f38123bb4c1563600cfa568a.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/use_accelerator.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding GPU Accelerator to Kaggle Notebook
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Kaggle Datasets with Kaggle Notebooks
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Machine learning projects are data-hungry monsters, and finding datasets for
+    our current projects or looking for datasets to start new projects is always a
+    chore. Luckily, Kaggle has a rich collection of datasets contributed by users
+    and from competitions. These datasets can be a treasure trove for people looking
+    for data for their current machine learning project or people looking for new
+    ideas for projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s explore how we can add these datasets to our Kaggle notebook.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, click on Add data on the right sidebar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/4f4c93e3e2768c2e8eed03fa98dfa4c9.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/add_data.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding Datasets to Kaggle Notebook Environment
+  prefs: []
+  type: TYPE_NORMAL
+- en: A window should appear that shows you some of the publicly available datasets
+    and gives you the option to upload your own dataset for use with your Kaggle notebook.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/c57413aa7e56ab4ba5f83adf04fe8576.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/kaggle_datasets.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Searching Through Kaggle datasets
+  prefs: []
+  type: TYPE_NORMAL
+- en: I’ll be using the classic titanic dataset as my example for this tutorial, which
+    you can find by keying your search terms into the search bar on the top right
+    of the window.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/b1791fd2aa294e26b943adbe8b368584.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/search_titanic_dataset.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Kaggle Datasets Filtered with “Titanic” Keyword
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After that, the dataset is available to be used by the notebook. To access
+    the files, take a look at the path for the file and prepend `../input/{path}`.
+    For example, the file path for the titanic dataset is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the notebook, we can read the data using:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This gets us the data from the file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/744de917b8518a888f78c125ea6124af.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/kaggle_notebook_read_dataset.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Titanic Dataset in Kaggle Notebook
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Kaggle Datasets with Kaggle CLI Tool
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Kaggle also has a public API with a CLI tool which we can use to download datasets,
+    interact with competitions, and much more. We’ll be looking at how to set up and
+    download Kaggle datasets using the CLI tool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To get started, install the CLI tool using:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For Mac/Linux users, you might need:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, you’ll need to create an API token for authentication. Go to Kaggle’s
+    webpage, click on your profile icon in the top right corner and go to Account.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/b266916fa74554ec5dc4ea66f91d3c22.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/kaggle_account.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Going to Kaggle Account Settings
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From there, scroll down to Create New API Token:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/0332c476ff138998f8642db6a1cd7d70.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/create_api_token.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generating New API Token for Kaggle Public API
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This will download a `kaggle.json` file that you’ll use to authenticate yourself
+    with the Kaggle CLI tool. You will have to place it in the correct location for
+    it to work. For Linux/Mac/Unix-based operating systems, this should be placed
+    at `~/.kaggle/kaggle.json`, and for Windows users, it should be placed at `C:\Users\<Windows-username>\.kaggle\kaggle.json`.
+    Placing it in the wrong location and calling `kaggle` in the command line will
+    give an error:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s get started on downloading those datasets!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To search for datasets using a search term, e.g., titanic, we can use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Searching for titanic, we get:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To download the first dataset in that list, we can use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Using a Jupyter notebook to read the file, similar to the Kaggle notebook example,
+    gives us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/fb4e862c218bf3d2275bd79571a5715c.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/jupyter_titanic.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Titanic Dataset in Jupyter Notebook
+  prefs: []
+  type: TYPE_NORMAL
+- en: Of course, some datasets are so large in size that you may not want to keep
+    them on your own disk. Nonetheless, this is one of the free resources provided
+    by Kaggle for your machine learning projects!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources if you’re interested in going deeper into
+    the topic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Kaggle: [https://www.kaggle.com](https://www.kaggle.com)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Kaggle API documentation: [https://www.kaggle.com/docs/api](https://www.kaggle.com/docs/api)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned what Kaggle is , how we can use Kaggle to get
+    datasets, and even for some free GPU/TPU instances within Kaggle Notebooks. You’ve
+    also seen how we can use Kaggle API’s CLI tool to download datasets for us to
+    use in our local environments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learnt:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is Kaggle
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use Kaggle notebooks along with their GPU/TPU accelerator
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use Kaggle datasets in Kaggle notebooks or download them using Kaggle’s
+    CLI tool
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

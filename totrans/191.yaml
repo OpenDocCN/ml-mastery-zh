@@ -1,0 +1,490 @@
+- en: Inferencing the Transformer Model
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/inferencing-the-transformer-model/](https://machinelearningmastery.com/inferencing-the-transformer-model/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: We have seen how to [train the Transformer model](https://machinelearningmastery.com/training-the-transformer-model/)
+    on a dataset of English and German sentence pairs and how to [plot the training
+    and validation loss curves](https://machinelearningmastery.com/?p=13879&preview=true)
+    to diagnose the model’s learning performance and decide at which epoch to run
+    inference on the trained model. We are now ready to run inference on the trained
+    Transformer model to translate an input sentence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover how to run inference on the trained Transformer
+    model for neural machine translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to run inference on the trained Transformer model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to generate text translations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/fded4026d0b6b47179cdeb33f286c6e7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/10/karsten-wurth-algc0FKHeMA-unsplash-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inferencing the Transformer model
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Karsten Würth](https://unsplash.com/photos/algc0FKHeMA), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recap of the Transformer Architecture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Inferencing the Transformer Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Testing Out the Code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you are already familiar with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[The theory behind the Transformer model](https://machinelearningmastery.com/the-transformer-model/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[An implementation of the Transformer model](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Training the Transformer model](https://machinelearningmastery.com/training-the-transformer-model/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Plotting the training and validation loss curves for the Transformer model](https://machinelearningmastery.com/?p=13879&preview=true)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Recap of the Transformer Architecture**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Recall](https://machinelearningmastery.com/the-transformer-model/) having
+    seen that the Transformer architecture follows an encoder-decoder structure. The
+    encoder, on the left-hand side, is tasked with mapping an input sequence to a
+    sequence of continuous representations; the decoder, on the right-hand side, receives
+    the output of the encoder together with the decoder output at the previous time
+    step to generate an output sequence.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The encoder-decoder structure of the Transformer architecture
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: In generating an output sequence, the Transformer does not rely on recurrence
+    and convolutions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You have seen how to implement the complete Transformer model and subsequently
+    train it on a dataset of English and German sentence pairs. Let’s now proceed
+    to run inference on the trained model for neural machine translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Inferencing the Transformer Model**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s start by creating a new instance of the `TransformerModel` class that
+    was previously implemented in [this tutorial](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You will feed into it the relevant input arguments as specified in the paper
+    of [Vaswani et al. (2017)](https://arxiv.org/abs/1706.03762) and the relevant
+    information about the dataset in use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, note that the last input being fed into the `TransformerModel` corresponded
+    to the dropout rate for each of the `Dropout` layers in the Transformer model.
+    These `Dropout` layers will not be used during model inferencing (you will eventually
+    set the `training` argument to `False`), so you may safely set the dropout rate
+    to 0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Furthermore, the `TransformerModel` class was already saved into a separate
+    script named `model.py`. Hence, to be able to use the `TransformerModel` class,
+    you need to include `from model import TransformerModel`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, let’s create a class, `Translate`, that inherits from the `Module` base
+    class in Keras and assign the initialized inferencing model to the variable `transformer`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: When you [trained the Transformer model](https://machinelearningmastery.com/training-the-transformer-model/),
+    you saw that you first needed to tokenize the sequences of text that were to be
+    fed into both the encoder and decoder. You achieved this by creating a vocabulary
+    of words and replacing each word with its corresponding vocabulary index.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will need to implement a similar process during the inferencing stage before
+    feeding the sequence of text to be translated into the Transformer model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this purpose, you will include within the class the following `load_tokenizer`
+    method, which will serve to load the encoder and decoder tokenizers that [you
+    would have generated and saved during the training stage](https://machinelearningmastery.com/?p=13879&preview=true):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is important that you tokenize the input text at the inferencing stage using
+    the same tokenizers generated at the training stage of the Transformer model since
+    these tokenizers would have already been trained on text sequences similar to
+    your testing data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next step is to create the class method, `call()`, that will take care
+    to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Append the start (<START>) and end-of-string (<EOS>) tokens to the input sentence:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Load the encoder and decoder tokenizers (in this case, saved in the `enc_tokenizer.pkl`
+    and `dec_tokenizer.pkl` pickle files, respectively):'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Prepare the input sentence by tokenizing it first, then padding it to the maximum
+    phrase length, and subsequently converting it to a tensor:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Repeat a similar tokenization and tensor conversion procedure for the <START>
+    and <EOS> tokens at the output:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Prepare the output array that will contain the translated text. Since you do
+    not know the length of the translated sentence in advance, you will initialize
+    the size of the output array to 0, but set its `dynamic_size` parameter to `True`
+    so that it may grow past its initial size. You will then set the first value in
+    this output array to the <START> token:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Iterate, up to the decoder sequence length, each time calling the Transformer
+    model to predict an output token. Here, the `training` input, which is then passed
+    on to each of the Transformer’s `Dropout` layers, is set to `False` so that no
+    values are dropped during inference. The prediction with the highest score is
+    then selected and written at the next available index of the output array. The
+    `for` loop is terminated with a `break` statement as soon as an <EOS> token is
+    predicted:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Decode the predicted tokens into an output list and return it:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The complete code listing, so far, is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Testing Out the Code**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to test out the code, let’s have a look at the `test_dataset.txt` file
+    that you would have saved when [preparing the dataset for training](https://machinelearningmastery.com/?p=13879&preview=true).
+    This text file contains a set of English-German sentence pairs that have been
+    reserved for testing, from which you can select a couple of sentences to test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s start with the first sentence:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The corresponding ground truth translation in German for this sentence, including
+    the <START> and <EOS> decoder tokens, should be: `<START> ich bin durstig <EOS>`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you have a look at the [plotted training and validation loss curves](https://machinelearningmastery.com/?p=13879&preview=true)
+    for this model (here, you are training for 20 epochs), you may notice that the
+    validation loss curve slows down considerably and starts plateauing at around
+    epoch 16.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So let’s proceed to load the saved model’s weights at the 16th epoch and check
+    out the prediction that is generated by the model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running the lines of code above produces the following translated list of words:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Which is equivalent to the ground truth German sentence that was expected (always
+    keep in mind that since you are training the Transformer model from scratch, you
+    may arrive at different results depending on the random initialization of the
+    model weights).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s check out what would have happened if you had, instead, loaded a set
+    of weights corresponding to a much earlier epoch, such as the 4th epoch. In this
+    case, the generated translation is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In English, this translates to: *I in not not*, which is clearly far off from
+    the input English sentence, but which is expected since, at this epoch, the learning
+    process of the Transformer model is still at the very early stages.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s try again with a second sentence from the test dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The corresponding ground truth translation in German for this sentence, including
+    the <START> and <EOS> decoder tokens, should be: `<START> sind wir dann durch
+    <EOS>`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The model’s translation for this sentence, using the weights saved at epoch
+    16, is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Which, instead, translates to: *I was ready*. While this is also not equal
+    to the ground truth, it is *close* to its meaning.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What the last test suggests, however, is that the Transformer model might have
+    required many more data samples to train effectively. This is also corroborated
+    by the validation loss at which the validation loss curve plateaus remain relatively
+    high.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Indeed, Transformer models are notorious for being very data hungry. [Vaswani
+    et al. (2017)](https://arxiv.org/abs/1706.03762), for example, trained their English-to-German
+    translation model using a dataset containing around 4.5 million sentence pairs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*We trained on the standard WMT 2014 English-German dataset consisting of about
+    4.5 million sentence pairs…For English-French, we used the significantly larger
+    WMT 2014 English-French dataset consisting of 36M sentences…*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: They reported that it took them 3.5 days on 8 P100 GPUs to train the English-to-German
+    translation model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In comparison, you have only trained on a dataset comprising 10,000 data samples
+    here, split between training, validation, and test sets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So the next task is actually for you. If you have the computational resources
+    available, try to train the Transformer model on a much larger set of sentence
+    pairs and see if you can obtain better results than the translations obtained
+    here with a limited amount of data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
+    2021'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered how to run inference on the trained Transformer
+    model for neural machine translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to run inference on the trained Transformer model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to generate text translations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

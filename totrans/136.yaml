@@ -1,0 +1,302 @@
+- en: Building a Regression Model in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/building-a-regression-model-in-pytorch/](https://machinelearningmastery.com/building-a-regression-model-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: PyTorch library is for deep learning. Some applications of deep learning models
+    are to solve regression or classification problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, you will discover how to use PyTorch to develop and evaluate neural
+    network models for regression problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this post, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to load data from scikit-learn and adapt it for PyTorch models
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create a neural network for regerssion problem using PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to improve model performance with data preparation techniques
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/918e52e81c4c7df61a4008105b43a255.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a Regression Model in PyTorchPhoto by [Sam Deng](https://unsplash.com/photos/2bJGj7sIclQ).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description of the Dataset
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The dataset you will use in this tutorial is the [California housing dataset](https://scikit-learn.org/stable/datasets/real_world.html#california-housing-dataset).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a dataset that describes the median house value for California districts.
+    Each data sample is a census block group. The target variable is the median house
+    value in USD 100,000 in 1990 and there are 8 input features, each describing something
+    about the house. They are, namely,
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'MedInc: median income in block group'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'HouseAge: median house age in block group'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'AveRooms: average number of rooms per household'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'AveBedrms: average number of bedrooms per household'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Population: block group population'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'AveOccup: average number of household members'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Latitude: block group centroid latitude'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Longitude: block group centroid longitude'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This data is special because the input data is in vastly different scale. For
+    example, the number of rooms per house is usually small but the population per
+    block group is usually large. Moreover, most features should be positive but the
+    longitude must be negative (because that’s about California). Handling such diversity
+    of data is a challenge to some machine learning models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can get the dataset from scikit-learn, which in turn, is downloaded from
+    the Internet at realtime:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Building a Model and Train
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This is a regression problem. Unlike classification problems, the output variable
+    is a continuous value. In case of neural networks, you usually use linear activation
+    at the output layer (i.e., no activation) such that the output range theoretically
+    can be anything from negative infinty to positive infinity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Also for regression problems, you should never expect the model to predict the
+    values perfectly. Therefore, you should care about how close the prediction is
+    to the actual value. The loss metric that you can use for this is the mean square
+    error (MSE) or mean absolute error (MAE). But you may also interested in the root
+    mean squared error (RMSE) because that’s a metric in the same unit as your output
+    variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s try the traditional design of a neural network, namely, the pyramid structure.
+    A pyramid structure is to have the number of neurons in each layer decreasing
+    as the network progresses to the output. The number of input features is fixed,
+    but you set a large number of neurons on the first hidden layer and gradually
+    reduce the number in the subsequent layers. Because you have only one target in
+    this dataset, the final layer should output only one value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One design is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: To train this network, you need to define a loss function. MSE is a reasonable
+    choice. You also need an optimizer, such as Adam.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To train this model, you can use your usual training loop. In order to obtain
+    an evaluation score so you are confident that the model works, you need to split
+    the data into training and test sets. You may also want to avoid overfitting by
+    keeping track on the test set MSE. The following is the training loop with the
+    train-test split:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the training loop, `tqdm` is used to set up a progress bar and in each iteration
+    step, MSE is calculated and reported. You can see how the MSE changed by setting
+    the `tqdm` parameter `disable` above to `False`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that in the training loop, each epoch is to run the forward and backward
+    steps with the training set a few times to optimize the model weights, and at
+    the end of the epoch, the model is evaluated using the test set. It is the MSE
+    from the test set that is remembered in the list `history`. It is also the metric
+    to evaluate a model, which the best one is stored in the variable `best_weights`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After you run this, you will have the best model restored and the best MSE stored
+    in the variable `best_mse`. Note that the mean square error is the average of
+    the square of the difference between the predicted value and the actual value.
+    The square root of it, RMSE, can be regarded as the average difference and it
+    is numerically more useful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In below, you can show the MSE and RMSE, and plot the history of MSE. It should
+    be decreasing with the epochs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This model produced:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The MSE graph would like the following.![](../Images/0c33b9cf0623b8a856785b5c34dad411.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Putting everything together, the following is the complete code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Improving the Model with Preprocessing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In the above, you see the RMSE is 0.68\. Indeed, it is easy to improve the
+    RMSE by polishing the data before training. The problem of this dataset is the
+    diversity of the features: Some are with a narrow range and some are wide. And
+    some are small but positive while some are very negative. This indeed is not very
+    nice to most of the machine learning model.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: One way to improve this is to apply a **standard scaler**. It is to convert
+    each feature into their standard score. In other words, for each feature $x$,
+    you replace it with
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: z = \frac{x – \bar{x}}{\sigma_x}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where $\bar{x}$ is the mean of $x$ and $\sigma_x$ is the standard deviation.
+    This way, every transformed feature is centered around 0 and in a narrow range
+    that around 70% of the samples are between -1 to +1\. This can help the machine
+    learning model to converge.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can apply the standard scaler from scikit-learn. The following is how you
+    should modify the data preparation part of the above code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that standard scaler is applied after train-test split. The `StandardScaler`
+    above is fitted on the training set but applied on both the training and test
+    set. You must not apply the standard scaler to all data because nothing from the
+    test set should be hinted to the model. Otherwise you are introducing **data leakage**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Other than that, virtually nothing shall be changed: You still have 8 features
+    (only they are not the same in value). You still use the same training loop. If
+    you train the model with the scaled data, you should see the RMSE improved, e.g.,'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: While the MSE history is in a similar falling shape, the y-axis shows it is
+    indeed better after scaling:![](../Images/8550b66a243d506ee34fe176c6b78113.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, you need to be careful at the end: When you use the trained model
+    and apply to new data, you should apply the scaler to the input data before feed
+    into the mode. That is, inference should be done as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Of course, there is still room to imporve the model. One way is to present the
+    target in log scale or, equivalently, use mean absolute percentage error (MAPE)
+    as the loss function. This is because the target variable is the value of houses
+    and it is in a wide range. For the same error magnitude, it is more an issue for
+    low-valued houses. It is your exercise to modify the above code to produce a better
+    prediction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you discovered the use of PyTorch to build a regression model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You learned how you can work through a regression problem step-by-step with
+    PyTorch, specifically:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to load and prepare data for use in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create neural network models and choose a loss function for regression
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to improve model accuracy by applying standard scaler
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

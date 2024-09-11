@@ -1,0 +1,304 @@
+- en: Detecting and Overcoming Perfect Multicollinearity in Large Datasets
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/detecting-and-overcoming-perfect-multicollinearity-in-large-datasets/](https://machinelearningmastery.com/detecting-and-overcoming-perfect-multicollinearity-in-large-datasets/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: One of the significant challenges statisticians and data scientists face is
+    multicollinearity, particularly its most severe form, perfect multicollinearity.
+    This issue often lurks undetected in large datasets with many features, potentially
+    disguising itself and skewing the results of statistical models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, we explore the methods for detecting, addressing, and refining
+    models affected by perfect multicollinearity. Through practical analysis and examples,
+    we aim to equip you with the tools necessary to enhance your models’ robustness
+    and interpretability, ensuring that they deliver reliable insights and accurate
+    predictions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/fcc19ef4088d150c20c8db33e1c5fa32.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Detecting and Overcoming Perfect Multicollinearity in Large Datasets
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Ryan Stone](https://unsplash.com/photos/red-bridge-during-daytime-sOLbaTbs5mU).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring the Impact of Perfect Multicollinearity on Linear Regression Models
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Addressing Multicollinearity with Lasso Regression
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Refining the Linear Regression Model Using Insights from Lasso Regression
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Exploring the Impact of Perfect Multicollinearity on Linear Regression Models
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Multiple linear regression is particularly valued for its interpretability.
+    It allows a direct understanding of how each predictor impacts the response variable.
+    However, its effectiveness hinges on the assumption of independent features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Collinearity means that a variable can be expressed as a linear combination
+    of some other variables. Hence, the variables are not independent of each other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Linear regression works under the assumption that the feature set has no collinearity.
+    To ensure this assumption holds, understanding a core concept in linear algebra—the
+    rank of a matrix—is vital. In linear regression, the rank reveals the linear independence
+    of features. Essentially, no feature should be a direct linear combination of
+    another. This independence is crucial because dependencies among features—where
+    the rank is less than the number of features—lead to perfect multicollinearity.
+    This condition can distort the interpretability and reliability of a regression
+    model, impacting its utility in making informed decisions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s explore this with the Ames Housing dataset. We will examine the dataset’s
+    rank and the number of features to detect multicollinearity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our preliminary results show that the Ames Housing dataset has multicollinearity,
+    with 27 features but only a rank of 26:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: To address this, let’s identify the redundant features using a tailored function.
+    This approach helps make informed decisions about feature selection or modifications
+    to enhance model reliability and interpretability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following features have been identified as redundant, indicating that they
+    do not contribute uniquely to the predictive power of the model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Having identified redundant features in our dataset, it is crucial to understand
+    the nature of their redundancy. Specifically, we suspect that ‘GrLivArea’ may
+    simply be a sum of the first floor area (“1stFlrSF”), second floor area (“2ndFlrSF”),
+    and low-quality finished square feet (“LowQualFinSF”). To verify this, we will
+    calculate the total of these three areas and compare it directly with “GrLivArea”
+    to confirm if they are indeed identical.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our analysis confirms that “GrLivArea” is precisely the sum of “1stFlrSF”,
+    “2ndFlrSF”, and “LowQualFinSF” in 100% of the cases in the dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Having established the redundancy of “GrLivArea” through matrix rank analysis,
+    we now aim to visualize the effects of multicollinearity on our regression model’s
+    stability and predictive power. The following steps will involve running a Multiple
+    Linear Regression using the redundant features to observe the variance in coefficient
+    estimates. This exercise will help demonstrate the practical impact of multicollinearity
+    in a tangible way, reinforcing the need for careful feature selection in model
+    building.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The results can be demonstrated with the two plots below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/5c151c386335f581bbf5f668ba482cd6.png)](https://machinelearningmastery.com/?attachment_id=17325)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The box plot on the left illustrates the substantial variance in the coefficient
+    estimates. This significant spread in values not only points to the instability
+    of our model but also directly challenges its interpretability. Multiple linear
+    regression is particularly valued for its interpretability, which hinges on its
+    coefficients’ stability and consistency. When coefficients vary widely from one
+    data subset to another, it becomes difficult to derive clear and actionable insights,
+    which are essential for making informed decisions based on the model’s predictions.
+    Given these challenges, a more robust approach is needed to address the variability
+    and instability in our model’s coefficients.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Addressing Multicollinearity with Lasso Regression
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Lasso regression presents itself as a robust solution. Unlike multiple linear
+    regression, Lasso can penalize the coefficients’ size and, crucially, set some
+    coefficients to zero, effectively reducing the number of features in the model.
+    This feature selection is particularly beneficial in mitigating multicollinearity.
+    Let’s apply Lasso to our previous example to demonstrate this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By varying the regularization strength (alpha), we can observe how increasing
+    the penalty affects the coefficients and the predictive accuracy of the model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/1b5a2cf4d504b65eb0ceb862e65c3d6b.png)](https://machinelearningmastery.com/?attachment_id=17327)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The box plots on the left show that as alpha increases, the spread and magnitude
+    of the coefficients decrease, indicating more stable estimates. Notably, the coefficient
+    for ‘2ndFlrSF’ begins to approach zero as alpha is set to 1 and is virtually zero
+    when alpha increases to 2\. This trend suggests that ‘2ndFlrSF’ contributes minimally
+    to the model as the regularization strength is heightened, indicating that it
+    may be redundant or collinear with other features in the model. This stabilization
+    is a direct result of Lasso’s ability to reduce the influence of less important
+    features, which are likely contributing to multicollinearity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The fact that ‘2ndFlrSF’ can be removed with minimal impact on the model’s predictability
+    is significant. It underscores the efficiency of Lasso in identifying and eliminating
+    unnecessary predictors. Importantly, the overall predictability of the model remains
+    unchanged even as this feature is effectively zeroed out, demonstrating the robustness
+    of Lasso in maintaining model performance while simplifying its complexity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Refining the Linear Regression Model Using Insights from Lasso Regression
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Following the insights gained from the Lasso regression, we have refined our
+    model by removing ‘2ndFlrSF’, a feature identified as contributing minimally to
+    the predictive power. This section evaluates the performance and stability of
+    the coefficients in the revised model, using only ‘GrLivArea’, ‘1stFlrSF’, and
+    ‘LowQualFinSF’.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The results of our refined multiple regression model can be demonstrated with
+    the two plots below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/487ff0ad305599d84982682cd0bf9601.png)](https://machinelearningmastery.com/?attachment_id=17328)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The box plot on the left illustrates the coefficients’ distribution across different
+    folds of cross-validation. Notably, the variance in the coefficients appears reduced
+    compared to previous models that included “2ndFlrSF.” This reduction in variability
+    highlights the effectiveness of removing redundant features, which can help stabilize
+    the model’s estimates and enhance its interpretability. Each feature’s coefficient
+    now exhibits less fluctuation, suggesting that the model can consistently evaluate
+    the importance of these features across various subsets of the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to maintaining the model’s predictability, the reduction in feature
+    complexity has significantly enhanced the interpretability of the model. With
+    fewer variables, each contributing distinctly to the outcome, we can now more
+    easily gauge the impact of these specific features on the sale price. This clarity
+    allows for more straightforward interpretations and more confident decision-making
+    based on the model’s output. Stakeholders can better understand how changes in
+    “GrLivArea”, “1stFlrSF’, and “LowQualFinSF” are likely to affect property values,
+    facilitating clearer communication and more actionable insights. This improved
+    transparency is invaluable, particularly in fields where explaining model predictions
+    is as important as the predictions themselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[sklearn.linear_model.Lasso](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Apply Lasso regression to automate feature selection](https://developer.ibm.com/tutorials/awb-lasso-regression-automatic-feature-selection/)
+    by Eda Kavlakoglu'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Feature selection in machine learning using Lasso regression](https://www.yourdatateacher.com/2021/05/05/feature-selection-in-machine-learning-using-lasso-regression/)
+    by Gianluca Malato'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Ames Housing Dataset & Data Dictionary**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This blog post tackled the challenge of perfect multicollinearity in regression
+    models, starting with its detection using matrix rank analysis in the Ames Housing
+    dataset. We then explored Lasso regression to mitigate multicollinearity by reducing
+    feature count, stabilizing coefficient estimates, and preserving model predictability.
+    It concluded by refining the linear regression model and enhancing its interpretability
+    and reliability through strategic feature reduction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The use of matrix rank analysis to detect perfect multicollinearity in a dataset.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The application of Lasso regression to mitigate multicollinearity and assist
+    in feature selection.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The refinement of a linear regression model using insights from Lasso to enhance
+    interpretability.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

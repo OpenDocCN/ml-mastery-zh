@@ -1,0 +1,252 @@
+- en: Training and Validation Data in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/training-and-validation-data-in-pytorch/](https://machinelearningmastery.com/training-and-validation-data-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Training data is the set of data that a machine learning algorithm uses to learn.
+    It is also called training set. Validation data is one of the sets of data that
+    machine learning algorithms use to test their accuracy. To validate an algorithm’s
+    performance is to compare its predicted output with the known ground truth in
+    validation data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training data is usually large and complex, while validation data is usually
+    smaller. The more training examples there are, the better the model performance
+    will be. For instance, in a spam detection task, if there are 10 spam emails and
+    10 non-spam emails in the training set then it can be difficult for the machine
+    learning model to detect spam in a new email because there isn’t enough information
+    about what spam looks like. However, if we have 10 million spam emails and 10
+    million non-spam emails then it would be much easier for our model to detect new
+    spam because it has seen so many examples of what it looks like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you will learn about training and validation data in PyTorch.
+    We will also demonstrate the importance of training and validation data for machine
+    learning models in general, with a focus on neural networks. Particularly, you’ll
+    learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The concept of training and validation data in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How data is split into training and validations sets in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can build a simple linear regression model with built-in functions in
+    PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can use various learning rates to train our model in order to get the
+    desired accuracy.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can tune the hyperparameters in order to obtain the best model for your
+    data.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/5917059615dafe61e0e6e0ee4f6ceac6.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Optimizers from PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Markus Krisetya](https://unsplash.com/photos/Vkp9wg-VAsQ). Some
+    rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Build the Data Class for Training and Validation Sets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build and Train the Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Visualize the Results
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build the Data Class for Training and Validation Sets
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s first load up a few libraries we’ll need in this tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: We’ll start from building a custom dataset class to produce enough amount of
+    synthetic data. This will allow us to split our data into training set and validation
+    set. Moreover, we’ll add some steps to include the outliers into the data as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: For training set, we’ll set our `train` parameter to `True` by default. If set
+    to `False`, it will produce validation data. We created our train set and validation
+    set as separate objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, let’s visualize our data. You’ll see the outliers at $x=-2$ and $x=0$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/74d19cb54ba44ff680cd75ebd2ea7369.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Training and validation datasets
+  prefs: []
+  type: TYPE_NORMAL
+- en: The complete code to generate the plot above is as follows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Build and Train the Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `nn` package in PyTorch provides us many useful functions. We’ll import
+    linear regression model and loss criterion from the `nn` package. Furthermore,
+    we’ll also import `DataLoader` from `torch.utils.data` package.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: We’ll create a list of various learning rates to train multiple models in one
+    go. This is a common practice among deep learning practitioners where they tune
+    different hyperparameters to get the best model. We’ll store both training and
+    validation losses in tensors and create an empty list `Models` to store our models
+    as well. Later on, we’ll plot the graphs to evaluate our models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: To train the models, we’ll use various learning rates with stochastic gradient
+    descent (SGD) optimizer. Results for training and validation data will be saved
+    along with the models in the list. We’ll train all models for 20 epochs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The code above collects losses from training and validation separately. This
+    helps us to understand how well our training can be, for example, whether we are
+    overfitting. It overfits if we discovered that the loss in validation set is largely
+    different from the loss from training set. In that case, our trained model failed
+    to generalize to the data it didn’t see, namely, the validation sets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Visualize the Results
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the above, we use the same model (linear regression) and train with a fixed
+    number of epochs. The only variation is the learning rate. Then we can compare
+    which learning rate gives us the best model in terms of fastest convergence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s visualize the loss plots for both training and validation data for each
+    learning rate. By looking at the plot, you can observe that the loss is smallest
+    at the learning rate 0.001, meaning our model converge faster at this learning
+    rate for this data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/245eb7e1d10344f52b605a55369db77f.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Loss vs learning rate
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s also plot the predictions from each of the models on the validation data.
+    A perfectly converged model should fit the data perfectly while a model far from
+    converged would produce predicts that are far off from the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: which we see the prediction visualized as follows:![](../Images/27f946929f6b40cab47a48b13292e3fd.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can see, the green line is closer to the validation data points. It’s
+    the line with the optimal learning rate (0.001).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following is the complete code from creating the data to visualizing the
+    loss from training and validation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned the concept of training and validation data in
+    PyTorch. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The concept of training and validation data in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How data is split into training and validations sets in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can build a simple linear regression model with built-in functions in
+    PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can use various learning rates to train our model in order to get the
+    desired accuracy.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can tune the hyperparameters in order to obtain the best model for your
+    data.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

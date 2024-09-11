@@ -1,0 +1,677 @@
+- en: 'Method of Lagrange Multipliers: The Theory Behind Support Vector Machines (Part
+    3: Implementing An SVM From Scratch In Python)'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-3-implementing-an-svm-from-scratch-in-python/](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-3-implementing-an-svm-from-scratch-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The mathematics that powers a support vector machine (SVM) classifier is beautiful.
+    It is important to not only learn the basic model of an SVM but also know how
+    you can implement the entire model from scratch. This is a continuation of our
+    series of tutorials on SVMs. In [part1](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case) and
+    [part2](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-2-the-non-separable-case)
+    of this series we discussed the mathematical model behind a linear SVM. In this
+    tutorial, we’ll show how you can build an SVM linear classifier using the optimization
+    routines shipped with Python’s SciPy library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use SciPy’s optimization routines
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to define the objective function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to define bounds and linear constraints
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement your own SVM classifier in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/61e8306c5410b11740e6ad2ef285cc14.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/Untitled.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Method Of Lagrange Multipliers: The Theory Behind Support Vector Machines (Part
+    3: Implementing An SVM From Scratch In Python)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sculpture Gyre by Thomas Sayre, Photo by Mehreen Saeed, some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into 2 parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The optimization problem of an SVM
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Solution of the optimization problem in Python
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Define the objective function
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Define the bounds and linear constraints
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Solve the problem with different C values
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Pre-requisites
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this tutorial, it is assumed that you are already familiar with the following
+    topics. You can click on the individual links to get more details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[A Gentle Introduction to Optimization / Mathematical Programming](https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[A Gentle Introduction To Method Of Lagrange Multipliers](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Lagrange Multiplier Approach with Inequality Constraints](https://machinelearningmastery.com/lagrange-multiplier-approach-with-inequality-constraints/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Method Of Lagrange Multipliers: The Theory Behind Support Vector Machines
+    (Part 1: The Separable Case)](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case))'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Method Of Lagrange Multipliers: The Theory Behind Support Vector Machines
+    (Part 2: The Non-Separable Case](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-2-the-non-separable-case)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Notations and Assumptions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A basic SVM machine assumes a binary classification problem. Suppose, we have
+    $m$ training points, each point being an $n$-dimensional vector. We’ll use the
+    following notations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '$m$: Total training points'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$n$: Dimensionality of each training point'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$x$: Data point, which is an $n$-dimensional vector'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$i$: Subscript used to index the training points. $0 \leq i < m$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$k$: Subscript used to index the training points. $0 \leq k < m$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$j$: Subscript used to index each dimension of a training point'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$t$: Label of a data point. It is an $m$-dimensional vector, with $t_i \in
+    \{-1, +1\}$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$T$: Transpose operator'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$w$: Weight vector denoting the coefficients of the hyperplane. It is also
+    an $n$-dimensional vector'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$\alpha$: Vector of Lagrange multipliers, also an $m$-dimensional vector'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$C$: User defined penalty factor/regularization constant'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The SVM Optimization Problem
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The SVM classifier maximizes the following Lagrange dual given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: L_d = -\frac{1}{2} \sum_i \sum_k \alpha_i \alpha_k t_i t_k (x_i)^T (x_k) + \sum_i
+    \alpha_i
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The above function is subject to the following constraints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{eqnarray}
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0 \leq \alpha_i \leq C, & \forall i\\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \sum_i \alpha_i t_i = 0& \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{eqnarray}
+  prefs: []
+  type: TYPE_NORMAL
+- en: All we have to do is find the Lagrange multiplier $\alpha$ associated with each
+    training point, while satisfying the above constraints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python Implementation of SVM
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We’ll use the SciPy optimize package to find the optimal values of Lagrange
+    multipliers, and compute the soft margin and the separating hyperplane.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Import Section and Constants
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Let’s write the import section for optimization, plotting and synthetic data
+    generation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: We also need the following constant to detect all alphas numerically close to
+    zero, so we need to define our own threshold for zero.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Defining the Data Points and Labels
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Let’s define a very simple dataset, the corresponding labels and a simple routine
+    for plotting this data. Optionally, if a string of alphas is given to the plotting
+    function, then it will also label all support vectors with their corresponding
+    alpha values. Just to recall support vectors are those points for which $\alpha>0$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/6711a1196ab44cac89c2e2cea620d083.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/svm1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `minimize()` Function
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s look at the `minimize()` function in `scipy.optimize` library. It requires
+    the following arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The objective function to minimize. Lagrange dual in our case.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The initial values of variables with respect to which the minimization takes
+    place. In this problem, we have to determine the Lagrange multipliers $\alpha$.
+    We’ll initialize all $\alpha$ randomly.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The method to use for optimization. We’ll use `trust-constr`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The linear constraints on $\alpha$.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The bounds on $\alpha$.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Defining the Objective Function
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Our objective function is $L_d$ defined above, which has to be maximized. As
+    we are using the `minimize()` function, we have to multiply $L_d$ by (-1) to maximize
+    it. Its implementation is given below. The first parameter for the objective function
+    is the variable w.r.t. which the optimization takes place. We also need the training
+    points and the corresponding labels as additional arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can shorten the code for the `lagrange_dual()` function given below by using
+    matrices. However, in this tutorial, it is kept very simple to make everything
+    clear.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Defining the Linear Constraints
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The linear constraint on alpha for each point is given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \sum_i \alpha_i t_i = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also write this as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \alpha_0 t_0 + \alpha_1 t_1 + \ldots \alpha_m t_m = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `LinearConstraint()` method requires all constraints to be written as matrix
+    form, which is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{equation}
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0 =
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: t_0 & t_1 & \ldots t_m
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \alpha_0\\ \alpha_1 \\ \vdots \\ \alpha_m
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{equation}
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first matrix is the first parameter in the `LinearConstraint()` method.
+    The left and right bounds are the second and third arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Defining the Bounds
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The bounds on alpha are defined using the `Bounds()` method. All alphas are
+    constrained to lie between 0 and $C$. Here is an example for $C=10$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Defining the Function to Find Alphas
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Let’s write the overall routine to find the optimal values of `alpha` when given
+    the parameters `x`, `t`, and `C`. The objective function requires the additional
+    arguments `x` and `t`, which are passed via args in `minimize()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Determining the Hyperplane
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The expression for the hyperplane is given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: w^T x + w_0 = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For the hyperplane, we need the weight vector $w$ and the constant $w_0$. The
+    weight vector is given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: w = \sum_i \alpha_i t_i x_i
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: If there are too many training points, it’s best to use only support vectors
+    with $\alpha>0$ to compute the weight vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For $w_0$, we’ll compute it from each support vector $s$, for which $\alpha_s
+    < C$, and then take the average. For a single support vector $x_s$, $w_0$ is given
+    by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: w_0 = t_s – w^T x_s
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: A support vector’s alpha cannot be numerically exactly equal to C. Hence, we
+    can subtract a small constant from C to find all support vectors with $\alpha_s
+    < C$. This is done in the `get_w0()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Classifying Test Points
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To classify a test point $x_{test}$, we use the sign of $y(x_{test})$ as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \text{label}_{x_{test}} = \text{sign}(y(x_{test})) = \text{sign}(w^T x_{test}
+    + w_0)
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s write the corresponding function that can take as argument an array of
+    test points along with $w$ and $w_0$ and classify various points. We have also
+    added a second function for calculating the misclassification rate:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Plotting the Margin and Hyperplane
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Let’s also define functions to plot the hyperplane and the soft margin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Powering Up The SVM
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It’s now time to run the SVM. The function `display_SVM_result()` will help
+    us visualize everything. We’ll initialize alpha to random values, define C and
+    find the best values of alpha in this function. We’ll also plot the hyperplane,
+    the margin and the data points. The support vectors would also be labelled by
+    their corresponding alpha value. The title of the plot would be the percentage
+    of errors and number of support vectors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/6d21cd8f9e3aabbca53d7d43d2797583.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/svm2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Effect of `C`
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you change the value of `C` to $\infty$, then the soft margin turns into
+    a hard margin, with no toleration for errors. The problem we defined above is
+    not solvable in this case. Let’s generate an artificial set of points and look
+    at the effect of `C` on classification. To understand the entire problem, we’ll
+    use a simple dataset, where the positive and negative examples are separable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Below are the points generated via `make_blobs()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/d7b12af690efcde3c5b1ac891ad4092a.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/svm3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now let’s define different values of C and run the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/0ac6abb53632bf1496bf8a6208fe9d14.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/svm4.png)Comments
+    on the Result'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The above is a nice example, which shows that increasing $C$, decreases the
+    margin. A high value of $C$ adds a stricter penalty on errors. A smaller value
+    allows a wider margin and more misclassification errors. Hence, $C$ defines a
+    tradeoff between the maximization of margin and classification errors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consolidated Code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Here is the consolidated code, that you can paste in your Python file and run
+    it at your end. You can experiment with different values of $C$ and try out the
+    different optimization methods given as arguments to the `minimize()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Pattern Recognition and Machine Learning](https://www.amazon.com/Pattern-Recognition-Learning-Information-Statistics/dp/0387310738)
+    by Christopher M. Bishop'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Support Vector Machines for Machine Learning](https://machinelearningmastery.com/support-vector-machines-for-machine-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[A Tutorial on Support Vector Machines for Pattern Recognition](https://www.di.ens.fr/~mallat/papiers/svmtutorial.pdf)
+    by Christopher J.C. Burges'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: API Reference
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[SciPy’s optimization library](https://docs.scipy.org/doc/scipy/reference/tutorial/optimize.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Scikit-learn’s sample generation library (sklearn.datasets)](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.datasets)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[NumPy random number generator](https://numpy.org/doc/stable/reference/random/generated/numpy.random.rand.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered how to implement an SVM classifier from scratch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to write the objective function and constraints for the SVM optimization
+    problem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to write code to determine the hyperplane from Lagrange multipliers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The effect of C on determining the margin
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions about SVMs discussed in this post? Ask your questions
+    in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

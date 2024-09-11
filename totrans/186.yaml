@@ -1,0 +1,408 @@
+- en: A Technical Introduction to Stable Diffusion
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-technical-introduction-to-stable-diffusion/](https://machinelearningmastery.com/a-technical-introduction-to-stable-diffusion/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The introduction of GPT-3, particularly its chatbot form, i.e. the ChatGPT,
+    has proven to be a monumental moment in the AI landscape, marking the onset of
+    the generative AI (GenAI) revolution. Although prior models existed in the image
+    generation space, it’s the GenAI wave that caught everyone’s attention.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stable Diffusion is a member of the GenAI family for image generation. It is
+    known for its possibility to customization, freely available to run on your own
+    hardware, and actively improving. It is not the only one. For example, OpenAI
+    released DALLE-3 as part of its ChatGPTPlus subscription to allow image generation.
+    But Stable Diffusion showed remarkable success in generating images from text
+    as well as from other existing images. The recent integration of video generation
+    capabilities into diffusion models provides a compelling case for studying this
+    cutting-edge technology.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, you will learn some technical details of Stable Diffusion and
+    how to set it up on your own hardware.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
+    Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/db887f122226d5a1da57de529dde96f0.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: A Technical Introduction to Stable Diffusion
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Denis Oliveira](https://unsplash.com/photos/lighted-incense-_12PwFpWZZ0).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is in four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How Do Diffusion Models Work
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mathematics of Diffusion Models
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Why Is Stable Diffusion Special
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to Install Stable Diffusion WebUI
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How Do Diffusion Models Work
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To understand diffusion models, let us first revisit how image generation using
+    machines was performed before the introduction of Stable Diffusion or its counterparts
+    today. It all started with GANs (Generative Adversarial Networks), wherein two
+    neural networks engage in a competitive and cooperative learning process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first one is the generator network, which fabricates synthetic data, in
+    this case, images, that are indistinguishable from real ones. It produces random
+    noise and progressively refines it through several layers to generate increasingly
+    realistic images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The second network, i.e., the discriminator network, acts as the adversary,
+    scrutinizing the generated images to differentiate between real and synthetic
+    ones. Its goal is to accurately classify images as either real or fake.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/2bf98b23ffdedb3b492a6ecacd80d0bd.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Architecture of U-Net GAN. From Schonfeld et al. (2020)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The diffusion models assume that a noisy image or pure noise is an outcome of
+    repeated overlay of noise (or Gaussian Noise) on the original image. This process
+    of noise overlay is called the Forward Diffusion. Now, exactly opposite to this
+    is the Reverse Diffusion, which involves going from a noisy image to a less noisy
+    image, one step at a time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Below is an illustration of the Forward Diffusion process from right to left,
+    i.e., clear to noisy image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/1d6b03550c84cf221ea222148ea9c012.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Diffusion process. Image from Ho et al. (2020)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mathematics of Diffusion Models
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Both the Forward and Reverse Diffusion processes follow a Markov Chain, which
+    means that at any time step t, the pixel value or noise in an image depends only
+    on the previous image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Forward Diffusion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Mathematically, each step in the forward diffusion process can be represented
+    using the below equation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$q(\mathbf{x}_t\mid \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t;\mu_t = \sqrt{1-\beta_t}\mathbf{x}_{t-1},
+    \Sigma_t = \beta_t \mathbb{I})$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: where $q(x_t\mid x_{t-1})$ is a normal distribution with mean $\mu_t = \sqrt{1-\beta_t}x_{t-1}$
+    and variance $\Sigma_t = \beta_t \mathbb{I}$, and $\mathbf{I}$ is the identity
+    matrix, images (as a latent variable) in each step $\mathbf{x}_t$ is a vector,
+    and the mean and variance are parameterized by the scalar value $\beta_t$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/22e279186296f5fb5e2121014a67a000.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Forward diffusion $q(\mathbf{x}_t\mid\mathbf{x}_{t-1})$ and reverse diffusion
+    $p_\theta(\mathbf{x}_{t-1}\mid\mathbf{x}_t)$. Figure from Ho et al. (2020)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The posterior probability of all the steps in the forward diffusion process
+    is thus defined below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$q(\mathbf{x}_{1:T}\mid \mathbf{x}_0) = \prod_{t=1}^T q(\mathbf{x}_t\mid\mathbf{x}_{t-1})$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, we apply from timestep 1 to $T$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reverse Diffusion
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Reverse diffusion, which is the opposite of the forward diffusion process, works
+    similarly. While the forward process maps the posterior probability given the
+    prior probability, the reverse process does the opposite, i.e., maps the prior
+    probability given the posterior one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$p_\theta(\mathbf{x}_{t-1}\mid\mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1};\mu_\theta(\mathbf{x}_t,t),\Sigma_\theta(\mathbf{x}_t,t))$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: where $p_\theta$ applies reverse diffusion, also called the trajectory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the time step $t$ approaches infinity, the latent variable $\mathbf{x}_T$
+    tends to an almost isotropic Gaussian distribution (i.e., purely noise with no
+    image content). The aim is to learn $q(\mathbf{x}_{t-1}\mid \mathbf{x}_t)$, where
+    the process starts at the sample from $\mathcal{N}(0,\mathbf{I})$ called $\mathbf{x}_T$.
+    We run the complete reverse process, one step at a time, to reach a sample from
+    $q(\mathbf{x}_0)$, i.e., the generated data from the actual data distribution.
+    In layman’s term, the reverse diffusion is to create an image out of random noise
+    in many small steps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Is Stable Diffusion Special?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Instead of directly applying the diffusion process to a high-dimensional input,
+    Stable diffusion projects the input into a reduced latent space using an encoder
+    network (that is where the diffusion process occurs). The rationale behind this
+    approach is to reduce the computational load involved in training diffusion models
+    by handling the input within a lower-dimensional space. Subsequently, a conventional
+    diffusion model (such as a U-Net) is used to generate new data, which are then
+    upsampled using a decoder network.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to Install Stable Diffusion WebUI?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You can use stable diffusion as a service by subscription, or you can download
+    and run on your computer. There are two major ways to use it on your computer:
+    The WebUI and the CompfyUI. Here you will be shown to install WebUI.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Note:** Stable Diffusion is compute heavy. You may need a decent hardware
+    with supported GPU to run at a reasonable performance.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The Stable Diffusion WebUI package for Python programming language is free
+    to download and use from its GitHub [page](https://github.com/AUTOMATIC1111/stable-diffusion-webui).
+    Below are the steps to install the library on an Apple Silicon chip, where other
+    platform are mostly the same as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Prerequisites.** One of the prerequisites to the process is having a setup
+    to run the WebUI. It is a Python-based web server with the UI built using Gradio.
+    The setup is mostly automatic, but you should make sure some basic components
+    are available, such as `git` and `wget`. When you run the WebUI, a Python virtual
+    environment will be created.'
+  prefs:
+  - PREF_OL
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In macOS, you may want to install a Python system using Homebrew because some
+    dependencies may need a newer version of Python than what the macOS shipped by
+    default. See the [Homebrew’s setup guide](https://brew.sh/). Then you can install
+    Python with Homebrew using:'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+- en: '**Download.** The WebUI is a repository on GitHub. To get a copy of the WebUI
+    to your computer, you can run the following command:'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+- en: This will create a folder named `stable-diffusion-webui` and you should work
+    in this folder for the following steps.
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**Checkpoints.** The WebUI is to run the pipeline but the Stable Diffusion
+    model is not included. You need to download the model (also known as checkpoints),
+    and there are several versions you can choose from. These can be downloaded from
+    various sources, most commonly from [HuggingFace](https://huggingface.co/). The
+    following section will cover this step in more detail. All Stable Diffusion models/checkpoints
+    should be placed in the directory `stable-diffusion-webui/models/Stable-diffusion`.'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**First run.** Navigate into the `stable-diffusion-webui` directory using the
+    command line and run `./webui.sh` to launch the web UI. This action will create
+    and activate a Python virtual environment using `venv`, automatically fetching
+    and installing any remaining required dependencies.![](../Images/daf647e75a5b24f9f527f2d4248ac813.png)'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Python modules installed during the first run of WebUI
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**Subsequent run.** For future access to the web UI, re-run `./webui.sh` at
+    the WebUI directory. Note that the WebUI doesn’t update itself automatically;
+    to update it, you have to execute `git pull` before running the command to ensure
+    you’re using the latest version. What this `webui.sh` script does is to start
+    a web server, which you can open up your browser to access to the Stable Diffusion.
+    All the interaction should be done over the browser, and you can shutdown the
+    WebUI by shutting down the web server (e.g., pressing Control-C on the terminal
+    running `webui.sh`).'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: For other operating systems, the [official readme file](https://github.com/AUTOMATIC1111/stable-diffusion-webui/blob/master/README.md)
+    offers the best guidance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to Download the Models?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can download Stable Diffusion models via [Hugging Face](https://huggingface.co/models?pipeline_tag=text-to-image&sort=downloads)
+    by selecting a model of interest and proceeding to the “Files and versions” section.
+    Look for files labeled with the “`.ckpt`” or “`.safetensors`” extensions and click
+    the right-facing arrow next to the file size to initiate the download. SafeTensor
+    is an alternative format to Python’s pickle serialization library; their difference
+    is handled by the WebUI automatically, so you can consider them equivalent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/dbd0bdcde3cc554155e99aac6c45c0d5.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: There are several models from Hugging Face if you search by the model name “stable-diffusion”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Several official Stable Diffusion models that we may use in the upcoming chapters
+    include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stable Diffusion 1.4 (`sd-v1-4.ckpt`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stable Diffusion 1.5 (`v1-5-pruned-emaonly.ckpt`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stable Diffusion 1.5 Inpainting (`sd-v1-5-inpainting.ckpt`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'A model and configuration file are essential for Stable Diffusion versions
+    2.0 and 2.1\. Additionally, when generating images, ensure the image width and
+    height are set to 768 or higher:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stable Diffusion 2.0 (`768-v-ema.ckpt`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stable Diffusion 2.1 (`v2-1_768-ema-pruned.ckpt`)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The configuration file can be found on GitHub at the following location:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-inference-v.yaml](https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-inference-v.yaml)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: After you downloaded `v2-inference-v.yaml` from above, you should place it in
+    the same folder as the model matching the model’s filename (e.g., if you downloaded
+    the `768-v-ema.ckpt` model, you should rename this configuration file to `768-v-ema.yaml`
+    and store it in `stable-diffusion-webui/models/Stable-diffusion` along with the
+    model).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A Stable Diffusion 2.0 depth model (`512-depth-ema.ckpt`) also exists. In that
+    case, you should download the `v2-midas-inference.yaml` configuration file from:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-midas-inference.yaml](https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-midas-inference.yaml)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: and save it to the model’s folder as `stable-diffusion-webui/models/Stable-diffusion/512-depth-ema.yaml`.
+    This model functions optimally at image dimensions of 512 width/height or higher.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another location that you can find model checkpoints for Stable Diffusion is
+    [https://civitai.com/](https://civitai.com/), which you can see the samples as
+    well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Below are several papers that are referenced above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: “[A U-Net Based Discriminator for Generative Adversarial Networks](https://openaccess.thecvf.com/content_CVPR_2020/html/Schonfeld_A_U-Net_Based_Discriminator_for_Generative_Adversarial_Networks_CVPR_2020_paper.html)”
+    by Schonfeld, Schiele, and Khoreva. In Proc CVPR 2020, pp.8207-8216
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: “Denoising Diffusion Probabilistic Models” by Ho, Jain, and Abbeel (2020). [arXiv
+    2006.11239](https://arxiv.org/abs/2006.11239)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, we learned the fundamentals of diffusion models and their broad
+    application across diverse fields. In addition to expanding on the recent successes
+    of their image and video generation successes, we discussed the Forward and Reverse
+    Diffusion processes and modeling posterior probability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stable Diffusion’s unique approach involves projecting high-dimensional input
+    into a reduced latent space, reducing computational demands via encoder and decoder
+    networks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moving forward, we’ll learn the practical aspects of generating images using
+    Stable Diffusion WebUI. Our exploration will cover model downloads and leveraging
+    the web interface for image generation.
+  prefs: []
+  type: TYPE_NORMAL

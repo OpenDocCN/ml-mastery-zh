@@ -1,0 +1,345 @@
+- en: 'Stable Diffusion Project: Creating Illustration'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/stable-diffusion-project-creating-illustration/](https://machinelearningmastery.com/stable-diffusion-project-creating-illustration/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Many people write in their jobs. Not everyone is a novel writer; some write
+    technical documentation, business plans, news articles, and even blog posts. In
+    those writings, illustrations are not essential but often good to have. They are
+    decorations, interpretations, or visual explanations of the text. However, you
+    probably do not want to spend too much time or do not have the drawing skills
+    to create the illustration. Stable Diffusion is here to help!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this post, you will see how you can use Stable Diffusion to create illustrations.
+    After finishing this post, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to create a prompt from text
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to adjust the prompt for a better illustration
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
+    Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/319ea69d535ed69cb589740d52d63985.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Stable Diffusion Project: Creating Illustration'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Koushik Chowdavarapu](https://unsplash.com/photos/shallow-focus-photography-of-person-drawing-QNj_dwdljY8).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is in three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Project Idea
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating the Illustration
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Facial Details
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Project Idea
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Illustration is a decoration to the text. Let’s begin with the following story:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A number of generals are attacking a fortress. The generals must decide as a
+    group whether to attack or retreat; some may prefer to attack, while others prefer
+    to retreat. The important thing is that all generals agree on a common decision,
+    for a halfhearted attack by a few generals would become a rout, and would be worse
+    than either a coordinated attack or a coordinated retreat.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The problem is complicated by the presence of treacherous generals who may not
+    only cast a vote for a suboptimal strategy; they may do so selectively. For instance,
+    if nine generals are voting, four of whom support attacking while four others
+    are in favor of retreat, the ninth general may send a vote of retreat to those
+    generals in favor of retreat, and a vote of attack to the rest. Those who received
+    a retreat vote from the ninth general will retreat, while the rest will attack
+    (which may not go well for the attackers). The problem is complicated further
+    by the generals being physically separated and having to send their votes via
+    messengers who may fail to deliver votes or may forge false votes.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: If you are familiar with this story, it is the description of [Byzantine Generals’
+    Problem](https://en.wikipedia.org/wiki/Byzantine_fault). The text above is from
+    Wikipedia. You are going to create a picture to accompany the text above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the Illustration
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Simply, you can open up the Stable Diffusion Web UI and enter the story as the
+    positive prompt and generate. But there are some problems. Firstly, the story
+    may have different scenes, and you need only one in an illustration. Secondly,
+    the description is not optimized for use as a prompt. Since the text will be converted
+    into an embedding for the diffusion process, you want to emphasize the keywords
+    while using a grammatically correct sentence is not important. Thirdly, besides
+    the positive prompt, you may also need a negative prompt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Paraphrasing the story to make it suitable to use as a prompt is the first
+    step. ChatGPT or some other AI tool is good at paraphrasing. You can start with
+    this prompt in ChatGPT:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Below is a story. Please extract a key scene and describe it as a prompt for
+    Stable Diffusion to generate an illustration. If appropriate, please also describe
+    the corresponding negative prompt.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Story: A number of generals are attacking a fortress. The generals must decide
+    as a group whether to attack or retreat; some may prefer to attack, while others
+    prefer to retreat. The important thing is that all generals agree on a common
+    decision, for a halfhearted attack by a few generals would become a rout, and
+    would be worse than either a coordinated attack or a coordinated retreat. The
+    problem is complicated by the presence of treacherous generals who may not only
+    cast a vote for a suboptimal strategy; they may do so selectively. For instance,
+    if nine generals are voting, four of whom support attacking while four others
+    are in favor of retreat, the ninth general may send a vote of retreat to those
+    generals in favor of retreat, and a vote of attack to the rest. Those who received
+    a retreat vote from the ninth general will retreat, while the rest will attack
+    (which may not go well for the attackers). The problem is complicated further
+    by the generals being physically separated and having to send their votes via
+    messengers who may fail to deliver votes or may forge false votes.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'And the response will be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Key Scene Description for Stable Diffusion:**'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In a dramatic moment, a group of nine generals stands in a tense circle within
+    a dimly lit war tent. The atmosphere is charged with suspense as they face the
+    crucial decision of attacking or retreating from a looming fortress. The generals
+    are in deep discussion, some with expressions of determination, others with doubt,
+    reflecting their conflicting preferences. In the center of the scene, a messenger
+    is depicted delivering a vote, his presence adding to the tension as the generals
+    eye him warily. The backdrop includes maps and battle plans pinned to the tent
+    walls, with the distant silhouette of the fortress visible through the tent’s
+    open flap. The expressions and body language of the generals convey the gravity
+    of their dilemma, hinting at underlying treachery and the looming threat of a
+    disastrous miscommunication.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '**Negative Prompt:**'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Avoid depicting modern technology, futuristic elements, and unrealistic or fantasy
+    settings. The scene should not include any supernatural elements or anachronistic
+    details like computers or modern uniforms.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '![](../Images/86789154581e6cdf6406278154147904.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using ChatGPT to generate a prompt for Stable Diffusion
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By just copy-and-paste these two generated paragraphs into Stable Diffusion
+    Web UI as the positive and negative prompts, you may get this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/53829eca7e7f04243c53b8a6ef1f21cb.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: A picture generated from Stable Diffusion using the prompts as suggested by
+    ChatGPT
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is generated using the model [Deliberate](https://huggingface.co/XpucT/Deliberate)
+    and the generation is set to 768×512 pixels. This result is not bad, but it may
+    not be what you wanted. Firstly, this output looks like a picture of a photograph.
+    If you repeat it a few times, you will see various different styles may be produced
+    because you never mentioned what style you wanted! Surely, you want to polish
+    the prompts for a better picture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s resort to ChatGPT again, as a follow-up:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Simplify the answer of the positive prompt into fewer words
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Then you get:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Positive Prompt for Stable Diffusion:**'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: A group of nine generals in a dimly lit war tent, deep in discussion about attacking
+    or retreating from a fortress. Tense expressions and body language reflect their
+    conflicting preferences. A messenger delivers a vote, adding to the tension. Maps
+    and battle plans adorn the tent walls, with the fortress silhouette visible through
+    the open flap.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '![](../Images/d817a8f064a4d84276bbb121b23d30cb.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Asking ChatGPT to simplify the prompt
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can replace your positive prompt with this shorter version. The result should
+    not be very different. A good prompt should mention the main focus, the background,
+    and the composition and style. This prompt lacks the last. So you can modify the
+    prompt to enrich such details. If you want a realistic-looking output, adding
+    a keyword “photorealistic” should works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The negative prompt is also important to the generation. We can also simply
+    the negative prompt to provide just the keyword. You should also add some style
+    keywords to the negative prompt to control what you do not want. An example is
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Modern technology, futuristic elements, fantasy, supernatural elements, sketch,
+    cartoon, anime, model
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'And the output is like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/9eeeaacd68e93e716161601f2c7f9123.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Improved generation from Stable Diffusion by adjusting the prompt used
+  prefs: []
+  type: TYPE_NORMAL
+- en: Facial Details
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A photorealistic picture would easily fail if you want to have a lot of persons
+    in it. This is the case in the screenshot above: If you look closer to each person’s
+    face, you will see many of them have a weird facial expression of distorted anatomy.
+    This can be fixed, but not with the prompt.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You need to install the [“ADetailer” plugin](https://github.com/Bing-su/adetailer)
+    to Stable Diffusion: Go to the extension tab and type in the URL to the “Install
+    from URL” section and then restart the Web UI. Then you can see “ADetailer” section
+    in the text2img control.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Repeating the prompt, but this time you should check “ADetailer” to enable
+    it and make sure the detector is “face_yolo8n.pt”. This will detect the faces
+    from the generated picture and run inpainting to regenerate the faces. You do
+    not need to provide any additional prompt in ADetailer plugin unless you want
+    some additional details to those faces. The result is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/3bbadb6bff38fb607b35154d7a80476b.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Generation from Stable Diffusion. Note the faces look malformed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/20b8fb0efddbc0f724be365293ec92cc.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Improved picture after applying the ADetailer plugin.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The two pictures are generated with a fixed random seed so they looks similar.
+    But with the ADetailer plugin, you see the faces look much more natural. Now you
+    can use the generated picture as an illustration for your writing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Byzantine fault](https://en.wikipedia.org/wiki/Byzantine_fault) on Wikipedia'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deliberate model](https://huggingface.co/XpucT/Deliberate) on Hugging Face'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[ADetailer plugin](https://github.com/Bing-su/adetailer) for Stable Diffusion
+    Web UI'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you experienced a workflow on how to extract a scene from text
+    and convert it into a prompt for Stable Diffusion. With some attention to the
+    details, you can modify the prompt to generate a picture that is suitable as an
+    illustration for your text. You also learned that the ADetailer extension for
+    the Stable Diffusion Web UI can help you make a better picture by replacing the
+    faces in the generation with more naturally looking one.
+  prefs: []
+  type: TYPE_NORMAL

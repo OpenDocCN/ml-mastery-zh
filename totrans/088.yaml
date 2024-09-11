@@ -1,0 +1,374 @@
+- en: Multiprocessing in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/multiprocessing-in-python/](https://machinelearningmastery.com/multiprocessing-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When you work on a computer vision project, you probably need to preprocess
+    a lot of image data. This is time-consuming, and it would be great if you could
+    process multiple images in parallel. Multiprocessing is the ability of a system
+    to run multiple processors at one time. If you had a computer with a single processor,
+    it would switch between multiple processes to keep all of them running. However,
+    most computers today have at least a multi-core processor, allowing several processes
+    to be executed at once. The Python Multiprocessing Module is a tool for you to
+    increase your scripts’ efficiency by allocating tasks to different processes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why we would want to use multiprocessing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use basic tools in the Python multiprocessing module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/9a88deccc690ace4b32ff7249d00cfa4.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multiprocessing in Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Thirdman](https://www.pexels.com/photo/wooden-interior-of-a-piano-6193847/).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Benefits of multiprocessing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Basic multiprocessing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Multiprocessing for real use
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using joblib
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Benefits of Multiprocessing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You may ask, “Why Multiprocessing?” Multiprocessing can make a program substantially
+    more efficient by running multiple tasks in parallel instead of sequentially.
+    A similar term is multithreading, but they are different.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A process is a program loaded into memory to run and does not share its memory
+    with other processes. A thread is an execution unit within a process. Multiple
+    threads run in a process and share the process’s memory space with each other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python’s Global Interpreter Lock (GIL) only allows one thread to be run at a
+    time under the interpreter, which means you can’t enjoy the performance benefit
+    of multithreading if the Python interpreter is required. This is what gives multiprocessing
+    an upper hand over threading in Python. Multiple processes can be run in parallel
+    because each process has its own interpreter that executes the instructions allocated
+    to it. Also, the OS would see your program in multiple processes and schedule
+    them separately, i.e., your program gets a larger share of computer resources
+    in total. So, multiprocessing is faster when the program is CPU-bound. In cases
+    where there is a lot of I/O in your program, threading may be more efficient because
+    most of the time, your program is waiting for the I/O to complete. However, multiprocessing
+    is generally more efficient because it runs concurrently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Basic multiprocessing
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s use the Python Multiprocessing module to write a basic program that demonstrates
+    how to do concurrent programming.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s look at this function, `task()`, that sleeps for 0.5 seconds and prints
+    before and after the sleep:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To create a process, we simply say so using the multiprocessing module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `target` argument to the `Process()` specifies the target function that
+    the process runs. But these processes do not run immediately until we start them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A complete concurrent program would be as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: We must fence our main program under `if __name__ == "__main__"` or otherwise
+    the `multiprocessing` module will complain. This safety construct guarantees Python
+    finishes analyzing the program before the sub-process is created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, there is a problem with the code, as the program timer is printed
+    before the processes we created are even executed. Here’s the output for the code
+    above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We need to call the `join()` function on the two processes to make them run
+    before the time prints. This is because three processes are going on: `p1`, `p2`,
+    and the main process. The main process is the one that keeps track of the time
+    and prints the time taken to execute. We should make the line of `finish_time`
+    run no earlier than the processes `p1` and `p2` are finished. We just need to
+    add this snippet of code immediately after the `start()` function calls:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `join()` function allows us to make other processes wait until the processes
+    that had `join()` called on it are complete. Here’s the output with the join statements
+    added:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With similar reasoning, we can make more processes run. The following is the
+    complete code modified from above to have 10 processes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multiprocessing for Real Use
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Starting a new process and then joining it back to the main process is how multiprocessing
+    works in Python (as in many other languages). The reason we want to run multiprocessing
+    is probably to execute many different tasks concurrently for speed. It can be
+    an image processing function, which we need to do on thousands of images. It can
+    also be to convert PDFs into plaintext for the subsequent natural language processing
+    tasks, and we need to process a thousand PDFs. Usually, we will create a function
+    that takes an argument (e.g., filename) for such tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s consider a function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to run it with arguments 1 to 1,000, we can create 1,000 processes
+    and run them in parallel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, this will not work as you probably have only a handful of cores in
+    your computer. Running 1,000 processes is creating too much overhead and overwhelming
+    the capacity of your OS. Also, you may have exhausted your memory. The better
+    way is to run a process pool to limit the number of processes that can be run
+    at a time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The argument for `multiprocessing.Pool()` is the number of processes to create
+    in the pool. If omitted, Python will make it equal to the number of cores you
+    have in your computer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use the `apply_async()` function to pass the arguments to the function `cube`
+    in a list comprehension. This will create tasks for the pool to run. It is called
+    “`async`” (asynchronous) because we didn’t wait for the task to finish, and the
+    main process may continue to run. Therefore the `apply_async()` function does
+    not return the result but an object that we can use, `get()`, to wait for the
+    task to finish and retrieve the result. Since we get the result in a list comprehension,
+    the order of the result corresponds to the arguments we created in the asynchronous
+    tasks. However, this does not mean the processes are started or finished in this
+    order inside the pool.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you think writing lines of code to start processes and join them is too
+    explicit, you can consider using `map()` instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We don’t have the start and join here because it is hidden behind the `pool.map()`
+    function. What it does is split the iterable `range(1,1000)` into chunks and runs
+    each chunk in the pool. The map function is a parallel version of the list comprehension:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But the modern-day alternative is to use `map` from `concurrent.futures`, as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code is running the `multiprocessing` module under the hood. The beauty
+    of doing so is that we can change the program from multiprocessing to multithreading
+    by simply replacing `ProcessPoolExecutor` with `ThreadPoolExecutor`. Of course,
+    you have to consider whether the global interpreter lock is an issue for your
+    code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using joblib
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The package `joblib` is a set of tools to make parallel computing easier. It
+    is a common third-party library for multiprocessing. It also provides caching
+    and serialization functions. To install the `joblib` package, use the command
+    in the terminal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can convert our previous example into the following to use `joblib`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Indeed, it is intuitive to see what it does. The `delayed()` function is a wrapper
+    to another function to make a “delayed” version of the function call. Which means
+    it will not execute the function immediately when it is called.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we call the delayed function multiple times with different sets of arguments
+    we want to pass to it. For example, when we give integer `1` to the delayed version
+    of the function `cube`, instead of computing the result, we produce a tuple, `(cube,
+    (1,), {})` for the function object, the positional arguments, and keyword arguments,
+    respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We created the engine instance with `Parallel()`. When it is invoked like a
+    function with the list of tuples as an argument, it will actually execute the
+    job as specified by each tuple in parallel and collect the result as a list after
+    all jobs are finished. Here we created the `Parallel()` instance with `n_jobs=3`,
+    so there will be three processes running in parallel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also write the tuples directly. Hence the code above can be rewritten
+    as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The benefit of using `joblib` is that we can run the code in multithread by
+    simply adding an additional argument:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: And this hides all the details of running functions in parallel. We simply use
+    a syntax not too much different from a plain list comprehension.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[High Performance Python](https://www.amazon.com/dp/1718502222/), 2nd edition,
+    by Micha Gorelick and Ian Ozsvald'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[joblib](https://joblib.readthedocs.io/en/latest/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[multiprocessing](https://docs.python.org/3/library/multiprocessing.html) in
+    Python standard library'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[concurrent.futures](https://docs.python.org/3/library/concurrent.futures.html)
+    in Python standard library'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned how we run Python functions in parallel for speed.
+    In particular, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use the `multiprocessing` module in Python to create new processes that
+    run a function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The mechanism of launching and completing a process
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The use of process pool in `multiprocessing` for controlled multiprocessing
+    and the counterpart syntax in `concurrent.futures`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the third-party library `joblib` for multiprocessing
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

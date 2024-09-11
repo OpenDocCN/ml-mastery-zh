@@ -1,0 +1,310 @@
+- en: Inpainting and Outpainting with Diffusers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/inpainting-and-outpainting-with-diffusers/](https://machinelearningmastery.com/inpainting-and-outpainting-with-diffusers/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Inpainting and outpainting are popular image editing techniques. You have seen
+    how to perform inpainting and outpainting using the WebUI. You can do the same
+    using code as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, you will see how you can use the diffusers library from Hugging
+    Face to run Stable Diffusion pipeline to perform inpainting and outpainting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After finishing this tutorial, you will learn
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to perform inpainting using the corresponding pipeline from diffusers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to understand a outpainting problem as a special form of inpainting
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
+    Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/e250ba0fb5f4a8c71b82ced60796fc7e.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Inpainting and Outpainting with Diffusers
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Anna Kolosyuk](https://unsplash.com/photos/three-silver-paint-brushes-on-white-textile-D5nh6mCW52c).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in two parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Inpainting with the Diffusers Library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Outpainting with the Diffusers Library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Inpainting with the Diffusers Library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We covered the idea of inpainting the a [previous post](https://machinelearningmastery.com/inpainting-and-outpainting-with-stable-diffusion/)
+    and showed how inpainting can be done using the WebUI. In this section, you will
+    see how you can do the same using Python code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You are going to use Google Colab in this post, for the convenience that you
+    do not need to own a GPU. If you decided to run the code locally, some small modification
+    may be needed. For example, you can call `cv2.imshow()` function directly instead
+    of using Google’s patched `cv2_imshow()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inpainting requires you to mask regions of the image that have to be reconstructed
+    and a capable model to fill the region with missing pixels. Instead of drawing
+    the mask on the image, you will utilize:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Meta AI’s SAM ([Segment Anything Model](https://github.com/facebookresearch/segment-anything)),
+    a very strong image segmentation model, you will utilize it to generate masks
+    for input images.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`StableDiffusionInpaintPipeline` from Hugging Face library for text-guided
+    inpainting with stable diffusion'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'First, you should create a notebook on Google Colab and set to use T4 GPU.
+    At the beginning of the notebook, you should install all dependencies and load
+    the checkpoint ViT-B (URL: [https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth](https://github.com/facebookresearch/segment-anything),
+    ) for SAM.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The code below should go first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, you can upload an image to Colab for reconstruction. It can be done conveniently
+    by clicking on the “File” icon on the left toolbar and then upload a file from
+    your local computer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/aa8f223363d291aa59d318577d445624.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The left panel on Google Colab allows you to upload a file
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The file you uploaded there is under the directory `/content/` . You can load
+    the image by providing the full path and convert it into RGB format:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is the sample image to start with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/311f9e2fd19c5b89bb266e9daf8e98ca.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The sample picture to perform inpainting
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now load the SAM model with the checkpoint you have downloaded above. Here you
+    are using the `SamPredictor` class to segment images. You provide image coordinates
+    for the object to be masked, the model will automatically segment the image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The object selected is the one with the pixel at position (250,250), i.e., at
+    the center of the image. The array `mask` is a boolean array (for the binary image),
+    we’ll convert it into pixel values, change the shape from (1,512,512) to (512,512,1),
+    and convert it into black-and-white version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The mask created is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/fcbe5c99e35e5ed73b811a80ac0a928d.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The mask created by SAM for inpainting. White pixels are to be changed and black
+    pixels are preserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: SAM has done its job by helping us generate a mask, now we’re ready to use Stable
+    Diffusion for inpainting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Create a pipeline using a Stable Diffusion model from Hugging Face repository:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above, you used `StableDiffusionInpaintPipeline` and it works only for
+    Stable Diffusion 1.x Inpainting models. If you are not sure your model is one,
+    you can also try with `AutoPipelineForInpainting` instead and see if the correct
+    architecture can be figured out automatically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now provide a prompt for the reconstruction and wait for the magic!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This image is also created under the directory `/content` in Colab. You can
+    now display the image like the previous:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is what you may see:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/1f51d45eac5636aae81565e984be8c26.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Result of inpainting
+  prefs: []
+  type: TYPE_NORMAL
+- en: Congratulations on completing this quick tutorial! Now, here’s where the real
+    fun begins. That’s it for this short tutorial, Note that in the example image,
+    there’s only one main object (Dog), but if there are multiple objects or if you
+    wanna try different masking techniques, try exploring `SamAutomaticMaskGenerator`
+    or use the same `SamPredictor` but with bounding boxes to tackle different objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Outpainting with the Diffusers Library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Unlike inpainting, there is not a dedicated pipeline in diffusers library for
+    outpainting. But in fact, outpainting is just like inpainting with some modification
+    to the mask and the image. Let’s see how this can be done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Same as before, you will need the same prerequisties such as set up a notebook
+    with GPU and install the diffusers library. But instead of using SAM as a segmentation
+    model to create a mask of an object **inside** the picture, you should create
+    a mask to highlight the pixels **outside** the border of the picture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The code above is check the original image for its size (and save into variables
+    `height` and `width`). Then create a outpaint mask with 100 pixels border in such
+    a way that an array of integer value 255 is created to match the size of the outpainted
+    image, then set the center (excluding the padding) to zero value. Recall that
+    zero value in the mask means the pixel would not change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, you can create an “extended image” to match the shape of an outpainted
+    one. Together with the mask created, you converted an outpainting problem into
+    an inpainting problem in which the mask is along the border.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can simply fill the pixels outside the original border with gray. You can
+    easily do that with numpy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is what the extended image looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/0adaac4dec6ed974fb5f5a8f26bb2bc9.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Extended image for outpainting
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now you can run the inpainting as in the previous section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can check the output as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and the result is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/b3bd4f346eeea5fa17d0f82b151b5c5a.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Outpainting result. Note the trees are added on the side.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may wonder why in outpainting you still need to provide a prompt. It is
+    required by the pipeline’s API but you can provide an empty string as prompt.
+    But describing the original picture is necessary indeed. You can try and observe
+    the result with a different prompt such as “a framed picture of a dog on a bench”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[diffusers API manual](https://huggingface.co/docs/diffusers/main/en/index)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[StableDiffusionInpaintPipeline API](https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/inpaint)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Segment Anything Github](https://github.com/facebookresearch/segment-anything)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Segment Anything Example Code](https://github.com/facebookresearch/segment-anything/blob/main/demo/README.md)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you have learned the building blocks to use Stable Diffusion for
+    inpainting and outpainting with the diffusers library. In particular, you learned
+    to use `StablediffusionInpaintPipeline` and SAM for image segmentation & creating
+    masks for inpainting. You also learned how to convert an outpainting problem into
+    an inpainting problem so you can do the same in Python code.
+  prefs: []
+  type: TYPE_NORMAL

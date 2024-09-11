@@ -1,0 +1,604 @@
+- en: 'Skewness Be Gone: Transformative Tricks for Data Scientists'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/skewness-be-gone-transformative-tricks-for-data-scientists/](https://machinelearningmastery.com/skewness-be-gone-transformative-tricks-for-data-scientists/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Data transformations enable data scientists to refine, normalize, and standardize
+    raw data into a format ripe for analysis. These transformations are not merely
+    procedural steps; they are essential in mitigating biases, handling skewed distributions,
+    and enhancing the robustness of statistical models. This chapter will primarily
+    focus on how to address skewed data. By focusing on the “SalePrice” and “YearBuilt”
+    attributes from the Ames housing dataset, you will see examples of positive and
+    negative skewed data and ways to normalize their distributions using transformations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/ef9f886abfc8f501420f90dd9a39bdeb.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Skewness Be Gone: Transformative Tricks for Data Scientists'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Suzanne D. Williams](https://unsplash.com/photos/three-pupas-VMKBFR6r_jg).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into five parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding Skewness and the Need for Transformation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Strategies for Taming Positive Skewness
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Strategies for Taming Negative Skewness
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Statistical Evaluation of Transformations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Choosing the Right Transformation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understanding Skewness and the Need for Transformation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Skewness is a statistical measure that describes the asymmetry of a data distribution
+    around its mean. In simpler terms, it indicates whether the bulk of the data is
+    bunched up on one side of the scale, leaving a long tail stretching out in the
+    opposite direction. There are two types of skewness you encounter in data analysis:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Positive Skewness**: This occurs when the tail of the distribution extends
+    towards higher values, on the right side of the peak. The majority of data points
+    are clustered at the lower end of the scale, indicating that while most values
+    are relatively low, there are a few exceptionally high values. The ‘SalePrice’
+    attribute in the Ames dataset exemplifies positive skewness, as most homes sell
+    at lower prices, but a small number sell at significantly higher prices.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Negative Skewness**: Conversely, negative skewness happens when the tail
+    of the distribution stretches towards lower values, on the left side of the peak.
+    In this scenario, the data is concentrated towards the higher end of the scale,
+    with fewer values trailing off into lower numbers. The ‘YearBuilt’ feature of
+    the Ames dataset is a perfect illustration of negative skewness, suggesting that
+    while a majority of houses were built in more recent years, a smaller portion
+    dates back to earlier times.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: To better grasp these concepts, let’s visualize the skewness.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: For ‘SalePrice’, the graph shows a pronounced right-skewed distribution, highlighting
+    the challenge of skewness in data analysis. Such distributions can complicate
+    predictive modeling and obscure insights, making it difficult to draw accurate
+    conclusions. In contrast, ‘YearBuilt’ demonstrates negative skewness, where the
+    distribution reveals that newer homes predominate, with older homes forming the
+    long tail to the left.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/e4b33d6707b791f1d4d1d22078bb52c7.png)](https://machinelearningmastery.com/wp-content/uploads/2024/02/Figure_1-1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Addressing skewness through data transformation is not merely a statistical
+    adjustment; it is a crucial step toward uncovering precise, actionable insights.
+    By applying transformations, you aim to mitigate the effects of skewness, facilitating
+    more reliable and interpretable analyses. This normalization process enhances
+    your ability to conduct meaningful data science, beyond just meeting statistical
+    prerequisites. It underscores your commitment to improving the clarity and utility
+    of your data, setting the stage for insightful, impactful findings in your subsequent
+    explorations of data transformation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Strategies for Taming Positive Skewness
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To combat positive skew, you can use five key transformations: Log, Square
+    Root, Box-Cox, Yeo-Johnson, and Quantile Transformations. Each method aims to
+    mitigate skewness, enhancing the data’s suitability for further analysis.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Log Transformation**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This method is particularly suited for right-skewed data, effectively minimizing
+    large-scale differences by taking the natural log of all data points. This compression
+    of the data range makes it more amenable for further statistical analysis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can see that the skewness is reduced:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Square Root Transformation**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A softer approach than the log transformation, ideal for moderately skewed data.
+    By applying the square root to each data point, it reduces skewness and diminishes
+    the impact of outliers, making the distribution more symmetric.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Box-Cox Transformation**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Offers flexibility by optimizing the transformation parameter lambda (λ), applicable
+    only to positive data. The Box-Cox method systematically finds the best power
+    transformation to reduce skewness and stabilize variance, enhancing the data’s
+    normality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is the best transformation so far because the skewness is very close to
+    zero:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Yeo-Johnson Transformation**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The above transformations only work with positive data. Yeo-Johnson is similar
+    to Box-Cox but adaptable to both positive and non-positive data. It modifies the
+    data through an optimal transformation parameter. This adaptability allows it
+    to manage skewness across a wider range of data values, improving its fit for
+    statistical models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similar to Box-Cox, the skewness after transformation is very close to zero:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Quantile Transformation**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Quantile transformation maps data to a specified distribution, such as normal,
+    effectively addresses skewness by distributing the data points evenly across the
+    chosen distribution. This transformation normalizes the shape of the data, focusing
+    on making the distribution more uniform or Gaussian-like without assuming it will
+    directly benefit linear models due to its non-linear nature and the challenge
+    of reverting the data to its original form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Because this transformation fits the data into the Gaussian distribution by
+    brute force, the skewness is closest to zero:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: To illustrate the effects of these transformations, let’s take a look at the
+    visual representation of the ‘SalePrice’ distribution before and after each method
+    is applied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The following visual provides a side-by-side comparison, helping you to understand
+    better the influence of each transformation on the distribution of housing prices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/14c4064dce26f3699d47dc5fd573d1a1.png)](https://machinelearningmastery.com/wp-content/uploads/2024/02/Figure_2-2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Distribution of data after transformation
+  prefs: []
+  type: TYPE_NORMAL
+- en: This visual serves as a clear reference for how each transformation method alters
+    the distribution of ‘SalePrice’, demonstrating the resulting effect towards achieving
+    a more normal distribution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Strategies for Taming Negative Skewness
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To combat negative skew, you can use the five key transformations: Squared,
+    Cubed, Box-Cox, Yeo-Johnson, and Quantile Transformations. Each method aims to
+    mitigate skewness, enhancing the data’s suitability for further analysis.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Squared Transformation**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This involves taking each data point in the dataset and squaring it (i.e., raising
+    it to the power of 2). The squared transformation is useful for reducing negative
+    skewness because it tends to spread out the lower values more than the higher
+    values. However, it’s more effective when **all data points are positive** and
+    the degree of negative skewness is not extreme.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Cubed Transformation**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similar to the squared transformation but involves raising each data point to
+    the power of 3\. The cubed transformation can further reduce negative skewness,
+    especially in cases where the squared transformation is insufficient. It’s **more
+    aggressive** in spreading out values, which can benefit more negatively skewed
+    distributions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Box-Cox Transformation**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A more sophisticated method that finds the best lambda (λ) parameter to transform
+    the data into a normal shape. The transformation is defined for positive data
+    only. The Box-Cox transformation is highly effective for a wide range of distributions,
+    including those with negative skewness, by making the data more symmetric. For
+    negatively skewed data, a positive lambda is often found, applying a transformation
+    that effectively reduces skewness.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can see the skewness is moved closer to zero than before:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Yeo-Johnson Transformation**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similar to the Box-Cox transformation, but the Yeo-Johnson is designed to handle
+    both positive and negative data. For negatively skewed data, the Yeo-Johnson transformation
+    can normalize distributions even when negative values are present. It adjusts
+    the data in a way that reduces skewness, making it particularly versatile for
+    datasets with a mix of positive and negative values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similar to Box-Cox, you get a skewness moved closer to zero:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Quantile Transformation**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This method transforms the features to follow a specified distribution, such
+    as the normal distribution, based on their quantiles. It does not assume any specific
+    distribution shape for the input data. When applied to negatively skewed data,
+    the quantile transformation can effectively normalize the distribution. It’s particularly
+    useful for dealing with outliers and making the distribution of the data uniform
+    or normal, regardless of the original skewness.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As you saw before in the case of positive skewness, quantile transformation
+    provides the best result in the sense that the resulting skewness is closest to
+    zero:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: To illustrate the effects of these transformations, let’s take a look at the
+    visual representation of the ‘YearBuilt’ distribution before and after each method
+    is applied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: The following visual provides a side-by-side comparison, helping us to better
+    understand the influence of each transformation on this feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/a54d737f5189bc8c49a6c9baff1a3e69.png)](https://machinelearningmastery.com/wp-content/uploads/2024/02/Figure_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This visual provides a clear reference for how each transformation method alters
+    the distribution of ‘YearBuilt’, demonstrating the resulting effect towards achieving
+    a more normal distribution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Beginner's Guide to Data Science?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Statistical Evaluation of Transformations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: How do you know the transformed data matches the normal distribution?
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Kolmogorov-Smirnov (KS) test is a **non-parametric test** used to determine
+    if a sample comes from a population with a specific distribution. Unlike parametric
+    tests, which assume a specific distribution form for the data (usually normal
+    distribution), non-parametric tests make no such assumptions. This quality makes
+    them highly useful in the context of data transformations because it helps to
+    assess how closely a transformed dataset approximates a normal distribution. The
+    KS test compares the cumulative distribution function (CDF) of the sample data
+    against the CDF of a known distribution (in this case, the normal distribution),
+    providing a test statistic that quantifies the distance between the two.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Null and Alternate Hypothesis:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Null Hypothesis ($H_0$):** The data follows the specified distribution (normal
+    distribution, in this case).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Alternate Hypothesis ($H_1$):** The data does not follow the specified distribution.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In this context, the KS test is used to evaluate the goodness-of-fit between
+    the empirical distribution of the transformed data and the normal distribution.
+    The test statistic is a measure of the largest discrepancy between the empirical
+    (transformed data) and theoretical CDFs (normal distribution). A small test statistic
+    suggests that the distributions are similar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above prints a table as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see that the higher the KS statistic, the lower the p-value. Respectively,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**KS Statistic:** This represents the maximum difference between the empirical
+    distribution function of the sample and the cumulative distribution function of
+    the reference distribution. Smaller values indicate a closer fit to the normal
+    distribution.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**P-Value:** Provides the probability of observing the test results under the
+    null hypothesis. A low p-value (typically <0.05) rejects the null hypothesis,
+    indicating the sample distribution significantly differs from the normal distribution.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Quantile transformation of ‘SalePrice’ yielded the most promising results,
+    with a KS statistic of 0.00719 and a p-value of 0.99924, indicating that after
+    this transformation, the distribution closely aligns with the normal distribution.
+    It is not surprising because Quantile Transformation is designed to produce a
+    good fit. The p-value is significant because a higher p-value (close to 1) suggests
+    that the null hypothesis (that the sample comes from a specified distribution)
+    cannot be rejected, implying good normality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other transformations like Log, Box-Cox, and Yeo-Johnson also improved the distribution
+    of ‘SalePrice’ but to a lesser extent, as reflected by their lower p-values (ranging
+    from 0.00014 to 0.00017), indicating less conformity to the normal distribution
+    compared to the Quantile transformation. The transformations applied to ‘YearBuilt’
+    showed generally less effectiveness in achieving normality compared to ‘SalePrice’.
+    The BoxCox and YeoJohnson transformations offered slight improvements over Squaring
+    and Cubing, as seen in their slightly lower KS statistics and p-values, but still
+    indicated significant deviations from normality. The Quantile transformation for
+    ‘YearBuilt’ showed a more favorable outcome with a KS statistic of 0.02243 and
+    a p-value of 0.14717, suggesting a moderate improvement towards normality, although
+    not as pronounced as the effect seen with ‘SalePrice’.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Choosing the Right Transformation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Choosing the right transformation for addressing skewness in data is not a
+    one-size-fits-all decision; it requires careful consideration of the context and
+    characteristics of the data at hand. The importance of context in selecting the
+    appropriate transformation method cannot be overstated. Here are key factors to
+    consider:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Data Characteristics:** The nature of the data (e.g., the presence of zeros
+    or negative values) can limit the applicability of certain transformations. For
+    instance, log transformations cannot be directly applied to zero or negative values
+    without adjustments.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Degree of Skewness:** The extent of skewness in the data influences the choice
+    of transformation. More severe skewness might require more potent transformations
+    (e.g., Box-Cox or Yeo-Johnson) compared to milder skewness, which might be adequately
+    addressed with log or square root transformations.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Statistical Properties:** The transformation chosen should ideally improve
+    the statistical properties of the dataset, such as normalizing the distribution
+    and stabilizing variance, which are essential for many statistical tests and models.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Interpretability:** The ease of interpreting results after transformation
+    is crucial. Some transformations, like log or square root, allow for relatively
+    straightforward interpretation, whereas others, like the quantile transformation,
+    might complicate the original scale’s interpretation.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Objective of Analysis:** The ultimate goal of the analysis—whether it’s predictive
+    modeling, hypothesis testing, or exploratory analysis—plays a critical role in
+    selecting the transformation method. The transformation should align with the
+    analytical techniques and models to be employed later.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In summary, the choice of the right transformation depends on multiple factors,
+    including, but not limited to, a solid understanding of the dataset, the specific
+    goals of the analysis, and the practical implications for model interpretability
+    and performance. No single method is universally superior; each has its trade-offs
+    and applicability depending on the scenario at hand. It’s important to highlight
+    a cautionary note regarding the Quantile Transformation, which your visual and
+    statistical tests identified as highly effective in achieving a normal distribution.
+    While potent, the Quantile Transformation is not a linear transformation like
+    the others. This means it can significantly alter the data’s structure in ways
+    that are not easily reversible, potentially complicating the interpretation of
+    results and the application of inverse transformations for back-transformation
+    to the original scale. Therefore, despite its effectiveness in normalization,
+    its use should be considered carefully, especially in cases where maintaining
+    a connection to the original data scale is important or where the model’s interpretability
+    is a priority. In most scenarios, the preference might lean towards transformations
+    that balance normalization effectiveness with simplicity and reversibility, ensuring
+    that the data remains as interpretable and manageable as possible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[scipy.stats.boxcox](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.boxcox.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[scipy.stats.yeojohnson](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.yeojohnson.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[sklearn.preprocessing.Quantile Transformer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.QuantileTransformer.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[scipy.stats.kstest](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Resources**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you’ve embarked on a detailed exploration of data transformations,
+    focusing on their critical role in addressing skewed data within the field of
+    data science. Through practical examples using the ‘SalePrice’ and ‘YearBuilt’
+    features from the Ames housing dataset, you demonstrated various transformation
+    techniques—log, square root, Box-Cox, Yeo-Johnson, and quantile transformations—and
+    their impact on normalizing data distributions. Your analysis underscores the
+    necessity of selecting appropriate transformations based on data characteristics,
+    the degree of skewness, statistical goals, interpretability, and the specific
+    objectives of the analysis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The significance of data transformations and how they can handle skewed distributions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to compare the effectiveness of different transformations through visual
+    and statistical assessments.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The importance of evaluating data characteristics, the severity of skewness,
+    and analytical objectives to choose the most suitable transformation technique.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

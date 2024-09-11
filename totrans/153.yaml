@@ -1,0 +1,201 @@
+- en: Training a Single Output Multilinear Regression Model in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/training-a-single-output-multilinear-regression-model-in-pytorch/](https://machinelearningmastery.com/training-a-single-output-multilinear-regression-model-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: A neural network architecture is built with hundreds of neurons where each of
+    them takes in multiple inputs to perform a multilinear regression operation for
+    prediction. In the previous tutorials, we built a single output multilinear regression
+    model that used only a forward function for prediction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this tutorial, we’ll add optimizer to our single output multilinear regression
+    model and perform backpropagation to reduce the loss of the model. Particularly,
+    we’ll demonstrate:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to build a single output multilinear regression model in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How PyTorch built-in packages can be used to create complicated models.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train a single output multilinear regression model with mini-batch gradient
+    descent in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/56305823125c76e32f310decba0c6ab0.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training a Single Output Multilinear Regression Model in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Bruno Nascimento](https://unsplash.com/photos/PHIgYUGQPvU). Some
+    rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing Data for Prediction
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using `Linear` Class for Multilinear Regression
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Visualize the Results
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build the Dataset Class
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Just like previous tutorials, we’ll create a sample dataset to perform our experiments
+    on. Our data class includes a dataset constructor, a getter `__getitem__()` to
+    fetch the data samples, and `__len__()` function to get the length of the created
+    data. Here is how it looks like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: With this, we can easily create the dataset object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Build the Model Class
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have the dataset, let’s build a custom multilinear regression model
+    class. As discussed in the previous tutorial, we define a class and make it a
+    subclass of `nn.Module`. As a result, the class inherits all the methods and attributes
+    from the latter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: We’ll create a model object with an input size of 2 and output size of 1\. Moreover,
+    we can print out all model parameters using the method `parameters()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here’s what the output looks like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: In order to train our multilinear regression model, we also need to define the
+    optimizer and loss criterion. We’ll employ stochastic gradient descent optimizer
+    and mean square error loss for the model. We’ll keep the learning rate at 0.1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Train the Model with Mini-Batch Gradient Descent
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we start the training process, let’s load up our data into the `DataLoader`
+    and define the batch size for the training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: We’ll start the training and let the process continue for 20 epochs, using the
+    same for-loop as in our previous tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the training loop above, the loss is reported in each epoch. You should
+    see the output similar to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: This training loop is typical in PyTorch. You will reuse it very often in future
+    projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plot the Graph
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Lastly, let’s plot the graph to visualize how the loss decreases during the
+    training process and converge to a certain point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/f96a509edf9cb1ce999a9ed3eb7de3a9.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Loss during training
+  prefs: []
+  type: TYPE_NORMAL
+- en: Putting everything together, the following is the complete code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial you learned how to build a single output multilinear regression
+    model in PyTorch. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to build a single output multilinear regression model in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How PyTorch built-in packages can be used to create complicated models.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train a single output multilinear regression model with mini-batch gradient
+    descent in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,368 @@
+- en: Support Vector Machines for Image Classification and Detection Using OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/support-vector-machines-for-image-classification-and-detection-using-opencv/](https://machinelearningmastery.com/support-vector-machines-for-image-classification-and-detection-using-opencv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In a [previous tutorial](https://machinelearningmastery.com/?p=14889&preview=true),
+    we explored using the Support Vector Machine algorithm as one of the most popular
+    supervised machine learning techniques implemented in the OpenCV library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So far, we have seen how to apply Support Vector Machines to a custom dataset
+    that we have generated, consisting of two-dimensional points gathered into two
+    classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will learn how to apply OpenCV’s Support Vector Machine
+    algorithm to solve image classification and detection problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important characteristics of Support Vector Machines.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply Support Vector Machines to the problems of image classification
+    and detection.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started. [![](../Images/47afd0d4c22fd547010be0754a657edd.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_class_detect_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Support Vector Machines for Image Classification and Detection Using OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Patrick Ryan](https://unsplash.com/photos/3kUIaB2EPp8), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recap of How Support Vector Machines Work
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying the SVM Algorithm to Image Classification
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the SVM Algorithm for Image Detection
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Recap of How Support Vector Machines Work**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In a [previous tutorial](https://machinelearningmastery.com/?p=14889&preview=true),
+    we were introduced to using the Support Vector Machine (SVM) algorithm in the
+    OpenCV library. So far, we have applied it to a custom dataset that we have generated,
+    consisting of two-dimensional points gathered into two classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have seen that SVMs seek to separate data points into classes by computing
+    a decision boundary that maximizes the margin to the closest data points from
+    each class, called the support vectors. The constraint of maximizing the margin
+    can be relaxed by tuning a parameter called *C*, which controls the trade-off
+    between maximizing the margin and reducing the misclassifications on the training
+    data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The SVM algorithm may use different kernel functions, depending on whether the
+    input data is linearly separable. In the case of non-linearly separable data,
+    a non-linear kernel may be used to transform the data to a higher-dimensional
+    space in which it becomes linearly separable. This is analogous to the SVM finding
+    a non-linear decision boundary in the original input space.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Applying the SVM Algorithm to Image Classification**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We will use the [digits dataset in OpenCV](https://machinelearningmastery.com/?p=14607&preview=true)
+    for this task, although the code we will develop may also be used with other datasets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our first step is to load the OpenCV digits image, divide it into its many
+    sub-images that feature handwritten digits from 0 to 9, and create their corresponding
+    ground truth labels that will enable us to quantify the accuracy of the trained
+    SVM classifier later. For this particular example, we will allocate 80% of the
+    dataset images to the training set and the remaining 20% of the images to the
+    testing set:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Our next step is to create an SVM in OpenCV that uses an RBF kernel. As we
+    have done in [our previous tutorial](https://machinelearningmastery.com/?p=14889&preview=true),
+    we must set several parameter values related to the SVM type and the kernel function.
+    We shall also include the termination criteria to stop the iterative process of
+    the SVM optimization problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Rather than training and testing the SVM on the raw image data, we will first
+    convert each image into its HOG descriptors, as explained in [this tutorial](https://machinelearningmastery.com/?p=14553&preview=true).
+    The HOG technique aims for a more compact representation of an image by exploiting
+    its local shape and appearance. Training a classifier on HOG descriptors can potentially
+    increase its discriminative power in distinguishing between different classes
+    while at the same time reducing the computational expense of processing the data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We may finally train the SVM on the HOG descriptors and proceed to predict
+    labels for the testing data, based on which we may compute the classifier’s accuracy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: For this particular example, the values for *C* and *gamma* are being set empirically.
+    However, it is suggested that a tuning technique, such as the *grid search* algorithm,
+    is employed to investigate whether a better combination of hyperparameters can
+    push the classifier’s accuracy even higher.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete code listing is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Using the SVM Algorithm for Image Detection**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It is possible to extend the ideas we have developed above from image classification
+    to image detection, where the latter refers to identifying and localizing objects
+    of interest within an image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can achieve this by repeating the image classification we developed in the
+    previous section at different positions within a larger image (we will refer to
+    this larger image as the *test image*).
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this particular example, we will create an image that consists of a *collage*
+    of randomly selected sub-images from OpenCV’s digits dataset, and we will then
+    attempt to detect any occurrences of a digit of interest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s start by creating the test image first. We will do so by randomly selecting
+    25 sub-images equally spaced across the entire dataset, shuffling their order,
+    and joining them together into a $100\times 100$-pixel image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The resulting test image looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/17e26fca020891683effdb809b4cc102.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_class_detect_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Test Image for Image Detection
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we shall train a newly created SVM like in the previous section. However,
+    given that we are now addressing a detection problem, the ground truth labels
+    should not correspond to the digits in the images; instead, they should distinguish
+    between the positive and the negative samples in the training set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Say, for instance, that we are interested in detecting the two occurrences of
+    the *0* digit in the test image. Hence, the images featuring a *0* in the training
+    portion of the dataset are taken to represent the *positive* samples and distinguished
+    by a class label of 1\. All other images belonging to the remaining digits are
+    taken to represent the *negative* samples and consequently distinguished by a
+    class label of 0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once we have the ground truth labels generated, we may proceed to create and
+    train an SVM on the training dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The final piece of code that we shall be adding to the code listing above performs
+    the following operations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Traverses the test image by a pre-defined stride.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Crops an image patch of equivalent size to the sub-images that feature the digits
+    (i.e., 20 $\times$ 20 pixels) from the test image at every iteration.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Extracts the HOG descriptors of every image patch.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Feeds the HOG descriptors into the trained SVM to obtain a label prediction.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Stores the image patch coordinates whenever a detection is found.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Draws the bounding box for each detection on the original test image.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The complete code listing is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The resulting image shows that we have successfully detected the two occurrences
+    of the *0* digit in the test image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/05595d0267b5f6dbe6f185ba18a8c1f3.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_class_detect_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Detecting the Two Occurrences of the *0* Digit
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We have considered a simple example, but the same ideas can be easily adapted
+    to address more challenging real-life problems. If you plan to adapt the code
+    above to more challenging problems:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Remember that the object of interest may appear in various sizes inside the
+    image, so you might need to carry out a multi-scale detection task.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do not run into the class imbalance problem when generating positive and negative
+    samples to train your SVM. The examples we have considered in this tutorial were
+    images of very little variation (we were limited to just 10 digits, featuring
+    no variation in scale, lighting, background, etc.), and any dataset imbalance
+    seems to have had very little effect on the detection result. However, real-life
+    challenges do not tend to be this simple, and an imbalanced distribution between
+    classes can lead to poor performance.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Introduction to Support Vector Machines, [https://docs.opencv.org/4.x/d1/d73/tutorial_introduction_to_svm.html](https://docs.opencv.org/4.x/d1/d73/tutorial_introduction_to_svm.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to apply OpenCV’s Support Vector Machine algorithm
+    to solve image classification and detection problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important characteristics of Support Vector Machines.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply Support Vector Machines to the problems of image classification
+    and detection.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

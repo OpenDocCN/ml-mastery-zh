@@ -1,0 +1,485 @@
+- en: A Gentle Introduction to Limits and Continuity
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity/](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: There is no denying that calculus is a difficult subject. However, if you learn
+    the fundamentals, you will not only be able to grasp the more complex concepts
+    but also find them fascinating. To understand machine learning algorithms, you
+    need to understand concepts such as gradient of a function, Hessians of a matrix,
+    and optimization, etc. The concept of limits and continuity serves as a foundation
+    for all these topics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, you will discover how to evaluate the limit of a function, and
+    how to determine if a function is continuous or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After reading this post, you will be able to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Determine if a function f(x) has a limit as x approaches a certain value
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Evaluate the limit of a function f(x) as x approaches a
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Determine if a function is continuous at a point or in an interval
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is divided into two parts
+  prefs: []
+  type: TYPE_NORMAL
+- en: Limits
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Determine if the limit of a function exists for a certain point
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Compute the limit of a function for a certain point
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Formal definition of a limit
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Examples of limits
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Left and right hand limits
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Continuity
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Definition of continuity
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Determine if a function is continuous at a point or within an interval
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Examples of continuous functions
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[![A Gentle Introduction to Limits and Continuity](../Images/c5e6d533049015c2adfcbc3201abae70.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/mainpic.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Gentle Introduction to Limits and Continuity
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by Mehreen Saeed, some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Simple Example
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s start by looking at a simple function f(x) given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: f(x) = 1+x
+  prefs: []
+  type: TYPE_NORMAL
+- en: What happens to f(x) near -1?
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can see that f(x) gets closer and closer to 0 as x gets closer and closer
+    -1, from either side of x=-1\. At x=-1, the function is exactly zero. We say that
+    f(x) has a limit equal to 0, when x approaches -1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/cbcee3a26af84ead0df5380da70c8f29.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limit1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extend the Example
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Extending the problem. Let’s define g(x):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: g(x) = (1-x^2)/(1+x)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can simplify the expression for g(x) as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: g(x) = (1-x)(1+x)/(1+x)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If the denominator is not zero then g(x) can be simplified as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: g(x) = 1-x,  if x ≠ -1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, at (x = -1), the denominator is zero and we cannot divide by zero.
+    So it looks like there is a hole in the function at x=-1\. Despite the presence
+    of this hole, g(x) gets closer and closer to 2 as x gets closer and closer -1,
+    as shown in the figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/8a137995305f8bc124e40789fbf94894.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limit2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is the basic idea of a limit. If g(x) is defined in an open interval that
+    does not include -1, and g(x) gets closer and closer to 2, as x approaches -1,
+    we write this as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: lim(x→-1) g(x) = 2
+  prefs: []
+  type: TYPE_NORMAL
+- en: In general, for any function f(x), if f(x) gets closer and closer to a value
+    L, as x gets closer and closer to k, we define the limit of f(x) as x approaches
+    k, as L. This is written as:[![limit f(x) = L as x approaches k](../Images/7b46fe2c8cf153246d44082c0ec43c6f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/l1.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Left and Right Hand Limits
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'For the function g(x), it doesn’t matter whether we increase x to get closer
+    to -1 (approach -1 from left) or decrease x to get closer to -1 (approach -1 from
+    right), g(x) still gets closer and closer to 2\. This is shown in the figure below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/5c7650cac3aed71014e060f9339ade93.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limit3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This gives rise to the notion of one-sided limits. The left hand limit is defined
+    on an interval to the left of -1, which does not include -1, e.g., (-1.003, -1).
+    As we approach -1 from the left, g(x) gets closer to 2.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similarly, the right hand limit is defined on an open interval to the right
+    of -1 and does not include -1, e.g., (-1, 0.997). As we approach -1 from the right,
+    the right hand limit of g(x) is 2\. Both the left and right hand limits are written
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/1dd6a35ca2dc837560d9e16007c84873.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/l2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We say that f(x) has a limit L as x approaches k, if both its left and right
+    hand limits are equal. Therefore, this is another way of testing whether a function
+    has a limit at a specific point, i..e, [![](../Images/f867774d87bea8e796e6e3bd87b01d75.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/l3.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Formal Definition of a Limit
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In mathematics, we need to have an exact definition of everything. To define
+    a limit formally, we’ll use the the notion of the Greek letter ????. The mathematics
+    community agrees to use ???? for arbitrarily small positive numbers, which means
+    we can make ???? as small as we like and it can be as close to zero as we like,
+    provided ????>0 (so ???? cannot be zero).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The limit of f(x) is L as x approaches k, if for every ????>0, there is a positive
+    number ????>0, such that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: if 0<|????−????|<???? then |????(????)−????|<????
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The definition is quite straightforward. x-k is the difference of x from k
+    and |x-k| is the distance of x from k that ignores the sign of the difference.
+    Similarly, |f(x)-L| is the distance of f(x) from L. Hence, the definition says
+    that when the distance of x from k approaches an arbitrary small value, the distance
+    of f(x) from L also approaches a very small value. The figure below is a good
+    illustration of the above definition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/0247f75b9c3bf32b9a128b5ab1e375d1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limit4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples of Limits
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The figure below illustrates a few examples, which are also explained below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/881c200b71b2e7e40cd5092d1d1fe631.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limitExample.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1.1 Example with Absolute Value
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: f_1(x) = |x|
+  prefs: []
+  type: TYPE_NORMAL
+- en: The limit of f_1(x) exists at all values of x, e.g., lim(x→0) f_1(x) = 0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1.2 Example with a Polynomial
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: f_2(x) = x^2 + 3x + 1
+  prefs: []
+  type: TYPE_NORMAL
+- en: The limit of f_2(x) exists for all values of x, e..g, lim(x→1) f_2(x) = 1+3+1
+    = 5.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1.3 Example with Infinity
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: f_3(x) = 1/x,  if x>0
+  prefs: []
+  type: TYPE_NORMAL
+- en: f_3(x) = 0,   if x<=0
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the above as x becomes larger and larger, the value of f_3(x) gets smaller
+    and smaller, approaching zero. Hence, lim(x→∞) f_3(x) = 0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Example of Functions that Don’t have a Limit
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'From the definition of the limit, we can see that the following functions do
+    not have a limit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2.1 The Unit Step Function
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The unit step function H(x) is given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: H(x) = 0,  if x<0
+  prefs: []
+  type: TYPE_NORMAL
+- en: H(x) = 1,  otherwise
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we get closer and closer to 0 from the left, the function remains a zero.
+    However, as soon as we reach x=0, H(x) jumps to 1, and hence H(x) does not have
+    a limit as x approaches zero. This function has a left hand limit equal to zero
+    and a right hand limit equal to 1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The left and right hand limits do not agree, as x→0, hence H(x) does not have
+    a limit as x approaches 0\. Here, we used the equality of left and right hand
+    limits as a test to check if a function has a limit at a particular point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2.2 The Reciprocal Function
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Consider h_1(x):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: h_1(x) = 1/(x-1)
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we approach x=1 from the left side, the function tends to have large negative
+    values. As we approach x=1, from the right, h_1(x)  increases to large positive
+    values. So when x is close to 1, the values of h_1(x) do not stay close to a fixed
+    real value. Hence, the limit does not exist for x→1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2.3 The Ceil Function
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Consider the ceil function that rounds a real number with a non-zero fractional
+    part to the next integer value. Hence, lim(x→1) ceil(x) does not exist. In fact
+    ceil(x) does not have a limit at any integer value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'All the above examples are shown in the figure below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/a5a02e49ac59484ad89497e49c35ede0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/nolimit-1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Continuity
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you have understood the notion of a limit, then it is easy to understand
+    continuity. A function f(x) is continuous at a point a, if the following three
+    conditions are met:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: f(a) should exist
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: f(x) has a limit as x approaches a
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The limit of f(x) as x->a is equal to f(a)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'If all of the above hold true, then the function is continuous at the point
+    a. Some examples follow:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples of Continuity
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The concept of continuity is closely related to limits. If the function is
+    defined at a point, has no jumps at that point, and has a limit at that point,
+    then it is continuous at that point. The figure below shows some examples, which
+    are explained below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/8eb92e46be07690ba1eb8d23d7d2934f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/cont.png)'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 3.1 The Square Function
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The following function f_4(x) is continuous for all values of x:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: f_4(x) = x^2
+  prefs: []
+  type: TYPE_NORMAL
+- en: 3.2 The Rational Function
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Our previously used function g(x):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: g(x) = (1-x^2)/(1+x)
+  prefs: []
+  type: TYPE_NORMAL
+- en: g(x) is continuous everywhere except at x=-1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can modify g(x) as g**(x):*
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*g**(x) = (1-x^2)/(1+x), if x ≠ -1'
+  prefs: []
+  type: TYPE_NORMAL
+- en: g*(x) = 2, otherwise
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we have a function that is continuous for all values of x.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 3.3 The Reciprocal Function
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Going back to our previous example of f_3(x):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: f_3(x) = 1/x,  if x>0
+  prefs: []
+  type: TYPE_NORMAL
+- en: f_3(x) = 0,  if x<=0
+  prefs: []
+  type: TYPE_NORMAL
+- en: f_3(x) is continuous everywhere, except at x=0 as the value of f_3(x) has a
+    big jump at x=0\. Hence, there is a discontinuity at x=0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+    Math is all about practice, and below is a list of resources that will provide
+    more exercises and examples on this topic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Resource Page
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Jason Brownlee’s excellent resource on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning/).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Thomas’ Calculus](https://www.amazon.com/Thomas-Calculus-14th-Joel-Hass/dp/0134438981/ref=as_li_ss_tl?ie=UTF8&linkCode=sl1&tag=inspiredalgor-20&linkId=1fcceb2171bd06294b60a6aa4cd51550&language=en_US),
+    14th edition, 2017\. (based on the original works of George B. Thomas, revised
+    by Joel Hass, Christopher Heil, Maurice Weir).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US),
+    3rd Edition, 2017\. (Gilbert Strang).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://www.amazon.com/Calculus-James-Stewart/dp/1285740629/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-6&linkCode=sl1&tag=inspiredalgor-20&linkId=3bbba00479751e9e9bf3990c98f629c7&language=en_US),
+    8th edition, 2015\. (James Stewart).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you discovered calculus concepts on limits and continuity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Whether a function has a limit when approaching a point
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Whether a function is continuous at a point or within an interval
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Ask your questions in the comments below and I will
+    do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

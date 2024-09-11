@@ -1,0 +1,434 @@
+- en: Understanding Simple Recurrent Neural Networks in Keras
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/understanding-simple-recurrent-neural-networks-in-keras/](https://machinelearningmastery.com/understanding-simple-recurrent-neural-networks-in-keras/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This tutorial is designed for anyone looking for an understanding of how recurrent
+    neural networks (RNN) work and how to use them via the Keras deep learning library.
+    While the Keras library provides all the methods required for solving problems
+    and building applications, it is also important to gain an insight into how everything
+    works. In this article, the computations taking place in the RNN model are shown
+    step by step. Next, a complete end-to-end system for time series prediction is
+    developed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The structure of an RNN
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How an RNN computes the output when given an input
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to prepare data for a SimpleRNN in Keras
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train a SimpleRNN model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Umstead state park](../Images/1ca5e37fc2847144b1ccbedc332ad33a.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/IMG_9433-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding simple recurrent neural networks in Keras. Photo by Mehreen Saeed,
+    some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The structure of the RNN
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Different weights and biases associated with different layers of the RNN
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How computations are performed to compute the output when given an input
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A complete application for time series prediction
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Prerequisites
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It is assumed that you have a basic understanding of RNNs before you start implementing
+    them. [An Introduction to Recurrent Neural Networks and the Math That Powers Them](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them)
+    gives you a quick overview of RNNs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s now get right down to the implementation part.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Import Section
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To start the implementation of RNNs, let’s add the import section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keras SimpleRNN
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The function below returns a model that includes a `SimpleRNN` layer and a `Dense`
+    layer for learning sequential data. The `input_shape` specifies the parameter
+    `(time_steps x features)`. We’ll simplify everything and use univariate data,
+    i.e., one feature only; the time steps are discussed below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The object `demo_model` is returned with two hidden units created via the `SimpleRNN`
+    layer and one dense unit created via the `Dense` layer. The `input_shape` is set
+    at 3×1, and a `linear` activation function is used in both layers for simplicity.
+    Just to recall, the linear activation function $f(x) = x$ makes no change in the
+    input. The network looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we have $m$ hidden units ($m=2$ in the above case), then:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Input: $x \in R$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Hidden unit: $h \in R^m$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Weights for the input units: $w_x \in R^m$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Weights for the hidden units: $w_h \in R^{mxm}$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Bias for the hidden units: $b_h \in R^m$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Weight for the dense layer: $w_y \in R^m$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Bias for the dense layer: $b_y \in R$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let’s look at the above weights. Note: As the weights are randomly initialized,
+    the results posted here will be different from yours. The important thing is to
+    learn what the structure of each object being used looks like and how it interacts
+    with others to produce the final output.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now let’s do a simple experiment to see how the layers from a SimpleRNN and
+    Dense layer produce an output. Keep this figure in view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Layers Of A Recurrent Neural Network](../Images/e8bb3c270b82776a3235fbeb8b5636e3.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnnCode1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Layers of a recurrent neural network
+  prefs: []
+  type: TYPE_NORMAL
+- en: We’ll input `x` for three time steps and let the network generate an output.
+    The values of the hidden units at time steps 1, 2, and 3 will be computed. $h_0$
+    is initialized to the zero vector. The output $o_3$ is computed from $h_3$ and
+    $w_y$. An activation function is not required as we are using linear units.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Running the RNN on Sunspots Dataset
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now that we understand how the SimpleRNN and Dense layers are put together.
+    Let’s run a complete RNN on a simple time series dataset. We’ll need to follow
+    these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Read the dataset from a given URL
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Split the data into training and test sets
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Prepare the input to the required Keras format
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Create an RNN model and train it
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Make the predictions on training and test sets and print the root mean square
+    error on both sets
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: View the result
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Step 1, 2: Reading Data and Splitting Into Train and Test'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The following function reads the train and test data from a given URL and splits
+    it into a given percentage of train and test data. It returns single-dimensional
+    arrays for train and test data after scaling the data between 0 and 1 using `MinMaxScaler`
+    from scikit-learn.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Step 3: Reshaping Data for Keras'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'The next step is to prepare the data for Keras model training. The input array
+    should be shaped as: `total_samples x time_steps x features`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many ways of preparing time series data for training. We’ll create
+    input rows with non-overlapping time steps. An example for time steps = 2 is shown
+    in the figure below. Here, time steps denotes the number of previous time steps
+    to use for predicting the next value of the time series data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![How Data Is Prepared For Sunspots Example](../Images/a2cf22ce957a7712a9bc2065c1a8b3f6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnnCode2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How data is prepared for sunspots example
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following function `get_XY()` takes a one-dimensional array as input and
+    converts it to the required input `X` and target `Y` arrays. We’ll use 12 `time_steps`
+    for the sunspots dataset as the sunspots generally have a cycle of 12 months.
+    You can experiment with other values of `time_steps`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Step 4: Create RNN Model and Train'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: For this step, you can reuse your `create_RNN()` function that was defined above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Step 5: Compute and Print the Root Mean Square Error'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The function `print_error()` computes the mean square error between the actual
+    and predicted values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Step 6: View the Result'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The following function plots the actual target values and the predicted values.
+    The red line separates the training and test data points.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following plot is generated:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/26031cdffaf0e3342ade6a587323178d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnnCode3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consolidated Code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Given below is the entire code for this tutorial. Try this out at your end and
+    experiment with different hidden units and time steps. You can add a second `SimpleRNN`
+    to the network and see how it behaves. You can also use the `scaler` object to
+    rescale the data back to its normal range.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Deep Learning Essentials](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365)
+    by Wei Di, Anurag Bhardwaj, and Jianing Wei.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=as_li_ss_tl?dchild=1&keywords=deep+learning&qid=1606171954&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=0a0c58945768a65548b639df6d1a98ed&language=en_US)
+    by Ian Goodfellow, Joshua Bengio, and Aaron Courville.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Wikipedia article on BPTT](https://en.wikipedia.org/wiki/Backpropagation_through_time)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[A Tour of Recurrent Neural Network Algorithms for Deep Learning](https://machinelearningmastery.com/recurrent-neural-network-algorithms-for-deep-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[A Gentle Introduction to Backpropagation Through Time](https://machinelearningmastery.com/gentle-introduction-backpropagation-time/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[How to Prepare Univariate Time Series Data for Long Short-Term Memory Networks](https://machinelearningmastery.com/prepare-univariate-time-series-data-long-short-term-memory-networks/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered recurrent neural networks and their various
+    architectures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The structure of RNNs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the RNN computes an output from previous inputs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement an end-to-end system for time series forecasting using an RNN
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions about RNNs discussed in this post? Ask your questions
+    in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

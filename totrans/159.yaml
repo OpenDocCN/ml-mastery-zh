@@ -1,0 +1,308 @@
+- en: Training a Linear Regression Model in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/training-a-linear-regression-model-in-pytorch/](https://machinelearningmastery.com/training-a-linear-regression-model-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Linear regression is a simple yet powerful technique for predicting the values
+    of variables based on other variables. It is often used for modeling relationships
+    between two or more continuous variables, such as the relationship between income
+    and age, or the relationship between weight and height. Likewise, linear regression
+    can be used to predict continuous outcomes such as price or quantity demand, based
+    on other variables that are known to influence these outcomes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to train a linear regression model, we need to define a cost function
+    and an optimizer. The cost function is used to measure how well our model fits
+    the data, while the optimizer decides which direction to move in order to improve
+    this fit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While in the previous tutorial you learned how we can make simple predictions
+    with only a linear regression forward pass, here you’ll train a linear regression
+    model and update its learning parameters using PyTorch. Particularly, you’ll learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How you can build a simple linear regression model from scratch in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can apply a simple linear regression model on a dataset.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How a simple linear regression model can be trained on a single learnable parameter.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How a simple linear regression model can be trained on two learnable parameters.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, let’s get started.![](../Images/36c11f7d580464fc02a1045f012399aa.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training a Linear Regression Model in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Ryan Tasto](https://unsplash.com/photos/chbXE4o0ryU). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in four parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing Data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building the Model and Loss Function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training the Model for a Single Parameter
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training the Model for Two Parameters
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing Data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s import a few libraries we’ll use in this tutorial and make some data for
+    our experiments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: We will use synthetic data to train the linear regression model. We’ll initialize
+    a variable `X` with values from $-5$ to $5$ and create a linear function that
+    has a slope of $-5$. Note that this function will be estimated by our trained
+    model later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Also, we’ll see how our data looks like in a line plot, using matplotlib.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/0a01711341bd7916a2a85908675aab14.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Plot of the linear function
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we need to simulate the real data we just created, let’s add some Gaussian
+    noise to it in order to create noisy data of the same size as $X$, keeping the
+    value of standard deviation at 0.4\. This will be done by using `torch.randn(X.size())`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s visualize these data points using below lines of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/4205c90fc75188f10574fafcd50b09f5.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Data points and the linear function
+  prefs: []
+  type: TYPE_NORMAL
+- en: Putting all together, the following is the complete code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Building the Model and Loss Function
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We created the data to feed into the model, next we’ll build a forward function
+    based on a simple linear regression equation. Note that we’ll build the model
+    to train only a single parameter ($w$) here. Later, in the sext section of the
+    tutorial, we’ll add the bias and train the model for two parameters ($w$ and $b$).
+    The function for the forward pass of the model is defined as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: In training steps, we’ll need a criterion to measure the loss between the original
+    and the predicted data points. This information is crucial for gradient descent
+    optimization operations of the model and updated after every iteration in order
+    to calculate the gradients and minimize the loss. Usually, linear regression is
+    used for continuous data where Mean Square Error (MSE) effectively calculates
+    the model loss. Therefore MSE metric is the criterion function we use here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training the Model for a Single Parameter
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With all these preparations, we are ready for model training. First, the parameter
+    $w$ need to be initialized randomly, for example, to the value $-10$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we’ll define the learning rate or the step size, an empty list to store
+    the loss after each iteration, and the number of iterations we want our model
+    to train for. While the step size is set at 0.1, we train the model for 20 iterations
+    per epochs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: When below lines of code is executed, the `forward()` function takes an input
+    and generates a prediction. The `criterian()` function calculates the loss and
+    stores it in `loss` variable. Based on the model loss, the `backward()` method
+    computes the gradients and `w.data` stores the updated parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The output of the model training is printed as under. As you can see, model
+    loss reduces after every iteration and the trainable parameter (which in this
+    case is $w$) is updated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s also visualize via the plot to see how the loss reduces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/6d683ebe8813cbfa81bb2cd8a33c131f.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Training loss vs epochs
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Training the Model for Two Parameters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s also add bias $b$ to our model and train it for two parameters. First
+    we need to change the forward function to as follows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we have two parameters $w$ and $b$, we need to initialize both to some random
+    values, such as below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: While all the other code for training will remain the same as before, we’ll
+    only have to make a few changes for two learnable parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keeping learning rate at 0.1, lets train our model for two parameters for 20
+    iterations/epochs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here is what we get for output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Similarly we can plot the loss history.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: And here is how the plot for the loss looks like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/924907dee58b3d5e330d169165c3a225.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: History of loss for training with two parameters
+  prefs: []
+  type: TYPE_NORMAL
+- en: Putting everything together, this is the complete code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial you learned how you can build and train a simple linear regression
+    model in PyTorch. Particularly, you learned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How you can build a simple linear regression model from scratch in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can apply a simple linear regression model on a dataset.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How a simple linear regression model can be trained on a single learnable parameter.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How a simple linear regression model can be trained on two learnable parameters.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,439 @@
+- en: Exploring the Python Ecosystem
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/exploring-the-python-ecosystem/](https://machinelearningmastery.com/exploring-the-python-ecosystem/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Python is a neat programming language because its syntax is simple, clear, and
+    concise. But Python would not be so successful without its rich third-party libraries.
+    Python is so famous for data science and machine learning that it has become a
+    de facto lingua franca just because we have so many libraries for those tasks.
+    Without those libraries, Python is not too powerful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After finishing this tutorial, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where the Python libraries are installed in your system
+  prefs:
+  - PREF_UL
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is PyPI, and how a library repository can help your project
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the `pip` command to use a library from the repository
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/2cd46909a505ce6aabb535db23a2c254.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring the Python Ecosystem
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Vinit Srivastava](https://unsplash.com/photos/ETTY3Q_ukmk). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is in five parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Python ecosystem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python libraries location
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The pip command
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Search for a package
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Host your own repository
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Python Ecosystem
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the old days before the Internet, the language and the libraries are separated.
+    When you learn C from a textbook, you will not see anything to help you read a
+    CSV file or open a PNG image. Same in the old days of Java. If you need anything
+    not included in the official libraries, you need to search for it from various
+    places. How to download or install the libraries would be specific to the vendor
+    of the library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It would be way more convenient if we had a **central repository** to host many
+    libraries and let us install the library with a unified interface, which allows
+    us to check for new versions from time to time. Even better, we may also search
+    on the repository with keywords to discover the library that can help our project.
+    The CPAN is an example of libraries repository for Perl. Similarly, we have CRAN
+    for R, RubyGems for Ruby, npm for Node.js, and maven for Java. For Python, we
+    have PyPI (Python Package Index), [https://pypi.org/](https://pypi.org/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The PyPI is platform agnostic. If you installed your Python in Windows by downloading
+    the installer from python.org, you have the `pip` command to access PyPI. If you
+    used homebrew on Mac to install Python, you also have the same `pip` command.
+    It is the same even if you use the built-in Python from Ubuntu Linux.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a repository, you can find almost anything on PyPI. From large libraries
+    like Tensorflow and PyTorch to small things like [minimal](https://pypi.org/project/minimal/).
+    Because of the vast amount of libraries available on PyPI, you can easily find
+    tools that implement some important components of your projects. Therefore, we
+    have a strong and growing ecosystem of libraries in Python that makes it more
+    powerful.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python Libraries Location
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When we need a library in our Python scripts, we use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But how can Python know where to read the content of the module and load it
+    for our scripts? Like how the bash shell in Linux or command prompt in Windows
+    looks for the command to execute, Python depends on a list of **paths** to locate
+    the module to load. At any time, we can check the path by printing the list `sys.path` (after
+    importing the `sys` module). For example, in a Mac installation of Python via
+    homebrew:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It prints the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This means if you run `import my_module`, Python will look for the `my_module` in
+    the same directory as your current location first (the first element, empty string).
+    If not found, Python will check for the module located inside the zip file in
+    the second element above. Then under the directory as the third element, and so
+    on. The final path `/usr/local/lib/python3.9/site-packages` is usually where you
+    installed your third-party libraries. The second, third, and fourth elements above
+    are where the built-in standard libraries are located.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you have some extra libraries installed elsewhere, you can set up your environment
+    variable `PYTHONPATH` and point to it. In Linux and Mac, for example, we can run
+    the command in the shell as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'where `print_path.py` is the two-line code above. Running this command will
+    print the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We see Python will search from `/tmp`, then `/var/tmp`, before checking the
+    built-in libraries and installed third-party libraries. When we set up the `PYTHONPATH`
+    environment variable, we use a colon “`:`” to separate multiple paths to search
+    for our `import`. In case you are not familiar with the shell syntax, the above
+    command line that defines the environment variable and runs the Python script
+    can be broken into two commands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you’re using Windows, you need to do this instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: That is, we need to use a semicolon “`;`” to separate the paths.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Note:** It is not recommended, but you can modify `sys.path` in your script
+    before the `import` statement. Python will search the new locations for the `import`
+    afterward, but it means to tie your script to a particular path. In other words,
+    your script may not run on another computer.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Pip Command
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The last path in the `sys.path` printed above is where your third-party libraries
+    are normally installed. The `pip` command is how you get the library from the
+    Internet and install it to that location. The simplest syntax is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will install two packages: scikit-learn and pandas. Later, you may want
+    to upgrade the packages when a new version is released. The syntax is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'where `-U` means to upgrade. To know which packages are outdated, we can use
+    the command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It will print the list of all packages with a newer version in PyPI than your
+    system, such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Without the `--outdated`, the `pip` command will show you all the installed
+    packages and their versions. You can optionally show the location that each package
+    is installed with the `-V` option, such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: In case you need to check the summary of a package, you can use the `pip show` command,
+    e.g.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This gives you some information such as the home page, where you installed it,
+    as well as what other packages it depends on and the packages depending on it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you need to remove a package (e.g., to free up the disk space), you can
+    simply run:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'One final note to use the `pip` command: There are two types of packages from
+    pip. The packages distributed as source code and the packages distributed as binary.
+    They are different only when part of the module is not written in Python but in
+    some other language (e.g., C or Cython) and needs to compile before use. The source
+    packages will be compiled on your machine, but the binary distribution is already
+    compiled, specific to the platform (e.g., 64-bit Windows). Usually the latter
+    is distributed as “wheel” packages, and you need to have `wheel` installed first
+    to enjoy the full benefit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: A large package such as Tensorflow will take many hours to compile from scratch.
+    Therefore, it is advisable to have `wheel` installed and use the wheel packages
+    whenever they are available.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Search for a Package
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The newer version of `pip` command disabled the search function because it imposed
+    too much workload to the PyPI system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The way we can look for a package on PyPI is to use the search box on its webpage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/b26f1d6795ec71a13ba9876bfd4346dc.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When you type in a keyword, such as “gradient boosting,” it will show you many
+    packages that contain the keyword somewhere:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/5cc3d26b661148b10088ddf05054128b.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: You can click on each one for more details (usually including code examples)
+    to determine which one fits your needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you prefer the command line, you can install the `pip-search` package:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then you can run the `pip_search` command to search with a keyword:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It will not give you everything on PyPI because there would be thousands of
+    them. But it will give you the most relevant results. Below is the result from
+    a Mac terminal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/c17f68b6bb42a2fa346740c66e43c990.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/pip-search.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Host Your Own Repository
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'PyPI is a repository on the Internet. But the `pip` command does not use it
+    exclusively. If you have some reason to want your own PyPI server (for example,
+    hosting internally in your corporate network so your `pip` does not goes beyond
+    your firewall), you can try out the `pypiserver` package:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Following the package’s documentation, you can set up your server using the
+    `pypi-server` command. Then, you can upload the package and start serving. The
+    details on how to configure and set up your own server would be too long to describe
+    in detail here. But what it does is provide an index of available packages in
+    the format that `pip` command can understand and provides the package for downloading
+    when `pip` requests a particular one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you have your own server, you can install a package in `pip` by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the address after the `--index-url` is the host and port number of your
+    own server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PyPI is not the only repository. If you installed Python with Anaconda, you
+    have an alternative system, `conda`, to install packages. The syntax is similar
+    (almost always replacing `pip` with `conda` will work as expected). However, you
+    should be reminded that they are two different systems that work independently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: pip documentation, [https://pip.pypa.io/en/stable/](https://pip.pypa.io/en/stable/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python package index, [https://pypi.org/](https://pypi.org/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: pypiserver package, [https://pypi.org/project/pypiserver/](https://pypi.org/project/pypiserver/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you’ve discovered the command `pip` and how it brings you
+    the abundant packages from the Python ecosystem to help your project. Specifically,
+    you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to look for a package from PyPI
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How Python manages its libraries in your system
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to install, upgrade, and remove a package from your system
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How we can host our own version of PyPI in our network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

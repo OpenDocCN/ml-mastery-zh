@@ -1,0 +1,383 @@
+- en: Logistic Regression for Image Classification Using OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/logistic-regression-for-image-classification-using-opencv/](https://machinelearningmastery.com/logistic-regression-for-image-classification-using-opencv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In a [previous tutorial](https://machinelearningmastery.com/logistic-regression-in-opencv/),
+    we explored logistic regression as a simple but popular machine learning algorithm
+    for binary classification implemented in the OpenCV library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So far, we have seen how logistic regression may be applied to a custom two-class
+    dataset we have generated ourselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will learn how the standard logistic regression algorithm,
+    inherently designed for binary classification, can be modified to cater to multi-class
+    classification problems by applying it to an image classification task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important characteristics of the logistic regression algorithm.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the logistic regression algorithm can be modified for multi-class classification
+    problems.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply logistic regression to the problem of image classification.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started. [![](../Images/668c4db693f639a7d15a5b38ef2ae931.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_multi_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Logistic Regression for Image Classification Using OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [David Marcu](https://unsplash.com/photos/landscape-photography-of-mountain-hit-by-sun-rays-78A265wPiO4),
+    some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recap of What Logistic Regression Is
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Modifying Logistic Regression for Multi-Class Classification Problems
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying Logistic Regression to a Multi-Class Classification Problem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Recap of What Logistic Regression Is**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In a [previous tutorial](https://machinelearningmastery.com/logistic-regression-in-opencv/),
+    we started exploring OpenCV’s implementation of the logistic regression algorithm.
+    So far, we have applied it to a custom two-class dataset that we have generated,
+    consisting of two-dimensional points gathered into two clusters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Following Jason Brownlee’s tutorials on logistic regression, we have also recapped
+    the important points about logistic regression. We have seen that logistic regression
+    is closely related to linear regression because they both involve a linear combination
+    of features in generating a real-valued output. However, logistic regression extends
+    this process by applying the logistic (or sigmoid) function. Hence its name. It
+    is to map the real-valued output into a probability value within a range [0, 1].
+    This probability value is then classified as belonging to the default class if
+    it exceeds a threshold of 0.5; otherwise, it is classified as belonging to the
+    non-default class. This makes logistic regression inherently a method for *binary*
+    classification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The logistic regression model is represented by as many coefficients as features
+    in the input data, plus an extra bias value. These coefficients and bias values
+    are learned during training using gradient descent or maximum likelihood estimation
+    (MLE) techniques.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Modifying Logistic Regression for Multi-Class Classification Problems**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As mentioned in the previous section, the standard logistic regression method
+    caters solely to two-class problems by how the logistic function and the ensuing
+    thresholding process map the real-valued output of the linear combination of features
+    into either class 0 or class 1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hence, catering for multi-class classification problems (or problems that involve
+    more than two classes) with logistic regression requires modification of the standard
+    algorithm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One technique to achieve this involves splitting the multi-class classification
+    problem into multiple binary (or two-class) classification subproblems. The standard
+    logistic regression method can then be applied to each subproblem. This is how
+    OpenCV implements multi-class logistic regression:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*… Logistic Regression supports both binary and multi-class classifications
+    (for multi-class it creates a multiple 2-class classifiers).*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Logistic Regression, OpenCV](https://docs.opencv.org/3.4/dc/dd6/ml_intro.html#ml_intro_lr)'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: A technique of this type is known as the *one-vs-one* approach, which involves
+    training a separate binary classifier for each unique pair of classes in the dataset.
+    During prediction, each of these binary classifiers votes for one of the two classes
+    on which it was trained, and the class that receives the most votes across all
+    classifiers is taken to be the predicted class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are other techniques to achieve multi-class classification with logistic
+    regression, such as through the *one-vs-rest* approach. You may find further information
+    in these tutorials [[1](https://machinelearningmastery.com/multinomial-logistic-regression-with-python/),
+    [2](https://machinelearningmastery.com/one-vs-rest-and-one-vs-one-for-multi-class-classification/)].
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Applying Logistic Regression to a Multi-Class Classification Problem**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this purpose, we shall be using the [digits dataset in OpenCV](https://machinelearningmastery.com/?p=14607&preview=true),
+    although the code we will develop may also be applied to other multi-class datasets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our first step is to load the OpenCV digits image, divide it into its many
+    sub-images that feature handwritten digits from 0 to 9, and create their corresponding
+    ground truth labels that will enable us to quantify the accuracy of the trained
+    logistic regression model later. For this particular example, we will allocate
+    80% of the dataset images to the training set and the remaining 20% of the images
+    to the testing set:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we shall follow a process similar to what we did in the [previous tutorial](https://machinelearningmastery.com/logistic-regression-in-opencv/),
+    where we trained and tested the logistic regression algorithm on a two-class dataset,
+    changing a few parameters to adapt it to a larger multi-class dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first step is, again, to create the logistic regression model itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We may, again, confirm that OpenCV implements Batch Gradient Descent as its
+    default training method (represented by a value of 0) and then proceed to change
+    this to a Mini-Batch Gradient Descent method, specifying the mini-batch size:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Different mini-batch sizes will certainly affect the model’s training and prediction
+    accuracy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our choice for the mini-batch size in this example was based on a heuristic
+    approach for practicality, whereby a few mini-batch sizes were experimented with,
+    and a value that resulted in a sufficiently high prediction accuracy (as we will
+    see later) was identified. However, you should follow a more systematic approach,
+    which can provide you with a more informed decision about the mini-batch size
+    that offers a better compromise between computational cost and prediction accuracy
+    for the task at hand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we shall define the number of iterations that we want to run the chosen
+    training algorithm for before it terminates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We’re now set to train the logistic regression model on the training data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: In our [previous tutorial](https://machinelearningmastery.com/logistic-regression-in-opencv/),
+    we printed out the learned coefficients to discover how the model, which best
+    separated the two-class samples we worked with, was defined.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We shall not be printing out the learned coefficients this time round, mainly
+    because there are too many of them, given that we are now working with input data
+    of higher dimensionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What we shall alternatively do is print out the number of learned coefficients
+    (rather than the coefficients themselves) as well as the number of input features
+    to be able to compare the two:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Indeed, we find that we have as many coefficient values as input features, plus
+    an additional bias value, as we had expected (we are working with $20\times 20$
+    pixel images, and we are using the pixel values themselves as the input features,
+    hence 400 features per image).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can test how well this model predicts the target class labels by trying
+    it out on the testing part of the dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As a final step, let’s go ahead to generate and plot a [confusion](https://machinelearningmastery.com/confusion-matrix-machine-learning/)
+    matrix to gain a deeper insight into which digits have been mistaken for one another:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/8c8b39c222a12667c15fc5c545c28d8d.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_multi_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Confusion Matrix
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this manner, we can see that the classes with the lowest performance are
+    5 and 2, which are mistaken mostly for 8.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The entire code listing is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this tutorial, we have applied the logistic regression method, inherently
+    designed for binary classification, to a multi-class classification problem. We
+    have used the pixel values as input features representing each image, obtaining
+    an 88.8% classification accuracy with the chosen parameter values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How about testing whether training the logistic regression algorithm on HOG
+    descriptors extracted from the images would improve this accuracy?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Logistic Regression, [https://docs.opencv.org/3.4/dc/dd6/ml_intro.html#ml_intro_lr](https://docs.opencv.org/3.4/dc/dd6/ml_intro.html#ml_intro_lr)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how the standard logistic regression algorithm,
+    inherently designed for binary classification, can be modified to cater to multi-class
+    classification problems by applying it to an image classification task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important characteristics of the logistic regression algorithm.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the logistic regression algorithm can be modified for multi-class classification
+    problems.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply logistic regression to the problem of image classification.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

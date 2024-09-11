@@ -1,0 +1,441 @@
+- en: 'Beyond SQL: Transforming Real Estate Data into Actionable Insights with Pandas'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/beyond-sql-transforming-real-estate-data-into-actionable-insights-with-pandas/](https://machinelearningmastery.com/beyond-sql-transforming-real-estate-data-into-actionable-insights-with-pandas/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In data analysis, SQL stands as a mighty tool, renowned for its robust capabilities
+    in managing and querying databases. The pandas library in Python brings SQL-like
+    functionalities to data scientists, enabling sophisticated data manipulation and
+    analysis without the need for a traditional SQL database. In the following, you
+    will apply SQL-like functions in Python to dissect and understand data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/3564c6b63ef18ee9b4c8ba58d3b66c41.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Beyond SQL: Transforming Real Estate Data into Actionable Insights with Pandas'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Lukas W.](https://unsplash.com/photos/white-and-black-panda-on-brown-wooden-fence-during-daytime-e3mu-MTj7Xk)
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Exploring Data with Pandas’ `DataFrame.query()` Method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Aggregating and Grouping Data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Mastering Row and Column Selection in Pandas
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Harnessing Pivot Table for In-Depth Housing Market Analysis
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Exploring Data with Pandas’ `DataFrame.query()` Method
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `DataFrame.query()` method in pandas allows for the selection of rows based
+    on a specified condition, akin to the SQL `SELECT` statement. Starting with the
+    basics, you filter data based on single and multiple conditions, thereby laying
+    the foundation for more complex data querying.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the code above, you utilize the `DataFrame.query()` method from pandas to
+    filter out houses priced above \$600,000, storing the result in a new DataFrame
+    called `high_value_houses`. This method allows for concise and readable querying
+    of the data based on a condition specified as a string. In this case, `'SalePrice
+    > 600000'`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The resulting DataFrame below showcases the selected high-value properties.
+    The query effectively narrows down the dataset to houses with a sale price exceeding
+    \$600,000, showcasing merely 5 properties that meet this criterion. The filtered
+    view provides a focused look at the upper echelon of the housing market in the
+    Ames dataset, offering insights into the characteristics and locations of the
+    highest-valued properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the next example below, let’s further explore the capabilities of the `DataFrame.query()`
+    method to filter the Ames Housing dataset based on more specific criteria. The
+    query selects houses that have more than 3 bedrooms (`BedroomAbvGr > 3`) and are
+    priced below $300,000 (`SalePrice < 300000`). This combination of conditions is
+    achieved using the logical AND operator (`&`), allowing you to apply multiple
+    filters to the dataset simultaneously.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of this query is stored in a new DataFrame called `specific_houses`,
+    which contains all the properties that satisfy both conditions. By printing `specific_houses`,
+    you can examine the details of homes that are both relatively large (in terms
+    of bedrooms) and affordable, targeting a specific segment of the housing market
+    that could interest families looking for spacious living options within a certain
+    budget range.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The advanced query successfully identified a total of 352 houses from the Ames
+    Housing dataset that meet the specified criteria: having more than 3 bedrooms
+    and a sale price below \$300,000\. This subset of properties highlights a significant
+    portion of the market that offers spacious living options without breaking the
+    budget, catering to families or individuals searching for affordable yet ample
+    housing. To further explore the dynamics of this subset, let’s visualize the relationship
+    between sale prices and ground living areas, with an additional layer indicating
+    the number of bedrooms. This graphical representation will help you understand
+    how living space and bedroom count influence the affordability and appeal of these
+    homes within the specified criteria.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/d1de7e8953b049490ac746cc4db78258.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Scatter plot showing distribution of sales price related to the number of bedrooms
+    and living area
+  prefs: []
+  type: TYPE_NORMAL
+- en: The scatter plot above vividly demonstrates the nuanced interplay between sale
+    price, living area, and bedroom count, underscoring the varied options available
+    within this segment of the Ames housing market. It highlights how larger living
+    spaces and additional bedrooms contribute to the property’s value, offering valuable
+    insights for potential buyers and investors focusing on spacious yet affordable
+    homes. This visual analysis not only makes the data more accessible but also underpins
+    the practical utility of Pandas in uncovering key market trends.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Aggregating and Grouping Data**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Aggregation and grouping are pivotal in summarizing data insights. Building
+    on the foundational querying techniques explored in the first part of your exploration,
+    let’s delve deeper into the power of data aggregation and grouping in Python.
+    Similar to SQL’s `GROUP BY` clause, pandas offers a robust `groupby()` method,
+    enabling you to segment your data into subsets for detailed analysis. This next
+    phase of your journey focuses on leveraging these capabilities to uncover hidden
+    patterns and insights within the Ames Housing dataset. Specifically, you’ll examine
+    the average sale prices of homes with more than three bedrooms, priced below \$300,000,
+    across different neighborhoods. By aggregating this data, you aim to highlight
+    the variability in housing affordability and inventory across the spatial canvas
+    of Ames, Iowa.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: By employing Seaborn for visualization, let’s aim to create an intuitive and
+    accessible representation of your aggregated data. You proceed with creating a
+    bar plot that showcases the average sale price by neighborhood, complemented by
+    annotations of house counts to illustrate both price and volume in a single, cohesive
+    graph.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/8acde4372862c4994564c610b58a0a32.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Comparing neighborhoods by ascending average sales price
+  prefs: []
+  type: TYPE_NORMAL
+- en: The analysis and subsequent visualization underscore the significant variability
+    in both the affordability and availability of homes that meet specific criteria—more
+    than three bedrooms and priced below \$300,000—across Ames, Iowa. This not only
+    demonstrates the practical application of SQL-like functions in Python for real-world
+    data analysis but also provides valuable insights into the dynamics of local real
+    estate markets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mastering Row and Column Selection in Pandas
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Selecting specific subsets of data from DataFrames is a frequent necessity.
+    Two powerful methods at your disposal are `DataFrame.loc[]` and `DataFrame.iloc[]`.
+    Both serve similar purposes—to select data—but they differ in how they reference
+    the rows and columns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding The `DataFrame.loc[]` Method
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '`DataFrame.loc[]` is a label-based data selection method, meaning you use the
+    labels of rows and columns to select the data. It’s highly intuitive for selecting
+    data based on column names and row indexes when you know the specific labels you’re
+    interested in.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Syntax**: `DataFrame.loc[row_label, column_label]`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Goal**: Let’s select all houses with more than 3 bedrooms, priced below \$300,000,
+    in specific neighborhoods known for their higher average sale prices (based on
+    your earlier findings), and display their  ‘Neighborhood’, ‘SalePrice’ and ‘GrLivArea’.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Understanding The `DataFrame.iloc[]` Method
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: In contrast, `DataFrame.iloc[]` is an integer-location based indexing method.
+    This means you use integers to specify the rows and columns you want to select.
+    It’s particularly useful to access data by its position in the DataFrame.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Syntax**: `DataFrame.iloc[row_position, column_position]`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Goal**: The next focus is to uncover affordable housing options within the
+    Ames dataset that do not compromise on space, specifically targeting homes with
+    at least 3 bedrooms above grade and priced below \$300,000 outside of high-value
+    neighborhoods.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: In your exploration of `DataFrame.loc[]` and `DataFrame.iloc[]`, you’ve uncovered
+    the capabilities of pandas for row and column selection, demonstrating the flexibility
+    and power of these methods in data analysis. Through practical examples from the
+    Ames Housing dataset, you’ve seen how `DataFrame.loc[]` allows for intuitive,
+    label-based selection, ideal for targeting specific data based on known labels.
+    Conversely, `DataFrame.iloc[]` provides a precise way to access data by its integer
+    location, offering an essential tool for positional selection, especially useful
+    in scenarios requiring a focus on data segments or samples. Whether filtering
+    for high-value properties in select neighborhoods or identifying entry-level homes
+    in the broader market, mastering these selection techniques enriches your data
+    science toolkit, enabling more targeted and insightful data exploration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Beginner's Guide to Data Science?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Harnessing Pivot Tables for In-depth Housing Market Analysis**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As you venture further into the depths of the Ames Housing dataset, your analytical
+    journey introduces you to the potent capabilities of pivot tables within pandas.
+    Pivot tables serve as an invaluable tool for summarizing, analyzing, and presenting
+    complex data in an easily digestible format. This technique allows you to cross-tabulate
+    and segment data to uncover patterns and insights that might otherwise remain
+    hidden. In this section, you’ll leverage pivot tables to dissect the housing market
+    more intricately, focusing on the interplay between neighborhood characteristics,
+    the number of bedrooms, and sale prices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To set the stage for your pivot table analysis, you filter the dataset for homes
+    priced below \$300,000 and with at least one bedroom above grade. This criterion
+    focuses on more affordable housing options, ensuring your analysis remains relevant
+    to a broader audience. You then proceed to construct a pivot table that segments
+    the average sale price by neighborhood and bedroom count, aiming to uncover patterns
+    that dictate housing affordability and preference within Ames.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s take a quick view of the pivot table before we discuss some insights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The pivot table above provides a comprehensive snapshot of how the average
+    sale price varies across neighborhoods with the inclusion of different bedroom
+    counts. This analysis reveals several key insights:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Affordability by Neighborhood**: You can see at a glance which neighborhoods
+    offer the most affordable options for homes with specific bedroom counts, aiding
+    in targeted home searches.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Impact of Bedrooms on Price**: The table highlights how the number of bedrooms
+    influences sale prices within each neighborhood, offering a gauge of the premium
+    placed on larger homes.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Market Gaps and Opportunities**: Areas with zero values indicate a lack of
+    homes meeting certain criteria, signaling potential market gaps or opportunities
+    for developers and investors.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By leveraging pivot tables for this analysis, you’ve managed to distill complex
+    relationships within the Ames housing market into a format that’s both accessible
+    and informative. This process not only showcases the powerful synergy between
+    pandas and SQL-like analysis techniques but also emphasizes the importance of
+    sophisticated data manipulation tools in uncovering actionable insights within
+    real estate markets. As insightful as pivot tables are, their true potential is
+    unleashed when combined with visual analysis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To further illuminate your findings and make them more intuitive, you’ll transition
+    from numerical analysis to visual representation. A heatmap is an excellent tool
+    for this purpose, especially when dealing with multidimensional data like this.
+    However, to enhance the clarity of your heatmap and direct attention towards actionable
+    data, you will employ a custom color scheme that distinctly highlights non-existent
+    combinations of neighborhood and bedroom counts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/f4316886e11be4175e0a26fad3ac5191.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Heatmap showing the average sales price by neighborhood
+  prefs: []
+  type: TYPE_NORMAL
+- en: The heatmap vividly illustrates the distribution of average sale prices across
+    neighborhoods, segmented by the number of bedrooms. This color-coded visual aid
+    makes it immediately apparent which areas of Ames offer the most affordable housing
+    options for families of various sizes. Moreover, the distinct shading for zero
+    values—indicating combinations of neighborhoods and bedroom counts that do not
+    exist—is a critical tool for market analysis. It highlights gaps in the market
+    where demand might exist, but supply does not, offering valuable insights for
+    developers and investors alike. Remarkably, your analysis also highlights that
+    homes with 6 bedrooms in the “Old Town” neighborhood are listed at below \$100,000\.
+    This discovery points to exceptional value for larger families or investors looking
+    for properties with high bedroom counts at affordable price points.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Through this visual exploration, you’ve not only enhanced your understanding
+    of the housing market’s dynamics but also demonstrated the indispensable role
+    of advanced data visualization in real estate analysis. The pivot table, complemented
+    by the heatmap, exemplifies how sophisticated data manipulation and visualization
+    techniques can reveal informative insights into the housing sector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python Documentation
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Pandas’ `DataFrame.query()` Method](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html#pandas.DataFrame.query)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Pandas’ `DataFrame.groupby()` Method](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Pandas’ `DataFrame.loc[]` Method](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Pandas’ `DataFrame.iloc[]` Method](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iloc.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Pandas’ `DataFrame.pivot_table()` Method](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pivot_table.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Resources**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This comprehensive journey through the Ames Housing dataset underscores the
+    versatility and strength of pandas for conducting sophisticated data analysis,
+    often achieving or exceeding what’s possible with SQL in an environment that doesn’t
+    rely on traditional databases. From pinpointing detailed housing market trends
+    to identifying unique investment opportunities, you’ve showcased a range of techniques
+    that equip analysts with the tools needed for deep data exploration. Specifically,
+    you learned how to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Leverage the `DataFrame.query()` for data selection akin to SQL’s `SELECT` statement.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use `DataFrame.groupby()` for aggregating and summarizing data, similar to SQL’s
+    `GROUP BY`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Apply advanced data manipulation techniques like `DataFrame.loc[]`, `DataFrame.iloc[]`,
+    and `DataFrame.pivot_table()` for deeper analysis.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

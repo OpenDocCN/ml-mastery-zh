@@ -1,0 +1,225 @@
+- en: Using Machine Learning in Customer Segmentation
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/using-machine-learning-in-customer-segmentation/](https://machinelearningmastery.com/using-machine-learning-in-customer-segmentation/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '![Using Machine Learning in Customer Segmentation](../Images/3d9de44ffda3e50ff7b10af5e16be2db.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Image by Editor | Midjourney
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the past, businesses grouped customers based on simple things like age or
+    gender. Now, machine learning has changed this process. Machine learning algorithms
+    can analyze large amounts of data. In this article, we will explore how machine
+    learning improves customer segmentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduction to Customer Segmentation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Customer segmentation divides customers into different groups. These groups
+    are based on similar traits or behaviors. The main goal is to understand each
+    group better. This helps businesses create marketing strategies and products that
+    fit each group’s specific needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The customers can be divided into groups based on several criteria:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Demographic Segmentation**: Based on factors such as age, gender and occupation.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Psychographic Segmentation**: Focuses on customer lifestyles and interests.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Behavioral Segmentation**: Analyzes customer behaviors such as brand loyalty
+    and usage frequency.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Geographic Segmentation**: Divides customers based on their geographical
+    location.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Customer segmentation offers several advantages for businesses:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Personalized Marketing**: Businesses can send specific messages for each
+    groups of customers.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Improved Customer Retention**: Organizations can identify the preferences
+    of customers and make them loyal customers.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Enhanced Product Development**: Segmentation helps to understand what products
+    customers want.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Machine learning Algorithms for Customer Segmentation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Machine learning uses several algorithms to categorize customers based on their
+    features. Some commonly used algorithms include:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**K-means Clustering**: Divides customers into clusters based on similar features.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Hierarchical Clustering**: Organizes customers into a tree-like hierarchy
+    of clusters.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**DBSCAN**: Identifies clusters based on density of points in data space.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Principal Component Analysis (PCA)**: Reduces the dimensionality of data
+    and preserves important information.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Decision Trees**: Divides customers based on a series of hierarchical decisions.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Neural Networks**: Learn complex patterns in data through interconnected
+    layers of nodes.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: We will use K-means algorithm to segment customers into various groups.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing K-means Clustering Algorithm
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: K-means clustering is an unsupervised algorithm. It operates without any predefined
+    labels or training examples. This algorithm is used to group similar data points
+    in a dataset. The goal is to divide the data into clusters. Each cluster contains
+    similar data points. Let’s see how this algorithm works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Initialization**: Choose the number of clusters (k). Initialize k points
+    randomly as centroids.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Assignment**: Assign each data point to the nearest centroid and form the
+    clusters.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Update Centroids**: Calculate the mean of all data points assigned to each
+    centroid. Move the centroid to this mean position.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Repeat steps 2 and 3 until convergence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following sections, we are going to implement K-means clustering algorithm
+    to group customers into clusters according to different features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data Preparation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s explore the customer dataset. Our dataset has around 5,00,000 data points.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Customer dataset](../Images/c29fd4b57df09f19c8756d96eaff15ed.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Customer dataset
+  prefs: []
+  type: TYPE_NORMAL
+- en: The missing values and duplicates are removed and three features (‘Quantity’,
+    ‘UnitPrice’, ‘CustomerID’) are selected for clustering.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Pre-processed dataset](../Images/674da2a29658b2407d4ead4a8e199e75.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Pre-processed dataset
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hyperparameter Tuning
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One challenge in K-means clustering is to find out the optimal number of clusters.
+    The elbow method help us in doing so. It plots the sum of squared distances from
+    each point to its assigned cluster centroid (inertia) against K. T Look for the
+    point where the inertia no longer decreases significantly with increasing K. This
+    point is called the elbow of the clustering model. It suggests a suitable K value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can generate an inertia vs number of clusters plot using the above code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Elbow method](../Images/6e06a6aaf1e59df92378f38538bcc296.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Elbow method
+  prefs: []
+  type: TYPE_NORMAL
+- en: At K=1, inertia is at the highest. From K=1 to K=5, the inertia decreases steeply.
+    Between K=5 to K=7, the curve decreases gradually. Finally, at K=7, it becomes
+    stable, so the optimal value of K is 7\.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Visualizing Segmentation Results
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s implement K-means clustering algorithm and visualize the results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![Scatter plot](../Images/51af319167f7f4d61f24026a52286766.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Scatter plot
+  prefs: []
+  type: TYPE_NORMAL
+- en: The 3D scatter plot visualizes the clusters based on ‘Quantity’, ‘UnitPrice’,
+    and ‘CustomerID’. Each cluster is differentiated by color and labeled accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have discussed customer segmentation using machine learning and its benefits.
+    Furthermore, we showed how to implement the K-means algorithm to segment customers
+    into different groups. First, we found a suitable number of clusters using the
+    elbow method. Then, we implemented the K-means algorithm and visualized the results
+    using a scatter plot. Through these steps, companies can segment customers into
+    groups efficiently.
+  prefs: []
+  type: TYPE_NORMAL

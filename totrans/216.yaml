@@ -1,0 +1,588 @@
+- en: 'Method of Lagrange Multipliers: The Theory Behind Support Vector Machines (Part
+    2: The Non-Separable Case)'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-2-the-non-separable-case/](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-2-the-non-separable-case/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'This tutorial is an extension of [Method Of Lagrange Multipliers: The Theory
+    Behind Support Vector Machines (Part 1: The Separable Case)](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case))
+    and explains the non-separable case. In real life problems positive and negative
+    training examples may not be completely separable by a linear decision boundary.
+    This tutorial explains how a soft margin can be built that tolerates a certain
+    amount of errors.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, we’ll cover the basics of a linear SVM. We won’t go into details
+    of non-linear SVMs derived using the kernel trick. The content is enough to understand
+    the basic mathematical model behind an SVM classifier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Concept of a soft margin
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to maximize the margin while allowing mistakes in classification
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to formulate the optimization problem and compute the Lagrange dual
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/842900385f29e014608246c563c2401e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/shakeel-ahmad-Z_MWEx6MgHI-unsplash-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Method Of Lagrange Multipliers: The Theory Behind Support Vector Machines (Part
+    2: The Non-Separable Case).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by Shakeel Ahmad, some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into 2 parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The solution of the SVM problem for the case where positive and negative examples
+    are not linearly separable
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The separating hyperplane and the corresponding relaxed constraints
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The quadratic optimization problem for finding the soft margin
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A worked example
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Pre-requisites
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For this tutorial, it is assumed that you are already familiar with the following
+    topics. You can click on the individual links to get more information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[A Gentle Introduction to Optimization / Mathematical Programming](https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[A Gentle Introduction To Method Of Lagrange Multipliers](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Lagrange Multiplier Approach with Inequality Constraints](https://machinelearningmastery.com/lagrange-multiplier-approach-with-inequality-constraints/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Method Of Lagrange Multipliers: The Theory Behind Support Vector Machines
+    (Part 1: The Separable Case)](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case))'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Notations Used In This Tutorial
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This is a continuation of Part 1, so the same notations will be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '$m$: Total training points'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$x$: Data point, which is an $n$-dimensional vector. Each dimension is indexed
+    by j.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$x^+$: Positive example'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$x^-$: Negative example'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$i$: Subscript used to index the training points. $0 \leq i < m$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$j$: Subscript to index a dimension of the data point. $1 \leq j \leq n$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$t$: Label of data points. It is an m-dimensional vector'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$T$: Transpose operator'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$w$: Weight vector denoting the coefficients of the hyperplane. It is an $n$-dimensional
+    vector'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$\alpha$: Vector of Lagrange multipliers, an $m$-dimensional vector'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$\mu$: Vector of Lagrange multipliers, again an $m$-dimensional vector'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$\xi$: Error in classification. An $m$-dimensional vector'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Separating Hyperplane and Relaxing the Constraints
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s find a separating hyperplane between the positive and negative examples.
+    Just to recall, the separating hyperplane is given by the following expression,
+    with \(w_j\) being the coefficients and \(w_0\) being the arbitrary constant that
+    determines the distance of the hyperplane from the origin:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: w^T x_i + w_0 = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we allow positive and negative examples to lie on the wrong side of the
+    hyperplane, we have a set of relaxed constraints. Defining $\xi_i \geq 0, \forall
+    i$, for positive examples we require:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: w^T x_i^+ + w_0 \geq 1 – \xi_i
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also for negative examples we require:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: w^T x_i^- + w_0 \leq -1 + \xi_i
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Combining the above two constraints by using the class label $t_i \in \{-1,+1\}$
+    we have the following constraint for all points:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: t_i(w^T x_i + w_0) \geq 1 – \xi_i
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The variable $\xi$ allows more flexibility in our model. It has the following
+    interpretations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '$\xi_i =0$: This means that $x_i$ is correctly classified and this data point
+    is on the correct side of the hyperplane and away from the margin.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '$0 < \xi_i < 1$: When this condition is met, $x_i$ lies on the correct side
+    of the hyperplane but inside the margin.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '$\xi_i > 0$: Satisfying this condition implies that $x_i$ is misclassified.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Hence, $\xi$ quantifies the errors in the classification of training points.
+    We can define the soft error as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: E_{soft} = \sum_i \xi_i
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Quadratic Programming Problem
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We are now in a position to formulate the objective function along with the
+    constraints on it. We still want to maximize the margin, i.e., we want to minimize
+    the norm of the weight vector. Along with this, we also want to keep the soft
+    error as small as possible. Hence, now our new objective function is given by
+    the following expression, with $C$ being a user defined constant and represents
+    the penalty factor or the regularization constant.
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{1}{2}||w||^2 + C \sum_i \xi_i
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The overall quadratic programming problem is, therefore, given by the following
+    expression:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \min_w \frac{1}{2}||w||^2 + C \sum_i \xi_i \;\text{ subject to } t_i(w^Tx_i+w_0)
+    \geq +1 – \xi_i, \forall i \; \text{ and } \xi_i \geq 0, \forall i
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Role of C, the Regularization Constant
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To understand the penalty factor $C$, consider the product term $C \sum_i \xi_i$,
+    which has to be minimized. If C is kept large, then the soft margin $\sum_i \xi_i$
+    would automatically be small. If $C$ is close to zero, then we are allowing the
+    soft margin to be large making the overall product small.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In short, a large value of $C$ means we have a high penalty on errors and hence
+    our model is not allowed to make too many mistakes in classification. A small
+    value of $C$ allows the errors to grow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Solution Via The Method Of Lagrange Multipliers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s use the method of Lagrange multipliers to solve the quadratic programming
+    problem that we formulated earlier. The Lagrange function is given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: L(w, w_0, \alpha, \mu) = \frac{1}{2}||w||^2 + \sum_i \alpha_i\big(t_i(w^Tx_i+w_0)
+    – 1 + \xi_i\big) – \sum_i \mu_i \xi_i
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To solve the above, we set the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{equation}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{ \partial w} = 0, \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{ \partial \alpha} = 0, \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{ \partial w_0} = 0, \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{ \partial \mu} = 0 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{equation}
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Solving the above gives us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: w = \sum_i \alpha_i t_i x_i
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: and
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0= C – \alpha_i – \mu_i
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Substitute the above in the Lagrange function gives us the following optimization
+    problem, also called the dual:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: L_d = -\frac{1}{2} \sum_i \sum_k \alpha_i \alpha_k t_i t_k (x_i)^T (x_k) + \sum_i
+    \alpha_i
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We have to maximize the above subject to the following constraints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{equation}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \sum_i \alpha_i t_i = 0 \\ \text{ and }
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0 \leq \alpha_i \leq C, \forall i
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{equation}
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similar to [the separable case](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case),
+    we have an expression for $w$ in terms of Lagrange multipliers. The objective
+    function involves no $w$ term. There is a Lagrange multiplier $\alpha$ and $\mu$
+    associated with each data point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interpretation of the Mathematical Model and Computation of $w_0$
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Following cases are true for each training data point $x_i$:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '$\alpha_i = 0$: The ith training point lies on the correct side of the hyperplane
+    away from the margin. This point plays no role in the classification of a test
+    point.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$0 < \alpha_i < C$: The ith training point is a support vector and lies on
+    the margin. For this point $\xi_i = 0$ and $t_i(w^T x_i + w_0) = 1$ and hence
+    it can be used to compute $w_0$. In practice $w_0$ is computed from all support
+    vectors and an average is taken.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '$\alpha_i = C$: The ith training point is either inside the margin on the correct
+    side of the hyperplane or this point is on the wrong side of the hyperplane.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The picture below will help you understand the above concepts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/849c3e78f28a1b115c9065c0cd68fd57.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/soft1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deciding The Classification of a Test Point
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The classification of any test point $x$ can be determined using this expression:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: y(x) = \sum_i \alpha_i t_i x^T x_i + w_0
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: A positive value of $y(x)$ implies $x\in+1$ and a negative value means $x\in-1$.
+    Hence, the predicted class of a test point is the sign of $y(x)$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Karush-Kuhn-Tucker Conditions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Karush-Kuhn-Tucker (KKT) conditions are satisfied by the above constrained
+    optimization problem as given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{eqnarray}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \alpha_i &\geq& 0 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: t_i y(x_i) -1 + \xi_i &\geq& 0 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \alpha_i(t_i y(x_i) -1 + \xi_i) &=& 0 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \mu_i \geq 0 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \xi_i \geq 0 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \mu_i\xi_i = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{eqnarray}
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Solved Example
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[![](../Images/bbbedc379b026ff27bac7776f381096c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/soft2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Shown above is a solved example for 2D training points to illustrate all the
+    concepts. A few things to note about this solution are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The training data points and their corresponding labels act as input
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The user defined constant $C$ is set to 10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The solution satisfies all the constraints, however, it is not the optimal solution
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We have to make sure that all the $\alpha$ lie between 0 and C
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The sum of alphas of all negative examples should equal the sum of alphas of
+    all positive examples
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The points (1,2), (2,1) and (-2,-2) lie on the soft margin on the correct side
+    of the hyperplane. Their values have been arbitrarily set to 3, 3 and 6 respectively
+    to balance the problem and satisfy the constraints.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The points with $\alpha=C=10$ lie either inside the margin or on the wrong side
+    of the hyperplane
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Pattern Recognition and Machine Learning](https://www.amazon.com/Pattern-Recognition-Learning-Information-Statistics/dp/0387310738)
+    by Christopher M. Bishop'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Support Vector Machines for Machine Learning](https://machinelearningmastery.com/support-vector-machines-for-machine-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[A Tutorial on Support Vector Machines for Pattern Recognition](https://www.di.ens.fr/~mallat/papiers/svmtutorial.pdf)
+    by Christopher J.C. Burges'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered the method of Lagrange multipliers for finding
+    the soft margin in an SVM classifier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to formulate the optimization problem for the non-separable case
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to find the hyperplane and the soft margin using the method of Lagrange
+    multipliers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to find the equation of the separating hyperplane for very simple problems
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions about SVMs discussed in this post? Ask your questions
+    in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

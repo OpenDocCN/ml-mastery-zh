@@ -1,0 +1,597 @@
+- en: The Transformer Attention Mechanism
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/the-transformer-attention-mechanism/](https://machinelearningmastery.com/the-transformer-attention-mechanism/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Before the introduction of the Transformer model, the use of attention for neural
+    machine translation was implemented by RNN-based encoder-decoder architectures.
+    The Transformer model revolutionized the implementation of attention by dispensing
+    with recurrence and convolutions and, alternatively, relying solely on a self-attention
+    mechanism.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will first focus on the Transformer attention mechanism in this tutorial
+    and subsequently review the Transformer model in a separate one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover the Transformer attention mechanism for
+    neural machine translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How the Transformer attention differed from its predecessors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the Transformer computes a scaled-dot product attention
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the Transformer computes multi-head attention
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/f35da8fadb4385fc1d2a6f98fc1e061d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_cover.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Transformer attention mechanism
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Andreas Gücklhorn](https://unsplash.com/photos/mawU2PoJWfU), some
+    rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduction to the Transformer Attention
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Transformer Attention
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Scaled-Dot Product Attention
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Multi-Head Attention
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you are already familiar with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[The concept of attention](https://machinelearningmastery.com/what-is-attention/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The attention mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Bahdanau attention mechanism](https://machinelearningmastery.com/?p=12940&preview=true)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Luong attention mechanism](https://machinelearningmastery.com/the-luong-attention-mechanism/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Introduction to the Transformer Attention**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Thus far, you have familiarized yourself with using an attention mechanism in
+    conjunction with an RNN-based encoder-decoder architecture. Two of the most popular
+    models that implement attention in this manner have been those proposed by [Bahdanau
+    et al. (2014)](https://arxiv.org/abs/1409.0473) and [Luong et al. (2015)](https://arxiv.org/abs/1508.04025).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Transformer architecture revolutionized the use of attention by dispensing
+    with recurrence and convolutions, on which the formers had extensively relied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*… the Transformer is the first transduction model relying entirely on self-attention
+    to compute representations of its input and output without using sequence-aligned
+    RNNs or convolution.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In their paper, “Attention Is All You Need,” [Vaswani et al. (2017)](https://arxiv.org/abs/1706.03762)
+    explain that the Transformer model, alternatively, relies solely on the use of
+    self-attention, where the representation of a sequence (or sentence) is computed
+    by relating different words in the same sequence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Self-attention, sometimes called intra-attention, is an attention mechanism
+    relating different positions of a single sequence in order to compute a representation
+    of the sequence.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '**The Transformer Attention**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The main components used by the Transformer attention are the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $\mathbf{q}$ and $\mathbf{k}$ denoting vectors of dimension, $d_k$, containing
+    the queries and keys, respectively
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $\mathbf{v}$ denoting a vector of dimension, $d_v$, containing the values
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $\mathbf{Q}$, $\mathbf{K}$, and $\mathbf{V}$ denoting matrices packing together
+    sets of queries, keys, and values, respectively.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $\mathbf{W}^Q$, $\mathbf{W}^K$ and $\mathbf{W}^V$ denoting projection matrices
+    that are used in generating different subspace representations of the query, key,
+    and value matrices
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $\mathbf{W}^O$ denoting a projection matrix for the multi-head output
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In essence, the attention function can be considered a mapping between a query
+    and a set of key-value pairs to an output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The output is computed as a weighted sum of the values, where the weight assigned
+    to each value is computed by a compatibility function of the query with the corresponding
+    key.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Vaswani et al. propose a *scaled dot-product attention* and then build on it
+    to propose *multi-head attention*. Within the context of neural machine translation,
+    the query, keys, and values that are used as inputs to these attention mechanisms
+    are different projections of the same input sentence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Intuitively, therefore, the proposed attention mechanisms implement self-attention
+    by capturing the relationships between the different elements (in this case, the
+    words) of the same sentence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Scaled Dot-Product Attention**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Transformer implements a scaled dot-product attention, which follows the
+    procedure of the [general attention mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)
+    that you had previously seen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the name suggests, the scaled dot-product attention first computes a *dot
+    product* for each query, $\mathbf{q}$, with all of the keys, $\mathbf{k}$. It
+    subsequently divides each result by $\sqrt{d_k}$ and proceeds to apply a softmax
+    function. In doing so, it obtains the weights that are used to *scale* the values,
+    $\mathbf{v}$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/bdffca1b5f416aed7741d5b03a4acf82.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/tour_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scaled dot-product attention
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In practice, the computations performed by the scaled dot-product attention
+    can be efficiently applied to the entire set of queries simultaneously. In order
+    to do so, the matrices—$\mathbf{Q}$, $\mathbf{K}$, and $\mathbf{V}$—are supplied
+    as inputs to the attention function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\text{attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax} \left(
+    \frac{QK^T}{\sqrt{d_k}} \right) V$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Vaswani et al. explain that their scaled dot-product attention is identical
+    to the multiplicative attention of [Luong et al. (2015)](https://arxiv.org/abs/1508.04025),
+    except for the added scaling factor of $\tfrac{1}{\sqrt{d_k}}$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This scaling factor was introduced to counteract the effect of having the dot
+    products grow large in magnitude for large values of $d_k$, where the application
+    of the softmax function would then return extremely small gradients that would
+    lead to the infamous vanishing gradients problem. The scaling factor, therefore,
+    serves to pull the results generated by the dot product multiplication down, preventing
+    this problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Vaswani et al. further explain that their choice of opting for multiplicative
+    attention instead of the additive attention of [Bahdanau et al. (2014)](https://arxiv.org/abs/1409.0473) was
+    based on the computational efficiency associated with the former.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*… dot-product attention is much faster and more space-efficient in practice
+    since it can be implemented using highly optimized matrix multiplication code.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Therefore, the step-by-step procedure for computing the scaled-dot product
+    attention is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Compute the alignment scores by multiplying the set of queries packed in the
+    matrix, $\mathbf{Q}$, with the keys in the matrix, $\mathbf{K}$. If the matrix,
+    $\mathbf{Q}$, is of the size $m \times d_k$, and the matrix, $\mathbf{K}$, is
+    of the size, $n \times d_k$, then the resulting matrix will be of the size $m
+    \times n$:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \mathbf{QK}^T =
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: e_{11} & e_{12} & \dots & e_{1n} \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: e_{21} & e_{22} & \dots & e_{2n} \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \vdots & \vdots & \ddots & \vdots \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: e_{m1} & e_{m2} & \dots & e_{mn} \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Scale each of the alignment scores by $\tfrac{1}{\sqrt{d_k}}$:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\mathbf{QK}^T}{\sqrt{d_k}} =
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \tfrac{e_{11}}{\sqrt{d_k}} & \tfrac{e_{12}}{\sqrt{d_k}} & \dots & \tfrac{e_{1n}}{\sqrt{d_k}}
+    \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \tfrac{e_{21}}{\sqrt{d_k}} & \tfrac{e_{22}}{\sqrt{d_k}} & \dots & \tfrac{e_{2n}}{\sqrt{d_k}}
+    \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \vdots & \vdots & \ddots & \vdots \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \tfrac{e_{m1}}{\sqrt{d_k}} & \tfrac{e_{m2}}{\sqrt{d_k}} & \dots & \tfrac{e_{mn}}{\sqrt{d_k}}
+    \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And follow the scaling process by applying a softmax operation in order to
+    obtain a set of weights:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \text{softmax} \left( \frac{\mathbf{QK}^T}{\sqrt{d_k}} \right) =
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \text{softmax} ( \tfrac{e_{11}}{\sqrt{d_k}} & \tfrac{e_{12}}{\sqrt{d_k}} & \dots
+    & \tfrac{e_{1n}}{\sqrt{d_k}} ) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \text{softmax} ( \tfrac{e_{21}}{\sqrt{d_k}} & \tfrac{e_{22}}{\sqrt{d_k}} & \dots
+    & \tfrac{e_{2n}}{\sqrt{d_k}} ) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \vdots & \vdots & \ddots & \vdots \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \text{softmax} ( \tfrac{e_{m1}}{\sqrt{d_k}} & \tfrac{e_{m2}}{\sqrt{d_k}} & \dots
+    & \tfrac{e_{mn}}{\sqrt{d_k}} ) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, apply the resulting weights to the values in the matrix, $\mathbf{V}$,
+    of the size, $n \times d_v$:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: '& \text{softmax} \left( \frac{\mathbf{QK}^T}{\sqrt{d_k}} \right) \cdot \mathbf{V}
+    \\'
+  prefs: []
+  type: TYPE_NORMAL
+- en: =&
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \text{softmax} ( \tfrac{e_{11}}{\sqrt{d_k}} & \tfrac{e_{12}}{\sqrt{d_k}} & \dots
+    & \tfrac{e_{1n}}{\sqrt{d_k}} ) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \text{softmax} ( \tfrac{e_{21}}{\sqrt{d_k}} & \tfrac{e_{22}}{\sqrt{d_k}} & \dots
+    & \tfrac{e_{2n}}{\sqrt{d_k}} ) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \vdots & \vdots & \ddots & \vdots \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \text{softmax} ( \tfrac{e_{m1}}{\sqrt{d_k}} & \tfrac{e_{m2}}{\sqrt{d_k}} & \dots
+    & \tfrac{e_{mn}}{\sqrt{d_k}} ) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \cdot
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: v_{11} & v_{12} & \dots & v_{1d_v} \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: v_{21} & v_{22} & \dots & v_{2d_v} \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \vdots & \vdots & \ddots & \vdots \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: v_{n1} & v_{n2} & \dots & v_{nd_v} \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Multi-Head Attention**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Building on their single attention function that takes matrices, $\mathbf{Q}$,
+    $\mathbf{K}$, and $\mathbf{V}$, as input, as you have just reviewed, Vaswani et
+    al. also propose a multi-head attention mechanism.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Their multi-head attention mechanism linearly projects the queries, keys, and
+    values $h$ times, using a different learned projection each time. The single attention
+    mechanism is then applied to each of these $h$ projections in parallel to produce
+    $h$ outputs, which, in turn, are concatenated and projected again to produce a
+    final result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/49d312ed799331ac86c88962132369f2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/tour_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multi-head attention
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: The idea behind multi-head attention is to allow the attention function to extract
+    information from different representation subspaces, which would otherwise be
+    impossible with a single attention head.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The multi-head attention function can be represented as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\text{multihead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{concat}(\text{head}_1,
+    \dots, \text{head}_h) \mathbf{W}^O$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here, each $\text{head}_i$, $i = 1, \dots, h$, implements a single attention
+    function characterized by its own learned projection matrices:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\text{head}_i = \text{attention}(\mathbf{QW}^Q_i, \mathbf{KW}^K_i, \mathbf{VW}^V_i)$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The step-by-step procedure for computing multi-head attention is, therefore,
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compute the linearly projected versions of the queries, keys, and values through
+    multiplication with the respective weight matrices, $\mathbf{W}^Q_i$, $\mathbf{W}^K_i$,
+    and $\mathbf{W}^V_i$, one for each $\text{head}_i$.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Apply the single attention function for each head by (1) multiplying the queries
+    and keys matrices, (2) applying the scaling and softmax operations, and (3) weighting
+    the values matrix to generate an output for each head.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Concatenate the outputs of the heads, $\text{head}_i$, $i = 1, \dots, h$.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Apply a linear projection to the concatenated output through multiplication
+    with the weight matrix, $\mathbf{W}^O$, to generate the final result.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
+    2014.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Effective Approaches to Attention-based Neural Machine Translation](https://arxiv.org/abs/1508.04025),
+    2015.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered the Transformer attention mechanism for neural
+    machine translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How the Transformer attention differed from its predecessors.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the Transformer computes a scaled-dot product attention.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the Transformer computes multi-head attention.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

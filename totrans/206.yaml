@@ -1,0 +1,442 @@
+- en: The Luong Attention Mechanism
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/the-luong-attention-mechanism/](https://machinelearningmastery.com/the-luong-attention-mechanism/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The Luong attention sought to introduce several improvements over the Bahdanau
+    model for neural machine translation, notably by introducing two new classes of
+    attentional mechanisms: a *global* approach that attends to all source words and
+    a *local* approach that only attends to a selected subset of words in predicting
+    the target sentence.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover the Luong attention mechanism for neural
+    machine translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The operations performed by the Luong attention algorithm
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the global and local attentional models work.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the Luong attention compares to the Bahdanau attention
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/043f91d8989b436c4d6a25f333bfdd4d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/luong_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Luong attention mechanism
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Mike Nahlii](https://unsplash.com/photos/BskqKfpR4pw), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into five parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduction to the Luong Attention
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Luong Attention Algorithm
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Global Attentional Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Local Attentional Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Comparison to the Bahdanau Attention
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you are already familiar with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[The concept of attention](https://machinelearningmastery.com/what-is-attention/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The attention mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Bahdanau attention mechanism](https://machinelearningmastery.com/?p=12940&preview=true)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Introduction to the Luong Attention**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Luong et al. (2015)](https://arxiv.org/abs/1508.04025) inspire themselves
+    from previous attention models to propose two attention mechanisms:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*In this work, we design, with simplicity and effectiveness in mind, two novel
+    types of attention-based models: a global approach which always attends to all
+    source words and a local one that only looks at a subset of source words at a
+    time.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Effective Approaches to Attention-based Neural Machine Translation](https://arxiv.org/abs/1508.04025),
+    2015.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The *global* attentional model resembles the [Bahdanau et al. (2014)](https://arxiv.org/abs/1409.0473)
+    model in attending to *all* source words but aims to simplify it architecturally.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The *local* attentional model is inspired by the hard and soft attention models
+    of [Xu et al. (2016)](https://arxiv.org/abs/1502.03044) and attends to *only a
+    few* of the source positions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The two attentional models share many of the steps in their prediction of the
+    current word but differ mainly in their computation of the context vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s first take a look at the overarching Luong attention algorithm and then
+    delve into the differences between the global and local attentional models afterward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Luong Attention Algorithm**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The attention algorithm of Luong et al. performs the following operations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The encoder generates a set of annotations, $H = \mathbf{h}_i, i = 1, \dots,
+    T$, from the input sentence.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The current decoder hidden state is computed as: $\mathbf{s}_t = \text{RNN}_\text{decoder}(\mathbf{s}_{t-1},
+    y_{t-1})$. Here, $\mathbf{s}_{t-1}$ denotes the previous hidden decoder state
+    and $y_{t-1}$ the previous decoder output.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'An alignment model, $a(.)$, uses the annotations and the current decoder hidden
+    state to compute the alignment scores: $e_{t,i} = a(\mathbf{s}_t, \mathbf{h}_i)$.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'A softmax function is applied to the alignment scores, effectively normalizing
+    them into weight values in a range between 0 and 1: $\alpha_{t,i} = \text{softmax}(e_{t,i})$.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Together with the previously computed annotations, these weights are used to
+    generate a context vector through a weighted sum of the annotations: $\mathbf{c}_t
+    = \sum^T_{i=1} \alpha_{t,i} \mathbf{h}_i$.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'An attentional hidden state is computed based on a weighted concatenation of
+    the context vector and the current decoder hidden state: $\widetilde{\mathbf{s}}_t
+    = \tanh(\mathbf{W_c} [\mathbf{c}_t \; ; \; \mathbf{s}_t])$.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The decoder produces a final output by feeding it a weighted attentional hidden
+    state: $y_t = \text{softmax}(\mathbf{W}_y \widetilde{\mathbf{s}}_t)$.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Steps 2-7 are repeated until the end of the sequence.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**The Global Attentional Model**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The global attentional model considers all the source words in the input sentence
+    when generating the alignment scores and, eventually, when computing the context
+    vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The idea of a global attentional model is to consider all the hidden states
+    of the encoder when deriving the context vector, $\mathbf{c}_t$.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Effective Approaches to Attention-based Neural Machine Translation](https://arxiv.org/abs/1508.04025),
+    2015.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In order to do so, Luong et al. propose three alternative approaches for computing
+    the alignment scores. The first approach is similar to Bahdanau’s. It is based
+    upon the concatenation of $\mathbf{s}_t$ and $\mathbf{h}_i$, while the second
+    and third approaches implement *multiplicative* attention (in contrast to Bahdanau’s
+    *additive* attention):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$a(\mathbf{s}_t, \mathbf{h}_i) = \mathbf{v}_a^T \tanh(\mathbf{W}_a [\mathbf{s}_t
+    \; ; \; \mathbf{h}_i)]$$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$a(\mathbf{s}_t, \mathbf{h}_i) = \mathbf{s}^T_t \mathbf{h}_i$$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$a(\mathbf{s}_t, \mathbf{h}_i) = \mathbf{s}^T_t \mathbf{W}_a \mathbf{h}_i$$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Here, $\mathbf{W}_a$ is a trainable weight matrix, and similarly, $\mathbf{v}_a$
+    is a weight vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Intuitively, the use of the dot product in *multiplicative* attention can be
+    interpreted as providing a similarity measure between the vectors, $\mathbf{s}_t$
+    and $\mathbf{h}_i$, under consideration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*… if the vectors are similar (that is, aligned), the result of the multiplication
+    will be a large value and the attention will be focused on the current t,i relationship.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – [Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The resulting alignment vector, $\mathbf{e}_t$, is of a variable length according
+    to the number of source words.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Local Attentional Model**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In attending to all source words, the global attentional model is computationally
+    expensive and could potentially become impractical for translating longer sentences.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The local attentional model seeks to address these limitations by focusing
+    on a smaller subset of the source words to generate each target word. In order
+    to do so, it takes inspiration from the *hard* and *soft* attention models of
+    the image caption generation work of [Xu et al. (2016)](https://arxiv.org/abs/1502.03044):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: S*oft* attention is equivalent to the global attention approach, where weights
+    are softly placed over all the source image patches. Hence, soft attention considers
+    the source image in its entirety.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Hard* attention attends to a single image patch at a time.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The local attentional model of Luong et al. generates a context vector by computing
+    a weighted average over the set of annotations, $\mathbf{h}_i$, within a window
+    centered over an aligned position, $p_t$:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$[p_t – D, p_t + D]$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While a value for $D$ is selected empirically, Luong et al. consider two approaches
+    in computing a value for $p_t$:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Monotonic* alignment: where the source and target sentences are assumed to
+    be monotonically aligned and, hence, $p_t = t$.'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '*Predictive* alignment: where a prediction of the aligned position is based
+    upon trainable model parameters, $\mathbf{W}_p$ and $\mathbf{v}_p$, and the source
+    sentence length, $S$:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$p_t = S \cdot \text{sigmoid}(\mathbf{v}^T_p \tanh(\mathbf{W}_p, \mathbf{s}_t))$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Gaussian distribution is centered around $p_t$ when computing the alignment
+    weights to favor source words nearer to the window center.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This time round, the resulting alignment vector, $\mathbf{e}_t$, has a fixed
+    length of $2D + 1$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Comparison to the Bahdanau Attention**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The Bahdanau model and the global attention approach of Luong et al. are mostly
+    similar, but there are key differences between the two:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*While our global attention approach is similar in spirit to the model proposed
+    by Bahdanau et al. (2015), there are several key differences which reflect how
+    we have both simplified and generalized from the original model.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Effective Approaches to Attention-based Neural Machine Translation](https://arxiv.org/abs/1508.04025),
+    2015.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Most notably, the computation of the alignment scores, $e_t$, in the Luong global
+    attentional model depends on the current decoder hidden state, $\mathbf{s}_t$,
+    rather than on the previous hidden state, $\mathbf{s}_{t-1}$, as in the Bahdanau
+    attention.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[![](../Images/3a026168f6ec3b0c5a379b45e365e2c2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/luong_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Bahdanau architecture (left) vs. the Luong architecture (right)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: Luong et al. drop the bidirectional encoder used by the Bahdanau model and instead
+    utilize the hidden states at the top LSTM layers for both the encoder and decoder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The global attentional model of Luong et al. investigates the use of multiplicative
+    attention as an alternative to the Bahdanau additive attention.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Effective Approaches to Attention-based Neural Machine Translation](https://arxiv.org/abs/1508.04025),
+    2015.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered the Luong attention mechanism for neural machine
+    translation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The operations performed by the Luong attention algorithm
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the global and local attentional models work
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the Luong attention compares to the Bahdanau attention
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

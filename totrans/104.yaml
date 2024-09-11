@@ -1,0 +1,428 @@
+- en: Duck Typing, Scope, and Investigative Functions in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/duck-typing-python/](https://machinelearningmastery.com/duck-typing-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Python is a duck typing language. It means the data types of variables can change
+    as long as the syntax is compatible. Python is also a dynamic programming language.
+    Meaning we can change the program while it runs, including defining new functions
+    and the scope of the name resolution. These give us not only a new paradigm in
+    writing Python code but also a new set of tools for debugging. In the following,
+    we will see what we can do in Python that cannot be done in many other languages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After finishing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How Python manages the variables you define
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How Python code uses a variable and why we don’t need to define its type like
+    in C or Java
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/d8f668f859e9d752510aecd2adad80f4.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Duck typing, scope, and investigative functions in Python. Photo by [Julissa
+    Helmuth](https://www.pexels.com/photo/flock-of-yellow-baby-ducks-in-grass-4381480/).
+    Some rights reserved
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Duck typing in programming languages
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Scopes and name space in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Investigating the type and scope
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Duck Typing in Programming Languages
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Duck typing is a feature of some modern programming languages that allow data
+    types to be dynamic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A programming style which does not look at an object’s type to determine if
+    it has the right interface; instead, the method or attribute is simply called
+    or used (“If it looks like a duck and quacks like a duck, it must be a duck.”)
+    By emphasizing interfaces rather than specific types, well-designed code improves
+    its flexibility by allowing polymorphic substitution.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: — [Python Glossary](https://docs.python.org/3/glossary.html)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Simply speaking, the program should allow you to swap data structures as long
+    as the same syntax still makes sense. In C, for example, you have to define functions
+    like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: C
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'While the operation `x * x` is identical for integers and floating-point numbers,
+    a function taking an integer argument and a function taking a floating-point argument
+    are not the same. Because types are static in C, we must define two functions
+    although they perform the same logic. In Python, types are dynamic; hence we can
+    define the corresponding function as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This feature indeed gives us tremendous power and convenience. For example,
+    from scikit-learn, we have a function to do cross validation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But in the above, the `model` is a variable of a scikit-learn-model object.
+    It doesn’t matter if it is a perceptron model as in the above, a decision tree,
+    or a support vector machine model. What matters is that inside the `cross_val_score()`
+    function, the data will be passed onto the model with its `fit()` function. Therefore,
+    the model must implement the `fit()` member function, and the `fit()` function
+    behaves identically. The consequence is that the `cross_val_score()` function
+    is not expecting any particular model type as long as it looks like one. If we
+    are using Keras to build a neural network model, we can make the Keras model look
+    like a scikit-learn model with a wrapper:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the above, we used the wrapper from Keras. Other wrappers exist, such as
+    scikeras. All it does is to make sure the **interface** of the Keras model looks
+    like a scikit-learn classifier so you can make use of the `cross_val_score()` function.
+    If we replace the `model` above with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: then the scikit-learn function will complain as it cannot find the `model.score()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similarly, because of duck typing, we can reuse a function that expects a list
+    for a NumPy array or pandas series because they all support the same indexing
+    and slicing operation. For example, we fit a time series with ARIMA as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above should produce the same AIC scores for each fitting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scopes and Name Space in Python
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In most languages, variables are defined in a limited scope. For example, a
+    variable defined inside a function is accessible only inside that function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The **local variable** `discrim` is in no way accessible if we are not inside
+    the function `quadratic()`. Moreover, this may be surprising for someone:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We defined the variable `a` outside function `f`, but inside `f`, variable `a` is
+    assigned to be `2 * x`. However, the `a` inside the function and the one outside
+    are unrelated except for the name. Therefore, as we exit from the function, the
+    value of `a` is untouched. To make it modifiable inside function `f`, we need
+    to declare the name `a` as `global`  to make it clear that this name should be
+    from the **global scope**, not the **local scope**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'However, we may further complicate the issue when introducing the **nested
+    scope** in functions. Consider the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The variable `a` inside function `f` is distinct from the global one. However,
+    when inside `g`, since there is never anything written to `a` but merely read
+    from it, Python will see the same `a` from the nearest scope, i.e., from function `f`.
+    The variable `x`, however, is defined as an argument to the function `g`, and
+    it takes the value `3` when we called `g(3)` instead of assuming the value of
+    `x` from function `f`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**NOTE:** If a variable has any value assigned to it **anywhere** in the function,
+    it is defined in the local scope. And if that variable has its value read from
+    it before the assignment, an error is raised rather than using the value from
+    the variable of the same name from the outer or global scope.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This property has many uses. Many implementations of memoization decorators
+    in Python make clever use of the function scopes. Another example is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is a **generator function** that creates batches of samples from the input
+    NumPy arrays `X` and `y`. Such a generator is acceptable by Keras models in their
+    training. However, for reasons such as cross validation, we do not want to sample
+    from the entire input arrays `X` and `y` but a **fixed** subset of rows from them.
+    The way we do it is to randomly select a portion of rows at the beginning of the `datagen()` function
+    and keep them in `Xsam`, `ysam`. Then in the inner function `_gen()`, rows are
+    sampled from `Xsam` and `ysam` until a batch is created. While the lists `Xbatch` and `ybatch`
+    are defined and created inside the function `_gen()`, the arrays `Xsam` and `ysam` are
+    not local to `_gen()`. What’s more interesting is when the generator is created:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: The function `datagen()` is called two times, and therefore two different sets
+    of `Xsam`, `yam` are created. But since the inner function `_gen()` depends on
+    them, these two sets of `Xsam`, `ysam` are in memory concurrently. Technically,
+    we say that when `datagen()` is called, a **closure** is created with the specific `Xsam`, `ysam` defined
+    within, and the call to `_gen()` is accessing that closure. In other words, the
+    scopes of the two incarnations of `datagen()` calls coexist.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In summary, whenever a line of code references a name (whether it is a variable,
+    a function, or a module), the name is resolved in the order of the LEGB rule:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Local scope first, i.e., those names that were defined in the same function
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Enclosure or the “nonlocal” scope. That’s the upper-level function if we are
+    inside the nested function.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Global scope, i.e., those that were defined in the top level of the same script
+    (but not across different program files)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Built-in scope, i.e., those created by Python automatically, such as the variable
+    `__name__` or functions `list()`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Investigating the type and scope
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Because the types are not static in Python, sometimes we would like to know
+    what we are dealing with, but it is not trivial to tell from the code. One way
+    to tell is using the `type()` or `isinstance()` functions. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `type()` function returns a type object. The `isinstance()` function returns
+    a Boolean that allows us to check if something matches a particular type. These
+    are useful in case we need to know what type a variable is. This is useful if
+    we are debugging a code. For example, if we pass on a pandas dataframe to the
+    `datagen()` function that we defined above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running the above code under the Python’s debugger `pdb` will give the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We see from the traceback that something is wrong because we cannot get `ysam[i]`.
+    We can use the following to verify that `ysam` is indeed a Pandas DataFrame instead
+    of a NumPy array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Therefore we cannot use `ysam[i]` to select row `i` from `ysam`. What can we
+    do in the debugger to verify how we should modify our code? There are several
+    useful functions you can use to investigate the variables and the scope:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`dir()` to see the names defined in the scope or the attributes defined in
+    an object'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`locals()` and `globals()` to see the names and values defined locally and
+    globally, respectively.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For example, we can use `dir(ysam)` to see what attributes or functions are
+    defined inside `ysam`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Some of these are attributes, such as `shape`, and some of these are functions,
+    such as `describe()`. You can read the attribute or invoke the function in `pdb`.
+    By carefully reading this output, we recalled that the way to read row `i` from
+    a DataFrame is through `iloc`, and hence we can verify the syntax with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we call `dir()` without any argument, it gives you all the names defined
+    in the current scope, e.g.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: where the scope changes as you move around the call stack. Similar to `dir()` without
+    argument, we can call `locals()` to show all locally defined variables, e.g.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Indeed, `locals()` returns you a `dict` that allows you to see all the names
+    and values. Therefore, if we need to read the variable `Xbatch`, we can get the
+    same with `locals()["Xbatch"]`. Similarly, we can use `globals()` to get a dictionary
+    of names defined in the global scope.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This technique is beneficial sometimes. For example, we can check if a Keras
+    model is “compiled” or not by using `dir(model)`. In Keras, compiling a model
+    is to set up the loss function for training and build the flow for forward and
+    backward propagations. Therefore, a compiled model will have an extra attribute `loss` defined:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: This allows us to put an extra guard on our code before we run into an error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Duck typing, [https://en.wikipedia.org/wiki/Duck_typing](https://en.wikipedia.org/wiki/Duck_typing)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python Glossary (Duck-typing), [https://docs.python.org/3/glossary.html#term-duck-typing](https://docs.python.org/3/glossary.html#term-duck-typing)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python built-in functions, [https://docs.python.org/3/library/functions.html](https://docs.python.org/3/library/functions.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '*Fluent Python*, second edition, by Luciano Ramalho, [https://www.amazon.com/dp/1492056359/](https://www.amazon.com/dp/1492056359/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you’ve seen how Python organizes the naming scopes and how
+    variables interact with the code. Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python code uses variables through their interfaces; therefore, a variable’s
+    data type is usually unimportant
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python variables are defined in their naming scope or closure, where variables
+    of the same name can coexist in different scopes, so they are not interfering
+    with each other
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We have some built-in functions from Python to allow us to examine the names
+    defined in the current scope or the data type of a variable
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

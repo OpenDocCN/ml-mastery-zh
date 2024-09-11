@@ -1,0 +1,470 @@
+- en: The Transformer Model
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/the-transformer-model/](https://machinelearningmastery.com/the-transformer-model/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: We have already familiarized ourselves with the concept of self-attention as
+    implemented by the Transformer attention mechanism for neural machine translation.
+    We will now be shifting our focus to the details of the Transformer architecture
+    itself to discover how self-attention can be implemented without relying on the
+    use of recurrence and convolutions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover the network architecture of the Transformer
+    model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How the Transformer architecture implements an encoder-decoder structure without
+    recurrence and convolutions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the Transformer encoder and decoder work
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the Transformer self-attention compares to the use of recurrent and convolutional
+    layers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/36719df57407f049d28f29163b226ac0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_cover-1-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Transformer Model
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Samule Sun](https://unsplash.com/photos/vuMTQj6aQQ0), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Transformer Architecture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Encoder
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Decoder
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Sum Up: The Transformer Model'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Comparison to Recurrent and Convolutional Layers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you are already familiar with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[The concept of attention](https://machinelearningmastery.com/what-is-attention/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The attention mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Transformer attention mechanism](https://machinelearningmastery.com/the-transformer-attention-mechanism)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**The Transformer Architecture**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Transformer architecture follows an encoder-decoder structure but does not
+    rely on recurrence and convolutions in order to generate an output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The  encoder-decoder structure of the Transformer architecture
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a nutshell, the task of the encoder, on the left half of the Transformer
+    architecture, is to map an input sequence to a sequence of continuous representations,
+    which is then fed into a decoder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The decoder, on the right half of the architecture, receives the output of the
+    encoder together with the decoder output at the previous time step to generate
+    an output sequence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*At each step the model is auto-regressive, consuming the previously generated
+    symbols as additional input when generating the next.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '**The Encoder**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[![](../Images/64c247dcde7ce423e196af0e42321858.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The encoder block of the Transformer architecture
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The encoder consists of a stack of $N$ = 6 identical layers, where each layer
+    is composed of two sublayers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first sublayer implements a multi-head self-attention mechanism. [You have
+    seen](https://machinelearningmastery.com/the-transformer-attention-mechanism)
+    that the multi-head mechanism implements $h$ heads that receive a (different)
+    linearly projected version of the queries, keys, and values, each to produce $h$
+    outputs in parallel that are then used to generate a final result.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The second sublayer is a fully connected feed-forward network consisting of
+    two linear transformations with Rectified Linear Unit (ReLU) activation in between:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$\text{FFN}(x) = \text{ReLU}(\mathbf{W}_1 x + b_1) \mathbf{W}_2 + b_2$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: The six layers of the Transformer encoder apply the same linear transformations
+    to all the words in the input sequence, but *each* layer employs different weight
+    ($\mathbf{W}_1, \mathbf{W}_2$) and bias ($b_1, b_2$) parameters to do so.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Furthermore, each of these two sublayers has a residual connection around it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Each sublayer is also succeeded by a normalization layer, $\text{layernorm}(.)$,
+    which normalizes the sum computed between the sublayer input, $x$, and the output
+    generated by the sublayer itself, $\text{sublayer}(x)$:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\text{layernorm}(x + \text{sublayer}(x))$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: An important consideration to keep in mind is that the Transformer architecture
+    cannot inherently capture any information about the relative positions of the
+    words in the sequence since it does not make use of recurrence. This information
+    has to be injected by introducing *positional encodings* to the input embeddings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The positional encoding vectors are of the same dimension as the input embeddings
+    and are generated using sine and cosine functions of different frequencies. Then,
+    they are simply summed to the input embeddings in order to *inject* the positional
+    information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Decoder **'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[![](../Images/b5ece98aba8f016010f010adfd5a8097.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The decoder block of the Transformer architecture
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: The decoder shares several similarities with the encoder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The decoder also consists of a stack of $N$ = 6 identical layers that are each
+    composed of three sublayers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first sublayer receives the previous output of the decoder stack, augments
+    it with positional information, and implements multi-head self-attention over
+    it. While the encoder is designed to attend to all words in the input sequence
+    *regardless* of their position in the sequence, the decoder is modified to attend
+    *only* to the preceding words. Hence, the prediction for a word at position $i$
+    can only depend on the known outputs for the words that come before it in the
+    sequence. In the multi-head attention mechanism (which implements multiple, single
+    attention functions in parallel), this is achieved by introducing a mask over
+    the values produced by the scaled multiplication of matrices $\mathbf{Q}$ and
+    $\mathbf{K}$. This masking is implemented by suppressing the matrix values that
+    would otherwise correspond to illegal connections:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \text{mask}(\mathbf{QK}^T) =
+  prefs: []
+  type: TYPE_NORMAL
+- en: \text{mask} \left( \begin{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: e_{11} & e_{12} & \dots & e_{1n} \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: e_{21} & e_{22} & \dots & e_{2n} \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \vdots & \vdots & \ddots & \vdots \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: e_{m1} & e_{m2} & \dots & e_{mn} \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{bmatrix} \right) =
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: e_{11} & -\infty & \dots & -\infty \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: e_{21} & e_{22} & \dots & -\infty \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \vdots & \vdots & \ddots & \vdots \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: e_{m1} & e_{m2} & \dots & e_{mn} \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{bmatrix}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/bdffca1b5f416aed7741d5b03a4acf82.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/tour_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The multi-head attention in the decoder implements several masked, single-attention
+    functions
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The masking makes the decoder unidirectional (unlike the bidirectional encoder).*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The second layer implements a multi-head self-attention mechanism similar to
+    the one implemented in the first sublayer of the encoder. On the decoder side,
+    this multi-head mechanism receives the queries from the previous decoder sublayer
+    and the keys and values from the output of the encoder. This allows the decoder
+    to attend to all the words in the input sequence.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The third layer implements a fully connected feed-forward network, similar to
+    the one implemented in the second sublayer of the encoder.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Furthermore, the three sublayers on the decoder side also have residual connections
+    around them and are succeeded by a normalization layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Positional encodings are also added to the input embeddings of the decoder in
+    the same manner as previously explained for the encoder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Sum Up: The Transformer Model**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The Transformer model runs as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each word forming an input sequence is transformed into a $d_{\text{model}}$-dimensional
+    embedding vector.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Each embedding vector representing an input word is augmented by summing it
+    (element-wise) to a positional encoding vector of the same $d_{\text{model}}$
+    length, hence introducing positional information into the input.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The augmented embedding vectors are fed into the encoder block consisting of
+    the two sublayers explained above. Since the encoder attends to all words in the
+    input sequence, irrespective if they precede or succeed the word under consideration,
+    then the Transformer encoder is *bidirectional*.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The decoder receives as input its own predicted output word at time-step, $t
+    – 1$.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The input to the decoder is also augmented by positional encoding in the same
+    manner done on the encoder side.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The augmented decoder input is fed into the three sublayers comprising the decoder
+    block explained above. Masking is applied in the first sublayer in order to stop
+    the decoder from attending to the succeeding words. At the second sublayer, the
+    decoder also receives the output of the encoder, which now allows the decoder
+    to attend to all the words in the input sequence.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The output of the decoder finally passes through a fully connected layer, followed
+    by a softmax layer, to generate a prediction for the next word of the output sequence.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Comparison to Recurrent and Convolutional Layers**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Vaswani et al. (2017)](https://arxiv.org/abs/1706.03762) explain that their
+    motivation for abandoning the use of recurrence and convolutions was based on
+    several factors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Self-attention layers were found to be faster than recurrent layers for shorter
+    sequence lengths and can be restricted to consider only a neighborhood in the
+    input sequence for very long sequence lengths.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The number of sequential operations required by a recurrent layer is based on
+    the sequence length, whereas this number remains constant for a self-attention
+    layer.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In convolutional neural networks, the kernel width directly affects the long-term
+    dependencies that can be established between pairs of input and output positions.
+    Tracking long-term dependencies would require using large kernels or stacks of
+    convolutional layers that could increase the computational cost.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered the network architecture of the Transformer
+    model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How the Transformer architecture implements an encoder-decoder structure without
+    recurrence and convolutions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the Transformer encoder and decoder work
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the Transformer self-attention compares to recurrent and convolutional layers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,483 @@
+- en: A Guide to Getting Datasets for Machine Learning in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-guide-to-getting-datasets-for-machine-learning-in-python/](https://machinelearningmastery.com/a-guide-to-getting-datasets-for-machine-learning-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Compared to other programming exercises, a machine learning project is a blend
+    of code and data. You need both to achieve the result and do something useful.
+    Over the years, many well-known datasets have been created, and many have become
+    standards or benchmarks. In this tutorial, we are going to see how we can obtain
+    those well-known public datasets easily. We will also learn how to make a synthetic
+    dataset if none of the existing datasets fits our needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After finishing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where to look for freely available datasets for machine learning projects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to download datasets using libraries in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to generate synthetic datasets using scikit-learn
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/c8d8d914e32227dd6a9b2a836dca18bc.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Guide to Getting Datasets for Machine Learning in Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Olha Ruskykh](https://www.pexels.com/photo/close-up-shot-of-cassette-tapes-with-small-pieces-of-flowers-7166023/).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dataset repositories
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Retrieving dataset in scikit-learn and Seaborn
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Retrieving dataset in TensorFlow
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Generating dataset in scikit-learn
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Dataset Repositories
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Machine learning has been developed for decades, and therefore there are some
+    datasets of historical significance. One of the most well-known repositories for
+    these datasets is the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/index.php).
+    Most of the datasets over there are small in size because the technology at the
+    time was not advanced enough to handle larger size data. Some famous datasets
+    located in this repository are the iris flower dataset (introduced by Ronald Fisher
+    in 1936) and the 20 newsgroups dataset (textual data usually referred to by information
+    retrieval literature).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Newer datasets are usually larger in size. For example, the ImageNet dataset
+    is over 160 GB. These datasets are commonly found in [Kaggle](https://www.kaggle.com/),
+    and we can search them by name. If we need to download them, it is recommended
+    to use Kaggle’s command line tool after registering for an account.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[OpenML](https://www.openml.org/) is a newer repository that hosts a lot of
+    datasets. It is convenient because you can search for the dataset by name, but
+    it also has a standardized web API for users to retrieve data. It would be useful
+    if you want to use Weka since it provides files in ARFF format.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: But still, many datasets are publicly available but not in these repositories
+    for various reasons. You may also want to check out the “[List of datasets for
+    machine-learning research](https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research)”
+    on Wikipedia. That page contains a long list of datasets attributed to different
+    categories, with links to download them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Retrieving Datasets in scikit-learn and Seaborn
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Trivially, you may obtain those datasets by downloading them from the web, either
+    through the browser, via command line, using the `wget` tool, or using network
+    libraries such as `requests` in Python. Since some of those datasets have become
+    a standard or benchmark, many machine learning libraries have created functions
+    to help retrieve them. For practical reasons, often, the datasets are not shipped
+    with the libraries but downloaded in real time when you invoke the functions.
+    Therefore, you need to have a steady internet connection to use them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Scikit-learn is an example where you can download the dataset using its API.
+    The related functions are defined under `sklearn.datasets,`and you may see the
+    list of functions at:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://scikit-learn.org/stable/modules/classes.html#module-sklearn.datasets](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.datasets)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For example, you can use the function `load_iris()` to get the iris flower
+    dataset as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `load_iris()` function would return numpy arrays (i.e., does not have column
+    headers) instead of pandas DataFrame unless the argument `as_frame=True` is specified.
+    Also, we pass `return_X_y=True` to the function, so only the machine learning
+    features and targets are returned, rather than some metadata such as the description
+    of the dataset. The above code prints the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Separating the features and targets is convenient for training a scikit-learn
+    model, but combining them would be helpful for visualization. For example, we
+    may combine the DataFrame as above and then visualize the correlogram using Seaborn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/4305dbb0e95e1ce50c49f4469fd7f7c5.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'From the correlogram, we can see that target 0 is easy to distinguish, but
+    targets 1 and 2 usually have some overlap. Because this dataset is also useful
+    to demonstrate plotting functions, we can find the equivalent data loading function
+    from Seaborn. We can rewrite the above into the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/8d0b3bd7b0346af0cb3a86092ea90bdb.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The dataset supported by Seaborn is more limited. We can see the names of all
+    supported datasets by running:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'where the following is all the datasets from Seaborn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are a handful of similar functions to load the “[toy datasets](https://scikit-learn.org/stable/datasets/toy_dataset.html)”
+    from scikit-learn. For example, we have `load_wine()` and `load_diabetes()` defined
+    in similar fashion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Larger datasets are also similar. We have `fetch_california_housing()`, for
+    example, that needs to download the dataset from the internet (hence the “fetch”
+    in the function name). Scikit-learn documentation calls these the “[real-world
+    datasets](https://scikit-learn.org/stable/datasets/real_world.html),” but, in
+    fact, the toy datasets are equally real.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we need more than these, scikit-learn provides a handy function to read any
+    dataset from OpenML. For example,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Sometimes, we should not use the name to identify a dataset in OpenML as there
+    may be multiple datasets of the same name. We can search for the data ID on OpenML
+    and use it in the function as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The data ID in the code above refers to the titanic dataset. We can extend
+    the code into the following to show how we can obtain the titanic dataset and
+    then run the logistic regression:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Retrieving Datasets in TensorFlow
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Besides scikit-learn, TensorFlow is another tool that we can use for machine
+    learning projects. For similar reasons, there is also a dataset API for TensorFlow
+    that gives you the dataset in a format that works best with TensorFlow. Unlike
+    scikit-learn, the API is not part of the standard TensorFlow package. You need
+    to install it using the command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The list of all datasets is available on the catalog:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://www.tensorflow.org/datasets/catalog/overview#all_datasets](https://www.tensorflow.org/datasets/catalog/overview#all_datasets)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'All datasets are identified by a name. The names can be found in the catalog
+    above. You may also get a list of names using the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: which prints more than 1,000 names.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an example, let’s pick the MNIST handwritten digits dataset as an example.
+    We can download the data as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This shows us that `tfds.load()` gives us an object of type `tensorflow.data.OptionsDataset`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: In particular, this dataset has the data instances (images) in a numpy array
+    of shapes (28,28,1), and the targets (labels) are scalars.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With minor polishing, the data is ready for use in the Keras `fit()` function.
+    An example is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we provided `as_supervised=True`, the dataset would be records of tuples
+    (features, targets) instead of the dictionary. It is required for Keras. Moreover,
+    to use the dataset in the `fit()` function, we need to create an iterable of batches.
+    This is done by setting up the batch size of the dataset to convert it from `OptionsDataset`
+    object into `BatchDataset` object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We applied the LeNet5 model for the image classification. But since the target
+    in the dataset is a numerical value (0 to 9) rather than a Boolean vector, we
+    ask Keras to convert the softmax output vector into a number before computing
+    accuracy and loss by specifying `sparse_categorical_accuracy` and `sparse_categorical_crossentropy`
+    in the `compile()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The key here is to understand every dataset is in a different shape. When you
+    use it with your TensorFlow model, you need to adapt your model to fit the dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generating Datasets in scikit-learn
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In scikit-learn, there is a set of very useful functions to generate a dataset
+    with particular properties. Because we can control the properties of the synthetic
+    dataset, it is helpful to evaluate the performance of our models in a specific
+    situation that is not commonly seen in other datasets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Scikit-learn documentation calls these functions the **samples generator**.
+    It is easy to use; for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/74f67b0e82c50b686cfd8f92f8a49201.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The `make_circles()` function generates coordinates of scattered points in a
+    2D plane such that there are two classes positioned in the form of concentric
+    circles. We can control the size and overlap of the circles with the parameters
+    `factor` and `noise` in the argument. This synthetic dataset is helpful to evaluate
+    classification models such as a support vector machine since there is no linear
+    separator available.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The output from `make_circles()` is always in two classes, and the coordinates
+    are always in 2D. But some other functions can generate points of more classes
+    or in higher dimensions, such as `make_blob()`. In the example below, we generate
+    a dataset in 3D with 4 classes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/dad0a3a3f7b08bd39e3a2cb94867db43.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: There are also some functions to generate a dataset for regression problems.
+    For example, `make_s_curve()` and `make_swiss_roll()` will generate coordinates
+    in 3D with targets as continuous values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/cc63c3079ac131349251431c22ea6eeb.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: If we prefer not to look at the data from a geometric perspective, there are
+    also `make_classification()` and `make_regression()`. Compared to the other functions,
+    these two provide us more control over the feature sets, such as introducing some
+    redundant or irrelevant features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Below is an example of using `make_regression()` to generate a dataset and
+    run linear regression with it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the example above, we created 10-dimensional features, but only 4 of them
+    are informative. Hence from the result of the regression, we found only 4 of the
+    coefficients are significantly non-zero.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'An example of using `make_classification()` similarly is as follows. A support
+    vector machine classifier is used in this case:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Repositories
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[UCI machine learning repository](https://archive.ics.uci.edu/ml/index.php)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Kaggle](https://www.kaggle.com/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[OpenML](https://www.openml.org/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Wikipedia, [https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research](https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[List of datasets for machine-learning research](https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research),
+    Wikipedia'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[scikit-learn toy datasets](https://scikit-learn.org/stable/datasets/toy_dataset.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[scikit-learn real-world datasets](https://scikit-learn.org/stable/datasets/real_world.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[TensorFlow datasets catalog](https://www.tensorflow.org/datasets/catalog/overview#all_datasets)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Training a neural network on MNIST with Keras using TensorFlow Datasets](https://www.tensorflow.org/datasets/keras_example)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Kaggle API and tools](https://www.kaggle.com/docs/api)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[TensorFlow datasets](https://www.tensorflow.org/datasets)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[scikit-learn datasets](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.datasets)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[scikit-learn samples generator](https://scikit-learn.org/stable/modules/classes.html#samples-generator)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered various options for loading a common dataset
+    or generating one in Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use the dataset API in scikit-learn, Seaborn, and TensorFlow to load
+    common machine learning datasets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The small differences in the format of the dataset returned by different APIs
+    and how to use them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to generate a dataset using scikit-learn
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

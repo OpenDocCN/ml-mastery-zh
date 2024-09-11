@@ -1,0 +1,211 @@
+- en: Multi-Target Predictions with Multilinear Regression in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/multi-target-predictions-with-multilinear-regression-in-pytorch/](https://machinelearningmastery.com/multi-target-predictions-with-multilinear-regression-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: While in the previous few tutorials we worked with single output multilinear
+    regression, here we’ll explore how we can use multilinear regression for multi-target
+    predictions. Complex neural network architectures are essentially having each
+    neuron unit to perform linear regression independently then pass on their result
+    to another neuron. Therefore, knowing how such regression works is useful to understand
+    how a neural network performs multi-target predictions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The goal of this article is to provide a step-by-step guide for the implementation
+    of multi-target predictions in PyTorch. We will do so by using the framework of
+    a linear regression model that takes multiple features as input and produces multiple
+    results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will start by importing the necessary packages for our model. We will then
+    define our input data points and what we want to achieve with our model. Particularly,
+    we’ll demonstrate:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to understand multilinear regression in multiple dimensions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make multi-target predictions with multilinear regression in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build class linear using the ‘nn.Module’ in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make multi-target predictions with a single input data sample.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to male multi-target predictions with multiple input data samples.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note that we’ll not train our MLR model in this tutorial, we’ll only see how
+    it makes simple predictions. In the subsequent tutorial of our PyTorch series,
+    we’ll learn how this model can be trained on a dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/cdd32cc247e36c58378d342bdfd55393.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multi-Target Predictions with Multilinear Regression in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Dan Gold](https://unsplash.com/photos/yhQhvK04QPc). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create the Module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Making Predictions with Sinple Input Samples
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Making Predictions with Multiple Input Samples
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Create the Module
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We’ll build a custom linear class for our multilinear Regression model. We’ll
+    define a linear class and make it a child class of the PyTorch package `nn.Module`.
+    This class inherits all the methods and attributes from the package, such as `nn.Linear`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s create the model object and define the parameters accordingly. As
+    we plan on making multi-target predictions, let’s first check how our model works
+    for a single input sample. Later, we’ll make predictions for multiple input samples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making Predictions with Single Input Samples
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We’ll create our model object that takes a single input sample and makes five
+    predictions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, lets define our input tensor `x` for the model and make predictions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here’s what the output looks like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, our model made multiple predictions out of only a single input
+    sample. Here is how we can list the model parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and the output is like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may get a different result in numbers as those are randomized weights, but
+    the shape of the weight tensors would match our design of taking one input and
+    giving five output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making Predictions with Multiple Input Samples
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Similarly, let’s define a tensor `X` for multiple input samples, where each
+    row represents a data sample.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can make multi-target predictions with multiple input samples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As we have three samples of input, we should see three samples of output, like
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned how you can make multi-target predictions with
+    multilinear regression model. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to understand multilinear regression in multiple dimensions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make multi-target predictions with multilinear regression in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build class linear using the ‘nn.Module’ in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make multi-target predictions with a single input data sample.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to male multi-target predictions with multiple input data samples.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

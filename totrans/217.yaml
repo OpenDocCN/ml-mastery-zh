@@ -1,0 +1,702 @@
+- en: Application of differentiations in neural networks
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/application-of-differentiations-in-neural-networks/](https://machinelearningmastery.com/application-of-differentiations-in-neural-networks/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Differential calculus is an important tool in machine learning algorithms. Neural
+    networks in particular, the gradient descent algorithm depends on the gradient,
+    which is a quantity computed by differentiation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, we will see how the back-propagation technique is used in
+    finding the gradients in neural networks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After completing this tutorial, you will know
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is a total differential and total derivative
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to compute the total derivatives in neural networks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How back-propagation helped in computing the total derivatives
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Application of differentiations in neural networks](../Images/a020e001bca1f90861490b3977c94858.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Application of differentiations in neural networks
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Freeman Zhou](https://unsplash.com/photos/plX7xeNb3Yo), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into 5 parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Total differential and total derivatives
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Algebraic representation of a multilayer perceptron model
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Finding the gradient by back-propagation
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Matrix form of gradient equations
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Implementing back-propagation
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Total differential and total derivatives
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For a function such as $f(x)$, we call denote its derivative as $f'(x)$ or $\frac{df}{dx}$.
+    But for a multivariate function, such as $f(u,v)$, we have a partial derivative
+    of $f$ with respect to $u$ denoted as $\frac{\partial f}{\partial u}$, or sometimes
+    written as $f_u$. A partial derivative is obtained by differentiation of $f$ with
+    respect to $u$ while assuming the other variable $v$ is a constant. Therefore,
+    we use $\partial$ instead of $d$ as the symbol for differentiation to signify
+    the difference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, what if the $u$ and $v$ in $f(u,v)$ are both function of $x$? In other
+    words, we can write $u(x)$ and $v(x)$ and $f(u(x), v(x))$. So $x$ determines the
+    value of $u$ and $v$ and in turn, determines $f(u,v)$. In this case, it is perfectly
+    fine to ask what is $\frac{df}{dx}$, as $f$ is eventually determined by $x$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the concept of total derivatives. In fact, for a multivariate function
+    $f(t,u,v)=f(t(x),u(x),v(x))$, we always have
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{df}{dx} = \frac{\partial f}{\partial t}\frac{dt}{dx} + \frac{\partial
+    f}{\partial u}\frac{du}{dx} + \frac{\partial f}{\partial v}\frac{dv}{dx}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: The above notation is called the total derivative because it is sum of the partial
+    derivatives. In essence, it is applying chain rule to find the differentiation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we take away the $dx$ part in the above equation, what we get is an approximate
+    change in $f$ with respect to $x$, i.e.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: df = \frac{\partial f}{\partial t}dt + \frac{\partial f}{\partial u}du + \frac{\partial
+    f}{\partial v}dv
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: We call this notation the total differential.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Algebraic representation of a multilayer perceptron model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Consider the network:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/d244025167c7691aa0e2d6bad081afa3.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'An example of neural network. Source: [https://commons.wikimedia.org/wiki/File:Multilayer_Neural_Network.png](https://commons.wikimedia.org/wiki/File:Multilayer_Neural_Network.png")'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a simple, fully-connected, 4-layer neural network. Let’s call the input
+    layer as layer 0, the two hidden layers the layer 1 and 2, and the output layer
+    as layer 3\. In this picture, we see that we have $n_0=3$ input units, and $n_1=4$
+    units in the first hidden layer and $n_2=2$ units in the second input layer. There
+    are $n_3=2$ output units.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we denote the input to the network as $x_i$ where $i=1,\cdots,n_0$ and the
+    network’s output as $\hat{y}_i$ where $i=1,\cdots,n_3$. Then we can write
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: h_{1i} &= f_1(\sum_{j=1}^{n_0} w^{(1)}_{ij} x_j + b^{(1)}_i) & \text{for } i
+    &= 1,\cdots,n_1\\
+  prefs: []
+  type: TYPE_NORMAL
+- en: h_{2i} &= f_2(\sum_{j=1}^{n_1} w^{(2)}_{ij} h_{1j} + b^{(2)}_i) & i &= 1,\cdots,n_2\\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \hat{y}_i &= f_3(\sum_{j=1}^{n_2} w^{(3)}_{ij} h_{2j} + b^{(3)}_i) & i &= 1,\cdots,n_3
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here the activation function at layer $i$ is denoted as $f_i$. The outputs of
+    first hidden layer are denoted as $h_{1i}$ for the $i$-th unit. Similarly, the
+    outputs of second hidden layer are denoted as $h_{2i}$. The weights and bias of
+    unit $i$ in layer $k$ are denoted as $w^{(k)}_{ij}$ and $b^{(k)}_i$ respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the above, we can see that the output of layer $k-1$ will feed into layer
+    $k$. Therefore, while $\hat{y}_i$ is expressed as a function of $h_{2j}$, but
+    $h_{2i}$ is also a function of $h_{1j}$ and in turn, a function of $x_j$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The above describes the construction of a neural network in terms of algebraic
+    equations. Training a neural network would need to specify a *loss function* as
+    well so we can minimize it in the training loop. Depends on the application, we
+    commonly use cross entropy for categorization problems or mean squared error for
+    regression problems. With the target variables as $y_i$, the mean square error
+    loss function is specified as
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: L = \sum_{i=1}^{n_3} (y_i-\hat{y}_i)^2
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding the gradient by back-propagation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In the above construct, $x_i$ and $y_i$ are from the dataset. The parameters
+    to the neural network are $w$ and $b$. While the activation functions $f_i$ are
+    by design the outputs at each layer $h_{1i}$, $h_{2i}$, and $\hat{y}_i$ are dependent
+    variables. In training the neural network, our goal is to update $w$ and $b$ in
+    each iteration, namely, by the gradient descent update rule:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: w^{(k)}_{ij} &= w^{(k)}_{ij} – \eta \frac{\partial L}{\partial w^{(k)}_{ij}}
+    \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: b^{(k)}_{i} &= b^{(k)}_{i} – \eta \frac{\partial L}{\partial b^{(k)}_{i}}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: where $\eta$ is the learning rate parameter to gradient descent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the equation of $L$ we know that $L$ is not dependent on $w^{(k)}_{ij}$
+    or $b^{(k)}_i$ but on $\hat{y}_i$. However, $\hat{y}_i$ can be written as function
+    of $w^{(k)}_{ij}$ or $b^{(k)}_i$ eventually. Let’s see one by one how the weights
+    and bias at layer $k$ can be connected to $\hat{y}_i$ at the output layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We begin with the loss metric. If we consider the loss of a single data point,
+    we have
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: L &= \sum_{i=1}^{n_3} (y_i-\hat{y}_i)^2\\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial \hat{y}_i} &= 2(y_i – \hat{y}_i) & \text{for } i
+    &= 1,\cdots,n_3
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here we see that the loss function depends on all outputs $\hat{y}_i$ and therefore
+    we can find a partial derivative $\frac{\partial L}{\partial \hat{y}_i}$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now let’s look at the output layer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \hat{y}_i &= f_3(\sum_{j=1}^{n_2} w^{(3)}_{ij} h_{2j} + b^{(3)}_i) & \text{for
+    }i &= 1,\cdots,n_3 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial w^{(3)}_{ij}} &= \frac{\partial L}{\partial \hat{y}_i}\frac{\partial
+    \hat{y}_i}{\partial w^{(3)}_{ij}} & i &= 1,\cdots,n_3;\ j=1,\cdots,n_2 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&= \frac{\partial L}{\partial \hat{y}_i} f’_3(\sum_{j=1}^{n_2} w^{(3)}_{ij}
+    h_{2j} + b^{(3)}_i)h_{2j} \\'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial b^{(3)}_i} &= \frac{\partial L}{\partial \hat{y}_i}\frac{\partial
+    \hat{y}_i}{\partial b^{(3)}_i} & i &= 1,\cdots,n_3 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&= \frac{\partial L}{\partial \hat{y}_i}f’_3(\sum_{j=1}^{n_2} w^{(3)}_{ij}
+    h_{2j} + b^{(3)}_i)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because the weight $w^{(3)}_{ij}$ at layer 3 applies to input $h_{2j}$ and affects
+    output $\hat{y}_i$ only. Hence we can write the derivative $\frac{\partial L}{\partial
+    w^{(3)}_{ij}}$ as the product of two derivatives $\frac{\partial L}{\partial \hat{y}_i}\frac{\partial
+    \hat{y}_i}{\partial w^{(3)}_{ij}}$. Similar case for the bias $b^{(3)}_i$ as well.
+    In the above, we make use of $\frac{\partial L}{\partial \hat{y}_i}$, which we
+    already derived previously.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But in fact, we can also write the partial derivative of $L$ with respect to
+    output of second layer $h_{2j}$. It is not used for the update of weights and
+    bias on layer 3 but we will see its importance later:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial h_{2j}} &= \sum_{i=1}^{n_3}\frac{\partial L}{\partial
+    \hat{y}_i}\frac{\partial \hat{y}_i}{\partial h_{2j}} & \text{for }j &= 1,\cdots,n_2
+    \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&= \sum_{i=1}^{n_3}\frac{\partial L}{\partial \hat{y}_i}f’_3(\sum_{j=1}^{n_2}
+    w^{(3)}_{ij} h_{2j} + b^{(3)}_i)w^{(3)}_{ij}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: This one is the interesting one and different from the previous partial derivatives.
+    Note that $h_{2j}$ is an output of layer 2\. Each and every output in layer 2
+    will affect the output $\hat{y}_i$ in layer 3\. Therefore, to find $\frac{\partial
+    L}{\partial h_{2j}}$ we need to add up every output at layer 3\. Thus the summation
+    sign in the equation above. And we can consider $\frac{\partial L}{\partial h_{2j}}$
+    as the total derivative, in which we applied the chain rule $\frac{\partial L}{\partial
+    \hat{y}_i}\frac{\partial \hat{y}_i}{\partial h_{2j}}$ for every output $i$ and
+    then sum them up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we move back to layer 2, we can derive the derivatives similarly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: h_{2i} &= f_2(\sum_{j=1}^{n_1} w^{(2)}_{ij} h_{1j} + b^{(2)}_i) & \text{for
+    }i &= 1,\cdots,n_2\\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial w^{(2)}_{ij}} &= \frac{\partial L}{\partial h_{2i}}\frac{\partial
+    h_{2i}}{\partial w^{(2)}_{ij}} & i&=1,\cdots,n_2;\ j=1,\cdots,n_1 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&= \frac{\partial L}{\partial h_{2i}}f’_2(\sum_{j=1}^{n_1} w^{(2)}_{ij} h_{1j}
+    + b^{(2)}_i)h_{1j} \\'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial b^{(2)}_i} &= \frac{\partial L}{\partial h_{2i}}\frac{\partial
+    h_{2i}}{\partial b^{(2)}_i} & i &= 1,\cdots,n_2 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&= \frac{\partial L}{\partial h_{2i}}f’_2(\sum_{j=1}^{n_1} w^{(2)}_{ij} h_{1j}
+    + b^{(2)}_i) \\'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial h_{1j}} &= \sum_{i=1}^{n_2}\frac{\partial L}{\partial
+    h_{2i}}\frac{\partial h_{2i}}{\partial h_{1j}} & j&= 1,\cdots,n_1 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&= \sum_{i=1}^{n_2}\frac{\partial L}{\partial h_{2i}}f’_2(\sum_{j=1}^{n_1}
+    w^{(2)}_{ij} h_{1j} + b^{(2)}_i) w^{(2)}_{ij}'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the equations above, we are reusing $\frac{\partial L}{\partial h_{2i}}$
+    that we derived earlier. Again, this derivative is computed as a sum of several
+    products from the chain rule. Also similar to the previous, we derived $\frac{\partial
+    L}{\partial h_{1j}}$ as well. It is not used to train $w^{(2)}_{ij}$ nor $b^{(2)}_i$
+    but will be used for the layer prior. So for layer 1, we have
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: h_{1i} &= f_1(\sum_{j=1}^{n_0} w^{(1)}_{ij} x_j + b^{(1)}_i) & \text{for } i
+    &= 1,\cdots,n_1\\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial w^{(1)}_{ij}} &= \frac{\partial L}{\partial h_{1i}}\frac{\partial
+    h_{1i}}{\partial w^{(1)}_{ij}} & i&=1,\cdots,n_1;\ j=1,\cdots,n_0 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&= \frac{\partial L}{\partial h_{1i}}f’_1(\sum_{j=1}^{n_0} w^{(1)}_{ij} x_j
+    + b^{(1)}_i)x_j \\'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial b^{(1)}_i} &= \frac{\partial L}{\partial h_{1i}}\frac{\partial
+    h_{1i}}{\partial b^{(1)}_i} & i&=1,\cdots,n_1 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&= \frac{\partial L}{\partial h_{1i}}f’_1(\sum_{j=1}^{n_0} w^{(1)}_{ij} x_j
+    + b^{(1)}_i)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: and this completes all the derivatives needed for training of the neural network
+    using gradient descent algorithm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Recall how we derived the above: We first start from the loss function $L$
+    and find the derivatives one by one in the reverse order of the layers. We write
+    down the derivatives on layer $k$ and reuse it for the derivatives on layer $k-1$.
+    While computing the output $\hat{y}_i$ from input $x_i$ starts from layer 0 forward,
+    computing gradients are in the reversed order. Hence the name “back-propagation”.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Matrix form of gradient equations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'While we did not use it above, it is cleaner to write the equations in vectors
+    and matrices. We can rewrite the layers and the outputs as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \mathbf{a}_k = f_k(\mathbf{z}_k) = f_k(\mathbf{W}_k\mathbf{a}_{k-1}+\mathbf{b}_k)
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: where $\mathbf{a}_k$ is a vector of outputs of layer $k$, and assume $\mathbf{a}_0=\mathbf{x}$
+    is the input vector and $\mathbf{a}_3=\hat{\mathbf{y}}$ is the output vector.
+    Also denote $\mathbf{z}_k = \mathbf{W}_k\mathbf{a}_{k-1}+\mathbf{b}_k$ for convenience
+    of notation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Under such notation, we can represent $\frac{\partial L}{\partial\mathbf{a}_k}$
+    as a vector (so as that of $\mathbf{z}_k$ and $\mathbf{b}_k$) and $\frac{\partial
+    L}{\partial\mathbf{W}_k}$ as a matrix. And then if $\frac{\partial L}{\partial\mathbf{a}_k}$
+    is known, we have
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial\mathbf{z}_k} &= \frac{\partial L}{\partial\mathbf{a}_k}\odot
+    f_k'(\mathbf{z}_k) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial\mathbf{W}_k} &= \left(\frac{\partial L}{\partial\mathbf{z}_k}\right)^\top
+    \cdot \mathbf{a}_k \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial\mathbf{b}_k} &= \frac{\partial L}{\partial\mathbf{z}_k}
+    \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial\mathbf{a}_{k-1}} &= \left(\frac{\partial\mathbf{z}_k}{\partial\mathbf{a}_{k-1}}\right)^\top\cdot\frac{\partial
+    L}{\partial\mathbf{z}_k} = \mathbf{W}_k^\top\cdot\frac{\partial L}{\partial\mathbf{z}_k}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: where $\frac{\partial\mathbf{z}_k}{\partial\mathbf{a}_{k-1}}$ is a Jacobian
+    matrix as both $\mathbf{z}_k$ and $\mathbf{a}_{k-1}$ are vectors, and this Jacobian
+    matrix happens to be $\mathbf{W}_k$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing back-propagation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We need the matrix form of equations because it will make our code simpler and
+    avoided a lot of loops. Let’s see how we can convert these equations into code
+    and make a multilayer perceptron model for classification from scratch using numpy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first thing we need to implement the activation function and the loss function.
+    Both need to be differentiable functions or otherwise our gradient descent procedure
+    would not work. Nowadays, it is common to use ReLU activation in the hidden layers
+    and sigmoid activation in the output layer. We define them as a function (which
+    assumes the input as numpy array) as well as their differentiation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We deliberately clip the input of the sigmoid function to between -500 to +500
+    to avoid overflow. Otherwise, these functions are trivial. Then for classification,
+    we care about accuracy but the accuracy function is not differentiable. Therefore,
+    we use the cross entropy function as loss for training:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above, we assume the output and the target variables are row matrices
+    in numpy. Hence we use the dot product operator `@` to compute the sum and divide
+    by the number of elements in the output. Note that this design is to compute the
+    **average cross entropy** over a **batch** of samples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then we can implement our multilayer perceptron model. To make it easier to
+    read, we want to create the model by providing the number of neurons at each layer
+    as well as the activation function at the layers. But at the same time, we would
+    also need the differentiation of the activation functions as well as the differentiation
+    of the loss function for the training. The loss function itself, however, is not
+    required but useful for us to track the progress. We create a class to ensapsulate
+    the entire model, and define each layer $k$ according to the formula:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \mathbf{a}_k = f_k(\mathbf{z}_k) = f_k(\mathbf{a}_{k-1}\mathbf{W}_k+\mathbf{b}_k)
+  prefs: []
+  type: TYPE_NORMAL
+- en: $
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The variables in this class `z`, `W`, `b`, and `a` are for the forward pass
+    and the variables `dz`, `dW`, `db`, and `da` are their respective gradients that
+    to be computed in the back-propagation. All these variables are presented as numpy
+    arrays.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As we will see later, we are going to test our model using data generated by
+    scikit-learn. Hence we will see our data in numpy array of shape “(number of samples,
+    number of features)”. Therefore, each sample is presented as a row on a matrix,
+    and in function `forward()`, the weight matrix is right-multiplied to each input
+    `a` to the layer. While the activation function and dimension of each layer can
+    be different, the process is the same. Thus we transform the neural network’s
+    input `x` to its output by a loop in the `forward()` function. The network’s output
+    is simply the output of the last layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To train the network, we need to run the back-propagation after each forward
+    pass. The back-propagation is to compute the gradient of the weight and bias of
+    each layer, starting from the output layer to the input layer. With the equations
+    we derived above, the back-propagation function is implemented as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The only difference here is that we compute `db` not for one training sample,
+    but for the entire batch. Since the loss function is the cross entropy averaged
+    across the batch, we compute `db` also by averaging across the samples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Up to here, we completed our model. The `update()` function simply applies the
+    gradients found by the back-propagation to the parameters `W` and `b` using the
+    gradient descent update rule.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To test out our model, we make use of scikit-learn to generate a classification
+    dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and then we build our model: Input is two-dimensional and output is one dimensional
+    (logistic regression). We make two hidden layers of 4 and 3 neurons respectively:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/82e14f28209c46f403b93af1fa2e6469.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We see that, under random weight, the accuracy is 50%:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we train our network. To make things simple, we perform full-batch gradient
+    descent with fixed learning rate:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and the output is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Although not perfect, we see the improvement by training. At least in the example
+    above, we can see the accuracy was up to more than 80% at iteration 145, but then
+    we saw the model diverged. That can be improved by reducing the learning rate,
+    which we didn’t implement above. Nonetheless, this shows how we computed the gradients
+    by back-propagations and chain rules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The back-propagation algorithm is the center of all neural network training,
+    regardless of what variation of gradient descent algorithms you used. Textbook
+    such as this one covered it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Deep Learning*, by Ian Goodfellow, Yoshua Bengio, and Aaron Courville, 2016.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ([https://www.amazon.com/dp/0262035618](https://www.amazon.com/dp/0262035618))
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Previously also implemented the neural network from scratch without discussing
+    the math, it explained the steps in greater detail:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[How to Code a Neural Network with Backpropagation In Python (from scratch)](https://machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how differentiation is applied to training a neural
+    network.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is a total differential and how it is expressed as a sum of partial differentials
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to express a neural network as equations and derive the gradients by differentiation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How back-propagation helped us to express the gradients of each layer in the
+    neural network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to convert the gradients into code to make a neural network model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

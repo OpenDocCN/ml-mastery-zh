@@ -1,0 +1,382 @@
+- en: A Gentle Introduction to Optimization / Mathematical Programming
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming/](https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Whether it is a supervised learning problem or an unsupervised problem, there
+    will be some optimization algorithm working in the background. Almost any classification,
+    regression or clustering problem can be cast as an optimization problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover what is optimization and concepts related
+    to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is Mathematical programming or optimization
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Difference between a maximization and minimization problems
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Difference between local and global optimal solutions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Difference between constrained and unconstrained optimization
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Difference between linear and non-linear programming
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Examples of optimization
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Picture of Hunza valley by Mehtab Farooq](../Images/0e5347ba2b2d8df8c982aa2cbe6669ff.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/Mehtab-Farooq.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A gentle introduction to optimization. Photo by Mehtab Farooq, some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Various introductory topics related to optimization
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Constrained vs. unconstrained optimization
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Equality vs. inequality constraints
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Feasible region
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Examples of optimization in machine learning
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**What Is Optimization or Mathematical Programming?**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In calculus and mathematics, the optimization problem is also termed as mathematical
+    programming. To describe this problem in simple words, it is the mechanism through
+    which we can find an element, variable or quantity that best fits a set of given
+    criterion or constraints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Maximization Vs. Minimization Problems**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The simplest cases of optimization problems are minimization or maximization
+    of scalar functions. If we have a scalar function of one or more variables, f(x_1,
+    x_2, … x_n) then the following is an optimization problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Find x_1, x_2, …, x_n where f(x) is minimum
+  prefs: []
+  type: TYPE_NORMAL
+- en: Or we can have an equivalent maximization problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When we define functions quantifying errors or penalties, we apply a minimization
+    problem. On the other hand, if a learning algorithm constructs a function modeling
+    the accuracy of a method, we would maximize this function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many automated software tools for optimization, generally implement either a
+    maximization problem or a minimization task but not both. Hence, we can convert
+    a maximization problem to a minimization problem (and vice versa) by adding a
+    negative sign to f(x), i.e.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: Maximize f(x) w.r.r x is equivalent to Minimize -f(x) w.r.t. x
+  prefs: []
+  type: TYPE_NORMAL
+- en: As the two problems are equivalent, we’ll only talk about either minimization
+    or maximization problems in the rest of the tutorial. The same rules and definitions
+    apply to its equivalent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Global Vs. Local Optimum Points**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In machine learning, we often encounter functions, which are highly non-linear
+    with a complex landscape. It is possible that there is a point where the function
+    has the lowest value within a small or local region around that point. Such a
+    point is called a local minimum point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is opposed to global minimum point, which is a point where the function
+    has the least value over its entire domain. The following figure shows local and
+    global maximum points.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Local and global maximum points](../Images/8e5ed28a44beb2bccf2ad51f99f578e8.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/optLocal.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Local and global maximum points
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Unconstrained Vs. Constrained Optimization**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are many problems in machine learning, where we are interested in finding
+    the global optimum point without any constraints or restrictions on the region
+    in space. Such problems are called unconstrained optimization problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At times we have to solve an optimization problem subject to certain constraints.
+    Such optimization problems are termed as constrained optimization problems. For
+    example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Minimize x^2 + y^2     subject to.       x + y <= 1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Examples of constrained optimization are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Find minimum of a function when the sum of variables in the domain must sum
+    to one
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Find minimum of a function such that certain vectors are normal to each other
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Find minimum of a function such that certain domain variables lie in a certain
+    range.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Feasible Region**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: All the points in space where the constraints on the problem hold true comprise
+    the feasible region. An optimization algorithm searches for optimal points in
+    the feasible region. The feasible region for the two types of constraints is shown
+    in the figure of the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For an unconstrained optimization problem, the entire domain of the function
+    is a feasible region.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Equality Vs. Inequality Constraints**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The constraints imposed in an optimization problem could be equality constraints
+    or inequality constraints. The figure below shows the two types of constraints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Equality vs. inequality constraints](../Images/ba43e9dbb4cedb28b6237c44734a1f54.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/optCon-1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Equality vs. inequality constraints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Linear Vs. Non-linear Programming**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: An optimization problem where the function is linear and all equality or inequality
+    constraints are also linear constraints is called a linear programming problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If either the objective function is non-linear or one or more than one constraints
+    is non-linear, then we have a non-linear programming problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To visualize the difference between linear and non-linear functions you can
+    check out the figure below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Linear vs. non-linear functions](../Images/e039901e416b709f4b66e10a99222309.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/optLin.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Linear vs. non-linear functions
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Examples of Optimization in Machine Learning**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Listed below are some well known machine learning algorithms that employ optimization.
+    You should keep in mind that almost all machine learning algorithms employ some
+    kind of optimization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gradient descent in neural networks (unconstrained optimization).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Method of Lagrange multipliers in support vector machines (constrained optimization).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Principal component analysis (constrained optimization)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Clustering via expectation maximization algorithm (constrained optimization)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Logistic regression (unconstrained optimization)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Genetic algorithms in evolutionary learning algorithms (different variants exist
+    to solve both constrained and unconstrained optimization problems).
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Extensions**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section lists some ideas for extending the tutorial that you may wish to
+    explore.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Method of Lagrange multipliers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Non-linear optimization techniques
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The simplex method
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you explore any of these extensions, I’d love to know. Post your findings
+    in the comments below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go  
+    deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorials**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Function of several variables and gradient vectors](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Gradient descent for machine learning](https://machinelearningmastery.com/gradient-descent-for-machine-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Why optimization is important in machine learning](https://machinelearningmastery.com/why-optimization-is-important-in-machine-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[How to choose an optimization algorithm](https://machinelearningmastery.com/tour-of-optimization-algorithms/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Resources**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Additional resources on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Thomas’ Calculus](https://amzn.to/35Yeolv), 14th edition, 2017\. (based on
+    the original works of George B. Thomas, revised by Joel Hass, Christopher Heil,
+    Maurice Weir)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US),
+    3rd Edition, 2017\. (Gilbert Strang)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://amzn.to/3kS9I52), 8th edition, 2015\. (James Stewart)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you discovered what is mathematical programming or optimization
+    problem. Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Maximization vs. minimization
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Constrained vs. unconstrained optimization
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Why optimization is important in machine learning
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Do you have any questions?**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer
+  prefs: []
+  type: TYPE_NORMAL

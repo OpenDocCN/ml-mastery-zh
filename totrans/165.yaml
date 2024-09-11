@@ -1,0 +1,348 @@
+- en: One-Dimensional Tensors in Pytorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/one-dimensional-tensors-in-pytorch/](https://machinelearningmastery.com/one-dimensional-tensors-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: PyTorch is an open-source deep learning framework based on Python language.
+    It allows you to build, train, and deploy deep learning models, offering a lot
+    of versatility and efficiency.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PyTorch is primarily focused on tensor operations while a tensor can be a number,
+    matrix, or a multi-dimensional array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, we will perform some basic operations on one-dimensional tensors
+    as they are complex mathematical objects and an essential part of the PyTorch
+    library. Therefore, before going into the detail and more advanced concepts, one
+    should know the basics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After going through this tutorial, you will:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understand the basics of one-dimensional tensor operations in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Know about tensor types and shapes and perform tensor slicing and indexing operations.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Be able to apply some methods on tensor objects, such as mean, standard deviation,
+    addition, multiplication, and more.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/a33f5fbb84b7bcd8c5bbde1f3c03eeca.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: One-Dimensional Tensors in Pytorch
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Jo Szczepanska](https://unsplash.com/photos/9OKGEVJiTKk). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Types and Shapes of One-Dimensional Tensors**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First off, let’s import a few libraries we’ll use in this tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you have experience in other programming languages, the easiest way to understand
+    a tensor is to consider it as a multidimensional array. Therefore, a one-dimensional
+    tensor is simply a one-dimensional array, or a vector. In order to convert a list
+    of integers to tensor, apply `torch.tensor()` constructor. For instance, we’ll
+    take a list of integers and convert it to various tensor objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Also, you can apply the same method torch.tensor() to convert a float list to
+    a float tensor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that elements of a list that need to be converted into a tensor must have
+    the same type. Moreover, if you want to convert a list to a certain tensor type,
+    torch also allows you to do that. The code lines below, for example, will convert
+    a list of integers to a float tensor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Similarly, `size()` and `ndimension()` methods allow you to find the size and
+    dimensions of a tensor object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: For reshaping a tensor object, `view()` method can be applied. It takes `rows`
+    and `columns` as arguments. As an example, let’s use this method to reshape `int_list_to_float_tensor`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the `view()` method has changed the size of the tensor to `torch.Size([4,
+    1])`, with 4 rows and 1 column.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While the number of elements in a tensor object should remain constant after
+    `view()` method is applied, you can use `-1` (such as `reshaped_tensor**.**view(-1,
+    1)`) to reshape a dynamic-sized tensor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Converting Numpy Arrays to Tensors**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Pytorch also allows you to convert NumPy arrays to tensors. You can use `torch.from_numpy`
+    for this operation. Let’s take a NumPy array and apply the operation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Similarly, you can convert the tensor object back to a NumPy array. Let’s use
+    the previous example to show how it’s done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Converting Pandas Series to Tensors**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can also convert a pandas series to a tensor. For this, first you’ll need
+    to store the pandas series with `values()` function using a NumPy array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Furthermore, the Pytorch framework allows us to do a lot with tensors such as
+    its `item()` method returns a python number from a tensor and `tolist()` method
+    returns a list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Indexing and Slicing in One-Dimensional Tensors**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Indexing and slicing operations are almost the same in Pytorch as python. Therefore,
+    the first index always starts at 0 and the last index is less than the total length
+    of the tensor. Use square brackets to access any number in a tensor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Like a list in python, you can also perform slicing operations on the values
+    in a tensor. Moreover, the Pytorch library allows you to change certain values
+    in a tensor as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s take an example to check how these operations can be applied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let’s change the value at index 3 of `example_tensor`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Some Functions to Apply on One-Dimensional Tensors**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this section, we’ll review some statistical methods that can be applied on
+    tensor objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Min and Max Functions**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: These two useful methods are employed to find the minimum and maximum value
+    in a tensor. Here is how they work.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We’ll use a `sample_tensor` as an example to apply these methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Mean and Standard Deviation**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Mean and standard deviation are often used while doing statistical operations
+    on tensors. You can apply these two metrics using `.mean()` and `.std()` functions
+    in Pytorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s use an example to see how these two metrics are calculated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Simple Addition and Multiplication Operations on One-Dimensional Tensors**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Addition and Multiplication operations can be easily applied on tensors in Pytorch.
+    In this section, we’ll create two one-dimensional tensors to demonstrate how these
+    operations can be used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For your convenience, below is all the examples above tying together so you
+    can try them in one shot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Developed at the same time as TensorFlow, PyTorch used to have a simpler syntax
+    until TensorFlow adopted Keras in its 2.x version. To learn the basics of PyTorch,
+    you may want to read the PyTorch tutorials:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://pytorch.org/tutorials/](https://pytorch.org/tutorials/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Especially the basics of PyTorch tensor can be found in the Tensor tutorial
+    page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html](https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There are also quite a few books on PyTorch that are suitable for beginners.
+    A more recently published book should be recommended as the tools and syntax are
+    actively evolving. One example is
+  prefs: []
+  type: TYPE_NORMAL
+- en: Deep Learning with PyTorch by Eli Stevens, Luca Antiga, and Thomas Viehmann,
+    2020.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://www.manning.com/books/deep-learning-with-pytorch](https://www.manning.com/books/deep-learning-with-pytorch)'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you’ve discovered how to use one-dimensional tensors in Pytorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The basics of one-dimensional tensor operations in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: About tensor types and shapes and how to perform tensor slicing and indexing
+    operations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply some methods on tensor objects, such as mean, standard deviation,
+    addition, and multiplication
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

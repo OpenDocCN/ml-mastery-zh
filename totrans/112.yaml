@@ -1,0 +1,494 @@
+- en: Some Language Features in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/some-language-features-in-python/](https://machinelearningmastery.com/some-language-features-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The Python language syntax is quite powerful and expressive. Hence it is concise
+    to express an algorithm in Python. Maybe this is the reason why it is popular
+    in machine learning, as we need to experiment a lot in developing a machine learning
+    model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you’re new to Python but with experience in another programming language,
+    you will sometimes find Python syntax understandable but weird. If you are used
+    to writing in C++ or Java and then transitioning to Python, likely your program
+    is not **Pythonic**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, we will cover several common language features in Python that
+    distinguishes itself from other programming languages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/2d608b7ddfff69813b497b423179c919.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some Language Features in Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [David Clode](https://unsplash.com/photos/QZePScKPb2Q), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Operators
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Built-in data structures
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Special variables
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Built-in functions
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Operators
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Most of the operators used in Python are the same as the other languages. The
+    precedence table is as follows, adopted from Chapter 6 of Python Language Reference
+    ([https://docs.python.org/3/reference/expressions.html](https://docs.python.org/3/reference/expressions.html)):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Operator | Description |'
+  prefs: []
+  type: TYPE_TB
+- en: '| (expressions…), [expressions…], {key: value…}, {expressions…} | Binding or
+    parenthesized expression, list display, dictionary display, set display |'
+  prefs: []
+  type: TYPE_TB
+- en: '| x[index], x[index:index], x(arguments…), x.attribute | Subscription, slicing,
+    call, attribute reference |'
+  prefs: []
+  type: TYPE_TB
+- en: '| await x | Await expression |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ** | Exponentiation |'
+  prefs: []
+  type: TYPE_TB
+- en: '| +x, -x, ~x | Positive, negative, bitwise NOT |'
+  prefs: []
+  type: TYPE_TB
+- en: '| *, @, /, //, % | Multiplication, matrix multiplication, division, floor division,
+    remainder |'
+  prefs: []
+  type: TYPE_TB
+- en: '| +, – | Addition and subtraction |'
+  prefs: []
+  type: TYPE_TB
+- en: '| <<, >> | Shifts |'
+  prefs: []
+  type: TYPE_TB
+- en: '| & | Bitwise AND |'
+  prefs: []
+  type: TYPE_TB
+- en: '| ^ | Bitwise XOR |'
+  prefs: []
+  type: TYPE_TB
+- en: '| &#124; | Bitwise OR |'
+  prefs: []
+  type: TYPE_TB
+- en: '| in, not in, is, is not, <, <=, >, >=, !=, == | Comparisons, including membership
+    tests and identity tests |'
+  prefs: []
+  type: TYPE_TB
+- en: '| not x | Boolean NOT |'
+  prefs: []
+  type: TYPE_TB
+- en: '| and | Boolean AND |'
+  prefs: []
+  type: TYPE_TB
+- en: '| or | Boolean OR |'
+  prefs: []
+  type: TYPE_TB
+- en: '| if – else | Conditional expression |'
+  prefs: []
+  type: TYPE_TB
+- en: '| lambda | Lambda expression |'
+  prefs: []
+  type: TYPE_TB
+- en: '| := | Assignment expression |'
+  prefs: []
+  type: TYPE_TB
+- en: 'Some key differences to other languages:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Boolean operators are spelled out, while bitwise operators are characters `&`,
+    `^` and `|`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: exponentiation uses `2**3`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: integer division uses `//`, and division `/` always gives you floating point
+    values
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'ternary operator: If you are familiar with the expression `(x)?a:b` in C, we
+    write it as `a if x else b` in Python'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: comparing if two things are equal can ether use `==` or `is`. The `==` operator
+    is the same as other languages for equality, but `is` is stricter, reserved for
+    whether the two variable points to the same object
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In Python, we allow concatenation in comparison operators. For example, to
+    test if a value is between -1 and +1, we can do:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'but we can also do:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Built-in Data Structures
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As in many other languages, we have integer and floating point data types in
+    Python. But there are also complex numbers (e.g., `3+1j`), Boolean as constants
+    (`True` and `False`), strings, as well as a dummy type `None`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But the power of Python as a language lies in the fact that there are container
+    types built-in: Python arrays are called “list,” and it will expand automatically.
+    Associative arrays (or hash tables) are called “dict.” We also have “tuple” as
+    a read-only list and “set” as a container for unique items. In C++, for example,
+    you will need STL to give you these features.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The “dict” data structure is probably the most powerful one in Python and gives
+    us some convenience in writing code. For example, in the problem of image classification
+    between dogs and cats, our machine learning model may give you only a value of
+    0 or 1, and if you want to print the name, we can do:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In this case, we make use of the dict `value_to_name` as a lookup table. Similarly,
+    we can also make use of the dict to build a counter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will build a dict called `counter` that maps each character to the number
+    of occurrences in the sentence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Python list also comes with powerful syntax. Unlike some other languages, we
+    can put anything into a list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: and we can use `+` to concatenate lists. In the above, we use `+=` to extend
+    the list `A`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Python list has slicing syntax. For example, in the above `A`, we can make
+    `A[1:3]` to mean elements 1 and 2, i.e., `[2, "fizz"]` and `A[1:1]` is an empty
+    list. Indeed we can assign something to a slice to insert or remove some elements.
+    For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: and then,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Tuple has a similar syntax as list, except it is defined using parenthesis:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Tuple is immutable. It means you cannot modify it once it is defined. In Python,
+    if you put several things together with commas to separate each other, it is assumed
+    to be a tuple. The significance of this is that we can swap two variables in a
+    very clean syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, as you have seen in the examples above, Python strings support substitution
+    on the fly. With the similar template syntax as `printf()` function in C, we can
+    use `%s` to substitute a string or `%d` to substitute an integer. We can also
+    use `%.3f` to substitute a floating point number with 3 decimal places. Below
+    is an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: But this is just one of the many ways to do it. The above can also be achieved
+    using the f-string and format() method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Special variables
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Python has several “special variables” predefined. `__name__` tells the current
+    namespace, and `__file__` tells the filename of the script. More will be found
+    inside objects, but almost all of them are generally not supposed to be directly
+    used. As a convention (i.e., just a habit as no one is stopping you from doing
+    it), we name internal variables with an underscore or double underscore as a prefix
+    (by the way, double underscores are pronounced as “dunder” by some people). If
+    you’re from C++ or Java, these are equivalent to the private members of a class,
+    although they are not technically private.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One notable “special” variable that you may often see in Python code is `_`,
+    just an underscore character. It is by convention to mean a variable that we do
+    not care about. Why do you need a variable if you don’t care? That’s because sometimes
+    you hold a return value from a function. For example, in pandas, we can scan each
+    row of a dataframe:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above, we can see that the dataframe has three columns, “x,” “y,” and
+    “z,” and the rows are indexed by 0 to 3\. If we call `A.iterrows()`, it will give
+    us the index and the row one by one, but we don’t care about the index. We can
+    just create a new variable to hold it but not use it. To clarify that we are not
+    going to use it, we use `_` as the variable to hold the index while the row is
+    stored into variable `row`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Built-in functions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In Python, a small number of functions are defined as built-in while other
+    functionalities are delivered in other packages. The list of all built-in functions
+    are available in the Python Standard Library documentation ([https://docs.python.org/3/library/functions.html](https://docs.python.org/3/library/functions.html)).
+    Below are those defined in Python 3.10:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Not all are used every day, but some are particularly notable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`zip()` allows you to combine multiple lists together. For example,'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: And it is handy if you want to “pivot” a list of list, e.g.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: '`enumerate()` is handy to let you number a list of items, for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is equivalent to the following if you do not use `enumerate`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Compared to other languages, the for loop in Python is to iterate over a predefined
+    range rather than computing the values in each iteration. In other words, there
+    is no direct equivalence to the following C for loop:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: C
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and in Python, we have to use `range()` to do the same:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In a similar sense, there are some functions that manipulate a list (or list-like
+    data structures, which Python calls the “iterables”):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`max(a)`: To find the maximum value in list `a`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`min(a)`: To find the minimum value in list `a`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`sum(a)`: To find the sum of values in list `a`'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`reverse(a)`: To iterate from list `a` from back'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`sorted(a)`: To return a copy of list `a` with elements in sorted order'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We will cover more on these in the next post.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The above only highlighted some key features in Python. Surely there is no
+    more authoritative documentation than the official documentation from Python.org;
+    all beginners should start with the Python tutorial and check the Language Reference
+    for syntax details and the Standard Library for additional libraries that come
+    with the Python installation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Python Tutorial – [https://docs.python.org/3/tutorial/index.html](https://docs.python.org/3/tutorial/index.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Python Language Reference – [https://docs.python.org/3/reference/index.html](https://docs.python.org/3/reference/index.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Python Standard Library – [https://docs.python.org/3/library/index.html](https://docs.python.org/3/library/index.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: For books, *Learning Python* from Lutz is an old but good primer. After that,
+    *Fluent Python* can help you better understand the internal structure of the language.
+    However, if you want something quick, Al Sweigart’s book can help you quickly
+    pick up the language with examples. Once you get familiar with Python, you may
+    want to learn some quick tips for a particular task from the *Python Cookbook*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Learning Python*, 5th Edition by Mark Lutz, O’Reilly, 2013, [https://www.amazon.com/dp/1449355730/](https://www.amazon.com/dp/1449355730/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Fluent Python* by Luciano Ramalho, O’Reilly, 2015, [https://www.amazon.com/dp/1491946008/](https://www.amazon.com/dp/1491946008/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Automate the Boring Stuff with Python*, 2nd Edition by Al Sweigart, No Starch
+    Press, 2019, [https://www.amazon.com/dp/1593279922/](https://www.amazon.com/dp/1593279922/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Python Cookbook*, 3rd Edition by David Beazley and Brian K. Jones, O’Reilly,
+    2013, [https://www.amazon.com/dp/1449340377/](https://www.amazon.com/dp/1449340377/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you discovered some distinctive features of Python. Specifically,
+    you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The operators provided by Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some use of the built-in data structure
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some frequently used built-in functions and why they are useful
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

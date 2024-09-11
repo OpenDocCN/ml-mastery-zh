@@ -1,0 +1,365 @@
+- en: 'Calculus in Machine Learning: Why it Works'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/calculus-in-machine-learning-why-it-works/](https://machinelearningmastery.com/calculus-in-machine-learning-why-it-works/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Calculus is one of the core mathematical concepts in machine learning that permits
+    us to understand the internal workings of different machine learning algorithms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the important applications of calculus in machine learning is the gradient
+    descent algorithm, which, in tandem with backpropagation, allows us to train a
+    neural network model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover the integral role of calculus in machine
+    learning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Calculus plays an integral role in understanding the internal workings of machine
+    learning algorithms, such as the gradient descent algorithm for minimizing an
+    error function.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Calculus provides us with the necessary tools to optimise complex objective
+    functions as well as functions with multidimensional inputs, which are representative
+    of different machine learning applications.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/2343173724de7d980235b08b0537a98d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Calculus in Machine Learning: Why it Works'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Hasmik Ghazaryan Olson](https://unsplash.com/photos/N9OQ2ZHNwCs),
+    some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Calculus in Machine Learning
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Why Calculus in Machine Learning Works
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Calculus in Machine Learning**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A neural network model, whether shallow or deep, implements a function that
+    maps a set of inputs to expected outputs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The function implemented by the neural network is learned through a training
+    process, which iteratively searches for a set of weights that best enable the
+    neural network to model the variations in the training data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*A very simple type of function is a linear mapping from a single input to
+    a single output. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Page 187, Deep Learning, 2019.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Such a linear function can be represented by the equation of a line having
+    a slope, *m*, and a y-intercept, *c*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*y* = *mx* + *c*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Varying each of parameters, *m* and *c*, produces different linear models that
+    define different input-output mappings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/06f2f48544438dc59d5aeb0f3b1b0664.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Line Plot of Different Line Models Produced by Varying the Slope and Intercept
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from Deep Learning
+  prefs: []
+  type: TYPE_NORMAL
+- en: The process of learning the mapping function, therefore, involves the approximation
+    of these model parameters, or *weights*, that result in the minimum error between
+    the predicted and target outputs. This error is calculated by means of a loss
+    function, cost function, or error function, as often used interchangeably, and
+    the process of minimizing the loss is referred to as *function optimization*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can apply differential calculus to the process of function optimization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In order to understand better how differential calculus can be applied to function
+    optimization, let us return to our specific example of having a linear mapping
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Say that we have some dataset of single input features, *x*, and their corresponding
+    target outputs, *y*. In order to measure the error on the dataset, we shall be
+    taking the sum of squared errors (SSE), computed between the predicted and target
+    outputs, as our loss function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Carrying out a parameter sweep across different values for the model weights,
+    *w[0]* = *m* and *w[1]* = *c*, generates individual error profiles that are convex
+    in shape.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/6dc7ec225202bd839f403a3092a7b026.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Line Plots of Error (SSE) Profiles Generated When Sweeping Across a Range of
+    Values for the Slope and Intercept
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from Deep Learning
+  prefs: []
+  type: TYPE_NORMAL
+- en: Combining the individual error profiles generates a three-dimensional error
+    surface that is also convex in shape. This error surface is contained within a
+    weight space, which is defined by the swept ranges of values for the model weights,
+    *w[0]* and *w[1]*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/7ff228ddf4932af3e3b783f0fb109a9c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Three-Dimensional Plot of the Error (SSE) Surface Generated When Both Slope
+    and Intercept are Varied
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from Deep Learning
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moving across this weight space is equivalent to moving between different linear
+    models. Our objective is to identify the model that best fits the data among all
+    possible alternatives. The best model is characterised by the lowest error on
+    the dataset, which corresponds with the lowest point on the error surface.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*A convex or bowl-shaped error surface is incredibly useful for learning a
+    linear function to model a dataset because it means that the learning process
+    can be framed as a search for the lowest point on the error surface. The standard
+    algorithm used to find this lowest point is known as gradient descent. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Page 194, Deep Learning, 2019.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*The gradient descent algorithm, as the optimization algorithm, will seek to
+    reach the lowest point on the error surface by following its gradient downhill.
+    This descent is based upon the computation of the gradient, or slope, of the error
+    surface.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is where differential calculus comes into the picture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Calculus, and in particular differentiation, is the field of mathematics that
+    deals with rates of change.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Page 198, Deep Learning, 2019.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*More formally, let us denote the function that we would like to optimize by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*error =* f(*weights*)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: By computing the rate of change, or the slope, of the error with respect to
+    the weights, the gradient descent algorithm can decide on how to change the weights
+    in order to keep reducing the error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Why Calculus in Machine Learning Works**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The error function that we have considered to optimize is relatively simple,
+    because it is convex and characterised by a single global minimum.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nonetheless, in the context of machine learning, we often need to optimize more
+    complex functions that can make the optimization task very challenging. Optimization
+    can become even more challenging if the input to the function is also multidimensional.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Calculus provides us with the necessary tools to address both challenges.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose that we have a more generic function that we wish to minimize, and
+    which takes a real input, *x*, to produce a real output, *y*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*y* = f(*x*)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Computing the rate of change at different values of *x* is useful because it
+    gives us an indication of the changes that we need to apply to *x*, in order to
+    obtain the corresponding changes in *y*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since we are minimizing the function, our goal is to reach a point that obtains
+    as low a value of f(*x*) as possible that is also characterised by zero rate of
+    change; hence, a global minimum. Depending on the complexity of the function,
+    this may not necessarily be possible since there may be many local minima or saddle
+    points that the optimisation algorithm may remain caught into.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*In the context of deep learning, we optimize functions that may have many
+    local minima that are not optimal, and many saddle points surrounded by very flat
+    regions. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Page 84, Deep Learning, 2017.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Hence, within the context of deep learning, we often accept a suboptimal solution
+    that may not necessarily correspond to a global minimum, so long as it corresponds
+    to a very low value of f(*x*).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/9733b001cd18cf11fc3094249e73a168.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Line Plot of Cost Function to Minimize Displaying Local and Global Minima
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from Deep Learning
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the function we are working with takes multiple inputs, calculus also provides
+    us with the concept of *partial derivatives*; or in simpler terms, a method to
+    calculate the rate of change of *y* with respect to changes in each one of the
+    inputs, *x**[i]*, while holding the remaining inputs constant.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*This is why each of the weights is updated independently in the gradient descent
+    algorithm: the weight update rule is dependent on the partial derivative of the
+    SSE for each weight, and because there is a different partial derivative for each
+    weight, there is a separate weight update rule for each weight. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Page 200, Deep Learning, 2019.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Hence, if we consider again the minimization of an error function, calculating
+    the partial derivative for the error with respect to each specific weight permits
+    that each weight is updated independently of the others.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This also means that the gradient descent algorithm may not follow a straight
+    path down the error surface. Rather, each weight will be updated in proportion
+    to the local gradient of the error curve. Hence, one weight may be updated by
+    a larger amount than another, as much as needed for the gradient descent algorithm
+    to reach the function minimum.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_4?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-4),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered the integral role of calculus in machine learning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Calculus plays an integral role in understanding the internal workings of machine
+    learning algorithms, such as the gradient descent algorithm that minimizes an
+    error function based on the computation of the rate of change.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The concept of the rate of change in calculus can also be exploited to minimise
+    more complex objective functions that are not necessarily convex in shape.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The calculation of the partial derivative, another important concept in calculus,
+    permits us to work with functions that take multiple inputs.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.*****
+  prefs: []
+  type: TYPE_NORMAL

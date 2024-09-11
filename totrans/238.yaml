@@ -1,0 +1,372 @@
+- en: A Gentle Introduction to Indeterminate Forms and L’Hospital’s Rule
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-indeterminate-forms-and-lhospitals-rule/](https://machinelearningmastery.com/a-gentle-introduction-to-indeterminate-forms-and-lhospitals-rule/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Indeterminate forms are often encountered when evaluating limits of functions,
+    and limits in turn play an important role in mathematics and calculus. They are
+    essential for learning about derivatives, gradients, Hessians, and a lot more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover how to evaluate the limits of indeterminate
+    forms and the L’Hospital’s rule for solving them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to evaluate the limits of functions having indeterminate types of the form
+    0/0 and ∞/∞
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: L’Hospital’s rule for evaluating indeterminate types
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to convert more complex indeterminate types and apply L’Hospital’s rule
+    to them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![A Gentle Introduction to Indeterminate Forms and L’Hospital’s Rule Photo
+    credits, Mehreen Saeed, some rights reserved.](../Images/4f1c6c59d904f6be8fc7ee7aa5091808.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/IMG_9247-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Gentle Introduction to Indeterminate Forms and L’Hospital’s Rule Photo by
+    Mehreen Saeed, some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into 2 parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The indeterminate forms of type 0/0 and ∞/∞
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How to apply L’Hospital’s rule to these types
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Solved examples of these two indeterminate types
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: More complex indeterminate types
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How to convert the more complex indeterminate types to 0/0 and ∞/∞ forms
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Solved examples of such types
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Prerequisites
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial requires a basic understanding of the following two topics:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Limits and Continuity](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Evaluating limits](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you are not familiar with these topics, you can review them by clicking the
+    above links.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are Indeterminate Forms?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When evaluating limits, we come across situations where the [basic rules for
+    evaluating limits](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits)
+    might fail. For example, we can apply the quotient rule in case of rational functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: lim(x→a) f(x)/g(x) = (lim(x→a)f(x))/(lim(x→a)g(x))          if lim(x→a)g(x)≠0
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The above rule can only be applied if the expression in the denominator does
+    not approach zero as x approaches a. A more complicated situation arises if both
+    the numerator and denominator both approach zero as x approaches a. This is called
+    an indeterminate form of type 0/0\. Similarly, there are indeterminate forms of
+    the type ∞/∞, given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: lim(x→a) f(x)/g(x) = (lim(x→a)f(x))/(lim(x→a)g(x)) when lim(x→a)f(x)=∞ and lim(x→a)g(x)=∞
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is L’Hospital’s Rule?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The L’Hospital rule states the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![L''Hospital rule](../Images/4c337ca00d088fa9a381ac750321ec53.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rule.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: L’Hospital’s rule
+  prefs: []
+  type: TYPE_NORMAL
+- en: When to Apply L’Hospital’s Rule
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'An important point to note is that L’Hospital’s rule is only applicable when
+    the conditions for f(x) and g(x) are met. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: lim(????→0) sin(x)/(x+1) Cannot apply L’Hospital’s rule as it’s not 0/0 form
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: lim(????→0) sin(x)/x Can apply the rule as it’s 0/0 form
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: lim(????→∞) (e^x)/(1/x+1) Cannot apply L’Hospital’s rule as it’s not ∞/∞ form
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: lim(????→∞) (e^x)/x Can apply L’Hospital’s rule as it is ∞/∞ form
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Examples of 0/0 and ∞/∞
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Some examples of these two types, and how to solve them are shown below. You
+    can also refer to the figure below to refer to these functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Example 1.1: 0/0'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Evaluate lim(????→2) ln(x-1)/(x-2) (See the left graph in the figure)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![lim(????→2) ln(x-1)/(x-2)=1](../Images/4afeea316d5bc47499ed342d4be99554.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex11.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: lim(????→2) ln(x-1)/(x-2)=1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Example 1.2: ∞/∞'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Evaluate lim(????→∞) ln(x)/x (See the right graph in the figure)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![lim(????→∞) ln(x)/x=0](../Images/59f743b8d85b0355a4808db77311c8b1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex12.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: lim(????→∞) ln(x)/x=0
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Graphs of examples 1.1 and 1.2](../Images/1cbf611a8751998f2d9fddcd25758b66.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/hosp1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Graphs of examples 1.1 and 1.2
+  prefs: []
+  type: TYPE_NORMAL
+- en: More Indeterminate Forms
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The L’Hospital rule only tells us how to deal with 0/0 or ∞/∞ forms. However,
+    there are more indeterminate forms that involve products, differences, and powers.
+    So how do we deal with the rest? We can use some clever tricks in mathematics
+    to convert products, differences and powers into quotients. This can enable us
+    to easily apply L’Hospital rule to almost all indeterminate forms. The table below
+    shows various indeterminate forms and how to deal with them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![How to solve more complex indeterminate forms](../Images/35e4a76281de7329a1827495a8f04ea5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/hosp2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to solve more complex indeterminate forms
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The following examples show how you can convert one indeterminate form to either
+    0/0 or ∞/∞ form and apply L’Hospital’s rule to solve the limit. After the worked
+    out examples you can also look at the graphs of all the functions whose limits
+    are calculated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Example 2.1: 0.∞'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Evaluate lim(????→∞) x.sin(1/x) (See the first graph in the figure)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![lim(????→∞) x.sin(1/x)=1](../Images/f92015a7d6b4d8186902610f3887a513.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex21.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: lim(????→∞) x.sin(1/x)=1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Example 2.2: ∞-∞'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Evaluate lim(????→0) 1/(1-cos(x)) – 1/x (See the second graph in the figure
+    below)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![lim(????→0) 1/(1-cos(x)) - 1/x = ∞](../Images/3f79ec8d6b75158b4e6433fe4b054fd7.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex22.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: lim(????→0) 1/(1-cos(x)) – 1/x =∞
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Example 2.3: Power form'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Evaluate lim(????→∞) (1+x)^(1/x) (See the third graph in the figure below)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![lim(????→∞) (1+x)^(1/x)=1](../Images/c3289a40a43e2e0056247255dcd858f8.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex23.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: lim(????→∞) (1+x)^(1/x)=1
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Graphs of examples 2.1, 2.2, and 2.3](../Images/395967e73f577b87aefd3e9685a3dd97.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/hosp3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Graphs of examples 2.1, 2.2, and 2.3
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extensions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section lists some ideas for extending the tutorial that you may wish to
+    explore.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cauchy’s Mean Value Theorem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Rolle’s theorem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you explore any of these extensions, I’d love to know. Post your findings
+    in the comments below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Limits and Continuity](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Evaluating limits](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Resources
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Additional resources on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Thomas’ Calculus](https://amzn.to/35Yeolv), 14th edition, 2017\. (based on
+    the original works of George B. Thomas, revised by Joel Hass, Christopher Heil,
+    Maurice Weir)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US),
+    3rd Edition, 2017\. (Gilbert Strang)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://amzn.to/3kS9I52), 8th edition, 2015\. (James Stewart)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered the concept of indeterminate forms and how
+    to evaluate them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Indeterminate forms of type 0/0 and ∞/∞
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: L’Hospital rule for evaluating types 0/0 and ∞/∞
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Indeterminate forms of type 0.∞, ∞-∞, and power forms, and how to evaluate them.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,443 @@
+- en: 'Harmonizing Data: A Symphony of Segmenting, Concatenating, Pivoting, and Merging'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/harmonizing-data-a-symphony-of-segmenting-concatenating-pivoting-and-merging/](https://machinelearningmastery.com/harmonizing-data-a-symphony-of-segmenting-concatenating-pivoting-and-merging/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In a data science project, the data you collect is often not in the shape that
+    you want it to be. Often you will need to create derived features, aggregate subsets
+    of data into a summarized form, or select a portion of the data according to some
+    complex logic. This is not a hypothetical situation. In a project big or small,
+    the data you obtained at the first step is very likely far from ideal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a data scientist, you must be handy to format the data into the right shape
+    to make your subsequent steps easier. In the following, you will learn how to
+    slice and dice the dataset in pandas as well as reassemble them into a very different
+    form to make the useful data more pronounced, so that analysis can be easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/b696b299f843eaf29bccadb880187738.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Harmonizing Data: A Symphony of Segmenting, Concatenating, Pivoting, and Merging'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Samuel Sianipar](https://unsplash.com/photos/group-of-person-playing-violin-4TNd3hsW3PM).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Segmenting and Concatenating: Choreographing with Pandas'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Pivoting and Merging: Dancing with Pandas'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Segmenting and Concatenating: Choreographing with Pandas'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'One intriguing question you might pose is: How does the year a property was
+    built influence its price? To investigate this, you can segment the dataset by
+    ‘SalePrice’ into four quartiles—Low, Medium, High, and Premium—and analyze the
+    construction years within these segments. This methodical division of the dataset
+    not only paves the way for a focused analysis but also reveals trends that might
+    be concealed within a collective review.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Segmentation Strategy: Quartiles of ‘SalePrice’**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let’s begin by creating a new column that neatly classifies the ‘SalePrice’
+    of properties into your defined price categories:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By executing the above code, you have enriched your dataset with a new column
+    entitled ‘Price_Category’. Here’s a glimpse of the output you’ve obtained:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Visualizing Trends with the Empirical Cumulative Distribution Function (ECDF)**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can now split the original dataset into four DataFrames and proceed to visualize
+    the cumulative distribution of construction years within each price category.
+    This visual will help your understand at a glance the historical trends in property
+    construction as they relate to pricing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Below is the ECDF plot, which provides a visual summation of the data you’ve
+    categorized. An ECDF, or Empirical Cumulative Distribution Function, is a statistical
+    tool used to describe the distribution of data points in a dataset. It represents
+    the proportion or percentage of data points that fall below or at a certain value.
+    Essentially, it gives you a way to visualize the distribution of data points across
+    different values, providing insights into the shape, spread, and central tendency
+    of the data. ECDF plots are particularly useful because they allow for easy comparison
+    between different datasets. Notice how the curves for each price category give
+    you a narrative of housing trends over the years.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/a222055d0fe41c6fb234e8763d858159.png)](https://machinelearningmastery.com/wp-content/uploads/2024/02/Figure_1-2.png)From
+    the plot, it is evident that lower and medium-priced homes have a higher frequency
+    of being built in earlier years, while high and premium-priced homes tend to be
+    of more recent construction. Armed with the understanding that property age varies
+    significantly across price segments, you find a compelling reason to use `Pandas.concat()`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Stacking Datasets with `Pandas.concat()`**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'As data scientists, you often need to stack datasets or their segments to glean
+    deeper insights. The `Pandas.concat()` function is your Swiss Army knife for such
+    tasks, enabling you to combine DataFrames with precision and flexibility. This
+    powerful function is reminiscent of SQL’s `UNION` operation when it comes to combining
+    rows from different datasets. Yet, `Pandas.concat()` stands out by offering greater
+    flexibility—it allows both vertical and horizontal concatenation of DataFrames.
+    This feature becomes indispensable when you work with datasets that have non-matching
+    columns or when you need to align them by common columns, significantly broadening
+    your analytical scope. Here’s how you can combine the segmented DataFrames to
+    compare the broader market categories of ‘affordable’ and ‘luxury’ homes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Through this, you can juxtapose and analyze the characteristics that differentiate
+    more accessible homes from their expensive counterparts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Pivoting and Merging: Dancing with Pandas'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Having segmented the dataset into ‘affordable’ and ‘luxury’ homes and explored
+    the distribution of their construction years, you now turn your attention to another
+    dimension that influences property value: amenities, with a focus on the number
+    of fireplaces. Before you delve into merging datasets—a task for which `Pandas.merge()`
+    stands as a robust tool comparable to SQL’s `JOIN`—you must first examine your
+    data through a finer lens.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pivot tables are an excellent tool for summarizing and analyzing specific data
+    points within the segments. They provide you with the ability to aggregate data
+    and reveal patterns that can inform your subsequent merge operations. By creating
+    pivot tables, you can compile a clear and organized overview of the average living
+    area and the count of homes, categorized by the number of fireplaces. This preliminary
+    analysis will not only enrich your understanding of the two market segments but
+    also set a solid foundation for the intricate merging techniques you want to show.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Creating Insightful Summaries with Pivot Tables**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s commence by constructing pivot tables for the ‘affordable’ and ‘luxury’
+    home categories. These tables will summarize the average gross living area (GrLivArea)
+    and provide a count of homes for each category of fireplaces present. Such analysis
+    is crucial as it illustrates a key aspect of home desirability and value—the presence
+    and number of fireplaces—and how these features vary across different segments
+    of the housing market.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: With these pivot tables, you can now easily visualize and compare how features
+    like fireplaces correlate with the living area and how frequently they occur within
+    each segment. The first pivot table was crafted from the ‘affordable’ homes DataFrame
+    and demonstrates that most properties within this grouping do not have any fireplaces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The second pivot table which was derived from the ‘luxury’ homes DataFrame illustrates
+    that properties within this subset have a range of zero to four fireplaces, with
+    one fireplace being the most common.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: With the creation of the pivot tables, you’ve distilled the data into a form
+    that’s ripe for the next analytical step—melding these insights using `Pandas.merge()`
+    to see how these features interplay across the broader market.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The pivot table above is the simplest one. The more advanced version allows
+    you to specify not only the index but also the columns in the argument. The idea
+    is similar: you pick two columns, one specified as `index` and the other as `columns`
+    argument, which the values of these two columns are aggregated and become a matrix.
+    The value in the matrix is then the result as specified by the `aggfunc` argument.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can consider the following example, which produces a similar result as
+    above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see the result is the same by comparing, for example, the count of low
+    and medium homes of zero fireplaces to be 520 and 411, respectively, which 931
+    = 520+411 as you obtained previously. You see the second-level columns are labeled
+    with Low, Medium, High, and Premium because you specified “Price_Category” as
+    `columns` argument in `pivot_table()`. The dictionary to the `aggfunc` argument
+    gives the top-level columns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Towards Deeper Insights: Leveraging `Pandas.merge()` for Comparative Analysis**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Having illuminated the relationship between fireplaces, home count, and living
+    area within the segmented datasets, you are well-positioned to take your analysis
+    one step further. With `Pandas.merge()`, you can overlay these insights, akin
+    to how SQL’s `JOIN` operation combines records from two or more tables based on
+    a related column. This technique will allow you to merge the segmented data on
+    a common attribute, enabling a comparative analysis that transcends categorization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our first operation uses an **outer join** to combine the affordable and luxury
+    home datasets, ensuring no data is lost from either category. This method is particularly
+    illuminating as it reveals the full spectrum of homes, regardless of whether they
+    share a common number of fireplaces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this case, the outer join functions similarly to a right join, capturing
+    every distinct category of fireplaces present across both market segments. It
+    is interesting to note that there are no properties within the affordable price
+    range that have 3 or 4 fireplaces. You need to specify two strings for the `suffixes`
+    argument because the “HmCount” and “AvLivArea” columns exist in both DataFrames
+    `pivot_affordable` and `pivot_luxury`. You see “HmCount_aff” is zero for 3 and
+    4 fireplaces because you need them as a placeholder for the outer join to match
+    the rows in `pivot_luxury`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, you can use the **inner join**, focusing on the intersection where affordable
+    and luxury homes share the same number of fireplaces. This approach highlights
+    the core similarities between the two segments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Interestingly, in this context, the inner join mirrors the functionality of
+    a left join, showcasing categories present in both datasets. You do not see the
+    rows corresponding to 3 and 4 fireplaces because it is the result of inner join,
+    and there are no such rows in the DataFrame `pivot_affordable`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, a **cross join** allows you to examine every possible combination of
+    affordable and luxury home attributes, offering a comprehensive view of how different
+    features interact across the entire dataset. The result is sometimes called the
+    **Cartesian product** of rows from the two DataFrames.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result is as follows, which demonstrates the result of cross-join but does
+    not provide any special insight in the context of this dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Deriving Insights from Merged Data**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'With these merge operations complete, you can delve into the insights they
+    unearth. Each join type sheds light on different aspects of the housing market:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The **outer join** reveals the broadest range of properties, emphasizing the
+    diversity in amenities like fireplaces across all price points.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **inner join** refines your view, focusing on the direct comparisons where
+    affordable and luxury homes overlap in their fireplace counts, providing a clearer
+    picture of standard market offerings.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The **cross join** offers an exhaustive combination of features, ideal for hypothetical
+    analyses or understanding potential market expansions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'After conducting these merges, you observe **amongst affordable homes** that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Homes with no fireplaces have an average gross living area of approximately
+    1159 square feet and constitute the largest segment.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As the number of fireplaces increases to one, the average living area expands
+    to around 1296 square feet, underscoring a noticeable uptick in living space.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Homes with two fireplaces, though fewer in number, boast an even larger average
+    living area of approximately 1379 square feet, highlighting a trend where additional
+    amenities correlate with more generous living spaces.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In contrast, you observe **amongst luxury homes** that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The luxury segment presents a starting point with homes without fireplaces averaging
+    1560 square feet, significantly larger than their affordable counterparts.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The leap in the average living area is more pronounced as the number of fireplaces
+    increases, with one-fireplace homes averaging about 1805 square feet.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Homes with two fireplaces further amplify this trend, offering an average living
+    area of nearly 1998 square feet. The rare presence of three and even four fireplaces
+    in homes marks a significant increase in living space, peaking at an expansive
+    2646 square feet for a home with four fireplaces.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: These observations offer a fascinating glimpse into how amenities such as fireplaces
+    not only add to the desirability of homes but also appear to be a marker of larger
+    living spaces, particularly as you move from affordable to luxury market segments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Beginner's Guide to Data Science?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[`Pandas.concat()` Method](https://pandas.pydata.org/docs/reference/api/pandas.concat.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Pandas’ `DataFrame.pivot_table()` Method](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pivot_table.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[`Pandas.merge()` Method](https://pandas.pydata.org/docs/reference/api/pandas.merge.html#pandas.merge)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Resources**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this comprehensive exploration of data harmonization techniques using Python
+    and Pandas, you’ve delved into the intricacies of segmenting, concatenating, pivoting,
+    and merging datasets. From dividing datasets into meaningful segments based on
+    price categories to visualizing trends in construction years, and from stacking
+    datasets to analyzing broader market categories using `Pandas.concat()`, to summarizing
+    and analyzing data points within segments using pivot tables, you’ve covered a
+    wide array of essential data manipulation and analysis techniques. Additionally,
+    by leveraging `Pandas.merge()` to compare segmented datasets and derive insights
+    from different types of merge operations (outer, inner, cross), you’ve unlocked
+    the power of data integration and exploration. Armed with these techniques, data
+    scientists and analysts can navigate the complex landscape of data with confidence,
+    uncovering hidden patterns, and extracting valuable insights that drive informed
+    decision-making.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to divide datasets into meaningful segments based on price categories and
+    visualize trends in construction years.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The use of `Pandas.concat()` to stack datasets and analyze broader market categories.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The role of pivot tables in summarizing and analyzing data points within segments.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to leverage `Pandas.merge()` to compare segmented datasets and derive insights
+    from different types of merge operations (outer, inner, cross).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

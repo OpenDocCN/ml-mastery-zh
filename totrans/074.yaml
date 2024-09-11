@@ -1,0 +1,363 @@
+- en: How to Read and Display Videos Using OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/how-to-read-and-display-videos-using-opencv/](https://machinelearningmastery.com/how-to-read-and-display-videos-using-opencv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Digital videos are close relatives of digital images because they are made up
+    of many digital images sequentially displayed in rapid succession to create the
+    effect of moving visual data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The OpenCV library provides several methods to work with videos, such as reading
+    video data from different sources and accessing several of their properties.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will familiarise yourself with the most basic OpenCV operations
+    essential when working with videos.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How a digital video is formulated as a close relative of digital images.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the image frames comprising a video are read from a camera.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the image frames comprising a video are read from a saved video file.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started. [![](../Images/792c2009444a72a75be38d2515da4e20.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/video_basics_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and Displaying Videos Using OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Thomas William](https://unsplash.com/photos/4qGbMEZb56c), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How is a Video Formulated?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading and Displaying Image Frames From a Camera
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading and Displaying Image Frames From a Video File
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**How is a Video Formulated?**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have seen that a digital image comprises pixels, with each pixel characterized
+    by its *spatial coordinates* inside the image space and its *intensity* or *gray
+    level* value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have also mentioned that a grayscale image comprising a single channel can
+    be describedby a 2D function, *I*(*x*, *y*), where *x* and *y* denote the aforementioned
+    spatial coordinates, and the value of *I* at any image position (*x*, *y*) denotes
+    the pixel intensity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An RGB image, in turn, can be described by three of these 2D functions, *I**[R]*(*x*,
+    *y*), *I**[G]*(*x*, *y*), and *I**[B]*(*x*, *y*), corresponding to its Red, Green,
+    and Blue channels, respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In describing digital video, we shall add an extra dimension, *t*, which denotes
+    *time*. The reason for doing so is that digital video comprises digital images
+    sequentially displayed in rapid succession across a period. Within the context
+    of video, we shall be referring to these images as *image frames*. The rate at
+    which frames are displayed in succession is referred to as *frame rate* and is
+    measured in *frames per second*, or FPS in short.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hence, if we had to pick an image frame out of a *grayscale* video at a specific
+    time instance, *t*, we would describe it by the function, *I*(*x*, *y, t*), which
+    now includes a temporal dimension.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similarly, if we had to pick an image frame out of an *RGB* video at a specific
+    time instance, *t*, we would describe it by three functions: *I**[R]*(*x*, *y,
+    t*), *I**[G]*(*x*, *y, t*), and *I**[B]*(*x*, *y, t*), corresponding to its Red,
+    Green, and Blue channels, respectively.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our formulation tells us that the data contained in digital video is *time-dependent*,
+    which means that the data changes over time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In simpler terms, this means that the intensity value of a pixel with coordinates
+    (*x*, *y*) at time instance, *t*, will likely be different from its intensity
+    value at another time instance, (*t* + 1). This change in intensity values might
+    come from the fact that the physical scene being recorded is changing but also
+    from the presence of noise in the video data (originating, for instance, from
+    the camera sensor itself).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Reading and Displaying Image Frames From a Camera**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To read image frames either from a camera that is connected to your computer
+    or a video file that is stored on your hard disk, our first step will be to create
+    a `VideoCapture` object to work with. The required argument is either the index
+    value of the type `int` corresponding to the camera to read from or the video
+    file name.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s start first by grabbing image frames from a camera.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you have a webcam that is built into or connected to your computer, then
+    you may index it by a value of `0`. If you have additional connected cameras that
+    you would otherwise wish to read from, then you may index them with a value of
+    `1`, `2`, etc., depending on how many cameras you have available.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Before attempting to read and display image frames, it would be sensible to
+    check that a connection to the camera has been established successfully. The `capture.isOpened()`
+    method can be used for this purpose, which returns `False` in case the connection
+    could not be established:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If the camera has, otherwise, been successfully connected, we may proceed to
+    read the image frames by making use of the `capture.read()` the method as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This method returns the next image frame in `frame`, together with a boolean
+    value `ret` that is `True` if an image frame has been successfully grabbed or,
+    conversely, `False` if the method has returned an empty image. The latter can
+    happen if, for instance, the camera has been disconnected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Displaying the grabbed image frameworks in the same way as we had done for
+    the still images, using the `imshow` method:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Always keep in mind that when working with OpenCV, each image frame is read
+    in BGR color format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the complete code listing, we’re going to place the code above inside a
+    `while` loop that will keep on grabbing image frames from the camera until the
+    user terminates it. For the purpose of letting the user terminate the `while`
+    loop, we will include the following two lines of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the `waitKey` function stops and waits for a keyboard event for the specified
+    amount of milliseconds. It returns the code of the pressed key, or -1 if no keyboard
+    event is generated until the specified time has elapsed. In our particular case,
+    we have specified a time window of 25ms, and we are checking for an ASCII code
+    of `27` that corresponds to pressing the `Esc` key. When the `Esc` key is pressed,
+    the `while` loop is terminated by a `break` command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The very last lines of code that we shall be including serve to stop the video
+    capture, deallocate the memory, and close the window being used for image display:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: In some laptop computers, you will see a small LED lit up next to your built-in
+    webcam when the video capture is used. You need to stop the video capture to turn
+    off that LED. It doesn’t matter if your program is reading from the camera. You
+    must also stop the video capture before another program can use your webcam.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete code listing is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Reading and Displaying Image Frames From a Video File**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It is, alternatively, possible to read image frames from a video file stored
+    on your hard disk. OpenCV supports many video formats. For this purpose, we will
+    modify our code to specify a path to a video file rather than an index to a camera.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I downloaded [this video](https://www.videvo.net/video/rising-up-over-a-river/452789/),
+    renamed it to *Iceland.mp4,* and saved it to a local folder called *Videos*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I can see from the video properties displayed on my local drive that the video
+    comprises image frames of dimensions 1920 x 1080 pixels and that it runs at a
+    frame rate of 25 fps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To read the image frames of this video, we shall be modifying the following
+    line of code as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It is also possible to get several properties of the capture object, such as
+    the image frames’ width and height, as well as the frame rate:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The complete code listing is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The video has a time dimension. But in OpenCV, you are dealing with one **frame**
+    at a time. This can make the video processing consistent with image processing
+    so you can reuse the techniques from one to another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We may include other lines of code inside the `while` loop to process every
+    image frame after this has been grabbed by the `capture.read()` method. One example
+    is to convert each BGR image frame into grayscale, for which we may use the same
+    `cvtColor` method that [we used for converting still images](https://machinelearningmastery.com/reading-and-displaying-images-and-converting-between-color-spaces-using-opencv):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: What other transformations can you think of to apply to the image frames?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you familiarize yourself with the most basic OpenCV operations
+    essential when working with videos.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How a digital video is formulated as a close relative of digital images.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the image frames comprising a video are read from a camera.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the image frames comprising a video are read from a saved video file.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

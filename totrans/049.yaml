@@ -1,0 +1,325 @@
+- en: Exploring Dictionaries, Classifying Variables, and Imputing Data in the Ames
+    Dataset
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/classifying_variables/](https://machinelearningmastery.com/classifying_variables/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The real estate market is a complex ecosystem driven by numerous variables such
+    as location, property features, market trends, and economic indicators. One dataset
+    that offers a deep dive into this complexity is the Ames Housing dataset. Originating
+    from Ames, Iowa, this dataset comprises various properties and their characteristics,
+    ranging from the type of alley access to the overall condition of the property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, you aim to take a closer look at this dataset using data science
+    techniques. Specifically, you’ll focus on how to identify categorical and numerical
+    variables, as understanding these variables is crucial for any data-driven decision-making
+    process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/901cfca1dbcdd2b628de1d387de9db36.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Exploring Dictionaries, Classifying Variables, and Imputing Data in the Ames
+    Dataset
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Brigitte Tohm](https://unsplash.com/photos/pink-petaled-flowers-bouquet-1i4P2B148FQ).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Importance of a Data Dictionary
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Identifying Categorical and Numerical Variables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Missing Data Imputation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**The Importance of a Data Dictionary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A crucial first step in analyzing the Ames Housing dataset is utilizing its
+    [data dictionary](https://jse.amstat.org/v19n3/decock/DataDocumentation.txt).
+    This version does more than list and define the features; it categorizes them
+    into **nominal**, **ordinal**, **discrete**, and **continuous** types, guiding
+    our analysis approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Nominal Variables** are categories without an order like ‘Neighborhood’.
+    They help in identifying segments for grouping analysis.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Ordinal Variables** have a clear order (e.g ‘KitchenQual’). They allow for
+    ranking and order-based analysis but don’t imply equal spacing between categories.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Discrete Variables** are countable numbers, like ‘Bedroom’. They are integral
+    to analyses that sum or compare quantities.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Continuous Variables** measure on a continuous scale, like ‘Lot Area’. They
+    enable a wide range of statistical analyses that depend on granular detail.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understanding these variable types also guides the selection of appropriate
+    visualization techniques. **Nominal and ordinal variables** are well-suited to
+    bar charts, which can effectively highlight categorical differences and rankings.
+    In contrast, **discrete and continuous variables** are best represented through
+    histograms, scatter plots, and line charts, which illustrate distributions, relationships,
+    and trends within the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Identifying Categorical and Numerical Variables**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Building on our understanding of the data dictionary, let’s delve into how we
+    can practically distinguish between categorical and numerical variables within
+    the Ames dataset using Python’s pandas library. This step is crucial for informing
+    our subsequent data processing and analysis strategies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Executing the above code will yield the following output, categorizing each
+    feature by its data type:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This output reveals that the dataset comprises `object` (44 variables), `int64`
+    (27 variables), and `float64` (14 variables) data types. Here, `object` typically
+    indicates nominal variables, which are categorical data without an inherent order.
+    Meanwhile, `int64` and `float64` suggest numerical data, which could be either
+    discrete (`int64` for countable numbers) or continuous (`float64` for measurable
+    quantities on a continuous scale).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now we can leverage pandas’ `select_dtypes()` method to explicitly separate
+    numerical and categorical features within the Ames dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `numerical_features` captures variables stored as `int64` and `float64`,
+    indicative of countable and measurable quantities, respectively. Conversely, the
+    `categorical_features` comprises variables of type `object`, typically representing
+    nominal or ordinal data without a quantitative value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notably, some variables, like ‘MSSubClass’ despite being encoded numerically,
+    actually serve as categorical data, underscoring the importance of referring back
+    to our data dictionary for accurate classification. Similarly, features like ‘MoSold’
+    (Month Sold) and ‘YrSold’ (Year Sold) are numerical in nature, but they can often
+    be treated as categorical variables, especially when there is no interest in performing
+    mathematical operations on them. We can use the `astype()` method in pandas to
+    convert these to categorical features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: After performing this conversion, the count of columns with the `object` data
+    type has increased to 47 (from the previous 44), while `int64` has dropped to
+    24 (from 27).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: A careful assessment of the data dictionary, the nature of the dataset, and
+    domain expertise can contribute to properly reclassifying data types.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Missing Data Imputation**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Dealing with missing data is a challenge that every data scientist faces. Ignoring
+    missing values or handling them inadequately can lead to skewed analysis and incorrect
+    conclusions. The choice of imputation technique often depends on the nature of
+    the data—categorical or numerical. In addition, information in the data dictionary
+    will be useful (such as the case for Pool Quality) where a missing value (“NA”)
+    has a meaning, namely the absence of this feature for a particular property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Data Imputation For Categorical Features with Missing Values**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can identify categorical data types and rank them in the order in which
+    they are most affected by missing data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The data dictionary indicates that missing values for the entire list of categorical
+    features above indicate the absence of that feature for a given property, except
+    for “Electrical”. With this insight, we can impute with the “mode” for the 1 missing
+    data point for the electrical system and impute all others using `"None"` (with
+    quotations to make it a Python string).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This confirms that there are now no more missing values for categorical features:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Data Imputation For Numerical Features with Missing Values**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can apply the same technique demonstrated above to identify numerical data
+    types and rank them in the order in which they are most affected by missing data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above illustrates that there are fewer instances of missing numerical data
+    versus missing categorical data. However, the data dictionary is not as useful
+    for a straightforward imputation. Whether or not to impute missing data in data
+    science largely depends on the goal of the analysis. Often, a data scientist may
+    generate multiple imputations to account for the uncertainty in the imputation
+    process. Common multiple imputation methods include (but are not limited to) mean,
+    median, and regression imputation. As a baseline, we will illustrate how to employ
+    mean imputation here, but may refer to other techniques depending on the task
+    at hand.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: At times, we may also opt to leave the missing value without any imputation
+    to retain the authenticity of the original dataset and remove the observations
+    that do not have complete and accurate data if required. Alternatively, you may
+    also try to build a machine learning model to **guess** the missing value based
+    on some other data in the same rows, which is the principle behind imputation
+    by regression. As a final step of the above baseline imputation, let us cross-check
+    if there are any missing values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should see:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Congratulations! We have successfully imputed every missing value in the Ames
+    dataset using baseline operations. It’s important to note that numerous other
+    techniques exist for imputing missing data. As a data scientist, exploring various
+    options and determining the most appropriate method for the given context is crucial
+    to producing reliable and meaningful results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Beginner's Guide to Data Science?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**Resources**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary (Expanded Version)](https://jse.amstat.org/v19n3/decock/DataDocumentation.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, we explored the Ames Housing dataset through the lens of data
+    science techniques. We discussed the importance of a data dictionary in understanding
+    the dataset’s variables and dove into Python code snippets that help identify
+    and handle these variables effectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding the nature of the variables you’re working with is crucial for
+    any data-driven decision-making process. As we’ve seen, the Ames data dictionary
+    serves as a valuable guide in this respect. Coupled with Python’s powerful data
+    manipulation libraries, navigating complex datasets like the Ames Housing dataset
+    becomes a much more manageable task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The importance of a data dictionary when assessing data types and imputation
+    strategies.**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***   **Identification and reclassification methods for numerical and categorical
+    features.*****   **How to impute missing categorical and numerical features using
+    the pandas library.******'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '******Do you have any questions? Please ask your questions in the comments
+    below, and I will do my best to answer.******'
+  prefs: []
+  type: TYPE_NORMAL

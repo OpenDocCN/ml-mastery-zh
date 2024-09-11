@@ -1,0 +1,411 @@
+- en: Plotting the Training and Validation Loss Curves for the Transformer Model
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/plotting-the-training-and-validation-loss-curves-for-the-transformer-model/](https://machinelearningmastery.com/plotting-the-training-and-validation-loss-curves-for-the-transformer-model/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: We have previously seen how to train the Transformer model for neural machine
+    translation. Before moving on to inferencing the trained model, let us first explore
+    how to modify the training code slightly to be able to plot the training and validation
+    loss curves that can be generated during the learning process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The training and validation loss values provide important information because
+    they give us a better insight into how the learning performance changes over the
+    number of epochs and help us diagnose any problems with learning that can lead
+    to an underfit or an overfit model. They will also inform us about the epoch with
+    which to use the trained model weights at the inferencing stage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover how to plot the training and validation
+    loss curves for the Transformer model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to modify the training code to include validation and test splits, in addition
+    to a training split of the dataset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to modify the training code to store the computed training and validation
+    loss values, as well as the trained model weights
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to plot the saved training and validation loss curves
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/8597482be644bf2982b6f4c90e8493e3.png)](https://machinelearningmastery.com/wp-content/uploads/2022/10/training_validation_loss_cover.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plotting the training and validation loss curves for the Transformer model
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Jack Anstey](https://unsplash.com/photos/zS4lUqLEiNA), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recap of the Transformer Architecture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing the Training, Validation, and Testing Splits of the Dataset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training the Transformer Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Plotting the Training and Validation Loss Curves
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you are already familiar with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[The theory behind the Transformer model](https://machinelearningmastery.com/the-transformer-model/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[An implementation of the Transformer model](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Training the Transformer model](https://machinelearningmastery.com/training-the-transformer-model/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Recap of the Transformer Architecture**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Recall](https://machinelearningmastery.com/the-transformer-model/) having
+    seen that the Transformer architecture follows an encoder-decoder structure. The
+    encoder, on the left-hand side, is tasked with mapping an input sequence to a
+    sequence of continuous representations; the decoder, on the right-hand side, receives
+    the output of the encoder together with the decoder output at the previous time
+    step to generate an output sequence.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The encoder-decoder structure of the Transformer architecture
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: In generating an output sequence, the Transformer does not rely on recurrence
+    and convolutions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You have seen how to train the complete Transformer model, and you shall now
+    see how to generate and plot the training and validation loss values that will
+    help you diagnose the model’s learning performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Preparing the Training, Validation, and Testing Splits of the Dataset**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In order to be able to include validation and test splits of the data, you
+    will modify the code that [prepares the dataset](https://machinelearningmastery.com/?p=13585&preview=true)
+    by introducing the following lines of code, which:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specify the size of the validation data split. This, in turn, determines the
+    size of the training and test splits of the data, which we will be dividing into
+    a ratio of 80:10:10 for the training, validation, and test sets, respectively:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Split the dataset into validation and test sets in addition to the training
+    set:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Prepare the validation data by tokenizing, padding, and converting to a tensor.
+    For this purpose, you will collect these operations into a function called `encode_pad`,
+    as shown in the complete code listing below. This will avoid excessive repetition
+    of code when performing these operations on the training data as well:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the encoder and decoder tokenizers into pickle files and the test dataset
+    into a text file to be used later during the inferencing stage:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The complete code listing is now updated as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Training the Transformer Model**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We shall introduce similar modifications to the code that [trains the Transformer
+    model](https://machinelearningmastery.com/?p=13585&preview=true) to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Prepare the validation dataset batches:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Monitor the validation loss metric:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Initialize dictionaries to store the training and validation losses and eventually
+    store the loss values in the respective dictionaries:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Compute the validation loss:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the trained model weights at every epoch. You will use these at the inferencing
+    stage to investigate the differences in results that the model produces at different
+    epochs. In practice, it would be more efficient to include a callback method that
+    halts the training process based on the metrics that are being monitored during
+    training and only then save the model weights:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Finally, save the training and validation loss values into pickle files:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The modified code listing now becomes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Plotting the Training and Validation Loss Curves**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to be able to plot the training and validation loss curves, you will
+    first load the pickle files containing the training and validation loss dictionaries
+    that you saved when training the Transformer model earlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then you will retrieve the training and validation loss values from the respective
+    dictionaries and graph them on the same plot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The code listing is as follows, which you should save into a separate Python
+    script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running the code above generates a similar plot of the training and validation
+    loss curves to the one below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/857677d969f9ea1636d3455ad9447958.png)](https://machinelearningmastery.com/wp-content/uploads/2022/10/training_validation_loss_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Line plots of the training and validation loss values over several training
+    epochs
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that although you might see similar loss curves, they might not necessarily
+    be identical to the ones above. This is because you are training the Transformer
+    model from scratch, and the resulting training and validation loss values depend
+    on the random initialization of the model weights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nonetheless, these loss curves give us a better insight into how the learning
+    performance changes over the number of epochs and help us diagnose any problems
+    with learning that can lead to an underfit or an overfit model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For more details on using the training and validation loss curves to diagnose
+    the learning performance of a model, you can refer to [this tutorial](https://machinelearningmastery.com/learning-curves-for-diagnosing-machine-learning-model-performance/)
+    by Jason Brownlee.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
+    2021'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: How to use Learning Curves to Diagnose Machine Learning Model Performance, [https://machinelearningmastery.com/learning-curves-for-diagnosing-machine-learning-model-performance/](https://machinelearningmastery.com/learning-curves-for-diagnosing-machine-learning-model-performance/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered how to plot the training and validation loss
+    curves for the Transformer model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to modify the training code to include validation and test splits, in addition
+    to a training split of the dataset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to modify the training code to store the computed training and validation
+    loss values, as well as the trained model weights
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to plot the saved training and validation loss curves
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

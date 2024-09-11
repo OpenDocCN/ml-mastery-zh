@@ -1,0 +1,303 @@
+- en: Using LoRA in Stable Diffusion
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/using-lora-in-stable-diffusion/](https://machinelearningmastery.com/using-lora-in-stable-diffusion/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The deep learning model of Stable Diffusion is huge. The weight file is multiple
+    GB large. Retraining the model means to update a lot of weights and that is a
+    lot of work. Sometimes we must modify the Stable Diffusion model, for example,
+    to define a new interpretation of prompts or make the model to generate a different
+    style of painting by default. Indeed there are ways to make such an extension
+    to existing model without modifying the existing model weights. In this post,
+    you will learn about the low-rank adaptation, which is the most common technique
+    for modifying the behavior of Stable Diffusion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
+    Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/94f1ab5412b0f6cfd160a3e785cb00e7.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using LoRA in Stable Diffusion
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Agent J](https://unsplash.com/photos/green-and-brown-concrete-wall-dO1i_fWbbcw).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is in three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What Is Low-Rank Adaptation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Checkpoint or LoRA?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Examples of LoRA Models
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What Is Low-Rank Adaptation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: LoRA, or Low-Rank Adaptation, is a lightweight training technique used for fine-tuning
+    Large Language and Stable Diffusion Models without needing full model training.
+    Full fine-tuning of larger models (consisting of billions of parameters) is inherently
+    expensive and time-consuming. LoRA works by adding a smaller number of new weights
+    to the model for training, rather than retraining the entire parameter space of
+    the model. This significantly reduces the number of trainable parameters, allowing
+    for faster training times and more manageable file sizes (typically around a few
+    hundred megabytes). This makes LoRA models easier to store, share, and use on
+    consumer GPUs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In simpler terms, LoRA is like adding a small team of specialized workers to
+    an existing factory, rather than building an entirely new factory from scratch.
+    This allows for more efficient and targeted adjustments to the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: LoRA is a state-of-the-art fine-tuning method proposed by [Microsoft researchers](https://arxiv.org/pdf/2106.09685.pdf)
+    to adapt larger models to particular concepts. A typical complete fine-tuning
+    involves updating the weights of the entire model in each dense layer of the neural
+    network. [Aghajanyan et al.(2020)](https://arxiv.org/abs/2012.13255) explained
+    that pre-trained over-parametrized models actually reside on a low intrinsic dimension.
+    LoRA approach is based on this finding, by by restricting weight updates to the
+    residual of the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Suppose that $W_0\in \mathbb{R}^{d\times k}$ represents a pretrained weight
+    matrix of size $\mathbb{R}^{d\times k}$ (i.e., a matrix of $d$ rows and $k$ columns
+    in real numbers), and it changes by $\Delta W$ (the **update matrix**) such that
+    the fine-tuned model’s weight are
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$ W’ = W_0 + \Delta W$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'LoRA use the technique lowers the rank of this update matrix $\Delta W$ by
+    rank decomposition such that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \Delta W = B \times A
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: where $B\in\mathbb{R}^{d\times r}$ and $A\in\mathbb{R}^{r\times k}$, such that
+    $r\ll \min(k,d)$$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/4f78c9876b1fb0e86862a50cbb762221.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Breaking a matrix into two lower rank matrices
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By freezing $W_0$ (to save memory), we can fine-tune $A$ and $B$, which contain
+    the trainable parameters for adaptation. This results in the fine-tuned model’s
+    forward pass looking like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: h = W’x = W_0 x + BA x
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: For Stable diffusion fine-tuning, it’s sufficient to apply rank decomposition
+    to cross-attention layers (shaded below) which are responsible for integrating
+    the prompt and image information.  Specifically, the weight matrices $W_O$, $W_Q$,
+    $W_K$, and $W_V$ in these layers are decomposed to lower the rank of the weight
+    updates. By freezing other MLP modules and fine-tuning only the decomposed matrices
+    $A$ and $B$, LoRA models can lead to smaller file sizes while being much faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/4b5e0eec24a9e8aca0e6b3943b472e8a.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Workflow of Stable Diffusion. The crossattention modules can be modified by
+    LoRA.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Checkpoint or LoRA?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A checkpoint model is a complete, pre-trained model saved at a particular state
+    during training. It contains all the parameters learned during training and can
+    be used for inference or fine-tuning. However, fine-tuning a checkpoint model
+    requires updating all the weights in the model, which can be computationally expensive
+    and result in large file sizes (typically in several GBs for Stable Diffusion).
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the other hand, LoRA (Low-Rank Adaptation) models are much smaller and more
+    efficient. It behaves as an adapter that builds on the top of a checkpoint model
+    (foundation or base model). LoRA models update only a subset of a checkpoint model’s
+    parameters (enhancing a checkpoint model). This enables these models to be small-sized
+    (usually 2MB to 500MB) and be frequently fine-tuned for specific concepts or styles.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, fine-tuning a Stable Diffusion model may be done with DreamBooth.
+    DreamBooth is a fine-tuning method that updates the entire model to adapt to a
+    specific concept or style. While it can produce impressive results, it comes with
+    a significant drawback: **the size of the fine-tuned model**. Since DreamBooth
+    updates the entire model, the resulting checkpoint model can be quite large (approximately
+    2 to 7 GBs) and require a lot of GPU resources for training. In contrast, A LoRA
+    model significantly requires less GPU requirements yet the inferences are still
+    comparable to those of a Dreamboothed checkpoint.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While it is the most common, LoRA is not the only way to modify Stable Diffusion.
+    Refer to the workflow as illustrated above, the crossattention module took input
+    $\tau_\theta$, which usually resulted from converting the prompt text into text
+    embeddings. Modifying the embedding is what **Text Inversions** do to change the
+    behavior of Stable Diffusion. Textual Inversions is even smaller and faster than
+    LoRA. However, Textual Inversions have a limitation: they **only fine-tune the
+    text embeddings for a particular concept or style**. The U-Net, which is responsible
+    for generating the images, remains unchanged. This means that Textual Inversions
+    can only generate images that are similar to the ones it was trained on and cannot
+    produce anything beyond what it already knows.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples of LoRA models
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are many different LoRA models within the context of Stable Diffusion.
+    One way to categorize them is to base on what the LoRA model does:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Character LoRA: These models are fine-tuned to capture the appearance, body
+    proportions, and expressions of specific characters, often found in cartoons,
+    video games, or other forms of media. They are useful for creating fan artwork,
+    game development, and animation/illustration purposes.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Style LoRA: These models are fine-tuned on artwork from specific artists or
+    styles to generate images in that style. They are often used to stylize a reference
+    image in a particular aesthetic.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Clothing LoRA: These models are fine-tuned on artwork from specific artists
+    or styles to generate images in that style. They are often used to stylize a reference
+    image in a particular aesthetic.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Some examples are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/6f453bd1a4476ed2920da8801ccc2956.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Image created with character LoRA “[goku black [dragon ball super]](https://civitai.com/models/62283/goku-black-dragon-ball-super?modelVersionId=66827)”
+    on Civitai, authored by [TheGooder](https://civitai.com/images/742370)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/9826d470fe504a171eb0bd1fb306d59d.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Image created with style LoRA “[Anime Lineart / Manga-like (线稿/線画/マンガ風/漫画风)
+    Style](https://civitai.com/models/16014/anime-lineart-manga-like-style?modelVersionId=28907)”
+    on Civitai, authored by [CyberAIchemist](https://civitai.com/images/326150).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/1e883042f99da1d997248ea54f26b934.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Image created with clothing LoRA “[Anime Lineart / Manga-like (线稿/線画/マンガ風/漫画风)
+    Style](https://civitai.com/models/23337/urban-samurai-or-v014-or-clothing-lora?modelVersionId=27871)”
+    on Civitai, authored by [YeHeAI](https://civitai.com/images/685315).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most popular place to find LoRA model files is on [Civitai](https://civitai.com/).
+    If you are using the Stable Diffusion Web UI, all you need to do is to download
+    the model file and put it into the folder `stable-diffusion-webui/models/Lora`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To use the LoRA from the Web UI, you just need to add the name of the LoRA
+    in angle brackets as part of your prompt. For example, one of the image above
+    is generated with the prompt:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: best masterpiece,1girl,solo,incredibly absurdres,hoodie,headphones, street,outdoors,rain,neon
+    lights, light smile, hood up, hands in pockets, looking away, from side, lineart,
+    monochrome, <lora:animeoutlineV4_16:1>
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The part “<lora:animeoutlineV4_16:1>” means to use the LoRA which the model
+    file is named as `animeoutlineV4_16.safetensors`, and apply it with weight 1\.
+    Note that in the prompt, nothing mentioned about the line art style except the
+    reference to a LoRA model. Hence you can see that the LoRA model produced an enormous
+    effect to the output. If you are curious, you can often find the prompt and other
+    parameters used to generate the picture from those posted on Civitai.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/72d89a00f5d716f941e1df97dc7b84ba.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Checking out an image posted on Civitai can see the prompt and other parameters
+    used to generate it on the right half of the screen.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a final remark, LoRA depends on the model you used. For example, Stable Diffusion
+    v1.5 and SD XL are incompatible in architecture so you need a LoRA that match
+    the version of your base model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Below are there papers introduced the LoRA fine-tuning techniques:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[“LoRA: Low-Rank Adaptation of Large Language Models”](https://arxiv.org/abs/2106.09685),
+    by Hu et al (2021)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[“Intrinsic Dimensionality Explains the Effectiveness of Language Model Fine-Tuning”](https://arxiv.org/abs/2012.13255),
+    by Aghajanyan et al (2020)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you learned what is LoRA in Stable Diffusion and why it is a lightweight
+    enhancement. You also learned that using LoRA in Stable Diffusion Web UI is as
+    easy as adding an extra keyword to the prompt There are many LoRA models developed
+    by Stable Diffusion users and put up on the Internet for you to download. You
+    can find one to easily change the generated result without much worrying on how
+    to describe the style you want it to change.
+  prefs: []
+  type: TYPE_NORMAL

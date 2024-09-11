@@ -1,0 +1,450 @@
+- en: Using ControlNet with Stable Diffusion
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/control-net-with-stable-diffusion/](https://machinelearningmastery.com/control-net-with-stable-diffusion/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ControlNet is a neural network that can improve image generation in Stable Diffusion
+    by adding extra conditions. This allows users to have more control over the images
+    generated. Instead of trying out different prompts, the ControlNet models enable
+    users to generate consistent images with just one prompt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this post, you will learn how to gain precise control over images generated
+    by Stable Diffusion using ControlNet. Specifically, we will cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is ControlNet, and how it works
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use ControlNet with the Hugging Face Spaces
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using ControlNet with the Stable Diffusion WebUI
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
+    Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/5a8a4831275d1577117a9be97654c47d.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using ControlNet with Stable Diffusion
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Nadine Shaabana](https://unsplash.com/photos/red-sony-ps-dualshock-4-YsPnamiHdmI).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is in four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is ControlNet?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ControlNet in Hugging Face Space
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Scribble Interactive
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ControlNet in Stable Diffusion Web UI
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is ControlNet?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[ControlNet](https://github.com/lllyasviel/ControlNet) is a neural network
+    architecture that can be used to control diffusion models. In addition to the
+    prompt you would usually provide to create the output image, it works by adding
+    extra **conditioning** to the diffusion model with an input image as the additional
+    constraint to guide the diffusion process.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many types of conditioning inputs (canny edge, user sketching, human
+    pose, depth, etc.) that can provide a diffusion model to have more control over
+    image generation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some examples of how ControlNet can control diffusion models:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: By providing a specific human pose, an image mimicking the same pose is generated.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Make the output follow the style from another image.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Turn scribbles into high-quality images.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generate a similar image using a reference image.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Inpainting missing parts of an image.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '![](../Images/256d2c038157499d826110cd6f32d50f.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Block diagram of how ControlNet modified the diffusion process. Figure from
+    Zhang et al (2023)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'ControlNet works by copying the weights from the original diffusion model into
+    two sets:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A “locked” set that preserves the original model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A “trainable” set that learns the new conditioning.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The ControlNet model essentially produces a difference vector in the latent
+    space, which modifies the image that the diffusion model would otherwise produce.
+    In equation, if the original model produces output image $y$ from prompt $x$ using
+    a function $y=F(x;\Theta)$, in the case of ControlNet would be
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$y_c = F(x;\Theta) + Z(F(x+Z(c;\Theta_{z1}); \Theta_c); \Theta_{z2})$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: in which the function $Z(\cdot;\Theta_z)$ is the zero convolution layer, and
+    the parameters $\Theta_c, \Theta_{z1}, \Theta_{z2}$ are parameters from the ControlNet
+    model. The zero-convolution layers have weights and biases initialized with zero,
+    so they don’t initially cause distortion. As training happens, these layers learn
+    to meet the conditioning constraints. This structure allows training ControlNet
+    even on small machines. Note that the same diffusion architecture (e.g., Stable
+    Diffusion 1.x) is used twice but with different model parameters $\Theta$ and
+    $\Theta_c$. And now, you need to provide two inputs, $x$ and $c$ to create the
+    output $y$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The design of running ControlNet and the original Diffusion model in segregate
+    allows fine-tuning on small datasets without destroying the original diffusion
+    model. It also allows the same ControlNet to be used with different diffusion
+    models as long as the architecture is compatible. The modular and fast-adapting
+    nature of ControlNet makes it a versatile approach for gaining more precise control
+    over image generation without extensive retraining.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ControlNet in Hugging Face Space
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s see how ControlNet do magic to the diffusion model. In this section, we
+    will use an online ControlNet demo available on Hugging Face Spaces to generate
+    a human pose image using the ControlNet Canny model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**URL:** [https://hf.co/spaces/hysts/ControlNet-v1-1](https://hf.co/spaces/hysts/ControlNet-v1-1)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'We will upload [Yogendra Singh’s](https://www.pexels.com/photo/dancing-man-wearing-pants-and-long-sleeved-shirt-1701194/)
+    photo from Pexels.com to ControlNet Spaces and add a simple prompt. Instead of
+    a boy, we will generate an image of women dancing in a club. Let’s use the tab
+    “Canny”. Set the prompt to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: a girl dancing in a club
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Click run, and you will see the output as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/d53d3806c1b78c24882624a6d60e5437.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Running ControlNet on Hugging Face Space
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is amazing! “Canny” is an image processing algorithm to detect edges. Hence,
+    you provide the edge from your uploaded image as an outline sketch. Then, provide
+    this as the additional input $c$ to ControlNet, together with your text prompt
+    $x$, you provided the output image $y$. In essence, you can generate a similar
+    pose image using canny edges on the original image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s see another example. We will upload [Gleb Krasnoborov’s](https://www.pexels.com/photo/man-wearing-boxing-gloves-2628207/)
+    photo and apply a new prompt that changes the background, effect, and ethnicity
+    of the boxer to Asian. The prompt we use is
+  prefs: []
+  type: TYPE_NORMAL
+- en: A man shadow boxing in streets of Tokyo
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'and this is the output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/f1cd90c1b8e9f4cb38a9cbcfd9b5a55b.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Another example of using Canny model in ControlNet
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once again, the results are excellent. We generated an image of a boxer in a
+    similar pose, shadowboxing on the streets of Tokyo.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scribble Interactive
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The architecture of ControlNet can accept many different kinds of input. Using
+    Canny edge as the outline is just one model of ControlNet. There are many more
+    models, each trained as a different conditioning for image diffusion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the same Hugging Face Spaces page, the different versions of ControlNet versions
+    are available, which can be accessed through the top tab. Let’s see another example
+    using the Scribbles model. In order to generate an image using Scribbles, simply
+    go to the Scribble Interactive tab draw a doodle with your mouse, and write a
+    simple prompt to generate the image, such as
+  prefs: []
+  type: TYPE_NORMAL
+- en: A house by the river
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/481ebece443fee7d7b39d3970531bde7.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Using Scribble ControlNet: Drawing a house and providing a text prompt'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then, by setting the other parameters and pressing the “Run” button, you may
+    get the output like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/b8c299d8dcada8c9039d592799372327.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Output from Scribble ControlNet
+  prefs: []
+  type: TYPE_NORMAL
+- en: The generated image looks good but could be better. You can try again with more
+    details in the scribbles as well as the text prompt to get an improved result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using scribble and a text prompt is a trivial way to generate images, especially
+    when you can’t think of a very accurate textual description of the image you want
+    to create. Below is another example of creating a picture of a hot air balloon.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/6eabb6c96067b14b2b38ada15552071d.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Creating a picture of a hot air balloon using Scribble.
+  prefs: []
+  type: TYPE_NORMAL
+- en: ControlNet in Stable Diffusion Web UI
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As you have learned about using the Stable Diffusion Web UI in the previous
+    posts, you can expect that ControlNet can also be used on the Web UI. It is an
+    extension. If you haven’t installed it yet, you need to launch the Stable Diffusion
+    Web UI. Then, go to the Extensions tab, click on “Install from the URL”, and enter
+    the link to the ControlNet repository: https://github.com/Mikubill/sd-webui-controlnet
+    to install.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/d67e325b30ef2e56a33a93d95ffa5c4a.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Installing ControlNet extension on Stable Diffusion Web UI
+  prefs: []
+  type: TYPE_NORMAL
+- en: The extension you installed is only the code. Before using the ControlNet Canny
+    version, for example, you have to download and set up the Canny model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Go to [https://hf.co/lllyasviel/ControlNet-v1-1/tree/main](https://hf.co/lllyasviel/ControlNet-v1-1/tree/main)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Download the [control_v11p_sd15_canny.pth](https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_canny.pth)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Put the model file in the the SD WebUI directory in `stable-diffusion-webui/extensions/sd-webui-controlnet/models`
+    or `stable-diffusion-webui/models/ControlNet`
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Note**: You can download all models (beware each model is in several GB in
+    size) from the above repository using `git clone` command. Besides, this repository
+    collects some more ControlNet models, [https://hf.co/lllyasviel/sd_control_collection](https://hf.co/lllyasviel/sd_control_collection)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, you are all set up to use the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s try it out with the Canny ControlNet. You go to the “txt2img” tab, scroll
+    down to find the ControNet section to open it. Then, you follow these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Change the control type to Canny.![](../Images/4ecd191985470c5701868cdbea963539.png)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Selecting “Canny” from the ControlNet box in Web UI.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Upload the reference image.![](../Images/2c2a9f048c7856cec264606533929f59.png)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Upload an image to ControlNet widget in Web UI
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Work on other sections on the txt2img tab: Write positive prompt, negative
+    prompt, and change other advanced settings. For example,'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Positive prompt:** “detailed, masterpiece, best quality, Astounding, Enchanting,
+    Striking, man, natural light, beach, beach background, sunny, jungle, plants in
+    background, beach background, beach, tropical beach, water,  clear skin, perfect
+    light, perfect shadows”'
+  prefs:
+  - PREF_IND
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_IND
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '**Negative prompt:** “worst quality, low quality, lowres, monochrome, greyscale,
+    multiple views, comic, sketch, bad anatomy, deformed, disfigured, watermark, multiple_views,
+    mutation hands, watermark”'
+  prefs:
+  - PREF_IND
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'and the generation parameters:'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**Sampling Steps:** 30'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Sampler:** DDIM'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**CFG scale:** 7'
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The output could be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/5c40b835c8b6326e4ac8a70c1ff712c2.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Output of image generation using ControlNet in Web UI
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can see, we have obtained high-quality and similar images. We can improve
+    the photo by using different ControlNet models and applying various prompt engineering
+    techniques, but this is the best we have now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here is the full image generated with the Canny version of ControlNet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/22f99663dd1ffc6fba1ced3e600b9126.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Image generated using ControlNet with image diffusion model
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Adding Conditional Control to Text-to-Image Diffusion Models](https://arxiv.org/abs/2302.05543),
+    by Zhang et al (2023)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[ControlNet](https://github.com/lllyasviel/ControlNet) on GitHub'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[ControlNet v1.1](https://github.com/lllyasviel/ControlNet-v1-1-nightly) on
+    GitHub'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Model download](https://github.com/Mikubill/sd-webui-controlnet/wiki/Model-download)
+    from the ControlNet Wiki'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, we learned about ControlNet, how it works, and how to use it
+    to generate precise control images of users’ choices. Specifically, we covered:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ControlNet online demo on Hugging Face to generate images using various reference
+    images.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Different versions of ControlNet and generated the image using the scribbles.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting up ControlNet on Stable Diffusion WebUI and using it to generate the
+    high-quality image of the boxer.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,371 @@
+- en: K-Means Clustering for Image Classification Using OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/k-means-clustering-for-image-classification-using-opencv/](https://machinelearningmastery.com/k-means-clustering-for-image-classification-using-opencv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In a [previous tutorial](https://machinelearningmastery.com/?p=14752&preview=true),
+    we explored using the k-means clustering algorithm as an unsupervised machine
+    learning technique that seeks to group similar data into distinct clusters to
+    uncover patterns in the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: So far, we have seen how to apply the k-means clustering algorithm to a simple
+    two-dimensional dataset containing distinct clusters and the problem of image
+    color quantization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will learn how to apply OpenCV’s k-means clustering algorithm
+    for image classification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why k-means clustering can be applied to image classification.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying the k-means clustering algorithm to the digit dataset in OpenCV for
+    image classification.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to reduce the digit variations due to skew to improve the accuracy of the
+    k-means clustering algorithm for image classification.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.[![](../Images/a546e63aa5af5b9aed299af495b6d59c.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_class_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: K-Means Clustering for Image Classification Using OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Jeremy Thomas](https://unsplash.com/photos/E0AHdsENmDg), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recap of k-Means Clustering as an Unsupervised Machine Learning Technique
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying k-Means Clustering to Image Classification
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Recap of k-Means Clustering as an Unsupervised Machine Learning Technique**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In a [previous tutorial](https://machinelearningmastery.com/?p=14752&preview=true),
+    we have been introduced to k-means clustering as an unsupervised learning technique.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have seen that this technique involves automatically grouping data into distinct
+    groups (or clusters), where the data within each cluster are similar to one another
+    but different from those in the other clusters. It aims to uncover patterns in
+    the data that may not be apparent before clustering.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have applied the k-means clustering algorithm to a simple two-dimensional
+    dataset containing five clusters to label the data points belonging to each cluster
+    accordingly, and subsequently to the task of color quantization where we have
+    used this algorithm to reduce the number of distinct colors representing an image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, we shall again exploit the strength of k-means clustering
+    in uncovering hidden structures in the data by applying it to the image classification
+    task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For such a task, we will be employing the OpenCV digits dataset introduced in
+    a [previous tutorial](https://machinelearningmastery.com/?p=14607&preview=true),
+    where we will aim to try to group images of similar handwritten digits in an unsupervised
+    manner (i.e., without using the ground truth label information).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Applying k-Means Clustering to Image Classification**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We’ll first need to load the OpenCV digits image, divide it into its many sub-images
+    that feature handwritten digits from 0 to 9, and create their corresponding ground
+    truth labels that will enable us to quantify the performance of the k-means clustering
+    algorithm later on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The returned `imgs` array contains 5,000 sub-images, organized row-wise in
+    the form of flattened one-dimensional vectors, each comprising 400 pixels:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The k-means algorithm can subsequently be provided with input arguments that
+    are equivalent to those that we have used for our color quantization example,
+    with the only exception being that we’ll need to pass the `imgs` array as the
+    input data, and that we shall be setting the value of `K` clusters to 10 (i.e.,
+    the number of digits that we have available):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `kmeans` function returns a `centers` array, which should contain a representative
+    image for each cluster. The returned `centers` array is of shape 10$\times$400,
+    which means that we’ll first need to reshape it back to 20$\times$20 pixel images
+    before proceeding to visual them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The representative images of the cluster centers are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/55ebdee53f5e3978a455567469627a56.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_class_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Representative Images of the Cluster Centers Found by the k-Means Algorithm
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is remarkable that the cluster centers generated by the k-means algorithm
+    indeed resemble the handwritten digits contained in the OpenCV digits dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You may also notice that the order of the cluster centers does not necessarily
+    follow the order of the digits from 0 to 9\. This is because the k-means algorithm
+    can cluster similar data together but has no notion of its order. However, it
+    also creates a problem when comparing the predicted labels with the ground truth
+    ones. This is because the ground truth labels have been generated to correspond
+    to the digit numbers featured inside the images. However, the cluster labels generated
+    by the k-means algorithm do not necessarily follow the same convention. To solve
+    this problem, we need to *re-order* the cluster labels:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now we’re ready to calculate the accuracy of the algorithm, by finding the
+    percentage of predicted labels that correspond to the ground truth:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The complete code listing up to this point is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, let’s print out the [confusion matrix](https://machinelearningmastery.com/confusion-matrix-machine-learning/)
+    to gain a deeper insight into which digits have been mistaken for one another:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The confusion matrix needs to be interpreted as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/0e40119b35588748e510569d608bfdd2.png)](https://machinelearningmastery.com/wp-content/uploads/2023/11/kmeans_class_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Interpreting the Confusion Matrix
+  prefs: []
+  type: TYPE_NORMAL
+- en: The values on the diagonal indicate the number of correctly predicted digits,
+    whereas the off-diagonal values indicate the misclassifications per digit. We
+    may see that the best performing digit is *0*, with the highest diagonal value
+    and very few misclassifications. The worst performing digit is *9* since this
+    has the highest number of misclassifications with many other digits, mostly with
+    4\. We may also see that *7* has been mostly mistaken with 4, while *8* has been
+    mostly mistaken with *3*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'These results do not necessarily come as a surprise because, if we had to look
+    at the digits in the dataset, we might see that the curves and skew of several
+    different digits cause them to resemble each other. To investigate the effect
+    of reducing the digit variations, let’s introduce a function, `deskew_image()`,
+    that applies an affine transformation to an image based on a measure of skew calculated
+    from the image moments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The de-skewing function has the following effect on some of the digits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/c903561e45c7cb2d80269494acc7c792.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_class_3-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The First Column Depicts the Original Dataset Images, While the Second Column
+    Shows Images Corrected for Skew
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Remarkably, the accuracy rises to 70.92% when the skew of the digits is reduced,
+    while the cluster centers become more representative of the digits in the dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/fb3f6277b372dac1ea27653b15b788d3.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_class_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Representative Images of the Cluster Centers Found by the k-Means Algorithm
+  prefs: []
+  type: TYPE_NORMAL
+- en: This result shows that skew was a highly contributing factor to the loss of
+    accuracy that we experienced without its correction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Can you think of any other pre-processing steps you may introduce to improve
+    the accuracy?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 10 Clustering Algorithms With Python, [https://machinelearningmastery.com/clustering-algorithms-with-python/](https://machinelearningmastery.com/clustering-algorithms-with-python/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: K-Means Clustering in OpenCV, [https://docs.opencv.org/3.4/d1/d5c/tutorial_py_kmeans_opencv.html](https://docs.opencv.org/3.4/d1/d5c/tutorial_py_kmeans_opencv.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: k-means clustering, [https://en.wikipedia.org/wiki/K-means_clustering](https://en.wikipedia.org/wiki/K-means_clustering)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to apply OpenCV’s k-means clustering algorithm
+    for image classification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why k-means clustering can be applied to image classification.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying the k-means clustering algorithm to the digit dataset in OpenCV for
+    image classification.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to reduce the digit variations due to skew to improve the accuracy of the
+    k-means clustering algorithm for image classification.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

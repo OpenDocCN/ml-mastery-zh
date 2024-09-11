@@ -1,0 +1,241 @@
+- en: 'One Hot Encoding: Understanding the “Hot” in Data'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/one-hot-encoding-understanding-the-hot-in-data/](https://machinelearningmastery.com/one-hot-encoding-understanding-the-hot-in-data/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Preparing categorical data correctly is a fundamental step in machine learning,
+    particularly when using linear models. One Hot Encoding stands out as a key technique,
+    enabling the transformation of categorical variables into a machine-understandable
+    format. This post tells you why you cannot use a categorical variable directly
+    and demonstrates the use One Hot Encoding in our search for identifying the most
+    predictive categorical features for linear regression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/84a746c5b165dc1f69ee148356c2ca81.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'One Hot Encoding: Understanding the “Hot” in Data'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [sutirta budiman](https://unsplash.com/photos/low-angle-photography-of-yellow-hot-air-balloon-eN6c3KWNXcA).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is One Hot Encoding?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Identifying the Most Predictive Categorical Feature
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Evaluating Individual Features’ Predictive Power
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is One Hot Encoding?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In data preprocessing for linear models, “One Hot Encoding” is a crucial technique
+    for managing categorical data. In this method, “hot” signifies a category’s presence
+    (encoded as one), while “cold” (or zero) signals its absence, using binary vectors
+    for representation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the angle of levels of measurement, categorical data are **nominal data**,
+    which means if we used numbers as labels (e.g., 1 for male and 2 for female),
+    operations such as addition and subtraction would not make sense. And if the labels
+    are not numbers, you can’t even do any math with it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One hot encoding separates each category of a variable into distinct features,
+    preventing the misinterpretation of categorical data as having some ordinal significance
+    in linear regression and other linear models. After the encoding, the number bears
+    meaning, and it can readily be used in a math equation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For instance, consider a categorical feature like “Color” with the values Red,
+    Blue, and Green. One Hot Encoding translates this into three binary features (“Color_Red,”
+    “Color_Blue,” and “Color_Green”), each indicating the presence (1) or absence
+    (0) of a color for each observation. Such a representation clarifies to the model
+    that these categories are distinct, with no inherent order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why does this matter? Many machine learning models, including linear regression,
+    operate on numerical data and assume a numerical relationship between values.
+    Directly encoding categories as numbers (e.g., Red=1, Blue=2, Green=3) could imply
+    a non-existent hierarchy or quantitative relationship, potentially skewing predictions.
+    One Hot Encoding sidesteps this issue, preserving the categorical nature of the
+    data in a form that models can accurately interpret.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s apply this technique to the Ames dataset, demonstrating the transformation
+    process with an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: As seen, the Ames dataset’s categorical columns are converted into 188 distinct
+    features, illustrating the expanded complexity and detailed representation that
+    One Hot Encoding provides. This expansion, while increasing the dimensionality
+    of the dataset, is a crucial preprocessing step when modeling the relationship
+    between categorical features and the target variable in linear regression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Identifying the Most Predictive Categorical Feature
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'After understanding the basic premise and application of One Hot Encoding in
+    linear models, the next step in our analysis involves identifying which categorical
+    feature contributes most significantly to predicting our target variable. In the
+    code snippet below, we iterate through each categorical feature in our dataset,
+    apply One Hot Encoding, and evaluate its predictive power using a linear regression
+    model in conjunction with cross-validation. Here, the `drop="first"` parameter
+    in the `OneHotEncoder` function plays a vital role:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `drop="first"` parameter is used to mitigate perfect collinearity. By dropping
+    the first category (encoding it implicitly as zeros across all other categories
+    for a feature), we reduce redundancy and the number of input variables without
+    losing any information. This practice simplifies the model, making it easier to
+    interpret and often improving its performance. The code above will output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our analysis reveals that “Neighborhood” is the categorical feature with the
+    highest predictability in our dataset. This finding highlights the significant
+    impact of location on housing prices within the Ames dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Evaluating Individual Features’ Predictive Power
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With a deeper understanding of One Hot Encoding and identifying the most predictive
+    categorical feature, we now expand our analysis to uncover the top five categorical
+    features that significantly impact housing prices. This step is essential for
+    fine-tuning our predictive model, enabling us to focus on the features that offer
+    the most value in forecasting outcomes. By evaluating each feature’s mean cross-validated
+    R² score, we can determine not just the importance of these features individually
+    but also gain insights into how different aspects of a property contribute to
+    its overall valuation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s delve into this evaluation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output from our analysis presents a revealing snapshot of the factors that
+    play pivotal roles in determining housing prices:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This result accentuates the importance of the feature “Neighborhood” as the
+    top predictor, reinforcing the idea that location significantly influences housing
+    prices. Following closely are “ExterQual” (Exterior Material Quality) and “KitchenQual”
+    (Kitchen Quality), which highlight the premium buyers place on the quality of
+    construction and finishes. “Foundation” and “HeatingQC” (Heating Quality and Condition)
+    also emerge as significant, albeit with lower predictive power, suggesting that
+    structural integrity and comfort features are critical considerations for home
+    buyers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[sklearn.preprocessing.OneHotEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[One-hot encoding categorical variables](https://www.blog.trainindata.com/one-hot-encoding-categorical-variables/)
+    by Sole Galli'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Ames Housing Dataset & Data Dictionary**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, we focused on the critical process of preparing categorical data
+    for linear models. Starting with an explanation of One Hot Encoding, we showed
+    how this technique makes categorical data interpretable for linear regression
+    by creating binary vectors. Our analysis identified “Neighborhood” as the categorical
+    feature with the highest impact on housing prices, underscoring location’s pivotal
+    role in real estate valuation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: One Hot Encoding’s role in converting categorical data to a format usable by
+    linear models, preventing the algorithm from misinterpreting the data’s nature.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The importance of the `drop='first'` parameter in One Hot Encoding to avoid
+    perfect collinearity in linear models.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to evaluate the predictive power of individual categorical features and
+    rank their performance within the context of linear models.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

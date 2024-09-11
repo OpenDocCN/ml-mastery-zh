@@ -1,0 +1,201 @@
+- en: Building a Single Layer Neural Network in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/building-a-single-layer-neural-network-in-pytorch/](https://machinelearningmastery.com/building-a-single-layer-neural-network-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: A neural network is a set of neuron nodes that are interconnected with one another.
+    The neurons are not just connected to their adjacent neurons but also to the ones
+    that are farther away.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The main idea behind neural networks is that every neuron in a layer has one
+    or more input values, and they produce output values by applying some mathematical
+    functions to the input. The outputs of the neurons in one layer become the inputs
+    for the next layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A single layer neural network is a type of artificial neural network where
+    there is only one hidden layer between the input and output layers. This is the
+    classic architecture before the deep learning became popular. In this tutorial,
+    you will get a chance to build a neural network with only a single hidden layer.
+    Particularly, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to build a single layer neural network in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train a single layer neural network with PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to classify one-dimensional data using a single layer neural network.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/5d222a4a9a81586d10e46bcea04b481b.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a Single Layer Neural Network in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Tim Cheung](https://unsplash.com/photos/He3wMrz8c7k). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing the Dataset
+  prefs:
+  - PREF_UL
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build the Model
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Train the Model
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing the Data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A neural network simply a function that approximates other functions with some
+    parameters. Let’s build some data and see how our single layer neural network
+    approximates the function to make the data linearly separable. Later in this tutorial,
+    you will visualize the function during training to see how the approximated function
+    overlaps over the given set of data points.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The data, as plotted using matplotlib, looks like the following.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/75aa284a267d06f9beca5af59e392dbc.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Build the Model with `nn.Module`
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Next, let’s build our custom module for single layer neural network with `nn.Module`.
+    Please check previous tutorials of the series if you need more information on
+    `nn.Module`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This neural network features an input layer, a hidden layer with two neurons,
+    and an output layer. After each layer, a sigmoid activation function is applied.
+    Other kind of activation functions are available in PyTorch but the classic design
+    for this network is to use sigmoid function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here is how your single layer neural network looks like in code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s also instantiate a model object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Train the Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before starting the training loop, let’s define loss function and optimizer
+    for the model. You will write a loss function for the cross entropy loss and use
+    stochastic gradient descent for parameter optimization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now you have all components to train the model. Let’s train the model for 5000
+    epochs. You will see a plot of how the neural network approximates the function
+    after every 1000 epochs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: After 1000 epochs, the model approximated the function like the following:![](../Images/abcc65969416e141fc5bbaa935035a0b.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: But after 5000 epochs, it improves to the following:![](../Images/14b59102632200a0307b78e58395314c.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: From which, you can see the approximation in blue is closer to the data in purple.
+    As you can see, the neural network approximates the functions quite nicely. If
+    the function is more complex, you may need more hidden layers or more neurons
+    in the hidden layer, i.e., a more complex model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s also plot to see how the loss reduced during training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: You should see:![](../Images/423642b2e038969698998972e2b0655f.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned how you can build and train a neural network
+    and estimate the function. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to build a single layer neural network in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train a single layer neural network with PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to classify one-dimensional data using a single layer neural network.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

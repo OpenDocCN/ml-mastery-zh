@@ -1,0 +1,353 @@
+- en: A Gentle Introduction to the Jacobian
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-the-jacobian/](https://machinelearningmastery.com/a-gentle-introduction-to-the-jacobian/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In the literature, the term *Jacobian* is often interchangeably used to refer
+    to both the Jacobian matrix or its determinant.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Both the matrix and the determinant have useful and important applications:
+    in machine learning, the Jacobian matrix aggregates the partial derivatives that
+    are necessary for backpropagation; the determinant is useful in the process of
+    changing between variables.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will review a gentle introduction to the Jacobian.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Jacobian matrix collects all first-order partial derivatives of a multivariate
+    function that can be used for backpropagation.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Jacobian determinant is useful in changing between variables, where it acts
+    as a scaling factor between one coordinate space and another.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/15bbbead1331269a034556273b96fc79.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Gentle Introduction to the Jacobian
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Simon Berger](https://unsplash.com/@8moments), some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Partial Derivatives in Machine Learning
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Jacobian Matrix
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Other Uses of the Jacobian
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Partial Derivatives in Machine Learning**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have thus far mentioned [gradients and partial derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)
+    as being important for an optimization algorithm to update, say, the model weights
+    of a neural network to reach an optimal set of weights. The use of partial derivatives
+    permits each weight to be updated independently of the others, by calculating
+    the gradient of the error curve with respect to each weight in turn.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Many of the functions that we usually work with in machine learning are [multivariate](https://machinelearningmastery.com/?p=12606&preview=true),
+    [vector-valued functions](https://machinelearningmastery.com/a-gentle-introduction-to-vector-valued-functions),
+    which means that they map multiple real inputs, *n*, to multiple real outputs,
+    *m*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/d68489b6972b22bef03f8a36c7d6e748.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_11.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, consider a neural network that classifies grayscale images into
+    several classes. The function being implemented by such a classifier would map
+    the *n* pixel values of each single-channel input image, to *m* output probabilities
+    of belonging to each of the different classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In training a neural network, the backpropagation algorithm is responsible for
+    sharing back the error calculated at the output layer, among the neurons comprising
+    the different hidden layers of the neural network, until it reaches the input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The fundamental principle of the backpropagation algorithm in adjusting the
+    weights in a network is that each weight in a network should be updated in proportion
+    to the sensitivity of the overall error of the network to changes in that weight. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 222, [Deep Learning](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_4?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-4),
+    2019.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This sensitivity of the overall error of the network to changes in any one particular
+    weight is measured in terms of the rate of change, which, in turn, is calculated
+    by taking the partial derivative of the error with respect to the same weight.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For simplicity, suppose that one of the hidden layers of some particular network
+    consists of just a single neuron, *k*. We can represent this in terms of a simple
+    computational graph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/05a06a855a6a020b0a719405812afb08.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Neuron with a Single Input and a Single Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Again, for simplicity, let’s suppose that a weight, *w**[k]*, is applied to
+    an input of this neuron to produce an output, *z**[k]*, according to the function
+    that this neuron implements (including the nonlinearity). Then, the weight of
+    this neuron can be connected to the error at the output of the network as follows
+    (the following formula is formally known as the *chain rule of calculus*, but
+    more on this later in a separate tutorial):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/57514729ec537354f4b98b9267ddfb56.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, the derivative, *dz**[k]* / *dw**[k]*, first connects the weight, *w**[k]*,
+    to the output, *z**[k]*, while the derivative, *d*error / *dz**[k]*, subsequently
+    connects the output, *z**[k]*, to the network error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is more often the case that we’d have many connected neurons populating
+    the network, each attributed a different weight. Since we are more interested
+    in such a scenario, then we can generalise beyond the scalar case to consider
+    multiple inputs and multiple outputs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/3716368d80976118ff8dc4a048f168de.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This sum of terms can be represented more compactly as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/ce023319eed564c2e1435b2c33387ae6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_4-1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Or, equivalently, in [vector notation](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)
+    using the del operator, ∇, to represent the gradient of the error with respect
+    to either the weights, **w***[k]*, or the outputs, **z***[k]*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/53996174fd4fdc0f85c77c04b7be6d09.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_5.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The back-propagation algorithm consists of performing such a Jacobian-gradient
+    product for each operation in the graph.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 207, [Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
+    2017.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: This means that the backpropagation algorithm can relate the sensitivity of
+    the network error to changes in the weights, through a multiplication by the *Jacobian
+    matrix*, (∂**z***[k]* / ∂**w***[k]*)^T.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hence, what does this Jacobian matrix contain?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Jacobian Matrix**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Jacobian matrix collects all first-order partial derivatives of a multivariate
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, consider first a function that maps *u* real inputs, to a single
+    real output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/e37bc437334f32f627142fdbc4fdb46e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_6.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then, for an input vector, **x**, of length, *u*, the Jacobian vector of size,
+    1 × *u*, can be defined as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/2aafa58edb30e90df33840d856dcf78a.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_7.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, consider another function that maps *u* real inputs, to *v* real outputs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/5b5bbbac33c2ad8b6905fdd06592fc61.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_8.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then, for the same input vector, **x**, of length, *u*, the Jacobian is now
+    a *v* × *u* matrix, **J** ∈ ℝ*^(v×)**^u*, that is defined as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/c5e6111fb3bad9cd95525461879454bd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_9.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Reframing the Jacobian matrix into the machine learning problem considered
+    earlier, while retaining the same number of *u* real inputs and *v* real outputs,
+    we find that this matrix would contain the following partial derivatives:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/2a9675ac70b68b38ffd10c3d0bb83064.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/jacobian_10.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Other Uses of the Jacobian**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: An important technique when working with [integrals](https://machinelearningmastery.com/?p=12637&preview=true)
+    involves the *change of variables* (also referred to as, *integration by substitution*
+    or *u-substitution*), where an integral is simplified into another integral that
+    is easier to compute.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the single variable case, substituting some variable, *x*, with another variable,
+    *u*, can transform the original function into a simpler one for which it is easier
+    to find an antiderivative. In the two variable case, an additional reason might
+    be that we would also wish to transform the region of terms over which we are
+    integrating, into a different shape.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*In the single variable case, there’s typically just one reason to want to
+    change the variable: to make the function “nicer” so that we can find an antiderivative.
+    In the two variable case, there is a second potential reason: the two-dimensional
+    region over which we need to integrate is somehow unpleasant, and we want the
+    region in terms of u and v to be nicer—to be a rectangle, for example. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 412, [Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
+    2020.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When performing a substitution between two (or possibly more) variables, the
+    process starts with a definition of the variables between which the substitution
+    is to occur. For example, *x* = *f*(*u*, *v*) and *y* = *g*(*u*, *v*). This is
+    then followed by a conversion of the integral limits depending on how the functions,
+    *f* and *g*, will transform the *u*–*v* plane into the *x*–*y* plane. Finally,
+    the absolute value of the *Jacobian determinant* is computed and included, to
+    act as a scaling factor between one coordinate space and another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Mathematics for Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_4?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-4),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Articles**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Jacobian matrix and determinant, Wikipedia](https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Integration by substitution, Wikipedia](https://en.wikipedia.org/wiki/Integration_by_substitution).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered a gentle introduction to the Jacobian.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Jacobian matrix collects all first-order partial derivatives of a multivariate
+    function that can be used for backpropagation.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Jacobian determinant is useful in changing between variables, where it acts
+    as a scaling factor between one coordinate space and another.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

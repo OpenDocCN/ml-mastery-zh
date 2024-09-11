@@ -1,0 +1,300 @@
+- en: Implementing Gradient Descent in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/implementing-gradient-descent-in-pytorch/](https://machinelearningmastery.com/implementing-gradient-descent-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The gradient descent algorithm is one of the most popular techniques for training
+    deep neural networks. It has many applications in fields such as computer vision,
+    speech recognition, and natural language processing. While the idea of gradient
+    descent has been around for decades, it’s only recently that it’s been applied
+    to applications related to deep learning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gradient descent is an iterative optimization method used to find the minimum
+    of an objective function by updating values iteratively on each step. With each
+    iteration, it takes small steps towards the desired direction until convergence,
+    or a stop criterion is met.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you will train a simple linear regression model with two
+    trainable parameters and explore how gradient descent works and how to implement
+    it in PyTorch. Particularly, you’ll learn about:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gradient Descent algorithm and its implementation in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Batch Gradient Descent and its implementation in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stochastic Gradient Descent and its implementation in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How Batch Gradient Descent and Stochastic Gradient Descent are different from
+    each other
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How loss decreases in Batch Gradient Descent and Stochastic Gradient Descent
+    during training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: So, let’s get started.![](../Images/45ac7903b28ab4040d742d5544c770df.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing Gradient Descent in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Michael Behrens](https://unsplash.com/photos/DA-iYgv8kjE). Some
+    rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in four parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing Data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Batch Gradient Descent
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stochastic Gradient Descent
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Plotting Graphs for Comparison
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing Data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To keep the model simple for illustration, we will use the linear regression
+    problem as in the last tutorial. The data is synthetic and generated as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Same as in the previous tutorial, we initialized a variable `X` with values
+    ranging from $-5$ to $5$, and created a linear function with a slope of $-5$.
+    Then, Gaussian noise is added to create the variable `Y`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can plot the data using matplotlib to visualize the pattern:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/c7d2910711d5a9cf82e04f012cd344f1.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Data points for regression model
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Batch Gradient Descent
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have created the data for our model, next we’ll build a forward
+    function based on a simple linear regression equation. We’ll train the model for
+    two parameters ($w$ and $b$). We will also need a loss criterion function. Because
+    it is a regression problem on continuous values, MSE loss is appropriate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Before we train our model, let’s learn about the **batch gradient descent**.
+    In batch gradient descent, all the samples in the training data are considered
+    in a single step. The parameters are updated by taking the mean gradient of all
+    the training examples. In other words, there is only one step of gradient descent
+    in one epoch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While Batch Gradient Descent is the best choice for smooth error manifolds,
+    it’s relatively slow and computationally complex, especially if you have a larger
+    dataset for training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training with Batch Gradient Descent
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Let’s randomly initialize the trainable parameters $w$ and $b$, and define some
+    training parameters such as learning rate or step size, an empty list to store
+    the loss, and number of epochs for training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: We’ll train our model for 20 epochs using below lines of code. Here, the `forward()`
+    function generates the prediction while the `criterion()` function measures the
+    loss to store it in `loss` variable. The `backward()` method performs the gradient
+    computations and the updated parameters are stored in `w.data` and `b.data`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here is the how the output looks like and the parameters are updated after every
+    epoch when we apply batch gradient descent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Putting all together, the following is the complete code
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The for-loop above prints one line per epoch, such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Stochastic Gradient Descent
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As we learned that batch gradient descent is not a suitable choice when it comes
+    to a huge training data. However, deep learning algorithms are data hungry and
+    often require large quantity of data for training. For instance, a dataset with
+    millions of training examples would require the model to compute the gradient
+    for all data in a single step, if we are using batch gradient descent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This doesn’t seem to be an efficient way and the alternative is **stochastic
+    gradient descent** (SGD). Stochastic gradient descent considers only a single
+    sample from the training data at a time, computes the gradient to take a step,
+    and update the weights. Therefore, if we have $N$ samples in the training data,
+    there will be $N$ steps in each epoch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training with Stochastic Gradient Descent
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To train our model with stochastic gradient descent, we’ll randomly initialize
+    the trainable parameters $w$ and $b$ as we did for the batch gradient descent
+    above. Here we’ll define an empty list to store the loss for stochastic gradient
+    descent and train the model for 20 epochs. The following is the complete code
+    modified from the previous example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints a long list of values as follows
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Plotting Graphs for Comparison
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we have trained our model using batch gradient descent and stochastic
+    gradient descent, let’s visualize how the loss decreases for both the methods
+    during model training. So, the graph for batch gradient descent looks like this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/d5db2e52a1e8d2326b9d6ab22a28ecc0.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The loss history of batch gradient descent
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, here is how the graph for stochastic gradient descent looks like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/8579b9611bf88f4e7df2a6d465f48e93.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Loss history of stochastic gradient descent
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can see, the loss smoothly decreases for batch gradient descent. On the
+    other hand, you’ll observe fluctuations in the graph for stochastic gradient descent.
+    As mentioned earlier, the reason is quite simple. In batch gradient descent, the
+    loss is updated after all the training samples are processed while the stochastic
+    gradient descent updates the loss after every training sample in the training
+    data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, below is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial you learned about the Gradient Descent, some of its variations,
+    and how to implement them in PyTorch. Particularly, you learned about:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gradient Descent algorithm and its implementation in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Batch Gradient Descent and its implementation in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stochastic Gradient Descent and its implementation in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How Batch Gradient Descent and Stochastic Gradient Descent are different from
+    each other
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How loss decreases in Batch Gradient Descent and Stochastic Gradient Descent
+    during training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,431 @@
+- en: Use PyTorch Deep Learning Models with scikit-learn
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/use-pytorch-deep-learning-models-with-scikit-learn/](https://machinelearningmastery.com/use-pytorch-deep-learning-models-with-scikit-learn/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The most popular deep learning libraries in Python for research and development
+    are TensorFlow/Keras and PyTorch, due to their simplicity. The scikit-learn library,
+    however, is the most popular library for general machine learning in Python. In
+    this post, you will discover how to use deep learning models from PyTorch with
+    the scikit-learn library in Python. This will allow you to leverage the power
+    of the scikit-learn library for tasks like model evaluation and model hyper-parameter
+    optimization. After completing this lesson you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to wrap a PyTorch model for use with the scikit-learn machine learning library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to easily evaluate PyTorch models using cross-validation in scikit-learn
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to tune PyTorch model hyperparameters using grid search in scikit-learn
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/a4f0998f7e876a482d3b30020553a429.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Use PyTorch Deep Learning Models with scikit-learn
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Priyanka Neve](https://unsplash.com/photos/puk-xEM9CyI). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This chapter is in four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview of skorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Evaluate Deep Learning Models with Cross-Validation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Running k-Fold Cross-validation with scikit-learn
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Grid Search Deep Learning Model Parameters
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Overview of skorch
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'PyTorch is a popular library for deep learning in Python, but the focus of
+    the library is deep learning, not all of machine learning. In fact, it strives
+    for minimalism, focusing on only what you need to quickly and simply define and
+    build deep learning models. The scikit-learn library in Python is built upon the
+    SciPy stack for efficient numerical computation. It is a fully featured library
+    for general purpose machine learning and provides many useful utilities in developing
+    deep learning models. Not least of which are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Evaluation of models using resampling methods like k-fold cross-validation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Efficient search and evaluation of model hyperparameters
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Connecting multiple steps of a machine learning workflow into a pipeline
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: PyTorch cannot work with scikit-learn directly. But thanks to the duck-typing
+    nature of Python language, it is easy to adapt a PyTorch model for use with scikit-learn.
+    Indeed, the `skorch` module is built for this purpose. With `skorch`, you can
+    make your PyTorch model work just like a scikit-learn model. You may find it easier
+    to use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following sections, you will work through examples of using the `NeuralNetClassifier`
+    wrapper for a classification neural network created in PyTorch and used in the
+    scikit-learn library. The test problem is the [Sonar dataset](https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks)).
+    This is a small dataset with all numerical attributes that is easy to work with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following examples assume you have successfully installed PyTorch, skorch,
+    and scikit-learn. If you use the pip for your Python modules, you may install
+    them with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Evaluate Deep Learning Models with Cross-Validation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `NeuralNet` class, or more specialized `NeuralNetClassifier`, `NeuralNetBinaryClassifier`,
+    and `NeuralNetRegressor` classes in skorch are factory wrappers for PyTorch models.
+    They take an argument `model` which is a class or a function to call to get your
+    model. In return, these wrapper classes allows you to specify loss function and
+    optimizer, then the training loop comes for free. This is the convenience compare
+    to using PyTorch directly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Below is a simple example of training a binary classifier on the Sonar dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this model, you used `torch.nn.BCEWithLogitsLoss` as the loss function (that
+    is indeed the default of `NeuralNetBinaryClassifier`). It is to combine the sigmoid
+    function with binary cross entropy loss, so that you don’t need to put the sigmoid
+    function at the output of the model. It is sometimes preferred to provide better
+    numerical stability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition, you specified the training parameters such as the number of epochs
+    and batch size in the skorch wrapper. Then you just need to call `fit()` function
+    with the input feature and target. The wrapper will help you initialize a model
+    and train it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Running the above will produce the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that skorch is positioned as a wrapper for PyTorch models to adapt to scikit-learn
+    interface. Therefore, you should use the model as if it is a scikit-learn model.
+    For example, to train your binary classification model, it is expected the target
+    to be a vector rather than an $n\times 1$ matrix. And to run the model for inference,
+    you should use `model.predict(X)` or `model.predict_proba(X)`. It is also why
+    you should use `NeuralNetBinaryClassifier`, such that the classification-related
+    scikit-learn functions are provided as model methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running k-Fold Cross-validation with scikit-learn
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using a wrapper over your PyTorch model already save you a lot of boilerplate
+    code on building your own training loop. But the entire suite of machine learning
+    functions from scikit-learn is the real productivity boost.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One example is to use the model selection functions from scikit-learn. Let’s
+    say you want to evaluate this model design with k-fold cross-validation. Normally,
+    it means to take a dataset, split it into $k$ portions, then run a loop to select
+    one of these portion as test set and the rest as training set to train a model
+    from scratch and obtain an evaluation score. It is not difficult to do but you
+    need to write several lines of code to implement these.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Indeed, we can make use of the k-fold and cross validation function from scikit-learn,
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The parameter `verbose=False` in `NeuralNetBinaryClassifier` is to stop the
+    display of progress while the model is trained, since there was a lot. The above
+    code will print the validation score, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'These are the evaluation scores. Because it is a binary classification model,
+    they are the average accuracy. There are five of them because it is obtained from
+    a k-fold cross-validation with $k=5$, each for a different test set. Usually you
+    evaluate a model with the mean and standard deviation of the cross-validation
+    scores:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: which is
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: A good model should produce a high score (in this case, accuracy close to 1)
+    and low standard deviation. A high standard deviation means the model is not very
+    consistent with different test sets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In comparison, the following is an equivalent implementation with a neural
+    network model in scikit-learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Which you should see how skorch is to make a drop-in replacement of scikit-learn
+    model with a model from PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Grid Search Deep Learning Model Parameters
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The previous example showed how easy it is to wrap your deep learning model
+    from PyTorch and use it in functions from the scikit-learn library. In this example,
+    you will go a step further. The function that you specify to the model argument
+    when creating the `NeuralNetBinaryClassifier` or `NeuralNetClassifier` wrapper
+    can take many arguments. You can use these arguments to further customize the
+    construction of the model. In addition, you know you can provide arguments to
+    the `fit()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this example, you will use grid search to evaluate different configurations
+    for your neural network model and report on the combination that provides the
+    best estimated performance. To make it interesting, let’s modify the PyTorch model
+    such that it takes a parameter to decide how deep you want it to be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this design, we hold the hidden layers and their activation functions in
+    Python lists. Because the PyTorch components are not immediate attributes of the
+    class, you will not see them in `model.parameters()`. That will be a problem on
+    training. This can be mitigated by using `self.add_module()` to register the components.
+    An alternative is to use `nn.ModuleList()` instead of a Python list, so that you
+    provided enough clues to tell where to find the components of the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The skorch wrapper is still the same. With it, you can have a model compatible
+    to scikit-learn. As you can see, there are parameters to set up the deep learning
+    model as well as training parameters such as learning rate (`lr`) specified in
+    the wrapper, you have many possible variations. The `GridSearchCV` function from
+    scikit-learn is to provide grid search cross validation. You can provide a list
+    of values for each parameter and ask scikit-learn to try out **all combinations**
+    and report the best set of parameters according to the metric you specified. An
+    example is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You passed in `model` to `GridSearchCV()`, which is a skorch wrapper. You also
+    passed in `param_grid`, which specified to vary:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: the parameter `n_layers` in he PyTorch model (i.e., the `SonarClassifier` class),
+    that controls the depth of the neural network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: the parameter `lr` in the wrapper, that controls the learning rate at the optimizer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: the parameter `max_epochs` in the wrapper, that controls the number of training
+    epochs to run
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Note the use of double underscore to pass on parameters to the PyTorch model.
+    In fact, this allows you to configure other parameters too. For example, you can
+    set up `optimizer__weight_decay` to pass on `weight_decay` parameters to the Adam
+    optimizer (which is for setting up L2 regularization).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running this can take a while to compute because it tries all combinations,
+    each evaluated with 3-fold cross validation. You do not want to run this often
+    but it can be useful for you to design models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After the grid search is finished, the performance and combination of configurations
+    for the best model are displayed, followed by the performance of all combinations
+    of parameters, as below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It gives:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This might take about 5 minutes to complete on your workstation executed on
+    the CPU (rather than GPU). Running the example shows the results below. You can
+    see that the grid search discovered that using a learning rate of 0.001 with 150
+    epochs and only a single hidden layer achieved the best cross-validation score
+    of approximately 65% on this problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In fact, you can see if you can improve the result by first standardizing input
+    features. Since the wrapper allows you to use PyTorch model with scikit-learn,
+    you can also use the scikit-learn’s standardizer in realtime, and create a machine
+    learning pipeline:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The new object `pipe` you created is another scikit-learn model that works
+    just like the `model` object, except a standard scaler is applied before the data
+    is passed on to the neural network. Therefore you can run a grid search on this
+    pipeline, with a little tweak on the way parameters are specified:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Two key points to note here: Since PyTorch models are running on 32-bit floats
+    by default but NumPy arrays are usually 64-bit floats. These data types are not
+    aligned, but scikit-learn’s scaler always return you a NumPy array. Therefore
+    you need to do type conversion in the middle of the pipeline, using a `FunctionTransformer`
+    object.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Moreover, in a scikit-learn pipeline, each step is referred by a name, such
+    as `scaler` and `sonarmodel`. Therefore, the parameters set for the pipeline need
+    to carry the name as well. In the example above, we use `sonarmodel__module__n_layers`
+    as a parameter for grid search. This refers to the `sonarmodel` part of the pipeline
+    (which is your skorch wrapper), the `module` part therein (which is your PyTorch
+    model), and its `n_layers` parameter. Note the use of double underscore for hierarchy
+    separation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Online Resources
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[skorch documentation](https://skorch.readthedocs.io/en/latest/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Stratified K-Folds cross-validator](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedKFold.html).
+    scikit-learn documentation.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Grid search cross-validator](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html).
+    scikit-learn documentation.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html).
+    scikit-learn documentation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this chapter, you discovered how to wrap your PyTorch deep learning models
+    and use them in the scikit-learn general machine learning library. You learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Specifically how to wrap PyTorch models so that they can be used with the scikit-learn
+    machine learning library.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use a wrapped PyTorch model as part of evaluating model performance in
+    scikit-learn.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to perform hyperparameter tuning in scikit-learn using a wrapped PyTorch
+    model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can see that using scikit-learn for standard machine learning operations
+    such as model evaluation and model hyperparameter optimization can save a lot
+    of time over implementing these schemes yourself. Wrapping your model allowed
+    you to leverage powerful tools from scikit-learn to fit your deep learning models
+    into your general machine learning process.
+  prefs: []
+  type: TYPE_NORMAL

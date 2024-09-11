@@ -1,0 +1,686 @@
+- en: Lagrange Multiplier Approach with Inequality Constraints
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/lagrange-multiplier-approach-with-inequality-constraints/](https://machinelearningmastery.com/lagrange-multiplier-approach-with-inequality-constraints/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In a previous post, we introduced the [method of Lagrange multipliers](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)
+    to find local minima or local maxima of a function with equality constraints.
+    The same method can be applied to those with inequality constraints as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover the method of Lagrange multipliers applied
+    to find the local minimum or maximum of a function when inequality constraints
+    are present, optionally together with equality constraints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After completing this tutorial, you will know
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to find points of local maximum or minimum of a function with equality constraints
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Method of Lagrange multipliers with equality constraints
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![Lagrange Multiplier Approach with Inequality Constraints](../Images/3bcfc4cf00942cfcadcc9024019a6378.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Lagrange Multiplier Approach with Inequality Constraints
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Christine Roy](https://unsplash.com/@agent_illustrateur), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prerequisites
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you already have reviewed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Derivative of functions](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Function of several variables, partial derivatives and gradient vectors](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[A gentle introduction to optimization](https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Gradient descent](https://machinelearningmastery.com/a-gentle-introduction-to-gradient-descent-procedure)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: as well as
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[A Gentle Introduction To Method Of Lagrange Multipliers](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can review these concepts by clicking on the links above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Constrained Optimization and Lagrangians
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Extending from our [previous post](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/),
+    a constrained optimization problem can be generally considered as
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \min && f(X) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \textrm{subject to} && g(X) &= 0 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&& h(X) &\ge 0 \\'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&& k(X) &\le 0'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: where $X$ is a scalar or vector values. Here, $g(X)=0$ is the equality constraint,
+    and $h(X)\ge 0$, $k(X)\le 0$ are inequality constraints. Note that we always use
+    $\ge$ and $\le$ rather than $\gt$ and $\lt$ in optimization problems because the
+    former defined a **closed set** in mathematics from where we should look for the
+    value of $X$. These can be many constraints of each type in an optimization problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The equality constraints are easy to handle but the inequality constraints
+    are not. Therefore, one way to make it easier to tackle is to convert the inequalities
+    into equalities, by introducing **slack variables**:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \min && f(X) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \textrm{subject to} && g(X) &= 0 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&& h(X) – s^2 &= 0 \\'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&& k(X) + t^2 &= 0'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: When something is negative, adding a certain positive quantity into it will
+    make it equal to zero, and vice versa. That quantity is the slack variable; the
+    $s^2$ and $t^2$ above are examples. We deliberately put $s^2$ and $t^2$ terms
+    there to denote that they must not be negative.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With the slack variables introduced, we can use the Lagrange multipliers approach
+    to solve it, in which the Lagrangian is defined as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: L(X, \lambda, \theta, \phi) = f(X) – \lambda g(X) – \theta (h(X)-s^2) + \phi
+    (k(X)+t^2)
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is useful to know that, for the optimal solution $X^*$ to the problem, the
+    inequality constraints are either having the equality holds (which the slack variable
+    is zero), or not. For those inequality constraints with their equality hold are
+    called the active constraints. Otherwise, the inactive constraints. In this sense,
+    you can consider that the equality constraints are always active.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Complementary Slackness Condition
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The reason we need to know whether a constraint is active or not is because
+    of the Krush-Kuhn-Tucker (KKT) conditions. Precisely, the KKT conditions describe
+    what happens when $X^*$ is the optimal solution to a constrained optimization
+    problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The gradient of the Lagrangian function is zero
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: All constraints are satisfied
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The inequality constraints satisfied complementary slackness condition
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The most important of them is the complementary slackness condition. While we
+    learned that optimization problem with equality constraint can be solved using
+    Lagrange multiplier which the gradient of the Lagrangian is zero at the optimal
+    solution, the complementary slackness condition extends this to the case of inequality
+    constraint by saying that at the optimal solution $X^*$, either the Lagrange multiplier
+    is zero or the corresponding inequality constraint is active.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The use of complementary slackness condition is to help us explore different
+    cases in solving the optimization problem. It is the best to be explained with
+    an example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Example 1: Mean-variance portfolio optimization'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This is an example from finance. If we have 1 dollar and were to engage in two
+    different investments, in which their return is modeled as a bi-variate Gaussian
+    distribution. How much should we invest in each to minimize the overall variance
+    in return?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This optimization problem, also known as Markowitz mean-variance portfolio
+    optimization, is formulated as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \min && f(w_1, w_2) &= w_1^2\sigma_1^2+w_2^2\sigma_2^2+2w_1w_2\sigma_{12} \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \textrm{subject to} && w_1+w_2 &= 1 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&& w_1 &\ge 0 \\'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&& w_1 &\le 1'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'which the last two are to bound the weight of each investment to between 0
+    and 1 dollar. Let’s assume $\sigma_1^2=0.25$, $\sigma_2^2=0.10$, $\sigma_{12}
+    = 0.15$ Then the Lagrangian function is defined as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: L(w_1,w_2,\lambda,\theta,\phi) =& 0.25w_1^2+0.1w_2^2+0.3w_1w_2 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&- \lambda(w_1+w_2-1) \\'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&- \theta(w_1-s^2) – \phi(w_1-1+t^2)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'and we have the gradients:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial w_1} &= 0.5w_1+0.3w_2-\lambda-\theta-\phi \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial w_2} &= 0.2w_2+0.3w_1-\lambda \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial\lambda} &= 1-w_1-w_2 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial\theta} &= s^2-w_1 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial\phi} &= 1-w_1-t^2
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From this point onward, the complementary slackness condition have to be considered.
+    We have two slack variables $s$ and $t$ and the corresponding Lagrange multipliers
+    are $\theta$ and $\phi$. We now have to consider whether a slack variable is zero
+    (which the corresponding inequality constraint is active) or the Lagrange multiplier
+    is zero (the constraint is inactive). There are four possible cases:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $\theta=\phi=0$ and $s^2>0$, $t^2>0$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $\theta\ne 0$ but $\phi=0$, and $s^2=0$, $t^2>0$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $\theta=0$ but $\phi\ne 0$, and $s^2>0$, $t^2=0$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $\theta\ne 0$ and $\phi\ne 0$, and $s^2=t^2=0$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: For case 1, using $\partial L/\partial\lambda=0$, $\partial L/\partial w_1=0$
+    and $\partial L/\partial w_2=0$ we get
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{align}
+  prefs: []
+  type: TYPE_NORMAL
+- en: w_2 &= 1-w_1 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0.5w_1 + 0.3w_2 &= \lambda \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0.3w_1 + 0.2w_2 &= \lambda
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{align}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: which we get $w_1=-1$, $w_2=2$, $\lambda=0.1$. But with $\partial L/\partial\theta=0$,
+    we get $s^2=-1$, which we cannot find a solution ($s^2$ cannot be negative). Thus
+    this case is infeasible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For case 2, with $\partial L/\partial\theta=0$ we get $w_1=0$. Hence from $\partial
+    L/\partial\lambda=0$, we know $w_2=1$. And with $\partial L/\partial w_2=0$, we
+    found $\lambda=0.2$ and from $\partial L/\partial w_1$ we get $\phi=0.1$. In this
+    case, the objective function is 0.1
+  prefs: []
+  type: TYPE_NORMAL
+- en: For case 3, with $\partial L/\partial\phi=0$ we get $w_1=1$. Hence from $\partial
+    L/\partial\lambda=0$, we know $w_2=0$. And with $\partial L/\partial w_2=0$, we
+    get $\lambda=0.3$ and from $\partial L/\partial w_1$ we get $\theta=0.2$. In this
+    case, the objective function is 0.25
+  prefs: []
+  type: TYPE_NORMAL
+- en: For case 4, we get $w_1=0$ from $\partial L/\partial\theta=0$ but $w_1=1$ from
+    $\partial L/\partial\phi=0$. Hence this case is infeasible.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Comparing the objective function from case 2 and case 3, we see that the value
+    from case 2 is lower. Hence that is taken as our solution to the optimization
+    problem, with the optimal solution attained at $w_1=0$, $w_2=1$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As an exercise, you can retry the above with $\sigma_{12}=-0.15$. The solution
+    would be 0.0038 attained when $w_1=\frac{5}{13}$, with the two inequality constraints
+    inactive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Example 2: Water-filling algorithm'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This is an example from communication engineering. If we have a channel (say,
+    a wireless bandwidth) in which the noise power is $N$ and the signal power is
+    $S$, the channel capacity (in terms of bits per second) is proportional to $\log_2(1+S/N)$.
+    If we have $k$ similar channels, each has its own noise and signal level, the
+    total capacity of all channels is the sum $\sum_i \log_2(1+S_i/N_i)$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Assume we are using a battery that can give only 1 watt of power and this power
+    have to distribute to the $k$ channels (denoted as $p_1,\cdots,p_k$). Each channel
+    may have different attenuation so at the end, the signal power is discounted by
+    a gain $g_i$ for each channel. Then the maximum total capacity we can achieve
+    by using these $k$ channels is formulated as an optimization problem
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \max && f(p_1,\cdots,p_k) &= \sum_{i=1}^k \log_2\left(1+\frac{g_ip_i}{n_i}\right)
+    \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \textrm{subject to} && \sum_{i=1}^k p_i &= 1 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&& p_1,\cdots,p_k &\ge 0 \\'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: For convenience of differentiation, we notice $\log_2x=\log x/\log 2$ and $\log(1+g_ip_i/n_i)=\log(n_i+g_ip_i)-\log(n_i)$,
+    hence the objective function can be replaced with
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: f(p_1,\cdots,p_k) = \sum_{i=1}^k \log(n_i+g_ip_i)
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Assume we have $k=3$ channels, each has noise level of 1.0, 0.9, 1.0 respectively,
+    and the channel gain is 0.9, 0.8, 0.7, then the optimization problem is
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \max && f(p_1,p_2,p_k) &= \log(1+0.9p_1) + \log(0.9+0.8p_2) + \log(1+0.7p_3)\\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \textrm{subject to} && p_1+p_2+p_3 &= 1 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '&& p_1,p_2,p_3 &\ge 0'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have three inequality constraints here. The Lagrangian function is defined
+    as
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: '& L(p_1,p_2,p_3,\lambda,\theta_1,\theta_2,\theta_3) \\'
+  prefs: []
+  type: TYPE_NORMAL
+- en: =\ & \log(1+0.9p_1) + \log(0.9+0.8p_2) + \log(1+0.7p_3) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: '& – \lambda(p_1+p_2+p_3-1) \\'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '& – \theta_1(p_1-s_1^2) – \theta_2(p_2-s_2^2) – \theta_3(p_3-s_3^2)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: The gradient is therefore
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial p_1} & = \frac{0.9}{1+0.9p_1}-\lambda-\theta_1 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial p_2} & = \frac{0.8}{0.9+0.8p_2}-\lambda-\theta_2
+    \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial p_3} & = \frac{0.7}{1+0.7p_3}-\lambda-\theta_3 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial\lambda} &= 1-p_1-p_2-p_3 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial\theta_1} &= s_1^2-p_1 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial\theta_2} &= s_2^2-p_2 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{\partial L}{\partial\theta_3} &= s_3^2-p_3 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But now we have 3 slack variables and we have to consider 8 cases:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $\theta_1=\theta_2=\theta_3=0$, hence none of $s_1^2,s_2^2,s_3^2$ are zero
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $\theta_1=\theta_2=0$ but $\theta_3\ne 0$, hence only $s_3^2=0$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $\theta_1=\theta_3=0$ but $\theta_2\ne 0$, hence only $s_2^2=0$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $\theta_2=\theta_3=0$ but $\theta_1\ne 0$, hence only $s_1^2=0$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $\theta_1=0$ but $\theta_2,\theta_3$ non-zero, hence only $s_2^2=s_3^2=0$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $\theta_2=0$ but $\theta_1,\theta_3$ non-zero, hence only $s_1^2=s_3^2=0$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $\theta_3=0$ but $\theta_1,\theta_2$ non-zero, hence only $s_1^2=s_2^2=0$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: all of $\theta_1,\theta_2,\theta_3$ are non-zero, hence $s_1^2=s_2^2=s_3^2=0$
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Immediately we can tell case 8 is infeasible since from $\partial L/\partial\theta_i=0$
+    we can make $p_1=p_2=p_3=0$ but it cannot make $\partial L/\partial\lambda=0$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For case 1, we have
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{0.9}{1+0.9p_1}=\frac{0.8}{0.9+0.8p_2}=\frac{0.7}{1+0.7p_3}=\lambda
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: from $\partial L/\partial p_1=\partial L/\partial p_2=\partial L/\partial p_3=0$.
+    Together with $p_3=1-p_1-p_2$ from $\partial L/\partial\lambda=0$, we found the
+    solution to be $p_1=0.444$, $p_2=0.430$, $p_3=0.126$, and the objective function
+    $f(p_1,p_2,p_3)=0.639$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For case 2, we have $p_3=0$ from $\partial L/\partial\theta_3=0$. Further, using
+    $p_2=1-p_1$ from $\partial L/\partial\lambda=0$, and
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \frac{0.9}{1+0.9p_1}=\frac{0.8}{0.9+0.8p_2}=\lambda
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: from $\partial L/\partial p_1=\partial L/\partial p_2=0$, we can solve for $p_1=0.507$
+    and $p_2=0.493$. The objective function $f(p_1,p_2,p_3)=0.634$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly in case 3, $p_2=0$ and we solved $p_1=0.659$ and $p_3=0.341$, with
+    the objective function $f(p_1,p_2,p_3)=0.574$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In case 4, we have $p_1=0$, $p_2=0.652$, $p_3=0.348$, and the objective function
+    $f(p_1,p_2,p_3)=0.570$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Case 5 we have $p_2=p_3=0$ and hence $p_3=1$. Thus we have the objective function
+    $f(p_1,p_2,p_3)=0.0.536$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly in case 6 and case 7, we have $p_2=1$ and $p_1=1$ respectively. The
+    objective function attained 0.531 and 0.425 respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Comparing all these cases, we found that the maximum value that the objective
+    function attained is in case 1\. Hence the solution to this optimization problem
+    is
+  prefs: []
+  type: TYPE_NORMAL
+- en: $p_1=0.444$, $p_2=0.430$, $p_3=0.126$, with $f(p_1,p_2,p_3)=0.639$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extensions and Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While in the above example, we introduced the slack variables into the Lagrangian
+    function, some books may prefer not to add the slack variables but to limit the
+    Lagrange multipliers for inequality constraints as positive. In that case you
+    may see the Lagrangian function written as
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: L(X, \lambda, \theta, \phi) = f(X) – \lambda g(X) – \theta h(X) + \phi k(X)
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: but requires $\theta\ge 0;\phi\ge 0$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Lagrangian function is also useful to apply to primal-dual approach for
+    finding the maximum or minimum. This is particularly helpful if the objectives
+    or constraints are non-linear, which the solution may not be easily found.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Some books that covers this topic are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Convex Optimization](https://amzn.com/0521833787) by Stephen Boyd and Lieven
+    Vandenberghe, 2004'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Chapter 4 of [Deep Learning](https://amzn.com/0262035618) by Ian Goodfellow
+    et al, 2016
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you discovered how the method of Lagrange multipliers can
+    be applied to inequality constraints. Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lagrange multipliers and the Lagrange function in presence of inequality constraints
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use KKT conditions to solve an optimization problem when inequality constraints
+    are given
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,480 @@
+- en: A Gentle Introduction to Decorators in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-decorators-in-python/](https://machinelearningmastery.com/a-gentle-introduction-to-decorators-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When working on code, whether we know it or not, we often come across the decorator
+    design pattern. This is a programming technique to extend the functionality of
+    classes or functions without modifying them. The decorator design pattern allows
+    us to mix and match extensions easily. Python has a decorator syntax rooted in
+    the decorator design pattern. Knowing how to make and use a decorator can help
+    you write more powerful code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, you will discover the decorator pattern and Python’s function
+    decorators.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is the decorator pattern, and why is it useful
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python’s function decorators and how to use them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started!![](../Images/a67e1d8293610400f6d7b5fd8ea10829.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Gentle Introduction to Decorators in Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Olya Kobruseva](https://www.pexels.com/photo/a-book-beside-a-cup-of-coffee-6560995/).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into four parts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is the decorator pattern, and why is it useful?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Function decorators in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The use cases of decorators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some practical examples of decorators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is the decorator pattern, and why is it useful?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The decorator pattern is a software design pattern that allows us to dynamically
+    add functionality to classes without creating subclasses and affecting the behavior
+    of other objects of the same class. By using the decorator pattern, we can easily
+    generate different permutations of functionality that we might want without creating
+    an exponentially increasing number of subclasses, making our code increasingly
+    complex and bloated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Decorators are usually implemented as sub-interfaces of the main interface that
+    we want to implement and store an object of the main interface’s type. It will
+    then modify the methods to which it wants to add certain functionality by overriding
+    the methods in the original interface and calling on methods from the stored object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/20be37618a47d64073464ab0a407d0c5.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/Decorator-UML-Class-Diagram.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: UML class diagram for decorator pattern
+  prefs: []
+  type: TYPE_NORMAL
+- en: Above is the UML class diagram for the decorator design pattern. The decorator
+    abstract class contains an object of type `OriginalInterface`; this is the object
+    whose functionality the decorator will be modifying. To instantiate our concrete
+    `DecoratorClass`, we would need to pass in a concrete class that implements the
+    `OriginalInterface,` and then when we make method calls to `DecoratorClass.method1()`,
+    our `DecoratorClass` should modify the output from the object’s `method1()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With Python, however, we are able to simplify many of these design patterns
+    due to dynamic typing along with functions and classes being first-class objects.
+    While modifying a class or a function without changing the implementation remained
+    the key idea of decorators, we will explore Python’s decorator syntax in the following.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Function Decorators in Python
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A function decorator is an incredibly useful feature in Python. It is built
+    upon the idea that functions and classes are first-class objects in Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s consider a simple example, that is, to call a function twice. Since a
+    Python function is an object and we can pass a function as an argument to another
+    function, this task can be done as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Again, since a Python function is an object, we can make a function to return
+    another function, which is to execute yet another function twice. This is done
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The function returned by `repeat_decorator()` above is created when it is invoked,
+    as it depends on the argument provided. In the above, we passed the `hello_world`
+    function as an argument to the `repeat_decorator()` function, and it returns the
+    `decorated_fn` function, which is assigned to `hello_world_twice`. Afterward,
+    we can invoke `hello_world_twice()` since it is now a function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The idea of decorator pattern applies here. But we do not need to define the
+    interface and subclasses explicitly. In fact, `hello_world` is a name defined
+    as a function in the above example. There is nothing preventing us from redefining
+    this name to something else. Hence we can also do the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: That is, instead of assigning the newly created function to `hello_world_twice`,
+    we overwrite `hello_world` instead. While the name `hello_world` is reassigned
+    to another function, the previous function still exists but is just not exposed
+    to us.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Indeed, the above code is functionally equivalent to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above code, `@repeat_decorator` before a function definition means to
+    pass the function into `repeat_decorator()` and reassign its name to the output.
+    That is, to mean `hello_world = repeat_decorator(hello_world)`. The `@` line is
+    the decorator syntax in Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Note:** `@` syntax is also used in Java but has a different meaning where
+    it’s an annotation that is basically metadata and not a decorator.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also implement decorators that take in arguments, but this would be
+    a bit more complicated as we need to have one more layer of nesting. If we extend
+    our example above to define the number of times to repeat the function call:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `repeat_decorator()` takes in an argument and returns a function which
+    is the actual decorator for the `hello_world` function (i.e., invoking `repeat_decorator(5)`
+    returns `inner_decorator` with the local variable `num_repeats = 5` set). The
+    above code will print the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Before we end this section, we should remember that decorators can also be applied
+    to classes in addition to functions. Since class in Python is also an object,
+    we may redefine a class in a similar fashion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Use Cases of Decorators
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The decorator syntax in Python made the use of decorators easier. There are
+    many reasons we may use a decorator. One of the most common use cases is to convert
+    data implicitly. For example, we may define a function that assumes all operations
+    are based on numpy arrays and then make a decorator to ensure that happens by
+    modifying the input:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can further add to our decorator by modifying the output of the function,
+    such as rounding off floating point values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let’s consider the example of finding the sum of an array. A numpy array has
+    `sum()` built-in, as does pandas DataFrame. But the latter is to sum over columns
+    rather than sum over all elements. Hence a numpy array will sum to one floating
+    point value while a DataFrame will sum to a vector of values. But with the above
+    decorator, we can write a function that gives you consistent output in both cases:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running the above code gives us the output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a simple example. But imagine if we define a new function that computes
+    the standard deviation of elements in an array. We can simply use the same decorator,
+    and then the function will also accept pandas DataFrame. Hence all the code to
+    polish input is taken out of these functions by depositing them into the decorator.
+    This is how we can efficiently reuse the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Some Practical Examples of Decorators
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we learned the decorator syntax in Python, let’s see what we can do
+    with it!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Memoization
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are some function calls that we do repeatedly, but where the values rarely,
+    if ever, change. This could be calls to a server where the data is relatively
+    static or as part of a dynamic programming algorithm or computationally intensive
+    math function. We might want to **memoize** these function calls, i.e., storing
+    the value of their output on a virtual memo pad for reuse later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A decorator is the best way to implement a memoization function. We just need
+    to remember the input and output of a function but keep the function’s behavior
+    as-is. Below is an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, we implemented `memoize()` to work with a global dictionary
+    `MEMO` such that the name of a function together with the arguments becomes the
+    key and the function’s return becomes the value. When the function is called,
+    the decorator will check if the corresponding key exists in `MEMO`, and the stored
+    value will be returned. Otherwise, the actual function is invoked, and its return
+    value is added to the dictionary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We use `pickle` to serialize the input and output and use `hashlib` to create
+    a hash of the input because not everything can be a key to the Python dictionary
+    (e.g., `list` is an unhashable type; thus, it cannot be a key). Serializing any
+    arbitrary structure into a string can overcome this and guarantee that the return
+    data is immutable. Furthermore, hashing the function argument would avoid storing
+    an exceptionally long key in the dictionary (for example, when we pass in a huge
+    numpy array to the function).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The above example uses `fibonacci()` to demonstrate the power of memoization.
+    Calling `fibonacci(n)` will produce the n-th Fibonacci number. Running the above
+    example would produce the following output, in which we can see the 40th Fibonacci
+    number is 102334155 and how the dictionary `MEMO` is used to store different calls
+    to the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may try to remove the `@memoize` line in the code above. You will find the
+    program takes significantly longer to run (because each function call invokes
+    two more function calls; hence it is running in O(2^n) instead of O(n) as in the
+    memoized case), or you may even be running out of memory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Memoization is very helpful for expensive functions whose outputs don’t change
+    frequently, for example, the following function that reads some stock market data
+    from the Internet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If implemented correctly, the call to `get_stock_data()` should be more expensive
+    the first time and much less expensive subsequently. The output from the code
+    snippet above gives us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is particularly useful if you are working on a Jupyter notebook. If you
+    need to download some data, wrap it in a memoize decorator. Since developing a
+    machine learning project means many iterations of changing your code to see if
+    the result looks any better, a memoized download function saves you a lot of unnecessary
+    waiting.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You may make a more powerful memoization decorator by saving the data in a
+    database (e.g., a key-value store like GNU dbm or an in-memory database such as
+    memcached or Redis). But if you just need the functionality as above, Python 3.2
+    or later shipped you the decorator `lru_cache` from the built-in library `functools`,
+    so you don’t need to write your own:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Note:** The `lru_cache` implements LRU caching, which limits its size to
+    the most recent calls (default 128) to the function. In Python 3.9, there is a
+    `@functools.cache` as well, which is unlimited in size without the LRU purging.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Function Catalog
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Another example where we might want to consider the use of function decorators
+    is for registering functions in a catalog. It allows us to associate functions
+    with a string and pass the strings as arguments for other functions. This is the
+    start of making a system that will enable user-provided plug-ins. Let’s illustrate
+    this with an example. Below is a decorator and a function `activate()` that we
+    will use later. Let’s assume the following code is saved in the file `activation.py`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After defining the `register` decorator in the above code, we can now use it
+    to register functions and associate strings with them. Let’s have the file `funcs.py`
+    as such:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: We’ve registered the “relu,” “sigmoid,” and “tanh” functions to their respective
+    strings by building this association in the `ACTIVATION` dictionary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, let’s see how we can use our newly registered functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'which gives us the output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Observe that before we reached the `import func` line, the ReLU activation does
+    not exist. Hence calling the function will have the error message print, and the
+    result is `None`. Then after we run that `import` line, we are loading those functions
+    defined just like a plug-in module. Then the same function call gave us the result
+    we expected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that we never invoked anything in the module `func` explicitly, and we
+    didn’t modify anything in the call to `activate()`. Simply importing `func` caused
+    those new functions to register and expanded the functionality of `activate()`.
+    Using this technique allows us to develop a very large system while focusing on
+    only one small part at a time without worrying about the interoperability of other
+    parts. Without the registration decorators and function catalog, adding a new
+    activation function would need modification to **every** function that uses activation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you’re familiar with Keras, you should resonate the above with the following
+    syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Keras defined almost all components using a decorator of similar nature. Hence
+    we can refer to building blocks by name. Without this mechanism, we have to use
+    the following syntax all the time, which puts a burden on us to remember the location
+    of a lot of components:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Decorator pattern](https://blogs.oracle.com/javamagazine/post/the-decorator-pattern-in-depth)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python Language Reference, Section 8.7, [Function definitions](https://docs.python.org/3/reference/compound_stmts.html#function)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PEP 318 – Decorators for Functions and Methods](https://peps.python.org/pep-0318/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Fluent Python](https://www.amazon.com/dp/1492056359/), 2nd edition, by Luciano
+    Ramalho'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[functools module](https://docs.python.org/3/library/functools.html) in Python
+    standard library'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you discovered the decorator design pattern and Python’s decorator
+    syntax. You also saw some specific use cases of decorators that can help your
+    Python program run faster or be easier to extend.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The idea of a decorator pattern and the decorator syntax in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement a decorator in Python for use with the decorator syntax
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The use of a decorator for adapting function input and output, for memoization,
+    and for registering functions in a catalog
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

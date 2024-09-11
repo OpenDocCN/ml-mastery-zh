@@ -1,0 +1,359 @@
+- en: A Gentle Introduction to Positional Encoding in Transformer Models, Part 1
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-positional-encoding-in-transformer-models-part-1/](https://machinelearningmastery.com/a-gentle-introduction-to-positional-encoding-in-transformer-models-part-1/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In languages, the order of the words and their position in a sentence really
+    matters. The meaning of the entire sentence can change if the words are re-ordered.
+    When implementing NLP solutions, recurrent neural networks have an inbuilt mechanism
+    that deals with the order of sequences. The transformer model, however, does not
+    use recurrence or convolution and treats each data point as independent of the
+    other. Hence, positional information is added to the model explicitly to retain
+    the information regarding the order of words in a sentence. Positional encoding
+    is the scheme through which the knowledge of the order of objects in a sequence
+    is maintained.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we’ll simplify the notations used in this remarkable paper,
+    [Attention Is All You Need](https://arxiv.org/abs/1706.03762) by Vaswani et al. After
+    completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is positional encoding, and why it’s important
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Positional encoding in transformers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Code and visualize a positional encoding matrix in Python using NumPy
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/94214676d9c91a14c9b6559a1f59e28b.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/muhammad-murtaza-ghani-CIVbJZR8aAk-unsplash-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A gentle introduction to positional encoding in transformer models
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Muhammad Murtaza Ghani](https://unsplash.com/@murtaza327?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+    on [Unsplash](https://unsplash.com/s/photos/free-pakistan?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText),
+    some rights reserved
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is positional encoding
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Mathematics behind positional encoding in transformers
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Implementing the positional encoding matrix using NumPy
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Understanding and visualizing the positional encoding matrix
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What Is Positional Encoding?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Positional encoding describes the location or position of an entity in a sequence
+    so that each position is assigned a unique representation. There are many reasons
+    why a single number, such as the index value, is not used to represent an item’s
+    position in transformer models. For long sequences, the indices can grow large
+    in magnitude. If you normalize the index value to lie between 0 and 1, it can
+    create problems for variable length sequences as they would be normalized differently.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Transformers use a smart positional encoding scheme, where each position/index
+    is mapped to a vector. Hence, the output of the positional encoding layer is a
+    matrix, where each row of the matrix represents an encoded object of the sequence
+    summed with its positional information. An example of the matrix that encodes
+    only the positional information is shown in the figure below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/352dc9fefeea3b3944ef08622a876ab3.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Quick Run-Through of the Trigonometric Sine Function
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This is a quick recap of sine functions; you can work equivalently with cosine
+    functions. The function’s range is [-1,+1]. The frequency of this waveform is
+    the number of cycles completed in one second. The wavelength is the distance over
+    which the waveform repeats itself. The wavelength and frequency for different
+    waveforms are shown below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/bb9f8b228167306f5b4ded76a4f0b5d3.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Positional Encoding Layer in Transformers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s dive straight into this. Suppose you have an input sequence of length
+    $L$ and require the position of the $k^{th}$ object within this sequence. The
+    positional encoding is given by sine and cosine functions of varying frequencies:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{eqnarray}
+  prefs: []
+  type: TYPE_NORMAL
+- en: P(k, 2i) &=& \sin\Big(\frac{k}{n^{2i/d}}\Big)\\
+  prefs: []
+  type: TYPE_NORMAL
+- en: P(k, 2i+1) &=& \cos\Big(\frac{k}{n^{2i/d}}\Big)
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{eqnarray}
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '$k$: Position of an object in the input sequence, $0 \leq k < L/2$'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '$d$: Dimension of the output embedding space'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '$P(k, j)$: Position function for mapping a position $k$ in the input sequence
+    to index $(k,j)$ of the positional matrix'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '$n$: User-defined scalar, set to 10,000 by the authors of [Attention Is All
+    You Need](https://arxiv.org/abs/1706.03762).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '$i$: Used for mapping to column indices $0 \leq i < d/2$, with a single value
+    of $i$ maps to both sine and cosine functions'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the above expression, you can see that even positions correspond to a sine
+    function and odd positions correspond to cosine functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Example
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: To understand the above expression, let’s take an example of the phrase “I am
+    a robot,” with n=100 and d=4\. The following table shows the positional encoding
+    matrix for this phrase. In fact, the positional encoding matrix would be the same
+    for any four-letter phrase with n=100 and d=4.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/9ef448bb75e651a4fbbb04ff18d7e5a7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Coding the Positional Encoding Matrix from Scratch
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Here is a short Python code to implement positional encoding using NumPy. The
+    code is simplified to make the understanding of positional encoding easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Understanding the Positional Encoding Matrix
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To understand the positional encoding, let’s start by looking at the sine wave
+    for different positions with n=10,000 and d=512.Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The following figure is the output of the above code:[![](../Images/b683d3a2e132ce6a7884a319b06538ff.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE4.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sine wave for different position indices
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can see that each position $k$ corresponds to a different sinusoid, which
+    encodes a single position into a vector. If you look closely at the positional
+    encoding function, you can see that the wavelength for a fixed $i$ is given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \lambda_{i} = 2 \pi n^{2i/d}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hence, the wavelengths of the sinusoids form a geometric progression and vary
+    from $2\pi$ to $2\pi n$. The scheme for positional encoding has a number of advantages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The sine and cosine functions have values in [-1, 1], which keeps the values
+    of the positional encoding matrix in a normalized range.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: As the sinusoid for each position is different, you have a unique way of encoding
+    each position.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You have a way of measuring or quantifying the similarity between different
+    positions, hence enabling you to encode the relative positions of words.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Visualizing the Positional Matrix
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s visualize the positional matrix on bigger values. Use Python’s `matshow()`
+    method from the `matplotlib` library. Setting n=10,000 as done in the original
+    paper, you get the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/fc424f5aba32b4c00664bde095000553.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE5.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The positional encoding matrix for n=10,000, d=512, sequence length=100
+  prefs: []
+  type: TYPE_NORMAL
+- en: What Is the Final Output of the Positional Encoding Layer?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The positional encoding layer sums the positional vector with the word encoding
+    and outputs this matrix for the subsequent layers. The entire process is shown
+    below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/08056ae40c6b19a2317f2134ee231931.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE6.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The positional encoding layer in the transformer
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Transformers for natural language processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
+    by Denis Rothman.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Papers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[The Transformer Attention Mechanism](https://machinelearningmastery.com/the-transformer-attention-mechanism/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Transformer Model](https://machinelearningmastery.com/the-transformer-model/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Transformer model for language understanding](https://www.tensorflow.org/text/tutorials/transformer)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered positional encoding in transformers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is positional encoding, and why it is needed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement positional encoding in Python using NumPy
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to visualize the positional encoding matrix
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions about positional encoding discussed in this post?
+    Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

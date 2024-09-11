@@ -1,0 +1,285 @@
+- en: Creating a Training Loop for PyTorch Models
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/creating-a-training-loop-for-pytorch-models/](https://machinelearningmastery.com/creating-a-training-loop-for-pytorch-models/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: PyTorch provides a lot of building blocks for a deep learning model, but a training
+    loop is not part of them. It is a flexibility that allows you to do whatever you
+    want during training, but some basic structure is universal across most use cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this post, you will see how to make a training loop that provides essential
+    information for your model training, with the option to allow any information
+    to be displayed. After completing this post, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The basic building block of a training loop
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use tqdm to display training progress
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/0672407873f4aff7bd5553961f40e664.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a training loop for PyTorch models
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [pat pat](https://unsplash.com/photos/4DE9h3fpLiI). Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is in three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Elements of Training a Deep Learning Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Collecting Statistics During Training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using tqdm to Report the Training Progress
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Elements of Training a Deep Learning Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As with all machine learning models, the model design specifies the algorithm
+    to manipulate an input and produce an output. But in the model, there are parameters
+    that you need to fine-tune to achieve that. These model parameters are also called
+    the weights, biases, kernels, or other names depending on the particular model
+    and layers. Training is to feed in the sample data to the model so that an optimizer
+    can fine-tune these parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you train a model, you usually start with a dataset. Each dataset is a
+    fairly large number of data samples. When you get a dataset, it is recommended
+    to split it into two portions: the training set and the test set. The training
+    set is further split into batches and used in the training loop to drive the gradient
+    descent algorithms. The test set, however, is used as a benchmark to tell how
+    good your model is. Usually, you do not use the training set as a metric but take
+    the test set, which is not seen by the gradient descent algorithm, so you can
+    tell if your model fits well to the unseen data.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overfitting is when the model fits too well to the training set (i.e., at very
+    high accuracy) but performs significantly worse in the test set. Underfitting
+    is when the model cannot even fit well to the training set. Naturally, you don’t
+    want to see either on a good model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training of a neural network model is in epochs. Usually, one epoch means you
+    run through the entire training set once, although you only feed one batch at
+    a time. It is also customary to do some housekeeping tasks at the end of each
+    epoch, such as benchmarking the partially trained model with the test set, checkpointing
+    the model, deciding if you want to stop the training early, and collecting training
+    statistics, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In each epoch, you feed data samples into the model in batches and run a gradient
+    descent algorithm. This is one step in the training loop because you run the model
+    in one forward pass (i.e., providing input and capturing output), and one backward
+    pass (evaluating the loss metric from the output and deriving the gradient of
+    each parameter all the way back to the input layer). The backward pass computes
+    the gradient using automatic differentiation. Then, this gradient is used by the
+    gradient descent algorithm to adjust the model parameters. There are multiple
+    steps in one epoch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Reusing the examples in a [previous tutorial](https://machinelearningmastery.com/develop-your-first-neural-network-with-pytorch-step-by-step/),
+    you can download the [dataset](https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv)
+    and split the dataset into two as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This dataset is small–only 768 samples. Here, it takes the first 700 as the
+    training set and the rest as the test set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is not the focus of this post, but you can reuse the model, the loss function,
+    and the optimizer from a previous post:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With the data and the model, this is the minimal training loop, with the forward
+    and backward pass in each step:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the inner for-loop, you take each batch in the dataset and evaluate the loss.
+    The loss is a PyTorch tensor that remembers how it comes up with its value. Then
+    you zero out all gradients that the optimizer manages and call `loss.backward()`
+    to run the backpropagation algorithm. The result sets up the gradients of all
+    the tensors that the tensor `loss` depends on directly and indirectly. Afterward,
+    upon calling `step()`, the optimizer will check each parameter that it manages
+    and update them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After everything is done, you can run the model with the test set to evaluate
+    its performance. The evaluation can be based on a different function than the
+    loss function. For example, this classification problem uses accuracy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Putting everything together, this is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Collecting Statistics During Training
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The training loop above should work well with small models that can finish training
+    in a few seconds. But for a larger model or a larger dataset, you will find that
+    it takes significantly longer to train. While you’re waiting for the training
+    to complete, you may want to see how it’s going as you may want to interrupt the
+    training if any mistake is made.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Usually, during training, you would like to see the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In each step, you would like to know the loss metrics, and you are expecting
+    the loss to go down
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In each step, you would like to know other metrics, such as accuracy on the
+    training set, that are of interest but not involved in the gradient descent
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: At the end of each epoch, you would like to evaluate the partially-trained model
+    with the test set and report the evaluation metric
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: At the end of the training, you would like to be above to visualize the above
+    metrics
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'These all are possible, but you need to add more code into the training loop,
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you collect the loss and accuracy in the list, you can plot them using matplotlib.
+    But be careful that you collected training set statistics at each step, but the
+    test set accuracy only at the end of the epoch. Thus you would like to show the
+    **average accuracy** from the training loop in each epoch, so they are comparable
+    to each other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Putting everything together, below is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The story does not end here. Indeed, you can add more code to the training loop,
+    especially in dealing with a more complex model. One example is checkpointing.
+    You may want to save your model (e.g., using pickle) so that, if for any reason,
+    your program stops, you can restart the training loop from the middle. Another
+    example is early stopping, which lets you monitor the accuracy you obtained with
+    the test set at the end of each epoch and interrupt the training if you don’t
+    see the model improving for a while. This is because you probably can’t go further,
+    given the design of the model, and you do not want to overfit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using tqdm to Report the Training Progress
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If you run the above code, you will find that there are a lot of lines printed
+    on the screen while the training loop is running. Your screen may be cluttered.
+    And you may also want to see an animated progress bar to better tell you how far
+    you are in the training progress. The library `tqdm` is the popular tool for creating
+    the progress bar. Converting the above code to use tqdm cannot be easier:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The usage of `tqdm` creates an iterator using `trange()` just like Python’s
+    `range()` function, and you can read the number in a loop. You can access the
+    progress bar by updating its description or “postfix” data, but you have to do
+    that before it exhausts its content. The `set_postfix()` function is powerful
+    as it can show you anything.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In fact, there is a `tqdm()` function besides `trange()` that iterates over
+    an existing list. You may find it easier to use, and you can rewrite the above
+    loop as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The following is the complete code (without the matplotlib plotting):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you looked in detail at how to properly set up a training loop
+    for a PyTorch model. In particular, you saw:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are the elements needed to implement in a training loop
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How a training loop connects the training data to the gradient descent optimizer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to collect information in the training loop and display them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

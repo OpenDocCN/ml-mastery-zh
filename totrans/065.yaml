@@ -1,0 +1,434 @@
+- en: Support Vector Machines in OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/support-vector-machines-in-opencv/](https://machinelearningmastery.com/support-vector-machines-in-opencv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The Support Vector Machine algorithm is one of the most popular supervised machine
+    learning techniques, and it is implemented in the OpenCV library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This tutorial will introduce the necessary skills to start using Support Vector
+    Machines in OpenCV, using a custom dataset we will generate. In a subsequent tutorial,
+    we will then apply these skills for the specific applications of image classification
+    and detection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will learn how to apply OpenCV’s Support Vector Machine
+    algorithm on a custom two-dimensional dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important characteristics of Support Vector Machines.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the Support Vector Machine algorithm on a custom dataset in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started. [![](../Images/f64588ee6b508d0f79b81993da3e92c7.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Support Vector Machines in OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Lance Asper](https://unsplash.com/photos/O79h8KzusIc), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reminder of How Support Vector Machines Work
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discovering the SVM Algorithm in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Reminder of How Support Vector Machines Work**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The Support Vector Machine (SVM) algorithm has already been explained well
+    in [this tutorial by Jason Brownlee](https://machinelearningmastery.com/support-vector-machines-for-machine-learning/),
+    but let’s first start with brushing up some of the most important points from
+    his tutorial:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**For simplicity, let’s say that we have two separate classes, 0 and 1\. A
+    hyperplane can separate the data points within these two classes, the decision
+    boundary that splits the input space to separate the data points by their class.
+    The dimension of this hyperplane depends on the dimensionality of the input data
+    points.**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***   **If given a newly observed data point, we may find the class to which
+    it belongs by calculating which side of the hyperplane it falls. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **A *margin* is the distance between the decision boundary and the closest
+    data points. It is found by considering only the closest data points belonging
+    to the different classes. It is calculated as the perpendicular distance of these
+    nearest data points to the decision boundary.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **The largest margin to the closest data points characterizes the optimal
+    decision boundary. These nearest data points are known as the *support vectors*. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **If the classes are not perfectly separable from one another because
+    they may be distributed so that some of their data points intermingle in space,
+    the constraint of maximizing the margin needs to be relaxed. The margin constraint
+    can be relaxed by introducing a tunable parameter known as *C*.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **The value of the *C* parameter controls how much the margin constraint
+    can be violated, with a value of 0 meaning that no violation is permitted at all.
+    The aim of increasing the value of *C* is to reach a better compromise between
+    maximizing the margin and reducing the number of misclassifications. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **Furthermore, the SVM uses a kernel to compute a similarity (or distance)
+    measure between the input data points. In the simplest case, the kernel implements
+    a dot product operation when the input data is linearly separable and can be separated
+    by a linear hyperplane. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **If the data points are not linearly separable straight away, the *kernel
+    trick* comes to the rescue, where the operation performed by the kernel seeks
+    to transform the data to a higher-dimensional space in which it becomes linearly
+    separable. This is analogous to the SVM finding a non-linear decision boundary
+    in the original input space. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**## **Discovering the SVM algorithm in OpenCV**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s first consider applying the SVM to a simple linearly separable dataset
+    that enables us to visualize several of the abovementioned concepts before moving
+    on to more complex tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this purpose, we shall be generating a dataset consisting of 100 data points
+    (specified by `n_samples`), which are equally divided into 2 Gaussian clusters
+    (specified by `centers`) having a standard deviation set to 1.5 (specified by
+    `cluster_std`). To be able to replicate the results, let’s also define a value
+    for `random_state`, which we’re going to set to 15:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above should generate the following plot of data points. You may note
+    that we are setting the color values to the ground truth labels to be able to
+    distinguish between data points belonging to the two different classes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/3df691de41cf7f3c35dc2f9bf6c17ad1.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Linearly Separable Data Points Belonging to Two Different Classes
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next step is to split the dataset into training and testing sets, where
+    the former will be used to train the SVM and the latter to test it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/089153a633cbb0ac10d2d09e1c7ba635.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Splitting the Data Points in Training and Testing Sets
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We may see from the image of the training data above that the two classes are
+    clearly distinguishable and should be easily separated by a linear hyperplane.
+    Hence, let’s proceed to create and train an SVM in OpenCV that makes use of a
+    linear kernel to find the optimal decision boundary between these two classes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, note that the SVM’s `train` method in OpenCV requires the input data to
+    be of the 32-bit float type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We may proceed to use the trained SVM to predict labels for the testing data
+    and subsequently calculate the classifier’s accuracy by comparing the predictions
+    with their corresponding ground truth:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: As expected, all of the testing data points have been correctly classified.
+    Let’s also visualize the decision boundary computed by the SVM algorithm during
+    training to understand better how it arrived at this classification result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the meantime, the code listing so far is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To visualize the decision boundary, we will be creating many two-dimensional
+    points structured into a rectangular grid, which span the space occupied by the
+    data points used for testing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we shall organize the x- and y-coordinates of the data points that make
+    up the rectangular grid into a two-column array and pass them on to the `predict`
+    method to generate a class label for each one of them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We may finally visualize them by a contour plot overlayed with the data points
+    used for testing to confirm that, indeed, the decision boundary computed by the
+    SVM algorithm is linear:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/bf15586b51941683f859cb2e76a5829e.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Linear Decision Boundary Computed by the SVM
+  prefs: []
+  type: TYPE_NORMAL
+- en: We may also confirm from the figure above that, as mentioned in the first section,
+    the testing data points have been assigned a class label depending on the side
+    of the decision boundary they were found on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Furthermore, we may highlight the training data points that have been identified
+    as the support vectors and which have played an instrumental role in determining
+    the decision boundary:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/9f46d2335c85f1f476afa36c888b4332.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Support Vectors Highlighted in Red
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete code listing to generate the decision boundary and visualize the
+    support vectors is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So far, we have considered the simplest case of having two well-distinguishable
+    classes. But how do we distinguish between classes that are less clearly separable
+    because they consist of data points that intermingle in space, such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/d61273165fdd90cf1137b9c1f80ca270.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_5.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Non-Linearly Separable Data Points Belonging to Two Different Classes
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/df2368cf095f546fe83047e5b3857825.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_6.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Splitting the Non-Linearly Separable Data in Training and Testing Sets
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, we might wish to explore different options depending on how much
+    the two classes overlap one another, such as (1) relaxing the margin constraint
+    for the linear kernel by increasing the value of the *C* parameter to allow for
+    a better compromise between maximizing the margin and reducing misclassifications,
+    or (2) using a different kernel function that can produce a non-linear decision
+    boundary, such as the Radial Basis Function (RBF).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In doing so, we need to set the values of a few properties of the SVM and the
+    kernel function in use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'SVM_C_SVC: Known as *C-Support Vector Classification*, this SVM type allows
+    an n-class classification (n $\geq$ 2) of classes with imperfect separation (i.e.
+    not linearly separable). Set using the `setType` method.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'C: Penalty multiplier for outliers when dealing with non-linearly separable
+    classes. Set using the `setC` method.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Gamma: Determines the radius of the RBF kernel function. A smaller gamma value
+    results in a wider radius that can capture the similarity of data points far from
+    each other but may result in overfitting. A larger gamma results in a narrower
+    radius that can only capture the similarity of nearby data points, which may result
+    in underfitting. Set using the `setGamma` method.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Here, the *C* and *gamma* values are being set arbitrarily, but you may conduct
+    further testing to investigate how different values affect the resulting prediction
+    accuracy. Both of the aforementioned options give us a prediction accuracy of
+    85% using the following code, but achieve this accuracy through different decision
+    boundaries:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using a linear kernel with a relaxed margin constraint:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/d42a484fb6efbecb1ddfeadbaf1132e3.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_7.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Decision Boundary Computed Using a Linear Kernel with Relaxed Margin Constraints
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using an RBF kernel function:'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/354fa2840c012dd6cd6f75e6a9302576.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_8.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Decision Boundary Computed Using an RBF Kernel
+  prefs: []
+  type: TYPE_NORMAL
+- en: The choice of values for the SVM parameters typically depends on the task and
+    the data at hand and requires further testing to be tuned accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Introduction to Support Vector Machines, [https://docs.opencv.org/4.x/d1/d73/tutorial_introduction_to_svm.html](https://docs.opencv.org/4.x/d1/d73/tutorial_introduction_to_svm.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to apply OpenCV’s Support Vector Machine algorithm
+    on a custom two-dimensional dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important characteristics of the Support Vector Machine
+    algorithm.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the Support Vector Machine algorithm on a custom dataset in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.****************
+  prefs: []
+  type: TYPE_NORMAL

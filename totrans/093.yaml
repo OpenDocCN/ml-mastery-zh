@@ -1,0 +1,636 @@
+- en: Massaging Data Using Pandas
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/massaging-data-using-pandas/](https://machinelearningmastery.com/massaging-data-using-pandas/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When we talk about managing data, it is quite inevitable to see data presented
+    in tables. With column header, and sometimes with names for rows, it makes understanding
+    data easier. In fact, it often happens that we see data of different types staying
+    together. For example, we have quantity as numbers and name as strings in a table
+    of ingredients for a recipe. In Python, we have the pandas library to help us
+    handle tabular data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After finishing this tutorial, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What the pandas library provides
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is a DataFrame and a Series in pandas
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to manipulate DataFrame and Series beyond the trivial array operations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started!![](../Images/bba3496226ca0851a3b7f37a917dae1b.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Massaging Data Using Pandas
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Mark de Jong](https://www.pexels.com/photo/a-giant-panda-eating-bamboo-leaves-6939449/).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into five parts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: DataFrame and Series
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Essential functions in DataFrame
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Manipulating DataFrames and Series
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Aggregation in DataFrames
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Handling time series data in pandas
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DataFrame and Series
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To begin, let’s start with an example dataset. We will import pandas and read
+    the [U.S. air pollutant emission data](https://www.epa.gov/air-emissions-inventories/air-pollutant-emissions-trends-data) into
+    a DataFrame:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a table of pollutant emissions for each year, with the information on
+    what kind of pollutant and the amount of emission per year.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here we demonstrated one useful feature from pandas: You can read a CSV file
+    using `read_csv()` or read an Excel file using `read_excel(),` as above. The filename
+    can be a local file in your machine or an URL from where the file can be downloaded.
+    We learned about this URL from the U.S. Environmental Protection Agency’s website.
+    We know which worksheet contains the data and from which row the data starts,
+    hence the extra arguments to the `read_excel()` function.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The pandas object created above is a DataFrame, presented as a table. Similar
+    to NumPy, data in Pandas are organized in arrays. But Pandas assign a data type
+    to columns rather than an entire array. This allows data of different types to
+    be included in the same data structure. We can check the data type by either calling
+    the `info()` function from the DataFrame:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'or we can also get the type as a pandas Series:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: In pandas, a DataFrame is a table, while a Series is a column of the table.
+    This distinction is important because data behind a DataFrame is a 2D array while
+    a Series is a 1D array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similar to the fancy indexing in NumPy, we can extract columns from one DataFrame
+    to create another:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Or, if we pass in a column name as a string rather than a list of column names,
+    we extract a column from a DataFrame as a Series:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Essential Functions in DataFrame
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Pandas is feature-rich. Many essential operations on a table or a column are
+    provided as functions defined on the DataFrame or Series. For example, we can
+    see a list of pollutants covered in the table above by using:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And we can find the mean (`mean()`), standard deviation (`std()`), minimum
+    (`min()`), and maximum (`max()`) of a series similarly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But in fact, we are more likely to use the `describe()` function to explore
+    a new DataFrame. Since the DataFrame in this example has too many columns, it
+    is better to transpose the resulting DataFrame from `describe()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Indeed, the DataFrame produced by `describe()` can help us get a sense of the
+    data. From there, we can tell how much missing data there is (by looking at the
+    count), how the data are distributed, whether there are outliers, and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Manipulating DataFrame and Series
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Similar to the Boolean indexing in NumPy, we can extract a subset of **rows** from
+    a DataFrame. For example, this is how we can select the data for carbon monoxide
+    emissions only:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As you may expect, the `==` operator compares each element from a series `df["Pollutant"]`
+    , resulting in a series of Boolean. If the lengths match, the DataFrame understands
+    it is to select the rows based on the Boolean value. In fact, we can combine Booleans
+    using bitwise operators. For example, this is how we select the rows of carbon
+    monoxide emissions due to highway vehicles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you prefer to select rows like a Python list, you may do so via the `iloc`
+    interface. This is how we can select rows 5 to 10 (zero-indexed) or columns 1
+    to 6 and rows 5 to 10:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you’re familiar with Excel, you probably know one of its exciting features
+    called a “pivot table.” Pandas allows you to do the same. Let’s consider the pollution
+    of carbon monoxide from all states in 2021 from this dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Through the pivot table, we can make the different ways of emitting carbon
+    monoxide as columns and different states as rows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `pivot_table()` function above does not require the values to be unique
+    to the index and columns. In other words, should there be two “wildfire” rows
+    in a state in the original DataFrame, this function will aggregate the two (the
+    default is to take the mean). To reverse the pivot operation, we have the `melt()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: There is way more we can do with a DataFrame. For example, we can sort the rows
+    (using the `sort_values()` function), rename columns (using the `rename()` function),
+    remove redundant rows (`drop_duplicates()` function), and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a machine learning project, we often need to do some clean-up before we
+    can use the data. It is handy to use pandas for this purpose. The `df_pivot` DataFrame
+    we just created has some values marked as `NaN` for no data available. We can
+    replace all those with zero with any of the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Aggregation in DataFrames
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In fact, pandas can provide table manipulation that otherwise can only be easily
+    done using database SQL statements. Reusing the above example dataset, each pollutant
+    in the table is broken down into different sources. If we want to know the aggregated
+    pollutant emissions, we can just sum up all the sources. Similar to SQL, this
+    is a “group by” operation. We can do so with the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result of the `groupby()` function will use the grouping column as the row
+    index. It works by putting rows that have the same value for that grouping column
+    into a group. Then as a group, some **aggregate** function is applied to reduce
+    the many rows into one. In the above example, we are taking the sum across each
+    column. Pandas comes with many other aggregate functions, such as taking the mean
+    or just counting the number of rows. Since we are doing `sum()`, the non-numeric
+    columns are dropped from the output as they do not apply to the operation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This allows us to do some interesting tasks. Let’s say, using the data in the
+    DataFrame above, we create a table of the total emission of carbon monoxide (CO)
+    and sulfur dioxide (SO2) in 2021 in each state. The reasoning on how to do that
+    would be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Group by “State” and “Pollutant,” then sum up each group. This is how we get
+    the total emission of each pollutant in each state.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Select only the column for 2021
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Run pivot table to make states the rows and the pollutants the columns with
+    the total emission as the values
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Select only the column for CO and SO2
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In code, this can be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above code, each step after the `groupby()` function is to create a new
+    DataFrame. Since we are using functions defined under DataFrame, we have the above
+    functional **chained invocation syntax**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `sum()` function will create a DataFrame from the `GroupBy` object that
+    has the grouped columns “State” and “Pollutant” as an index. Therefore, after
+    we diced the DataFrame to only one column, we used `reset_index()` to make the
+    index as columns (i.e., there will be three columns, `State`, `Pollutant`, and `emissions21`).
+    Since there will be more pollutants than we need, we use `filter()` to select
+    only the columns for CO and SO2 from the resulting DataFrame. This is similar
+    to using fancy indexing to select columns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Indeed, we can do the same differently:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Select only the rows for CO and compute the total emission; select only the
+    data for 2021
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Do the same for SO2
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Combine the resulting DataFrame in the previous two steps
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In pandas, there is a `join()` function in DataFrame that helps us combine
+    the columns with another DataFrame by matching the index. In code, the above steps
+    are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `join()` function is limited to index matching. If you’re familiar with
+    SQL, the `JOIN` clause’s equivalent in pandas is the `merge()` function. If the
+    two DataFrames we created for CO and SO2 have the states as a separate column,
+    we can do the same as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `merge()` function in pandas can do all types of SQL joins. We can match
+    different columns from a different DataFrame, and we can do left join, right join,
+    inner join, and outer join. This will be very useful when wrangling the data for
+    your project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `groupby()` function in a DataFrame is powerful as it allows us to manipulate
+    the DataFrame flexibly and opens the door to many sophisticated transformations.
+    There may be a case that no built-in function can help after `groupby(),` but
+    we can always provide our own. For example, this is how we can create a function
+    to operate on a sub-DataFrame (on all columns except the group-by column) and
+    apply it to find the years of minimum and maximum emissions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `apply()` function is the last resort to provide us the maximum flexibility.
+    Besides GroupBy objects, there are also `apply()` interfaces in DataFrames and
+    Series.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is the complete code to demonstrate all operations we introduced
+    above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Handling Time Series Data in Pandas
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You will find another powerful feature from pandas if you are dealing with
+    time series data. To begin, let’s consider some daily pollution data. We can select
+    and download some from the EPA’s website:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://www.epa.gov/outdoor-air-quality-data/download-daily-data](https://www.epa.gov/outdoor-air-quality-data/download-daily-data)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For illustration purposes, we downloaded the PM2.5 data of Texas in 2021\.
+    We can import the [downloaded CSV](https://machinelearningmastery.com/wp-content/uploads/2022/04/ad_viz_plotval_data.csv)
+    file, `ad_viz_plotval_data.csv`, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `read_csv()` function from pandas allows us to specify some columns as the
+    date and parse them into `datetime` objects rather than a string. This is essential
+    for further processing time series data. As we know, the first column (zero-indexed)
+    is the date column; we provide the argument `parse_dates=[0]` above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For manipulating time series data, it is important to use time as an index
+    in your DataFrame. We can make one of the columns an index by the `set_index()`
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we examine the index of this DataFrame, we will see the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: We know its type is `datetime64`, which is a timestamp object in pandas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From the index above, we can see each date is not unique. This is because the
+    PM2.5 concentration is observed in different sites, and each will contribute a
+    row to the DataFrame. We can filter the DataFrame to only one site to make the
+    index unique. Alternatively, we can use `pivot_table()` to transform the DataFrame,
+    where the pivot operation guarantees the resulting DataFrame will have unique
+    index:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can check the uniqueness with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE43]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, every column in this DataFrame is a **time series**. While pandas does
+    not provide any forecasting function on the time series, it comes with tools to
+    help you clean and transform the data. Setting a DateTimeIndex to a DataFrame
+    will be handy for time series analysis projects because we can easily extract
+    data for a time interval, e.g., the train-test split of the time series. Below
+    is how we can extract a 3-month subset from the above DataFrame:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE44]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'One commonly used function in a time series is to **resample** the data. Considering
+    the daily data in this DataFrame, we can transform it into weekly observations
+    instead. We can specify the resulting data to be indexed on every Sunday. But
+    we still have to tell what we want the resampled data to be like. If it is sales
+    data, we probably want to sum over the entire week to get the weekly revenue.
+    In this case, we can take the average over a week to smooth out the fluctuations.
+    An alternative is to take the first observation over each period, like below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE45]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE46]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The string “`W-SUN`” is to determine the mean weekly on Sundays. It is called
+    the “offset alias.” You can find the list of all offset alias from below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Resampling is particularly useful in financial market data. Imagine if we have
+    the price data from the market, where the raw data does not come in regular intervals.
+    We can still use resampling to convert the data into regular intervals. Because
+    it is so commonly used, pandas even provides you the open-high-low-close (known
+    as OHLC, i.e., first, maximum, minimum, and last observations over a period) from
+    the resampling. We demonstrate below how to get the OHLC over a week on one of
+    the observation sites:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE47]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE48]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In particular, if we resample a time series from a coarser frequency into a
+    finer frequency, it is called **upsampling**. Pandas usually inserts `NaN` values
+    during upsampling as the original time series does not have data during the in-between
+    time instances. One way to avoid these `NaN` values during upsampling is to ask
+    pandas to forward-fill (carry over values from an earlier time) or back-fill (using
+    values from a later time) the data. For example, the following is to forward-fill
+    the daily PM2.5 observations from one site into hourly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE49]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE50]'
+  prefs: []
+  type: TYPE_PRE
+- en: Besides resampling, we can also transform the data using a sliding window. For
+    example, below is how we can make a 10-day moving average from the time series.
+    It is not a resampling because the resulting data is still daily. But for each
+    data point, it is the mean of the past 10 days. Similarly, we can find the 10-day
+    standard deviation or 10-day maximum by applying a different function to the rolling
+    object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE51]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE52]'
+  prefs: []
+  type: TYPE_PRE
+- en: To show how the original and rolling average time series differs, below shows
+    you the plot. We added the argument `min_periods=5` to the `rolling()` function
+    because the original data has missing data on some days. This produces gaps in
+    the daily data, but we ask that the mean still be computed as long as there are
+    5 data points over the window of the past 10 days.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE53]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/6c705a5b7db290b483c8c04c0f5a95cc.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The following is the complete code to demonstrate the time series operations
+    we introduced above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE54]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Pandas is a feature-rich library with far more details than we can cover above.
+    The following are some resources for you to go deeper:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: API documentation
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[pandas user guide](https://pandas.pydata.org/docs/user_guide/index.html#user-guide)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[pandas API reference](https://pandas.pydata.org/docs/reference/index.html#api)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Python for Data Analysis](https://www.amazon.com/dp/1491957662/), 2nd edition,
+    by Wes McKinney'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you saw a brief overview of the functions provided by pandas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to work with pandas DataFrames and Series
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to manipulate DataFrames in a way similar to table operations in a relational
+    database
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make use of pandas to help manipulate time series data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

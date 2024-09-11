@@ -1,0 +1,435 @@
+- en: Running and Passing Information to a Python Script
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/running-and-passing-information-to-a-python-script/](https://machinelearningmastery.com/running-and-passing-information-to-a-python-script/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Running your Python scripts is an important step in the development process
+    because it is in this manner that you’ll get to find out if your code works as
+    you intended it to. Also, it is often the case that we would need to pass information
+    to the Python script for it to function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover various ways of running and passing information
+    to a Python script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to run a Python script using the command-line interface, the Jupyter Notebook,
+    or an Integrated Development Environment (IDE)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to pass information to a Python script using the  sys.argv  command by hard-coding
+    the input variables in the Jupyter Notebook or through the interactive use of
+    the input()  function.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.[![](../Images/09153287642a50f7f16be72bb77cfe36.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/invoking_python_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running and Passing Information to a Python Script
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Andrea Leopardi](https://unsplash.com/photos/QVD3Xht9txA), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running a Python Script
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a Command-Line Interface
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using the Jupyter Notebook
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using an Integrated Development Environment (IDE)
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python Input
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Running a Python Script:**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**Using a Command-Line Interface**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The command-line interface is used extensively for running Python code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s test a few commands by first opening up a Command Prompt or Terminal window,
+    depending on the operating system that you are working on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Typing the  python command in your command-line interface will initiate a Python
+    interactive session. You will see that a message appears informing you of the
+    Python version that you are using.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Any statements you write in your command-line interface during an interactive
+    session will be executed immediately. For example, typing out 2 + 3 returns a
+    value of 5:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using an interactive session in this manner has its advantages because you can
+    test out lines of Python code easily and quickly. However, it is not the ideal
+    option if we are more interested in writing lengthier programs, as would be the
+    case if we are developing a machine learning algorithm. The code also disappears
+    once the interactive session is terminated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An alternative option would be to run a Python script. Let’s start with a simple
+    example first.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a text editor (such as [Notepad++](https://notepad-plus-plus.org/), [Visual
+    Studio Code](https://code.visualstudio.com/), or [Sublime Text](https://www.sublimetext.com/)),
+    type the statement  print("Hello World!")  and save the file to *test_script.py* or
+    any other name of your choice as long as you include a *.py* extension.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, head back to your command-line interface and type the python command,
+    followed by the name of your script file. Before you do so, you might need to
+    change the path to point to the directory that contains the script file. Running
+    the script file should then produce the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s now write a script file that loads a pre-trained Keras model and outputs
+    a prediction for [this](https://unsplash.com/photos/2l0CWTpcChI) image of a dog.
+    It is often the case that we would also need to pass information to the Python
+    script in the form of command-line *arguments*. For this purpose, we will be using
+    the  sys.argv  command to pass to the script the image path and the number of
+    top guesses to return. We could have as many input arguments as the code requires,
+    in which case we would keep on reading the inputs from the argument list.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The script file that we will be running now contains the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the above code, we read the command line arguments using `sys.argv[1]` and
+    `sys.argv[2]` for the first two arguments. We can run the script by making use
+    of the `python` command followed by the name of the script file and further passing
+    it as arguments for the image path (after the image has been saved to the disk)
+    and the number of top guesses that we would like to predict:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, *pretrained_model.py* is the name of the script file, and the *dog.jpg*
+    image has been saved into the same directory that also contains the Python script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The generated top three guesses are the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But there can be more in the command line. For example, the following command
+    line will run the script in “optimized” mode, in which the debugging variable
+    `__debug__` is set to `False,` and `assert` statements are skipped:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And the following is to launch the script with a Python module, such as the
+    debugger:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: We will have another post about the use of the debugger and profilers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Using Jupyter Notebook**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Running a Python script from the command-line interface is a straightforward
+    option if your code generates a string output and not much else.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, when we are working with images, it is often desirable to generate
+    a visual output too. We might be checking the correctness of any pre-processing
+    applied to the input image before feeding it into a neural network or visualizing
+    the result that the neural network produces. The Jupyter Notebook offers an interactive
+    computing environment that can help us achieve this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One way of running a Python script through the Jupyter Notebook interface is
+    to simply add the code to a “cell” in the notebook. But this means your code stays
+    inside the Jupyter notebook and cannot be accessed elsewhere, such as using the
+    command line as above. Another way is to use the run magic command, prefixed by
+    the  %  character. Try typing the following code into a cell in Jupyter Notebook:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we are again specifying the name of the Python script file as *pretrained_model.py,* followed
+    by the image path and the number of top guesses as the input arguments. You will
+    see that the top three predictions are printed beneath the cell that produced
+    this result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, let’s say that we would like to display the input image in order to check
+    that it has been loaded according to the model target size. For this purpose,
+    we will modify the code slightly as follows and save it into a new Python script,
+    *pretrained_model_image.py*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running the newly saved Python script through the Jupyter Notebook interface
+    now displays the resized $224 \times 224$ pixel image, in addition to printing
+    the top three predictions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/c108d83793e64252ae12f8fc3aa8c8a1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/invoking_python_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running a Python Script in Jupyter Notebook
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Alternatively, we can trim down the code to the following (and save it to yet
+    another Python script, *pretrained_model_inputs.py*):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And define the input variables in one of the cells of the Jupyter Notebook
+    itself. Running the Python script in this manner would require that we also make
+    use of the  -i  option after the  %run  magic:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/b5a763afb12cc7fe37471e7d9b00a96b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/invoking_python_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running a Python Script in Jupyter Notebook
+  prefs: []
+  type: TYPE_NORMAL
+- en: The advantage of doing so is to gain easier access to variables inside the Python
+    script that can be defined interactively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As your code grows, combining the use of a text editor with Jupyter Notebook
+    could provide a convenient way forward: the text editor can be used to create
+    Python scripts, which store code that can be reused, while the Jupyter Notebook
+    provides an interactive computing environment for easier data exploration.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Using an Integrated Development Environment (IDE)**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Another option is to run the Python script from an IDE. This requires that a
+    project is created first, and the Python script with a *.py* extension is added
+    to it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we had to consider PyCharm or Visual Studio Code as the IDE of choice, this
+    would require that we create a new project and subsequently choose the version
+    of Python interpreter that we would like to work with. After adding the Python
+    script to the newly created project, this can be run to generate an output. The
+    following is a screenshot of running Visual Studio Code on macOS. Depending on
+    the IDE, there should be an option to run the code with or without the debugger.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/51d03c368f2389f15420ea3c1092dfe0.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: '**Python Input**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have, so far, considered the options of passing information to the Python
+    script using the sys.argv  command or by hard-coding the input variables in Jupyter
+    Notebook before running the script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another option is to take input from the user through the input()  function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the following code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, the user is prompted to manually enter the image path (the image has been
+    saved into the same directory containing the Python script and, hence, specifying
+    the image name is sufficient) and the number of top guesses to generate. Both
+    input values are of type string; however, the number of top guesses is later cast
+    to an integer when this is used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: No matter if this code is run in the command-line interface, in Jupyter Notebook,
+    or in a Python IDE, it will prompt the user for the required inputs and subsequently
+    generate the number of predictions that the user asks for.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Python Fundamentals](https://www.amazon.com/Python-Fundamentals-practical-learning-real-world-ebook/dp/B07K4CVYND/ref=sr_1_1?keywords=python+fundamentals+ebook&qid=1638986660&sr=8-1),
+    2018.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Python Machine Learning Blueprints](https://www.amazon.com/Python-Machine-Learning-Blueprints-developing-ebook/dp/B07JLMHWRG),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered various ways of running and passing information
+    to a Python script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to run a Python script using the command-line interface, the Jupyter Notebook,
+    or an Integrated Development Environment (IDE)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to pass information to a Python script using the sys.argv  command by hard-coding
+    the input variables in Jupyter Notebook or through the interactive use of the
+    input()  function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

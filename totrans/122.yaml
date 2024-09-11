@@ -1,0 +1,399 @@
+- en: LSTM for Time Series Prediction in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/lstm-for-time-series-prediction-in-pytorch/](https://machinelearningmastery.com/lstm-for-time-series-prediction-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Long Short-Term Memory (LSTM) is a structure that can be used in neural network.
+    It is a type of recurrent neural network (RNN) that expects the input in the form
+    of a sequence of features. It is useful for data such as time series or string
+    of text. In this post, you will learn about LSTM networks. In particular,
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is LSTM and how they are different
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to develop LSTM network for time series prediction
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train a LSTM network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/d214fb104993b3841ed55d66abcce14e.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: LSTM for Time Series Prediction in PyTorch
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Carry Kung](https://unsplash.com/photos/5W5Fb6bHOQc). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This post is divided into three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview of LSTM Network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: LSTM for Time Series Prediction
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training and Verifying Your LSTM Network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Overview of LSTM Network
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: LSTM cell is a building block that you can use to build a larger neural network.
+    While the common building block such as fully-connected layer are merely matrix
+    multiplication of the weight tensor and the input to produce an output tensor,
+    LSTM module is much more complex.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A typical LSTM cell is illustrated as follows
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/5ed2042866eadfa98c5156de25eaaebd.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: LSTM cell. Illustration from Wikipedia.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It takes one time step of an input tensor $x$ as well as a cell memory $c$ and
+    a hidden state $h$. The cell memory and hidden state can be initialized to zero
+    at the beginning. Then within the LSTM cell, $x$, $c$, and $h$ will be multiplied
+    by separate weight tensors and pass through some activation functions a few times.
+    The result is the updated cell memory and hidden state. These updated $c$ and
+    $h$ will be used on the **next time step** of the input tensor. Until the end
+    of the last time step, the output of the LSTM cell will be its cell memory and
+    hidden state.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, the equation of one LSTM cell is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: f_t &= \sigma_g(W_{f} x_t + U_{f} h_{t-1} + b_f) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: i_t &= \sigma_g(W_{i} x_t + U_{i} h_{t-1} + b_i) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: o_t &= \sigma_g(W_{o} x_t + U_{o} h_{t-1} + b_o) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: \tilde{c}_t &= \sigma_c(W_{c} x_t + U_{c} h_{t-1} + b_c) \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: c_t &= f_t \odot c_{t-1} + i_t \odot \tilde{c}_t \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: h_t &= o_t \odot \sigma_h(c_t)
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where $W$, $U$, $b$ are trainable parameters of the LSTM cell. Each equation
+    above is computed for each time step, hence with subscript $t$. These trainable
+    parameters are **reused** for all the time steps. This nature of shared parameter
+    bring the memory power to the LSTM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that the above is only one design of the LSTM. There are multiple variations
+    in the literature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since the LSTM cell expects the input $x$ in the form of multiple time steps,
+    each input sample should be a 2D tensors: One dimension for time and another dimension
+    for features. The power of an LSTM cell depends on the size of the hidden state
+    or cell memory, which usually has a larger dimension than the number of features
+    in the input.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: LSTM for Time Series Prediction
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s see how LSTM can be used to build a time series prediction neural network
+    with an example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The problem you will look at in this post is the international airline passengers
+    prediction problem. This is a problem where, given a year and a month, the task
+    is to predict the number of international airline passengers in units of 1,000\.
+    The data ranges from January 1949 to December 1960, or 12 years, with 144 observations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is a regression problem. That is, given the number of passengers (in unit
+    of 1,000) the recent months, what is the number of passengers the next month.
+    The dataset has only one feature: The number of passengers.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s start by reading the data. The data can be downloaded [here](https://raw.githubusercontent.com/jbrownlee/Datasets/master/airline-passengers.csv).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Save this file as `airline-passengers.csv` in the local directory for the following.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Below is a sample of the first few lines of the file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The data has two columns, the month and the number of passengers. Since the
+    data are arranged in chronological order, you can take only the number of passenger
+    to make a single-feature time series. Below you will use pandas library to read
+    the CSV file and convert it into a 2D numpy array, then plot it using matplotlib:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/a407c053d0bfadeaeb4c9f1b8446b9e4.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: This time series has 144 time steps. You can see from the plot that there is
+    an upward trend. There are also some periodicity in the dataset that corresponds
+    to the summer holiday period in the northern hemisphere. Usually a time series
+    should be “detrended” to remove the linear trend component and normalized before
+    processing. For simplicity, these are skipped in this project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To demonstrate the predictive power of our model, the time series is splitted
+    into training and test sets. Unlike other dataset, usually time series data are
+    splitted without shuffling. That is, the training set is the first half of time
+    series and the remaining will be used as the test set. This can be easily done
+    on a numpy array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The more complicated problem is how do you want the network to predict the time
+    series. Usually time series prediction is done on a window. That is, given data
+    from time $t-w$ to time $t$, you are asked to predict for time $t+1$ (or deeper
+    into the future). The size of window $w$ governs how much data you are allowed
+    to look at when you make the prediction. This is also called the **look back period**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On a long enough time series, multiple overlapping window can be created. It
+    is convenient to create a function to generate a dataset of fixed window from
+    a time series. Since the data is going to be used in a PyTorch model, the output
+    dataset should be in PyTorch tensors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This function is designed to apply windows on the time series. It is assumed
+    to predict for one time step into the immediate future. It is designed to convert
+    a time series into a tensor of dimensions (window sample, time steps, features).
+    A time series of $L$ time steps can produce roughly $L$ windows (because a window
+    can start from any time step as long as the window does not go beyond the boundary
+    of the time series). Within one window, there are multiple consecutive time steps
+    of values. In each time step, there can be multiple features. In this dataset,
+    there is only one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is intentional to produce the “feature” and the “target” the same shape:
+    For a window of three time steps, the “feature” is the time series from $t$ to
+    $t+2$ and the target is from $t+1$ to $t+3$. What we are interested is $t+3$ but
+    the information of $t+1$ to $t+2$ is useful in training.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note that the input time series is a 2D array and the output from the `create_dataset()`
+    function will be a 3D tensors. Let’s try with `lookback=1`. You can verify the
+    shape of the output tensor as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'which you should see:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now you can build the LSTM model to predict the time series. With `lookback=1`,
+    it is quite surely that the accuracy would not be good for too little clues to
+    predict. But this is a good example to demonstrate the structure of the LSTM model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The model is created as a class, in which a LSTM layer and a fully-connected
+    layer is used.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The output of `nn.LSTM()` is a tuple. The first element is the generated hidden
+    states, one for each time step of the input. The second element is the LSTM cell’s
+    memory and hidden states, which is not used here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The LSTM layer is created with option `batch_first=True` because the tensors
+    you prepared is in the dimension of (window sample, time steps, features) and
+    where a batch is created by sampling on the first dimension.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The output of hidden states is further processed by a fully-connected layer
+    to produce a single regression result. Since the output from LSTM is one per each
+    input time step, you can chooce to pick only the last timestep’s output, which
+    you should have:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: and the model’s output will be the prediction of the next time step. But here,
+    the fully connected layer is applied to each time step. In this design, you should
+    extract only the last time step from the model output as your prediction. However,
+    in this case, the window is 1, there is no difference in these two approach.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training and Verifying Your LSTM Network
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Because it is a regression problem, MSE is chosen as the loss function, which
+    is to be minimized by Adam optimizer. In the code below, the PyTorch tensors are
+    combined into a dataset using `torch.utils.data.TensorDataset()` and batch for
+    training is provided by a `DataLoader`. The model performance is evaluated once
+    per 100 epochs, on both the trainning set and the test set:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As the dataset is small, the model should be trained for long enough to learn
+    about the pattern. Over these 2000 epochs trained, you should see the RMSE on
+    both training set and test set decreasing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is expected to see the RMSE of test set is an order of magnitude larger.
+    The RMSE of 100 means the prediction and the actual target would be in average
+    off by 100 in value (i.e., 100,000 passengers in this dataset).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To better understand the prediction quality, you can indeed plot the output
+    using matplotlib, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/5ee4e3caa78be0fbe0045b477b74c9b1.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: From the above, you take the model’s output as `y_pred` but extract only the
+    data from the last time step as `y_pred[:, -1, :]`. This is what is plotted on
+    the chart.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The training set is plotted in red while the test set is plotted in green. The
+    blue curve is what the actual data looks like. You can see that the model can
+    fit well to the training set but not very well on the test set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Tying together, below is the complete code, except the parameter `lookback`
+    is set to 4 this time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/2a2483a409d79342ae403ac5b1d101e5.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Running the above code will produce the plot below. From both the RMSE measure
+    printed and the plot, you can notice that the model can now do better on the test
+    set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is also why the `create_dataset()` function is designed in such way: When
+    the model is given a time series of time $t$ to $t+3$ (as `lookback=4`), its output
+    is the prediction of $t+1$ to $t+4$. However, $t+1$ to $t+3$ are also known from
+    the input. By using these in the loss function, the model effectively was provided
+    with more clues to train. This design is not always suitable but you can see it
+    is helpful in this particular example.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[`nn.LSTM()` from PyTorch documentation](https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[`torch.utils.data` API from PyTorch](https://pytorch.org/docs/stable/data.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you discovered what is LSTM and how to use it for time series
+    prediction in PyTorch. Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is the international airline passenger time series prediction dataset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is a LSTM cell
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create an LSTM network for time series prediction
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

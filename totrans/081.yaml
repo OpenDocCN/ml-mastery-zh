@@ -1,0 +1,525 @@
+- en: Logging in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/logging-in-python/](https://machinelearningmastery.com/logging-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Logging is a way to store information about your script and track events that
+    occur. When writing any complex script in Python, logging is essential for debugging
+    software as you develop it. Without logging, finding the source of a problem in
+    your code may be extremely time consuming.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why we would like to use the logging module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the logging module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to customize the logging mechanism
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/2804cdbcac2294f5b99c95ee34942d0a.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Logging in Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [ilaria88](https://www.pexels.com/photo/brown-firewood-122588/). Some
+    rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The benefits of logging
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Basic logging
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Advanced configuration to logging
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An example of the use of logging
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Benefits of Logging**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You may ask: “Why not just use printing?”'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you run an algorithm and want to confirm it is doing what you expected,
+    it is natural to add some `print()` statements at strategic locations to show
+    the program’s state. Printing can help debug simpler scripts, but as your code
+    gets more and more complex, printing lacks the flexibility and robustness that
+    logging has.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With logging, you can pinpoint where a logging call came from, differentiate
+    severity between messages, and write information to a file, which printing cannot
+    do. For example, we can turn on and off the message from a particular module of
+    a larger program. We can also increase or decrease the verbosity of the logging
+    messages without changing a lot of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Basic Logging**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Python has a built-in library, `logging,` for this purpose. It is simple to
+    create a “logger” to log messages or information that you would like to see.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The logging system in Python operates under a hierarchical namespace and different
+    levels of severity. The Python script can create a logger under a namespace, and
+    every time a message is logged, the script must specify its severity. The logged
+    message can go to different places depending on the handler we set up for the
+    namespace. The most common handler is to simply print on the screen, like the
+    ubiquitous `print()` function. When we start the program, we may register a new
+    handler and set up the level of severity to which the handler will react.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are 5 different logging levels that indicate the severity of the logs,
+    shown in increasing severity:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: DEBUG
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: INFO
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: WARNING
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: ERROR
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: CRITICAL
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'A very simple example of logging is shown below, using the default logger or
+    the root logger:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'These will emit log messages of different severity. While there are five lines
+    of logging, you may see only three lines of output if you run this script, as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is because the root logger, by default, only prints the log messages of
+    a severity level of WARNING or above. However, using the root logger this way
+    is not much different from using the print() function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The settings for the root logger are not set in stone. We can configure the
+    root logger to output to a particular file, change its default severity level,
+    and format the output. Here’s an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running this script will produce no output to the screen but will have the
+    following in the newly created file `file.log`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The call to `logging.basicConfig()` is to alter the root logger. In our example,
+    we set the handler to output to a file instead of the screen, adjust the logging
+    level such that all log messages of level DEBUG or above are handled, and also
+    change the format of the log message output to include the time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that now all five messages were output, so the default level that the root
+    logger logs is now “DEBUG.” The log record attributes (such as `%(asctime)s`)
+    that can be used to format the output can be found [in the logging documentation](https://docs.python.org/3/library/logging.html#logrecord-attributes).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Although there is a default logger, we usually want to make and use other loggers
+    that can be configured separately. This is because we may want a different severity
+    level or format for different loggers. A new logger can be created with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Internally, the loggers are organized in a hierarchy. A logger created with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: will be a child logger created under the logger with the name “`parent`,” which,
+    in turn, is under the root logger. Using a dot in the string signifies that the
+    child logger is a child of the parent logger. In the above case, a logger with
+    the name “`parent.child`” is created as well as one with the name `"parent"` implicitly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Upon creation, a child logger has all the properties of its parent logger until
+    reconfigured. We can demonstrate this with the following example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This code snippet will output only one line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: which is created by the StreamHandler object with the customized format string.
+    It happens only after we reconfigured the logger for `parent` because otherwise,
+    the root logger’s configuration prevails, and no messages at level INFO will be
+    printed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Advanced Configuration to Logging**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As we saw in the last example, we can configure the loggers we made.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Threshold of Level
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Like the basic configuration of the root logger, we can also configure the
+    output destination, severity level, and formatting of a logger. The following
+    is how we can set the **threshold** of the level of a logger to INFO:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now commands with severity level INFO and higher will be logged by the parent_logger.
+    But if this is all you did, you will not see anything from `parent_logger.info("messages")`
+    because there are no **handlers** assigned for this logger. In fact, there are
+    no handlers for root logger as well unless you set up one with `logging.basicConfig()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Log Handlers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We can configure the output destination of our logger with handlers. Handlers
+    are responsible for sending the log messages to the correct destination. There
+    are several types of handlers; the most common ones are `StreamHandler` and `FileHandler`.
+    With `StreamHandler`, the logger will output to the terminal, while with `FileHandler`,
+    the logger will output to a particular file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s an example of using `StreamHandler` to output logs to the terminal:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the code above, there are two handlers created: A `FileHandler` created
+    by `logging.basicConfig()` for the root logger and a `StreamHandler` created for
+    the `parent` logger.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note that even though there is a `StreamHandler` that sends the logs to the
+    terminal, logs from the `parent` logger are still being sent to `file.log` since
+    it is a child of the root logger, and the root logger’s handler is also active
+    for the child’s log messages. We can see that the logs to the terminal include
+    INFO level messages and above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But the output to the terminal is not formatted, as we have not used a `Formatter`
+    yet. The log to `file.log`, however, has a `Formatter` set up, and it will be
+    like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Alternatively, we can use `FileHandler` in the above example of `parent_logger`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The example above demonstrated that you can also set the level of a handler.
+    The level of `parent_fhandler` filters out logs that are not WARNING level or
+    higher. However, if you set the handler’s level to DEBUG, that would be the same
+    as not setting the level because DEBUG logs would already be filtered out by the
+    logger’s level, which is INFO.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this case, the output to `parent.log` is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: while that of `file.log` is the same as before. In summary, when a log message
+    is recorded by a logger,
+  prefs: []
+  type: TYPE_NORMAL
+- en: The logger’s level will determine if the message is severe enough to be handled.
+    If the logger’s level is not set, the level of its parent (and ultimately the
+    root logger) will be used for this consideration.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If the log message will be handled, **all** handlers ever added along the logger
+    hierarchy up to the root logger will receive a copy of the message. Each handler’s
+    level will determine if this particular handler should honor this message.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Formatters**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'To configure the format of the logger, we use a `Formatter`. It allows us to
+    set the format of the log, similarly to how we did so in the root logger’s `basicConfig()`.
+    This is how we can add a formatter to our handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: First, we create a formatter, then set our handler to use that formatter. If
+    we wanted to, we could make several different loggers, handlers, and formatters
+    so that we could mix and match based on our preferences.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this example, the `parent.log` will have:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and the `file.log` associated with the handler at root logger will have:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Below is the visualization of the flow of loggers, handlers, and formatters
+    from [the documentation of the logging module:](https://docs.python.org/3/howto/logging.html#logging-flow)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/c3bba5e9d7619938a0c95ee9eac93ea5.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Flow chart of loggers and handlers in the logging module
+  prefs: []
+  type: TYPE_NORMAL
+- en: An Example of the Use of Logging
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s consider the [Nadam algorithm](https://machinelearningmastery.com/gradient-descent-optimization-with-nadam-from-scratch/)
+    as an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The simplest use case is to use logging to replace the `print()` function.
+    We can make the following change: First, create a logger with the name `nadam`
+    before we run any code and assign a `StreamHandler`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We must assign a handler because we never configured the root logger, and this
+    would be the only handler ever created. Then, in the function `nadam()`, we re-create
+    a logger `nadam,` but since it has already been set up, the level and handlers
+    persisted. At the end of each outer for-loop in `nadam()`, we replaced the `print()`
+    function with `logger.info()` so the message will be handled by the logging system:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we are interested in the deeper mechanics of the Nadam algorithm, we may
+    add more logs. The following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We prepared two level of loggers, `nadam` and `nadam.iter`, and set them in
+    different levels. In the inner loop of `nadam()`, we use the child logger to print
+    some internal variables. When you run this script, it will print the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Setting different loggers not only allows us to set a different level or handlers,
+    but it also lets us differentiate where the log message comes from by looking
+    at the logger’s name from the message printed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In fact, one handy trick is to create a logging decorator and apply the decorator
+    to some functions. We can keep track of every time that function is called. For
+    example, we created a decorator below and applied it to the functions `objective()`
+    and `derivative()`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we will see the following in the log:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: where we can see the parameters and return values of each call to those two
+    functions in the message logged by the `nadam.function` logger.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we get more and more log messages, the terminal screen will become very
+    busy. One way to make it easier to watch for issues is to highlight the logs in
+    color with the `colorama` module. You need to have the module installed first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here’s an example of how you can use the `colorama` module with the `logging`
+    module to change your log colors and text brightness:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: From the terminal, you would see the following:![](../Images/9f26ce61f0915bbf238b4282945e7703.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: where the `Fore`, `Back`, and `Style` from the `colorama` module control the
+    foreground, background, and brightness style of the text printed. This is leveraging
+    the ANSI escape characters and works only on ANSI-supported terminals. Hence this
+    is not suitable for logging to a text file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In fact, we may derive the `Formatter` class with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and use this instead of `logging.Formatter`. The following is how we can further
+    modify the Nadam example to add color:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we run it on a supporting terminal, we will see the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/71e97ab6847210d213d24abea52e7240.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Note that the colorful output can help us spot any abnormal behavior easier.
+    Logging helps with debugging and also allows us to easily control how much detail
+    we want to see by changing only a few lines of code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[logging module](https://docs.python.org/3/library/logging.html) from Python
+    standard library'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Colorama](https://github.com/tartley/colorama)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Python logging HOWTO](http://,https://docs.python.org/3/howto/logging.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to implement logging techniques in your scripts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Basic and advanced logging techniques
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply logging to a script and the benefits of doing so
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

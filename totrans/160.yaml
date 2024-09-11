@@ -1,0 +1,324 @@
+- en: Making Linear Predictions in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/making-linear-predictions-in-pytorch/](https://machinelearningmastery.com/making-linear-predictions-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Linear regression is a statistical technique for estimating the relationship
+    between two variables. A simple example of linear regression is to predict the
+    height of someone based on the square root of the person’s weight (that’s what
+    BMI is based on). To do this, we need to find the slope and intercept of the line.
+    The slope is how much one variable changes with the change in other variable by
+    one unit. The intercept is where our line crosses with the $y$-axis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s use the simple linear equation $y=wx+b$ as an example. The output variable
+    is $y$, while the input variable is $x$. The slope and $y$-intercept of the equation
+    are represented by the letters $w$ and $b$, hence referring them as the equation’s
+    parameters. Knowing these parameters allows you to forecast the outcome $y$ for
+    any given value of $x$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now that you have learnt some basics of the simple linear regression, let’s
+    try to implement this useful algorithm in the PyTorch framework. Here, we’ll focus
+    on a few points described as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is Linear Regression and how it can be implemented in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to import linear class in PyTorch and use it for making predictions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How we can build custom module for a linear regression problem, or for more
+    complex models in the future.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: So let’s get started.![](../Images/823dae920371197bb77b9912d74465ff.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Making Linear Predictions in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Daryan Shamkhali](https://unsplash.com/photos/pMCbPPPBSkA). Some
+    rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing Tensors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Linear Class from PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building a Custom Linear Class
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing Tensors
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Note that in this tutorial we’ll be covering one-dimensional linear regression
+    having only two parameters. We’ll create this linear expression:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$y=3x+1$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We’ll define the parameters $w$ and $b$ as tensors in PyTorch. We set the `requires_grad`
+    parameter to `True`, indicating that our model has to learn these parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: In PyTorch prediction step is called forward step. So, we’ll write a function
+    that allows us to make predictions for $y$ at any given value of $x$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that we have defined the function for linear regression, let’s make a prediction
+    at $x=2$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s also evaluate the equation with multiple inputs of $x$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the function for linear equation successfully predicted outcome
+    for multiple values of $x$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In summary, this is the complete code
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Linear Class from PyTorch
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to solve real-world problems, you’ll have to build more complex models
+    and, for that, PyTorch brings along a lot of useful packages including the linear
+    class that allows us to make predictions. Here is how we can import linear class
+    module from PyTorch. We’ll also randomly initialize the parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that previously we defined the values of $w$ and $b$ but in practice they
+    are randomly initialized before we start the machine learning algorithm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s create a linear object model and use the `parameters()` method to access
+    the parameters ($w$ and $b$) of the model. The `Linear` class is initialized with
+    the following parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`in_features`: reflects the size of each input sample'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`out_features`: reflects the size of each output sample'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Likewise, you can use `state_dict()` method to get the dictionary containing
+    the parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now we can repeat what we did before. Let’s make a prediction using a single
+    value of $x$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This gives
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: which corresponds to $0.5153\times 2 – 0.4414 = 0.5891$. Similarly, we’ll make
+    predictions for multiple values of $x$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Put everything together, the complete code is as follows
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Building a Custom Linear Class
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: PyTorch offers the possibility to build custom linear class. For later tutorials,
+    we’ll be using this method for building more complex models. Let’s start by importing
+    the `nn` module from PyTorch in order to build a custom linear class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: Custom modules in PyTorch are classes derived from `nn.Module`. We’ll build
+    a class for simple linear regression and name it as `Linear_Regression`. This
+    should make it a child class of the `nn.Module`. Consequently, all the methods
+    and attributes will be inherited into this class. In the object constructor, we’ll
+    declare the input and output parameters. Also, we create a super constructor to
+    call linear class from the `nn.Module`. Lastly, in order to generate prediction
+    from the input samples, we’ll define a forward function in the class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s create a simple linear regression model. It will simply be an equation
+    of line in this case. For sanity check, let’s also print out the model parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we did in the earlier sessions of the tutorial, we’ll evaluate our custom
+    linear regression model and try to make predictions for single and multiple values
+    of $x$ as input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: which corresponds to $-0.1939*2+0.4694=0.0816$. As you can see, our model has
+    been able to predict the outcome and the result is a tensor object. Similarly,
+    let’s try to get predictions for multiple values of $x$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: So, the model also works well for multiple values of $x$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Putting everything together, the following is the complete code
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial we discussed how we can build neural networks from scratch,
+    starting off with a simple linear regression model. We have explored multiple
+    ways of implementing simple linear regression in PyTorch. In particular, we learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is Linear Regression and how it can be implemented in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to import linear class in PyTorch and use it for making predictions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How we can build custom module for a linear regression problem, or for more
+    complex models in the future.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

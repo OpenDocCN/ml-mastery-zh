@@ -1,0 +1,513 @@
+- en: Functional Programming in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/functional-programming-in-python/](https://machinelearningmastery.com/functional-programming-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Python is a fantastic programming language. It is likely to be your first choice
+    for developing a machine learning or data science application. Python is interesting
+    because it is a multi-paradigm programming language that can be used for both
+    object-oriented and imperative programming. It has a simple syntax that is easy
+    to read and comprehend.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In computer science and mathematics, the solution of many problems can be more
+    easily and naturally expressed using the functional programming style. In this
+    tutorial, we’ll discuss Python’s support for the functional programming paradigm
+    and Python’s classes and modules that help you program in this style.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Basic idea of functional programming
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `itertools` library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `functools` library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Map-reduce design pattern and its possible implementation in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.[![](../Images/4e0953a4ac293d16bfdd79a9bb854405.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/abdullahShakoortree-gdd40e365b_1920.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Functional Programming In Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by Abdullah_Shakoor, some rights reserved
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into five parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The idea of functional programming
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'High order functions: Filter, map, and reduce'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Itertools
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Functools
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Map-reduce pattern
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The idea of functional programming
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you have programming experience, you likely learned imperative programming.
+    It is built with statements and manipulating variables. Functional programming
+    is a **declarative** paradigm. It is different from the imperative paradigm that
+    programs are built in by applying and composing functions. The functions here
+    are supposed to be closer to the definition of a mathematical function, in which
+    there are **no side effects** or simply no access to external variables. When
+    you call them with the same argument, they always give you the same result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The benefit of functional programming is to make your program less error-prone.
+    Without the side effects, it is more predictable and easier to see the outcome.
+    We also do not need to worry about one part of the program interfering with another
+    part.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Many libraries adopted a functional programming paradigm. For example, the
+    following using pandas and pandas-datareader:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This gives you the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The pandas-datareader is a useful library that helps you download data from
+    the Internet in real time. The above example is to download population data from
+    the World Bank. The result is a pandas dataframe with countries and years as an
+    index and a single column named “SP.POP.TOTL” for the population. Then we manipulate
+    the dataframe step by step, and at the end, we find the average population of
+    all countries across the years.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can write in this way because, in pandas, most functions on the dataframe
+    are not changing the dataframe but producing a new dataframe to reflect the result
+    of the function. We call this behavior **immutable** because the input dataframe
+    never changed. The consequence is that we can chain up the functions to manipulate
+    the dataframe step by step. If we have to break it using the style of imperative
+    programming, the above program is the same as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'High order functions: Filter, map, and reduce'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Python is not a strictly functional programming language. But it is trivial
+    to write Python in a functional style. There are three basic functions on iterables
+    that allow us to write a powerful program in a very trivial way: filter, map,
+    and reduce.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Filter is to select some of the elements in an iterable, such as a list. Map
+    is to transform elements one by one. Finally, reducing is converting the entire
+    iterable into a different form, such as the sum of all elements or concatenating
+    substrings in a list into a longer string. To illustrate their use, let’s consider
+    a simple task: Given a log file from the Apache web server, find the IP address
+    that sent the most requests with error code 404\. If you have no idea what a log
+    file from an Apache web server looks like, the following is an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above is from a bigger file located [here](https://raw.githubusercontent.com/elastic/examples/master/Common%20Data%20Formats/apache_logs/apache_logs).
+    These are a few lines from the log. Each line begins with the IP address of the
+    client (i.e., the browser), and the code after “HTTP/1.1” is the response status
+    code. Typically, it is 200 if the request is fulfilled. But if the browser requested
+    something that does not exist on the server, the code would be 404\. To find the
+    IP address that corresponds to the most 404 requests, we can simply scan the log
+    file line by line, find those with 404, and count the IP addresses to identify
+    the one with the most occurrences.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In Python code, we can do the following. First, we see how we can read the
+    log file and extract the IP address and status code from a line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'then we can use a couple map() and filter() and some other functions to find
+    the IP address:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here, we did not use the reduce() function because we have some specialized
+    reduce operations built in, such as `max()`. But indeed, we can make a simpler
+    program with list comprehension notation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'or even write it in a single statement (but less readable):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Itertools in Python
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The above example on filter, map, and reduce illustrates the ubiquity of **iterables**
+    in Python. This includes lists, tuples, dictionaries, sets, and even generators,
+    all of which can be **iterated** using a for-loop. In Python, we have a module
+    named `itertools` that brings in more functions to manipulate (but not mutate)
+    iterables. From [Python’s official documentation](https://docs.python.org/3/library/itertools.html):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The module standardizes a core set of fast, memory-efficient tools that are
+    useful by themselves or in combination. Together, they form an “iterator algebra,”
+    making it possible to construct specialized tools succinctly and efficiently in
+    pure Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We’ll discuss a few functions of `itertools` in this tutorial. When trying
+    out the examples given below, be sure to import `itertools` and `operator` as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Infinite Iterators
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Infinite iterators help you create sequences of infinite length as shown below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Construct + Example | Output |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `count()`  [PRE9]  |  [PRE10]  |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `cycle()`  [PRE11]  |  [PRE12]  |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `repeat()`  [PRE13]  |  [PRE14]  |'
+  prefs: []
+  type: TYPE_TB
+- en: Combinatoric iterators
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can create permutations, combinations, etc., with these iterators.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '| Construct + Example | Output |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `product()`  [PRE15]  |  [PRE16]  |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `permutations()`  [PRE17]  |  [PRE18]  |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `combinations()`  [PRE19]  |  [PRE20]  |'
+  prefs: []
+  type: TYPE_TB
+- en: '| `combinations_with_replacement()`  [PRE21]  |  [PRE22]  |'
+  prefs: []
+  type: TYPE_TB
+- en: More Useful Iterators
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are other iterators that stop at the end of the shorter of the two lists
+    passed as arguments.  Some of them are described below. This is not an exhaustive
+    list, and you can [see the complete list here](https://docs.python.org/3/library/itertools.html#itertool-functions).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Accumulate()
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Automatically creates an iterator that accumulates the result of a given operator
+    or function and returns the result. You can choose an operator from Python’s `operator`
+     library or write your own customized operator.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Starmap()
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Apply the same operator to pairs of items.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: filterfalse()
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Filter out data based on a specific criterion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Functools in Python
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In most programming languages, passing functions as arguments or a function
+    returning another function might be confusing or hard to work with. Python includes
+    the `functools` library, making it easy to work with these functions. From Python’s
+    official `functools` documentation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `functools` module is for higher-order functions: functions that act on
+    or return other functions. In general, any callable object can be treated as a
+    function'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here we explain a few nice features of this library. You can look at the [complete
+    list of `functools` functions here](https://docs.python.org/3/library/functools.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using `lru_cache`
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In imperative programming languages, recursion is very expensive. Every time
+    a function is invoked, it is evaluated, even if it is called with the same set
+    of arguments. In Python, the `lru_cache` is a decorator that can be used to cache
+    the results of function evaluations. When the function is invoked again with the
+    same set of arguments, the stored result is used, avoiding the extra overhead
+    related to recursion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s look at the following example. We have the same implementation of the
+    computation of the nth Fibonacci number with and without `lru_cache`. We can see
+    that `fib(30`) has 31 function evaluations, just as we expect because of `lru_cache`.
+    The `fib()` function is invoked only for n=0,1,2…30, and the result is stored
+    in memory and used later. This is significantly less than `fib_slow(30)`, with
+    2692537 evaluations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is worth noting that the `lru_cache` decorator is particularly useful when
+    you’re experimenting with machine learning problems in Jupyter notebooks. If you
+    have a function that downloads data from the Internet, wrapping it with `lru_cache`
+    can keep your download in memory and avoid downloading the same file again even
+    if you invoked the download function multiple times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using `reduce()`
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Reduce is similar to the `itertools.accumulate()`. It applies a function repeatedly
+    to the elements of a list and returns the result. Here are a few examples with
+    comments to explain the working of this functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `reduce()` function can accept any “operators” and optionally an initial
+    value. For example, the `collections.Counter` function in the previous example
+    can be implemented as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using `partial()`
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There are situations when you have a function that takes multiple arguments,
+    and some of its arguments are repeated again and again. The function `partial()`
+    returns a new version of the same function with a reduced number of arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, if you have to compute the power of 2 repeatedly, you can create
+    a new version of numpy’s `power()` function as shown below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: Map-Reduce Pattern
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In a previous section, we mentioned the filter, map, and reduce functions as
+    high order functions. Using a map-reduce design pattern is indeed a way to help
+    us easily make a highly scalable program. The map-reduce pattern is an abstract
+    representation of many types of computations that manipulate lists or collections
+    of objects. The `map` stage takes the input collection and maps it to an intermediate
+    representation. The `reduce` step takes this intermediate representation and computes
+    a single output from it. This design pattern is very popular in functional programming
+    languages. Python also provides constructs to implement this design pattern in
+    an efficient manner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Map-Reduce In Python
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: As an illustration of the map-reduce design pattern, let’s take a simple example.
+    Suppose we want to count the numbers divisible by 3 in a list. We’ll use `lambda`
+    to define an anonymous function and use it to `map()` all items of a list to 1
+    or 0 depending upon whether they pass our divisibility test or not. The function
+    `map()` takes as argument a function and an iterable. Next, we’ll use `reduce()`
+    to accumulate the overall result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: While being very simple, the previous example illustrates how easy it is to
+    implement the `map-reduce` design pattern in Python. You can solve complex and
+    lengthy problems using the surprisingly simple and easy constructs in Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Think Python: How to Think Like a Computer Scientist](https://greenteapress.com/thinkpython/html/index.html)
+    by Allen B. Downey'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Programming in Python 3: A Complete Introduction to the Python Language](https://www.amazon.com/Programming-Python-Complete-Introduction-Language-ebook-dp-B001OFK2DK/dp/B001OFK2DK/ref=mt_other?_encoding=UTF8&me=&qid=1638910263)
+    by Mark Summerfield'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Python Programming: An Introduction to Computer Science](https://www.amazon.com/Python-Programming-Introduction-Computer-Science/dp/1590282418/ref=sr_1_1?s=books&ie=UTF8&qid=1441293398&sr=1-1&keywords=Python+Zelle&pebp=1441293404611&perid=1B2BP6WM3RQHW4CY6990)
+    by John Zelle'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python Official Documentation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Python documentation](https://docs.python.org/3/contents.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered features of Python that support functional
+    programming.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The iterables returning finite or infinite sequences in Python using `itertools`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The higher-order functions supported by `functools`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The map-reduce design pattern’s implementation in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions about Python discussed in this post? Ask your questions
+    in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

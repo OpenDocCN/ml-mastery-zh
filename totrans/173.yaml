@@ -1,0 +1,232 @@
+- en: 'Stable Diffusion Project: Word Art'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/stable-diffusion-project-word-art/](https://machinelearningmastery.com/stable-diffusion-project-word-art/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Stable Diffusion is a powerful tool that helps you generate pictures. It is
+    fun to play with the generative AI tool. But it would be useful if the tool could
+    help you in a real job. In this post, you will see how you can leverage the power
+    of Stable Diffusion to work on something realistic and practical. After finishing
+    this post, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The reasoning process to decide how to use Stable Diffusion
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Augmenting other tools with Stable Diffusion in your creative project
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
+    Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/bb010e19fbec55be9ae5392ee44daa25.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Stable Diffusion Project: Word Art'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Zach Key](https://unsplash.com/photos/blue-art-neon-sign-turned-on-rKE6rXOl14U).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is in three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Project Idea
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating the Picture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Same Idea on a Different Theme
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Project Idea
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Imagine you are working on a project and need some word art. It can be a banner
+    for your website or the key visual in a poster. Words should be seen, but graphics
+    are also important. How can you blend letters into pictures? You want to make
+    the result very appealing, not at the level that you can easily create with Photoshop
+    or Microsoft Word.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s consider the theme of “green” to conserve the environment. We want a picture
+    of the nature and the word “green”. Let’s see how it can be created.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating the Picture
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It is easy to create a scene of nature with an appropriate prompt in Stable
+    Diffusion. Overlaying text onto a picture should not be too difficult because
+    you can easily add text with a drop shadow to a picture background in PowerPoint.
+    But making the scene blend with the text would need some skill, even with Photoshop,
+    and it takes a significant amount of time, too.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The idea of providing a prompt to control the picture generation but at the
+    same time imposing additional constraints on the picture is what ControlNet can
+    do. To use ControlNet, you need an image. Let’s create one with GIMP.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Assume the target picture is 768×512 pixels (remember the default resolution
+    for SD1 models is 512×512 pixels; you shouldn’t make the size too different).
+    You can set up the canvas to this size in GIMP and make a text “GREEN” in black
+    color on a white background. Then save the picture as PNG.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/0a093e692c816a68811abfb9c94fee9a.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Creating a picture with white background and black text “GREEN”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that you are not mandatory to use GIMP to create such picture. You can
+    also type the text on Microsoft Word and make a screenshot. The only problem with
+    this approach is that you are not easy to control the resolution.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s go to the Stable Diffusion Web UI. You should use “text2img” function
+    and pick a Stable Diffusion 1.x model (such as Deliberate_v6). Because we want
+    to generate a nature scene, you can set the prompt:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: nature scene of a forest, highly detailed, epic
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'and keep the negative prompt empty. Set the image size to 768 pixels in width
+    and 512 pixels in height. With such a prompt (and depends on the model you choose,
+    the CFG scale, and the sampler), you can generate a picture like the follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/9e0969d52131db7fe00e850edba580bc.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: A picture of forest. Generated using Stable Diffusion by the author.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It looks nice. Now you confirmed the prompt works and the output meets what
+    you expected. Let’s move on to ControlNet. Enable the ControlNet, and upload the
+    picture that you created with GIMP. Set the “Control Type” to “All”, then at the
+    preprocessor, select “invert (from white bg & black line)” and the model select
+    a depth model (e.g., “control_v11f1p_sd15_depth”). Then click generate and see
+    how this works. You may see the result as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/106f243e251703324ba23a4c9cb95ee7.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: A picture generated with bad blending of text to its background.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The text “GREEN” does not seem to blend into the picture. The text has some
+    texture, but it is still awkwardly imposed on the picture. This is because you
+    have not used the ControlNet right. This is the result when ControlNet drove the
+    picture generation for too long. You can tune down the importance of ControlNet
+    with a control weight of 0.7 instead of 1.0\. But most importantly, you want the
+    ControlNet to be involved only for the first 60% of the steps in the diffusion
+    process. In this way, the latter 40% of the steps use only your prompt, but the
+    outline of the picture has already been established.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Just with this change, you should see a better blending of the text and the
+    picture. But sometimes, you may see the text distorted because you gave too much
+    freedom for the diffusion process to change your picture at the last 40% of the
+    steps. It will be difficult to control, but you can set a larger batch size or
+    generate multiple batches to check your luck with multiple random seeds. The following
+    is an example of what you can get:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/93f83ccb50daf95295da984e0300eb39.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Word art generated by Stable Diffusion that text blended nicely into background.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This picture is using a CFG scale of 5 on the “Euler a” sampler with Karras
+    schedule on 25 steps. ControlNet has weight of 0.7 with starting control step
+    0 and ending control step 0.6\. Half of the pictures generated will have some
+    letters malformed, but this is one of the best from the other half. You can see
+    how the trees formed the letters. You will take a long time to draw such an effect
+    with Photoshop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Same Idea on a Different Theme
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: “Green” is not always about nature. With a different prompt but keeping all
+    other parameters the same, you can get a different picture. Let’s “go green” and
+    promote eating vegetables. By just changing the prompt to
+  prefs: []
+  type: TYPE_NORMAL
+- en: vegatables on kitchen table
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'You can get the following picture:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/7bb5265fa1ee13d0b3f03e87769d9b31.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Reusing the same template to generate a different picture in Stable Diffusion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is, in fact, the lesson you should learn on how to use Stable Diffusion
+    effectively: By experimenting with different parameters and find the best, you
+    can easily tweak the workflow a bit to create a totally new picture with the same
+    high quality result.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[ControlNet](https://github.com/lllyasviel/ControlNet) on GitHub'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Adding Conditional Control to Text-to-Image Diffusion Models](https://arxiv.org/abs/2302.05543)
+    by Zhang et al  (2023)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deliberate model](https://huggingface.co/XpucT/Deliberate) on Hugging Face'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you have seen how to create a word art picture that blended text
+    into the background naturally. The result is appealing and it is not easy to create
+    manually by drawing. However, you can quickly produce such detailed result using
+    Stable Diffusion with ControlNet plugin.
+  prefs: []
+  type: TYPE_NORMAL

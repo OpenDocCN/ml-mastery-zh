@@ -1,0 +1,234 @@
+- en: Introduction to Softmax Classifier in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/introduction-to-softmax-classifier-in-pytorch/](https://machinelearningmastery.com/introduction-to-softmax-classifier-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: While a logistic regression classifier is used for binary class classification,
+    softmax classifier is a supervised learning algorithm which is mostly used when
+    multiple classes are involved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Softmax classifier works by assigning a probability distribution to each class.
+    The probability distribution of the class with the highest probability is normalized
+    to 1, and all other probabilities are scaled accordingly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similarly, a softmax function transforms the output of neurons into a probability
+    distribution over the classes. It has the following properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is related to the logistic sigmoid, which is used in probabilistic modeling
+    and has similar properties.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: It takes values between 0 and 1, with 0 corresponding to an impossible event
+    and 1 corresponding to an event that is certain to occur.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The derivative of softmax with respect to input `x` can be interpreted as predicting
+    how likely it is that a particular class will be selected, given an input `x`.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'In this tutorial, we’ll build a one-dimensional softmax classifier and explore
+    its functionality. Particularly, we’ll learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How you can use a Softmax classifier for multiclass classification.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build and train a Softmax classifier in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to analyze the results of the model on test data.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/57fde22c2688d158fe47a133006f4715.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduction to Softmax Classifier in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Julia Caesar](https://unsplash.com/photos/HTSpgMng5ys). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in four parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing Dataset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Load Dataset into DataLoader
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build the Model with `nn.Module`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training the Classifier
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing Dataset
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, let’s build our dataset class to generate some data samples. Unlike the
+    previous experiments, you will generate data for multiple classes. Then you will
+    train the softmax classifier on these data samples and later use it to make predictions
+    on test data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In below, we generate data for four classes based on a single input variable:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s create the data object and check the first ten data samples and their
+    labels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Building the Softmax Model with `nn.Module`
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You will employ `nn.Module` from PyTorch to build a custom softmax module. It
+    is similar to the custom module you built in previous tutorials for logistic regression.
+    So, what’s the difference here? Previously you used `1` in place of `n_ouputs`
+    for binary classification, while here we’ll define four classes for multi-class
+    classification. Secondly, in the `forward()` function, the model doesn’t use logistic
+    function for prediction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s create the model object. It takes a one-dimensional vector as input
+    and predicts for four different classes. Let’s also check how parameters are initialized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training the Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Combined with the stochastic gradient descent, you will use cross entropy loss
+    for model training and set the learning rate at 0.01\. You’ll load the data into
+    the data loader and set the batch size to 2.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that everything is set, let’s train our model for 100 epochs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: After the training loop completed, you call the `max()` method on the model
+    to make predictions. The argument `1` returns maximum value with respect to axis
+    one, i.e., to return the index of the maximum value from each column.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'From above, you should see:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: These are the model predictions on test data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s also check the model accuracy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this case, you may see
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Which in this simple model, you can see the accuracy approach 1 if you train
+    it longer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned how to build a simple one-dimensional softmax
+    classifier. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How you can use a Softmax classifier for multiclass classification.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build and train a Softmax classifier in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to analyze the results of the model on test data.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

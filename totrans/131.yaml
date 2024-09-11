@@ -1,0 +1,451 @@
+- en: Loss Functions in PyTorch Models
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/loss-functions-in-pytorch-models/](https://machinelearningmastery.com/loss-functions-in-pytorch-models/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The loss metric is very important for neural networks. As all machine learning
+    models are one optimization problem or another, the loss is the objective function
+    to minimize. In neural networks, the optimization is done with gradient descent
+    and backpropagation. But what are loss functions, and how are they affecting your
+    neural networks?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this chapter, you will learn what loss functions are and delve into some
+    commonly used loss functions and how you can apply them to your neural networks.
+    After reading this chapter, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are loss functions, and their role in training neural network models
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Common loss functions for regression and classification problems
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use loss functions in your PyTorch model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started!![](../Images/e49e5629fd95d6ec4afd835b8e3415cb.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loss Functions in PyTorch Models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Hans Vivek](https://unsplash.com/photos/_aXtuc7tB00). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into four sections; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What Are Loss Functions?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Loss Functions for Regression
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Loss Functions for Classification
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Custom Loss Function in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What Are Loss Functions?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In neural networks, loss functions help optimize the performance of the model.
+    They are usually used to measure some penalty that the model incurs on its predictions,
+    such as the deviation of the prediction away from the ground truth label. Loss
+    functions are usually differentiable across their domain (but it is allowed that
+    the gradient is undefined only for very specific points, such as $x=0$, which
+    is basically ignored in practice). In the training loop, they are differentiated
+    with respect to parameters, and these gradients are used for your backpropagation
+    and gradient descent steps to optimize your model on the training set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loss functions are also slightly different from metrics. While loss functions
+    can tell you the performance of our model, they might not be of direct interest
+    or easily explainable by humans. This is where metrics come in. Metrics such as
+    accuracy are much more useful for humans to understand the performance of a neural
+    network even though they might not be good choices for loss functions since they
+    might not be differentiable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following, let’s explore some common loss functions, for regression problems
+    and for classification problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loss Functions for Regression
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In regression problems, the model is to predict a value in a continuous range.
+    Too good to be true that your model can predict the exact value all the time,
+    but it is good enough if the value is close enough. Therefore, you need a loss
+    function to measure how close it is. The farther away from the exact value, the
+    more the loss is your prediction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One simple function is just to measure the difference between the prediction
+    and the target value. You do not care the value is greater than or less than the
+    target value in finding the difference. Hence, in mathematics, we find $\dfrac{1}{m}\sum_{i=1}^m
+    \vert \hat{y}_i – y_i\vert$ with $m$ the number of training examples whereas $y_i$
+    and $\hat{y}_i$ are the target and predicted values, respectively, averaged over
+    all training examples. This is the mean absolute error (MAE).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The MAE is never negative and would be zero only if the prediction matched the
+    ground truth perfectly. It is an intuitive loss function and might also be used
+    as one of your metrics, specifically for regression problems, since you want to
+    minimize the error in your predictions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, absolute value is not differentiable at 0\. It is not really a problem
+    because you rarely hitting that value. But sometimes people would prefer to use
+    mean square error (MSE) instead. MSE equals to $\dfrac{1}{m}\sum_{i=1}^m (\hat{y}_i
+    – y_i)^2$, which is similar to MAE but use square function in place of absolute
+    value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It also measures the deviation of the predicted value from the target value.
+    However, the MSE squares this difference (always non-negative since squares of
+    real numbers are always non-negative), which gives it slightly different properties.
+    One property is that the mean squared error favors a large number of small errors
+    over a small number of large errors, which leads to models with fewer outliers
+    or at least outliers that are less severe than models trained with a MAE. This
+    is because a large error would have a significantly larger impact on the error
+    and, consequently, the gradient of the error when compared to a small error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s look at what the mean absolute error and mean square error loss function
+    looks like graphically:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/30c8a20fd3581188d63b4a8d657639e4.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Mean absolute error loss function (blue) and gradient (orange)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/f6ae01c6f242d10f710fec00562228fb.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Mean square error loss function (blue) and gradient (orange)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similar to activation functions, you might also be interested in what the gradient
+    of the loss function looks like since you are using the gradient later to do backpropagation
+    to train your model’s parameters. You should see that in MSE, larger errors would
+    lead to a larger magnitude for the gradient and a larger loss. Hence, for example,
+    two training examples that deviate from their ground truths by 1 unit would lead
+    to a loss of 2, while a single training example that deviates from its ground
+    truth by 2 units would lead to a loss of 4, hence having a larger impact. This
+    is not the case in MAE.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In PyTorch, you can create MAE and MSE as loss functions using `nn.L1Loss()`
+    and `nn.MSELoss()` respectively. It is named as L1 because the computation of
+    MAE is also called the L1-norm in mathematics. Below is an example of computing
+    the MAE and MSE between two vectors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: You should get
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: MAE is 2.0 because $\frac{1}{2}[\vert 0-1\vert + \vert 3-0\vert]=\frac{1}{2}(1+3)=2$
+    whereas MSE is 5.0 because $\frac{1}{2}[(0-1)^2 + (3-0)^2]=\frac{1}{2}(1+9)=5$.
+    Notice that in MSE, the second example with a predicted value of 3 and actual
+    value of 0 contributes 90% of the error under the mean squared error vs. 75% under
+    the mean absolute error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes, you may see people use root mean squared error (RMSE) as a metric.
+    This will take the square root of MSE. From the perspective of a loss function,
+    MSE and RMSE are equivalent. But from the perspective of the value, the RMSE is
+    in the same unit as the predicted values. If your prediction is money in dollars,
+    both MAE and RMSE give you how much your prediction is away from the true value
+    in dollars in average. But MSE is in unit of squared dollars, which its physical
+    meaning is not intuitive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loss Functions for Classification
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For classification problems, there is a small, discrete set of numbers that
+    the output could take. Furthermore, the number used to label-encode the classes
+    is arbitrary and with no semantic meaning (e.g., using the labels 0 for cat, 1
+    for dog, and 2 for horse does not represent that a dog is half cat and half horse).
+    Therefore, it should not have an impact on the performance of the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a classification problem, the model’s output is usually a vector of probability
+    for each category. Often, this vector is usually expected to be “logits,” i.e.,
+    real numbers to be transformed to probability using the softmax function, or the
+    output of a softmax activation function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The cross-entropy between two probability distributions is a measure of the
+    difference between the two probability distributions. Precisely, it is $−\sum_i
+    P(X=x_i)\log Q(X=x_i)$ for probability $P$ and $Q$. In machine learning, we usually
+    have the probability $P$ provided by the training data and $Q$ predicted by the
+    model, which $P$ is 1 for the correct class and 0 for every other class. The predicted
+    probability $Q$, however, is usually a floating point valued between 0 and 1\.
+    Hence when used for classification problems in machine learning, this formula
+    can be simplified into:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\text{categorical cross-entropy} = − \log p_{\text{target}}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: where $p_{\text{target}}$ is the model-predicted probability of the groud truth
+    class for that particular sample.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cross-entropy metrics have a negative sign because $\log(x)$ tends to negative
+    infinity as $x$ tends to zero. We want a higher loss when the probability approaches
+    0 and a lower loss when the probability approaches 1\. Graphically,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/5b11c08925dab718c9ec2ce103f1b1ff.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Categorical cross-entropy loss function (blue) and gradient (orange)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice that the loss is exactly 0 if the probability of the ground truth class
+    is 1 as desired. Also, as the probability of the ground truth class tends to 0,
+    the loss tends to positive infinity as well, hence substantially penalizing bad
+    predictions. You might recognize this loss function for logistic regression, which
+    is similar except the logistic regression loss is specific to the case of binary
+    classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Looking at the gradient, you can see that the gradient is generally negative,
+    which is also expected since, to decrease this loss, you would want the probability
+    on the ground truth class to be as high as possible. Recall that gradient descent
+    goes in the opposite direction of the gradient.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In PyTorch, the cross-entropy function is provided by `nn.CrossEntropyLoss()`.
+    It takes the predicted logits and the target as parameter and compute the categorical
+    cross-entropy. Remind that inside the `CrossEntropyLoss()` function, softmax will
+    be applied to the logits hence you should not use softmax activation function
+    at the output layer. Example of using the cross entropy loss function from PyTorch
+    is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Note the first argument to the cross entropy loss function is logit, not probabilities.
+    Hence each row does not sum to 1\. The second argument, however, is a tensor containing
+    rows of probabilities. If you convert the `logits` tensor above into probability
+    using softmax function, it would be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: which each row sums to 1.0\. This tensor also reveals why the cross entropy
+    above calculated to be 0.288, which is $-\log(0.75)$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The other way of calculating the cross entropy in PyTorch is not to use one-hot
+    encoding in the target but to use the integer indices label:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This gives you the same cross entropy of 0.288\. Note that,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'gives you:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is how PyTorch interprets your target tensor. It is also called “sparse
+    cross entropy” function in other libraries, to make a distinction that it does
+    not expect a one-hot vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note in PyTorch, you can use `nn.LogSoftmax()` as an activation function. It
+    is to apply softmax on the output of a layer and than take the logarithm on each
+    element. If this is your output layer, you should use `nn.NLLLoss()` (negative
+    log likelihood) as the loss function. Mathematically these duo is same as cross
+    entropy loss. You can confirm this by checking the code below produced the same
+    output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: In case of a classification problem with only two classes, it becomes binary
+    classification. It is special because the model is now a logistic regression model
+    in which there can be only one output instead of a vector of two values. You can
+    still implement binary classification as multiclass classification and use the
+    same cross entropy function. But if you output $x$ as the probability (between
+    0 and 1) for the “positive class”, it is known that the probability for the “negative
+    class” must be $1-x$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In PyTorch, you have `nn.BCELoss()` for binary cross entropy. It is specialized
+    for binary case. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This gives you:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It is because:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\frac{1}{2}[-\log(0.75) + (-\log(1-0.25))] = -\log(0.75) = 0.288$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that in PyTorch, the target label 1 is taken as the “positive class” and
+    label 0 is the “negative class”. There should not be other values in the target
+    tensor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Custom Loss Function in PyTorch
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Notice in above, the loss metric is calculated using an object from `torch.nn`
+    module. The loss metric computed is a PyTorch tensor, so you can differentiate
+    it and start the backpropagation. Therefore, nothing forbid you from creating
+    your own loss function as long as you can compute a tensor based on the model’s
+    output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'PyTorch does not give you all the possible loss metrics. For example, mean
+    absolute percentage error is not included. It is like MAE, defined as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\text{MAPE} = \frac{1}{m} \sum_{i=1}^m \lvert\frac{\hat{y}_i – y_i}{y_i}\rvert$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes you may prefer to use MAPE. Recall the example on regression on the
+    California housing dataset, the prediction is on the house price. It may make
+    more sense to consider prediction accurate based on percentage difference rather
+    than dollar difference. You can define your MAPE function, just remember to use
+    PyTorch functions to compute, and return a PyTorch tensor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'See the full example below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Compare to the example in the other post, you can see that `loss_fn` now is
+    defined as a custom function. Otherwise everything is just the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Below are the documentations from PyTorch that give you more details on how
+    the various loss functions are implemented:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[nn.L1Loss](https://pytorch.org/docs/stable/generated/torch.nn.L1Loss.html)
+    from PyTorch'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[nn.MSELoss](https://pytorch.org/docs/stable/generated/torch.nn.MSELoss.html)
+    from PyTorch'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[nn.CrossEntropyLoss](https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html)
+    from PyTorch'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[nn.BCELoss](https://pytorch.org/docs/stable/generated/torch.nn.BCELoss.html)
+    from PyTorch'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[nn.NLLLoss](https://pytorch.org/docs/stable/generated/torch.nn.NLLLoss.html)
+    from PyTorch'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you have seen loss functions and the role that they play in a
+    neural network. You have also seen some popular loss functions used in regression
+    and classification models, as well as how to implement your own loss function
+    for your PyTorch model. Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are loss functions, and why they are important in training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Common loss functions for regression and classification problems
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use loss functions in your PyTorch model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

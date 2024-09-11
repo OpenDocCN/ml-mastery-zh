@@ -1,0 +1,434 @@
+- en: A Gentle Introduction To Method Of Lagrange Multipliers
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The method of Lagrange multipliers is a simple and elegant method of finding
+    the local minima or local maxima of a function subject to equality or inequality
+    constraints. Lagrange multipliers are also called undetermined multipliers. In
+    this tutorial we’ll talk about this method when given equality constraints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover the method of Lagrange multipliers and how
+    to find the local minimum or maximum of a function when equality constraints are
+    present.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to find points of local maximum or minimum of a function with equality constraints
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Method of Lagrange multipliers with equality constraints
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/16f32fc7da801d54fc126634e0bdfee7.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/IMG_4464-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Gentle Introduction To Method Of Lagrange Multipliers. Photo by Mehreen Saeed,
+    some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into 2 parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Method of Lagrange multipliers with equality constraints
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Two solved examples
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you already know what are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Derivative of functions](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Function of several variables, partial derivatives and gradient vectors](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[A gentle introduction to optimization](https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Gradient descent ](https://machinelearningmastery.com/a-gentle-introduction-to-gradient-descent-procedure)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can review these concepts by clicking on the links given above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**What Is The Method Of Lagrange Multipliers With Equality Constraints?**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Suppose we have the following optimization problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Minimize f(x)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Subject to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: g_1(x) = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: g_2(x) = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: …
+  prefs: []
+  type: TYPE_NORMAL
+- en: g_n(x) = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: The method of Lagrange multipliers first constructs a function called the Lagrange
+    function as given by the following expression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: L(x, **????**) = f(x) + ????_1 g_1(x) + ????_2 g_2(x) + … + ????_n g_n(x)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here **????**represents a vector of Lagrange multipliers, i.e.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**????**= [ ????_1, ????_2, …, ????_n]^T'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To find the points of local minimum of f(x) subject to the equality constraints,
+    we find the stationary points of the Lagrange function L(x, **????**), i.e., we
+    solve the following equations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∇xL = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∂L/∂????_i = 0 (for i = 1..n)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hence, we get a total of m+n equations to solve, where
+  prefs: []
+  type: TYPE_NORMAL
+- en: m = number of variables in domain of f
+  prefs: []
+  type: TYPE_NORMAL
+- en: n = number of equality constraints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In short, the points of local minimum would be the solution of the following
+    equations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∂L/∂x_j = 0 (for j = 1..m)
+  prefs: []
+  type: TYPE_NORMAL
+- en: g_i(x) = 0 (for i = 1..n)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Solved Examples
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section contains two solved examples. If you solve both of them, you’ll
+    get a pretty good idea on how to apply the method of Lagrange multipliers to functions
+    of more than two variables, and a higher number of equality constraints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Example 1: One Equality Constraint**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let’s solve the following minimization problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Minimize: f(x) = x^2 + y^2
+  prefs: []
+  type: TYPE_NORMAL
+- en: Subject to: x + 2y – 1 = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first step is to construct the Lagrange function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: L(x, y, ????) = x^2 + y^2 + ????(x + 2y – 1)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We have the following three equations to solve:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∂L/∂x = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2x + ???? = 0      (1)
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∂L/∂y = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2y + 2???? = 0     (2)
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∂L/∂???? = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: x + 2y -1 = 0    (3)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using (1) and (2), we get:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ???? = -2x = -y
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Plugging this in (3) gives us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: x = 1/5
+  prefs: []
+  type: TYPE_NORMAL
+- en: y = 2/5
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hence, the local minimum point lies at (1/5, 2/5) as shown in the right figure.
+    The left figure shows the graph of the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Graph of function (left), contours, constraint and local minima (right)](../Images/db7dab43ae38af987da4d70b20e5b1f4.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/lagrange2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Graph of function (left). Contours, constraint and local minima (right)
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Example 2: Two Equality Constraints**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Suppose we want to find the minimum of the following function subject to the
+    given constraints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: minimize g(x, y) = x^2 + 4y^2
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Subject to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: x + y = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: x^2 + y^2 – 1 = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The solution of this problem can be found by first constructing the Lagrange
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: L(x, y, ????_1, ????_2) = x^2 + 4y^2 + ????_1(x + y) + ????_2(x^2 + y^2 – 1)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We have 4 equations to solve:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∂L/∂x = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2x + ????_1 + 2x ????_2 = 0    (1)
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∂L/∂y = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: 8y + ????_1 + 2y ????_2 = 0    (2)
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∂L/∂????_1 = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: x + y = 0         (3)
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∂L/∂????_2 = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: x^2 + y^2 – 1 = 0    (4)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Solving the above system of equations gives us two solutions for (x,y), i.e.
+    we get the two points:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: (1/sqrt(2), -1/sqrt(2))
+  prefs: []
+  type: TYPE_NORMAL
+- en: (-1/sqrt(2), 1/sqrt(2))
+  prefs: []
+  type: TYPE_NORMAL
+- en: The function along with its constraints and local minimum are shown below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Graph of function (left). Contours, constraint and local minima (right)](../Images/bad2871677f34f743a942c91e469600b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/lagrange1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Graph of function (left). Contours, constraint and local minima (right)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Relationship to Maximization Problems
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you have a function to maximize, you can solve it in a similar manner, keeping
+    in mind that maximization and minimization are equivalent problems, i.e.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: maximize f(x)                 is equivalent to                   minimize -f(x)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Importance Of The Method Of Lagrange Multipliers In Machine Learning
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Many well known machine learning algorithms make use of the method of Lagrange
+    multipliers. For example, the theoretical foundations of principal components
+    analysis (PCA) are built using the method of Lagrange multipliers with equality
+    constraints. Similarly, the optimization problem in support vector machines SVMs
+    is also solved using this method. However, in SVMS, inequality constraints are
+    also involved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Extensions**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section lists some ideas for extending the tutorial that you may wish to
+    explore.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Optimization with inequality constraints
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: KKT conditions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Support vector machines
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you explore any of these extensions, I’d love to know. Post your findings
+    in the comments below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorials**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Gradient descent for machine learning](https://machinelearningmastery.com/gradient-descent-for-machine-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[What is gradient in machine learning](https://machinelearningmastery.com/gradient-in-machine-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Partial derivatives and gradient vectors](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[How to choose an optimization algorithm](https://machinelearningmastery.com/tour-of-optimization-algorithms/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Resources**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Additional resources on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Thomas’ Calculus](https://amzn.to/35Yeolv), 14th edition, 2017\. (based on
+    the original works of George B. Thomas, revised by Joel Hass, Christopher Heil,
+    Maurice Weir)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US),
+    3rd Edition, 2017\. (Gilbert Strang)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://amzn.to/3kS9I52), 8th edition, 2015\. (James Stewart)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you discovered what is the method of Lagrange multipliers.
+    Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lagrange multipliers and the Lagrange function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to solve an optimization problem when equality constraints are given
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Do you have any questions?**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

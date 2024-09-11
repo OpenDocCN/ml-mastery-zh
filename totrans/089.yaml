@@ -1,0 +1,778 @@
+- en: Web Frameworks for Your Python Projects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/web-frameworks-for-your-python-projects/](https://machinelearningmastery.com/web-frameworks-for-your-python-projects/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When we finish a Python project and roll it out for other people to use, the
+    easiest way is to present our project as a command-line program. If you want to
+    make it friendlier, you may want to develop a GUI for your program so people can
+    interact with it with mouse clicks while it runs. Developing a GUI can be difficult
+    as the model of human-computer interaction is complex. Therefore, a compromise
+    is to create a web interface for your program. It requires some extra work compared
+    to a pure command-line program, but not as heavy as writing an interface using,
+    say, Qt5 library. In this post, we will show you the details of a web interface
+    and how easy it is to give your program one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After finishing this tutorial, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Flask framework from a simple example
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Dash to build an interactive web page entirely in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How a web application operates
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started!![](../Images/3c9ae620ba0715f364dadb96217dea84.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Web Frameworks for Your Python Projects
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Quang Nguyen Vinh](https://www.pexels.com/photo/photo-of-people-on-a-boat-during-dawn-2150371/).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into five parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python and the web
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Flask for web API applications
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Dash for interactive widgets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Polling in Dash
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Combining Flask and Dash
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python and the Web
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The web is served using the hypertext transfer protocol (HTTP). Python’s standard
+    library comes with support for interacting with HTTP. If you simply want to run
+    a web server with Python, nothing can be easier than going to a directory of files
+    to serve and run the command.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will usually launch a web server at port 8000\. If `index.html` exists
+    in the directory, that would be the default page to serve if we open a browser
+    on the same computer with the address `http://localhost:8000/`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This built-in web server is great if we just need to quickly set up a web server
+    (e.g., let another computer on the local network download a file). But it would
+    not be sufficient if we want to do more, such as having some dynamic content.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we move on to the details, let’s review what we would like to achieve
+    when we speak of the web interface. Firstly, a web page in the modern day would
+    be an interface for disseminating information to the user interactively. This
+    means not only sending information from the server but also receiving input from
+    the user. The browser is capable of rendering the information aesthetically.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alternatively, we may use a web page without a browser. A case would be to download
+    a file using web protocols. In Linux, we have the `wget` tool famous for doing
+    this task. Another case is to query information or pass information to the server.
+    For example, in AWS EC2 instances, you can check the machine instances’ [metadata](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html) at
+    the address `http://169.254.169.254/latest/meta-data/` (where the 169.254.169.254
+    is the special IP address available on EC2 machines). In Linux instances, we may
+    use the `curl` tool to check. Its output will not be in HTML but in a plain-text
+    machine-readable format. Sometimes, we call this the web API as we use it like
+    a remotely executed function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These are two different paradigms in web applications. The first one needs to
+    write code for the interaction between user and server. The second one needs to
+    set up various end-points on the URL so users can request different things using
+    different addresses. In Python, there are third-party libraries to do both.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Flask for Web API Applications
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The tools that allow us to write programs in Python to build a web-based application
+    are called **web frameworks**. There are a lot. Django is probably the most famous
+    one. However, the learning curve of different web frameworks can vary dramatically.
+    Some web frameworks assume you use a model-view design, and you need to understand
+    the rationale behind it to make sense of how you should use it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a machine learning practitioner, you probably want to do something quick,
+    not too complex, and yet powerful enough to meet many use cases. Flask is probably
+    a good choice in this class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Flask is a lightweight web framework. You can run it as a command and use it
+    as a Python module. Let’s say we want to write a web server that reports the current
+    time in any user-specified time zone. It can be done using Flask in a trivial
+    way:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Save the above into `server.py` or any filename you like, then run it on a
+    terminal. You will see the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This means your script is now running as a web server at `http://127.0.0.1:5000`.
+    It will serve web requests forever until you interrupt it with Ctrl-C.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you open up another terminal and query for the URL, e.g., using `curl` in
+    Linux:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: You will see the time printed on the screen in the time zone you requested (Asia/Tokyo
+    in this case, you can see the list of all supported time zone [on Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)).
+    The string returned by the function in your code will be the content responded
+    by the URL. If the time zone is not recognized, you will see the “Unknown time
+    zone” message as returned by the `except` block in the code above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we want to extend this a little bit such that we will assume UTC if no time
+    zone is provided, we just need to add another decorator to the function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Restarting the server, we can see the result as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Nowadays, many such applications return a JSON string for more complex data,
+    but technically anything can be delivered. If you wish to create more web APIs,
+    simply define your functions to return the data and decorate it with `@app.route()` as
+    in the above examples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dash for Interactive Widgets
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The web end points, as provided by Flask, are powerful. A lot of web applications
+    are done in this way. For example, we can write the web user interface using HTML
+    and handle the user interaction with Javascript. Once the user triggers an event,
+    we can let Javascript handle any UI change and create an AJAX call to the server
+    by sending data to an end point and waiting for the reply. An AJAX call is asynchronous;
+    hence when the web server’s response is received (usually within a fraction of
+    a section), Javascript is triggered again to further update the UI to let the
+    user know about it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, as the web interface gets more and more complex, writing Javascript
+    code can be tedious. Hence there are many **client-side** libraries to simplify
+    this. Some are to simplify Javascript programming, such as jQuery. Some are to
+    change the way HTML and Javascript should interact, such as ReactJS. But since
+    we are developing machine learning projects in Python, it would be great to develop
+    an interactive web application in Python without resorting to Javascript. Dash
+    is a tool for this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s consider an example in machine learning: We want to use the MNIST handwritten
+    digits dataset to train a handwritten digit recognizer. The LeNet5 model is famous
+    for this task. But we want to let the user fine-tune the LeNet5 model, retrain
+    it, and then use it for recognition. Training a simple LeNet5 model can be done
+    with only a few lines of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There are several hyperparameters that we can change in this code, such as
+    the activation function, the optimizer for training, the number of epochs, and
+    the batch size. We can make an interface in Dash to let the user change these
+    and retrain the model. This interface will be presented in HTML but coded in Python:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here we set up a Dash app built on top of a Flask server. The majority of the
+    code above is to set up the **layout** of the Dash app that will be displayed
+    on the web browser. The layout has a title on top, a button (with the label “Train”)
+    at the bottom, and a large box containing multiple option widgets in the middle.
+    There is a dropdown box for an activation function, another for a training optimizer,
+    and two sliders, one for the number of epochs and one for the batch size. The
+    layout will be like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/4432753c56de312f60d25feba0400887.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'If you’re familiar with HTML development, you probably noticed we used many
+    `<div>` elements above. Moreover, we provided `style` arguments to some elements
+    to change the way they are rendered on the browser. Indeed, we saved this Python
+    code into file `server.py` and created a file `assets/main.css` with the following
+    content:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is how we can have the four different user options aligned horizontally
+    when this code is run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After we have the HTML frontend created, the key is to let the user change
+    the hyperparameter by selecting from the dropdown list or moving the slider. Then,
+    we kick start the model training after the user clicks on the “Train” button.
+    Let’s define the training function as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This function depends on an external dictionary `model_data` for the parameters
+    and the dataset, such as `X_train` and `y_train`, defined outside of the function.
+    It will just create a new model, train it, and return the model with the training
+    history. We just need to run this function when the “Train” button on the browser
+    is clicked. We set `verbose=0` in the `fit()` function to ask the training process
+    not to print anything to the screen since it is supposed to run in the server
+    while the user is looking at the browser. The user cannot see the terminal output
+    at the server anyway. We can also take one step further to display the history
+    of loss and evaluation metrics along the training epochs. This is what we need
+    to do:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: We first add a `Graph` component to the web page to display our training metrics.
+    The `Graph` component is not a standard HTML element but a Dash component. There
+    are a number of such components provided by Dash as its major feature. Dash is
+    a sister project of Plotly, another visualization library similar to Bokeh that
+    renders interactive charts into HTML. The `Graph` component is to display a Plotly
+    chart.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then we defined a function `train_action()` and decorated it with our Dash application’s
+    callback function. The function `train_action()` takes several inputs (model hyperparameters)
+    and returns an output. In Dash, the output is usually a string, but we return
+    a Plotly graph object here. The callback decorator requires us to specify the
+    input and output. These are the web page components specified by their ID field
+    and the property that served as the input or output. In this example, in addition
+    to input and output, we also need some additional data called “states.”
+  prefs: []
+  type: TYPE_NORMAL
+- en: In Dash, input is what triggers an action. In this example, a button in Dash
+    will remember the number of times it has been pressed in the component’s property
+    `n_clicks`. So we declared the change in this property as the trigger for this
+    function. Similarly, when this function is returned, the graph object will replace
+    the `Graph` component. The state parameters are provided as non-trigger arguments
+    to this function. The order of specifying the output, input, and states is essential
+    as this is what the callback decorator expects, as well as the order of arguments
+    to the function we defined.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We are not going to explain the Plotly syntax in detail. If you learned what
+    a visualization library like Bokeh does, it should not be very difficult to adapt
+    your knowledge to Plotly after consulting its documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, there is one thing we need to mention about Dash callbacks: When the
+    web page is first loaded, all callbacks will be invoked once because the components
+    are newly created. Since all components’ properties changed from non-existence
+    to some values, they are trigger events. If we do not want to have them invoked
+    on the page load (e.g., in this case, we do not want our time-consuming training
+    process to start until the user confirms the hyperparameters), we need to specify
+    `prevent_initial_call=True` in the decorator.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can go one step further by getting the hyperparameter selection interactive
+    as well. This is polite because you give the user feedback on their action. As
+    we already have a `<div>` element for the title of each selection component, we
+    can make use of it for feedback by creating the following functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: These functions are trivial and return a string, which will become the “children”
+    of the `<div>` elements. We also demonstrated the named arguments in the first
+    function’s decorator in case you prefer to be more explicit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code that can control
+    a model training from a web interface:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The final line of the above code is to run the Dash application, just like we
+    run our Flask app in the previous section. The `debug=True` argument to the `run_server()`
+    function is for “hot-reloading,” which means to reload everything whenever Dash
+    detects our script has been changed. It is convenient to see how it will work
+    while editing our code on another window, as it doesn’t require us to terminate
+    our Dash server and run it again. The `threaded=True` is to ask the Dash server
+    to run in multithreads when serving multiple requests. It is generally not recommended
+    for Python programs to run in multithread due to the issue of global interpreter
+    locks. However, it is acceptable in the web server environment as mostly the server
+    is waiting for I/O. If not multithread, the option would be to run in multiprocesses.
+    We cannot run a server in a single thread in a single process because even if
+    we serve only one user, the browser will launch multiple HTTP queries at the same
+    time (e.g., request for the CSS file we created above while loading the web page).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Polling in Dash
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If we run the above Dash application with a moderate number of epochs, it would
+    take noticeable time to complete. We want to see it running rather than just having
+    the chart updated after it is finished. There is a way to ask Dash to **push** updates
+    to our browser, but that would require a plugin (e.g., [dash_devices](https://pypi.org/project/dash-devices/) package
+    can do this). But we can also ask the browser to **pull** for any updates. This
+    design is called **polling**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the `train()` function we defined above, we set `verbose=0` to skip the
+    terminal output. But we still need to know the progress of the training process.
+    In Keras, this can be done with a custom callback. We can define one as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we provide an instance of this class to the `fit()` function of a Keras model,
+    the member function of this class will be invoked at the beginning or the end
+    of the training cycle, or epoch, or a batch in one epoch. It is quite flexible
+    on what we can do inside the function. At the end of an epoch or a batch, the
+    `logs` arguments to the functions are a dictionary of the loss and validation
+    metrics. Hence we defined a global dictionary object to remember the metrics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now given we can check the dictionary `train_status` any time to know the progress
+    of our model training, we can modify our web page to display it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: We create a non-visible component `dcc.Interval()` that changes its property `n_intervals`
+    automatically once every 1000 milliseconds (= 1 second). Then we create a `<pre>` element
+    below our “Train” button and name it `progressdisplay`. Whenever the `Interval` component
+    fires, we convert the `train_status` dictionary into a JSON string and display
+    it in that `<pre>` element. If you prefer, you can make a widget to display this
+    information. Dash has a few provided.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With just these changes, your browser will look like the following when your
+    model is trained:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/c52255159aa96eda68efef591a3fb33b.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Below is the complete code. Don’t forget you also need the `assets/main.css`
+    file to properly render the web page:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Combining Flask and Dash
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Can you also provide a web interface to **use** the trained model? Certainly.
+    It will be easier if the model takes a few numerical inputs because we can just
+    provide an input box element on the page. In this case, since it is a handwritten
+    digit recognition model, we need to have a way to provide an image on the browser
+    and pass it on to the model at the server. Only then can we get the result and
+    display it. There are two options we can do this: We can let the user upload an
+    image of a digit for our model to recognize it, or we can let the user draw the
+    image directly on the browser.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In HTML5, we have a `<canvas>` element that allows us to draw or display pixels
+    in an area on the web page. We can make use of this to let the user draw on it,
+    then convert it into a numerical matrix of size 28×28, and send it to the server
+    side for the model to predict and display the prediction result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Doing this would not be Dash’s job because we want to read the `<canvas>` element
+    and convert it to a matrix of the correct format. We will do this in Javascript.
+    But after that, we would invoke the model in a web URL like what we described
+    at the beginning of this post. A query is sent with the parameter, and the response
+    from the server would be the digit that our model recognized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Behind the scene, Dash uses Flask, and the root URL points to the Dash application.
+    We can create a Flask endpoint that makes use of the model as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we can recall, the variable `server` is the Flask server upon which we build
+    our Dash application. We create an endpoint with its decorator. Since we are going
+    to pass a 28×28 matrix as the parameter, we use the HTTP POST method, which is
+    more suitable for a large block of data. The data provided by the POST method
+    will not be part of the URL. Hence we do not set up a path parameter to the `@server.route()` decorator.
+    Instead, we read the data with `request.form["matrix"]` in which `"matrix"` is
+    the name of the parameter we passed in. Then we convert the string into a list
+    of numbers by assuming it is in JSON format, and then further convert it into
+    a NumPy array and give it to the model to predict the digit. We kept our trained
+    model in `model_data["model"]`, but we can make the above code more robust by
+    checking if this trained model exists and returning an error message if it does
+    not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To modify the web page, we just add a few more components:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The bottom one is a hidden `<div>` element that we will use later. The main
+    block is another `<div>` element with three items in it, namely, a `<canvas>` element
+    (with ID `"writing"`), a `<div>` element (with ID `"predictresult"`) to display
+    the result, and a `<pre>` element (with ID `"lastinput"`) to display the matrix
+    that we passed to the server.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since these elements are not handled by Dash, we do not need to create any
+    more functions in Python. But instead, we need to create a Javascript file `assets/main.js` for
+    the interaction with these components. A Dash application will automatically load
+    everything under the directory `assets` and send it to the user when the web page
+    is loaded. We can write this in plain Javascript, but to make our code more concise,
+    we will use jQuery. Hence we need to tell Dash that we will require jQuery in
+    this web application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `external_scripts` argument is a list of URLs to be loaded as additional
+    scripts **before** the web page is loaded. Hence we usually provide the library
+    here but keep our own code away.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Our own Javascript code would be a single function because it is called after
+    our web page is fully loaded:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We first set up our `<canvas>` element in Javascript. These are specific to
+    our requirement. Firstly, we added the following into our `assets/main.css`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: This fixed the width and height to 300 pixels to make our canvas square, along
+    with other cosmetic fine tuning. Since ultimately, we would convert our handwriting
+    into a 28×28 pixel image to fit what our model expects, every stroke we write
+    on the canvas cannot be too thin. Therefore we set the stoke width relative to
+    the canvas size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Having this is not enough to make our canvas usable. Let’s assume we never
+    use it on mobile devices but only on a desktop browser, the drawing is done by
+    mouse click and movements. We need to define what a mouse click does on the canvas.
+    Hence we added the following functions to Javascript code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a bit verbose but essentially we ask to listen on three mouse events
+    on the canvas, namely, press down the mouse button, moving the mouse, and release
+    the mouse button. These three events combined is how we draw one stroke on the
+    canvas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Firstly, the `mousemove` event handler we added to the `<canvas>` element is
+    to simply remember the current mouse position in the Javascript object `mouse`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then in the `mousedown` event handler, we start our drawing context at the latest
+    mouse position. And since the drawing is started, all subsequent mouse move should
+    be painted on the canvas. We defined the `onPaint` function to extend a line segment
+    on the canvas to the current mouse position. This function is now registered as
+    an additional event handler to the `mousemove` event.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, the `mouseup` event handler is to handle the case when user finished
+    one stroke and released the mouse button. All subsequent mouse movement should
+    not be painted on the canvas so we need to remove the event handler of the `onPaint` function.
+    Then, as we finished one stroke, this **may be** a finished digit so we want to
+    extract it into a 28×28 pixel version. This can be done easily. We simply create
+    a new `Image` object in Javascript and load our entire canvas into it. When this
+    is finished, Javascript will automatically invoke the `onload` function associated
+    with it. In which, we will transform this `Image` object into 28×28 pixel and
+    draw into the top left corner of our `context` object. Then we read it back pixel
+    by pixel (each will be the RGB values of 0 to 255 per channel, but since we paint
+    in red, we concern only the red channel) into the Javascript array `input`. We
+    just need to give this `input` array to our model and the prediction can be carryed
+    out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We do not want to create any additional buttons to clear our canvas or submit
+    our digit for recognition. Hence we want to clear our canvas automatically if
+    the user has not draw anything new for 5 seconds. This is achieved with the Javascript
+    function `setTimeout()` and `clearTimeout()`. We make a `reset` function to clear
+    the canvas which will be fired at 5 seconds after the `mouseup` event. And this
+    scheduled call to the `reset` function will be cancelled whenever a drawing event
+    happens before the timeout. Similarly, the recognition is automatic whenever a `mouseup` event
+    happens.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Given we have the input data in 28×28 pixels transformed into a Javascript
+    array, we can just make use of the `recognize` end point we created with Flask.
+    It would be helpful if we can see what we passed into `recognize` and what it
+    returns. So we display the input in the `<pre>` element with ID `lastinput`, and
+    display the result returned by the `recognize` end point in the `<div>` element
+    with ID `predictresult`. This can be done easily by extending a bit on the `mouseup` event
+    handler:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: We defined a new Javascript funuction `predict()` that fires a AJAX call to
+    the `recognize` end point that we set up with Flask. It is using POST method with
+    the data `matrix` assigned with a JSON version of the Javascript array. We cannot
+    pass an array directly on a HTTP request because everything have to be serialized.
+    When the AJAX call returns, we update our `<div>` element with the result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This `predict()` function is invoked by the `mouseup` event handler, when we
+    finished transforming our 28×28 pixel image into numerical array. At the same
+    time, we write a version into the `<pre>` element solely for display purpose.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Up to here, our application is finished. But we still need to call the `pageinit()` function
+    when our Dash application is loaded. Behind the scene, Dash application is using
+    React for the web for delayed rendering, therefore we should not hook our `pageinit()` function
+    to the `document.onload` event handler or we will find that the components we
+    are looking for does not exists. The correct way to call a Javascript function
+    only when Dash application is fully loaded is to set up a **client callback**,
+    which means it is a callback but handled by the browser-side Javascript rather
+    than on the server-side Python. We add the following function call to our Python
+    program, `server.py`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `clientside_callback()` function is not used as a decorator but a complete
+    function call. It takes the Javascript function as the first argument, and the `Output` and `Input` object
+    as the second and third argument like the case of callback decorators. Because
+    of this, we created a hidden dummy component in our web page layout just to help
+    triggering the Javascript function at page load, all Dash callback would be invoked
+    once unless `prevent_initial_call=True` is an argument to the callback.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here we are all set. We can now run our `server.py` script to start our web
+    server, and it will load the two files under the `assets/` directory. Opening
+    a browser to visit the URL reported by our Dash application, we can change the
+    hyperparameter and train the model, then use the model for prediction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Tying everything together, the below is the complete code on our Javascript
+    part, saved as `assets/main.js`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: JavaScript
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and the following are the complete code for the CSS, `assets/main.css` (the `pre#lastinput` part
+    is to use smaller font to display our input matrix):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: CSS
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and the following is the main Python program, `server.py`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: If we run all of these, we should see a screen like the following:![](../Images/04723f0ab4a7bcaf5c76799e3aad525e.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are a vast amount of web framework available and Flask is just one of
+    them. Another popular one is CherryPy. Below are resources on the topic if you
+    are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Python Dash: Build Stunning Data Analysis and Visualization Apps with Plotly](https://www.amazon.com/dp/1718502222/)
+    by Adam Schroeder, Christian Mayer, and Ann Marie Ward'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Interactive Dashboards and Data Apps with Plotly and Dash](https://www.amazon.com/dp/1800568916/)
+    by Elias Dabbas'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Flask Web Development](https://www.amazon.com/dp/1491991739), 2nd Edition,
+    by Miguel Grinberg'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Flask Framework Cookbook](https://www.amazon.com/dp/1789951291/), 2nd Edition,
+    by Shalabh Aggarwal'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Web Frameworks](https://wiki.python.org/moin/WebFrameworks), Python.org wiki'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: APIs and software
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[CherryPy](https://cherrypydocrework.readthedocs.io/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Django](https://www.djangoproject.com/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Flask](https://flask.palletsprojects.com/en/2.1.x/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Dash](https://dash.plotly.com/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Plotly](https://plotly.com/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: MDN [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: MDN [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[jQuery](https://jquery.com/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how we can build a web app easily in Python with
+    the Dash library. You also learned how we can create some web API using Flask.
+    Specifically you learned
+  prefs: []
+  type: TYPE_NORMAL
+- en: The mechanism of a web application
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How we can use Dash to build a simple web application triggered by web page
+    components
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How can we use Flask to create a web API
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How a web application can be built in Javascript and run on a browser that uses
+    the web API we built with Flask
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

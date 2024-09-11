@@ -1,0 +1,412 @@
+- en: Building a Binary Classification Model in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/building-a-binary-classification-model-in-pytorch/](https://machinelearningmastery.com/building-a-binary-classification-model-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: PyTorch library is for deep learning. Some applications of deep learning models
+    are to solve regression or classification problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, you will discover how to use PyTorch to develop and evaluate neural
+    network models for binary classification problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this post, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to load training data and make it available to PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to design and train a neural network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to evaluate the performance of a neural network model using k-fold cross
+    validation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to run a model in inference mode
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create receiver operating characteristics curve for a binary classification
+    model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/e9eeb55887fe1686c2c425077d9c631c.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a Binary Classification Model in PyTorch
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [David Tang](https://unsplash.com/photos/Ufx030zbA3s). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Description of the Dataset
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The dataset you will use in this tutorial is the [Sonar dataset](https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a dataset that describes sonar chirp returns bouncing off different
+    services. The 60 input variables are the strength of the returns at different
+    angles. It is a binary classification problem that requires a model to differentiate
+    rocks from metal cylinders.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can learn more about this dataset on the [UCI Machine Learning repository](https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks)).
+    You can [download the dataset](https://archive.ics.uci.edu/ml/machine-learning-databases/undocumented/connectionist-bench/sonar/sonar.all-data)
+    for free and place it in your working directory with the filename `sonar.csv`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is a well-understood dataset. All the variables are continuous and generally
+    in the range of 0 to 1\. The output variable is a string “M” for mine and “R”
+    for rock, which will need to be converted to integers 1 and 0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A benefit of using this dataset is that it is a standard benchmark problem.
+    This means that we have some idea of the expected skill of a good model. Using
+    cross-validation, a neural network [should be able to achieve a performance](http://www.is.umk.pl/projects/datasets.html#Sonar)
+    of 84% to 88% accuracy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Load the Dataset
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you have downloaded the dataset in CSV format and saved it as `sonar.csv`
+    in the local directory, you can load the dataset using pandas. There are 60 input
+    variables (`X`) and one output variable (`y`). Because the file contains mixed
+    data of strings and numbers, it is easier to read them using pandas rather than
+    other tools such as NumPy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Data can be read as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is a binary classification dataset. You would prefer a numeric label over
+    a string label. You can do such conversion with `LabelEncoder` in scikit-learn.
+    The `LabelEncoder` is to map each label to an integer. In this case, there are
+    only two labels and they will become 0 and 1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using it, you need to first call the `fit()` function to make it learn what
+    labels are available. Then call `transform()` to do the actual conversion. Below
+    is how you use `LabelEncoder` to convert `y` from strings into 0 and 1:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can see the labels using:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'which outputs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: and if you run `print(y)`, you would see the following
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: You see the labels are converted into 0 and 1\. From the `encoder.classes_`,
+    you know that 0 means “M” and 1 means “R”. They are also called the negative and
+    positive classes respectively in the context of binary classification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Afterward, you should convert them into PyTorch tensors as this is the format
+    a PyTorch model would like to work with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now you’re ready for the neural network model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you have seen in some previous posts, the easiest neural network model is
+    a 3-layer model that has only one hidden layer. A deep learning model is usually
+    referring to those with more than one hidden layer. All neural network models
+    have parameters called weights. The more parameters a model has, heuristically
+    we believe that it is more powerful. Should you use a model with fewer layers
+    but more parameters on each layer, or a model with more layers but less parameters
+    each? Let’s find out.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A model with more parameters on each layer is called a wider model. In this
+    example, the input data has 60 features to predict one binary variable. You can
+    assume to make a wide model with one hidden layer of 180 neurons (three times
+    the input features). Such model can be built using PyTorch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Because it is a binary classification problem, the output have to be a vector
+    of length 1\. Then you also want the output to be between 0 and 1 so you can consider
+    that as probability or the model’s confidence of prediction that the input corresponds
+    to the “positive” class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A model with more layer is called a deeper model. Considering that the previous
+    model has one layer with 180 neurons, you can try one with three layers of 60
+    neurons each instead. Such model can be built using PyTorch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can confirm that these two models are having similar number of parameters,
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: There will be all the model’s parameters returned by `model1.parameters()` and
+    each is a PyTorch tensors. Then you can reformat each tensor into a vector and
+    count the length of the vector, using `x.reshape(-1).shape[0]`. So the above sum
+    up the total number of parameters in each model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Comparing Models with Cross-Validation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Should you use a wide model or a deep model? One way to tell is to use cross-validation
+    to compare them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is a technique that, use a “training set” of data to train the model and
+    then use a “test set” of data to see how accurate the model can predict. The result
+    from test set is what you should focus on. But you do not want to test a model
+    once because if you see an extremely good or bad result, it may be by chance.
+    You want to run this process $k$ times with different training and test sets,
+    such that you are ensured that you are comparing the **model design**, not the
+    result of a particular training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The technique that you can use here is called k-fold cross validation. It is
+    to split a larger dataset into $k$ portions and take one portion as the test set
+    while the $k-1$ portions are combined as the training set. There are $k$ different
+    such combinations. Therefore you can repeat the experiment for $k$ times and take
+    the average result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In scikit-learn, you have a function for stratified k-fold. Stratified means
+    that when the data is split into $k$ portions, the algorithm will look at the
+    labels (i.e., the positive and negative classes in a binary classification problem)
+    to ensure it is split in such a way that each portion contains equal number of
+    either classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Running k-fold cross validation is trivial, such as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Simply speaking, you use `StratifiedKFold()` from scikit-learn to split the
+    dataset. This function returns to you the indices. Hence you can create the splitted
+    dataset using `X[train]` and `X[test]` and named them training set and validation
+    set (so it is not confused with “test set” which will be used later, after we
+    picked our model design). You assume to have a function that runs the training
+    loop on a model and give you the accuracy on the validation set. You can than
+    find the mean and standard deviation of this score as the performance metric of
+    such model design. Note that you need to create a new model every time in the
+    for-loop above because you should not re-train a trained model in the k-fold cross
+    valiation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The training loop can be defined as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The training loop above contains the usual elements: The forward pass, the
+    backward pass, and the gradient descent weight updates. But it is extended to
+    have an evaluation step after each epoch: You run the model at evaluation mode
+    and check how the model predicts the **validation set**. The accuracy on the validation
+    set is remembered along with the model weight. At the end of the training, the
+    best weight is restored to the model and the best accuracy is returned. This returned
+    value is the best you ever encountered during the many epochs of training and
+    it is based on the validation set.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that you set `disable=True` in the `tqdm` above. You can set it to `False`
+    to see the training set loss and accuracy as you progress in the training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Remind that the goal is to pick the best design and train the model again, which
+    in the training, you want to have an evaluation score so you know what to expect
+    in production. Thus you should split the entire dataset you obtained into a training
+    set and test set. Then you further split the training set in k-fold cross validation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With these, here is how you can compare the two model designs: By running k-fold
+    cross validation on each and compare the accuracy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You may see the output of above as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: So you found that the deeper model is better than the wider model, in the sense
+    that the mean accuracy is higher and its standard deviation is lower.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Retrain the Final Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now you know which design to pick, you want to rebuild the model and retrain
+    it. Usually in k-fold cross validation, you will use a smaller dataset to make
+    the training faster. The final accuracy is not an issue because the gold of k-fold
+    cross validation to to tell which design is better. In the final model, you want
+    to provide more data and produce a better model, since this is what you will use
+    in production.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you already split the data into training and test set, these are what you
+    will use. In Python code,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can reuse the `model_train()` function as it is doing all the required training
+    and validation. This is because the training procedure doesn’t change for the
+    final model or during k-fold cross validation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This model is what you can use in production. Usually it is unlike training,
+    prediction is one data sample at a time in production. The following is how we
+    demonstate using the model for inference by running five samples from the test
+    set:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Its output should look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: You run the code under `torch.no_grad()` context because you sure there’s no
+    need to run the optimizer on the result. Hence you want to relieve the tensors
+    involved from remembering how the values are computed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The output of a binary classification neural network is between 0 and 1 (because
+    of the sigmoid function at the end). From `encoder.classes_`, you can see that
+    0 means “M” and 1 means “R”. For a value between 0 and 1, you can simply round
+    it to the nearest integer and interpret the 0-1 result, i.e.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: or use any other threshold to quantize the value into 0 or 1, i.e.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Indeed, round to the nearest integer is equivalent to using 0.5 as the threshold.
+    A good model should be robust to the choice of threshold. It is when the model
+    output exactly 0 or 1\. Otherwise you would prefer a model that seldom report
+    values in the middle but often return values close to 0 or close to 1\. To see
+    if your model is good, you can use **receiver operating characteristic curve** (ROC),
+    which is to plot the true positive rate against the false positive rate of the
+    model under various threshold. You can make use of scikit-learn and matplotlib
+    to plot the ROC:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may see the following. The curve is always start from the lower left corner
+    and ends at upper right corner. The closer the curve to the upper left corner,
+    the better your model is.![](../Images/4b42ed8d731efa28450b20623da84dc2.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Complete Code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code of the above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you discovered the use of PyTorch to build a binary classification
+    model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You learned how you can work through a binary classification problem step-by-step
+    with PyTorch, specifically:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to load and prepare data for use in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create neural network models and use k-fold cross validation to compare
+    them
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train a binary classification model and obtain the receiver operating
+    characteristics curve for it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,399 @@
+- en: The Chain Rule of Calculus – Even More Functions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/the-chain-rule-of-calculus-even-more-functions/](https://machinelearningmastery.com/the-chain-rule-of-calculus-even-more-functions/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The chain rule is an important derivative rule that allows us to work with composite
+    functions. It is essential in understanding the workings of the backpropagation
+    algorithm, which applies the chain rule extensively in order to calculate the
+    error gradient of the loss function with respect to each weight of a neural network.
+    We will be building on our earlier introduction to the chain rule, by tackling
+    more challenging functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover how to apply the chain rule of calculus
+    to challenging functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The process of applying the chain rule to univariate functions can be extended
+    to multivariate ones.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The application of the chain rule follows a similar process, no matter how
+    complex the function is: take the derivative of the outer function first, and
+    then move inwards. Along the way, the application of other derivative rules might
+    be required.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying the chain rule to multivariate functions requires the use of partial
+    derivatives.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/3a04bc967ac4d822892461c2bc78b7a5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Chain Rule of Calculus – Even More Functions
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Nan Ingraham](https://unsplash.com/photos/mNuLRRjLwjA), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Chain Rule on Univariate Functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Chain Rule on Multivariate Functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you already know what are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Multivariate functions](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The power and product rules](https://machinelearningmastery.com/the-power-product-and-quotient-rules/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Partial derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The chain rule](https://machinelearningmastery.com/?p=12720&preview=true)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can review these concepts by clicking on the links given above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Chain Rule on Univariate Functions**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have already discovered the chain rule for univariate and multivariate functions,
+    but we have only seen a few simple examples so far. Let’s see a few more challenging
+    ones here. We will be starting with univariate functions first, and then apply
+    what we learn to multivariate functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**EXAMPLE 1**: Let’s raise the bar a little by considering the following composite
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/888dc49a8963a98efffdf3e9daabbd92.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can separate the composite function into the inner function, *f*(*x*) = *x*²
+    – 10, and the outer function, *g*(*x*) = √*x* = (*x*)^(1/2). The output of the
+    inner function is denoted by the intermediate variable, *u*, and its value will
+    be fed into the input of the outer function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first step is to find the derivative of the outer part of the composite
+    function, while ignoring whatever is inside. For this purpose, we can apply the
+    power rule:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*dh / du* = (1/2) (*x*² – 10)^(-1/2)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next step is to find the derivative of the inner part of the composite
+    function, this time ignoring whatever is outside. We can apply the power rule
+    here too:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*du / dx* = 2*x*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting the two parts together and simplifying, we have:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/5bc9274d18f937415b51e5e04a666729.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**EXAMPLE 2**: Let’s repeat the procedure, this time with a different composite
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/010e6913ec9792f771e8169d6f8a3fa5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will again use, *u*, the output of the inner function, as our intermediate
+    variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The outer function in this case is, cos *x*. Finding its derivative, again
+    ignoring the inside, gives us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*dh* / *du* = (cos(*x*³ – 1))’ = -sin(*x*³ – 1)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The inner function is, *x*³ – 1\. Hence, its derivative becomes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*du* / *dx* = (*x*³ – 1)’ = 3*x*²'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting the two parts together, we obtain the derivative of the composite function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/372aea582fcc9200253d14c64445805b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**EXAMPLE 3**: Let’s now raise the bar a little further by considering a more
+    challenging composite function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/9790d874f4378cc1959b686e38f29053.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_5.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we observe this closely, we realize that not only do we have nested functions
+    for which we will need to apply the chain rule multiple times, but we also have
+    a product to which we will need to apply the product rule.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We find that the outermost function is a cosine. In finding its derivative
+    by the chain rule, we shall be using the intermediate variable, *u*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*dh* / *du* = (cos(*x* √(*x*² – 10) ))’ = -sin(*x* √(*x*² – 10) )'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Inside the cosine, we have the product, *x* √(x² – 10), to which we will be
+    applying the product rule to find its derivative (notice that we are always moving
+    from the outside to the inside, in order to discover the operation that needs
+    to be tackled next):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*du* / *dx* = (*x* √(x² – 10) )’ = √(x² – 10) + *x* ( √(x² – 10) )’'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One of the components in the resulting term is, ( √(x² – 10) )’, to which we
+    shall be applying the chain rule again. Indeed, we have already done so above,
+    and hence we can simply re-utilise the result:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ( √(x² – 10) )’ = *x* (*x*² – 10)^(-1/2)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting all the parts together, we obtain the derivative of the composite function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/1b40e41be080b2e5fb2995c34593b7c2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_6.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This can be simplified further into:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/82698389386127bd1576c5aa0ea0f93e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_7.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Chain Rule on Multivariate Functions**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**EXAMPLE 4**: Suppose that we are now presented by a multivariate function
+    of two independent variables, *s* and *t*, with each of these variables being
+    dependent on another two independent variables, *x* and *y*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*h* = *g*(*s*, *t*) = *s*² + *t*³'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where the functions, *s* = *xy*, and *t* = 2*x* – *y*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Implementing the chain rule here requires the computation of partial derivatives,
+    since we are working with multiple independent variables. Furthermore, *s* and
+    *t* will also act as our intermediate variables. The formulae that we will be
+    working with, defined with respect to each input, are the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/2606c50ef132b201038a111cab86cfff.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_8.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From these formulae, we can see that we will need to find six different partial
+    derivatives:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/d88c3c4d5520fe9892b878b6e56973df.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_9.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can now proceed to substitute these terms in the formulae for ∂*h* / ∂*x*
+    and∂*h* / ∂*y*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/47a08637936e4980affa7f636df03818.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_10.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And subsequently substitute for *s* and *t* to find the derivatives:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/db166792a3f963ede4171a4478b40964.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_11.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**EXAMPLE 5**: Let’s repeat this again, this time with a multivariate function
+    of three independent variables, $r$, $s$ and $t$, with each of these variables
+    being dependent on another two independent variables, $x$ and $y$:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$h=g(r,s,t)=r^2-rs+t^3$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where the functions, $r = x \cos y$, $s=xe^y$, and $t=x+y$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This time round, $r$, $s$ and $t$ will act as our intermediate variables. The
+    formulae that we will be working with, defined with respect to each input, are
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/00845680e230e2baba31deb78d04414f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_12.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'From these formulae, we can see that we will now need to find nine different
+    partial derivatives:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/bf7c5f20f2988e8a58ba522680d3ca14.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_13.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Again, we proceed to substitute these terms in the formulae for ∂*h* / ∂*x*
+    and∂*h* / ∂*y*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/38450f54cb49aea82d59107ed8fdb2e8.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_14.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'And subsequently substitute for $r$, $s$ and $t$ to find the derivatives:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/8f982a867545bc8e8e9c29e3f87a421a.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_15.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Which may be simplified a little further (hint: apply the trigonometric identity
+    $2\sin y\cos y=\sin 2y$ to $\partial h/\partial y$):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/6b892e514e40766ef391a6a57f3cefbe.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_16.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'No matter how complex the expression is, the procedure to follow remains similar:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Your last computation tells you the first thing to do.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 143, [Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
+    2016.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Hence, start by tackling the outer function first, then move inwards to the
+    next one. You may need to apply other rules along the way, as we have seen for
+    Example 3\. Do not forget to take the partial derivatives if you are working with
+    multivariate functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
+    2016.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Mathematics for Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered how to apply the chain rule of calculus to
+    challenging functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The process of applying the chain rule to univariate functions can be extended
+    to multivariate ones.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The application of the chain rule follows a similar process, no matter how
+    complex the function is: take the derivative of the outer function first, and
+    then move inwards. Along the way, the application of other derivative rules might
+    be required.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying the chain rule to multivariate functions requires the use of partial
+    derivatives.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

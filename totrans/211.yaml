@@ -1,0 +1,317 @@
+- en: What Is Attention?
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/what-is-attention/](https://machinelearningmastery.com/what-is-attention/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Attention is becoming increasingly popular in machine learning, but what makes
+    it such an attractive concept? What is the relationship between attention applied
+    in artificial neural networks and its biological counterpart? What components
+    would one expect to form an attention-based system in machine learning?
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover an overview of attention and its application
+    in machine learning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A brief overview of how attention can manifest itself in the human brain
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The components that make up an attention-based system and how these are inspired
+    by biological attention
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/82c53327289d2beef0800aeb35231bb2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/what_is_attention_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is attention?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Rod Long](https://unsplash.com/photos/J-ygvQbilXU), some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Attention
+  prefs:
+  - PREF_UL
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Attention in Machine Learning
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Attention**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Attention is a widely investigated concept that has often been studied in conjunction
+    with arousal, alertness, and engagement with one’s surroundings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*In its most generic form, attention could be described as merely an overall
+    level of alertness or ability to engage with surroundings.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Attention in Psychology, Neuroscience, and Machine Learning](https://www.frontiersin.org/articles/10.3389/fncom.2020.00029/full),
+    2020.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Visual* attention is one of the areas most often studied from both the neuroscientific
+    and psychological perspectives.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: When a subject is presented with different images, the eye movements that the
+    subject performs can reveal the *salient* image parts that the subject’s attention
+    is most attracted to. In their review of computational models for visual attention,
+    [Itti and Koch (2001)](https://authors.library.caltech.edu/40408/1/391.pdf) mention
+    that such salient image parts are often characterized by visual attributes, including
+    intensity contrast, oriented edges, corners and junctions, and motion. The human
+    brain attends to these salient visual features at different neuronal stages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Neurons at the earliest stages are tuned to simple visual attributes such
+    as intensity contrast, colour opponency, orientation, direction and velocity of
+    motion, or stereo disparity at several spatial scales. Neuronal tuning becomes
+    increasingly more specialized with the progression from low-level to high-level
+    visual areas, such that higher-level visual areas include neurons that respond
+    only to corners or junctions, shape-from-shading cues or views of specific real-world
+    objects.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – [Computational Modelling of Visual Attention](https://authors.library.caltech.edu/40408/1/391.pdf),
+    2001.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Interestingly, research has also observed that different subjects tend to be
+    attracted to the same salient visual cues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Research has also discovered several forms of interaction between memory and
+    attention. Since the human brain has a limited memory capacity, then selecting
+    which information to store becomes crucial in making the best use of the limited
+    resources. The human brain does so by relying on attention, such that it dynamically
+    stores in memory the information that the human subject most pays attention to.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Attention in Machine Learning**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Implementing the attention mechanism in artificial neural networks does not
+    necessarily track the biological and psychological mechanisms of the human brain.
+    Instead, it is the ability to dynamically highlight and use the *salient* parts
+    of the information at hand—in a similar manner as it does in the human brain—that
+    makes attention such an attractive concept in machine learning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Think of an attention-based system consisting of three components:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*A process that “reads” raw data (such as source words in a source sentence),
+    and converts them into distributed representations, with one feature vector associated
+    with each word position. *'
+  prefs:
+  - PREF_BQ
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*A list of feature vectors storing the output of the reader. This can be understood
+    as a “memory” containing a sequence of facts, which can be retrieved later, not
+    necessarily in the same order, without having to visit all of them.*'
+  prefs:
+  - PREF_BQ
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*A process that “exploits” the content of the memory to sequentially perform
+    a task, at each time step having the ability put attention on the content of one
+    memory element (or a few, with a different weight).*'
+  prefs:
+  - PREF_BQ
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 491, [Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
+    2017.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Let’s take the encoder-decoder framework as an example since it is within such
+    a framework that the attention mechanism was first introduced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we are processing an input sequence of words, then this will first be fed
+    into an encoder, which will output a vector for every element in the sequence.
+    This corresponds to the first component of our attention-based system, as explained
+    above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A list of these vectors (the second component of the attention-based system
+    above), together with the decoder’s previous hidden states, will be exploited
+    by the attention mechanism to dynamically highlight which of the input information
+    will be used to generate the output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At each time step, the attention mechanism then takes the previous hidden state
+    of the decoder and the list of encoded vectors, using them to generate unnormalized
+    *score* values that indicate how well the elements of the input sequence align
+    with the current output. Since the generated score values need to make relative
+    sense in terms of their importance, they are normalized by passing them through
+    a softmax function to generate the *weights*. Following the softmax normalization,
+    all the weight values will lie in the interval [0, 1] and add up to 1, meaning
+    they can be interpreted as probabilities. Finally, the encoded vectors are scaled
+    by the computed weights to generate a *context vector*. This attention process
+    forms the third component of the attention-based system above. It is this context
+    vector that is then fed into the decoder to generate a translated output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*This type of artificial attention is thus a form of iterative re-weighting.
+    Specifically, it dynamically highlights different components of a pre-processed
+    input as they are needed for output generation. This makes it flexible and context
+    dependent, like biological attention. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* [Attention in Psychology, Neuroscience, and Machine Learning](https://www.frontiersin.org/articles/10.3389/fncom.2020.00029/full),
+    2020.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The process implemented by a system that incorporates an attention mechanism
+    contrasts with one that does not. In the latter, the encoder would generate a
+    fixed-length vector irrespective of the input’s length or complexity. In the absence
+    of a mechanism that highlights the salient information across the entirety of
+    the input, the decoder would only have access to the limited information that
+    would be encoded within the fixed-length vector. This would potentially result
+    in the decoder missing important information.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The attention mechanism was initially proposed to process sequences of words
+    in machine translation, which have an implied temporal aspect to them. However,
+    it can be generalized to process information that can be static and not necessarily
+    related in a sequential fashion, such as in the context of image processing. You
+    will see how this generalization can be achieved in a separate tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Deep Learning Essentials](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365),
+    2018.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Attention in Psychology, Neuroscience, and Machine Learning](https://www.frontiersin.org/articles/10.3389/fncom.2020.00029/full),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Computational Modelling of Visual Attention](https://authors.library.caltech.edu/40408/1/391.pdf),
+    2001.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered an overview of attention and its application
+    in machine learning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A brief overview of how attention can manifest itself in the human brain
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The components that make up an attention-based system and how these are inspired
+    by biological attention
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

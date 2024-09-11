@@ -1,0 +1,267 @@
+- en: The Search for the Sweet Spot in a Linear Regression with Numeric Features
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/the-search-for-the-sweet-spot-in-a-linear-regression-with-numeric-features/](https://machinelearningmastery.com/the-search-for-the-sweet-spot-in-a-linear-regression-with-numeric-features/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Consistent with the principle of Occam’s razor, starting simple often leads
+    to the most profound insights, especially when piecing together a predictive model.
+    In this post, using the Ames Housing Dataset, we will first pinpoint the key features
+    that shine on their own. Then, step by step, we’ll layer these insights, observing
+    how their combined effect enhances our ability to forecast accurately. As we delve
+    deeper, we will harness the power of the Sequential Feature Selector (SFS) to
+    sift through the complexities and highlight the optimal combination of features.
+    This methodical approach will guide us to the “sweet spot” — a harmonious blend
+    where the selected features maximize our model’s predictive precision without
+    overburdening it with unnecessary data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/7e42c34ceb3610fcb7dc01ed7efbfea4.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Search for the Sweet Spot in a Linear Regression with Numeric Features
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Joanna Kosinska](https://unsplash.com/photos/assorted-color-candies-on-container--ayOfwsd9mY).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: From Single Features to Collective Impact
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Diving Deeper with SFS: The Power of Combination'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finding the Predictive “Sweet Spot”
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: From Individual Strengths to Collective Impact
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our first step is to identify which features out of the myriad available in
+    the Ames dataset stand out as powerful predictors on their own. We turn to simple
+    linear regression models, each dedicated to one of the top standalone features
+    identified based on their predictive power for housing prices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will output the top 5 features that can be used individually in a simple
+    linear regression:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Curiosity leads us further: what if we combine these top features into a single
+    multiple linear regression model? Will their collective power surpass their individual
+    contributions?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The initial findings are promising; each feature indeed has its strengths. However,
+    when combined in a multiple regression model, we observe a “decent” improvement—a
+    testament to the complexity of housing price predictions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This result hints at untapped potential: Could there be a more strategic way
+    to select and combine features for even greater predictive accuracy?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Diving Deeper with SFS: The Power of Combination'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As we expand our use of Sequential Feature Selector (SFS) from $n=1$ to $n=5$,
+    an important concept comes into play: the power of combination. Let’s illustrate
+    as we build on the code above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Choosing $n=5$ doesn’t merely mean selecting the five best standalone features.
+    Rather, it’s about identifying the set of five features that, when used together,
+    optimize the model’s predictive ability:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This outcome is particularly enlightening when we compare it to the top five
+    features selected based on their standalone predictive power. The attribute “FullBath”
+    (not selected by SFS) was replaced by “KitchenAbvGr” in the SFS selection. This
+    divergence highlights a fundamental principle of feature selection: **it’s the
+    combination that counts**. SFS doesn’t just look for strong individual predictors;
+    it seeks out features that work best in concert. This might mean selecting a feature
+    that, on its own, wouldn’t top the list but, when combined with others, improves
+    the model’s accuracy.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you wonder why this is the case, the features selected in the combination
+    should be complementary to each other rather than correlated. In this way, each
+    new feature provides new information for the predictor instead of agreeing with
+    what is already known.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding the Predictive “Sweet Spot”
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The journey to optimal feature selection begins by pushing our model to its
+    limits. By initially considering the maximum possible features, we gain a comprehensive
+    view of how model performance evolves by adding each feature. This visualization
+    serves as our starting point, highlighting the diminishing returns on model predictability
+    and guiding us toward finding the “sweet spot.” Let’s start by running a Sequential
+    Feature Selector (SFS) across the entire feature set, plotting the performance
+    to visualize the impact of each addition:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The plot below demonstrates how model performance improves as more features
+    are added but eventually plateaus, indicating a point of diminishing returns:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/72b6861d0c9ee3d5349ba73b3612671f.png)](https://machinelearningmastery.com/?attachment_id=16806)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Comparing the effect of adding features to the predictor
+  prefs: []
+  type: TYPE_NORMAL
+- en: From this plot, you can see that using more than ten features has little benefit.
+    Using three or fewer features, however, is suboptimal. You can use the “elbow
+    method” to find where this curve bends and determine the optimal number of features.
+    This is a subjective decision. This plot suggests anywhere from 5 to 9 looks right.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Armed with the insights from our initial exploration, we apply a tolerance
+    (`tol=0.005`) to our feature selection process. This can help us determine the
+    optimal number of features objectively and robustly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This strategic move allows us to concentrate on those features that provide
+    the highest predictability, culminating in the selection of 8 optimal features:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/2a59d56f014d23a7c1fcc073dad006b8.png)](https://machinelearningmastery.com/?attachment_id=16808)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding the optimal number of features from a plot
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can now conclude our findings by showing the features selected by SFS:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: By focusing on these 8 features, we achieve a model that balances complexity
+    with high predictability, showcasing the effectiveness of a measured approach
+    to feature selection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[sklearn.feature_selection.SequentialFeatureSelector](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SequentialFeatureSelector.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Sequential Feature Selection](https://www.youtube.com/watch?v=0vCXcGJg5Bo)
+    by Sebastian Raschka'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Ames Housing Dataset & Data Dictionary**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Through this three-part post, you have embarked on a journey from assessing
+    the predictive power of individual features to harnessing their combined strength
+    in a refined model. Our exploration has demonstrated that while more features
+    can enhance a model’s ability to capture complex patterns, there comes a point
+    where additional features no longer contribute to improved predictions. By applying
+    a tolerance level to the Sequential Feature Selector, you have honed in on an
+    optimal set of features that propel our model’s performance to its peak without
+    overcomplicating the predictive landscape. This sweet spot—identified as eight
+    key features—epitomizes the strategic melding of simplicity and sophistication
+    in predictive modeling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Art of Starting Simple**: Beginning with simple linear regression models
+    to understand each feature’s standalone predictive value sets the foundation for
+    more complex analyses.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Synergy in Selection**: The transition to the Sequential Feature Selector
+    underscores the importance of not just individual feature strengths but their
+    synergistic impact when combined effectively.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Maximizing Model Efficacy**: The quest for the predictive sweet spot through
+    SFS with a set tolerance teaches us the value of precision in feature selection,
+    achieving the most with the least.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

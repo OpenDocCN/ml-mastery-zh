@@ -1,0 +1,280 @@
+- en: Image Datasets for Practicing Machine Learning in OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/image-datasets-for-practicing-machine-learning-in-opencv/](https://machinelearningmastery.com/image-datasets-for-practicing-machine-learning-in-opencv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: At the very start of your machine learning journey, publicly available datasets
+    alleviate the worry of creating the datasets yourself and let you focus on learning
+    to use the machine learning algorithms. It also helps if the datasets are moderately
+    sized and do not require too much pre-processing to get you to practice using
+    the algorithms quicker before moving on to more challenging problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Two datasets we will be looking at are the simpler digits dataset provided with
+    OpenCV and the more challenging but widely used CIFAR-10 dataset. We will use
+    any of these two datasets during our journey through OpenCV’s machine learning
+    algorithms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will learn how to download and extract the OpenCV digits
+    and CIFAR-10 datasets for practicing machine learning in OpenCV.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to download and extract the OpenCV digits dataset.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to download and extract the CIFAR-10 dataset without necessarily relying
+    on other Python packages (such as TensorFlow).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started. [![](../Images/edd66ee5c05c91d99f79dbb46db3775c.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/datasets_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Image Datasets for Practicing Machine Learning in OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [OC Gonzalez](https://unsplash.com/photos/xg8z_KhSorQ), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Digits Dataset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The CIFAR-10 Dataset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Loading the Datasets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**The Digits Dataset**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[OpenCV provides the image, digits.png](https://github.com/opencv/opencv/tree/master/samples/data),
+    composed of a ‘collage’ of 20$\times$20 pixel sub-images, where each sub-image
+    features a digit from 0 to 9 and may be split up to create a dataset. In total,
+    the *digits* image contains 5,000 handwritten digits.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The digits dataset provided by OpenCV does not necessarily represent the real-life
+    challenges that come with more complex datasets, primarily because its image content
+    features very limited variation. However, its simplicity and ease of use will
+    allow us to quickly test several machine learning algorithms at a low pre-processing
+    and computational cost.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To be able to extract the dataset from the full digits image, our first step
+    is to split it into the many sub-images that make it up. For this purpose, let’s
+    create the following `split_images` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `split_images` function takes as input the path to the full image, together
+    with the pixel size of the sub-images. Since we are working with square sub-images,
+    we shall be denoting their size by a single dimension, which is equal to 20.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The function subsequently applies the OpenCV `imread` method to load a grayscale
+    version of the image into a NumPy array. The `hsplit` and `vsplit` methods are
+    then used to split the NumPy array horizontally and vertically, respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The array of sub-images the `split_images` function returns is of size (50,
+    100, 20, 20).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once we have extracted the array of sub-images, we shall partition it into training
+    and testing sets. We will also need to create the ground truth labels for both
+    splits of data to be used during the training process and to evaluate the test
+    results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following `split_data` function serves these purposes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `split_data` function takes the array of sub-images as input and the split
+    ratio for the training portion of the dataset. The function then proceeds to compute
+    the `partition` value that divides the array of sub-images along its columns into
+    training and testing sets. This `partition` value is then used to allocate the
+    first set of columns to the training data and the remaining set of columns to
+    the testing data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To visualize this partitioning on the *digits.png* image, this would appear
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/0cd17ea5c637503aa9a0929737ff62f7.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/kNN_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Partitioning the sub-images into a training dataset and a testing dataset
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may also note that we are flattening out every 20$\times$20 sub-image into
+    a one-dimensional vector of length 400 pixels such that, in the arrays containing
+    the training and testing images, every row now stores a flattened out version
+    of a 20$/times$20 pixel image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The final part of the `split_data` function creates ground truth labels with
+    values between 0 and 9 and repeats these values according to how many training
+    and testing images we have available.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The CIFAR-10 Dataset**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The CIFAR-10 dataset is not provided with OpenCV, but we shall consider it because
+    it represents real-world challenges better than OpenCV’s digits dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The CIFAR-10 dataset consists of a total of 60,000, 32$\times$32 RGB images.
+    It features a variety of images belonging to 10 different classes, such as airplanes,
+    cats, and ships. The dataset files are readily split into 5 pickle files containing
+    1,000 training images and labels, plus an additional one with 1,000 testing images
+    and labels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s go ahead and download the CIFAR-10 dataset for Python from [this link](https://www.cs.toronto.edu/~kriz/cifar.html)
+    (**note**: the reason for not using TensorFlow/Keras to do so is to show how we
+    can work without relying on additional Python packages if need be). Take note
+    of the path on your hard disk to which you have saved and extracted the dataset.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following code loads the dataset files and returns the training and testing,
+    images, and labels:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is important to remember that the compromise of testing out different models
+    using a larger and more varied dataset, such as the CIFAR-10, over a simpler one,
+    such as the digits dataset, is that training on the former might be more time-consuming.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Loading the Datasets**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s try calling the functions that we have created above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'I have separated the code belonging to the digits dataset from the code belonging
+    to the CIFAR-10 dataset into two different Python scripts that I named `digits_dataset.py`
+    and `cifar_dataset.py`, respectively:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Note**: Do not forget to change the paths in the code above to where you
+    have saved *your* data files.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the subsequent tutorials, we shall see how to use these datasets with different
+    machine learning techniques, first seeing how to convert the dataset images into
+    feature vectors as one of the pre-processing steps before using them for machine
+    learning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to download and extract the OpenCV digits
+    and CIFAR-10 datasets for practicing machine learning in OpenCV.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to download and extract the OpenCV digits dataset.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to download and extract the CIFAR-10 dataset without necessarily relying
+    on other Python packages (such as TensorFlow).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

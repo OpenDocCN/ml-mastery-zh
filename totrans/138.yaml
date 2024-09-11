@@ -1,0 +1,435 @@
+- en: Building a Multiclass Classification Model in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/building-a-multiclass-classification-model-in-pytorch/](https://machinelearningmastery.com/building-a-multiclass-classification-model-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The PyTorch library is for deep learning. Some applications of deep learning
+    models are used to solve regression or classification problems. In this tutorial,
+    you will discover how to use PyTorch to develop and evaluate neural network models
+    for multi-class classification problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this step-by-step tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to load data from CSV and make it available to PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to prepare multi-class classification data for modeling with neural networks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use cross validation to evaluate a PyTorch neural network model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/7f27a731fa367f18038cd54aa9457355.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a multiclass classification model in PyTorch
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Cheung Yin](https://unsplash.com/photos/0BoRlSmNmc0). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Problem Description
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you will use a standard machine learning dataset called the
+    iris flowers dataset. It is a well-studied dataset and good for practicing machine
+    learning. It has four input variables; all are numeric and length measurements
+    in centimeters. Therefore, they are on a similar scale. Each data sample describes
+    the properties of an observed iris flower. Its goal is to use the measurements
+    (input features) to classify the iris species (output label).
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are three iris species in the dataset. Therefore, it is a multi*class
+    classification problem. Multi-class classification problems are special because
+    they require special handling to specify a class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This dataset came from Sir Ronald Fisher, the father of modern statistics. It
+    is the best-known dataset for pattern recognition, and you can achieve a model
+    accuracy in the range of 95% to 97%. You can make this your target in developing
+    the deep learning model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can download the [iris flowers dataset](https://archive.ics.uci.edu/ml/datasets/iris)
+    from the UCI Machine Learning repository and place it in your current working
+    directory with the filename “`iris.csv`“. You can also download the dataset [here](https://raw.githubusercontent.com/jbrownlee/Datasets/master/iris.csv).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Load the Dataset
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are multiple ways to read a CSV file. The easiest way is probably to
+    use a pandas library. After reading the dataset, you want to split it into features
+    and labels as you need to further process the labels before use. Unlike NumPy
+    or PyTorch tensors, a pandas DataFrame can do slicing by indices only through
+    `iloc`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now,  you have loaded the dataset and split the attributes (i.e., input features,
+    columns in the DataFrame) as `X` and the output variables (i.e., species labels)
+    as a single-column DataFrame `y`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Encode the Categorical Variable
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The species labels are strings, but you want them in numbers. It is because
+    numerical data are easier to use. In this dataset, the three class labels are
+    `Iris-setosa`, `Iris-versicolor`, and `Iris-virginica`. One way to convert these
+    labels into a number (i.e., encode them) is simply to assign an integer value
+    such as 0, 1, or 2 to replace these labels. But there is a problem: You do not
+    want the model to think that `Iris-virginica` it is the sum of `Iris-setosa` and
+    `Iris-versicolor`. In fact, in statistics, there are levels of measurement:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Nominal numbers: Those numbers are, in fact, names. Operations on them do not
+    make sense'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Ordinal numbers: They are orders of something. Comparing for greater or less
+    than makes sense, but addition or subtraction does not'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Interval numbers: They are measurements, such as the year today, so that subtraction
+    bears meaning (e.g., how old are you), but the zero value is arbitrary and not
+    special'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Ratio numbers: Like interval, but the zero is meaningful, such as the measure
+    of length or time. In this case, both subtraction and division bear meaning, and
+    you can say that something is twice as long.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The encoded label is nominal. You do not want to mistake it as interval or
+    ratio data, but your model would not know. One way to avoid such a mistake is
+    with **one-hot encoding**, which instead of converting a label into an integer,
+    converts a label into a **one-hot vector**. A one-hot vector is a vector of integers,
+    but only one of them is 1, and the rest are all zero. In this case, you convert
+    the labels into the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The above is a one-hot encoded binary matrix. You don’t need to create it manually.
+    You can encode the strings consistently to integers using the scikit-learn class
+    `LabelEncoder` or into one-hot encoding vectors using the class `OneHotEncoder`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'From these, you can see the `OneHotEncoder` learned the three categories:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then the string labels are transformed into one-hot vectors like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Define the Neural Network Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now you need to have a model that can take the input and predict the output,
+    ideally in the form of one-hot vectors. There is no science behind the design
+    of a perfect neural network model. But know one thing–it has to take in a vector
+    of 4 features and output a vector of 3 values. The 4 features correspond to what
+    you have in the dataset. The 3-value output is because we know the one-hot vector
+    has 3 elements. Anything can be in between, known as the “hidden layers,” since
+    they are neither input nor output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The simplest is to have only one hidden layer. Let’s make one like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Such a design is called the network topology. You should use a “softmax” activation
+    at the output layer. In the formula, it means:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: \sigma(z_i) = \dfrac{e^{z_i}}{\sum_{j=1}^3 e^{z_j}}
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: This normalizes the values ($z_1,z_2,z_3$) and applies a non-linear function
+    such that the sum of all 3 outputs will be 1, and each of them is in the range
+    of 0 to 1\. This makes the output look like a vector of probabilities. The use
+    of the softmax function at the output is the signature of a multi-class classification
+    model. But in PyTorch, you can skip this if you combine it with an appropriate
+    loss function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In PyTorch, you can build such a model as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The output of this model is the “weight” of the three classes. Ideally, the
+    model output will be such that only one of the elements is positive infinity,
+    and the rest are negative infinity, making an extreme contrast with absolute confidence
+    to which of the three classes the input features belong. In an imperfect situation,
+    as always happens, you can expect a good model to tell you that one of the values
+    is very positive, and the others are very negative. Or if you transform these
+    values using a sigmoid function or softmax function, one is very close to 1, and
+    the others are very close to 0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this case, the loss metric for the output can simply be measuring how close
+    the output is to the one-hot vector you transformed from the label. But usually,
+    in multi-class classification, you use categorical cross entropy as the loss metric.
+    In the formula, it is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: H(p,q) = -\sum_x p(x) \log q(x)
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: This means, given the real probability vector $p(x)$ and the predicted probability
+    vector $q(x)$, the similarity is the sum of the product of $p(x)$ and $\log q(x)$
+    for each element $x$. The one-hot vector is considered as the probability vector
+    $p(x)$, and the model output is $q(x)$. Since it is a one-hot vector, only the
+    actual class has $p(x)=1$, and the other classes have $p(x)=0$. The sum above
+    is essentially $-\log q(x)$ of the actual class $x$. The value will be 0 when
+    $q(x)=1$, and as $q(x)$ approaches 0 (the minimum value softmax can produce),
+    $-\log q(x)$ approaches infinity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Below is how you can define the loss metric. The `CrossEntropyLoss` function
+    in PyTorch combines the softmax function with the cross entropy calculation, so
+    you don’t need any activation function at the output layer of your model. You
+    also need an optimizer, and Adam is chosen below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that when you define the optimizer, you need to tell it the model parameters
+    as well since these are what the optimizer is going to update.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now you need to run the training loop to train your model. Minimally, you need
+    to put three steps in the loop: a forward pass, a backward pass, and the weight
+    update. The forward pass provides the input to the model and takes the output.
+    The backward pass starts with the loss metric, which is based on the model output,
+    and propagates the gradient backto the input. The weight update is based on the
+    gradient used to update the weights.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A minimal training loop can be implemented using a for-loop. But you can make
+    use of `tqdm` to create a progress bar visualization:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Benchmark the Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The goal of a model is never to match the dataset per se. The reason you want
+    to build a machine learning model is to prepare for the data you will encounter
+    in the future, which is unseen yet. How can you know the model can do that? You
+    need a test set. It is a dataset that is the same structure as the one used in
+    training but is separate. So it is like unseen data from the training process,
+    and you can take that as a benchmark. This technique of evaluating a model is
+    called **cross validation**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Usually, you do not add a test set but split the data set you obtained into
+    a training set and a test set. Then you use the test set to evaluate the model
+    at the end. Such a benchmark serves another purpose: You do not want your model
+    to overfit. It means the model learned too much about the training set and failed
+    to generalize. If this happens, you will see that the model does not give a good
+    result on the test set.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Splitting the data into a training set and a test set can be easily done with
+    scikit-learn. The workflow from loading data to one-hot encoding and splitting
+    is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The arguments `train_size=0.7` with `shuffle=True` means to randomly select
+    70% of the samples in the dataset into the training set, while the rest will become
+    the test set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you do that, you need to modify the training loop to use the training
+    set in training and use the test set at the end of each epoch for benchmarking:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'That’s almost everything you need to finish a deep learning model in PyTorch.
+    But you may also want to do a bit more: Firstly, after all the training epochs,
+    you may want to roll back the model to the best you ever achieved rather than
+    the last one. Secondly, you may want to produce a graph to visualize how the cross
+    entropy and accuracy progressed.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is not difficult to do. In the training loop, you keep track of the accuracy
+    on the test set and keep a copy of the model whenever this accuracy is higher.
+    And at the same time, remember the metrics you calculated in a list. Then at the
+    end of the training loop, you restore the best model you ever saw and plot the
+    metrics as a time series.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In code, this is how the training loop is modified into:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'When you run it, you will see something like this, where you see the accuracy
+    and cross entropy loss at each epoch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: You added more lines into the training loop but for a good reason. It is a good
+    practice to switch the model between training mode and evaluation mode when you
+    are switching between the training set and test set. In this particular model,
+    nothing is changed. But for some other models, it will affect the model’s behavior.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You collected metrics in Python lists. You need to be careful to convert the
+    PyTorch tensor (even if it is a scalar value) into a Python float. The purpose
+    of this conversion is to make a copy of the number so that PyTorch will not silently
+    mutate it (e.g., through the optimizer).
+  prefs: []
+  type: TYPE_NORMAL
+- en: After each epoch, you calculated the accuracy based on the test set, and the
+    model weight is stored if you saw the accuracy is higher. However, when you take
+    out the model weight, you should make a deep copy; otherwise, you lost them when
+    the model changes its weights in the next epoch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finally, you can plot the loss and accuracy across epochs using matplotlib
+    as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A typical result is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/3f9137f3053ae2cbbad06f6de74e8052.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Training and validation loss
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/c75fd53f20ed487f8a6818cc1080809b.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Training and validation accuracy
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can see from the graph that at the beginning, both training and test accuracy
+    are very low. This is when your model is underfitting and is performing horribly.
+    As you keep training the model, the accuracy increases, and the cross entropy
+    loss decreases. But at a certain point, the training accuracy is higher than the
+    test accuracy, and in fact, even when the training accuracy improves, the test
+    accuracy flattened or even lowered. This is when the model overfitted, and you
+    do not want to use such a model. That’s why you want to keep track of the test
+    accuracy and restore the model weight to the best result based on the test set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Complete Example
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you discovered how to develop and evaluate a neural network for
+    multi-class classification using PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By completing this tutorial, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to load data and convert them to PyTorch tensors
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to prepare multi-class classification data for modeling using one-hot encoding
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to define a deep learning model with PyTorch for multi-class classification
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to measure the likeness of model output to the expected result of a multi-class
+    classification
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to run a training loop on a PyTorch model and collect evaluation metrics
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

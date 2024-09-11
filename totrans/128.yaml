@@ -1,0 +1,236 @@
+- en: Training a PyTorch Model with DataLoader and Dataset
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/training-a-pytorch-model-with-dataloader-and-dataset/](https://machinelearningmastery.com/training-a-pytorch-model-with-dataloader-and-dataset/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When you build and train a PyTorch deep learning model, you can provide the
+    training data in several different ways. Ultimately, a PyTorch model works like
+    a function that takes a PyTorch tensor and returns you another tensor. You have
+    a lot of freedom in how to get the input tensors. Probably the easiest is to prepare
+    a large tensor of the entire dataset and extract a small batch from it in each
+    training step. But you will see that using the `DataLoader` can save you a few
+    lines of code in dealing with data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this post, you will see how you can use the the Data and DataLoader in PyTorch.
+    After finishing this post, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to create and use DataLoader to train your PyTorch model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use Data class to generate data on the fly
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/af45383d29bec7b11a42f8b5cd0c4c39.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training a PyTorch Model with DataLoader and Dataset
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Emmanuel Appiah](https://unsplash.com/photos/vPUVQOyOtyk). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is `DataLoader`?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using `DataLoader` in a Training Loop
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is `DataLoader`?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: To train a deep learning model, you need data. Usually data is available as
+    a dataset. In a dataset, there are a lot of data sample or instances. You can
+    ask the model to take one sample at a time but usually you would let the model
+    to process one batch of several samples. You may create a batch by extracting
+    a slice from the dataset, using the slicing syntax on the tensor. For a better
+    quality of training, you may also want to shuffle the entire dataset on each epoch
+    so no two batch would be the same in the entire training loop. Sometimes, you
+    may introduce **data augmentation** to manually introduce more variance to the
+    data. This is common for image-related tasks, which you can randomly tilt or zoom
+    the image a bit to generate a lot of data sample from a few images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can imagine there can be a lot of code to write to do all these. But it
+    is much easier with the `DataLoader`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is an example of how create a `DataLoader` and take a batch from
+    it. In this example, the [sonar dataset](http://archive.ics.uci.edu/ml/datasets/connectionist+bench+(sonar,+mines+vs.+rocks))
+    is used and ultimately, it is converted into PyTorch tensors and passed on to
+    `DataLoader`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see from the output of above that `X_batch` and `y_batch` are PyTorch
+    tensors. The `loader` is an instance of `DataLoader` class which can work like
+    an iterable. Each time you read from it, you get a batch of features and targets
+    from the original dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When you create a `DataLoader` instance, you need to provide a list of sample
+    pairs. Each sample pair is one data sample of feature and the corresponding target.
+    A list is required because `DataLoader` expect to use `len()` to find the total
+    size of the dataset and using array index to retrieve a particular sample. The
+    batch size is a parameter to `DataLoader` so it knows how to create a batch from
+    the entire dataset. You should almost always use `shuffle=True` so every time
+    you load the data, the samples are shuffled. It is useful for training because
+    in each epoch, you are going to read every batch once. When you proceed from one
+    epoch to another, as `DataLoader` knows you depleted all the batches, it will
+    re-shuffle so you get a new combination of samples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using `DataLoader` in a Training Loop
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The following is an example to make use of `DataLoader` in a training loop:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see that once you created the `DataLoader` instance, the training loop
+    can only be easier. In the above, only the training set is packaged with a `DataLoader`
+    because you need to loop through it in batches. You can also create a `DataLoader`
+    for the test set and use it for model evaluation, but since the accuracy is computed
+    over the entire test set rather than in a batch, the benefit of `DataLoader` is
+    not significant.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Putting everything together, below is the complete code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Create Data Iterator using `Dataset` Class
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In PyTorch, there is a `Dataset` class that can be tightly coupled with the
+    `DataLoader` class. Recall that `DataLoader` expects its first argument can work
+    with `len()` and with array index. The `Dataset` class is a base class for this.
+    The reason you may want to use `Dataset` class is there are some special handling
+    before you can get the data sample. For example, data should be read from database
+    or disk and you only want to keep a few samples in memory rather than prefetch
+    everything. Another example is to perform real-time preprocessing of data, such
+    as random augmentation that is common in image tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To use `Dataset` class, you just subclass from it and implement two member
+    functions. Below is an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is not the most powerful way to use `Dataset` but simple enough to demonstrate
+    how it works. With this, you can create a `DataLoader` and use it for model training.
+    Modifying from the previous example, you have the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: You set up `dataset` as an instance of `SonarDataset` which you implemented
+    the `__len__()` and `__getitem__()` functions. This is used in place of the list
+    in the previous example to set up the `DataLoader` instance. Afterward, everything
+    is the same in the training loop. Note that you still use PyTorch tensors directly
+    for the test set in the example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the `__getitem__()` function, you take an integer that works like an array
+    index and returns a pair, the features and the target. You can implement anything
+    in this function: Run some code to generate a synthetic data sample, read data
+    on the fly from the internet, or add random variations to the data. You will also
+    find it useful in the situation that you cannot keep the entire dataset in memory,
+    so you can load only the data samples that you need it.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In fact, since you created a PyTorch dataset, you don’t need to use scikit-learn
+    to split data into training set and test set. In `torch.utils.data` submodule,
+    you have a function `random_split()` that works with `Dataset` class for the same
+    purpose. A full example is below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is very similar to the example you have before. Beware that the PyTorch model
+    still needs a tensor as input, not a `Dataset`. Hence in the above, you need to
+    use the `default_collate()` function to collect samples from a dataset into tensors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[torch.utils.data](https://pytorch.org/docs/stable/data.html) from PyTorch
+    documentation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Datasets and DataLoaders](https://pytorch.org/tutorials/beginner/basics/data_tutorial.html)
+    from PyTorch tutorial'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you learned how to use `DataLoader` to create shuffled batches
+    of data and how to use `Dataset` to provide data samples. Specifically you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`DataLoader` as a convenient way of providing batches of data to the training
+    loop'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use `Dataset` to produce data samples
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How combine `Dataset` and `DataLoader` to generate batches of data on the fly
+    for model training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

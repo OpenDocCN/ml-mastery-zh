@@ -1,0 +1,470 @@
+- en: Training Stable Diffusion with Dreambooth
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/training-stable-diffusion-with-dreambooth/](https://machinelearningmastery.com/training-stable-diffusion-with-dreambooth/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Stable Diffusion is trained on LAION-5B, a large-scale dataset comprising billions
+    of general image-text pairs. However, it falls short of comprehending specific
+    subjects and their generation in various contexts (often blurry, obscure, or nonsensical).
+    To address this problem, fine-tuning the model for specific use cases becomes
+    crucial. There are two important fine-tuning techniques for stable Diffusion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Textual inversion: This technique focuses on retraining the text embeddings
+    of a model to inject a word as a subject.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'DreamBooth: Unlike textual inversion, DreamBooth involves the retraining of
+    the entire model, tailored specifically to the subject, thereby enabling better
+    personalization.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In this post, you will explore the following concepts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fine-tuning challenges and recommended settings in DreamBooth
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stable Diffusion fine-tuning with DreamBooth – Example
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tips to use Dreambooth in Stable Diffusion effectively
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
+    Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/f22bad9034f63a4c6f3fe080e6b0b1fe.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Training Stable Diffusion with DreamBooth
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Sasha Freemind](https://unsplash.com/photos/woman-standing-on-grass-field-frq5Q6Ne9k4).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is in five parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is DreamBooth?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Fine-Tuning Challenges
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Workflow of Fine-Tuning with DreamBooth
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Your Trained Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tips to Use DreamBooth Effectively
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is DreamBooth?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: DreamBooth is a significant leap in generative AI particularly, Text2Img models.
+    It is a specialized technique introduced by a group of Google researchers, to
+    fine-tune pre-trained large Text2Img models such as Stable Diffusion towards specific
+    subjects, characters, or objects. So now you can inject a custom object or a concept
+    into the model for a more personalized and diverse generation. Here’s how Google
+    researchers put it
+  prefs: []
+  type: TYPE_NORMAL
+- en: It’s like a photo booth, but once the subject is captured, it can be synthesized
+    wherever your dreams take you.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: DreamBooth offers a range of exciting use cases across various fields primarily
+    focused on enhancing image generation. This includes
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Personalization:** Users can create images of loved ones, pets, or specific
+    objects, making them suitable for gifting, social media, and personalized merchandise.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Art and Commercial Purposes:** Artists and designers can train the model
+    with their artwork to generate diverse artistic images and visualizations. It’s
+    also beneficial for commercial purposes, allowing tailored image generation for
+    branding and marketing needs.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Research and Experimentation:** DreamBooth is a powerful tool for researchers.
+    It enables exploring deep learning models, domain-specific applications, and controlled
+    experiments. By fine-tuning models, researchers can push the boundaries of generative
+    AI and gain new insights into its potential.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'With just a few images of your subject, along with its class name during training
+    and a specially tailored prompt during inference, you can generate personalized
+    outputs. Let’s dive into the DreamBooth fine-tuning process:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a fine-tuning image dataset
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Include a few (3-5) high-quality and representative images of your subject.
+    The model will learn to get accustomed to the subject based on the training data
+    so it needs to be carefully designed. Further details are discussed in the fine-tuning
+    section.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Bind a unique identifier and class name
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The subject must be associated with a rare token not frequently used in the
+    text model’s vocabulary. The model will recognize the subject through this unique
+    identifier. To maintain the original essence of the subject, you also need to
+    provide a class name (which the model already knows) during training. For example,
+    you can associate a personal pet dog with an identifier “[V]” and a class name
+    “dog,” so when prompted “a [V] dog sitting,” the model will recognize the pet
+    dog’s identifier when generating a dog image.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '![](../Images/392d2351304ef91063b51ed21e8936a2.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Fine-tuning a model. Image from [DreamBooth](https://dreambooth.github.io/)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first criterion above is important for obvious reasons in image generation.
+    The second criterion is also important because you are not training Stable Diffusion
+    from scratch but fine-tuning the existing model to adapt to your dataset. The
+    model already learned what a dog is. It is easier to learn that your token is
+    a variation of a dog than to unlearn a word (i.e., reassign the meaning of a word
+    to a totally different concept) or to learn a new word from scratch (e.g., learn
+    what a dog is from a model that never saw any animal).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fine-Tuning Challenges
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'To fine-tune a Stable Diffusion model means restarting the training from an
+    existing model known to work. This particular type of training has some challenges:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overfitting
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Overfitting occurs when the model memorizes training data too closely, forgetting
+    how to generalize. It starts performing well only on training data but flops on
+    new data. Since you only provide a handful of images to Dreambooth, it’s likely
+    to overfit quickly.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Language drift
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Language drift is a common occurrence in fine-tuning language models and extends
+    its impact to Txt2Img models. During fine-tuning, models might lose vital information
+    on the diverse representations of subjects within a class. This drift causes models
+    to struggle to generate varied subjects within the same category, affecting the
+    richness and diversity of outputs.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: 'Here are a few DreamBooth settings, and by carefully adjusting these, you can
+    make the model more adaptable to generate diverse outputs while also reducing
+    the risk of overfitting and language drift:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Optimizing learning rate and training steps
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Tuning the learning rate, training steps, and batch size is crucial to overcome
+    overfitting. A high learning rate and many training steps cause overfitting (affecting
+    diversity). A small learning rate and fewer training steps will underfit the model
+    (failing to capture the subject). Therefore, starting with a lower learning rate
+    and progressively increasing training steps until generation seems satisfactory
+    is suggested.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Prior-preservation loss
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: This is done by generating new samples (around 200 to 300) of the same class
+    along with the subject’s images and then adding these to our training image set.
+    These additional images are generated by the stable diffusion model itself via
+    a class prompt.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: GPU-efficient techniques
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Techniques like 8bit-Adam (supports quantization), fp16 mixed precision training
+    (reduces the precision of gradient calculation to 16-bit float), and gradient
+    accumulation (computes gradients in small steps rather than for entire batch)
+    can help optimize memory utilization and speed up training.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Workflow of Fine-Tuning with DreamBooth
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We’re ready to start the fine-tuning process and use a simplified version of
+    a diffuser-based DreamBooth training script, as below. With the above-mentioned
+    GPU efficient techniques, you can run this script on a Tesla T4 GPU provided in
+    the Google Colab Notebook.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before starting, you should set up the environment. In a notebook cell, you
+    use the following to run shell commands:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the above, the training script downloaded is named `train_dreambooth.py`.
+    A conversion script is also downloaded to process the training output. Some packages
+    are installed in the Python environment. To verify it works, you can run these
+    imports in a new cell to make sure no error is triggered:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Training a Stable Diffusion model is resource-hungry. It is better to leverage
+    some online resources to store the model. The script assumes you signed up for
+    a Hugging Face account and obtained the API tokens. Please provide your access
+    token within the designated field labeled as `HUGGINGFACE_TOKEN` for the script
+    to work, i.e.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s specify our base model and output directory where the model gets saved.
+    We’ll pass these variables when launching the script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now is the most crucial part of getting satisfactory and consistent results
+    from DreamBooth. It’s important to use high-quality images that represent your
+    subject. Note that the model will learn artifacts such as low resolution or motion
+    blur within the training set. Here’s what should be considered while creating
+    the dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Dataset size: As these models can overfit quickly, it’s better to include 10
+    to 120 samples of your subject. Crop them and resize them to 512×512 pixels'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Image diversity: Pick consistent samples of what you want exactly, and try
+    including images from different angles. For diversity, you may need to include
+    background scenes of people, landscapes, or animals/objects as well. Also, remove
+    unwanted objects inside (e.g., watermarks, people cut off by the edge). Avoid
+    using images with a plain or transparent background.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Before you upload the images to the Colab notebook, let’s run the following
+    cell:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: After running this cell, the path mapped with `instance_data_dir` above is created
+    as a directory. The images you prepared should be uploaded to the directory above
+    using the File icon on the side panel of Colab notebook.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `instance_prompt` is an example. You should update this to how you want
+    to name your images. Using a new token (such as “zwx” above) as a unique identifier
+    is encouraged. But the `class_prompt` should use only well-understood words to
+    highlight the image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this example, we’re fine-tuning Stable Diffusion on Husky dogs, and we have
+    provided 7 instance images. You can try something similar. After this cell, your
+    directory structure may look like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/1c4886b2f339915d81fa10b0637e0f3b.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Directory as seen from the side panel of Colab Notebook containing the training
+    images
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now you’re ready to start the training. The following table lists the best flags
+    based on computational requirements. The limiting factor is usually the memory
+    available on the GPU.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/a3541f181cb248ef0c76432b87dc34ec.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Recommended flags for training
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Training is to execute the `diffusers`-provided training script. Here are some
+    parameters you may consider:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`--use_8bit_adam` enables full precision and quantization support'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`--train_text_encoder` enables text-encoder fine-tuning'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`--with_prior_preservation` enables prior preservation loss'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`--prior_loss_weight` controls the strength of prior preservation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Creating and running the following as a cell on Colab notebook will do the
+    training:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Patiently wait for this script to complete. Then you can run the following
+    to convert it into a format we can use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above will create the file `model.ckpt` under the directory as assigned
+    to `WEIGHTS_DIR` (i.e., the latest checkpoint directory). This output file will
+    be compatible with the Stable Diffusion Web UI by Automatic1111\. If `fp16` is
+    assigned to `True`, it takes only half the space (i.e., 2GB), which is usually
+    recommended.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Your Trained Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The created model is just like any other Stable Diffusion model weight file.
+    You can load it into the WebUI. You can also load it with your Python code, like
+    the cell as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let’s try with four samples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is what the generated images look like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/84f5ac64212dbe75595e50f22b7b6700.png)![](../Images/853a1e2140c4f69eb9fd3ed6e3c42313.png)![](../Images/549b8899412a17161470a4c37d8ffc76.png)![](../Images/003094259564e256edc06f67c50ca8c2.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: That’s it!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tips to Use DreamBooth Effectively
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you’re fine-tuning the model for faces, prior preservation is crucial. Faces
+    require harder training as DreamBooth needs more training steps and a lower learning
+    rate for fine-tuning on faces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A scheduler like DDIM (preferred), PNDM, and LMS Discrete can help mitigate
+    model overfitting. You should try using schedulers when the outputs seem noisy
+    or lack sharpness or details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In addition to U-Net training, training the text encoder can significantly enhance
+    output quality (especially on faces), but it will cost memory; at least a 24GB
+    GPU may be required. You can also optimize using the above-discussed GPU-efficient
+    techniques.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'LAION-5B dataset: [https://laion.ai/blog/laion-5b/](https://laion.ai/blog/laion-5b/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Countering Language Drift via Visual Grounding](https://arxiv.org/abs/1909.04499),
+    by Lee et al (2019)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[DreamBooth](https://dreambooth.github.io/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[DreamBooth training example from diffusers](https://github.com/huggingface/diffusers/blob/main/examples/dreambooth/README.md)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that you’ve explored DreamBooth, it’s a powerful tool for refining Stable
+    Diffusion models for personalized content. However, it faces challenges like overfitting
+    due to fewer images and language drift. To make the most of DreamBooth, you have
+    also seen a few optimization methods. Remember, success with DreamBooth depends
+    on careful dataset preparation and precise parameter tuning. For deeper insights,
+    refer to the detailed DreamBooth training guide.
+  prefs: []
+  type: TYPE_NORMAL

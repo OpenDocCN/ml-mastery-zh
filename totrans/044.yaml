@@ -1,0 +1,330 @@
+- en: Garage or Not? Housing Insights Through the Chi-Squared Test for Ames, Iowa
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/chi-squared-ames/](https://machinelearningmastery.com/chi-squared-ames/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The chi-squared test for independence is a statistical procedure employed to
+    assess the relationship between two categorical variables—determining whether
+    they are correlated or independent. The exploration of the visual appeal of a
+    property and its impact on its valuation is intriguing. But how often do you associate
+    the outlook of a house with functional features like a garage? With the chi-squared
+    test, you can determine whether there exists a statistically significant correlation
+    between features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/a9f80be1f13b40c791938e24656cb22f.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Garage or Not? Housing Insights Through the Chi-Squared Test for Ames, Iowa
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Damir Kopezhanov](https://unsplash.com/photos/gray-sedan-w-bRrLmXODg).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding the Chi-Squared Test
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the Chi-Squared Test Works
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Unraveling the Association Between External Quality and Garage Presence
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Important Caveats
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understanding the Chi-Squared Test
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The Chi-squared ($\chi^2$) test is useful because of its ability to test for
+    relationships between **categorical variables**. It’s particularly valuable when
+    working with nominal or ordinal data, where the variables are divided into categories
+    or groups. The primary purpose of the Chi-squared test is to determine whether
+    there is a statistically significant association between two categorical variables.
+    In other words, it helps to answer questions such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Are two categorical variables independent of each other? **'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If the variables are independent, changes in one variable are not related to
+    changes in the other. There is no association between them.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Is there a significant association between the two categorical variables?**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If the variables are associated, changes in one variable are related to changes
+    in the other. The Chi-squared test helps to quantify whether this association
+    is statistically significant.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'In your study, you focus on the external quality of a house (categorized as
+    “Great” or “Average”) and its relation to the presence or absence of a garage.
+    For the results of the Chi-squared test to be valid, the following conditions
+    must be satisfied:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Independence:** The observations must be independent, meaning the occurrence
+    of one outcome shouldn’t affect another. Our dataset satisfies this as each entry
+    represents a distinct house.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Sample Size:** The dataset should not only be randomly sampled but also sizable
+    enough to be representative. Our data, sourced from Ames, Iowa, meets this criterion.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Expected Frequency:** Every cell in the contingency table should have an
+    expected frequency of at least 5\. This is vital for the test’s reliability, as
+    the Chi-squared test relies on a large sample approximation. You will demonstrate
+    this condition below by creating and visualizing the expected frequencies.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How the Chi-Squared Test Works
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Chi-squared test compares the observed frequencies from data to the expected
+    frequencies from assumptions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Chi-squared test works by comparing the observed frequencies of the categories
+    in a contingency table to the expected frequencies that would be expected under
+    the assumption of independence. The contingency table is a cross-tabulation of
+    the two categorical variables, showing how many observations fall into each combination
+    of categories.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Null Hypothesis ($H_0$):** The null hypothesis in the Chi-squared test assumes
+    independence between the two variables, i.e., the observed frequencies (with or
+    without garage) should match.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Alternative Hypothesis ($H_1$):** The alternative hypothesis suggests that
+    there is a significant association between the two variables, i.e., the observed
+    frequencies (with or without garage) should differ based on the value of another
+    variable (quality of a house).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The test statistic in the Chi-squared test is calculated by comparing the observed
+    and expected frequencies in each cell of the contingency table. The larger the
+    difference between observed and expected frequencies, the larger the Chi-squared
+    statistic becomes. The Chi-squared test produces a p-value, which indicates the
+    probability of observing the observed association (or a more extreme one) under
+    the assumption of independence. If the p-value is below a chosen significance
+    level $\alpha$ (commonly 0.05), the null hypothesis of independence is rejected,
+    suggesting a significant association.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Unraveling the Association Between External Quality and Garage Presence**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Using the [Ames housing dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv),
+    you set out to determine whether there’s an association between a house’s external
+    quality and the presence or absence of a garage. Let’s delve into the specifics
+    of our analysis, supported by the corresponding Python code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output should be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above performs three steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Data Loading & Preparation:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You began by loading the dataset and extracting the pertinent columns: `ExterQual`
+    (Exterior Quality) and `GarageFinish` (Garage Finish).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Recognizing the missing values in `GarageFinish`, you sensibly imputed them
+    with the label `"No Garage"`, indicating houses devoid of garages.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Data Grouping for Simplification:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You further categorized the `GarageFinish` data into two groups: “With Garage”
+    (for houses with any kind of garage) and “No Garage”.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Similarly, you grouped the `ExterQual` data into “Great” (houses with excellent
+    or good exterior quality) and “Average” (houses with average or fair exterior
+    quality).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Chi-squared Test:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: With the data aptly prepared, you constructed a contingency table to depict
+    the observed frequencies between the newly formed categories. They are the two
+    tables printed in the output.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You then performed a Chi-squared test on this contingency table using SciPy.
+    The p-value is printed and found much less than $\alpha$. The extremely low p-value
+    obtained from the test signifies a statistically significant association between
+    a house’s external quality and the presence of a garage in this dataset.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A quick glance at the expected frequencies satisfies the third condition of
+    a Chi-squared test, which requires a minimum of 5 occurrences in each cell.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Through this analysis, you not only refined and simplified the data to make
+    it more interpretable but also provided statistical evidence of an association
+    between two categorical variables of interest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Beginner's Guide to Data Science?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Important Caveats
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The Chi-squared test, despite its utility, has its limitations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**No Causation:** While the test can determine association, it doesn’t infer
+    causation. So, even though there’s a significant link between a house’s external
+    quality and its garage presence, you can’t conclude that one causes the other.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Directionality:** The test indicates an association but doesn’t specify its
+    direction. However, our data suggests that houses labeled as “Great” in terms
+    of external quality are more likely to have garages than those labeled as “Average”.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Magnitude:** The test doesn’t provide insights into the relationship’s strength.
+    Other metrics, like Cramér’s V, would be more informative in this regard.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**External Validity:** Our conclusions are specific to the Ames dataset. Caution
+    is advised when generalizing these findings to other regions.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Online
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Chi-square Test for Independence | Stat Trek](https://stattrek.com/chi-square-test/independence)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[scipy.stats.chi2_contingency](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Chi-square test](https://en.wikipedia.org/wiki/Chi-squared_test) on Wikipedia'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Resources**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you delved into the Chi-squared test and its application on the
+    Ames housing dataset. You discovered a significant association between a house’s
+    external quality and the presence of a garage.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The fundamentals and practicality of the Chi-squared test.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Chi-squared test revealed a significant association between a house’s external
+    quality and the presence of a garage in the Ames dataset. Houses with a “Great”
+    external quality rating showed a higher likelihood of having a garage when compared
+    to those with an “Average” rating, a trend that was statistically significant.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The vital caveats and limitations of the Chi-squared test.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

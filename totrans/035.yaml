@@ -1,0 +1,656 @@
+- en: Beginning Data Science (7-day mini-course)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/beginning-data-science-7-day-mini-course/](https://machinelearningmastery.com/beginning-data-science-7-day-mini-course/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Data science uses mathematics to analyze data, distill information, and tell
+    a story. The result of data science may be just to rigorously confirm a hypothesis,
+    or to discover some useful property from the data. There are many tools you can
+    use in data science, from basic statistics to sophisticated machine learning models.
+    Even the most common tool can work wonderfully in a data science project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this 7-part crash course, you will learn from examples how to perform a data
+    science project. This mini-course is focused on the core of data science. It is
+    assumed that you gathered the data and made it ready to use. Writing a web scraper
+    and validating the data you collect can be a big topic; it is not the scope here.
+    This mini-course is intended for practitioners who are already comfortable with
+    programming in Python, and willing to learn about the common tools for data science
+    such as pandas and matplotlib. You will see how these tools can help, but more
+    importantly, learn the process of drawing a quantitatively supported statement
+    from the data you have. Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/8239ac26f53fe92d9798371cb3384718.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Beginner’s Guide to Data Science (7-day Mini-Course)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Eduardo Soares](https://unsplash.com/photos/person-holding-white-and-red-card-utWyPB8_FU8).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Who Is This Mini-Course For?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we start, let’s ensure you are in the right place. The list below provides
+    some general guidelines as to who this course was designed for. Don’t panic if
+    you don’t match these points exactly; you might just need to brush up in one area
+    or another to keep up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Developers that know how to write a little code**. This means that it is
+    not a big deal for you to get things done with Python and know how to setup the
+    ecosystem on your workstation (a prerequisite). It does not mean you’re a wizard
+    coder, but you’re not afraid to install packages and write scripts.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Developers that know a little statistics**. This means you know about some
+    basic statistical tools and are not afraid to use them. It does not mean you are
+    a PhD in statistics, but you can look up the terms and learn if you encounter
+    them.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Developers who know a bit about data science tools**. Using a Jupyter notebook
+    is common in data science. Handing data in Python would be easier if you use the
+    library pandas. This list goes on. You are not required to be an expert in any
+    library, but being comfortable invoking the different libraries and writing code
+    to manipulate data is all you need.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This mini-course is not a textbook on data science. Rather, it is a project
+    guideline that takes you step-by-step from a developer with minimal knowledge
+    to a developer who can confidently demonstrate how a data science project can
+    be done.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mini-Course Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This mini-course is divided into 7 parts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each lesson was designed to take the average developer about 30 minutes. You
+    might finish some much sooner and other you may choose to go deeper and spend
+    more time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can complete each part as quickly or as slowly as you like. A comfortable
+    schedule may be to complete one lesson per day over seven days. Highly recommended.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The topics you will cover over the next 7 lessons are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Lesson 1**: Getting the Data'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Lesson 2**: Missing Values'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Lesson 3**: Descriptive Statistics'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Lesson 4**: Exploring Data'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Lesson 5**: Visualize Correlation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Lesson 6**: Hypothesis Testing'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Lesson 7**: Identifying Outliers'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This is going to be a lot of fun.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You’ll have to do some work, though: a little reading, research, and programming.
+    You want to learn how to finish a data science project, right?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Post your results in the comments**; I’ll cheer you on!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hang in there; don’t give up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 01: Getting the Data'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The dataset we will use for this mini-course is the “All Countries Dataset”
+    that is available on Kaggle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://www.kaggle.com/datasets/adityakishor1/all-countries-details](https://www.kaggle.com/datasets/adityakishor1/all-countries-details)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This dataset describes almost all countries’ demographic, economic, geographic,
+    health, and political data. The most well-known dataset of this type would be
+    the CIA World Fact Book. Scrapping from the World Fact Book should give you more
+    comprehensive and up-to-date data. However, using this dataset in CSV format would
+    save you a lot of trouble when building your web scraper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Downloading [this dataset](https://www.kaggle.com/datasets/adityakishor1/all-countries-details)
+    from Kaggle (you may need to sign up an account to do so), you will find the CSV
+    file [`All Countries.csv`](https://github.com/Padre-Media/dataset/raw/main/All%20Countries.csv).
+    Let’s check this dataset with pandas.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The above code will print a table to the screen, like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above, you see the basic information of the dataset. For example, at
+    the top, you know that there are 194 entries (rows) in this CSV file. And the
+    table tell you there are 64 columns (indexed by number 0 to 63). Some columns
+    are numeric, such as latitude, and some are not, such as capital_city. The data
+    type “object” in pandas usually means it is a string type. You also know that
+    there are some missing values, such as in `agricultural_land`, there are only
+    193 non-null values over 194 entries, meaning there is one row with missing values
+    on this column.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s see more detail into the dataset, such as taking the first five rows
+    as a sample:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This will show you the first five rows of the dataset in a tabular form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: This is the basic exploration of a dataset. But using the `head()` function
+    may not be always appropriate (e.g., when the input data are sorted). There are
+    also `tail()` function for the similar purpose. However, running `df.sample(5)`
+    would usually more helpful as it is to randomly sample 5 rows. Try with this function.
+    Also, as you can see from the above output, the columns are clipped to the screen
+    width. How to modify the above code to show **all** columns from the sample?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Hint: There is a `to_string()` function in pandas as well as you can adjust
+    the general print option `display.max_columns`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will see how to check your data for missing values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 02: Missing Values'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before analyzing any data, it is important to know how the data looks like.
+    In pandas, a column in floating point may represent the missing values as `NaN`
+    (“not a number”) and the presence of such values will break a lot of functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In pandas, you can find the missing values by `isnull()` or `notnull()`. These
+    functions are to check whether the value is null, which includes the Python `None`
+    and floating point `NaN`. The return value is boolean. If it is applied to a column,
+    you get a column of True or False. The sum would be the count of True values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In below, you use `isnull()` to find the null values, then sum the result to
+    count the number of them. You can sort the result to see which columns have the
+    most and the least missing values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You will see the above prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above, you can see that some columns have no missing value, such as the
+    name of the country. The column with most of the missing values is `internally_displaced_persons`,
+    which is a demographic of refugees. As you can imagine, this is not normal and
+    it is reasonable that most countries have no such population. Therefore, you can
+    replace the missing value with zero when you work on that. This is an example
+    of imputation using your domain knowledge.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To visualize missing values, you can use the Python package `missingno`. It
+    is useful to display how the missing values are distributed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The chart from above shows that some countries (rows) and some attributes (columns)
+    have a lot of missing values. You can probably guess which column in the chart
+    corresponds to `internally_displaced_persons`. The countries with many missing
+    values are probably because those countries are not collecting those statistics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Not all missing values should be replaced by zero. Another strategy is to replace
+    the missing value with the mean. Can you find another attribute in this dataset
+    where the missing value replaced by mean is appropriate? Further, how to replace
+    the missing value in a pandas DataFrame?
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will see how to use basic statistics to explore the
+    data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 03: Descriptive Statistics'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Given a pandas DataFrame, looking at the descriptive statistics is an important
+    first step. In code, you can use the `describe()` function from the DataFrame:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This shows the mean, the standard deviation, the min, the max, and the quartiles
+    of each **numeric** attribute. Non-numeric columns are not reported in the output.
+    You can verify this by printing the set of columns and compare:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There are a lot of columns in this dataset. To look at the descriptive statistics
+    of a particular column, you can filter its output as it is also a DataFrame:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is the same as defining `df2=df.describe()` and then extracting with `df2["inflation"]`.
+    In case of the columns with missing value, the descriptive statistics are computed
+    by skipping all the missing values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Continue from the previous example, you can tell that there are missing values
+    in the `inflation` column by checking that `df["inflation"].isnull().sum()` is
+    not zero. The mean can be computed using `df["inflation"].mean()`. How you can
+    verify that this mean has all the missing values skipped?
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will see how you can further your knowledge about the
+    data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 04: Exploring Data'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The goal of data science is to tell a story from the data. Let’s see some examples
+    here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the dataset, there’s a column `life_expectancy`. What contributes to life
+    expectancy? You can make some assumptions and verify with the data. You can check
+    if life expectancy varies in different region in the world:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Run above and observe its output. There are some variations, but they are not
+    very drastic. The `groupby()` function applied on a DataFrame is similar to the
+    `GROUP BY` clause in a SQL statement. But in pandas, applying a function on a
+    **groupby** needs to pay attention to the different data types in the columns.
+    If you use `mean()` like above, it is to compute the mean of all columns (and
+    you selected `life_expectancy` afterward), which will fail if the column is not
+    numeric. Hence, you need to add an argument to limit the operation to only those
+    columns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From above, you can tell that life expectancy is not related to which part of
+    the world you’re located. You can also group by continent instead of region, but
+    it may not be appropriate since some continents, like Asia, are large and diverse.
+    The average in those cases may not be informative.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can apply a similar operation to find not the life expectancy but the GDP
+    per capita. This is the country’s GDP divided by the population, which is one
+    of the metrics to tell how rich a country is. In code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: This shows a vast difference in different regions. Hence, unlike life expectancy,
+    where you live is correlated to how rich you are.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Besides group by, the other useful method to explore and summarize data is
+    **pivot table**. There is a function in pandas DataFrame for that. Let’s see how
+    the different type of government is preferred in different regions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The table above shows the **count** as it is specified as the aggregate function.
+    The rows (index) are “region” and the columns are the values from `democracy_type`.
+    The number in each cell counts the instances of such a “democracy type” within
+    the same “region.” Some values are NaN, which means there are no data to “count”
+    for that combination. And since it is a count, you know it means zero.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Pivot table and group by are very powerful tool to summarize data and distill
+    information. How can you use the pivot table above to find different regions’
+    average GDP per capita and democracy types? You will see the missing values. What
+    is a reasonable missing value to impute to help find the average across different
+    democracy types regardless of regions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will learn to investigate data from plots.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 05: Visualize Correlation'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the previous lesson, we explored the column of life expectancy and the GDP
+    per capita. Are they correlated?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are many ways to tell whether two attributes are correlated. A scatter
+    plot is a good first step because it provides visual proof. To plot the GDP per
+    capita (as computed in Lesson 4 by dividing GDP and population) against the life
+    expectancy, you can use the Python library Seaborn together with Matplotlib:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: The argument `hue` in the scatter plot function above is optional. This colors
+    the dot according to the value of another attribute, hence it is useful to tell,
+    for example, Africa is pronounced in lower end of life expectancy and GDP per
+    capita.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, there’s a problem in the chart produced above: You cannot see any
+    linear pattern and it is difficult to tell the relationship between the two attributes.
+    In this case, you must **transform** the data to determine the relationship. Let’s
+    try with a **semi-log plot** in which the y-axis is presented in log scale. You
+    can use Matplotlib to adjust the scale:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, it seems more plausible that life expectancy is linear with the log of
+    GDP per capita.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Numerically, you can compute the correlation factor between log of GDP per
+    capita and life expectancy. A correlation factor close to +1 or -1 means the correlation
+    is strong. Uncorrelated attributes would demonstrate a correlation factor close
+    to zero. You can find the strongest correlated factors among all numerical attributes
+    using pandas:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: The code above finds the top 6 correlated attributes to life expectancy. It
+    is regardless of positive or negative correlation since the sorting is based on
+    the absolute value. Life expectancy itself should be at the top of the list by
+    definition since anything has a correlation 1 with itself.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can create a correlogram using Seaborn to show the scatterplot between
+    any pair of them:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: A correlogram helps you quickly visualize what is correlated. For example, the
+    self-employed percentage strongly correlates to the vulnerable employment percentage.
+    The birth rate is negatively correlated to life expectancy (maybe because the
+    older age, the less likely a person is to give birth). The histogram in the diagonal
+    shows how that attribute is distributed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A scatter plot is a powerful tool, especially when you have a computer to help
+    you make one. In above, you established how two attributes are correlated visually,
+    but **correlation is not causation**. To establish causality, you need more evidence.
+    In statistics, there are nine “Bradford Hill criteria” that are famous in epidemiology.
+    A simpler and weaker formulation are the two principles of Granger causality.
+    Look at the data you have and compare to the Granger causality principles, what
+    additional data is required to prove that life expectancy is **caused** by GDP
+    per capita?
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will use statistical tests against your data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 06: Hypothesis Testing'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since data science is to tell a story, how you can back up your claim is central
+    to your work in a data science project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s focus on life expectancy again: Urbanization is key to improving life
+    expectancy since it also correlates with advanced medicine, hygiene, and immunization.
+    How do you prove that?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An easy way is to show two histograms of life expectancy, separating that for
+    more urbanized countries and those that are not. Let’s define an urban country
+    with more than 50% urban population. You can compute the population percentage
+    using pandas, then separate the dataset into two:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, you can create an overlapped histogram to show the life expectancy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This confirms the hypothesis above that urban countries have a higher life
+    expectancy. However, a chart is not very strong evidence. The better way is to
+    apply some statistical tests to quantify the strength of our claim. You want to
+    compare the **mean life expectancy** between two independent groups, hence the
+    t-test is appropriate. You can run a t-test using the SciPy package as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Unlike Matplotlib, which will ignore the missing values, SciPy will not compute
+    the statistics if any NaN exists in the provided data. Hence, above, you clean
+    up the data by removing the missing values and re-create the DataFrames `df_urban`
+    and `df_rural`. The t-test provided a p-value of 1.6×10^(-10), which is very small.
+    Hence, the **null hypothesis** is rejected, i.e., rejecting that the two groups
+    shared the same mean. But this t-test is not telling whether `df_urban` or `df_rural`
+    his the higher mean. You can easily tell by computing the mean separately afterward.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Instead of re-creating the DataFrames `df_urban` and `df_rural`, you can make
+    the t-test from SciPy work by filling in the missing values with their respective
+    mean. Try this out. How is the p-value changed? Does it change your conclusion?
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the next lesson, you will find outliers from the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 07: Identifying Outliers'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: An outlier is a sample that is very different from the majority, making it very
+    hard to consider as part of the larger group.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most well-known way of identifying outliers is the 68-95-99 rule of normal
+    distribution, which says one, two, and three standard deviations away from the
+    mean covering 68%, 95%, and 99% of the samples respectively. Usually, a sample
+    2 SD away from the mean is far enough to be considered an outlier. Let’s see if
+    any country’s life expectancy is an outlier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before you use the 68-95-99 rule, you want to transform the data closer to
+    normal distribution. One way is to use Box-Cox transform. You know the transform
+    works well if you compare the **skewness** before and after the transform. The
+    perfect normal distribution has a skewness zero:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After the Box-Cox transform, the skewness changed from 0.137 to -0.006, which
+    is closer to zero. The lambda value computed with the Box-Cox transform will be
+    useful later. As a sidenote, you can verify that the transformed data is roughly
+    symmetric:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Assuming the Box-Cox transformed data follows normal distribution, we can easily
+    find what is 2 SD below and above the mean. But that is in the transformed data.
+    Recall that Box-Cox transform is to transform *y* into w=(*y*^λ – 1)/λ. Hence
+    we can perform the inverse transform with (wλ + 1)^(1/λ):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'These are the lowerbound and upperbound for what is **not** outlier among the
+    countries with the more rural population. Let’s see whether there is any country
+    outside this range:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: So Liechtenstein is an outlier at the upper end, while Chad and Lesotho are
+    at the lower end. This test only points out these outliers to you without any
+    explanation. You will need to look further into the data to hypothesize why these
+    are the cases. But this is a typical workflow in data science.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your Task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You can repeat this on  `df_urban` to find which urban countries are the outliers.
+    How many countries are outliers at the lower and upper end?
+  prefs: []
+  type: TYPE_NORMAL
+- en: This was the final lesson.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The End! (*Look How Far You Have Come*)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You made it. Well done!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Take a moment and look back at how far you have come.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You discovered pandas, missingno, scipy, seaborn, and matplotlib as the Python
+    libraries to help you finish a data science project.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: With basic statistics, you can explore your dataset for insights. You can also
+    confirm your hypothesis from your data.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You see how you can explore data using visuals such as scatter plot, and also
+    using statistical tests.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You know how transforming data can help you extract information from data, such
+    as finding the outliers.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Don’t make light of this; you have come a long way in a short time. This is
+    just the beginning of your data science journey. Keep practicing and developing
+    your skills.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**How did you do with the mini-course?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Did you enjoy this crash course?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Do you have any questions? Were there any sticking points?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let me know. Leave a comment below.
+  prefs: []
+  type: TYPE_NORMAL

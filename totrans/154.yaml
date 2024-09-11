@@ -1,0 +1,290 @@
+- en: Making Predictions with Multilinear Regression in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/making-predictions-with-multilinear-regression-in-pytorch/](https://machinelearningmastery.com/making-predictions-with-multilinear-regression-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The multilinear regression model is a supervised learning algorithm that can
+    be used to predict the target variable `y` given multiple input variables `x`.
+    It is a linear regression problem where more than one input variables `x` or features
+    are used to predict the target variable `y`. A typical use case of this algorithm
+    is predicting the price of a house given its size, number of rooms, and age.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In previous tutorials, we focused on simple linear regression where we used
+    only a single variable `x` to predict the target variable `y`. From here on we’ll
+    be working with multiple input variables for prediction. While this tutorial only
+    focuses on a single output prediction `y` from multiple input variables `x`, in
+    subsequent ones we’ll introduce you to multiple input-multiple output regression
+    problems. Usually, same practice is opted in real world scenarios to build more
+    sophisticated neural network architectures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This tutorial will show how you can implement a multi
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'linear regression model in PyTorch. Particularly, you’ll learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to review linear regression in multiple dimensions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make predictions with multilinear regression model using Pytroch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use `Linear` class for multilinear regression in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build custom modules using `nn.Module` in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/cfb414ae8bd3f39d9577ea2dcbbf4ef5.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Optimizers from PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Mark Boss](https://unsplash.com/photos/W0zGOsdNFaE). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing Data for Prediction
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using `Linear` Class for Multilinear Regression
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Visualize the Results
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing Data for Prediction
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: As in the case of simple linear regression model, let’s initialize the weights
+    and bias for our model. Note that we have used multi-dimensional tensors for our
+    weights and bias as we’ll be working with more than one input variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we’ll define our forward function for prediction. Previously we used scalar
+    multiplications but here we use the `mm` function from PyTorch for **matrix multiplication**.
+    This function implements a linear equation with more than one input variables.
+    Note that multi-dimensional tensors are matrices and require a few rules to be
+    followed, like matrix multiplication. We’ll discuss more on this later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that we have initialized the weights and bias, and built a forward function
+    for prediction, let’s define a tensor `x` for input variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that in matrix multiplication `torch.mm(x, w)`, the number of **columns**
+    in the matrix `x` must be equal to the number of **rows** in `w`. In this case,
+    we have a $1\times 2$ tensor for `x` and $2\times 1$ tensor for `w`, resulting
+    in a $1\times 1$ tensor after matrix multiplication.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, we can apply the linear equation for multiple samples. For instance,
+    let’s create a tensor `X` where each row represents a sample.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: For prediction, we’ll use the same function as above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: which prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, we have obtained the result for multiple input variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using `Linear` Class for Multilinear Regression
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Instead of writing the functions from scratch, we can use PyTorch’s own built-in
+    class `Linear` for making predictions. This is more useful while building the
+    complex and powerful model architectures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s create a `Linear` model and make predictions for the same tensor `X`
+    defined above. Here we’ll define two parameters:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`in_features`: represents the number of input variables `X` and number of model
+    weights, which in this case is 2.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`out_features`: represents number of output/predicted values, which in this
+    case is 1.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s make predictions for `X` using our `lr_model` object, with randomly
+    initialized weights and bias.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output in this case is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note not the value but the shape of the output. This is same as the previous
+    case when we used the matrix multiplication.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating Custom Modules with `nn.Module`
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Alternatively, we can also create custom modules for our linear models. While
+    this may seem redundant for the time being, this can be the requirement when we
+    build state-of-the-art neural networks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that custom modules are objects and classes. In this case, we’ll define
+    a linear regression class `LR` and make it a subclass of the package `nn.Module`.
+    Consequently, all the methods and attributes inside the `nn.Module` package will
+    be inherited.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We’ll define the size of the input and output, namely `input_features` and `output_features`,
+    in the arguments of the constructor. Plus, we’ll call `super()` in the object
+    constructor which enables us to use methods and attributes from the parent class
+    `nn.Module`. Now we can use the `torch.nn.Linear` object and define the arguments
+    `input_features` and `output_features` inside.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Lastly, for making predictions, we’ll define the `forward` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: We’ll build our linear regression model with two inputs and one output as follows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now let’s make predictions again using our custom module for the tensor `X`
+    having multiple input samples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: which prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using the `parameters()` method, we can obtain the list of randomly initialized
+    parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: which prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Alternatively, we can also use `state_dict()` method to check the parameters
+    of the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code to create multilinear
+    regression models in different ways:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned how you can make predictions using multilinear
+    regression models. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to review linear regression in multiple dimensions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make predictions with multilinear regression model using PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use class `Linear` for multilinear regression in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build custom modules using `nn.Module` in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

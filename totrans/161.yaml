@@ -1,0 +1,309 @@
+- en: Loading and Providing Datasets in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/loading-and-providing-datasets-in-pytorch/](https://machinelearningmastery.com/loading-and-providing-datasets-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Structuring the data pipeline in a way that it can be effortlessly linked to
+    your deep learning model is an important aspect of any deep learning-based system.
+    PyTorch packs everything to do just that.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While in the [previous tutorial](https://machinelearningmastery.com/using-dataset-classes-in-pytorch/),
+    we used simple datasets, we’ll need to work with larger datasets in real world
+    scenarios in order to fully exploit the potential of deep learning and neural
+    networks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you’ll learn how to build custom datasets in PyTorch. While
+    the focus here remains only on the image data, concepts learned in this session
+    can be applied to any form of dataset such as text or tabular datasets. So, here
+    you’ll learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to work with pre-loaded image datasets in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply torchvision transforms on preloaded datasets.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build custom image dataset class in PyTorch and apply various transforms
+    on it.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/690e48696ca0dcd77f159c205093fb87.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading and Providing Datasets in PyTorch
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Uriel SC](https://unsplash.com/photos/11KDtiUWRq4). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preloaded Datasets in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying Torchvision Transforms on Image Datasets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building Custom Image Datasets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preloaded Datasets in PyTorch
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A variety of preloaded datasets such as CIFAR-10, MNIST, Fashion-MNIST, etc.
+    are available in the PyTorch domain library. You can import them from torchvision
+    and perform your experiments. Additionally, you can benchmark your model using
+    these datasets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We’ll move on by importing Fashion-MNIST dataset from torchvision. The Fashion-MNIST
+    dataset includes 70,000 grayscale images in 28×28 pixels, divided into ten classes,
+    and each class contains 7,000 images. There are 60,000 images for training and
+    10,000 for testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s start by importing a few libraries we’ll use in this tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s also define a helper function to display the sample elements in the dataset
+    using matplotlib.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we’ll load the Fashion-MNIST dataset, using the function `FashionMNIST()`
+    from `torchvision.datasets`. This function takes some arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`root`: specifies the path where we are going to store our data.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`train`: indicates whether it’s train or test data. We’ll set it to False as
+    we don’t yet need it for training.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`download`: set to `True`, meaning it will download the data from the internet.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`transform`: allows us to use any of the available transforms that we need
+    to apply on our dataset.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s check the class names along with their corresponding labels we have in
+    the Fashion-MNIST dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: It prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similarly, for class labels:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: It prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here is how we can visualize the first element of the dataset with its corresponding
+    label using the helper function defined above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![First element of the Fashion MNIST dataset](../Images/8eb784afc1dd3a52d6a76ad6a8e0bc60.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: First element of the Fashion MNIST dataset
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying Torchvision Transforms on Image Datasets
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In many cases, we’ll have to apply several transforms before feeding the images
+    to neural networks. For instance, a lot of times we’ll need to `RandomCrop` the
+    images for data augmentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can see below, PyTorch enables us to choose from a variety of transforms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This shows all available transform functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: As an example, let’s apply the `RandomCrop` transform to the Fashion-MNIST images
+    and convert them to a tensor. We can use `transform.Compose` to combine multiple
+    transforms as we learned from the previous tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see image has now been cropped to $16\times 16$ pixels. Now, let’s
+    plot the first element of the dataset to see how they have been randomly cropped.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This shows the following image
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/9baac4179f41ede2f91c546d3f2210ec.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Cropped image from Fashion MNIST dataset
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the complete code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Building Custom Image Datasets
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Until now we have been discussing prebuilt datasets in PyTorch, but what if
+    we have to build a custom dataset class for our image dataset? While in the [previous
+    tutorial](https://machinelearningmastery.com/using-dataset-classes-in-pytorch/)
+    we only had a simple overview about the components of the `Dataset` class, here
+    we’ll build a custom image dataset class from scratch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Firstly, in the constructor we define the parameters of the class. The `__init__`
+    function in the class instantiates the `Dataset` object. The directory where images
+    and annotations are stored is initialized along with the transforms if we want
+    to apply them on our dataset later. Here we assume we have some images in a directory
+    structure like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and the annotation is a CSV file like the following, located under the root
+    directory of the images (i.e., “attface” above):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: where the first column of the CSV data is the path to the image and the second
+    column is the label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, we define the `__len__` function in the class that returns the total
+    number of samples in our image dataset while the `__getitem__` method reads and
+    returns a data element from the dataset at a given index.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Now, we can create our dataset object and apply the transforms on it. We assume
+    the image data are located under the directory named “attface” and the annotation
+    CSV file is at “attface/imagedata.csv”. Then the dataset is created as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Optionally, you can add the transform function to the dataset as well:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can use this custom image dataset class to any of your datasets stored in
+    your directory and apply the transforms for your requirements.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned how to work with image datasets and transforms
+    in PyTorch. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to work with pre-loaded image datasets in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply torchvision transforms on pre-loaded datasets.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build custom image dataset class in PyTorch and apply various transforms
+    on it.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

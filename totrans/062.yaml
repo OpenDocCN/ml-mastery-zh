@@ -1,0 +1,389 @@
+- en: Random Forest for Image Classification Using OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/random-forest-for-image-classification-using-opencv/](https://machinelearningmastery.com/random-forest-for-image-classification-using-opencv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The Random Forest algorithm forms part of a family of ensemble machine learning
+    algorithms and is a popular variation of bagged decision trees. It also comes
+    implemented in the OpenCV library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will learn how to apply OpenCV’s Random Forest algorithm
+    for image classification, starting with a relatively easier banknote dataset and
+    then testing the algorithm on OpenCV’s digits dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important characteristics of the Random Forest algorithm.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the Random Forest algorithm for image classification in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started. [![](../Images/1e44ed6a9962e55ea6d509617cdf71f2.png)](https://machinelearningmastery.com/wp-content/uploads/2023/07/forest_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Random Forest for Image Classification Using OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Jeremy Bishop](https://unsplash.com/photos/21vV_QxWr6U), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reminder of How Random Forests Work
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying the Random Forest Algorithm to Image Classification
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Banknote Case Study
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Digits Case Study
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Reminder of How Random Forests Work**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The topic surrounding the Random Forest algorithm has already been explained
+    well in these tutorials by Jason Brownlee [[1](https://machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/),
+    [2](https://machinelearningmastery.com/implement-random-forest-scratch-python/)],
+    but let’s first start with brushing up on some of the most important points:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Random Forest is a type of ensemble machine learning algorithm called *bagging*.
+    It is a popular variation of *bagged decision trees*. **'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***   **A decision tree is a branched model that consists of a hierarchy of
+    decision nodes, where each decision node splits the data based on a decision rule.
+    Training a decision tree involves a greedy selection of the best split points
+    (i.e., points that divide the input space best) by minimizing a cost function. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **The greedy approach through which decision trees construct their decision
+    boundaries makes them susceptible to high variance. This means that small changes
+    in the training dataset can lead to very different tree structures and, in turn,
+    model predictions. If the decision tree is not pruned, it will also tend to capture
+    noise and outliers in the training data. This sensitivity to the training data
+    makes decision trees susceptible to overfitting. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   ***Bagged decision trees* address this susceptibility by combining the
+    predictions from multiple decision trees, each trained on a bootstrap sample of
+    the training dataset created by sampling the dataset with replacement. The limitation
+    of this approach stems from the fact that the same greedy approach trains each
+    tree, and some samples may be picked several times during training, making it
+    very possible that the trees share similar (or the same) split points (hence,
+    resulting in correlated trees). **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **The Random Forest algorithm tries to mitigate this correlation by training
+    each tree on a random subset of the training data, created by randomly sampling
+    the dataset without replacement. In this manner, the greedy algorithm can only
+    consider a fixed subset of the data to create the split points that make up each
+    tree, which forces the trees to be different. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **In the case of a classification problem, every tree in the forest produces
+    a prediction output, and the final class label is identified as the output that
+    the majority of the trees have produced. In the case of regression, the final
+    output is the average of the outputs produced by all the trees. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**## **Applying the Random Forest Algorithm to Image Classification**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Banknote Case Study**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We’ll first use the banknote dataset used in [this tutorial](https://machinelearningmastery.com/implement-decision-tree-algorithm-scratch-python/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The banknote dataset is a relatively simple one that involves predicting a given
+    banknote’s authenticity. The dataset contains 1,372 rows, with each row representing
+    a feature vector comprising four different measures extracted from a banknote
+    photograph, plus its corresponding class label (authentic or not).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The values in each feature vector correspond to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Variance of Wavelet Transformed image (continuous)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Skewness of Wavelet Transformed image (continuous)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Kurtosis of Wavelet Transformed image (continuous)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Entropy of image (continuous)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Class label (integer)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The dataset may be downloaded from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/banknote+authentication).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As in Jason’s tutorial, we shall load the dataset, convert its string numbers
+    to floats, and partition it into training and testing sets:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The OpenCV library implements the `RTrees_create` function in the `ml` module,
+    which will allow us to create an empty decision tree:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'All the trees in the forest will be trained with the same parameter values,
+    albeit on different subsets of the training dataset. The default parameter values
+    can be customized, but let’s first work with the default implementation. We will
+    return to customizing these parameter values shortly in the next section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: We have already obtained a high accuracy of around 96.73% using the default
+    implementation of the Random Forest algorithm on the banknote dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete code listing is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Digits Case Study**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Consider applying the Random Forest to images from OpenCV’s digits dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The digits dataset is still relatively simple. However, the feature vectors
+    we will extract from its images using the HOG method will have higher dimensionality
+    (81 features) than those in the banknote dataset. For this reason, we can consider
+    the digits dataset to be relatively more challenging to work with than the banknote
+    dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will first investigate how the default implementation of the Random Forest
+    algorithm copes with higher-dimensional data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: We find that the default implementation returns an accuracy of 81%.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This drop in accuracy from that achieved on the banknote dataset may indicate
+    that the capacity of the default implementation of the model may not be enough
+    to learn the complexity of the higher-dimensional data that we are now working
+    with.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s investigate whether we may obtain an improvement in the accuracy by changing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The termination criteria of the training algorithm, which considers the number
+    of trees in the forest, and the estimated performance of the model are measured
+    by an [Out-Of-Bag (OOB) error](https://machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/).
+    The current termination criteria may be found by making use of the `getTermCriteria`
+    method and set using the `setTermCriteria` method. When using the latter, the
+    number of trees may be set through the `TERM_CRITERIA_MAX_ITER` parameter, whereas
+    the desired accuracy may be specified using the `TERM_CRITERIA_EPS` parameter.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The maximum possible depth that each tree in the forest can attain. The current
+    depth may be found using the `getMaxDepth` method, and set using the `setMaxDepth`
+    method. The specified tree depth may not be reached if the above termination criteria
+    are met first.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When tweaking the above parameters, remember that increasing the number of trees
+    can increase the model’s capacity to capture more intricate detail in the training
+    data; it will also increase the prediction time linearly and make the model more
+    susceptible to overfitting. Hence, tweak the parameters judiciously.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we add in the following lines following the creation of an empty decision
+    tree, we may find the default values of the tree depth as well as the termination
+    criteria:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this manner, we can see that, by default, each tree in the forest has a depth
+    (or number of levels) equal to 5, while the number of trees and desired accuracy
+    are set to 50 and 0.1, respectively. The first value returned by the `getTermCriteria`
+    method refers to the `type` of termination criteria under consideration, where
+    a value of 3 specifies termination based on both `TERM_CRITERIA_MAX_ITER` and
+    `TERM_CRITERIA_EPS`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s now try changing the values mentioned above to investigate their effect
+    on the prediction accuracy. The code listing is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: We may see that the newly set parameter values bump the prediction accuracy
+    to 94.1%.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These parameter values are being set arbitrarily here to illustrate this example.
+    Still, it is always advised to take a more systematic approach to tweaking the
+    parameters of a model and investigating how each affects its performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Random Forests, [https://www.stat.berkeley.edu/users/breiman/RandomForests/reg_home.htm](https://www.stat.berkeley.edu/users/breiman/RandomForests/reg_home.htm)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to apply OpenCV’s Random Forest algorithm
+    for image classification, starting with a relatively *easier* banknote dataset
+    and then testing the algorithm on OpenCV’s digits dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important characteristics of the Random Forest algorithm.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the Random Forest algorithm for image classification in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.************
+  prefs: []
+  type: TYPE_NORMAL

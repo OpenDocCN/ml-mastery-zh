@@ -1,0 +1,276 @@
+- en: 'Image Feature Extraction in OpenCV: Keypoints and Description Vectors'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/opencv_sift_surf_orb_keypoints/](https://machinelearningmastery.com/opencv_sift_surf_orb_keypoints/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In the [previous post](https://machinelearningmastery.com/opencv_edges_and_corners/),
+    you learned some basic feature extraction algorithms in OpenCV. The features are
+    extracted in the form of classifying pixels. These indeed abstract the features
+    from images because you do not need to consider the different color channels of
+    each pixel, but to consider a single value. In this post, you will learn some
+    other feature extract algorithms that can tell you about the image more concisely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are keypoints in an image
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What are the common algorithms available in OpenCV for extracting keypoints
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/024d2c09a7b79bfc4ab5d65e42396879.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Image Feature Extraction in OpenCV: Keypoints and Description Vectors'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Silas Köhler](https://unsplash.com/photos/black-skeleton-keys-C1P4wHhQbjM),
+    some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keypoint Detection with SIFT and SURF in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Keypoint Detection using ORB in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you are already familiar with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Reading and displaying images using OpenCV](https://machinelearningmastery.com/?p=14402&preview=true)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Keypoint Detection with SIFT and SURF in OpenCV
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Scale-Invariant Feature Transform (SIFT) and Speeded-Up Robust Features (SURF)
+    are powerful algorithms for detecting and describing local features in images.
+    They are named scale-invariant and robust because, compared to Harris Corner Detection,
+    for example, its result is expectable even after some change to the image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The SIFT algorithm applies Gaussian blur to the image and computes the difference
+    in multiple scales. Intuitively, such a difference will be zero if your entire
+    image is a single flat color. Hence, this algorithm is called keypoint detection,
+    which identifies a place in the image with the most significant change in pixel
+    values, such as corners.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The SIFT algorithm derives certain “orientation” values for each keypoint and
+    outputs a vector representing the histogram of the orientation values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is found quite slow to run SIFT algorithm. Hence, there is a speed-up version,
+    SURF. Describing the SIFT and SURF algorithms in detail would be lengthy, but
+    luckily, you do not need to understand too much to use it with OpenCV.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s look at an example using the following image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://unsplash.com/photos/VSLPOL9PwB8](https://unsplash.com/photos/VSLPOL9PwB8)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Similar to the previous post, SIFT and SURF algorithms assume a grayscale image.
+    This time, you need to create a detector first and apply it to the image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**NOTE:** You may find difficulties in running the above code in your OpenCV
+    installation. To make this run, you may need to compile your own OpenCV module
+    from scratch. It is because SIFT and SURF were patented, so OpenCV considered
+    them “non-free”. Since the SIFT patent has already expired (SURF is still in effect),
+    you may find SIFT works fine if you download a newer version of OpenCV.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The output of the SIFT or SURF algorithm are a list of keypoints and a numpy
+    array of descriptors. The descriptors array is Nx128 for N keypoints, each represented
+    by a vector of length 128\. Each keypoint is an object with several attributes,
+    such as the orientation angle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There can be a lot of keypoints detected by default, because this helps one
+    of the best uses for detected keypoints — to find associations between distorted
+    images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To reduce the number of detected keypoint in the output, you can set a higher
+    “contrast threshold” and lower “edge threshold” (default to be 0.03 and 10 respectively)
+    in SIFT or increase the “Hessian threshold” (default 100) in SURF. These can be
+    adjusted at the detector object using `sift.setContrastThreshold(0.03)`, `sift.setEdgeThreshold(10)`,
+    and `surf.setHessianThreshold(100)` respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To draw the keypoints on the image, you can use the `cv2.drawKeypoints()` function
+    and apply the list of all keypoints to it. The complete code, using only the SIFT
+    algorithm and setting a very high threshold to keep only a few keypoints, is as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The image created is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/b24e32936e21c3ce59b89b1263f1df22.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Keypoints detected by the SIFT algorithm (zoomed in)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Original photo by [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8),
+    some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The function `cv2.drawKeypoints()` will not modify your original image, but
+    return a new one. In the picture above, you can see the keypoints drawn as circles
+    proportional to its “size” with a stroke indicating the orientation. There are
+    keypoints on the number “17” on the door as well as on the mail slots. But there
+    are indeed more. From the for loop above, you can see that some keypoints are
+    overlapped because multiple orientation angles are found.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In showing the keypoints on the image, you used the keypoint objects returned.
+    However, you may find the feature vectors stored in `descriptors` useful if you
+    want to further process the keypoints, such as running a clustering algorithm.
+    But note that you still need the list of keypoints for information, such as the
+    coordinates, to match the feature vectors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Keypoint Detection using ORB in OpenCV
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Since the SIFT and SURF algorithms are patented, there is an incentive to develop
+    a free alternative that doesn’t need to be licensed. It is a product of the OpenCV
+    developers themselves.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'ORB stands for Oriented FAST and Rotated BRIEF. It is a combination of two
+    other algorithms, FAST and BRIEF with modifications to match the performance of
+    SIFT and SURF. You do not need to understand the algorithm details to use it,
+    and its output is also a list of keypoint objects, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above, you set the ORB to generate the top 30 keypoints when you created
+    the detector. By default, this number will be 500.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The detector returns a list of keypoints and a numpy array of descriptors (feature
+    vector of each keypoint) exactly as before. However, the descriptors of each keypoint
+    are now of length-32 instead of 128.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The generated keypoints are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/dac0ab34ca23dab6ba83dbb937ec3667.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Keypoints detected by ORB algorithm
+  prefs: []
+  type: TYPE_NORMAL
+- en: Original photo by [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8),
+    some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can see, keypoints are generated roughly at the same location. The results
+    are not exactly the same because there are overlapping keypoints (or offset by
+    a very small distance) and easily the ORB algorithm reached the maximum count
+    of 30\. Moreover, the size are not comparable between different algorithms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: OpenCV Feature Detection and Description, [https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html](https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to apply OpenCV’s keypoint detection algorithms,
+    SIFT, SURF, and ORB.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is a keypoint in an image
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to find the keypoints and the associated description vectors using OpenCV
+    functions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you have any questions, please leave a comment below.
+  prefs: []
+  type: TYPE_NORMAL

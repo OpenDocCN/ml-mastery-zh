@@ -1,0 +1,328 @@
+- en: Integrating Scikit-Learn and Statsmodels for Regression
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/integrating-scikit-learn-and-statsmodels-for-regression/](https://machinelearningmastery.com/integrating-scikit-learn-and-statsmodels-for-regression/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Statistics and Machine Learning both aim to extract insights from data, though
+    their approaches differ significantly. Traditional statistics primarily concerns
+    itself with inference, using the entire dataset to test hypotheses and estimate
+    probabilities about a larger population. In contrast, machine learning emphasizes
+    prediction and decision-making, typically employing a train-test split methodology
+    where models learn from a portion of the data (the training set) and validate
+    their predictions on unseen data (the testing set).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, we will demonstrate how a seemingly straightforward technique
+    like linear regression can be viewed through these two lenses. We will explore
+    their unique contributions by using Scikit-Learn for machine learning and Statsmodels
+    for statistical inference.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/ebca9f6b8212bb3833601155dab5008c.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Integrating Scikit-Learn and Statsmodels for Regression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Stephen Dawson](https://unsplash.com/photos/turned-on-monitoring-screen-qwtCeJ5cLYs).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Supervised Learning: Classification vs. Regression'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Diving into Regression with a Machine Learning Focus
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Enhancing Understanding with Statistical Insights
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Supervised Learning: Classification vs. Regression'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Supervised learning is a branch of machine learning where the model is trained
+    on a labeled dataset. This means that each example in the training dataset is
+    paired with the correct output. Once trained, the model can apply what it has
+    learned to new, unseen data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In supervised learning, we encounter two main tasks: classification and regression.
+    These tasks are determined by the type of output we aim to predict. If the goal
+    is to predict categories, such as determining if an email is spam, we are dealing
+    with a classification task. Alternatively, if we estimate a value, such as calculating
+    the miles per gallon (MPG) a car will achieve based on its features, it falls
+    under regression. The output’s nature — a category or a number — steers us toward
+    the appropriate approach.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this series, we will used the [Ames housing dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv).
+    It provides a comprehensive collection of features related to houses, including
+    architectural details, condition, and location, aimed at predicting the “SalePrice”
+    (the sales price) of each house.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This should output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The “SalePrice” column is of data type `int64`, indicating that it represents
+    integer values. Since “SalePrice” is a numerical (continuous) variable rather
+    than categorical, predicting the “SalePrice” would be a **regression task**. This
+    means the goal is to predict a continuous quantity (the sale price of a house)
+    based on the input features provided in your dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Diving into Regression with a Machine Learning Focus
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Supervised learning in machine learning focuses on predicting outcomes based
+    on input data. In our case, using the Ames Housing dataset, we aim to predict
+    a house’s sale price from its living area—a classic regression task. For this,
+    we turn to scikit-learn, renowned for its simplicity and effectiveness in building
+    predictive models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To start, we select “GrLivArea” (ground living area) as our feature and “SalePrice”
+    as the target. The next step involves splitting our dataset into training and
+    testing sets using scikit-learn’s `train_test_split()` function. This crucial
+    step allows us to train our model on one set of data and evaluate its performance
+    on another, ensuring the model’s reliability.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s how we do it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This should output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `LinearRegression` object imported in the code above is scikit-learn’s implementation
+    of linear regression. The model’s R² score of 0.4789 indicates that our model
+    explains approximately 48% of the variation in sale prices based on the living
+    area alone—a significant insight for such a simple model. This step marks our
+    initial foray into machine learning with scikit-learn, showcasing the ease with
+    which we can assess model performance on unseen or test data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enhancing Understanding with Statistical Insights
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'After exploring how scikit-learn can help us assess model performance on unseen
+    data, we now turn our attention to `statsmodels`, a Python package that offers
+    a different angle of analysis. While scikit-learn excels in building models and
+    predicting outcomes, `statsmodels` shines by diving deep into the statistical
+    aspects of our data and model. Let’s see how `statsmodels` can provide you with
+    insight at a different level:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The first key distinction to highlight is `statsmodels`‘ use of all observations
+    in our dataset. Unlike the predictive modeling approach, where we split our data
+    into training and testing sets, `statsmodels` leverages the entire dataset to
+    provide comprehensive statistical insights. This full utilization of data allows
+    for a detailed understanding of the relationships between variables and enhances
+    the accuracy of our statistical estimates. The above code should output the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that it is not the same regerssion as in the case of scikit-learn because
+    the full dataset is used without train-test split.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s dive into the `statsmodels`‘ output for our OLS regression and explain
+    what the P-values, coefficients, confidence intervals, and diagnostics tell us
+    about our model, specifically focusing on predicting “SalePrice” from “GrLivArea”:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: P-values and Coefficients
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Coefficient of “GrLivArea”**: The coefficient for “GrLivArea” is 110.5551\.
+    This means that for every additional square foot of living area, the sales price
+    of the house is expected to increase by approximately $110.55\. This coefficient
+    quantifies the impact of living area size on the house’s sales price.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**P-value for “GrLivArea”**: The p-value associated with the “GrLivArea” coefficient
+    is essentially 0 (indicated by `P>|t|` near 0.000), suggesting that the living
+    area is a highly significant predictor of the sales price. In statistical terms,
+    we can reject the null hypothesis that the coefficient is zero (no effect) and
+    confidently state that there is a strong relationship between the living area
+    and sales price (but not necessarily the only factor).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Confidence Intervals
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**Confidence Interval for “GrLivArea”**: The confidence interval for the “GrLivArea”
+    coefficient is [106.439, 114.671]. This range tells us that we can be 95% confident
+    that the true impact of living area on sale price falls within this interval.
+    It offers a measure of the precision of our coefficient estimate.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Diagnostics
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '**R-squared (R²)**: The R² value of 0.518 indicates that the living area can
+    explain approximately 51.8% of the variability in sale prices. It’s a measure
+    of how well the model fits the data. It is expected that this number is not the
+    same as the case in scikit-learn regression since the data is different.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**F-statistic and Prob (F-statistic)**: The F-statistic is a measure of the
+    overall significance of the model. With an F-statistic of 2774 and a Prob (F-statistic)
+    essentially at 0, this indicates that the model is statistically significant.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Omnibus, Prob(Omnibus)**: These tests assess the normality of the residuals.
+    Residual is the difference between the predicted value $\hat{y}$) and the actual
+    value ($y$). The linear regression algorithm is based on the assumption that the
+    residuals are normally distributed. A Prob(Omnibus) value close to 0 suggests
+    the residuals are not normally distributed, which could be a concern for the validity
+    of some statistical tests.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Durbin-Watson**: The Durbin-Watson statistic tests the presence of autocorrelation
+    in the residuals. It is between 0 and 4\. A value close to 2 (1.926) suggests
+    there is no strong autocorrelation. Otherwise, this suggests that the relationship
+    between $X$ and $y$ may not be linear.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This comprehensive output from `statsmodels` provides a deep understanding of
+    how and why “GrLivArea” influences “SalePrice,” backed by statistical evidence.
+    It underscores the importance of not just using models for predictions but also
+    interpreting them to make informed decisions based on a solid statistical foundation.
+    This insight is invaluable for those looking to explore the statistical story
+    behind their data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[sklearn.linear_model.LinearRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[statsmodels.api](https://www.statsmodels.org/stable/api.html) API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Scikit-Learn Linear Regression: A Comprehensive Guide with Examples](https://www.simplilearn.com/tutorials/scikit-learn-tutorial/sklearn-linear-regression-with-examples)
+    by Avijeet Biswal'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/)
+    by Jake VanderPlas'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Ames Housing Dataset & Data Dictionary**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, we navigated through the foundational concepts of supervised learning,
+    specifically focusing on regression analysis. Using the Ames Housing dataset,
+    we demonstrated how to employ `scikit-learn` for model building and performance,
+    and `statsmodels` for gaining statistical insights into our data. This journey
+    from data to insights underscores the critical role of both predictive modeling
+    and statistical analysis in understanding and leveraging data effectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The distinction between classification and regression tasks in supervised learning.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to identify which approach to use based on the nature of your data.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use `scikit-learn` to implement a simple linear regression model, assess
+    its performance, and understand the significance of the model’s R² score.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The value of employing `statsmodels` to explore the statistical aspects of your
+    data, including the interpretation of coefficients, p-values, and confidence intervals,
+    and the importance of diagnostic tests for model assumptions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

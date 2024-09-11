@@ -1,0 +1,370 @@
+- en: How to Train a Object Detection Engine with HOG in OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/opencv_object_detection/](https://machinelearningmastery.com/opencv_object_detection/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In the [previous post](https://machinelearningmastery.com/opencv_hog/), you
+    saw that OpenCV can extract features from an image using a technique called the
+    Histogram of Oriented Gradients (HOG). In short, this is to convert a “patch”
+    of an image into a numerical vector. This vector, if set up appropriately, can
+    identify key features within that patch. While you can use HOG to compare images
+    for similarity, one practical application is to make it the input to a classifier
+    so you can detect objects in an image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this post, you will learn how to create a classifier with HOG. Specifically,
+    you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to prepare input data for classifier training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to run the training and save the model for reuse in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/5e0744e8e7762c03ae4132433fcb9aed.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to Train a Object Detection Engine with HOG in OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Neil Thomas](https://unsplash.com/photos/brown-tree-SIU1Glk6v5k).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: HOG for Classification
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing Data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training Classifier using HOG Features
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: HOG for Classification
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the [previous post](https://machinelearningmastery.com/opencv_hog/), you
+    learned that HOG is a technique to generate feature vectors from a region of an
+    image. Chances are, the object in that region determines much of the feature vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Object detection is to find the region in a larger image where a particular
+    object is located. Usually, the goal is to find a rectangular **bounding box**
+    in the large image such that the object is tightly within that box.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using HOG for object detection is not difficult: You simply draw multiple bounding
+    boxes randomly from the image. Then, you can find the feature vector of the bounding
+    box using HOG and compare the vector to what you expected for the target object.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, there are multiple details you need to take care of: Firstly, HOG
+    has multiple parameters, including the size of window, block, and cell. This also
+    determined the size and aspect ratio of the bounding box. If your bounding box
+    has a different size, you may need to resize it. Secondly, the HOG is sensitive
+    to rotation. Hence if the image is tilted, the feature vector obtained from HOG
+    may not be useful for object detection.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, every bounding box will produce a HOG vector differently, even if they
+    all identified the same object. You need a clever way to tell if the object is
+    detected, which is usually a machine learning model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several models can be used to compare the HOG from a candidate bounding box.
+    In this post, you will use a support vector machine (SVM). OpenCV has a built-in
+    people detector, which is also implemented as an SVM.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing Data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s consider the task of **cat detection**. For an image with a cat, you want
+    to draw a square around the cat’s face. You will build a SVM with OpenCV for this
+    task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As in all machine learning projects, the first step is to get the dataset.
+    You can get the dataset with cat image from the Oxford-IIIT Pet Dataset, at this
+    location:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://www.robots.ox.ac.uk/~vgg/data/pets/](https://www.robots.ox.ac.uk/~vgg/data/pets/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This is an 800MB dataset, which is a small one at the standard of computer
+    vision datasets. The images are annotated in the Pascal VOC format. In short,
+    each image has a corresponding XML file that looks like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: XHTML
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The XML file tells you which image file it is referring to, and what object
+    it contains, with the bounding box between the tags `<bndbox></bndbox>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are some Python library you can use to handle the Pascal VOC XML files.
+    But for a simple case like this, you can simply use Python’s built-in XML parser.
+    The following is a function that, given the XML filename, it reads the content
+    and returns a Python dictionary to tell you all the objects it contains and the
+    corresponding bounding boxes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'An example of the dictionary returned by the above function is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this dataset, there is only one object per image (either a cat or a dog).
+    The bounding box is specified as the pixel coordinates. With the filename you
+    obtained above, you can read the image using OpenCV. The image is a numpy array.
+    Hence you can extract the portion using array slicing. Like the following
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s focus on our goal of training a classifier. At first, you need to design
+    the parameters for HOG calculation. Let’s consider a vector that is not too long,
+    namely,
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'window size: (64,64)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'block size: (32, 32)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'block stride: (16, 16)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'cell size: (16, 16)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'number of bins: 9'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In other words, you will consider a square window of 64×64 pixels on the image
+    with the cell size of 16×16 pixels. Each block has 2×2 cells.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because the window is square, and you do not want to change the image’s aspect
+    ratio, you will adjust the bounding box in the dataset to a square size. Afterward,
+    you should crop the adjusted bounding box, resize it to 64×64 pixels, and save
+    it as **positive samples**. You also need negative samples for the training. Since
+    you want to make a cat detector, you can make use of the dog images as negative
+    samples. You want the negative samples to cover the background of the image. Instead
+    of following the bounding boxes, you can simply randomly crop a square region
+    from those images and resize to 64×64 pixels as negative samples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In code, below is how you can collect 1000 samples of positive and negative
+    samples from the dataset. It is assumed that you downloaded the dataset and expanded
+    the two tar files to the directory `oxford-iiit-pet`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Training Classifier using HOG Features
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'OpenCV comes with an SVM module in cv2.ml, and it works similarly to scikit-learn.
+    In essence, you simply need to do the following for training:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: You first create an SVM object with `cv2.ml.SVM_create()`. Then you configure
+    the SVM, since there are many variations. In the above, you used `SVM_C_SVC` as
+    the type, for it is a C-Support Vector Classifier (SVM for classification that
+    allows imperfect separation). You used a radial basis function kernel (`SVM_RBF`)
+    since it usually works well. You can also choose to use the simpler linear kernel
+    (`SVM_LINEAR`) if the task is easy. There are many other parameters for the SVM,
+    too. For example, if RBF kernel is used, you can use `svm.setGamma()` to set the
+    gamma value, and since you used C-SVC, you can set the value of parameter C using
+    `svm.setC()`. In the above, you leave all parameters to OpenCV’s default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The training of SVM requires a terminating condition. In the above, you used
+    `svm.setTermCritera()` to make the training stop at 10000 iterations or when the
+    loss function falls below $10^-8$, whichever is sooner. After all is done, you
+    just pass on the data and labels to the training routine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The training data is presented as a numpy array. You set it up in such a way
+    that each row in the array is one sample. The labels required are just integer
+    labels, 0 or 1\. Since you’re training a HOG classifier with SVM, you need to
+    convert your samples into HOG features. It is not difficult with OpenCV. Taking
+    the positive and negative samples that you collected, the following is how to
+    create the numpy arrays:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The complete code from data collection to training is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The last line in the code above is to print the support vectors from the trained
+    SVM. It is optional since you already saved the model into the file `svm_model.yml`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is how you can use the trained model: First you create a HOG object, an
+    SVM object, and then assign the SVM object into HOG as a detector. When you have
+    an image, you use HOG’s `detectMultiScale()` method to find the locations of the
+    detected object.This function will rescale the image multiple times so that the
+    size of the window you set for HOG does not need to match the object exactly.
+    It is very useful as you would not know how large the target object is within
+    the image. Since the SVM is trained on a particular HOG feature configuration,
+    you must create the HOG object using the same parameters (window, block, cells,
+    and bins) as you used in training. The output of the detect function will be multiple
+    bounding boxes, but you can simply take the best matching one based on the score.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In code, that is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is assumed the trained SVM has been saved into the file `svm_model.yml`.
+    You create the SVM object directly using the saved file. The output `scores` from
+    `hog.detectMultiScale()` is a N×1 numpy array. Hence you should flatten it to
+    a vector and find the maximum. The corresponding bounding box in the array `locations`
+    is the best matched one. The bounding box returned by this function is in terms
+    of the coordinate of the top left corner and the width and height. The last line
+    in the code above is to annotate such box directly on the image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can indeed run this on the same dataset. The complete code is as follows,
+    which the original bounding box and the detected one by SVM are both drawn on
+    the image and displayed with OpenCV:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: OpenCV will display the annotated images one by one from the dataset. The dataset’s
+    bounding box is in red while the bounding box as reported by the SVM is in blue.
+    Note that it is a cat detector so ideally nothing should be detected if it is
+    a dog image. However, SVM with HOG feature is not very good at this.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/5bf9900bdd0342138348b9db905617cf.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The bounding box from the dataset (red) compared to the detection output from
+    the trained model (blue).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In fact, this detector is not very accurate. An example is as above, in which
+    the detected bounding box is quite off from the face of a cat. Even so, it is
+    not a bad model. You may improve the quality of the SVM by tuning the model parameters
+    (such as C and gamma) as well as providing better data for training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Websites
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[OpenCV](https://opencv.org/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'StackOverflow: [OpenCV HOG Features Explanation](https://stackoverflow.com/questions/44972099/opencv-hog-features-explanation)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'OpenCV: [Introduction to Support Vector Machines](https://docs.opencv.org/4.8.0/d1/d73/tutorial_introduction_to_svm.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you learned how to train a SVM with HOG features for object detection,
+    entirely using the OpenCV library. In particular, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to prepare data for training, since the SVM takes only the feature as a
+    numpy array
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to save and load the SVM in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to attach a SVM object into HOG object in OpenCV for multiscale detection
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

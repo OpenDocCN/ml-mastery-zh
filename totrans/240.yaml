@@ -1,0 +1,488 @@
+- en: Derivative of the Sine and Cosine
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/derivative-of-the-sine-and-cosine/](https://machinelearningmastery.com/derivative-of-the-sine-and-cosine/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Many machine learning algorithms involve an optimization process for different
+    purposes. Optimization refers to the problem of minimizing or maximizing an objective
+    function by altering the value of its inputs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Optimization algorithms rely on the use of derivatives in order to understand
+    how to alter (increase or decrease) the input values to the objective function,
+    in order to minimize or maximize it. It is, therefore, important that the objective
+    function under consideration is *differentiable*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The two fundamental trigonometric functions, the sine and cosine, offer a good
+    opportunity to understand the manoeuvres that might be required in finding the
+    derivatives of differentiable functions. These two functions become especially
+    important if we think of them as the fundamental building blocks of more complex
+    functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover how to find the derivative of the sine and
+    cosine functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to find the derivative of the sine and cosine functions by applying several
+    rules from algebra, trigonometry and limits.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to find the derivative of the sine and cosine functions in Python.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/97c5645a8219d98eb5f0d79847aaf479.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Derivative of the Sine and Cosine
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Tim Marshall](https://unsplash.com/photos/9tta3btd8hE), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Derivative of the Sine Function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Derivative of the Cosine Function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finding Derivatives in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**The Derivative of the Sine Function**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The derivative *f’*(*x*) of some function, *f*, at a particular point, *x*,
+    may be specified as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/e58745938f14729e7cb18c1b4571cf96.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We shall start by considering the sine function. Hence, let’s first substitute
+    for *f*(*x*) = sin *x*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/c95a2ec2cdc227097606864e09a2f195.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we have a look at the trigonometric identities, we find that we may apply
+    the *addition formula* to expand the sin(*x* + *h*) term:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: sin(*x* + *y*) = sin *x* cos *y* + cos *x* sin *y*
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Indeed, by substituting *y* with *h* we can define the derivative of sin *x*
+    as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/cd1aefebe1b15aeb067b21590c3b8cd6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We may simplify the expression further by applying one of the limit laws, which
+    states that the limit of a sum of functions is equal to the sum of their limits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/3fff4bd866a2790e6b4202a21bd1fe31.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We may simplify even further by bringing out any common factor that is a function
+    of *x*. In this manner, we can factorise the expression to obtain the sum of two
+    separate limits that do not depend on *x*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/663df64c9c34ab0e71b480e8aadc582d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_5.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Solving each of these two limits will give us the derivative of sin *x*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s start by tackling the first limit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Recall](https://machinelearningmastery.com/what-you-need-to-know-before-you-get-started-a-brief-tour-of-calculus-pre-requisites/)
+    that we may represent angle, *h* in radians, on the unit circle. The sine of *h*
+    would then be given by the perpendicular to the x-axis (*BC*), at the point that
+    meets the unit circle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/1d01afe359f6ab56889b7d5d5ffa2633.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_diagrams_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Representing angle, *h*, on the unit circle
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will be comparing the area of different sectors and triangles, with sides
+    subtending the angle *h*, in an attempt to infer how ((sin *h*) / *h*) behaves
+    as the value of *h* approaches zero. For this purpose, consider first the area
+    of sector *OAB*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/3ca1fff1409be14f1d8ba1300016bb68.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_diagrams_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding the area of sector, *OAB*
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The area of a sector can be defined in terms of the circle radius, *r*, and
+    the length of the arc *AB*, *h*. Since the circle under consideration is the *unit*
+    circle, then *r* = 1:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: area_of_sector_OAB = *r h* / 2 = *h* / 2
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can compare the area of the sector *OAB* that we have just found, to the
+    area of the *triangle OAB* within the same sector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/86cb573874ef6d59618742d966a6a5a0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_diagrams_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding the area of triangle, *OAB*
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The area of this triangle is defined in terms of its height, *BC* = sin *h*,
+    and the length of its base, *OA* = 1:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: area_of_triangle_OAB = (*BC*) (*OA*) / 2 = (sin *h*) / 2
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since we can clearly see that the area of the triangle, *OAB*, that we have
+    just considered is smaller that the area of the sector that it is contained within,
+    then we may say that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: (sin *h)* / 2 < *h* / 2
+  prefs: []
+  type: TYPE_NORMAL
+- en: (sin *h*) / *h* < 1
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the first piece of information that we have obtained regarding the behaviour
+    of ((sin *h*) */* *h*), which tells us that its upper limit value will not exceed
+    1\.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let us now proceed to consider a second triangle, *OAB’*, that is characterised
+    by a larger area than that of sector, *OAB*. We can use this triangle to provide
+    us with the second piece of information about the behaviour of ((sin *h*) */*
+    *h*), which is its lower limit value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/666f15ac7d773d71b285878a91c0ce84.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_diagrams_04.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Comparing similar triangles, *OAB* and *OAB’*
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Applying the properties of similar triangles to relate *OAB’* to *OCB*, gives
+    us information regarding the length, *B’A*, that we need to compute the area of
+    the triangle:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*B’A* / *OA* = *BC* / *OC* = (sin *h*) / (cos *h*)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Hence, the area of triangle *OAB’* may be computed as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: area_of_triangle_OAB’ = (*B’A*) (*OA*) / 2 = (sin *h*) / (2 cos *h*)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Comparing the area of triangle *OAB’* to that of sector *OAB*, we can see that
+    the former is now larger:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*h* / 2 < (sin *h*) / (2 cos *h*)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: cos *h* < (sin *h*) / *h*
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is the second piece of information that we needed, which tells us that
+    the lower limit value of ((sin *h*) */* *h*) does not drop below cos *h*. We also
+    know that as *h* approaches 0, the value of cos *h* approaches 1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hence, putting the two pieces of information together, we find that as *h* becomes
+    smaller and smaller, the value of ((sin *h*) */* *h*) itself is *squeezed* to
+    1 by its lower and upper limits. This is, indeed, referred to as the *squeeze*
+    or *sandwich* theorem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s now proceed to tackle the second limit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By applying standard algebraic rules:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/fe941febd4512232421d746cce77004d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_6.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can manipulate the second limit as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/f81a719a89e784ceede553c551e087a6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_7.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can then express this limit in terms of sine, by applying the Pythagorean
+    identity from trigonometry, sin²*h* = 1 – cos²*h*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/84f936e4c6d065dfc5148efc0ad6a6e2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_8.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Followed by the application of another limit law, which states that the limit
+    of a product is equal to the product of the separate limits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/950e01bfe87186993a65b707b56adb67.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_9.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have already tackled the first limit of this product, and we have found that
+    this has a value of 1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The second limit of this product is characterised by a cos *h* in the denominator,
+    which approaches a value of 1 as *h* becomes smaller. Hence, the denominator of
+    the second limit approaches a value of 2 as h approaches 0\. The sine term in
+    the numerator, on the other hand, attains a value of 0 as *h* approaches 0\. This
+    drives not only the second limit, but also the entire product limit to 0:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/a6016518abc3fc78f516fdc15a1d55fa.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_10.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, we may finally arrive to the following conclusion:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/33254fd24959645815080e0474d59557.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_11.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: sin’(*x*) = (1) (cos *x*) + (0) (sin *x*)
+  prefs: []
+  type: TYPE_NORMAL
+- en: sin’(*x*) = cos *x*
+  prefs: []
+  type: TYPE_NORMAL
+- en: This, finally, tells us that the derivative of sin *x* is simply cos *x*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Derivative of the Cosine Function**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Similarly, we can calculate the derivative of the cosine function by re-using
+    the knowledge that we have gained in finding the derivative of the sine function.
+    Substituting for *f*(*x*) = cos *x*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/319bde341670d8d09a3ebd3cc8a07253.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_12.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The *addition formula* is now applied to expand the cos(*x* + *h*) term as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: cos(*x* + *y*) = cos *x* cos *y* + sin *x* sin *y*
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Which again leads to the summation of two limits:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/1a2888188876fa1ed3fd335a8f40094d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_13.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can quickly realise that we have already evaluated these two limits in the
+    process of finding the derivative of sine; the first limit approaches 1, whereas
+    the second limit approaches 0, as the value of *h* become smaller:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: cos’(*x*) = (1) (-sin *x*) + (0) (cos *x*)
+  prefs: []
+  type: TYPE_NORMAL
+- en: cos’(*x*) = -sin *x*
+  prefs: []
+  type: TYPE_NORMAL
+- en: Which, ultimately, tells us that the derivative of cos *x* is conversely -sin
+    *x*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The importance of the derivatives that we have just found lies in their definition
+    of the *rate of change* of the function under consideration, at some particular
+    angle, *h*. For instance, if we had to recall the graph of the periodic sine function,
+    we can observe that its first positive peak coincides with an angle of π / 2 radians.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/e769485aec4bbadb62bfcc599b42732d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_14.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Line Plot of the Periodic Sine Function
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can use the derivative of the sine function in order to compute directly
+    the rate of change, or slope, of the tangent line at this peak on the graph:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: sin’(π / 2) = cos(π / 2) = 0
+  prefs: []
+  type: TYPE_NORMAL
+- en: We find that this result corresponds well with the fact that the peak of the
+    sine function is, indeed, a stationary point with zero rate of change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A similar exercise can be easily carried out to compute the rate of change of
+    the tangent line at different angles, for both the sine and cosine functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Finding Derivatives in Python**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this section, we shall be finding the derivatives of the sine and cosine
+    functions in Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For this purpose, we will be making use of the SymPy library, which will let
+    us deal with the computation of mathematical objects symbolically. This means
+    that the SymPy library will let us define and manipulate the sine and cosine functions,
+    with unevaluated variables, in symbolic form. We will be able to define a variable
+    as symbol by making use of *symbols* in Python, whereas to take the derivatives
+    we shall be using the *diff* function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before proceeding further, let us first load the required libraries.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can now proceed to define a variable *x* in symbolic form, which means that
+    we can work with *x* without having to assign it a value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we can find the derivative of the sine and cosine function with respect
+    to *x*, using the *diff* function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: We find that the *diff* function correctly returns *cos*(*x*) as the derivative
+    of sine, and –*sin*(*x*) as the derivative of cosine.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The *diff* function can take multiple derivatives too. For example, we can find
+    the second derivative for both sine and cosine by passing *x* twice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This means that, in finding the second derivative, we are taking the derivative
+    of the derivative of each function. For example, to find the second derivative
+    of the sine function, we take the derivative of *cos*(*x*), its first derivative.
+    We can find the second derivative for the cosine function by similarly taking
+    the derivative of –*sin*(*x*), its first derivative.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can, alternatively, pass the number 2 to the diff function to indicate that
+    we are interested in finding the second derivative.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Tying all of this together, the complete example of finding the derivative of
+    the sine and cosine functions is listed below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[The Hitchhiker’s Guide to Calculus](https://www.amazon.com/Hitchhikers-Calculus-Classroom-Resource-Materials/dp/1470449625/ref=as_li_ss_tl?dchild=1&keywords=The+Hitchhiker%27s+Guide+to+Calculus&qid=1606170787&sr=8-1&linkCode=sl1&tag=inspiredalgor-20&linkId=f8875fa9736746bf29d78fc0c55553d8&language=en_US),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Algorithms for Optimization](https://www.amazon.com/Algorithms-Optimization-Press-Mykel-Kochenderfer/dp/0262039427/ref=sr_1_1?dchild=1&keywords=algorithms+for+optimization&qid=1624019308&sr=8-1),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered how to find the derivative of the sine and
+    cosine functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to find the derivative of the sine and cosine functions by applying several
+    rules from algebra, trigonometry and limits.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to find the derivative of the sine and cosine functions in Python.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

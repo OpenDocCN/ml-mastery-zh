@@ -1,0 +1,849 @@
+- en: Managing Data for Machine Learning Projects
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/managing-data-for-machine-learning-project/](https://machinelearningmastery.com/managing-data-for-machine-learning-project/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Big data, labeled data, noisy data. Machine learning projects all need to look
+    at data. Data is a critical aspect of machine learning projects, and how we handle
+    that data is an important consideration for our project. When the amount of data
+    grows, and there is a need to manage them, allow them to serve multiple projects,
+    or simply have a better way to retrieve data, it is natural to consider using
+    a database system. It can be a relational database or a flat-file format. It can
+    be local or remote.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, we explore different formats and libraries that you can use to
+    store and retrieve your data in Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Managing data using SQLite, Python dbm library, Excel, and Google Sheets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the data stored externally for training your machine learning model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What are the pros and cons of using a database in a machine learning project
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started!![](../Images/c04dc999bff0167a744a6febecdbbee6.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Managing Data with Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Bill Benzon](https://www.flickr.com/photos/stc4blues/25260822078/).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into seven parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Managing data in SQLite
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: SQLite in action
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Managing data in dbm
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using  the dbm database in a machine learning pipeline
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Managing data in Excel
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Managing data in Google Sheets
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Other uses of the database
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Managing Data in SQLite
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When we mention a database, it often means a relational database that stores
+    data in a tabular format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To start off, let’s grab a tabular dataset from `sklearn.dataset` (to learn
+    more about getting datasets for machine learning, look at our [previous article](https://machinelearningmastery.com/a-guide-to-getting-datasets-for-machine-learning-in-python/)).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The above lines read the “Pima Indians diabetes dataset” from OpenML and create
+    a pandas DataFrame. This is a classification dataset with multiple numerical features
+    and one binary class label. We can explore the DataFrame with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This gives us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is not a very large dataset, but if it was too large, we might not fit
+    it in memory. A relational database is a tool to help us manage tabular data efficiently
+    without keeping everything in memory. Usually, a relational database would understand
+    a dialect of SQL, which is a language describing the operation to the data. SQLite
+    is a serverless database system that does not need any setup, and we have built-in
+    library support in Python. In the following, we will demonstrate how we can make
+    use of SQLite to manage data but using a different database such as MariaDB or
+    PostgreSQL, which would be very similar.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, let’s start by creating an in-memory database in SQLite and getting a
+    cursor object for us to execute queries to our new database:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we want to store our data on a disk so that we can reuse it another time
+    or share it with another program, we can store the database in a database file
+    instead of replacing the magic string `:memory:` in the above code snippet with
+    the filename (e.g., `example.db`), as such:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s go ahead and create a new table for our diabetes data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `cur.execute()` method executes the SQL query that we have passed into it
+    as an argument. In this case, the SQL query creates the `diabetes` table with
+    the different columns and their respective data types. The language of SQL is
+    not described here, but you may learn more from many database books and courses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we can go ahead and insert data from our diabetes dataset, which is stored
+    in a pandas DataFrame, into our newly created diabetes table in our in-memory
+    SQL database.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Let’s break down the above code: `dataset.to_numpy().tolist()` gives us a list
+    of rows of the data in `dataset`, which we will pass as an argument into `cur.executemany()`.
+    Then, `cur.executemany()` runs the SQL statement multiple times, each time with
+    an element from  `dataset.to_numpy().tolist()`, which is a row of data from `dataset`.
+    The parameterized SQL expects a list of values each time, and hence we should
+    pass a list of the list into `executemany()`, which is what `dataset.to_numpy().tolist()`
+    creates.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, we can check to confirm that all data are stored in the database:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the above, we use the `SELECT` statement in SQL to query the table `diabetes`
+    for 5 random rows. The result will be returned as a list of tuples (one tuple
+    for each row). Then we convert the list of tuples into a pandas DataFrame by associating
+    a name to each column. Running the above code snippet, we get this output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here’s the complete code for creating, inserting, and retrieving a sample from
+    a relational database for the diabetes dataset using `sqlite3`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: The benefit of using a database is pronounced when the dataset is not obtained
+    from the Internet but collected by you over time. For example, you may be collecting
+    data from sensors over many days. You may write the data you collected each hour
+    into the database using an automated job. Then your machine learning project can
+    run using the dataset from the database, and you may see a different result as
+    your data accumulates.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s see how we can build our relational database into our machine learning
+    pipeline!
+  prefs: []
+  type: TYPE_NORMAL
+- en: SQLite in Action
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that we’ve explored how to store and retrieve data from a relational database
+    using sqlite3, we might be interested in how to integrate it into our machine
+    learning pipeline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Usually, in this situation, we will have a process to collect the data and
+    write it to the database (e.g., read from sensors over many days). This will be
+    similar to the code in the previous section, except we would prefer to write the
+    database onto a disk for persistent storage. Then we will read from the database
+    in the machine learning process, either for training or for prediction. Depending
+    on the model, there are different ways to use the data. Let’s consider a binary
+    classification model in Keras for the diabetes dataset. We may build a generator
+    to read a random batch of data from the database:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The above code is a generator function that gets the `batch_size` number of
+    rows from the SQLite database and returns them as a NumPy array. We may use data
+    from this generator for training in our classification network:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running the above code gives us this output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that we read only the batch in the generator function and not everything.
+    We rely on the database to provide us with the data, and we are not concerned
+    about how large the dataset is in the database. Although SQLite is not a client-server
+    database system, and hence it is not scalable to networks, there are other database
+    systems that can do that. Thus you can imagine an extraordinarily large dataset
+    can be used while only a limited amount of memory is provided for our machine
+    learning application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is the full code, from preparing the database to training a Keras
+    model using data read in realtime from it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Before moving on to the next section, we should emphasize that all databases
+    are a bit different. The SQL statement we use may not be optimal in other database
+    implementations. Also, note that SQLite is not very advanced as its objective
+    is to be a database that requires no server setup. Using a large-scale database
+    and how to optimize the usage is a big topic, but the concept demonstrated here
+    should still apply.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Managing Data in dbm
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A relational database is great for tabular data, but not all datasets are in
+    a tabular structure. Sometimes, data are best stored in a structure like Python’s
+    dictionary, namely, a key-value store. There are many key-value data stores. MongoDB
+    is probably the most well-known one, and it needs a server deployment just like
+    PostgreSQL. GNU dbm is a serverless store just like SQLite, and it is installed
+    in almost every Linux system. In Python’s standard library, we have the `dbm`
+    module to work with it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s explore Python’s `dbm` library. This library supports two different dbm
+    implementations: the GNU dbm and the ndbm. If neither is installed in the system,
+    there is Python’s own implementation as a fallback. Regardless of the underlying
+    dbm implementation, the same syntax is used in our Python program.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This time, we’ll demonstrate using scikit-learn’s digits dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `dbm` library uses a dictionary-like interface to store and retrieve data
+    from a dbm file, mapping keys to values where both keys and values are strings.
+    The code to store the digits dataset in the file `digits.dbm` is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above code snippet creates a new file `digits.dbm` if it does not exist
+    yet. Then we pick each digits image (from `digits.images`) and the label (from
+    `digits.target`) and create a tuple. We use the offset of the data as the key
+    and the pickled string of the tuple as a value to store in the database. Unlike
+    Python’s dictionary, dbm allows only string keys and serialized values. Hence
+    we cast the key into the string using `str(idx)` and store only the pickled data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may learn more about serialization in our [previous article](https://machinelearningmastery.com/a-gentle-introduction-to-serialization-for-python/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is how we can read the data back from the database:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above code snippet, we get 4 random keys from the database, then get
+    their corresponding values and deserialize using `pickle.loads()`. As we know,
+    the deserialized data will be a tuple; we assign them to the variables `image`
+    and `target` and then collect each of the random samples in the list `images`
+    and `targets`. For convenience in training in scikit-learn or Keras, we usually
+    prefer to have the entire batch as a NumPy array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Running the code above gets us the output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Putting everything together, this is what the code for retrieving the digits
+    dataset, then creating, inserting, and sampling from a dbm database looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, let’s look at how to use our newly created dbm database in our machine
+    learning pipeline!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using dbm Database in a Machine Learning Pipeline
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Here, you probably realized that we can create a generator and a Keras model
+    for digits classification, just like what we did in the example of the SQLite
+    database. Here is how we can modify the code. First is our generator function.
+    We just need to select a random batch of keys in a loop and fetch data from the
+    dbm store:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, we can create a simple MLP model for the data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running the above code gives us the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is how we used our dbm database to train our MLP for the digits dataset.
+    The complete code for training the model using dbm is here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: In more advanced systems such as MongoDB or Couchbase, we may simply ask the
+    database system to read random records for us instead of picking random samples
+    from the list of all keys. But the idea is still the same; we can rely on an external
+    store to keep our data and manage our dataset rather than doing it in our Python
+    script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Managing Data in Excel
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Sometimes, memory is not why we keep our data outside of our machine learning
+    script. It’s because there are better tools to manipulate the data. Maybe we want
+    to have tools to show us all data on the screen and allow us to scroll, with formatting
+    and highlight, etc. Or perhaps we want to share the data with someone else who
+    doesn’t care about our Python program. It is quite common to see people using
+    Excel to manage data in situations where a relational database can be used. While
+    Excel can read and export CSV files, the chances are that we may want to deal
+    with Excel files directly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In Python, there are several libraries to handle Excel files, and OpenPyXL
+    is one of the most famous. We need to install this library before we can use it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Today, Excel uses the “Open XML Spreadsheet” format with the filename ending
+    in `.xlsx`. The older Excel files are in a binary format with filename suffix
+    `.xls`, and it is not supported by OpenPyXL (in which you can use `xlrd` and `xlwt`
+    modules for reading and writing).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s consider the same example we used in the case of SQLite above. We can
+    open a new Excel workbook and write our diabetes dataset as a worksheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above is to prepare data for each cell in the worksheet (specified
+    by the rows and columns). When we create a new Excel file, there will be one worksheet
+    by default. Then the cells are identified by the row and column offset, beginning
+    with 1\. We write to a cell with the syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To read from a cell, we use:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Writing data into Excel cell by cell is tedious, and indeed we can add data
+    row by row. The following is how we can modify the code above to operate in rows
+    rather than cells:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once we have written our data into the file, we may use Excel to visually browse
+    the data, add formatting, and so on:![](../Images/d720837cd9e730ea9c4fab3e5f3b9303.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To use it for a machine learning project is not any harder than using an SQLite
+    database. The following is the same binary classification model in Keras, but
+    the generator is reading from the Excel file instead:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the above, we deliberately give the argument `steps_per_epoch=20` to the
+    `fit()` function because the code above will be extremely slow. This is because
+    OpenPyXL is implemented in Python to maximize compatibility but trades off the
+    speed that a compiled module can provide. Hence it’s best to avoid reading data
+    row by row every time from Excel. If we need to use Excel, a better option is
+    to read the entire data into memory in one shot and use it directly afterward:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: Managing Data in Google Sheets
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Besides an Excel workbook, sometimes we may find Google Sheets more convenient
+    to handle data because it is “in the cloud.” We may also manage data using Google
+    Sheets in a similar logic as Excel. But to begin, we need to install some modules
+    before we can access it in Python:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE30]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Assume you have a Gmail account, and you created a Google Sheet. The URL you
+    saw on the address bar, right before the `/edit` part, tells you the ID of the
+    sheet, and we will use this ID later:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/bb73e2dacbc3df0154c867b4e01b1c43.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: To access this sheet from a Python program, it is best if you create a **service
+    account** for your code. This is a machine-operable account that authenticates
+    using a key but is manageable by the account owner. You can control what this
+    service account can do and when it will expire. You may also revoke the service
+    account at any time as it is separate from your Gmail account.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To create a service account, first, you need to go to the Google developers
+    console, [https://console.developers.google.com](https://console.developers.google.com/),
+    and create a project by clicking the “Create Project” button:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/57cae22114bd3a3d2ecaf15c51164e25.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'You need to provide a name, and then you can click “Create”:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/d67a409b9978d3796ec0bed1d01b3645.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'It will bring you back to the console, but your project name will appear next
+    to the search box. The next step is to enable the APIs by clicking “Enable APIs
+    and Services” beneath the search box:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/840af135bd6a619b774f1b28d286b442.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Since we are to create a service account to use Google Sheets, we search for
+    “sheets” on the search box:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/0b6c0c1cb54073588136680cea85a4a8.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'and then click on the Google Sheets API:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/401bd565b03fe212219429e95c7360fc.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: and enable it
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/b82e796d273fe8c70ca3c9c0cc8e4b30.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Afterward, we will be sent back to the console main screen, and we can click
+    on “Create Credentials” at the top right corner to create the service account:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/debbc816737d11d651d51dc97395ad3a.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'There are different types of credentials, and we select “Service Account”:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/97184cb4221313f707ccfb8ae4cd98e6.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'We need to provide a name (for our reference), an account ID (as a unique identifier
+    for the project), and a description. The email address shown beneath the “Service
+    account ID” box is the email for this service account. Copy it, and we will add
+    it to our Google Sheet later. After we have created all these, we can skip the
+    rest and click “Done”:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/7a1016955a665f831d1f483aaeaffe88.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'When we finish, we will be sent back to the main console screen, and we know
+    the service account is created if we see it under the “Service Account” section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/ac270fda2a63e3a91acefd1d2f1fa770.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Next, we need to click on the pencil icon at the right of the account, which
+    brings us to the following screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/207ae004c0b6005a1e293c57aaeb9223.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Instead of a password, we need to create a key for this account. We click on
+    the “Keys” page at the top, and then click “Add Key” and select “Create new key”:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/454adac64723c7ab15f9414ab97a72b3.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'There are two different formats for the keys, and JSON is the preferred one.
+    Selecting JSON and clicking “Create” at the bottom will download the key in a
+    JSON file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/48dd0135bb8e96035149a2f2dc5c9f47.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'The JSON file will be like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE31]'
+  prefs: []
+  type: TYPE_PRE
+- en: After saving the JSON file, then we can go back to our Google Sheet and share
+    the sheet with our service account. Click on the “Share” button at the top right
+    corner and enter the email address of the service account. You can skip the notification
+    and just click “Share.” Then we are all set!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/2c8e3ccbf52e03e8855f791b23d889ad.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'At this point, we are ready to access this particular Google Sheet using the
+    service account from our Python program. To write to a Google Sheet, we can use
+    Google’s API. We depend on the JSON file we just downloaded for the service account
+    (`mlm-python.json` in this example) to create a connection first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE32]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we just created it, there should be only one sheet in the file, and it has
+    ID 0.  All operation using Google’s API is in the form of a JSON format. For example,
+    the following is how we can delete everything on the entire sheet using the connection
+    we just created:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE33]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Assume we read the diabetes dataset into a DataFrame as in our first example
+    above. Then, we can write the entire dataset into the Google Sheet in one shot.
+    To do so, we need to create a list of lists to reflect the 2D array structure
+    of the cells on the sheet, then put the data into the API query:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE34]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above, we assumed the sheet has the name “Sheet1” (the default, as you
+    can see at the bottom of the screen). We will write our data aligned at the top
+    left corner, filling cell A1 (top left corner) onward. We use `dataset.to_numpy().tolist()`
+    to collect all data into a list of lists, but we also add the column header as
+    the extra row at the beginning.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Reading the data back from the Google Sheet is similar. The following is how
+    we can read a random row of data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE35]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Firstly, we can tell how many rows in the sheet by checking its properties.
+    The `print()` statement above will produce the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE36]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As we have only one sheet, the list contains only one properties dictionary.
+    Using this information, we can select a random row and specify the range to read.
+    The variable `data` above will be a dictionary like the following, and the data
+    will be in the form of a list of lists and can be accessed using `data["values"]`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE37]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Tying all these together, the following is the complete code to load data into
+    Google Sheet and read a random row from it: (be sure to change the `sheet_id`
+    when you run it)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE38]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Undeniably, accessing Google Sheets in this way is too verbose. Hence we have
+    a third-party module `gspread` available to simplify the operation. After we install
+    the module, we can check the size of the spreadsheet as simple as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE39]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'To clear the sheet, write rows into it, and read a random row can be done as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE40]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Hence the previous example can be simplified into the following, much shorter:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE41]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Similar to reading Excel, using the dataset stored in a Google Sheet, it is
+    better to read it in one shot rather than reading row by row during the training
+    loop. This is because every time you read, you send a network request and wait
+    for the reply from Google’s server. This cannot be fast and hence is better avoided.
+    The following is an example of how we can combine data from a Google Sheet with
+    Keras code for training:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE42]'
+  prefs: []
+  type: TYPE_PRE
+- en: Other Uses of the Database
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The examples above show you how to access a database from a spreadsheet. We
+    assume the dataset is stored and consumed by a machine learning model in the training
+    loop. While this is one way of using external data storage, it’s not the only
+    way. Some other use cases of a database would be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: As storage for logs to keep a record of the details of the program, e.g., at
+    what time some script is executed. This is particularly useful to keep track of
+    changes if the script is going to mutate something, e.g., downloading some file
+    and overwriting the old version
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As a tool to collect data. Just like we may use `GridSearchCV` from scikit-learn,
+    very often, we might evaluate the model performance with different combinations
+    of hyperparameters. If the model is large and complex, we may want to distribute
+    the evaluation to different machines and collect the result. It would be handy
+    to add a few lines at the end of the program to write the cross-validation result
+    to a database of a spreadsheet so we can tabulate the result with the hyperparameters
+    selected. Having these data stored in a structural format allows us to report
+    our conclusion later.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: As a tool to configure the model. Instead of writing the hyperparameter combination
+    and the validation score, we can use it as a tool to provide us with the hyperparameter
+    selection for running our program. Should we decide to change the parameters,
+    we can simply open up a Google Sheet, for example, to make the change instead
+    of modifying the code.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The following are some resources for you to go deeper:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Practical SQL](https://www.amazon.com/dp/1718501064/), 2nd Edition, by Anthony
+    DeBarros'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[SQL Cookbook](https://www.amazon.com/dp/1492077445/), 2nd Edition, by Anthony
+    Molinaro and Robert de Graaf'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Automate the Boring Stuff with Python](https://www.amazon.com/dp/1593279922/),
+    2nd Edition, by Al Sweigart'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**APIs and Libraries**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[sqlite3](https://docs.python.org/3/library/sqlite3.html) in Python standard
+    library'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[apsw](https://rogerbinns.github.io/apsw/) – Another Python SQLite Wrapper'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[dbm](https://docs.python.org/3/library/dbm.html) in Python standard library'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Openpyxl](https://openpyxl.readthedocs.io/en/stable/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Google Sheets API](https://developers.google.com/sheets/api)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[gspread](https://docs.gspread.org/en/latest/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Service accounts](https://cloud.google.com/iam/docs/service-accounts) in Google
+    Cloud'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Creating and managing service accounts](https://cloud.google.com/iam/docs/creating-managing-service-accounts)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Software
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[SQLite](https://www.sqlite.org/index.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[GNU dbm](https://www.gnu.org.ua/software/gdbm/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you saw how you could use external data storage, including
+    a database or a spreadsheet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How you can make your Python program access a relational database such as SQLite
+    using SQL statements
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can use dbm as a key-value store and use it like a Python dictionary
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to read from Excel files and write to it
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to access Google Sheet over the Internet
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How we can use all these to host datasets and use them in our machine learning
+    project
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

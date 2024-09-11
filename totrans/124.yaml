@@ -1,0 +1,349 @@
+- en: Building a Convolutional Neural Network in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/building-a-convolutional-neural-network-in-pytorch/](https://machinelearningmastery.com/building-a-convolutional-neural-network-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Neural networks are built with layers connected to each other. There are many
+    different kind of layers. For image related applications, you can always find
+    convolutional layers. It is a layer with very few parameters but applied over
+    a large sized input. It is powerful because it can preserve the spatial structure
+    of the image. Therefore it is used to produce state-of-the-art results on computer
+    vision neural networks. In this post, you will learn about the convolutional layer
+    and the network it built. After completing this post, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are convolutional layers and pooling layers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How they fit together in a neural network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How a neural network using convolutional layers is designed
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/e26c3bb8e90bc698643284c6ebc8b725.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a Convolutional Neural Network in PyTorch
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Donna Elliot](https://unsplash.com/photos/O0yASWUhAgQ). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This post is divided into four parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Case for Convolutional Neural Networks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Building Blocks of Convolutional Neural Networks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An Example of Convolutional Neural Network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What Are in Feature Maps?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Case for Convolutional Neural Networks
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s consider to make a neural network to process grayscale image as input,
+    which is the simplest use case in deep learning for computer vision.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A grayscale image is an array of pixels. Each pixel is usually a value in a
+    range of 0 to 255\. An image with size 32×32 would have 1024 pixels. Taking it
+    as input to a neural network would mean the first layer to have at least 1024
+    input weights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Looking at the pixel value has little use to understanding the picture, because
+    data is hiding in the spatial structure (e.g., whether there is a horizontal line
+    or a vertical line on the picture). Hence the traditional neural network will
+    find it difficult to find out information from image input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Convolutional neural network is to use convolutional layers to preserve spatial
+    information of pixels. It learns how alike are the neighboring pixels and generating
+    **feature representations**. What the convolutional layers see from the picture
+    is invariant to distortion in some degree. For example, a convolutional neural
+    network could predict the same result even if the input image has shift in color,
+    rotated or rescaled. Moreover, convolutional layers has fewer weights, thus easier
+    to train.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building Blocks of Convolutional Neural Networks
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The simplest use case of a convolutional neural network is for classification.
+    You will find it to contain three types of layers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Convolutional layers
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Pooling layers
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Fully-connected layers
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Neurons on a convolutional layer is called the filter. Usually it is a 2D convolutional
+    layer in image application. The filter is a 2D patch (e.g., 3×3 pixels) that is
+    applied on the input image pixels. The size of this 2D patch is also called the
+    receptive field, meaning how large a portion of the image it can see at a time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The filter of a convolutional layer is to multiply with the input pixels, and
+    then sum up the result. This result is one pixel value at the output. The filter
+    will move around the input image to fill out all pixel values at the output. Usually
+    multiple filters are applied to the same input, producing multiple output tensors.
+    These output tensors are called the **feature maps** produced by this layer. They
+    are stacked together as one tensor and pass on to the next layer as input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/8baa5476210e37181192a8952af8022d.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Example of a Filter Applied to a Two-Dimensional Input to Create a Feature Map
+  prefs: []
+  type: TYPE_NORMAL
+- en: The output of a convolutional layer is called feature maps because usually it
+    learned about the features of the input image. For example, whether there are
+    vertical lines at the position. Learning the features from pixels is to help understanding
+    the image at a higher level. Multiple convolutional layers are stacked together
+    in order to infer higher level features from lower level details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pooling layer is to **downsample** the previous layer’s feature map. It is usually
+    used after a convolutional layer to consolidate features learned. It can compress
+    and generalize the feature representations. A pooling layer also has a receptive
+    field and usually it is to take the average (average pooling) or the maximum (max
+    pooling) over all values on the receptive field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Fully connected layers are usually the final layers in a network. It is to take
+    the features consolidated by previous convolutional and pooling layers as input
+    to produce prediction. There might be multiple fully connected layers stacked
+    together. In the case of classification, you usually see the output of the final
+    fully connected layer applied with a softmax function to produce probability-like
+    classification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An Example of Convolutional Neural Network
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The following is a program to do image classification on the CIFAR-10 dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The CIFAR-10 dataset provides images in 32×32 pixels in RGB color (i.e., 3
+    color channels). There are 10 classes, labelled in integers 0 to 9\. Whenever
+    you are working on PyTorch neural network models for images, you will find the
+    sister library `torchvision` useful. In the above, you used it to download the
+    CIFAR-10 dataset from the Internet and transform it into a PyTorch tensor:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You also used a `DataLoader` in PyTorch to help creating batches for training.
+    Training is to optimize the cross entropy loss of the model, using stochastic
+    gradient descent. It is a classification model, hence accuracy of classification
+    is more intuitive than cross entropy, which is computed at the end of each epoch,
+    by comparing the maximum value in the output logit to the dataset’s labels:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: It takes time to run the program above to train the network. This network should
+    be able to achieve above 70% accuracy in classification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is typical in a network for image classification to be comprised of convolutional
+    layers at an early stage, with dropout and pooling layers interleaved. Then, at
+    a later stage, the output from convolutional layers is flattened and processed
+    by some fully connected layers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What Are in Feature Maps?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are two convolutional layers in the network defined above. They are both
+    defined with kernel size of 3×3, hence it is looking at 9 pixels at a time to
+    produce one output pixel. Note that the first convolutional layer is taking the
+    RGB image as input. Hence each pixel has three channels. The second convolutional
+    layer is taking a feature map with 32 channels as input. Each “pixel” as it sees
+    will have 32 values. Thus the second convolutional layer has more parameters even
+    they have the same receptive field.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s see what is in the feature map. Let’s say we pick one input sample from
+    the training set:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: You should see that this is an image of a horse, in 32×32 pixels with RGB channels:![](../Images/f44ca8cebde0bb87ce531335393a68ed.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, you need to convert this into a PyTorch tensor and make it a batch of
+    one image. PyTorch models expect each image as a tensor in the format of (channel,
+    height, width) but the data you read is in the format of (height, width, channel).
+    If you use `torchvision` to transform the image into PyTorch tensors, this format
+    conversion is done automatically. Otherwise, you need to **permute** the dimensions
+    before use.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Afterward, pass it on through the model’s first convolution layer and capture
+    the output. You need to tell PyTorch that no gradient is needed for this calculation
+    as you are not going to optimize the model weight:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The feature maps are in one tensor. You can visualize them using matplotlib:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may see the following:![](../Images/2ccc6c2ed9cbee1c1f6f19960bd9586c.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can see that they are called feature maps because they are highlighting
+    certain features from the input image. A feature is identified using a small window
+    (in this case, over a 3×3 pixels filter). The input image has three color channels.
+    Each channel has a different filter applied, and their results are combined for
+    an output feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can similarly display the feature map from the output of the second convolutional
+    layer as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Which shows:![](../Images/8b83c74f12d624e59d75488949f550ac.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Compared to the output of the first convolutional layer, the feature maps from
+    the second convolutional layer looks blurry and more abstract. But these are more
+    useful for the model to identify the objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the code below loads the saved model from the
+    previous section and generate the feature maps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Posts
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[How Do Convolutional Layers Work in Deep Learning Neural Networks?](https://machinelearningmastery.com/convolutional-layers-for-deep-learning-neural-networks/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Training a Classifier](https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html),
+    from PyTorch tutorials'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Chapter 9: Convolutional Networks, [Deep Learning](https://amzn.to/2Dl124s),
+    2016.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[nn.Conv2d](https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html)
+    layer in PyTorch'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you learned how to use convolutional neural network to handle
+    image input and how to visualize the feature maps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The structure of a typical convolutional neural networks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is the effect of the filter size to a convolutional layer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is the effect of stacking convolutional layers in a network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to extract and visualize feature maps from a convolutional neural network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

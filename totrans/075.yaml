@@ -1,0 +1,474 @@
+- en: How to Read, Write, Display Images in OpenCV and Converting Color Spaces
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/how-to-read-write-display-images-in-opencv-and-converting-color-spaces/](https://machinelearningmastery.com/how-to-read-write-display-images-in-opencv-and-converting-color-spaces/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When working with images, some of the most basic operations that are essential
+    to get a grip on include reading the images from disk, displaying them, accessing
+    their pixel values, and converting them from one color space to another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This tutorial explains these basic operations, starting first with a description
+    of how a digital image is formulated in terms of its spatial coordinates and intensity
+    values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will familiarise yourself with the most basic OpenCV operations
+    that are essential when working with images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How a digital image is formulated in terms of its spatial coordinates and intensity
+    values.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How an image is read and displayed in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How an image’s pixel values can be accessed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How an image may be converted from one color space to another.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started. [![](../Images/5bfd6da5aac54635239852dc45b8cedc.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reading and Displaying Images, and Converting Between Color Spaces Using OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Andrew Ridley](https://unsplash.com/photos/jR4Zf-riEjI), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Formulation of an Image
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Reading and Displaying Images in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Converting Between Color Spaces
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Formulation of an Image**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A digital image is made up of pixels, where each pixel is characterised by its
+    *spatial coordinates* inside the image space, and its *intensity* or *gray level*
+    value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Essentially, an image can be described by a 2D function, *I*(*x*, *y*), where
+    *x* and *y* denote the aforementioned spatial coordinates, and the value of *I*
+    at any image position (*x*, *y*) denotes the pixel intensity. In a digital image,
+    the spatial coordinates as well as the intensity values are all finite, discrete
+    quantities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The type of digital image that we have just described is referred to as a *grayscale*
+    image, and that is because it comprises a single channel where the pixel values
+    carry only intensity information. The pixel intensities are commonly represented
+    by integer values in the range [0, 255], which means that each pixel can take
+    any of 256 discrete values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An RGB image, on the other hand, is composed of three channels, namely the *Red*,
+    *Green* and *Blue*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The RGB colour model is not the only one in existence, but it is possibly the
+    most commonly used in many computer vision applications. It is an additive colour
+    model, which refers to the process of creating colour by mixing (or adding) the
+    light spectra of differently coloured sources.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since an RGB image is composed of three channels, then we need three functions
+    to describe it: *I**[R]*(*x*, *y*), *I**[G]*(*x*, *y*) and *I**[B]*(*x*, *y*),
+    corresponding to the Red, Green and Blue channels, respectively. Consequently,
+    in an RGB image each pixel value is expressed by a triplet of intensity values.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Reading and Displaying Images in OpenCV**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s start by first importing the `imread` method from the OpenCV library
+    in Python:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then proceed to read an RGB image. For this purpose, I have downloaded [this
+    image](https://unsplash.com/photos/N04FIfHhv_k) and saved it to disk with the
+    name, *Dog.jpg*, in a folder called, *Images*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `imread` method returns a NumPy array, `img`, that contains the image pixel
+    values. We can check out the array’s data type and dimensions as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The returned information tells us that the array is of data type uint8, which
+    means that we are working with 8-bit unsigned integer values. This means that
+    the pixels in each channel of the image can take any of 2⁸ = 256 values, within
+    a range from 0 to 255\. This tallies exactly with the image formulation that we
+    have reviewed above. We have also learned that the dimensions of the array are
+    4000 × 6000 × 3, which correspond to the number of image rows, columns and channels,
+    respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The image is a 3-dimensional NumPy array. Hence you can manipulate the array
+    using NumPy syntax.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s now try to access the values of the very first pixel situated at the upper
+    left hand corner of the image. Keep in mind that arrays in Python are zero-indexed,
+    and hence the coordinates of this pixel are (0, 0).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may see from the output that, as expected, each pixel carries three values,
+    one for each of the three channels that make up the image. We will discover to
+    which specific channel each of these three values corresponds in the next section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**NOTE**: An important point to keep in mind is that, if the `imread` method
+    fails to load the input image (because the provided image name does not exist
+    or its path is invalid) it will not generate an error itself, but rather returns
+    a `NoneType` object. Hence, the following check can be included before proceeding
+    to run further code that eventually makes use of the `img` values:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next we shall display the image using the Matplotlib package, as well as OpenCV’s
+    `imshow` method. The latter takes as its first argument the name of the window
+    that will contain the image, and the image to be displayed as its second argument.
+    We will also be calling OpenCV’s `waitkey` function after the image is displayed,
+    which waits for a keyboard event for a specified amount of milliseconds. If a
+    value of 0 is, otherwise, provided as input, the `waitkey` function will wait
+    indefinitely, allowing us to see the displayed window until a keyboard event is
+    generated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Using Matplotlib:**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Python'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/2933a9d901d954c29d614cd980b871cd.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying a BGR image using Matplotlib.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Using OpenCV:**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Python'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/8dbc4841817c551d01a4836007058329.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Displaying a BGR image using OpenCV.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you are surprised with the output produced by Matplotlib and are wondering
+    how this happened, the reason for this is that OpenCV reads and displays the image
+    in BGR rather than RGB order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Initial developers at OpenCV chose the BGR color format (instead of the RGB
+    one) because at the time, the BGR color format was very popular among software
+    providers and camera manufacturers.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*Matplotlib, on the other hand, uses the RGB color format and, hence, requires
+    that the BGR image is first converted to RGB before it can be displayed well.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With OpenCV, you can also write a NumPy array as an image into a file, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: When you write an image with `imwrite()` function in OpenCV, you have to make
+    sure the NumPy array is in the format that OpenCV expects, namely, it is a 3-dimensional
+    array of uint8 in row × column × channel in BGR channel order.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Converting Between Color Spaces**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Conversion of an image from one color space to another can be achieved by means
+    of OpenCV’s `cvtColor` method, which takes the source image as an input argument
+    together with a color space conversion code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to convert between the BGR and RGB color spaces, we may use the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we had to retry displaying the image using Matplotlib, we may now see that
+    it is displayed correctly:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/74fb719469ac3471da5b7df3ae82aa05.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Converting a BGR image to RGB and displaying it using Matplotlib.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we also had to access the values of the very first pixel of the newly converted
+    RGB image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: and compare them to the values, [173 186 232], that we had printed earlier for
+    the BGR image, we may notice the first and third values have now been swapped.
+    What this tells us is that the order of the values, therefore, corresponds to
+    the order of the image channels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: BGR to RGB is not the only color conversion that may be achieved by this method.
+    Indeed, there are many color space conversion codes to choose from, such as `COLOR_RGB2HSV`
+    that converts between the RGB and the HSV (Hue, Saturation, Value) color spaces.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another popular conversion is from RGB to grayscale where, as we have mentioned
+    earlier, the resulting output is expected to be a single channel image. Let’s
+    try it out:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/8c75df1bdc49457e4d19586cbad2ca19.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Converting an RGB image to grayscale and displaying it using OpenCV.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The conversion appears to have been carried out well, but let’s also try to
+    access the value of the very first pixel at coordinates, (0, 0):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: As expected, only a single number is printed out that corresponds to the pixel’s
+    intensity value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is worth noting that this is not the only method by which the image may
+    be converted to grayscale. Indeed, if we had to be working with an application
+    that only requires the use of a grayscale (rather than an RGB) image, then we
+    can also choose to read the image in grayscale straight away:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**NOTE**: The OpenCV documentation here warns that using `IMREAD_GRAYSCALE`
+    will make use of the codec’s internal grayscale conversion when available, which
+    may result in a different output to that of `cvtColor()`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `imread` method also supports several other flag values, two of which are
+    `IMREAD_COLOR` and `IMREAD_UNCHANGED`. The `IMREAD_COLOR` flag is the default
+    option that converts an image to BGR color, ignoring any transparency. The `IMREAD_UNCHANGED`,
+    on the other hand, reads an image that may also include an alpha channel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: OpenCV Color Conversion Codes, [https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html#func-members](https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html#func-members)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you familiarised yourself with the most basic OpenCV operations
+    that are essential when working with images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How a digital image is formulated in terms of its spatial coordinates and intensity
+    values.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How an image is read and displayed in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How an image’s pixel values can be accessed.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How an image may be converted from one color space to another.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.*****
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,747 @@
+- en: Interior Design with Stable Diffusion (8-day mini-course)
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/interior-design-with-stable-diffusion-7-day-mini-course/](https://machinelearningmastery.com/interior-design-with-stable-diffusion-7-day-mini-course/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: At its core, Stable Diffusion is a deep learning model that can generate pictures.
+    Together with some other models and UI, you can consider that as a tool to help
+    you create pictures in a new dimension that not only you can provide instructions
+    on how the picture looks like, but also the generative model to brainstorm what
+    you didn’t specify.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this 7-part crash course, you will learn from examples how to make use of
+    Stable Diffusion to finish a drawing project. This mini-course is focused on the
+    use of generative AI models, but not their internal mechanism. Therefore, you
+    shouldn’t worry about the sophisticated theory of how they can provide such amazing
+    results. Yet, since nothing can be done in a single step, you should expect to
+    learn how the many extensions and parameters play together to finish an image
+    generation project. Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/4b6e59f01a7d37ff105cdda96cc51853.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Interior Design with Stable Diffusion (7-day mini-course)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Arno Smit](https://unsplash.com/photos/opened-door-of-house-iI72r3gSwWY).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Who Is This Mini-Course For?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we start, let’s ensure you are in the right place. The list below provides
+    some general guidelines as to who this course was designed for. Don’t panic if
+    you don’t match these points exactly; you might just need to brush up in one area
+    or another to keep up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**You know what is a generative model**. You are not expecting magic. Everything
+    you’re going to see is the result of some sophisticated algorithms. Therefore,
+    all results can be explained and the steps are reusable once you know what’s under
+    the hood.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**You are not an artist**. You are not painting on a digital canvas. Indeed,
+    you create a picture without painting. The generative model does not allow you
+    to control too much detail, but you can give some high-level instructions. This
+    means you should not expect to be able to control the output precisely. And you
+    also do not need to learn the drawing techniques to create a good picture.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**You have the patience to work on a project**. Similar to creating a picture
+    with a paintbrush, you need to be patient, and it takes time to finish a project.
+    Unlike painting, the time you spend is to experiment with the different knobs
+    in the generation pipeline. Depending on the nature of your project, you need
+    to check what are the optimal parameters for the best result.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This mini-course is not a textbook on stable diffusion. But you are going to
+    see how the many components work and how they help in the final result of image
+    generation. The key is to to know the role of each component and parameter so
+    that you can decide how you want to use them in your next project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mini-Course Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This mini-course is divided into eight parts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each lesson was designed to take around 30 minutes. You might finish some much
+    sooner, and in others, you may choose to go deeper and spend more time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can complete each part as quickly or as slowly as you like. A comfortable
+    schedule may be to complete one lesson daily over eight days. Highly recommended.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The topics you will cover over the next 8 lessons are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Lesson 01**: Create Your Stable Diffusion Environment'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Lesson 02**: Make Room for Yourself'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Lesson 03**: Trial and Error'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Lesson 04**: The Prompt Syntax'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Lesson 05**: More Trial and Error'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Lesson 06**: ControlNet'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Lesson 07**: LoRA'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Lesson 08**: Better Face'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This is going to be a lot of fun.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You’ll have to do some work: a little reading, research, and experiments. You
+    want to learn how to finish a stable diffusion project, right?'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Post your results in the comments**; I’ll cheer you on!'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hang in there; don’t give up.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 01: Create Your Stable Diffusion Environment'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Stable Diffusion is a deep learning model that simulates a diffusion process
+    to generate pictures. You need to know about the physics of diffusion to appreciate
+    how a seemingly unimaginative computer algorithm can produce artwork. However,
+    as a user, you can assume it is a black box that can transform your input, such
+    as a textual description, into a picture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Stable Diffusion is a base model, and the community produces many retrained
+    or fine-tuned derivative models. But after all, it is a deep learning model that
+    requires a lot of computation power. To run the model, it is recommended that
+    you have a computer with a decent GPU. If your computer doesn’t have one, you
+    can use one from cloud providers such as AWS.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may want to have a UI to the model to make your workflow smoother. It helps
+    you iterate faster and avoids many errors that you may commit if you need to write
+    code. There are several UI for Stable Diffusion. The ComfyUI is very flexible
+    and powerful. However, the Web UI created by Automatic1111 on GitHub is the easiest
+    to use. This is the UI you will use in these lessons.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To start, you need a modern Python, such as Python 3.10 or above. Linux machine
+    is preferred since the process is much smoother, but Windows or Mac also work.
+    First, you download the Web UI from GitHub. In Linux, you run the git command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, you need to download the Stable Diffusion models. Civitai is the most
+    famous community that provides user-generated models. For example, you can get
+    the “Realistic Vision v6” model from this location:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://civitai.com/models/4201/realistic-vision-v60-b1](https://civitai.com/models/4201/realistic-vision-v60-b1)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Select “safetensors” format and click the download button. Then move the downloaded
+    model file into `stable-diffusion-webui/models/Stable-diffusion`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another place you can find models is Hugging Face. You can search with the
+    keyword “stable diffusion” to find them. For example, these are the locations
+    you can find the Deliberate model as well as the original Stable Diffusion v1.5
+    model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://huggingface.co/XpucT/Deliberate](https://huggingface.co/XpucT/Deliberate)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[https://huggingface.co/models?pipeline_tag=text-to-image&sort=downloads](https://huggingface.co/models?pipeline_tag=text-to-image&sort=downloads)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Go to the “files” tab on those pages to get the model file. Similarly, move
+    them to `stable-diffusion-webui/models/Stable-diffusion` after you download them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once you have the models downloaded, you can go to the Web UI directory and
+    start it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will automatically create a Python virtual environment, install the required
+    packages (such as PyTorch), and start the Web UI. If you launched it with your
+    own computer, you should see a browser launched to the URL:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: http://localhost:7860
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'But if you are running this remotely, such as on a remote computer on the cloud,
+    you should make the Web UI to “listen” on public IP:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And this is what you should see on the browser:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/9366c3a18318a50e0e03fadfdf6a9d92.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Your task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Try to follow the steps above and launch your Web UI. Make sure you encountered
+    no error and have your checkpoint in the dropdown at the top left corner.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 02: Make Room for Yourself'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s imagine you’re an interior designer, and your project is to design a bedroom.
+    You want to show your idea to other people. You can draw it on a paper. But you
+    can also ask your computer to draw it for you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To make Stable Diffusion to draw a picture, you can provide a text prompt and
+    expect a picture in return. That’s the “text2img” feature in the Web UI. You can
+    type in the following in the positive prompt box:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: bed room, modern style, one window on one of the wall, realistic photo
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Make sure you select a ” checkpoint, ” which is the Stable Diffusion model you’re
+    using. Set the width and height to 768 and 512 respectively. Then click “Generate”
+    and wait for the picture. That’s your first artwork created by Stable Diffusion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you can see on the screen, you can adjust a lot more before generating the
+    picture. You used the positive prompt, but there were also negative prompts. The
+    positive prompt is supposed to describe the output, but the negative prompt tells
+    what the picture should avoid. Since you’re asking for a “realistic photo”, you
+    can enhance the result by saying any other style in the negative prompt, such
+    as
+  prefs: []
+  type: TYPE_NORMAL
+- en: sketch, black and white, painting
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: You can put more, such as “outdoor,” since, obviously, your output should be
+    an indoor scene. You can also try to adjust some keywords if you want a room in
+    a different style, such as “brick wall” or “inside a cabin”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/19ebef625553078f395595c2cad6595c.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Generating an image of a room using just the textual prompts
+  prefs: []
+  type: TYPE_NORMAL
+- en: Any prompts (even non-English) can be converted into an embedding vector using
+    a standard algorithm. However, different models may understand the prompt differently.
+    A keyword not known by the model may be ignored, or interpreted wrongly. That’s
+    why you should experiment with different models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In the web UI, you can see many other options. Try the above and generate for
+    multiple times. You should see a different picture each time. Then, find the box
+    for random seed, enter a fixed positive integer, and generate again. Do you see
+    the picture always staying the same? How about a fixed random seed but changing
+    the sampler?
+  prefs: []
+  type: TYPE_NORMAL
+- en: To recreate the same picture, you need the prompt, the model, and the options,
+    including the seed, the sampler, and the steps, all fixed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 03: Trial and Error'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Unfortunately, the nature of the diffusion process involves a lot of randomness,
+    with many knobs, and it is not easy to tell if your settings are right. The easiest
+    way to check is to keep your settings (including the prompt, the model, the scheduler,
+    and so on) but adjust the random seed. If multiple random seeds produce a consistently
+    wrong result, you know you should change something else.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the web UI, you can adjust the batch size and batch count while keeping the
+    random seed at $-1$ to generate multiple pictures with one press of the generate
+    button.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As in many deep learning models, data are processed in batch, and the batch
+    size tells how many pictures you’re asking the Stable Diffusion model to work
+    on concurrently, each with a different random seed. This works only if your GPU
+    has enough memory. Otherwise, you can increase the batch count, which means the
+    number of batches you want to generate. Each batch will run the generation once
+    (hence proportionally slower).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/b7fa2d64edbb378d19dea133971ef638.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Setting “batch size” to 4 will generate four images in one shot. Setting “batch
+    count” will have a similar effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: With multiple batch sizes or batch counts, you will see all outputs in the web
+    UI at once, with a “contact sheet” showing everything. You can click on each individual
+    picture to check the parameters (including the random seed used) to generate it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/fa176cbd83d826f18998300fa9d71efd.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The multiple images are generated in the same batch using the same prompts and
+    settings but varying random seeds.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Try to generate pictures with multiple batch sizes or batch counts. Adjust your
+    prompt or other settings and try again. Can you find the button to download the
+    picture showing on the screen? Do you know how to find the history of all pictures
+    you generated before? There’s a tab for that in the Web UI. Can you also find
+    the location on your disk where the previously generated pictures are stored?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 04: The Prompt Syntax'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You provided a prompt to the Stable Diffusion, and there is a preprocessor to
+    convert your textual prompt into a numerical embedding vector. The prompt will
+    be broken down into keywords, and you can make each have a different impact on
+    the picture generation process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider a prompt like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: bed room, modern style, one window on one of the wall, gray bedsheet, wooden
+    nightstand, pendant light, picture on wall, (a cat sleeping on the floor:1.1),
+    realistic photo
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In this prompt, you see the fragment “(a cat sleeping on the floor:1.1)” is
+    in parentheses, and it has the style of “(text:weight)”. This makes the quoted
+    text have a different weight to the final embedding vector, which the default
+    weight is 1.0\. You can use this prompt syntax in both the positive and negative
+    prompt boxes in the Web UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You should not try a very extreme weight because the model is not designed for
+    that. Normally, your weight should be between 0.5 and 1.5\. If you need a very
+    extreme weight, that may mean your model is not trained to understand that keyword.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Check out [https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki)
+    and see what prompt syntax is supported. This is handled by the prompt processor
+    in the Web UI and is not part of the Stable Diffusion model. There is a syntax
+    that allows you to use one prompt for the first half of the generation steps and
+    another prompt for the remaining steps. How to write such a prompt?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 05: More Trial and Error'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With the same set of parameters, you can use batch size to generate multiple
+    pictures simultaneously with different random seeds. It usually works and allows
+    you to find a good seed for a good picture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sometimes, however, you need to experiment with different parameters because
+    you are not sure which one can produce the right effect. This can be trying the
+    same prompt on different models, or replacing a keyword in your prompt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: By default, there is a “scripts” section in the Web UI and there is a “X/Y/Z
+    plot” in that section. This name means to create “axes” where each point in the
+    axes is an option, so that you are trying all combinations with one button click.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s try the following: Set the positive prompt to be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: bed room, modern style, one window on one of the wall, realistic photo
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'and the negative prompt to be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: sketch, black and white, painting
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Then select “X/Y/Z plot” in the scripts section and pick “Prompt S/R” for the
+    “X type”, then type in this for “X values”:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: modern, royal, medieval, japanese
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '![](../Images/a0bde43e5eb199362bc4db17fd98a0b7.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using the “X/Y/Z plot” script and “Prompt S/R” type to generate multiple images
+    with variation in the prompt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All values in X/Y/Z plot sections are comma-delimited. The first value, “modern,”
+    is what to search (S), and the rest are to replace (R). That’s how the Prompt
+    S/R helps you build the combinations. When you click “generate”, you will see
+    a picture like the above. For example, a modern-style bedroom has a minimalist
+    style of decoration, while a Japanese bedroom has no bed but a tatami.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: There is also a “prompt matrix” in the scripts, but “Prompt S/R” is easier to
+    use. Try with the “X/Y/Z plot” with other “types” and “values”. You can use at
+    most three axes at the same time. Do you find what “type” allows you to try with
+    multiple models? Do you think different models can give you different rooms? Try
+    using a prompt to generate a human in the picture. You should see how different
+    models generate human faces differently. The X/Y/Z plot is a powerful feature
+    that lets you explore the options to generate a picture you like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 06: ControlNet'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Behind the scene, the Stable Diffusion model is to start with a matrix of random
+    numbers and slowly convert them into a matrix of pixels where you can recognize
+    it as a picture that your prompt describes. This process involves multiple iterations
+    (the scheduler steps), and the amount of randomness to remove depends on the parameters
+    you set in the Web UI.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since there are multiple iterations, you can deliberately adjust the output
+    of each iteration before feeding it back to the Stable Diffusion model. This is
+    the idea of ControlNet. To use ControlNet, check the “Extensions” tab in the Web
+    UI and install the ControlNet plugin. Then you should also download and install
+    the ControlNet models from Hugging Face, following the instructions in the wiki
+    page of the ControlNet extension:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://github.com/Mikubill/sd-webui-controlnet/wiki/Model-download](https://github.com/Mikubill/sd-webui-controlnet/wiki/Model-download)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Once you installed the ControlNet, you may want to restart the Web UI (there’s
+    a button in the extensions tab) and refresh your browser to load it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s try to solve this prompt: If you generate the room multiple times, you
+    can see the angle of view is different each time. It will be difficult to write
+    a prompt to describe the angle you want, but it will be easy to show it in a picture.
+    Let’s download and use this “empty room” picture:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://machinelearningmastery.com/wp-content/uploads/2024/09/RoomAnime.png](https://machinelearningmastery.com/wp-content/uploads/2024/09/RoomAnime.png)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[![](../Images/473493ee6a1c22b2d178023b5c43e438.png)](https://machinelearningmastery.com/wp-content/uploads/2024/09/RoomAnime.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Image of an empty room in anime style. Generated by the author using Stable
+    Diffusion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You set the prompt and other settings as you did previously. But this time,
+    expand and enable the ControlNet section. On the “Single Image” tab, upload this
+    picture. Then select “MLSD” as the “Control Type”. Most importantly, set the “Starting
+    Control Step” to 0 and the “Ending Control Step” to 0.3\. This means you only
+    use this ControlNet in the first 30% of the steps. For example, if you selected
+    the sampling steps as 40, ControlNet will interfere with the image at steps 0
+    to 12.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Set a batch size and generate. You will see that the generated image all looks
+    at the same angle. This is because “MLSD” is an edge detection ControlNet, which
+    converts your uploaded picture into line art and applies the lines to the picture.
+    You can try changing the Control Type to “Canny,” which should have a similar
+    effect as it is another edge detection algorithm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/446680136c0943618bc4bef28489ccce.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using the MLSD ControlNet to generate pictures of a room in the same angle of
+    view.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: After you generate a picture by following the instructions above, do you see
+    there’s a way to look at what the edge detection result looks like? Do you see
+    there are some parameters to control the sensitivity of the edge detection algorithm?
+    There’s another Control Type called “Scribble”. This does not require you to upload
+    a picture but allows you to draw one with your mouse. Try this one and see the
+    effect.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/d91dcb16c09a1e3e5176b0887c58a030.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using the “scribble” ControlNet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 07: LoRA'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'ControlNet is not the only way to interfere with the diffusion process that
+    generates the picture. LoRA is a plugin that can also apply an effect to the output.
+    First, let’s download and use a Stable Diffusion XL model (SDXL), like the one
+    here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://civitai.com/models/312530](https://civitai.com/models/312530) (CyberRealistic
+    XL model)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Then you can download the “Better Picture, More Details LoRA” from Civitai:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://civitai.com/models/126343/better-picture-more-details-lora](https://civitai.com/models/126343/better-picture-more-details-lora)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: and save it to the path (`stable-diffusion-webui/models/Lora`). Note that LoRA
+    needs a matching Stable Diffusion architecture. This one requires SDXL. Some other
+    LoRA may require SD1 or SD2\. You cannot mix them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/5405f04b66bbce212b9c0ef75897dcd0.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: LoRA model can be downloaded from Civitai.com. Note that this particular LoRA
+    requires the use of an SDXL-based model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After you download the LoRA, try with the following prompt:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: bed room, modern style, one window on one of the wall, gray bedsheet, wooden
+    nightstand, pendant light, picture on wall, (a child girl sitting on the floor
+    holding a cat:1.2), realistic photo, <lora:SDXLHighDetail_v5:1.1>
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The part with an angle bracket is how you use a LoRA in the Web UI. You need
+    to specify the filename of the LoRA and the weight you want to use the LoRA. Some
+    LoRA may allow you to use negative weight, but you must check. If you omit the
+    “:1.1” part, the default weight 1.0 is assumed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This particular LoRA adds details such as texture to the picture you generate.
+    You should see, for example, more realistic fabric and hair.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/c98b873a99c6ad1c01d1419c77b5b3ab.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using a LoRA in the generation pipeline
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Explore Hugging Face and Civitai for LoRA models. Do you see how you can check
+    if the LoRA is for SD1, SD2, or SDXL? Do you see examples on how to use them (especially
+    in Civitai)? Can you use a LoRA for SDXL while enabling a ControlNet on SD 1.5?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Lesson 08: Better Face'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the previous lesson, you saw “a child girl sitting on the floor holding a
+    cat” added to the prompt. This makes the picture more complicated, and you should
+    find it easier to see the difference between different models. However, you should
+    also see that the human face sometimes looks unnatural. This is especially pronounced
+    if you are not generating a portrait but where the human only occupies a small
+    part of the picture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a way to fix it. First, you go to the “Extensions” tab and install
+    the plugin named “ADetailer”. You may need to reload the Stable Diffusion Web
+    UI after installation. Then you should set the prompt and other options as before.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Afterward, you can expand the “ADetailer” section and select “face_yolov8n.pt”
+    as the face detector. You can skip the prompt or set a prompt like “sleepy face”.
+    What the ADetailer does is detect faces on the generated picture after the diffusion
+    process is completed, then regenerate the faces using your prompt. This helps
+    to make faces more realistic, or adjust the facial expression more precisely.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/b6d820c1657570b2f4dc5ced393ac1c1.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using ADetailer to create realistic faces
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Using ADetailer corrects malformed faces to make the picture better but cannot
+    make the face look like another person. This is the job of another plugin: The
+    ReActor. Similarly, you need to go to the “Extensions” tab to install it. Then,
+    expand the “ReActor” section and upload a picture of a face. For example, this
+    picture:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://unsplash.com/photos/girl-sitting-and-leaning-on-hedge-YWrXZjb3Ulg](https://unsplash.com/photos/girl-sitting-and-leaning-on-hedge-YWrXZjb3Ulg)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '![](../Images/620416bb4af145aed76dbf4d43438852.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Photo by [Kune Chan](https://unsplash.com/photos/girl-sitting-and-leaning-on-hedge-YWrXZjb3Ulg).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the best result, the picture you choose should be frontal and clean so more
+    features of a face can be seen. By just uploading the picture and generate, you
+    should see all pictures generated resemble the person in the picture you uploaded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/4af9be6445ed52f0dc035e17fd67147a.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using ReActor extension to generate a picture with reference to another portrait
+  prefs: []
+  type: TYPE_NORMAL
+- en: Your task
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In ADetailer, you can polish not only faces but also hands. Can you find the
+    detector for this? In ReActor, you can provide a picture of multiple people and
+    select different faces to use. How can you control this?
+  prefs: []
+  type: TYPE_NORMAL
+- en: This was the final lesson.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The End! (*Look How Far You Have Come*)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You made it. Well done!
+  prefs: []
+  type: TYPE_NORMAL
+- en: You are now an interior designer with a helper called Stable Diffusion. You
+    can easily let the computer brainstorm different designs and produce design sketches
+    for you. This is how you can leverage the power of generative AI to save you time
+    and let you focus more on the idea, not the details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Take a moment and look back at how far you have come.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You learned how to set up and run Stable Diffusion quickly.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You learned how to control the image generation using prompts and the various
+    syntaxes you can use in the prompt.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You learned a few extensions for the Web UI that can help you generate a better
+    picture.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You learned how to experiment with the generation process efficiently.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Don’t make light of this; you have come a long way in a short time. This is
+    just the beginning of your generative AI journey. Keep practicing and developing
+    your skills.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**How did you do with the mini-course?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Did you enjoy this crash course?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Do you have any questions? Were there any sticking points?**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let me know. Leave a comment below.
+  prefs: []
+  type: TYPE_NORMAL

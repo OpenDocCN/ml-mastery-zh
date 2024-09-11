@@ -1,0 +1,284 @@
+- en: Understanding Traceback in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/understanding-traceback-in-python/](https://machinelearningmastery.com/understanding-traceback-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When an exception occurs in a Python program, often a traceback will be printed.
+    Knowing how to read the traceback can help you easily identify the error and make
+    a fix. In this tutorial, we are going to see what the traceback can tell you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to read a traceback
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to print the call stack without an exception
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is not shown in the traceback
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/bac7f8e495a1a3172f09a36f73585547.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding Traceback in Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Marten Bjork](https://unsplash.com/photos/GM9Xpgb0g98), some rights
+    reserved
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The call hierarchy of a simple program
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Traceback upon exception
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Triggering traceback manually
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: An example in model training
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The call hierarchy of a simple program
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s consider a simple program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This program will print the Python dictionary `data` with indentations. Its
+    output is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is a short program, but functions are calling each other. If we add a
+    line at the beginning of each function, we can reveal how the output is produced
+    with the flow of control:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and the output will be messed with more information:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: So now we know the order of how each function is invoked. This is the idea of
+    a call stack. At any point in time, when we run a line of code in a function,
+    we want to know what invoked this function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Traceback upon exception
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'If we make one typo in the code like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The typo is at the last line, where the closing bracket should be at the end
+    of the line, not before any `+`. The return value of the `print()` function is
+    a Python `None` object. And adding something to `None` will trigger an exception.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you run this program using the Python interpreter, you will see this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The lines starting with “Traceback (most recent call last):” are the traceback.
+    It is the **stack** of your program at the time when your program encountered
+    the exception. In the above example, the traceback is in the “most recent call
+    last” order. Hence your main function is at the top while the one triggering the
+    exception is at the bottom. So we know the issue is inside the function `printdict()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Usually, you will see the error message at the end of the traceback. In this
+    example, it is a `TypeError` triggered by adding `None` and string. But the traceback’s
+    help stops here. You need to figure out which one is `None` and which one is string.
+    By reading the traceback, we also know the exception-triggering function `printdict()`
+    is invoked by `indentprint()`, and it is in turn invoked by `printlist()`, and
+    so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you run this in a Jupyter notebook, the following is the output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The information is essentially the same, but it gives you the lines before and
+    after each function call.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Triggering traceback manually
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The easiest way to print a traceback is to add a `raise` statement to manually
+    create an exception. But this will also terminate your program. If we want to
+    print the stack at any time, even without any exception, we can do so with the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The line `traceback.print_stack()` will print the current call stack.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But indeed, we often want to print the stack only when there is an error (so
+    we learn more about why it is so). The more common use case is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a typical pattern for repeatedly calculating a function, such as Monte
+    Carlo simulation. But if we are not careful enough, we may run into some error,
+    such as in the above example where we may have division by zero. The problem is,
+    in the case of more complicated computations, you can’t easily spot the flaw.
+    Such as in the above, the issue is buried inside the call to `compute()`. Therefore,
+    it is helpful to understand how we get the error. But at the same time, we want
+    to handle the case of the error rather than let the entire program terminate.
+    If we use the `try-catch` construct, the traceback will not be printed by default.
+    Therefore, we need to use the `traceback.print_exc()` statement to do it manually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Actually, we can have the traceback more elaborated. Because the traceback
+    is the call stack, we can examine each function in the call stack and check the
+    variables in each level. In this complicated case, this is the function I usually
+    use to do a more detailed trace:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: An example of model training
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The call stack, as reported in the traceback, has a limitation: You can only
+    see the Python functions. It should be just fine for the program you wrote, but
+    many large libraries in Python have part of them written in another language and
+    compiled into binary. An example is Tensorflow. All the underlying operations
+    are in binary for the performance. Hence if you run the following code, you will
+    see something different:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `input_shape` parameter to the first LSTM layer in the model should be
+    `(n_in, 1)` to match the input data, rather than `(n_in+1, 1)`. This code will
+    print the following error once you invoke the last line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you look at the traceback, you cannot really see the complete call stack.
+    For example, the top frame you know you called `model.fit()`, but the second frame
+    is from a function named `error_handler()`. Here, you cannot see how the `fit()`
+    function triggered that. This is because Tensorflow is highly optimized. A lot
+    of stuff is hidden in compiled code and not visible by the Python interpreter.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, it is essential to patiently read the traceback and find the clue
+    to the cause. Of course, the error message usually should also give you some useful
+    hints.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Python Cookbook, 3rd edition](https://www.amazon.com/dp/1449340377) by David
+    Beazley and Brian K. Jones'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python Official Documentation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[The traceback module](https://docs.python.org/3/library/traceback.html) in
+    Python standard library'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered how to read and print the traceback from a
+    Python program.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What information the traceback tells you
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to print a traceback at any point of your program without raising an exception
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In the next post, we will see how to navigate the call stack inside the Python
+    debugger.
+  prefs: []
+  type: TYPE_NORMAL

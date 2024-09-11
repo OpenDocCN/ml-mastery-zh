@@ -1,0 +1,438 @@
+- en: Logistic Regression in OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/logistic-regression-in-opencv/](https://machinelearningmastery.com/logistic-regression-in-opencv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Logistic regression is a simple but popular machine learning algorithm for binary
+    classification that uses the logistic, or sigmoid, function at its core. It also
+    comes implemented in the OpenCV library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will learn how to apply OpenCV’s logistic regression algorithm,
+    starting with a custom two-class dataset that we will generate ourselves. We will
+    then apply these skills for the specific image classification application in a
+    subsequent tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important characteristics of the logistic regression algorithm.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the logistic regression algorithm on a custom dataset in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started. [![](../Images/57bfb0044c00503d6534f6ef446d5ed9.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Logistic Regression in OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Fabio Santaniello Bruun](https://unsplash.com/photos/aerial-phoography-of-road-near-river-and-green-leafed-trees-Ke-ENe3ByiQ).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reminder of What Logistic Regression Is
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discovering Logistic Regression in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Reminder of What Logistic Regression Is**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The topic surrounding logistic regression has already been explained well in
+    these tutorials by Jason Brownlee [[1](https://machinelearningmastery.com/logistic-regression-for-machine-learning/),
+    [2](https://machinelearningmastery.com/logistic-regression-tutorial-for-machine-learning/),
+    [3](https://machinelearningmastery.com/implement-logistic-regression-stochastic-gradient-descent-scratch-python/)],
+    but let’s first start with brushing up on some of the most important points:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Logistic regression takes its name from the function used at its core, the
+    *logistic function* (also known as the sigmoid function).  **'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***   **Despite the use of the word *regression* in its name, logistic regression
+    is a method for binary classification or, in simpler terms, problems with two-class
+    values.**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **Logistic regression can be regarded as an extension of linear regression
+    because it maps (or *squashes*) the real-valued output of a linear combination
+    of features into a probability value within the range [0, 1] through the use of
+    the logistic function. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **Within a two-class scenario, the logistic regression method models
+    the probability of the default class. As a simple example, let’s say that we are
+    trying to distinguish between classes of flowers A and B from their petal count,
+    and we are taking the default class to be A. Then, for an unseen input X, the
+    logistic regression model would give the probability of X belonging to the default
+    class A:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**$$ P(X) = P(A = 1 | X) $$'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The input X is classified as belonging to the default class A if its probability
+    P(X) > 0.5\. Otherwise, it is classified as belonging to the non-default class
+    B. **'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***   **The logistic regression model is represented by a set of parameters
+    known as coefficients (or weights) learned from the training data. These coefficients
+    are iteratively adjusted during training to minimize the error between the model
+    predictions and the actual class labels. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **The coefficient values may be estimated during training using gradient
+    descent or maximum likelihood estimation (MLE) techniques. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**## **Discovering Logistic Regression in OpenCV**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s start with a simple binary classification task before moving on to more
+    complex problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As we have already done in related tutorials through which we familiarised
+    ourselves with other machine learning algorithms in OpenCV (such as the SVM algorithm),
+    we shall be generating a dataset that comprises 100 data points (specified by
+    `n_samples`), equally divided into 2 Gaussian clusters (specified by `centers`)
+    having a standard deviation set to 5 (specified by `cluster_std`). To be able
+    to replicate the results, we shall again exploit the `random_state` parameter,
+    which we’re going to set to 15:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above should generate the following plot of data points. You may note
+    that we are setting the color values to the ground truth labels to be able to
+    distinguish between data points belonging to the two different classes:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/ea8d6b8fc2f5dc4d1dde8a517513a06d.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Data Points Belonging to Two Different Classes
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The next step is to split the dataset into training and testing sets, where
+    the former will be used to train the logistic regression model and the latter
+    to test it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/12507cdf6dac3107c3c43a733a0944d3.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Splitting the Data Points in Training and Testing Sets
+  prefs: []
+  type: TYPE_NORMAL
+- en: The image above indicates that the two classes appear clearly distinguishable
+    in the training and testing data. For this reason, we expect that this binary
+    classification problem should be a straightforward task for the trained linear
+    regression model. Let’s create and train a logistic regression model in OpenCV
+    to eventually see how it performs on the testing part of the dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first step is to create the logistic regression model itself:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In the next step, we shall choose the training method by which we want the
+    model’s coefficients to be updated during training. The OpenCV implementation
+    lets us choose between two different methods: the *Batch Gradient Descent* and
+    the *Mini-Batch Gradient Descent* methods.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the *Batch Gradient Descent* method is chosen, the model’s coefficients will
+    be updated using the entire training dataset at each iteration of the gradient
+    descent algorithm. If we are working with very large datasets, then this method
+    of updating the model’s coefficients can become very computationally expensive.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A more practical approach to updating the model’s coefficients, especially when
+    working with large datasets, is to opt for a *Mini-Batch Gradient Descent* method,
+    which rather divides the training data into smaller batches (called mini-batches,
+    hence the name of the method) and updates the model’s coefficients by processing
+    one mini-batch at a time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We may check what OpenCV implements as its default training method by making
+    use of the following line of code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The returned value of 0 represents the Batch Gradient Descent method in OpenCV.
+    If we want to change this to the Mini-Batch Gradient Descent method, we can do
+    so by passing `ml.LogisticRegression_MINI_BATCH` to the `setTrainMethod` function,
+    and then proceed to set the size of the mini-batch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Setting the mini-batch size to 5 means that the training data will be divided
+    into mini-batches containing 5 data points each, and the model’s coefficients
+    will be updated iteratively after each of these mini-batches is processed in turn.
+    If we had to set the size of the mini-batch to the total number of samples in
+    the training dataset, this would effectively result in a Batch Gradient Descent
+    operation since the entire batch of training data would be processed at once,
+    at each iteration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we shall define the number of iterations that we want to run the chosen
+    training algorithm for, before it terminates:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We’re now set to train the logistic regression model on the training data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: As mentioned earlier, the training process aims to adjust the logistic regression
+    model’s coefficients iteratively to minimize the error between the model predictions
+    and the actual class labels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each training sample we have fed into the model comprises two feature values,
+    denoted by $x_1$ and $x_2$. This means that we should expect the model we have
+    generated to be defined by two coefficients (one per input feature) and an additional
+    coefficient that defines the bias (or intercept).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then the probability value, $\hat{y}$, returned the model can be defined as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$ \hat{y} = \sigma( \beta_0 + \beta_1 \; x_1 + \beta_2 \; x_2 ) $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: where $\beta_1$ and $\beta_2$ denote the model coefficients, $\beta_0$ the bias,
+    and $\sigma$ the logistic (or sigmoid) function that is applied to the real-valued
+    output of the linear combination of features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s print out the learned coefficient values to see whether we retrieve as
+    many as we expect:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We find that we retrieve three values as expected, which means that we can
+    define the model that best separates between the two-class samples that we are
+    working with by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$ \hat{y} = \sigma( -0.0241 – \; 0.3461 \; x_1 + 0.0848 \; x_2 ) $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can assign a new, unseen data point to either of the two classes by plugging
+    in its feature values, $x_1$ and $x_2$, into the model above. If the probability
+    value returned by the model is > 0.5, we can take it as a prediction for class
+    0 (the default class). Otherwise, it is a prediction for class 1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s go ahead to see how well this model predicts the target class labels
+    by trying it out on the testing part of the dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can plot out the ground truth against the predicted classes for the testing
+    data, as well as print out the ground truth and predicted class labels, to investigate
+    any misclassifications:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/921729a1db7a6e7c73a3d6f9ad1d50dc.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Test Data Points Belonging to Ground Truth and Predicted Classes, Where a Red
+    Circle highlights a Misclassified Data Point
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this manner, we can see that one sample originally belonged to class 1 in
+    the ground truth data but has been misclassified as belonging to class 0 in the
+    model’s prediction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The entire code listing is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this tutorial, we have considered setting values for two specific training
+    parameters of the logistic regression model implemented in OpenCV. The parameters
+    defined the training method to use and the number of iterations for which we wanted
+    to run the chosen training algorithm during the training process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, these are not the only parameter values that can be set for the logistic
+    regression method. Other parameters, such as the learning rate and the type of
+    regularization to perform, can also be modified to achieve better training accuracy.
+    Hence, we suggest that you explore these parameters and investigate how different
+    values can affect the model’s training and prediction accuracy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Logistic Regression, [https://docs.opencv.org/3.4/dc/dd6/ml_intro.html#ml_intro_lr](https://docs.opencv.org/3.4/dc/dd6/ml_intro.html#ml_intro_lr)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to apply OpenCV’s logistic regression algorithm,
+    starting with a custom two-class dataset we generated.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important characteristics of the logistic regression algorithm.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the logistic regression algorithm on a custom dataset in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.**************
+  prefs: []
+  type: TYPE_NORMAL

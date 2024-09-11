@@ -1,0 +1,339 @@
+- en: Using Autograd in PyTorch to Solve a Regression Problem
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/using-autograd-in-pytorch-to-solve-a-regression-problem/](https://machinelearningmastery.com/using-autograd-in-pytorch-to-solve-a-regression-problem/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: We usually use PyTorch to build a neural network. However, PyTorch can do more
+    than this. Because PyTorch is also a tensor library with automatic differentiation
+    capability, you can easily use it to solve a numerical optimization problem with
+    gradient descent. In this post, you will learn how PyTorch’s automatic differentiation
+    engine, autograd, works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After finishing this tutorial, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is autograd in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make use of autograd and an optimizer to solve an optimization problem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/2e0828a473ddb5c2989609d73a615dac.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using autograd in PyTorch to solve a regression problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Billy Kwok](https://unsplash.com/photos/eCzKRT7svdc). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is in three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Autograd in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Autograd for Polynomial Regression
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Autograd to Solve a Math Puzzle
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Autograd in PyTorch
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In PyTorch, you can create tensors as variables or constants and build an expression
+    with them. The expression is essentially a function of the variable tensors. Therefore,
+    you may derive its derivative function, i.e., the differentiation or the gradient.
+    This is the foundation of the training loop in a deep learning model. PyTorch
+    comes with this feature at its core.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is easier to explain autograd with an example. In PyTorch, you can create
+    a constant matrix as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The above prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This creates an integer vector (in the form of a PyTorch tensor). This vector
+    can work like a NumPy vector in most cases. For example, you can do `x+x` or `2*x`,
+    and the result is just what you would expect. PyTorch comes with many functions
+    for array manipulation that match NumPy, such as `torch.transpose` or `torch.concatenate`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But this tensor is not assumed to be a variable for a function in the sense
+    that differentiation with it is not supported. You can create tensors that work
+    like a variable with an extra option:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will print:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Note that, in the above, a tensor of floating point values was created. It is
+    required because differentiation requires floating points, not integers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The operations (such as `x+x` and `2*x`) can still be applied, but in this
+    case, the tensor will remember how it got its values. You can demonstrate this
+    feature in the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'What it does is the following: This defined a variable `x` (with value 3.6)
+    and then computed `y=x*x` or $y=x^2$. Then you ask for the differentiation of
+    $y$. Since $y$ obtained its value from $x$, you can find the derivative $\dfrac{dy}{dx}$
+    at `x.grad`, in the form of a tensor, immediately after you run `y.backward()`.
+    You know $y=x^2$ means $y’=2x$. Hence the output would give you a value of $3.6\times
+    2=7.2$.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Autograd for Polynomial Regression
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: How is this feature in PyTorch helpful? Let’s consider a case where you have
+    a polynomial in the form of $y=f(x)$, and you are given several $(x,y)$ samples.
+    How can you recover the polynomial $f(x)$? One way is to assume a random coefficient
+    for the polynomial and feed in the samples $(x,y)$. If the polynomial is found,
+    you should see the value of $y$ matches $f(x)$. The closer they are, the closer
+    your estimate is to the correct polynomial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is indeed a numerical optimization problem where you want to minimize the
+    difference between $y$ and $f(x)$. You can use gradient descent to solve it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s consider an example. You can build a polynomial $f(x)=x^2 + 2x + 3$ in
+    NumPy as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This prints:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You may use the polynomial as a function, such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: And this prints `8.25`, for $(1.5)^2+2\times(1.5)+3 = 8.25$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now you can generate a number of samples from this function using NumPy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above, both `X` and `Y` are NumPy arrays of the shape `(20,1)`, and they
+    are related as $y=f(x)$ for the polynomial $f(x)$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now, assume you do not know what the polynomial is except it is quadratic.
+    And you want to recover the coefficients. Since a quadratic polynomial is in the
+    form of $Ax^2+Bx+C$, you have three unknowns to find. You can find them using
+    the gradient descent algorithm you implement or an existing gradient descent optimizer.
+    The following demonstrates how it works:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `print` statement before the for loop gives three random numbers, such
+    as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But the one after the for loop gives you the coefficients very close to that
+    in the polynomial:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'What the above code does is the following: First, it creates a variable vector
+    `w` of 3 values, namely the coefficients $A,B,C$. Then you create an array of
+    shape $(N,3)$, in which $N$ is the number of samples in the array `X`. This array
+    has 3 columns: the values of $x^2$, $x$, and 1, respectively. Such an array is
+    built from the vector `X` using the  `np.hstack()` function. Similarly, you build
+    the TensorFlow constant `y` from the NumPy array `Y`.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Afterward, you use a for loop to run the gradient descent in 1,000 iterations.
+    In each iteration, you compute $x \times w$ in matrix form to find $Ax^2+Bx+C$
+    and assign it to the variable `y_pred`. Then, compare `y` and `y_pred` and find
+    the mean square error. Next, derive the gradient, i.e., the rate of change of
+    the mean square error with respect to the coefficients `w` using the `backward()`
+    function. And based on this gradient, you use gradient descent to update `w` via
+    the optimizer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In essence, the above code will find the coefficients `w` that minimizes the
+    mean square error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using Autograd to Solve a Math Puzzle
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In the above, 20 samples were used, which is more than enough to fit a quadratic
+    equation. You may use gradient descent to solve some math puzzles as well. For
+    example, the following problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In other words,  to find the values of $A,B,C,D$ such that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\begin{aligned}
+  prefs: []
+  type: TYPE_NORMAL
+- en: A + B &= 9 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: C – D &= 1 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: A + C &= 8 \\
+  prefs: []
+  type: TYPE_NORMAL
+- en: B – D &= 2
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{aligned}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This can also be solved using autograd, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'There can be multiple solutions to this problem. One solution is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Which means $A=4.72$, $B=4.28$, $C=3.28$, and $D=2.28$. You can verify this
+    solution fits the problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The above code defines the four unknowns as variables with a random initial
+    value. Then you compute the result of the four equations and compare it to the
+    expected answer. You then sum up the squared error and ask PyTorch’s optimizer
+    to minimize it. The minimum possible square error is zero, attained when our solution
+    exactly fits the problem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Note the way PyTorch produces the gradient: You ask for the gradient of `sqerr`,
+    which it noticed that, among other things, only `A`, `B`, `C`, and `D` are its
+    dependencies that `requires_grad=True`. Hence four gradients are found. You then
+    apply each gradient to the respective variables in each iteration via the optimizer.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Articles:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Autograd mechanics](https://pytorch.org/docs/stable/notes/autograd.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Automatic differentiation package – torch.autograd](https://pytorch.org/docs/stable/autograd.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, we demonstrated how PyTorch’s automatic differentiation works.
+    This is the building block for carrying out deep learning training. Specifically,
+    you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is automatic differentiation in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can use gradient tape to carry out automatic differentiation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can use automatic differentiation to solve an optimization problem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

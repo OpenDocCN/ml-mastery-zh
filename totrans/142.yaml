@@ -1,0 +1,405 @@
+- en: Building Multilayer Perceptron Models in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/building-multilayer-perceptron-models-in-pytorch/](https://machinelearningmastery.com/building-multilayer-perceptron-models-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The PyTorch library is for deep learning. Deep learning, indeed, is just another
+    name for a large-scale neural network or multilayer perceptron network. In its
+    simplest form, multilayer perceptrons are a sequence of layers connected in tandem.
+    In this post, you will discover the simple components you can use to create neural
+    networks and simple deep learning models in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/13e5c97fd1dae9155df5f747a1c211bf.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building multilayer perceptron models in PyTorch
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Sharon Cho](https://unsplash.com/photos/fc7Kplqt9mk). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is in six parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Neural Network Models in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Model Inputs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Layers, Activations, and Layer Properties
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Loss Functions and Model Optimizers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Model Training and Inference
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Examination of a Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Neural Network Models in PyTorch
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'PyTorch can do a lot of things, but the most common use case is to build a
+    deep learning model. The simplest model can be defined using `Sequential` class,
+    which is just a linear stack of layers connected in tandem. You can create a `Sequential`
+    model and define all the layers in one shot; for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should have all your layers defined inside the parentheses in the processing
+    order from input to output. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The other way of using `Sequential` is to pass in an ordered dictionary in
+    which you can assign names to each layer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And if you would like to build the layers one by one instead of doing everything
+    in one shot, you can do the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: You will find this helpful in a more complex case where you need to build a
+    model based on some conditions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Model Inputs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The first layer in your model hints at the shape of the input. In the example
+    above, you have `nn.Linear(764, 100)` as the first layer. Depending on the different
+    layer type you use, the arguments may bear different meanings. But in this case,
+    it is a `Linear` layer (also known as a dense layer or fully connected layer),
+    and the two arguments tell the input and output dimensions of **this layer**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that the size of a batch is implicit. In this example, you should pass
+    in a PyTorch tensor of shape `(n, 764)` into this layer and expect a tensor of
+    shape `(n, 100)` in return, where `n` is the size of a batch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Layers, Activations, and Layer Properties
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are many kinds of neural network layers defined in PyTorch. In fact,
+    it is easy to define your own layer if you want to. Below are some common layers
+    that you may see often:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`nn.Linear(input, output)`: The fully-connected layer'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`nn.Conv2d(in_channel, out_channel, kernel_size)`: The 2D convolution layer,
+    popular in image processing networks'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`nn.Dropout(probability)`: Dropout layer, usually added to a network to introduce
+    regularization'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`nn.Flatten()`: Reshape a high-dimensional input tensor into 1-dimensional
+    (per each sample in a batch)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Besides layers, there are also activation functions. These are functions applied
+    to each element of a tensor. Usually, you take the output of a layer and apply
+    the activation before feeding it as input to a subsequent layer. Some common activation
+    functions are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`nn.ReLU()`: Rectified linear unit, the most common activation nowadays'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`nn.Sigmoid()` and `nn.Tanh()`: Sigmoid and hyperbolic tangent functions, which
+    are the usual choice in older literature'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`nn.Softmax()`: To convert a vector into probability-like values; popular in
+    classification networks'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find a list of all the different layers and activation functions in
+    PyTorch’s documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The design of PyTorch is very modular. Therefore, you don’t have much to adjust
+    in each component. Take this `Linear` layer as an example. You can only specify
+    the input and output shape but not other details, such as how to initialize the
+    weights. However, almost all the components can take two additional arguments:
+    the device and the data type.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A PyTorch device specifies where this layer will execute. Normally, you choose
+    between the CPU and the GPU or omit it and let PyTorch decide. To specify a device,
+    you do the following (CUDA means a supported nVidia GPU):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: or
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The data type argument (`dtype`) specifies what kind of data type this layer
+    should operate on. Usually, it is a 32-bit float, and usually, you don’t want
+    to change that. But if you need to specify a different type, you must do so using
+    PyTorch types, e.g.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Loss Function and Model Optimizers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A neural network model is a sequence of matrix operations. The matrices that
+    are independent of the input and kept inside the model are called weights. Training
+    a neural network will **optimize** these weights so that they produce the output
+    you want. In deep learning, the algorithm to optimize these weights is gradient
+    descent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many variations of gradient descent. You can make your choice by preparing
+    an optimizer for your model. It is not part of the model, but you will use it
+    alongside the model during training. The way you use it includes defining a **loss
+    function** and minimizing the loss function using the optimizer. The loss function
+    will give a **distance score** to tell how far away the model’s output is from
+    your desired output. It compares the output tensor of the model to the expected
+    tensor, which is called the **label** or the **ground truth** in a different context.
+    Because it is provided as part of the training dataset, a neural network model
+    is a supervised learning model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In PyTorch, you can simply take the model’s output tensor and manipulate it
+    to calculate the loss. But you can also make use of the functions provided in
+    PyTorch for that, e.g.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: In this example, the `loss_fn` is a function, and `loss` is a tensor that supports
+    automatic differentiation. You can trigger the differentiation by calling `loss.backward()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Below are some common loss functions in PyTorch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`nn.MSELoss()`: Mean square error, useful in regression problems'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`nn.CrossEntropyLoss()`: Cross entropy loss, useful in classification problems'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`nn.BCELoss()`: Binary cross entropy loss, useful in binary classification
+    problems'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Creating an optimizer is similar:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: All optimizers require a list of all parameters that it needs to optimize. It
+    is because the optimizer is created outside the model, and you need to tell it
+    where to look for the parameters (i.e., model weights). Then, the optimizer will
+    take the gradient as computed by the `backward()` function call and apply it to
+    the parameters based on the optimization algorithm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This is a list of some common optimizers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`torch.optim.Adam()`: The Adam algorithm (adaptive moment estimation)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`torch.optim.NAdam()`: The Adam algorithm with Nesterov momentum'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`torch.optim.SGD()`: Stochastic gradient descent'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`torch.optim.RMSprop()`: The RMSprop algorithm'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can find a list of all provided loss functions and optimizers in PyTorch’s
+    documentation. You can learn about the mathematical formula of each optimization
+    algorithm on the respective optimizers’ page in the documentation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Model Training and Inference
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'PyTorch doesn’t have a dedicated function for model training and evaluation.
+    A defined model by itself is like a function. You pass in an input tensor and
+    get back the output tensor. Therefore, it is your responsibility to write the
+    training loop. A minimal training loop is like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you already have a model, you can simply take `y_pred = model(X)` and use
+    the output tensor `y_pred` for other purposes. That’s how you use the model for
+    prediction or inference. A model, however, does not expect one input sample but
+    a batch of input samples in one tensor. If the model is to take an input vector
+    (which is one-dimensional), you should provide a two-dimensional tensor to the
+    model. Usually, in the case of inference, you deliberately create a batch of one
+    sample.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examination of a Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Once you have a model, you can check what it is by printing it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will give you, for example, the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you would like to save the model, you can use the `pickle` library from
+    Python. But you can also access it using PyTorch:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This way, you have the entire model object saved in a pickle file. You can
+    retrieve the model with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But the recommended way of saving a model is to leave the model design in code
+    and keep only the weights. You can do so with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `state_dict()` function extracts only the states (i.e., weights in a model).
+    To retrieve it, you need to rebuild the model from scratch and then load the weights
+    like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Resources
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You can learn more about how to create simple neural networks and deep learning
+    models in PyTorch using the following resources:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Online resources
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[`torch.nn` documentation](https://pytorch.org/docs/stable/nn.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[`torch.optim` documentation](https://pytorch.org/docs/stable/optim.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PyTorch tutorials](https://pytorch.org/tutorials/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you discovered the PyTorch API that you can use to create artificial
+    neural networks and deep learning models. Specifically, you learned about the
+    life cycle of a PyToch model, including:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Constructing a model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating and adding layers and activations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing a model for training and inference
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

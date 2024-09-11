@@ -1,0 +1,448 @@
+- en: Image Vector Representation for Machine Learning Using OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/image-vector-representation-for-machine-learning-using-opencv/](https://machinelearningmastery.com/image-vector-representation-for-machine-learning-using-opencv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: One of the pre-processing steps that are often carried out on images before
+    feeding them into a machine learning algorithm is to convert them into a feature
+    vector. As we will see in this tutorial, there are several advantages to converting
+    an image into a feature vector that makes the latter more efficient.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Among the different techniques for converting an image into a feature vector,
+    two of the most popular techniques used in conjunction with different machine
+    learning algorithms are the Histogram of Oriented Gradients and the Bag-of-Words
+    techniques.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover the Histogram of Oriented Gradients (HOG)
+    and the Bag-of-Words (BoW) techniques for image vector representation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are the advantages of using the Histogram of Oriented Gradients and the
+    Bag-of-Words techniques for image vector representation.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the Histogram of Oriented Gradients technique in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the Bag-of-Words technique in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started. [![](../Images/db84ce5bd8dc3f2d7c040fc6997726ab.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/vector_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Image Vector Representation for Machine Learning Using OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [John Fowler](https://unsplash.com/photos/RsRTIofe0HE), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are the Advantages of Using HOG or BoW for Image Vector Representation?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Histogram of Oriented Gradients Technique
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Bag-of-Words Technique
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Putting the Techniques to Test
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**What are the Advantages of Using HOG or BoW for Image Vector Representation?**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When working with machine learning algorithms, the image data typically undergoes
+    a data pre-processing step, which is structured so that the machine learning algorithms
+    can work with it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In OpenCV, for instance, the ml module requires that the image data is fed into
+    the machine learning algorithms in the form of feature vectors of equal length.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Each training sample is a vector of values (in Computer Vision it’s sometimes
+    referred to as feature vector). Usually all the vectors have the same number of
+    components (features); OpenCV ml module assumes that.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – [OpenCV](https://docs.opencv.org/4.x/dc/dd6/ml_intro.html), 2023.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: One way of structuring the image data is to flatten it out into a one-dimensional
+    vector, where the vector’s length would equal the number of pixels in the image.
+    For example, a $20\times 20$ pixel image would result in a one-dimensional vector
+    of length 400 pixels. This one-dimensional vector serves as the feature set fed
+    into the machine learning algorithm, where the intensity value of each pixel represents
+    every feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, while this is the simplest feature set we can create, it is not the
+    most effective one, especially when working with larger images that will result
+    in too many input features to be processed effectively by a machine learning algorithm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*This can dramatically impact the performance of machine learning algorithms
+    fit on data with many input features, generally referred to as the “*[*curse of
+    dimensionality*](https://en.wikipedia.org/wiki/Curse_of_dimensionality)*.”*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – [Introduction to Dimensionality Reduction for Machine Learning](https://machinelearningmastery.com/dimensionality-reduction-for-machine-learning/),
+    2020.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Rather, we want to reduce the number of input features that represent each image
+    so that, in turn, the machine learning algorithm can generalize better to the
+    input data. In more technical words, it is desirable to perform dimensionality
+    reduction that transforms the image data from a high-dimensional space to a lower
+    one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One way of doing so is to apply feature extraction and representation techniques,
+    such as the Histogram of Oriented Gradients (HOG) or the Bag-of-Words (BoW), to
+    represent an image in a more compact manner and, in turn, reduce the redundancy
+    in the feature set and the computational requirements to process it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another advantage to converting the image data into a feature vector using the
+    aforementioned techniques is that the vector representation of the image becomes
+    more robust to variations in illumination, scale, or viewpoint.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following sections, we will explore using the HOG and BoW techniques
+    for image vector representation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Histogram of Oriented Gradients Technique**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The HOG is a feature extraction technique that aims to represent the local shape
+    and appearance of objects inside the image space by a distribution of their edge
+    directions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a nutshell, the HOG technique performs the following steps when applied
+    to an image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Computes the image gradients in horizontal and vertical directions using, for
+    example, a Prewitt operator. The magnitude and direction of the gradient are then
+    computed for every pixel in the image.
+  prefs:
+  - PREF_OL
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Divide the image into non-overlapping cells of fixed size and compute a histogram
+    of gradients for each cell. This histogram representation of every image cell
+    is more compact and more robust to noise. The cell size is typically set according
+    to the size of the image features we want to capture.
+  prefs:
+  - PREF_OL
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Concatenates the histograms over blocks of cells into one-dimensional feature
+    vectors and normalizes them. This makes the descriptor more robust to lighting
+    variations.
+  prefs:
+  - PREF_OL
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Finally, it concatenates all normalized feature vectors representing the blocks
+    of cells to obtain a final feature vector representation of the entire image.
+  prefs:
+  - PREF_OL
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'The HOG implementation in OpenCV takes several input arguments that correspond
+    to the aforementioned steps, including:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The window size (*winSize*) that corresponds to the minimum object size to be
+    detected.
+  prefs:
+  - PREF_UL
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The cell size (*cellSize*) typically captures the size of the image features
+    of interest.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The block size (*blockSize*) tackles the problem of variation in illumination.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The block stride (*blockStride*) controls how much neighboring blocks overlap.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The number of histogram bins (*nbins*) to capture gradients between 0 and 180
+    degrees.
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let’s create a function, `hog_descriptors()`that computes feature vectors for
+    a set of images using the HOG technique:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Note**: It is important to note that how the images are being reshaped here
+    corresponds to the image dataset that will be later used in this tutorial. If
+    you use a different dataset, do not forget to tweak this part of the code accordingly.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Bag-of-Words Technique**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The BoW technique has been introduced in [this tutorial](https://machinelearningmastery.com/gentle-introduction-bag-words-model/) as
+    applied to modeling text with machine learning algorithms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Nonetheless, this technique can also be applied to computer vision, where images
+    are treated as visual words from which features can be extracted. For this reason,
+    when applied to computer vision, the BoW technique is often called the Bag-of-Visual-Words
+    technique.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In a nutshell, the BoW technique performs the following steps when applied
+    to an image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extracts feature descriptors from an image using algorithms such as the Scale-Invariant
+    Feature Transform (SIFT) or Speeded Up Robust Features (SURF). Ideally, the extracted
+    features should be invariant to intensity, scale, rotation, and affine variations.
+  prefs:
+  - PREF_OL
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Generates codewords from the feature descriptors where each codeword is representative
+    of similar image patches. One way of generating these codewords is to use k-means
+    clustering to aggregate similar descriptors into clusters, where the centers of
+    the clusters would then represent the visual words, while the number of clusters
+    represents the vocabulary size.
+  prefs:
+  - PREF_OL
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Maps the feature descriptors to the nearest cluster in the vocabulary, essentially
+    assigning a codeword to each feature descriptor.
+  prefs:
+  - PREF_OL
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Bins the codewords into a histogram and uses this histogram as a feature vector
+    representation of the image.
+  prefs:
+  - PREF_OL
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Let’s create a function, `bow_descriptors()`, that applies the BoW technique
+    using SIFT to a set of images:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Note**: It is important to note that how the images are being reshaped here
+    corresponds to the image dataset that will be later used in this tutorial. If
+    you use a different dataset, do not forget to tweak this part of the code accordingly.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Putting the Techniques to Test**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There isn’t necessarily a single best technique for all cases, and the choice
+    of technique for the image data you are working with often requires controlled
+    experiments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, as an example, we will apply the HOG technique to the digits
+    dataset that comes with OpenCV, and the BoW technique to images from the CIFAR-10
+    dataset. For this tutorial, we will only be considering a subset of images from
+    these two datasets to reduce the required processing time. Nonetheless, the same
+    code can be easily extended to the full datasets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We will start by loading the datasets we will be working with. Recall that
+    we had seen how to extract the images from each dataset in this tutorial. The
+    `digits_dataset` and the `cifar_dataset` are Python scripts that I have created
+    and which contain the code for loading the digits and the CIFAR-10 datasets, respectively:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We may then proceed to pass on the datasets to the `hog_descriptors()` and
+    the `bow_descriptors()` functions that we have created earlier in this tutorial:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The complete code listing looks as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above returns the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Based on our choice of parameter values, we may see that the HOG technique returns
+    feature vectors of size $1\times 81$ for each image. This means each image is
+    now represented by points in an 81-dimensional space. The BoW technique, on the
+    other hand, returns vectors of size $1\times 50$ for each image, where the vector
+    length has been determined by the number of k-means clusters of choice, which
+    is also analogous to the vocabulary size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hence, we may see that, instead of simply flattening out each image into a one-dimensional
+    vector, we have managed to represent each image more compactly by applying the
+    HOG and BoW techniques.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our next step will be to see how we can exploit this data using different machine
+    learning algorithms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: If you want to go deeper, this section provides more resources on the topic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Learning OpenCV 4 Computer Vision with Python 3](https://www.amazon.com/Learning-OpenCV-Computer-Vision-Python/dp/1789531616),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Histogram of Oriented Gradients explained using OpenCV, [https://learnopencv.com/histogram-of-oriented-gradients/](https://learnopencv.com/histogram-of-oriented-gradients/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Bag-of-Words Model in Computer Vision, [https://en.wikipedia.org/wiki/Bag-of-words_model_in_computer_vision](https://en.wikipedia.org/wiki/Bag-of-words_model_in_computer_vision)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover the Histogram of Oriented Gradients and
+    the Bag-of-Words techniques for image vector representation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are the advantages of using the Histogram of Oriented Gradients and the
+    Bag-of-Words techniques for image vector representation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the Histogram of Oriented Gradients technique in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the Bag-of-Words technique in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

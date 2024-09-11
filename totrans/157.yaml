@@ -1,0 +1,290 @@
+- en: Mini-Batch Gradient Descent and DataLoader in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/mini-batch-gradient-descent-and-dataloader-in-pytorch/](https://machinelearningmastery.com/mini-batch-gradient-descent-and-dataloader-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Mini-batch gradient descent is a variant of gradient descent algorithm that
+    is commonly used to train deep learning models. The idea behind this algorithm
+    is to divide the training data into batches, which are then processed sequentially.
+    In each iteration, we update the weights of all the training samples belonging
+    to a particular batch together. This process is repeated with different batches
+    until the whole training data has been processed. Compared to batch gradient descent,
+    the main benefit of this approach is that it can reduce computation time and memory
+    usage significantly as compared to processing all training samples in one shot.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`DataLoader` is a module in PyTorch that loads and preprocesses data for deep
+    learning models. It can be used to load the data from a file, or to generate synthetic
+    data.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this tutorial, we will introduce you to the concept of mini-batch gradient
+    descent. You will also get to know how to implement it with PyTorch `DataLoader`.
+    Particularly, we’ll cover:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementation of Mini-Batch Gradient Descent in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The concept of DataLoader in PyTorch and how we can load the data with it.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The difference between Stochastic Gradient Descent and Mini-Batch Gradient Descent.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement Stochastic Gradient Descent with PyTorch DataLoader.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement Mini-Batch Gradient Descent with PyTorch DataLoader.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/3f2641e03ddc35049caa853f237fb63f.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mini-Batch Gradient Descent and DataLoader in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Yannis Papanastasopoulos](https://unsplash.com/photos/kKzbyDeb62M).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in six parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: DataLoader in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing Data and the Linear Regression Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build Dataset and DataLoader Class
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training with Stochastic Gradient Descent and DataLoader
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training with Mini-Batch Gradient Descent and DataLoader
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Plotting Graphs for Comparison
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: DataLoader in PyTorch
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It all starts with loading the data when you plan to build a deep learning pipeline
+    to train a model. The more complex the data, the more difficult it becomes to
+    load it into the pipeline. PyTorch `DataLoader` is a handy tool offering numerous
+    options not only to load the data easily, but also helps to apply data augmentation
+    strategies, and iterate over samples in larger datasets. You can import `DataLoader`
+    class from `torch.utils.data`, as follows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: There are several parameters in the `DataLoader` class, we’ll only discuss about
+    `dataset` and `batch_size`. The `dataset` is the first parameter you’ll find in
+    the `DataLoader` class and it loads your data into the pipeline. The second parameter
+    is the `batch_size` which indicates the number of training examples processed
+    in one iteration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Preparing Data and the Linear Regression Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s reuse the same linear regression data as we produced in the previous
+    tutorial:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Same as in the previous tutorial, we initialized a variable `X` with values
+    ranging from $-5$ to $5$, and created a linear function with a slope of $-5$.
+    Then, Gaussian noise is added to create the variable `Y`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can plot the data using matplotlib to visualize the pattern:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/c7d2910711d5a9cf82e04f012cd344f1.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Data points for regression model
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, we’ll build a forward function based on a simple linear regression equation.
+    We’ll train the model for two parameters ($w$ and $b$). So, let’s define a function
+    for the forward pass of the model as well as a loss criterion function (MSE loss).
+    The parameter variables `w` and `b` will be defined outside of the function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Build Dataset and DataLoader Class
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s build our `Dataset` and `DataLoader` classes. The `Dataset` class allows
+    us to build custom datasets and apply various transforms on them. The `DataLoader`
+    class, on the other hand, is used to load the datasets into the pipeline for model
+    training. They are created as follows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Training with Stochastic Gradient Descent and `DataLoader`
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When the batch size is set to one, the training algorithm is referred to as
+    **stochastic gradient descent**. Likewise, when the batch size is greater than
+    one but less than the size of the entire training data, the training algorithm
+    is known as **mini-batch gradient descent**. For simplicity, let’s train with
+    stochastic gradient descent and `DataLoader`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As before, we’ll randomly initialize the trainable parameters $w$ and $b$, define
+    other parameters such as learning rate or step size, create an empty list to store
+    the loss, and set the number of epochs of training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In SGD, we just need to pick one sample from the dataset in each iteration
+    of training. Hence a simple for loop with a forward and backward pass is all we
+    needed:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Putting everything together, the following is a complete code to train the
+    model, namely, `w` and `b`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Training with Mini-Batch Gradient Descent and `DataLoader`
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Moving one step further, we’ll train our model with mini-batch gradient descent
+    and `DataLoader`. We’ll set various batch sizes for training, i.e., batch sizes
+    of 10 and 20. Training with batch size of 10 is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And, here is how we’ll implement the same with batch size of 20:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Putting all together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Plotting Graphs for Comparison
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Finally, let’s visualize how the loss decreases in all the three algorithms
+    (i.e., stochastic gradient descent, mini-batch gradient descent with batch size
+    of 10, and with batch size of 20) during training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/3cdffead736887fa03b6fcfd99f9086e.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: As we can see from the plot, mini-batch gradient descent can converge faster
+    because we can make more precise update to the parameters by calculating the average
+    loss in each step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting all together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned about mini-batch gradient descent, `DataLoader`,
+    and their implementation in PyTorch. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementation of mini-batch gradient descent in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The concept of `DataLoader` in PyTorch and how we can load the data with it.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The difference between stochastic gradient descent and mini-batch gradient descent.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement stochastic gradient descent with PyTorch `DataLoader`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement mini-batch gradient descent with PyTorch `DataLoader`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

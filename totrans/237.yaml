@@ -1,0 +1,446 @@
+- en: A Gentle Introduction to Continuous Functions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/continuous-functions/](https://machinelearningmastery.com/continuous-functions/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Many areas of calculus require an understanding of continuous functions. The
+    characteristics of continuous functions, and the study of points of discontinuity
+    are of great interest to the mathematical community. Because of their important
+    properties, continuous functions have practical applications in machine learning
+    algorithms and optimization methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover what continuous functions are, their properties,
+    and two important theorems in the study of optimization algorithms, i.e., intermediate
+    value theorem and extreme value theorem.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Definition of continuous functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Intermediate value theorem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Extreme value theorem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Picture of red roses](../Images/70dae59a4df1dc292696ec05f1bf1f5d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/jeeni.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Gentle Introduction to continuous functions Photo by Jeeni Khala, some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into 2 parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Definition of continuous functions
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Informal definition
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Formal definition
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Theorems
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Intermediate value theorem
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Extreme value theorem
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Prerequisites
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial requires an understanding of the concept of limits. To refresh
+    your memory, you can take a look at [limits and continuity](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity),
+    where continuous functions are also briefly defined. In this tutorial we’ll go
+    into more details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We’ll also make use of intervals. So square brackets mean closed intervals (include
+    the boundary points) and parenthesis mean open intervals (do not include boundary
+    points), for example,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[a,b] means a<=x<=b'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: (a,b) means a<x<b
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[a,b) means a<=x<b'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: From the above, you can note that an interval can be open on one side and closed
+    on the other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As a last point, we’ll only be discussing real functions defined over real numbers.
+    We won’t be discussing complex numbers or functions defined on the complex plane.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An Informal Definition of Continuous Functions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Suppose we have a function f(x). We can easily check if it is continuous between
+    two points a and b, if we can plot the graph of f(x) without lifting our hand.
+    As an example, consider a straight line defined as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: f(x)=2x+1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can draw the straight line between [0,1] without lifting our hand. In fact,
+    we can draw this line between any two values of x and we won’t have to lift our
+    hand (see figure below). Hence, this function is continuous over the entire domain
+    of real numbers. Now let’s see what happens when we plot the ceil function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Continuous function (left) and Not a continuous function (right)](../Images/bc42755172471bcc2be9b04be1c568f7.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/cont1-1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Continuous function (left), and not a continuous function (right)
+  prefs: []
+  type: TYPE_NORMAL
+- en: The ceil function has a value of 1 on the interval (0,1], for example, ceil(0.5)=
+    1, ceil(0.7) = 1, and so on. As a result, the function is continuous over the
+    domain (0,1]. If we adjust the interval to (0,2], ceil(x) jumps to 2 as soon as
+    x>1\. To plot ceil(x) for the domain (0,2], we must now lift our hand and start
+    plotting again at x=2\. As a result, the ceil function isn’t a continuous function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If the function is continuous over the entire domain of real numbers, then it
+    is a continuous function as a whole, otherwise, it is not continuous as whole.
+    For the later type of functions, we can check over which interval they are continuous.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Formal Definition
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'A function f(x) is continuous at a point a, if the function’s value approaches
+    f(a) when x approaches a. Hence to test the continuity of a function at a point
+    x=a, check the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: f(a) should exist
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: f(x) has a limit as x approaches a
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The limit of f(x) as x->a is equal to f(a)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: If all of the above hold true, then the function is continuous at the point
+    a.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Some examples are listed below and also shown in the figure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: f(x) = 1/x is not continuous as it is not defined at x=0\. However, the function
+    is continuous for the domain x>0.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: All polynomial functions are continuous functions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The trigonometric functions sin(x) and cos(x) are continuous and oscillate between
+    the values -1 and 1.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The trigonometric function tan(x) is not continuous as it is undefined at x=????/2,
+    x=-????/2, etc.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: sqrt(x) is not continuous as it is not defined for x<0.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '|x| is continuous everywhere.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[![Examples of continuous functions and functions with discontinuities](../Images/2a39658fe602e07a171f05f694ce64f6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/cont1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Examples of continuous functions and functions with discontinuities
+  prefs: []
+  type: TYPE_NORMAL
+- en: Connection of Continuity with Function Derivatives
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'From the definition of continuity in terms of limits, we have an alternative
+    definition. f(x) is continuous at x, if:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: f(x+h)-f(x)→ 0 when (h→0)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s look at the definition of a derivative:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: f'(x) = lim(h→0) (f(x+h)-f(x))/h
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hence, if f'(x) exists at a point a, then the function is continuous at a. The
+    converse is not always true. A function may be continuous at a point a, but f'(a)
+    may not exist. For example, in the above graph |x| is continuous everywhere. We
+    can draw it without lifting our hand, however, at x=0 its derivative does not
+    exist because of the sharp turn in the curve.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Intermediate Value Theorem
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The intermediate value theorem states that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function f(x) is continuous on [a,b]
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: and f(a) <= K <= f(b)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'then:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is a point c between a and b, i.e., a<=c<=b such that f(c) = K
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In very easy words, this theorem says that if a function is continuous over
+    [a,b], then all values of the function between f(a) and f(b) will exist within
+    this interval as shown in the figure below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Illustration of intermediate value theorem (left) and extreme value theorem
+    (right)](../Images/e0a00d6199732231e7f4471a5f67acb7.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/cont3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Illustration of intermediate value theorem (left) and extreme value theorem
+    (right)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extreme Value Theorem
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This theorem states that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: function f(x) is continuous on [a,b]
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'then:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are points x_min and x_max inside the interval [a,b], i.e.,
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: a<=x_min<=b
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: a<=x_max<=b
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: and the function f(x) has a minimum value f(x_min), and a maximum value f(x_max),
+    i.e.,
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: f(x_min)<=f(x)<=f(x_max) when a<=x<=b
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In simple words a continuous function always has a minimum and maximum value
+    within an interval as shown in the above figure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Continuous Functions and Optimization
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Continuous functions are very important in the study of optimization problems.
+    We can see that the extreme value theorem guarantees that within an interval,
+    there will always be a point where the function has a maximum value. The same
+    can be said for a minimum value. Many optimization algorithms are derived from
+    this fundamental property and can perform amazing tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extensions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section lists some ideas for extending the tutorial that you may wish to
+    explore.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Converging and diverging sequences
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Weierstrass and Jordan definitions of continuous functions based on infinitesimally
+    small constants
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you explore any of these extensions, I’d love to know. Post your findings
+    in the comments below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Limits and Continuity](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Evaluating limits](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Resources
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Additional resources on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Thomas’ Calculus](https://amzn.to/35Yeolv), 14th edition, 2017\. (based on
+    the original works of George B. Thomas, revised by Joel Hass, Christopher Heil,
+    Maurice Weir)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US),
+    3rd Edition, 2017\. (Gilbert Strang)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://amzn.to/3kS9I52), 8th edition, 2015\. (James Stewart)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered the concept of continuous functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are continuous functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The formal and informal definitions of continuous functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Points of discontinuity
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Intermediate value theorem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Extreme value theorem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Why continuous functions are important
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,435 @@
+- en: A Gentle Introduction To Partial Derivatives and Gradient Vectors
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors/](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Partial derivatives and gradient vectors are used very often in machine learning
+    algorithms for finding the minimum or maximum of a function. Gradient vectors
+    are used in the training of neural networks, logistic regression, and many other
+    classification and regression problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover partial derivatives and the gradient vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Function of several variables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Level sets, contours and graphs of a function of two variables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Partial derivatives of a function of several variables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Gradient vector and its meaning
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/eecbd965c05d3fefa4a0cefac3883a0c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/atifgulzar.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Gentle Introduction To Partial Derivatives and Gradient Vectors. A photo by
+    Atif Gulzar, some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Function of several variables
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Level sets
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Contours
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Graphs
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Definition of partial derivatives
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Gradient vector
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What does the gradient vector represent
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: A Function of Several Variables
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You can review the concept of a function and a function of several variables
+    in this [tutorial](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus).
+     We’ll provide more details about the functions of several variables here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A function of several variables has the following properties:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Its domain is a set of n-tuples given by (x_1, x_2, x_3, …, x_n)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Its range is a set of real numbers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For example, the following is a function of two variables (n=2):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: f_1(x,y) = x + y
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the above function x and y are the independent variables. Their sum determines
+    the value of the function. The domain of this function is the set of all points
+    on the XY cartesian plane. The plot of this function would require plotting in
+    the 3D space, with two axes for input points (x,y) and the third representing
+    the values of f.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here is another example of a function of two variables. f_2(x,y) = x**x + y**y
+  prefs: []
+  type: TYPE_NORMAL
+- en: To keep things simple, we’ll do examples of functions of two variables. Of course,
+    in machine learning you’ll encounter functions of hundreds of variables. The concepts
+    related to functions of two variables can be extended to those cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Level Sets and Graph of a Function of Two Variables
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The set of points in a plane, where a function f(x,y) has a constant value,
+    i.e., f(x,y)=c is the level set or level curve of f.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As an example, for function f_1, all (x,y) points that satisfy the equation
+    below define a level set for f_1:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: x + y = 1
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can see that this level set has an infinite set of points, e.g., (0,2), (1,1),
+    (2, 0), etc. This level set defines a straight line in the XY plane.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In general, all level sets of f_1 define straight lines of the form (c is any
+    real constant):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: x + y = c
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similarly, for function f_2, an example of a level set is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: x**x + y**y = 1
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can see that any point that lies on a circle of radius 1 with center at
+    (0,0) satisfies the above expression. Hence, this level set consists of all points
+    that lie on this circle. Similarly, any level set of f_2 satisfies the following
+    expression (c is any real constant >= 0):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: x**x + y**y = c
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hence, all level sets of f_2 are circles with center at (0,0), each level set
+    having its own radius.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The graph of the function f(x,y) is the set of all points (x,y,f(x,y)). It is
+    also called a surface z=f(x,y). The graphs of f_1 and f_2 are shown below (left
+    side).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![The functions f_1 and f_2 and their corresponding contours](../Images/0f7c744e397a2f1dd31ac37d6ab75585.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/grad1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The functions f_1 and f_2 and their corresponding contours
+  prefs: []
+  type: TYPE_NORMAL
+- en: Contours of a Function of Two Variables
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Suppose we have a function f(x,y) of two variables. If we cut the surface z=f(x,y)
+    using a plane z=c, then we get the set of all points that satisfy f(x,y) = c.
+    The contour curve is the set of points that satisfy f(x,y)=c, in the plane z=c.
+    This is slightly different from the level set, where the level curve is directly
+    defined in the XY plane. However, many books treat contours and level curves as
+    the same.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The contours of both f_1 and f_2 are shown in the above figure (right side).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Partial Derivatives and Gradients
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The partial derivative of a function f w.r.t. the variable x is denoted by
+    ∂f/∂x. Its expression can be determined by differentiating f w.r.t. x. For example
+    for the functions f_1 and f_2, we have:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∂f_1/∂x = 1
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∂f_2/∂x = 2x
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∂f_1/∂x represents the rate of change of f_1 w.r.t x. For any function f(x,y),
+    ∂f/∂x represents the rate of change of f w.r.t variable x.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similar is the case for ∂f/∂y. It represents the rate of change of f w.r.t y.
+    You can look at the formal definition of partial derivatives in this [tutorial](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we find the partial derivatives w.r.t all independent variables, we end
+    up with a vector. This vector is called the gradient vector of f denoted by ∇f(x,y).
+    A general expression for the gradients of f_1 and f_2 are given by (here i,j are
+    unit vectors parallel to the coordinate axis):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∇f_1(x,y) = ∂f_1/∂xi + ∂f_1/∂yj = i+j
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∇f_2(x,y) = ∂f_2/∂xi + ∂f_2/∂yj = 2xi + 2yj
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the general expression of the gradient, we can evaluate the gradient at
+    different points in space. In case of f_1 the gradient vector is a constant, i.e.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: i+j
+  prefs: []
+  type: TYPE_NORMAL
+- en: No matter where we are in the three dimensional space, the direction and magnitude
+    of the gradient vector remains unchanged.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For the function f_2, ∇f_2(x,y) changes with values of (x,y). For example,
+    at (1,1) and (2,1) the gradient of f_2 is given by the following vectors:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∇f_2(1,1) = 2i + 2j
+  prefs: []
+  type: TYPE_NORMAL
+- en: ∇f_2(2,1) = 4i + 2j
+  prefs: []
+  type: TYPE_NORMAL
+- en: What Does the Gradient Vector At a Point Indicate?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The gradient vector of a function of several variables at any point denotes
+    the direction of maximum rate of change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can relate the gradient vector to the [tangent line](https://machinelearningmastery.com/a-gentle-introduction-to-slopes-and-tangents).
+    If we are standing at a point in space and we come up with a rule that tells us
+    to walk along the tangent to the contour at that point. It means wherever we are,
+    we find the tangent line to the contour at that point and walk along it. If we
+    walk following this rule, we’ll end up walking along the contour of f. The function’s
+    value will never change as the function’s value is constant on the contour of
+    f.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The gradient vector, on the other hand, is normal to the tangent line and points
+    to the direction of maximum rate of increase. If we walk along the direction of
+    the gradient we’ll start encountering the next point where the function’s value
+    would be greater than the previous one.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The positive direction of the gradient indicates the direction of maximum rate
+    of increase, whereas, the negative direction indicates the direction of maximum
+    rate of decrease. The following figure shows the positive direction of the gradient
+    vector at different points of the contours of function f_2\. The direction of
+    the positive gradient is indicated by the red arrow. The tangent line to a contour
+    is shown in green.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![The contours and the direction of gradient vectors](../Images/01bf957dafbfba27f7c0efcca1d3cc3c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/grad2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The contours and the direction of gradient vectors
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why Is The Gradient Vector Important In Machine Learning?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The gradient vector is very important and used frequently in machine learning
+    algorithms. In classification and regression problems, we normally define the
+    mean square error function. Following the negative direction of the gradient of
+    this function will lead us to finding the point where this function has a minimum
+    value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similar is the case for functions, where maximizing them leads to achieving
+    maximum accuracy. In this case we’ll follow the direction of the maximum rate
+    of increase of this function or the positive direction of the gradient vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Extensions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section lists some ideas for extending the tutorial that you may wish to
+    explore.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gradient descent/ gradient ascent
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Hessian matrix
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Jacobian
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you explore any of these extensions, I’d love to know. Post your findings
+    in the comments below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Slopes and tangents](https://machinelearningmastery.com/a-gentle-introduction-to-slopes-and-tangents)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Multivariate calculus](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Gradient descent for machine learning](https://machinelearningmastery.com/gradient-descent-for-machine-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[What is gradient in machine learning](https://machinelearningmastery.com/gradient-in-machine-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Resources
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Additional resources on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Thomas’ Calculus](https://amzn.to/35Yeolv), 14th edition, 2017\. (based on
+    the original works of George B. Thomas, revised by Joel Hass, Christopher Heil,
+    Maurice Weir)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US),
+    3rd Edition, 2017\. (Gilbert Strang)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus](https://amzn.to/3kS9I52), 8th edition, 2015\. (James Stewart)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you discovered what are functions of several variables, partial
+    derivatives and the gradient vector. Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Function of several variables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Contours of a function of several variables
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Level sets of a function of several variables
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Partial derivatives of a function of several variables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Gradient vector and its meaning
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,332 @@
+- en: 'Revealing the Invisible: Visualizing Missing Values in Ames Housing'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/revealing_the_invisible/](https://machinelearningmastery.com/revealing_the_invisible/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The digital age has ushered in an era where data-driven decision-making is pivotal
+    in various domains, real estate being a prime example. Comprehensive datasets,
+    like the one concerning properties in Ames, offer a treasure trove for data enthusiasts.
+    Through meticulous exploration and analysis of such datasets, one can uncover
+    patterns, gain insights, and make informed decisions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Starting from this post, you will embark on a captivating journey through the
+    intricate lanes of Ames properties, focusing primarily on Data Science techniques.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/62b3f5a77321631871e0ca726f549d6e.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Revealing the Invisible: Visualizing Missing Values in Ames Housing'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Joakim Honkasalo](https://unsplash.com/photos/beige-and-black-lighthouse-on-hill-with-starry-sky-xNRWtb6mkao).
+    Some rights reserved
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Ames Properties Dataset**'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***   Loading & Sizing Up the Dataset*   Uncovering & Visualizing Missing Values**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**## **T****he****Ames****Properties****Dataset**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Every dataset has a story to tell, and understanding its background can offer
+    invaluable context. While the Ames Housing Dataset is widely known in academic
+    circles, the dataset we’re analyzing today, [`Ames.csv`](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv),
+    is a more comprehensive collection of property details from Ames.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dr. Dean De Cock, a dedicated academician, recognized the need for a new, robust
+    dataset in the domain of real estate. He meticulously compiled the [Ames Housing
+    Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/decock.pdf),
+    which has since become a cornerstone for budding data scientists and researchers.
+    This dataset stands out due to its comprehensive details, capturing myriad facets
+    of real estate properties. It has been a foundation for numerous predictive modeling
+    exercises and offers a rich landscape for exploratory data analysis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Ames Housing Dataset was envisioned as a modern alternative to the older
+    Boston Housing Dataset. Covering residential sales in Ames, Iowa between 2006
+    and 2010, it presents a diverse array of variables, setting the stage for advanced
+    regression techniques.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This time frame is particularly significant in U.S. history. The period leading
+    up to 2007-2008 saw the dramatic inflation of housing prices, fueled by speculative
+    frenzy and subprime mortgages. This culminated in the devastating collapse of
+    the housing bubble in late 2007, an event vividly captured in narratives like
+    “The Big Short.” The aftermath of this collapse rippled across the nation, leading
+    to the Great Recession. Housing prices plummeted, foreclosures skyrocketed, and
+    many Americans found themselves underwater on their mortgages. The Ames dataset
+    provides a glimpse into this turbulent period, capturing property sales in the
+    midst of national economic upheaval.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Loading****&****Sizing****Up****the****Dataset**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: For those who are venturing into the realm of data science, having the right
+    tools in your arsenal is paramount. If you require some help to set up your Python
+    environment, this [comprehensive guide](https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/)
+    is an excellent resource.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Dataset****Dimensions**: Before diving into intricate analyses, it’s essential
+    to familiarize yourself with the dataset’s basic structure and data types. This
+    step provides a roadmap for subsequent exploration and ensures you tailor your
+    analyses based on the data’s nature. With the environment in place, let’s load
+    and gauge the dataset’s extent in terms of rows (representing individual properties)
+    and columns (representing attributes of these properties).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Data****Types**: Recognizing the datatype of each attribute helps shape our
+    analysis approach. Numerical attributes might be summarized using measures like
+    mean or median, while mode (most frequent value) is apt for categorical attributes.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**The****Data****Dictionary**: A data dictionary, often accompanying comprehensive
+    datasets, is a handy resource. It offers detailed descriptions of each feature,
+    specifying its meaning, possible values, and sometimes even the logic behind its
+    collection. For datasets like the Ames properties, which encompass a wide range
+    of features, a data dictionary can be a beacon of clarity. By referring to the
+    attached [data dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt),
+    analysts, data scientists, and even domain experts can gain a deeper understanding
+    of the nuances of each feature. Whether you’re deciphering the meaning behind
+    an unfamiliar feature or discerning the significance of particular values, the
+    data dictionary serves as a comprehensive guide. It bridges the gap between raw
+    data and actionable insights, ensuring that the analyses and decisions are well-informed.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Ground Living Area and Sale Price are numerical (int64) data types, while Sale
+    Condition (object, which is string type in this example) is a categorical data
+    type.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Uncovering****&****Visualizing****Missing****Values**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Real-world datasets seldom arrive perfectly curated, often presenting analysts
+    with the challenge of missing values. These gaps in data can arise due to various
+    reasons, such as errors in data collection, system limitations, or the absence
+    of information. Addressing missing values is not merely a technical necessity
+    but a critical step that significantly impacts the integrity and reliability of
+    subsequent analyses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding the patterns of missing values is essential for informed data
+    analysis. This insight guides the selection of appropriate imputation methods,
+    which fill in missing data based on available information, thereby influencing
+    the accuracy and interpretability of results. Additionally, assessing missing
+    value patterns informs decisions on feature selection; features with extensive
+    missing data may be excluded to enhance model performance and focus on more reliable
+    information. In essence, grasping the patterns of missing values ensures robust
+    and trustworthy data analyses, guiding imputation strategies and optimizing feature
+    inclusion for more accurate insights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**NaN or None?:** In pandas, the `isnull()` function is used to detect missing
+    values in a DataFrame or Series. Specifically, it identifies the following types
+    or missing data:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`np.nan` (Not a Number), often used to denote missing numerical data'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`None`, which is Python’s built-in object to denote the absence of a value
+    or a null value'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Both `nan` and `NaN` are just different ways to refer to NumPy’s `np.nan`, and
+    `isnull()` will identify them as missing values. Here is a quick example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Visualizing****Missing****Values****:** When it comes to visualizing missing
+    data, tools like **DataFrames****,** **missingno**, **matplotlib**, and **seaborn**come
+    in handy. By sorting the features based on the percentage of missing values and
+    placing them into a DataFrame, you can easily rank the features most affected
+    by missing data.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The **missingno** package facilitates a swift, graphical representation of missing
+    data. The visualization’s white lines or gaps denote missing values. However,
+    it will only accommodate up to 50 labeled variables. Past that range, labels begin
+    to overlap or become unreadable, and by default, large displays omit them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/3e171c180e81a744c03df145fc8ee586.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Visual representation of missing values using `missingno.matrix()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the `msno.bar()` visual after extracting the top 15 features with the
+    most missing values provides a crisp illustration by column.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/1e8622b1dd0e995e9c841399bfb9d972.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Screenshot-2024-01-08-at-19.50.04.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using `missingno.bar()` to visualize features with missing data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The illustration above denotes that Pool Quality, Miscellaneous Feature, and
+    the type of Alley access to the property are the three features with the highest
+    number of missing values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/f76fc47b0119f35fb3e5f92ea2abdadc.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_2-1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using seaborn horizontal bar plots to visualize missing data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A horizontal bar plot using seaborn allows you to list features with the highest
+    missing values in a vertical format, adding both readability and aesthetic value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling missing values is more than just a technical requirement; it’s a significant
+    step that can influence the quality of your machine learning models. Understanding
+    and visualizing these missing values are the first steps in this intricate dance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Beginner's Guide to Data Science?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Anaconda Setup Tutorial](https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[1\. Ames, Iowa: Alternative to the Boston Housing Data as an End of Semester
+    Regression Project by Dr. Dean De Cock](https://raw.githubusercontent.com/Padre-Media/dataset/main/decock.pdf)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Resources**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Housing Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you embarked on an exploration of the Ames Properties dataset,
+    a comprehensive collection of housing data tailored for data science applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**About the context of the Ames dataset, including the pioneers and academic
+    importance behind it. **'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***   **How to extract dataset dimensions, data types, and missing values. *****   **How
+    to use packages like `missingno`, Matplotlib, and Seaborn to quickly visualize
+    your missing data. ******'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '******Do you have any questions? Please ask your questions in the comments
+    below, and I will do my best to answer.********'
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,407 @@
+- en: Normal Bayes Classifier for Image Segmentation Using OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/normal-bayes-classifier-for-image-segmentation-using-opencv/](https://machinelearningmastery.com/normal-bayes-classifier-for-image-segmentation-using-opencv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The Naive Bayes algorithm is a simple but powerful technique for supervised
+    machine learning. Its Gaussian variant is implemented in the OpenCV library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will learn how to apply OpenCV’s normal Bayes algorithm,
+    first on a custom two-dimensional dataset and subsequently for segmenting an image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important points in applying the Bayes theorem to machine
+    learning.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the normal Bayes algorithm on a custom dataset in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the normal Bayes algorithm to segment an image in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started. [![](../Images/972c9ab25c3889aec66be4c91f0d9a54.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Normal Bayes Classifier for Image Segmentation Using OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Fabian Irsara](https://unsplash.com/photos/_SwLdgVGfVY), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reminder of the Bayes Theorem As Applied to Machine Learning
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discovering Bayes Classification in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Image Segmentation Using a Normal Bayes Classifier
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Reminder of the Bayes Theorem As Applied to Machine Learning**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[This tutorial](https://machinelearningmastery.com/bayes-theorem-for-machine-learning/)
+    by Jason Brownlee gives an in-depth explanation of Bayes Theorem for machine learning,
+    so let’s first start with brushing up on some of the most important points from
+    his tutorial:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Bayes Theorem is useful in machine learning because it provides a statistical
+    model to formulate the relationship between data and a [hypothesis](https://machinelearningmastery.com/what-is-a-hypothesis-in-machine-learning/). **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **Expressed as $P(h | D) = P(D | h) * P(h) / P(D)$, the Bayes Theorem
+    states that the probability of a given hypothesis being true (denoted by $P(h
+    | D)$ and known as the *posterior probability* of the hypothesis) can be calculated
+    in terms of:**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   *   **The probability of observing the data given the hypothesis (denoted
+    by $P(D | h)$ and known as the *likelihood*).**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **The probability of the hypothesis being true, independently of the
+    data (denoted by $P(h)$ and known as the *prior probability* of the hypothesis).*****   **The
+    probability of observing the data independently of the hypothesis (denoted by
+    $P(D)$ and known as the *evidence*).******'
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '*******   **The Bayes Theorem assumes that every variable (or feature) making
+    up the input data, $D$, depends on all the other variables (or features). **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **Within the context of data classification, the Bayes Theorem may be
+    applied to the problem of calculating the conditional probability of a class label
+    given a data sample: $P(class | data) = P(data | class) * P(class) / P(data)$,
+    where the class label now substitutes the hypothesis. The evidence, $P(data)$,
+    is a constant and can be dropped. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **In the formulation of the problem as outlined in the bullet point above,
+    the estimation of the likelihood, $P(data | class)$, can be difficult because
+    it requires that the number of data samples is sufficiently large to contain all
+    possible combinations of variables (or features) for each class. This is seldom
+    the case, especially with high-dimensional data with many variables. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **The formulation above can be simplified into what is known as *Naive
+    Bayes*, where each input variable is treated separately: $P(class | X_1, X_2,
+    \dots, X_n) = P(X_1 | class) * P(X_2 | class) * \dots * P(X_n | class) * P(class)$**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **The Naive Bayes estimation changes the formulation from a *dependent*
+    conditional probability model to an *independent* conditional probability model,
+    where the input variables (or features) are now assumed to be independent. This
+    assumption rarely holds with real-world data, hence the name *naive*. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**## **Discovering Bayes Classification in OpenCV**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Suppose the input data we are working with is continuous. In that case, it may
+    be modeled using a continuous probability distribution, such as a Gaussian (or
+    normal) distribution, where the data belonging to each class is modeled by its
+    mean and standard deviation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Bayes classifier implemented in OpenCV is a normal Bayes classifier (also
+    commonly known as *Gaussian Naive Bayes*), which assumes that the input features
+    from each class are normally distributed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*This simple classification model assumes that feature vectors from each class
+    are normally distributed (though, not necessarily independently distributed).*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*–* OpenCV, [Machine Learning Overview](https://docs.opencv.org/4.x/dc/dd6/ml_intro.html),
+    2023.'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: To discover how to use the normal Bayes classifier in OpenCV, let’s start by
+    testing it on a simple two-dimensional dataset, as we did in previous tutorials.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this purpose, let’s generate a dataset consisting of 100 data points (specified
+    by `n_samples`), which are equally divided into 2 Gaussian clusters (identified
+    by `centers`) having a standard deviation set to 1.5 (specified by `cluster_std`).
+    Let’s also define a value for `random_state` to be able to replicate the results:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above should generate the following plot of data points:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/81951cebd834f49ffc6cf167d61906e5.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scatter Plot of Dataset Consisting of 2 Gaussian Clusters
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We shall then split this dataset, allocating 80% of the data to the training
+    set and the remaining 20% to the test set:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Following this, we will create the normal Bayes classifier and proceed with
+    training and testing it on the dataset values after having type cast to 32-bit
+    float:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: By making use of the `predictProb` method, we will obtain the predicted class
+    for each input vector (with each vector being stored on each row of the array
+    fed into the normal Bayes classifier) and the output probabilities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the code above, the predicted classes are stored in `y_pred`, whereas `y_probs`
+    is an array with as many columns as classes (two in this case) that holds the
+    probability value of each input vector belonging to each class under consideration.
+    It would make sense that the output probability values the classifier returns
+    for each input vector sum up to one. However, this may not necessarily be the
+    case because the probability values the classifier returns are not normalized
+    by the evidence, $P(data)$, which we have removed from the denominator, as explained
+    in the previous section.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Instead, what is being reported is a likelihood, which is basically the numerator
+    of the conditional probability equation, p(C) p(M | C). The denominator, p(M),
+    does not need to be computed.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – [Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
+    2017.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Nonetheless, whether the values are normalized or not, the class prediction
+    for each input vector may be found by identifying the class with the highest probability
+    value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The code listing so far is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We may see that the class predictions produced by the normal Bayes classifier
+    trained on this simple dataset are correct:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/7698c83e3bb69d23b94488b898655065.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scatter Plot of Predictions Generated for the Test Samples
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Image Segmentation Using a Normal Bayes Classifier**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Among their many applications, Bayes classifiers have been frequently used for
+    skin segmentation, which separates skin pixels from non-skin pixels in an image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can adapt the code above for segmenting skin pixels in images. For this purpose,
+    we will use the [Skin Segmentation dataset](https://archive-beta.ics.uci.edu/dataset/229/skin+segmentation),
+    consisting of 50,859 skin samples and 194,198 non-skin samples, to train the normal
+    Bayes classifier. The dataset presents the pixel values in BGR order and their
+    corresponding class label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After loading the dataset, we shall convert the BGR pixel values into HSV (denoting
+    Hue, Saturation, and Value) and then use the hue values to train a normal Bayes
+    classifier. Hue is often preferred over RGB in image segmentation tasks because
+    it represents the true color without modification and is less affected by lighting
+    variations than RGB. In the HSV color model, the hue values are arranged radially
+    and span between 0 and 360 degrees:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Note 1**: The OpenCV library provides the `cvtColor` method to convert between
+    color spaces, as seen in [this tutorial](https://machinelearningmastery.com/?p=14402&preview=true),
+    but the `cvtColor` method expects the source image in its original shape as an
+    input. The `rgb_to_hsv` method in Matplotlib, on the other hand, accepts a NumPy
+    array in the form of (…, 3) as input, where the array values are expected to be
+    normalized within the range of 0 to 1\. We are using the latter here since our
+    training data consists of individual pixels, which are not structured in the usual
+    form of a three-channel image.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Note 2**: The normal Bayes classifier assumes that the data to be modeled
+    follows a Gaussian distribution. While this is not a strict requirement, the classifier’s
+    performance may degrade if the data is distributed otherwise. We may check the
+    distribution of the data we are working with by plotting its histogram. If we
+    take the hue values of the skin pixels as an example, we find that a Gaussian
+    curve can describe their distribution:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/a6cb0962374044404ffd57b35bd59d57.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Checking the Distribution of the Data
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Once the normal Bayes classifier has been trained, we may test it out on an
+    image (let’s consider [this example image](https://unsplash.com/photos/gPZ8vbwdV5A)
+    for testing):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The resulting segmented mask displays the pixels labeled as belonging to the
+    skin (with a class label equal to 1).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By qualitatively analyzing the result, we may see that most of the skin pixels
+    have been correctly labeled as such. We may also see that some hair strands (hence,
+    non-skin pixels) have been incorrectly labeled as belonging to skin. If we had
+    to look at their hue values, we might notice that these are very similar to those
+    belonging to skin regions, hence the mislabelling. Furthermore, we may also notice
+    the effectiveness of using the hue values, which remain relatively constant in
+    regions of the face that otherwise appear illuminated or in shadow in the original
+    RGB image:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/e51ba781b0c42ea48617fbbfe4211c2f.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Original Image (Left); Hue Values (Middle); Segmented Skin Pixels (Right)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Can you think of more tests to try out with a normal Bayes classifier?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to apply OpenCV’s normal Bayes algorithm,
+    first on a custom two-dimensional dataset and subsequently for segmenting an image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important points in applying the Bayes theorem to machine
+    learning.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the normal Bayes algorithm on a custom dataset in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the normal Bayes algorithm to segment an image in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.********************
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,324 @@
+- en: 'From Data to Map: Visualizing Ames House Prices with Python'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/data-to-map-geospatial/](https://machinelearningmastery.com/data-to-map-geospatial/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Geospatial visualization has become an essential tool for understanding and
+    representing data in a geographical context. It plays a pivotal role in various
+    real-world applications, from urban planning and environmental studies to real
+    estate and transportation. For instance, city planners might use geospatial data
+    to optimize public transportation routes, while real estate professionals could
+    leverage it to analyze property value trends in specific regions. Using Python,
+    you can harness the power of libraries like geopandas, Matplotlib, and contextily
+    to create compelling visualizations. In this chapter, you’ll dive deep into a
+    code snippet that visualizes house sale prices in Ames, Iowa, breaking down each
+    step to understand its purpose and functionality.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/12266ea57807a05f0f5ec96cce79477f.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'From Data to Map: Visualizing Ames House Prices with Python'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Annie Spratt](https://unsplash.com/photos/white-and-green-state-maps-AFB6S2kibuk).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into six parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Installing Essential Python Packages
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Importing Necessary Libraries
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Loading and Preparing the Data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting the Coordinate Reference System (CRS)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating a Convex Hull
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Visualizing the Data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Installing Essential Python Packages
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before we dive into the world of geospatial visualization with Python, it’s
+    crucial to set up your development environment correctly. On Windows, you can
+    open either Command Prompt or PowerShell. If you’re using macOS or Linux, the
+    Terminal application is your gateway to the command-line world. Additionally,
+    to ensure that you have access to all the necessary Python libraries, it’s essential
+    to have access to the Python Package Index (PyPI), the official third-party software
+    repository for Python packages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To install the essential packages, you can use the following commands on your
+    terminal or command-line interface:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once you’ve successfully installed the required packages, you’re ready to import
+    the necessary libraries and begin your geospatial visualization journey.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Importing Necessary Libraries
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Before diving into the visualization, it’s essential to import the necessary
+    libraries that will power our visualization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We’ll be using several Python libraries, including:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**pandas:** For data manipulation and analysis.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**geopandas:** To handle geospatial data.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**matplotlib:** For creating static, animated, and interactive visualizations.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**contextily:** To add basemaps to our plots.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**shapely:** For manipulation and analysis of planar geometric objects.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Loading and Preparing the Data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The [`Ames.csv` dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)
+    contains detailed information about house sales in Ames, Iowa. This includes various
+    attributes of the houses, such as size, age, and condition, as well as their geographical
+    coordinates (latitude and longitude). These geographical coordinates are crucial
+    for our geospatial visualization, as they allow us to plot each house on a map,
+    providing a spatial context to the sale prices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: By converting the pandas DataFrame into a GeoDataFrame, we can leverage geospatial
+    functionalities on our dataset, transforming the raw data into a format suitable
+    for geospatial analysis and visualization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting the Coordinate Reference System (CRS)
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Coordinate Reference System (CRS) is a fundamental aspect of accurate geospatial
+    operations and cartography, determining how our data aligns on the Earth’s surface.
+    The distance between two points will differ under a different CRS, and the map
+    will look different. In our example, we set the CRS for the GeoDataFrame using
+    the notation “EPSG:4326,” which corresponds to the widely-used WGS 84 (or World
+    Geodetic System 1984) latitude-longitude coordinate system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: WGS 84 is a global reference system established in 1984 and is the de facto
+    standard for satellite positioning, GPS, and various mapping applications. It
+    uses a three-dimensional coordinate system with latitude and longitude defining
+    positions on the Earth’s surface and altitude indicating height above or below
+    a **reference ellipsoid**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Beyond WGS 84, numerous coordinate reference systems cater to diverse mapping
+    needs. Choices include the Universal Transverse Mercator (UTM), providing planar,
+    Cartesian coordinates suitable for regional mapping; the European Petroleum Survey
+    Group (EPSG) options, such as “EPSG:3857” for web-based mapping; and the State
+    Plane Coordinate System (SPCS), offering state-specific systems within the United
+    States. Selecting an appropriate CRS depends on factors like scale, accuracy,
+    and the geographic scope of your data, ensuring precision in geospatial analysis
+    and visualization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Creating a Convex Hull
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A convex hull provides a boundary that encloses all data points, offering a
+    visual representation of the geographical spread of our data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The transformation from “EPSG:4326” to “EPSG:3857” is crucial for a couple
+    of reasons:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Web-based Visualizations:** The “EPSG:3857” is optimized for web-based mapping
+    applications like Google Maps and OpenStreetMap. By transforming our data to this
+    CRS, we ensure it overlays correctly on web-based basemaps.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Buffering in Meters:** The buffer operation adds a margin around the convex
+    hull. In “EPSG:4326”, coordinates are in degrees, which makes buffering in meters
+    problematic. By transforming to “EPSG:3857”, we can accurately buffer our convex
+    hull by 500 meters, providing a clear boundary around Ames.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By buffering the convex hull, we not only visualize the spread of our data but
+    also provide a geographical context to the visualization, emphasizing the region
+    of interest.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Beginner's Guide to Data Science?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Visualizing the Data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With our data prepared, it’s time to bring it to life through visualization.
+    We’ll plot the sale prices of individual houses on a map, using a color gradient
+    to represent different price ranges.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The color gradient used, **‘coolwarm’**, is a diverging colormap. This means
+    it has two distinct colors representing the two ends of a spectrum, with a neutral
+    color in the middle. In our visualization:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Cooler colors (blues)** represent houses with lower sale prices.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Warmer colors (reds)** signify houses with higher sale prices.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: This choice of colormap allows readers to quickly identify areas with high and
+    low property values, offering insights into the distribution of house sale prices
+    in Ames. The buffered boundary further emphasizes the region of interest, providing
+    context to the visualization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/6a70d752343ae0774204a863874f8ac3.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Ames_Map.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This map is a combination of several components: The basemap, brought in by
+    contextily from OpenStreetMap, depicts the terrain at a particular latitude-longitude.
+    The colored dots are based on the data from the pandas DataFrame but converted
+    to a geographic CRS by geopandas, which should align with the basemap.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Introduction to GeoPandas](https://geopandas.org/en/stable/getting_started/introduction.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Resources**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, we delved into the intricacies of geospatial visualization using
+    Python, focusing on the visualization of house sale prices in Ames, Iowa. Through
+    a meticulous step-by-step breakdown of the code, we unveiled the various stages
+    involved, from the initial data loading and preparation to the final visualization.
+    Understanding geospatial visualization techniques is not just an academic exercise;
+    it holds profound real-world implications. Mastery of these techniques can empower
+    professionals across a spectrum of fields, from urban planning to real estate,
+    enabling them to make informed, data-driven decisions rooted in geographical contexts.
+    As cities grow and the world becomes increasingly data-centric, overlaying data
+    on geographical maps will be indispensable in shaping future strategies and insights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, from this tutorial, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to harness essential Python libraries for geospatial visualization.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The pivotal role of data preparation and transformation in geospatial operations.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Effective techniques for visualizing geospatial data, including the nuances
+    of setting up a color gradient and integrating a basemap.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

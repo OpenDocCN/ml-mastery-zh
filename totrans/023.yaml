@@ -1,0 +1,251 @@
+- en: 'Capturing Curves: Advanced Modeling with Polynomial Regression'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/capturing-curves-advanced-modeling-with-polynomial-regression/](https://machinelearningmastery.com/capturing-curves-advanced-modeling-with-polynomial-regression/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When we analyze relationships between variables in machine learning, we often
+    find that a straight line doesn’t tell the whole story. That’s where polynomial
+    transformations come in, adding layers to our regression models without complicating
+    the calculation process. By transforming our features into their polynomial counterparts—squares,
+    cubes, and other higher-degree terms—we give linear models the flexibility to
+    curve and twist, fitting snugly to the underlying trends of our data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This blog post will explore how we can move beyond simple linear models to capture
+    more complex relationships in our data. You’ll learn about the power of polynomial
+    and cubic regression techniques, which allow us to see beyond the apparent and
+    uncover the underlying patterns that a straight line might miss. We will also
+    delve into the balance between adding complexity and maintaining predictability
+    in your models, ensuring that they are both powerful and practical.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/e51c144c7f906e5661d9b65dc57e088f.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Capturing Curves: Advanced Modeling with Polynomial Regression'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Joakim Aglo](https://unsplash.com/photos/white-concrete-building-low-angle-photography-rr-euqNcCf4).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Establishing a Baseline with Linear Regression
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Capturing Curves with a Polynomial Regression
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Experimenting with a Cubic Regression
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Establishing a Baseline with Linear Regression
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When we talk about relationships between two variables, linear regression is
+    often the first step because it is the simplest. It models the relationship by
+    fitting a straight line to the data. This line is described by the simple equation
+    `y = mx + b`, where `y` is the dependent variable, `x` is the independent variable,
+    `m` is the slope of the line, and `b` is the y-intercept. Let’s demonstrate this
+    by predicting the “SalePrice” in the Ames dataset based on its overall quality,
+    which is an integer value ranging from 1 to 10.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/a0cbec5586cde38dd94a45f45688bf47.png)](https://machinelearningmastery.com/?attachment_id=16977)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'With a basic linear regression, our model came up with the following equation:
+    `y = 43383x - 84264`. This means that each additional point in quality is associated
+    with an increase of approximately $43,383 in the sale price. To evaluate the performance
+    of our model, we used 5-fold cross-validation, resulting in an R² of 0.618\. This
+    value indicates that about 61.8% of the variability in sale prices can be explained
+    by the overall quality of the house using this simple model.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Linear regression is straightforward to understand and implement. However, it
+    assumes that the relationship between the independent and dependent variables
+    is linear, which might not always be the case, as seen in the scatterplot above.
+    While linear regression provides a good starting point, real-world data often
+    require more complex models to capture curved relationships, as we’ll see in the
+    next section on polynomial regression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Capturing Curves with Polynomial Regression
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Real-world relationships are often not straight lines but curves. Polynomial
+    regression allows us to model these curved relationships. For a third-degree polynomial,
+    this method takes our simple linear equation and adds terms for each power of
+    `x`: `y = ax + bx^2 + cx^3 + d`. We can implement this by using the `PolynomialFeatures`
+    class from the `sklearn.preprocessing` library, which generates a new feature
+    matrix consisting of all polynomial combinations of the features with a degree
+    less than or equal to the specified degree. Here’s how we can apply it to our
+    dataset:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: First, we transform our predictor variable into polynomial features up to the
+    third degree. This enhancement expands our feature set from just `x` (Overall
+    Quality) to `x, x^2, x^3` (i.e., each feature becomes three different but correlated
+    features), allowing our linear model to fit a more complex, curved relationship
+    in the data. We then fit this transformed data into a linear regression model
+    to capture the nonlinear relationship between the overall quality and sale price.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/eea7859aff3c260e402ca4e6914a31b8.png)](https://machinelearningmastery.com/?attachment_id=16978)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Our new model has the equation `y = 65966x^1 - 11619x^2 + 1006x^3 - 31343`.
+    The curve fits the data points more closely than the straight line, indicating
+    a better model. Our 5-fold cross-validation gave us an R² of 0.681, which is an
+    improvement over our linear model. This suggests that including the squared and
+    cubic terms helps our model to capture more of the complexity in the data. Polynomial
+    regression introduces the ability to fit curves, but sometimes focusing on a specific
+    power, like the cubic term, can reveal deeper insights, as we will explore in
+    cubic regression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Experimenting with a Cubic Regression
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Sometimes, we may suspect that a specific power of `x` is particularly important.
+    In these cases, we can focus on that power. Cubic regression is a special case
+    where we model the relationship with a cube of the independent variable: `y =
+    ax^3 + b`. To effectively focus on this power, we can utilize the `FunctionTransformer`
+    class from the `sklearn.preprocessing` library, which allows us to create a custom
+    transformer to apply a specific function to the data. This approach is useful
+    for isolating and highlighting the impact of higher-degree terms like `x^3` on
+    the response variable, providing a clear view of how the cubic term alone explains
+    the variability in the data.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: We applied a cubic transformation to our independent variable and obtained a
+    cubic model with the equation `y = 361x^3 + 85579`. This represents a slightly
+    simpler approach than the full polynomial regression model, focusing solely on
+    the cubic term’s predictive power.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/43ee8ab9c13dfbe508ea6c06cc179913.png)](https://machinelearningmastery.com/?attachment_id=16985)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: With cubic regression, our 5-fold cross-validation yielded an R² of 0.678\.
+    This performance is slightly below the full polynomial model but still notably
+    better than the linear one. Cubic regression is simpler than a higher-degree polynomial
+    regression and can be sufficient for capturing the relationship in some datasets.
+    It’s less prone to overfitting than a higher-degree polynomial model but more
+    flexible than a linear model. The coefficient in the cubic regression model, 361,
+    indicates the rate at which sale prices increase as the quality **cubed** increases.
+    This emphasizes the substantial influence that very high-quality levels have on
+    the price, suggesting that properties with exceptional quality see a disproportionately
+    higher increase in their sale price. This insight is particularly valuable for
+    investors or developers focused on high-end properties where quality is a premium.
+  prefs: []
+  type: TYPE_NORMAL
+- en: As you may imagine, this technique does not limit you from polynomial regression.
+    You can introduce more exotic functions such as log and exponential if you think
+    that makes sense in the scenario.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[sklearn.preprocessing.PolynomialFeatures](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PolynomialFeatures.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[sklearn.preprocessing.FunctionTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.FunctionTransformer.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Polynomial Regression in Python using scikit-learn](https://data36.com/polynomial-regression-python-scikit-learn/)
+    by Tamas Ujhelyi'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Ames Housing Dataset & Data Dictionary**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This blog post explored different regression techniques suited for modeling
+    relationships in data across varying complexities. We started with **linear regression**
+    to establish a baseline for predicting house prices based on quality ratings.
+    Visuals accompanying this section demonstrate how a linear model attempts to fit
+    a straight line through the data points, illustrating the basic concept of regression.
+    Advancing to **polynomial regression**, we tackled more intricate, non-linear
+    trends, which enhanced model flexibility and accuracy. The accompanying graphs
+    showed how a polynomial curve adjusts to fit the data points more closely than
+    a simple linear model. Finally, we focused on **cubic regression** to examine
+    the impact of a specific power of the predictor variable, isolating the effects
+    of higher-degree terms on the dependent variable. The cubic model proved to be
+    particularly effective, capturing the essential characteristics of the relationship
+    with sufficient precision and simplicity.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to identify non-linear trends using visualization techniques.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to model non-linear trends using polynomial regression techniques.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How cubic regression can capture similar predictability with fewer model complexities.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,418 @@
+- en: Handwritten Digit Recognition with LeNet5 Model in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/handwritten-digit-recognition-with-lenet5-model-in-pytorch/](https://machinelearningmastery.com/handwritten-digit-recognition-with-lenet5-model-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'A popular demonstration of the capability of deep learning techniques is object
+    recognition in image data. The “hello world” of object recognition for machine
+    learning and deep learning is the MNIST dataset for handwritten digit recognition.
+    In this post, you will discover how to develop a deep learning model to achieve
+    near state-of-the-art performance on the MNIST handwritten digit recognition task
+    in PyTorch. After completing this chapter, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to load the MNIST dataset using torchvision
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to develop and evaluate a baseline neural network model for the MNIST problem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement and evaluate a simple Convolutional Neural Network for MNIST
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement a state-of-the-art deep learning model for MNIST
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/72c4d28201df8cb70f7682ca6ed5aeb1.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handwritten Digit Recognition with LeNet5 Model in PyTorch
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Johnny Wong](https://unsplash.com/photos/la0WP7U3-AM). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into five parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The MNIST Handwritten Digit Recognition Problem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Loading the MNIST Dataset in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Baseline Model with Multilayer Perceptrons
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Simple Convolutional Neural Network for MNIST
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: LeNet5 for MNIST
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The MNIST Handwritten Digit Recognition Problem
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The MNIST problem is a classic problem that can demonstrate the power of convolutional
+    neural networks. The MNIST dataset was developed by Yann LeCun, Corinna Cortes,
+    and Christopher Burges for evaluating machine learning models on the handwritten
+    digit classification problem. The dataset was constructed from a number of scanned
+    document datasets available from the National Institute of Standards and Technology
+    (NIST). This is where the name for the dataset comes from, the Modified NIST or
+    MNIST dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Images of digits were taken from a variety of scanned documents, normalized
+    in size, and centered. This makes it an excellent dataset for evaluating models,
+    allowing the developer to focus on machine learning with minimal data cleaning
+    or preparation required. Each image is a 28×28-pixel square (784 pixels total)
+    in grayscale. A standard split of the dataset is used to evaluate and compare
+    models, where 60,000 images are used to train a model, and a separate set of 10,000
+    images are used to test it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To goal of this problem is to identify the digits on the image. There are ten
+    digits (0 to 9) or ten classes to predict. The state-of-the-art prediction accuracy
+    is at 99.8% level, achieved with large convolutional neural networks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Loading the MNIST Dataset in PyTorch
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The `torchvision` library is a sister project of PyTorch that provide specialized
+    functions for computer vision tasks. There is a function in `torchvision` that
+    can download the MNIST dataset for use with PyTorch. The dataset is downloaded
+    the first time this function is called and stored locally, so you don’t need to
+    download again in the future. Below is a little script to download and visualize
+    the first 16 images in the training subset of the MNIST dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/34ab7ddbba87120d8b138ee58f69f538.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Baseline Model with Multilayer Perceptrons
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Do you really need a complex model like a convolutional neural network to get
+    the best results with MNIST? You can get good results using a very simple neural
+    network model with a single hidden layer. In this section, you will create a simple
+    multilayer perceptron model that achieves accuracy of 99.81%. You will use this
+    as a baseline for comparison to more complex convolutional neural network models.
+    First, let’s check what the data looks like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should see:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The training dataset is structured as a 3-dimensional array of instance, image
+    height, and image width. For a multilayer perceptron model, you must reduce the
+    images down into a vector of pixels. In this case, the 28×28-sized images will
+    be 784 pixel input vectors. You can do this transform easily using the `reshape()`
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The pixel values are grayscale between 0 and 255\. It is almost always a good
+    idea to perform some scaling of input values when using neural network models.
+    Because the scale is well known and well behaved, you can very quickly normalize
+    the pixel values to the range 0 and 1 by dividing each value by the maximum of
+    255.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following, you transform the dataset, convert to floating point, and
+    normalize them by scaling floating point values and you can normalize them easily
+    in the next step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The output targets `y_train` and `y_test` are labels in the form of integers
+    from 0 to 9\. This is a multiclass classification problem. You can convert these
+    labels into one-hot encoding or keep them as integer labels like this case. You
+    are going to use the cross entropy function to evaluate the model performance
+    and the PyTorch implementation of cross entropy function can be applied on one-hot
+    encoded targets or integer labeled targets.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You are now ready to create your simple neural network model. You will define
+    your model in a PyTorch `Module` class.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The model is a simple neural network with one hidden layer with the same number
+    of neurons as there are inputs (784). A rectifier activation function is used
+    for the neurons in the hidden layer. The output of this model are **logits**,
+    meaning they are real numbers which can be transformed into probability-like values
+    using a softmax function. You do not apply the softmax function explicitly because
+    the cross entropy function will do that for you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You will use the stochastic gradient descent algorithm (with learning rate
+    set to 0.01) to optimize this model. The training loop is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The MNIST dataset is small. This example should complete in a minute, with the
+    output below. This simple network can produce accuracy at 92%.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Below is the complete code for the above multilayer perceptron classification
+    on MNIST dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Simple Convolutional Neural Network for MNIST
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Now that you have seen how to use multilayer perceptron model to classify MNIST
+    dataset. Let’s move on to try a convolutional neural network model. In this section,
+    you will create a simple CNN for MNIST that demonstrates how to use all the aspects
+    of a modern CNN implementation, including convolutional layers, pooling layers,
+    and dropout layers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In PyTorch, convolutional layers are supposed to work on images. Tensors for
+    images should be the pixel values with the dimensions (sample, channel, height,
+    width) but when you load images using libraries such as PIL, the pixels are usually
+    presented as array of dimensions (height, width, channel). The conversion to a
+    proper tensor format can be done using a transform from the `torchvision` library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: You need to use `DataLoader` because the transform is applied when you read
+    the data from the `DataLoader`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, define your neural network model. Convolutional neural networks are more
+    complex than standard multilayer perceptrons, so you will start by using a simple
+    structure that uses all the elements for state-of-the-art results. Below summarizes
+    the network architecture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first hidden layer is a convolutional layer, `nn.Conv2d()`. The layer turns
+    a grayscale image into 10 feature maps, with the filter size of 5×5 and a ReLU
+    activation function. This is the input layer that expects images with the structure
+    outlined above.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next is a pooling layer that takes the max, `nn.MaxPool2d()`. It is configured
+    with a pool size of 2×2 with stride 1\. What it does is to take the maximum in
+    a 2×2 pixel patch per channel and assign the value to the output pixel. The result
+    is a 27×27-pixels feature map per channel.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The next layer is a regularization layer using dropout, `nn.Dropout()`. It is
+    configured to randomly exclude 20% of neurons in the layer in order to reduce
+    overfitting.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next is a layer that converts the 2D matrix data to a vector, using `nn.Flatten`.
+    There are 10 channels from its input and each channel’s feature map has size 27×27\.
+    This layer allows the output to be processed by standard, fully connected layers.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Next is a fully connected layer with 128 neurons. ReLU activation function is
+    used.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Finally, the output layer has ten neurons for the ten classes. You can transform
+    the output into probability-like predictions by applying a softmax function on
+    it.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'This model is trained using cross entropy loss and the Adam optimiztion algorithm.
+    It is implemented as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running the above takes a few minutes and produces the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Not the best result but this demonstrates how convolutional layer works.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Below is the complete code for using the simple convolutional network.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: LeNet5 for MNIST
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The previous model has only one convolutional layer. Of course, you can add
+    more to make a deeper model. One of the earliest demonstration of the effectiveness
+    of convolutional layers in neural networks is the “LeNet5” model. This model is
+    developed to solve the MNIST classification problem. It has three convolutional
+    layers and two fully connected layer to make up five trainable layers in the model,
+    as it is named.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'At the time it was developed, using hyperbolic tangent function as activation
+    is common. Hence it is used here. This model is implemented as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Compare to the previous model, LeNet5 does not have Dropout layer (because Dropout
+    layer was invented several years after LeNet5) and use average pooling instead
+    of max pooling (i.e., for a patch of 2×2 pixels, it is taking average of the pixel
+    values instead of taking the maximum). But the most notable characteristic of
+    LeNet5 model is that it uses strides and paddings to reduce the image size from
+    28×28 pixel down to 1×1 pixel while increasing the number of channels from a one
+    (grayscale) into 120.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Padding means to add pixels of value 0 at the border of the image to make it
+    a bit larger. Without padding, the output of a convolutional layer will be smaller
+    than its input. The stride parameter controls how much the filter should move
+    to produce the next pixel in the output. Usually it is 1 to preserve the same
+    size. If it is larger than 1, the output is a **downsampling** of the input. Hence
+    you see in the LeNet5 model, stride 2 was used in the pooling layers to make,
+    for example, a 28×28-pixel image into 14×14.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Training this model is same as training the previous convolutional network
+    model, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running this you may see:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we achieved accuracy beyond 98%.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following is the complete code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Resources on MNIST
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The MNIST dataset is very well studied. Below are some additional resources
+    you might want to look into.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Yann LeCun, Corinna Cortes, and Christopher J. C. Burges. [The MNIST database
+    of handwritten digits.](http://yann.lecun.com/exdb/mnist/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Rodrigo Benenson. [What is the class of this image? Classification datasets
+    results](https://rodrigob.github.io/are_we_there_yet/build/classification_datasets_results.htm),
+    2016.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Digit Recognizer](https://www.kaggle.com/c/digit-recognizer): Learn computer
+    vision fundamentals with the famous MNIST data. Kaggle.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Hubert Eichner. [Neural Net for Handwritten Digit Recognition in JavaScript.](http://myselph.de/neuralNet.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you discovered the MNIST handwritten digit recognition problem
+    and deep learning models developed in Python using the Keras library that are
+    capable of achieving excellent results. Working through this chapter, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to load the MNIST dataset in PyTorch with torchvision
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to convert the MNIST dataset into PyTorch tensors for consumption by a convolutional
+    neural network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use PyTorch to create convolutional neural network models for MNIST
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement the LeNet5 model for MNIST classification
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,477 @@
+- en: Techniques to Write Better Python Code
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/techniques-to-write-better-python-code/](https://machinelearningmastery.com/techniques-to-write-better-python-code/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: We write a program to solve a problem or make a tool that we can repeatedly
+    solve a similar problem. For the latter, it is inevitable that we come back to
+    revisit the program we wrote, or someone else is reusing the program we write.
+    There is also a chance that we will encounter data that we didn’t foresee at the
+    time we wrote our program. After all, we still want our program to **work**. There
+    are some techniques and mentalities we can use in writing our program to make
+    our code more robust.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After finishing this tutorial, you will learn
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to prepare your code for the unexpected situation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to give an appropriate signal for situations that your code cannot handle
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What are the good practices to write a more robust program
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started!![](../Images/d62bb542e948384af4cdc4d5efc759e4.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Techniques to Write Better Python Code
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Anna Shvets](https://www.pexels.com/photo/crop-woodworker-making-patterns-on-wooden-board-5711877/).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sanitation and assertive programming
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Guard rails and offensive programming
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Good practices to avoid bugs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sanitation and Assertive Programming
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'When we write a function in Python, we usually take in some argument and return
+    some value. After all, this is what a function supposed to be. As Python is a
+    duck-typing language, it is easy to see a function accepting numbers to be called
+    with strings. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code works perfectly fine, as the `+` operator in Python strings means
+    concatenation. Hence there is no syntax error; it’s just not what we intended
+    to do with the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This should not be a big deal, but if the function is lengthy, we shouldn’t
+    learn there is something wrong only at a later stage. For example, our program
+    failed and terminated because of a mistake like this only after spending hours
+    in training a machine learning model and wasting hours of our time waiting. It
+    would be better if we could proactively verify what we assumed. It is also a good
+    practice to help us communicate to other people who read our code what we expect
+    in the code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One common thing a fairly long code would do is to **sanitize the input**.
+    For example, we may rewrite our function above as the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Or, better, convert the input into a floating point whenever it is possible:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The key here is to do some “sanitization” at the beginning of a function, so
+    subsequently, we can assume the input is in a certain format. Not only do we have
+    better confidence that our code works as expected, but it may also allow our main
+    algorithm to be simpler because we ruled out some situations by sanitizing. To
+    illustrate this idea, we can see how we can reimplement the built-in `range()` function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a simplified version of `range()` that we can get from Python’s built-in
+    library. But with the two `if` statements at the beginning of the function, we
+    know there are always values for variables `a`, `b`, and `c`. Then, the `while` loop
+    can be written as such. Otherwise, we have to consider three different cases that
+    we call `range()`, namely, `range(10)`, `range(2,10)`, and `range(2,10,3)`, which
+    will make our `while` loop more complicated and error-prone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another reason to sanitize the input is for **canonicalization**. This means
+    we should make the input in a standardized format. For example, a URL should start
+    with “http://,” and a file path should always be a full absolute path like `/etc/passwd` instead
+    of something like `/tmp/../etc/././passwd`. Canonicalized input is easier to check
+    for conformation (e.g., we know `/etc/passwd` contains sensitive system data,
+    but we’re not so sure about `/tmp/../etc/././passwd`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: You may wonder if it is necessary to make our code lengthier by adding these
+    sanitations. Certainly, that is a balance you need to decide on. Usually, we do
+    not do this on every function to save our effort as well as not to compromise
+    the computation efficiency. We do this only where it can go wrong, namely, on
+    the interface functions that we expose as API for other users or on the main function
+    where we take the input from a user’s command line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'However, we want to point out that the following is a wrong but common way
+    to do sanitation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The `assert` statement in Python will raise the `AssertError` exception (with
+    the optional message provided) if the first argument is not `True`. While there
+    is not much practical difference between raising `AssertError` and raising `ValueError` on
+    unexpected input, using `assert` is not recommended because we can “optimize out”
+    our code by running with the `-O` option to the Python command, i.e.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: All `assert` in the code `script.py` will be ignored in this case. Therefore,
+    if our intention is to stop the code from execution (including you want to catch
+    the exception at a higher level), you should use `if` and explicitly raise an
+    exception rather than use `assert`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The correct way of using `assert` is to help us debug while developing our code.
+    For example,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: While we develop this function, we are not sure our algorithm is correct. There
+    are many things to check, but here we want to be sure that if we extracted every
+    even-indexed item from the input, it should be at least half the length of the
+    input array. When we try to optimize the algorithm or polish the code, this condition
+    must not be invalidated. We keep the `assert` statement at strategic locations
+    to make sure we didn’t break our code after modifications. You may consider this
+    as a different way of unit testing. But usually, we call it unit testing when
+    we check our functions’ input and output conformant to what we expect. Using `assert` this
+    way is to check the steps inside a function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we write a complex algorithm, it is helpful to add `assert` to check for **loop
+    invariants**, namely, the conditions that a loop should uphold. Consider the following
+    code of binary search in a sorted array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The last `assert` statement is to uphold our loop invariants. This is to make
+    sure we didn’t make a mistake on the logic to update the start cursor `s` and
+    end cursor `e` such that the midpoint `m` wouldn’t update in the next iteration.
+    If we replaced `s = m+1` with `s = m` in the last `elif` branch and used the function
+    on certain targets that do not exist in the array, the assert statement will warn
+    us about this bug. That’s why this technique can help us write better code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Guard Rails and Offensive Programming
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It is amazing to see Python comes with a `NotImplementedError` exception built-in.
+    This is useful for what we call  **offensive programming**.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While the input sanitation is to help align the input to a format that our
+    code expects, sometimes it is not easy to sanitize everything or is inconvenient
+    for our future development. One example is the following, in which we define a
+    registering decorator and some functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We raised `NotImplementedError` with a custom error message in our function `activate()`.
+    Running this code will print you the result for the first two calls but fail on
+    the third one as we haven’t defined the `tanh` function yet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can imagine, we can raise `NotImplementedError` in places where the condition
+    is not entirely invalid, but it’s just that we are not ready to handle those cases
+    yet. This is useful when we gradually develop our program, which we implement
+    one case at a time and address some corner cases later. Having these guard rails
+    in place will guarantee our half-baked code is never used in the way it is not
+    supposed to. It is also a good practice to make our code harder to be misused,
+    i.e., not to let variables go out of our intended range without notice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In fact, the exception handling system in Python is mature, and we should use
+    it. When you never expect the input to be negative, raise a `ValueError` with
+    an appropriate message. Similarly, when something unexpected happens, e.g., a
+    temporary file you created disappeared at the midway point, raise a `RuntimeError`.
+    Your code won’t work in these cases anyway, and raising an appropriate exception
+    can help future reuse. From the performance perspective, you will also find that
+    raising exceptions is faster than using if-statements to check. That’s why in
+    Python, we prefer “it’s easier to ask for forgiveness than permission” (EAFP)
+    over “look before you leap” (LBYL).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The principle here is that you should never let the anomaly proceed silently
+    as your algorithm will not behave correctly and sometimes have dangerous effects
+    (e.g., deleting wrong files or creating cybersecurity issues).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Good Practices to Avoid Bugs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It is impossible to say that a piece of code we wrote has no bugs. It is as
+    good as we tested it, but we don’t know what we don’t know. There are always potential
+    ways to break the code unexpectedly. However, there are some practices that can
+    promote good code with fewer bugs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First is the use of the functional paradigm. While we know Python has constructs
+    that allow us to write an algorithm in functional syntax, the principle behind
+    functional programming is to make no side effect on function calls. We never mutate
+    something, and we don’t use variables declared outside of the function. The “no
+    side effect” principle is powerful in avoiding a lot of bugs since we can never
+    mistakenly change something.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we write in Python, there are some common surprises that we find mutated
+    a data structure unintentionally. Consider the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is trivial to see what this function does. However, when we call this function
+    without any argument, the default is used and returned us `[1]`. When we call
+    it again, a different default is used and returned us `[1,1]`. It is because the
+    list `[]` we created at the function declaration as the default value for argument `a` is
+    an initiated object. When we append a value to it, this object is mutated. The
+    next time we call the function will see the mutated object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unless we explicitly want to do this (e.g., an in-place sort algorithm), we
+    should not use the function arguments as variables but should use them as read-only.
+    And in case it is appropriate, we should make a copy of it. For example,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This code intended to keep a log of what we did in the list `LOGS`, but it
+    did not. While we work on the names “Alice,” “Bob,” and then “Charlie,” the three
+    records in `LOGS` will all be “Charlie” because we keep the mutable dictionary
+    object there. It should be corrected as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then we will see the three distinct names in the log. In summary, we should
+    be careful if the argument to our function is a mutable object.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The other technique to avoid bugs is not to reinvent the wheel. In Python, we
+    have a lot of nice containers and optimized operations. You should never try to
+    create a stack data structure yourself since a list supports `append()` and `pop()`.
+    Your implementation would not be any faster. Similarly, if you need a queue, we
+    have `deque` in the `collections` module from the standard library. Python doesn’t
+    come with a balanced search tree or linked list. But the dictionary is highly
+    optimized, and we should consider using the dictionary whenever possible. The
+    same attitude applies to functions too. We have a JSON library, and we shouldn’t
+    write our own. If we need some numerical algorithms, check if you can get one
+    from NumPy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another way to avoid bugs is to use better logic. An algorithm with a lot of
+    loops and branches would be hard to follow and may even confuse ourselves. It
+    would be easier to spot errors if we could make our code clearer. For example,
+    making a function that checks if the upper triangular part of a matrix contains
+    any negative would be like this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'But we also use a Python generator to break this into two functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: We wrote a few more lines of code, but we kept each function focused on one
+    topic. If the function is more complicated, separating the nested loop into generators
+    may help us make the code more maintainable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s consider another example: We want to write a function to check if an
+    input string looks like a valid floating point or integer. We require the string
+    to be “`0.12`” and not accept “`.12`“. We need integers to be like “`12`” but
+    not “`12.`“. We also do not accept scientific notations like “`1.2e-1`” or thousand
+    separators like “`1,234.56`“. To make things simpler, we also do not consider
+    signs such as “`+1.23`” or “`-1.23`“.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can write a function to scan the string from the first character to the
+    last and remember what we saw so far. Then check whether what we saw matched our
+    expectation. The code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The function `isfloat()` above is messy with a lot of nested branches inside
+    the for-loop. Even after the for-loop, the logic is not entirely clear for how
+    we determine the Boolean value. Indeed we can use a different way to write our
+    code to make it less error-prone, such as using a state machine model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Visually, we implement the diagram below into code. We maintain a state variable
+    until we finish scanning the input string. The state will decide to accept a character
+    in the input and move to another state or reject the character and terminate.
+    This function returns True only if it stops at the acceptable states, namely,
+    “integer” or “decimal.” This code is easier to understand and more structured.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/422b81bc004d88bc9ce584b2ea2eb512.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: In fact, the better approach is to use a regular expression to match the input
+    string, namely,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, a regular expression matcher is also running a state machine under
+    the hood.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There is way more to explore on this topic. For example, how we can better segregate
+    responsibilities of functions and objects to make our code more maintainable and
+    easier to understand. Sometimes, using a different data structure can let us write
+    simpler code, which helps make our code more robust. It is not a science, but
+    almost always, bugs can be avoided if the code is simpler.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finally, consider adopting a **coding style** for your project. Having a consistent
+    way to write code is the first step in offloading some of your mental burdens
+    later when you read what you have written. This also makes you spot mistakes easier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Building Secure Software](https://www.amazon.com/dp/0321425235/) by John Viega
+    and Gary R. McGraw'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Building Secure and Reliable Systems](https://www.amazon.com/dp/1492083127/)
+    by Heather Adkins et al'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Hitchhiker’s Guide to Python](https://www.amazon.com/dp/1491933178/) by
+    Kenneth Reitz and Tanya Schlusser'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Practice of Programming](https://www.amazon.com/dp/020161586X/) by Brian
+    Kernighan and Rob Pike'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Refactoring](https://www.amazon.com/dp/0134757599/), 2nd Edition, by Martin
+    Fowler'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you have seen the high-level techniques to make your code
+    better. It can be better prepared for a different situation, so it works more
+    rigidly. It can also be easier to read, maintain, and extend, so it is fit for
+    reuse in the future. Some techniques mentioned here are generic to other programming
+    languages as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why we would like to sanitize our input, and how it can help make our program
+    simpler
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The correct way of using `assert` as a tool to help development
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use Python exceptions appropriately to give signals in unexpected situations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The pitfall in Python programming in handling mutable objects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

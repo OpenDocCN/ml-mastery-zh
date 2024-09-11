@@ -1,0 +1,304 @@
+- en: K-Nearest Neighbors Classification Using OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/k-nearest-neighbors-classification-using-opencv/](https://machinelearningmastery.com/k-nearest-neighbors-classification-using-opencv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The OpenCV library has a module that implements the k-Nearest Neighbors algorithm
+    for machine learning applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will learn how to apply OpenCV’s k-Nearest Neighbors algorithm
+    for classifying handwritten digits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important characteristics of the k-Nearest Neighbors algorithm.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the k-Nearest Neighbors algorithm for image classification in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started. [![](../Images/84c2d4834131494865dc8e314a88819b.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/kNN_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: K-Nearest Neighbors Classification Using OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Reminder of How the k-Nearest Neighbors Algorithm Works
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using k-Nearest Neighbors for Image Classification in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you are already familiar with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[How the k-Nearest Neighbors algorithm works](https://machinelearningmastery.com/k-nearest-neighbors-for-machine-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Reading and displaying images using OpenCV](https://machinelearningmastery.com/?p=14402&preview=true)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Reminder of How the k-Nearest Neighbors Algorithm Works**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The k-Nearest Neighbors (kNN) algorithm has already been explained well in
+    [this tutorial by Jason Brownlee](https://machinelearningmastery.com/k-nearest-neighbors-for-machine-learning/),
+    but let’s first start with brushing up on some of the most important points from
+    his tutorial:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The kNN algorithm does not involve any learning. It simply stores and uses
+    the entire training dataset as its model representation. For this reason, kNN
+    is also called a *lazy learning* algorithm. **'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '***   **Since the entire training dataset is stored, it would make sense to
+    keep it curated, updated often with new data, and as free as possible from outliers. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **A new instance is predicted by searching the entire training dataset
+    for the most similar instance based on a distance measure of choice. The choice
+    of distance measure is typically based on the properties of the data. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **If the kNN is used to solve a regression problem, then the mean or
+    the median of the k-most similar instances is typically used to generate a prediction. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **If the kNN is used to solve a classification problem, a prediction
+    can be generated from the class with the highest frequency of k-most similar instances. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **A value for *k* can be tuned by trying out different values and seeing
+    what works best for the problem. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***   **The kNN algorithm’s computational cost increases with the training
+    dataset’s size. The kNN algorithm also struggles as the dimensionality of the
+    input data increases. **'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**## **Using k-Nearest Neighbors for Image Classification in OpenCV**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, we will be considering the application of classifying handwritten
+    digits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a [previous tutorial](https://machinelearningmastery.com/image-datasets-for-practicing-machine-learning-in-opencv),
+    we have seen that OpenCV provides the image, digits.png, composed of a ‘collage’
+    of 5,000 sub-images in $20\times 20$ pixels, where each sub-image features a handwritten
+    digit from 0 to 9.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have also seen how to [convert dataset images into feature vector representations](https://machinelearningmastery.com/image-vector-representation-for-machine-learning-using-opencv)
+    before feeding them into a machine learning algorithm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We shall be splitting OpenCV’s digits dataset into training and testing sets,
+    converting them into feature vectors, and then using these feature vectors to
+    *train* and test a kNN classifier to classify handwritten digits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Note**: We have previously mentioned that the kNN algorithm does not involve
+    any training/learning, but we shall be referring to a *training dataset* to distinguish
+    the images that will be used for the model representation from those that will
+    be later used for testing.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s start by loading OpenCV’s digits image, splitting it into training and
+    testing sets of images, and converting them into feature vectors using the Histogram
+    of Oriented Gradients (HOG) technique:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, we’re going to initiate a kNN classifier:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then ‘train’ it on the training split of the dataset. For the training split
+    of the dataset, we may either use the intensity values of the image pixels themselves
+    (type casted to 32-bit floating-point values, according to the expected input
+    of the function):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Or use the feature vectors generated by the HOG technique. In the previous
+    section, we mentioned that the kNN algorithm struggles with high-dimensional data.
+    Using the HOG technique to generate a more compact representation of the image
+    data helps with alleviating this problem:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s continue this tutorial by making use of the HOG feature vectors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The trained kNN classifier can now be tested on the testing split of the dataset,
+    following which its accuracy can be computed by working out the percentage of
+    correct predictions that match the ground truth. For the time being, the value
+    for `k` will be empirically set to 3:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, as we have mentioned in the previous section, it is typical practice
+    that the value of *k* is tuned by trying out different values and seeing what
+    works best for the problem at hand. We can also try splitting the dataset using
+    different ratio values to see their effect on prediction accuracy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To do so, we’ll place the kNN classifier code above into a nested `for` loop,
+    where the outer loop iterates over different ratio values, whereas the inner loop
+    iterates over different values of *k*. Inside the inner loop, we shall also populate
+    a dictionary with the computed accuracy values to plot them later using Matplotlib.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'One last detail that we will include is a check to ensure that we are loading
+    the correct image and correctly splitting it into sub-images. For this purpose,
+    we’ll make use of OpenCV’s `imshow` method to display the images, followed by
+    a `waitKey` with an input of zero that will stop and wait for a keyboard event:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Plotting the computed prediction accuracy for different ratio values and different
+    values of *k*, gives a better insight into the effect that these different values
+    have on the prediction accuracy for this particular application:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/0c6a71bb4b294afaeede172838c4ca62.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/kNN.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Line plots of the prediction accuracy for different training splits of the dataset,
+    and different values of ‘k’
+  prefs: []
+  type: TYPE_NORMAL
+- en: Try using different image descriptors and tweaking the different parameters
+    for the algorithms of choice before feeding the data into the kNN algorithm, and
+    investigate the kNN’s outputs that result from your changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: OpenCV KNearest Class, [https://docs.opencv.org/4.7.0/dd/de1/classcv_1_1ml_1_1KNearest.html](https://docs.opencv.org/4.7.0/dd/de1/classcv_1_1ml_1_1KNearest.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to apply OpenCV’s k-Nearest Neighbors algorithm
+    to classify handwritten digits.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Several of the most important characteristics of the k-Nearest Neighbors algorithm.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the k-Nearest Neighbors algorithm for image classification in OpenCV.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.**************
+  prefs: []
+  type: TYPE_NORMAL

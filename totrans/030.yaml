@@ -1,0 +1,257 @@
+- en: 'From Train-Test to Cross-Validation: Advancing Your Model’s Evaluation'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/from-train-test-to-cross-validation-advancing-your-models-evaluation/](https://machinelearningmastery.com/from-train-test-to-cross-validation-advancing-your-models-evaluation/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Many beginners will initially rely on the train-test method to evaluate their
+    models. This method is straightforward and seems to give a clear indication of
+    how well a model performs on unseen data. However, this approach can often lead
+    to an incomplete understanding of a model’s capabilities. In this blog, we’ll
+    discuss why it’s important to go beyond the basic train-test split and how cross-validation
+    can offer a more thorough evaluation of model performance. Join us as we guide
+    you through the essential steps to achieve a deeper and more accurate assessment
+    of your machine learning models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/1a6dd8d3aeb574d9d77cc3d178743df5.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'From Train-Test to Cross-Validation: Advancing Your Model’s Evaluation'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Belinda Fewings](https://unsplash.com/photos/man-in-yellow-polo-shirt-and-black-pants-standing-on-red-plastic-chair-gQELczXc_NA).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Model Evaluation: Train-Test vs. Cross-Validation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The “Why” of Cross-Validation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Delving Deeper with K-Fold Cross-Validation
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Model Evaluation: Train-Test vs. Cross-Validation'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A machine learning model is determined by its design (such as a linear vs. non-linear
+    model) and its parameters (such as the coefficients in a linear regression model).
+    You need to make sure the model is suitable for the data before considering how
+    to fit the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The performance of a machine learning model is gauged by how well it performs
+    on previously unseen (or test) data. In a standard train-test split, we divide
+    the dataset into two parts: a larger portion for training our model and a smaller
+    portion for testing its performance. The model is suitable if the tested performance
+    is acceptable. This approach is straightforward but doesn’t always utilize our
+    data most effectively.[![](../Images/2d6ebe14ee209ccee526009fc7bffd66.png)](https://machinelearningmastery.com/cross-validation-002/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, with cross-validation, we go a step further. The second image shows
+    a 5-Fold Cross-Validation, where the dataset is split into five “folds.” In each
+    round of validation, a different fold is used as the test set while the remaining
+    form the training set. This process is repeated five times, ensuring each data
+    point is used for training and testing.[![](../Images/e7299569de4a4d501791968df0170a78.png)](https://machinelearningmastery.com/cross-validation-003/)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is an example to illustrate the above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'While the train-test method yields a single R² score, cross-validation provides
+    us with a spectrum of five different R² scores, one from each fold of the data,
+    offering a more comprehensive view of the model’s performance:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The roughly equal R² scores among the five means the model is stable. You can
+    then decide whether this model (i.e., linear regression) provides an acceptable
+    prediction power.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The “Why” of Cross-Validation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Understanding the variability of our model’s performance across different subsets
+    of data is crucial in machine learning. The train-test split method, while useful,
+    only gives us a snapshot of how our model might perform on one particular set
+    of unseen data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cross-validation, by systematically using multiple folds of data for both training
+    and testing, offers a more robust and comprehensive evaluation of the model’s
+    performance. Each fold acts as an independent test, providing insights into how
+    the model is expected to perform across varied data samples. This multiplicity
+    not only helps identify potential overfitting but also ensures that the performance
+    metric (in this case, R² score) is not overly optimistic or pessimistic, but rather
+    a more reliable indicator of how the model will generalize to unseen data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To visually demonstrate this, let’s consider the R² scores from both a train-test
+    split and a 5-fold cross-validation process:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This visualization underscores the difference in insights gained from a single
+    train-test evaluation versus the broader perspective offered by cross-validation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/fde7a447f9c7bdd49762c49039eb658b.png)](https://machinelearningmastery.com/?attachment_id=16741)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Through cross-validation, we gain a deeper understanding of our model’s performance,
+    moving us closer to developing machine learning solutions that are both effective
+    and reliable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Delving Deeper with K-Fold Cross-Validation
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Cross-validation is a cornerstone of reliable machine learning model evaluation,
+    with `cross_val_score()` providing a quick and automated way to perform this task.
+    Now, we turn our attention to the `KFold` class, a component of scikit-learn that
+    offers a deeper dive into the folds of cross-validation. The `KFold` class provides
+    not just a score but a window into the model’s performance across different segments
+    of our data. We demonstrate this by replicating the example above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This code block will show us the size of each training and testing set and
+    the corresponding R² score for each fold:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The `KFold` class shines in its transparency and control over the cross-validation
+    process. While `cross_val_score()` simplifies the process into one line, `KFold`
+    opens it up, allowing us to view the exact splits of our data. This is incredibly
+    valuable when you need to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understand how your data is being divided.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Implement custom preprocessing before each fold.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Gain insights into the consistency of your model’s performance.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By using the `KFold` class, you can manually iterate over each split and apply
+    the model training and testing process. This not only helps in ensuring that you’re
+    fully informed about the data being used at each stage but also offers the opportunity
+    to modify the process to suit complex needs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[sklearn.model_selection.train_test_split](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[sklearn.model_selection.cross_val_score](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[sklearn.model_selection.KFold](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Cross Validation in Machine Learning](https://www.geeksforgeeks.org/cross-validation-machine-learning/)
+    by Geeks for Geeks'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Ames Housing Dataset & Data Dictionary**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, we explored the importance of thorough model evaluation through
+    cross-validation and the `KFold` method. Both techniques meticulously avoid the
+    pitfall of data leakage by keeping training and testing data distinct, thereby
+    ensuring the model’s performance is accurately measured. Moreover, by validating
+    each data point exactly once and using it for training K-1 times, these methods
+    provide a detailed view of the model’s ability to generalize, boosting confidence
+    in its real-world applicability. Through practical examples, we’ve demonstrated
+    how integrating these strategies into your evaluation process leads to more reliable
+    and robust machine learning models, ready for the challenges of new and unseen
+    data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The efficiency of `cross_val_score()` in automating the cross-validation process.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How `KFold` offers detailed control over data splits for tailored model evaluation.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How both methods ensure full data utilization and prevent data leakage.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

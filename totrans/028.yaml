@@ -1,0 +1,187 @@
+- en: Building a Simple RAG Application Using LlamaIndex
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/building-a-simple-rag-application-using-llamaindex/](https://machinelearningmastery.com/building-a-simple-rag-application-using-llamaindex/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '![Building a Simple RAG Application Using LlamaIndex](../Images/58c09579890d02cb250a7e12788c7e4b.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Image by Author
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, we will explore Retrieval-Augmented Generation (RAG) and the
+    LlamaIndex AI framework. We will learn how to use LlamaIndex to build a RAG-based
+    application for Q&A over the private documents and enhance the application by
+    incorporating a memory buffer. This will enable the LLM to generate the response
+    using the context from both the document and previous interactions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is RAG in LLMs?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Retrieval-Augmented Generation (RAG) is an advanced methodology designed to
+    enhance the performance of large language models (LLMs) by integrating external
+    knowledge sources into the generation process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'RAG involves two main phases: retrieval and content generation. Initially,
+    relevant documents or data are retrieved from external databases, which are then
+    used to provide context for the LLM, ensuring that responses are based on the
+    most current and domain-specific information available.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is LlamaIndex?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: LlamaIndex is an advanced AI framework that is designed to enhance the capabilities
+    of large language models (LLMs) by facilitating seamless integration with diverse
+    data sources. It supports the retrieval of data from over 160 different formats,
+    including APIs, PDFs, and SQL databases, making it highly versatile for building
+    advanced AI applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can even build a complete multimodal and multistep AI application and then
+    deploy it to a server to provide highly accurate, domain-specific responses. Compared
+    to other frameworks like LangChain, LlamaIndex offers a simpler solution with
+    built-in functions tailored for various types of LLM applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building RAG Applications using LlamaIndex
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this section, we will build an AI application that loads Microsoft Word files
+    from a folder, converts them into embeddings, indexes them into the vector store,
+    and builds a simple query engine. After that, we will build a proper RAG chatbot
+    with history using vector store as a retriever, LLM, and the memory buffer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setting up
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Install all the necessary Python packages to load the data and for OpenAI API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Initiate LLM and embedding model using OpenAI functions. We will use the latest
+    “GPT-4o” and “text-embedding-3-small” models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Set both LLM and embedding model to global so that when we invoke a function
+    that requires LLM or embeddings, it will automatically use these settings.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Loading and Indexing the Documents
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Load the data from the folder, convert it into the embedding, and store it into
+    the vector store.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Building Query Engine
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Please convert the vector store to a query engine and begin asking questions
+    about the documents. The documents consist of the blogs published in June on Machine
+    Learning Mastery by the author Abid Ali Awan.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: And the answer is accurate.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The common themes of the blogs are centered around enhancing knowledge **and**
+    skills **in** machine learning. They focus on providing resources such **as**
+    free books, platforms **for** collaboration, **and** datasets to help individuals
+    deepen their understanding of machine learning algorithms, collaborate effectively
+    on projects, **and** gain practical experience through real-world data. These
+    resources are aimed at both beginners **and** professionals looking to build a
+    strong foundation **and** advance their careers **in** the field of machine learning.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Building RAG Application with Memory Buffer
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The previous app was simple; let’s create a more advanced chatbot with a history
+    feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We will build the chatbot using a retriever, a chat memory buffer, and a GPT-4o
+    model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Afterward, we will test our chatbot by asking questions about one of the blog
+    posts.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: It is highly accurate and to the point.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Based on the provided documents, the “Deep RL Course” by Hugging Face **is**
+    highly recommended **for** mastering Reinforcement Learning. This course **is**
+    particularly suitable **for** beginners **and** covers both the basics **and**
+    advanced techniques of reinforcement learning. It includes topics such **as**
+    Q-learning, deep Q-learning, policy gradients, ML agents, actor-critic methods,
+    multi-agent systems, **and** advanced topics like RLHF (Reinforcement Learning
+    **from** Human Feedback), Decision Transformers, **and** MineRL. The course **is**
+    designed to be completed within a month **and** offers practical experimentation
+    **with** models, strategies to improve scores, **and** a leaderboard to track
+    progress.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Let’s ask follow-up questions and understand more about the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you are having trouble running the above code, please refer to the Deepnote
+    Notebook: [Building RAG Application using LlamaIndex](https://deepnote.com/workspace/abid-5efa63e7-7029-4c3e-996f-40e8f1acba6f/project/Building-a-Simple-RAG-Application-using-LlamaIndex-5ef68174-c5cd-435e-882d-c0e112257391/notebook/Notebook%201-2912a70b918b49549f1b333b8778212c).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Conclusion
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Building and deploying AI applications has been made easy by LlamaIndex. You
+    just have to write a few lines of code and that’s it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The next step in your learning journey will be to build a proper Chatbot application
+    using Gradio and deploy it on the server. To simplify your life even more, you
+    can also check out Llama Cloud.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, we learned about LlamaIndex and how to build an RAG application
+    that lets you ask questions from your private documentation. Then, we built a
+    proper RAG chatbot that generates responses using private documents and previous
+    chat interactions.
+  prefs: []
+  type: TYPE_NORMAL

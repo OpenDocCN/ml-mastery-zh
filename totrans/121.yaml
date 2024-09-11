@@ -1,0 +1,536 @@
+- en: Text Generation with LSTM in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/text-generation-with-lstm-in-pytorch/](https://machinelearningmastery.com/text-generation-with-lstm-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Recurrent neural network can be used for time series prediction. In which, a
+    regression neural network is created. It can also be used as generative model,
+    which usually is a classification neural network model. A generative model is
+    to learn certain pattern from data, such that when it is presented with some prompt,
+    it can create a complete output that in the same style as the learned pattern.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this post, you will discover how to build a generative model for text using
+    LSTM recurrent neural networks in PyTorch. After finishing this post, you will
+    know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Where to download a free corpus of text that you can use to train text generative
+    models
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to frame the problem of text sequences to a recurrent neural network generative
+    model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to develop an LSTM to generate plausible text sequences for a given problem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/9fc2bb253eb3136eefd33aa7128fdfee.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Text Generation with LSTM in PyTorch
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Egor Lyfar](https://unsplash.com/photos/tfBlExFIVTw). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into six parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is a Generative Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Getting Text Data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A Small LSTM Network to Predit the Next Character
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generating Text with an LSTM Model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using a Larger LSTM Network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Faster Training with GPU
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is a Generative Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Generative model is indeed, just another machine learning model that happened
+    to be able to create new things. Generative Adverserial Network (GAN) is a class
+    of its own. Transformer models that uses attention mechanism is also found to
+    be useful to generate text passages.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is just a machine learning model because the model has been trained with
+    existing data, so that it learned something from it. Depends on how to train it,
+    they can work vastly different. In this post, a character-based generative model
+    is created. What it means is to train a model that take a sequence of characters
+    (alphabets and punctuations) as input and the immediate next character as the
+    target. As long as it can predict what is the next character given what are preceding,
+    you can run the model in a loop to generate a long piece of text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This model is probably the simplest one. However, human language is complex.
+    You shouldn’t expect it can produce very high quality output. Even so, you need
+    a lot of data and train the model for a long time before you can see sensible
+    results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Getting Text Data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Obtaining high quality data is important for a successful generative model.
+    Fortunately, many of the classical texts are no longer protected under copyright.
+    This means you can download all the text for these books for free and use them
+    in experiments, like creating generative models. Perhaps the best place to get
+    access to free books that are no longer protected by copyright is Project Gutenberg.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this post, you will use a favorite book from childhood as the dataset, Alice’s
+    Adventures in Wonderland by Lewis Carroll:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://www.gutenberg.org/ebooks/11](https://www.gutenberg.org/ebooks/11)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Your model will learn the dependencies between characters and the conditional
+    probabilities of characters in sequences so that you can, in turn, generate wholly
+    new and original sequences of characters. This post is a lot of fun, and repeating
+    these experiments with other books from Project Gutenberg is recommended. These
+    experiments are not limited to text; you can also experiment with other ASCII
+    data, such as computer source code, marked-up documents in LATEX, HTML or Markdown,
+    and more.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can download the complete text in ASCII format (Plaintext UTF-8) for this
+    book for free and place it in your working directory with the filename `wonderland.txt`.
+    Now, you need to prepare the dataset ready for modeling. Project Gutenberg adds
+    a standard header and footer to each book, which is not part of the original text.
+    Open the file in a text editor and delete the header and footer. The header is
+    obvious and ends with the text:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The footer is all the text after the line of text that says:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: You should be left with a text file that has about 3,400 lines of text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Small LSTM Network to Predict the Next Character
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: First, you need to do some preprocessing on the data before you can build a
+    model. Neural network models can only work with numbers, not text. Therefore you
+    need to transform the characters into numbers. To make the problem simpler, you
+    also want to transform all uppercase letters into lowercase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In below, you open the text file, transform all letters into lowercase, and
+    create a Python dict `char_to_int` to map characters into distinct integers. For
+    example, the list of unique sorted lowercase characters in the book is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Since this problem is character-based, the “vocabulary” are the distinct characters
+    ever used in the text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This should print:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see the book has just under 150,000 characters, and when converted to
+    lowercase, there are only 50 distinct characters in the vocabulary for the network
+    to learn — much more than the 26 in the alphabet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Next, you need to separate the text into inputs and targets. A window of 100
+    character is used here. That is, with character 1 to 100 as input, your model
+    is going to predict for character 101\. Should a window of 5 be used, the word
+    “chapter” will become two data samples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In a long text such as this one, a myraid of windows can be created and this
+    produced a dataset of a lot of samples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running the above, you can see a total of 144,474 samples are created. Each
+    sample is now in the form of integers, transformed using the mapping `char_to_int`.
+    However, a PyTorch model would prefer to see the data in floating point tensors.
+    Hence you should convert these into PyTorch tensors. LSTM layer is going to be
+    used in the model, thus the input tensor should be of dimension (sample, time
+    steps, features). To help training, it is also a good idea to normalize the input
+    to 0 to 1\. Hence you have the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can now define your LSTM model. Here, you define a single hidden LSTM layer
+    with 256 hidden units. The input is single feature (i.e., one integer for one
+    character). A dropout layer with probability 0.2 is added after the LSTM layer.
+    The output of LSTM layer is a tuple, which the first element is the hidden states
+    from the LSTM cell for each of the time step. It is a history of how the hidden
+    state evolved as the LSTM cell accepts each time step of input. Presumably, the
+    last hidden state contained the most information, hence only the last hidden state
+    is pass on to the output layer. The output layer is a fully-connected layer to
+    produce logits for the 50 vocabularies. The logits can be converted into probability-like
+    prediction using a softmax function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is a model for single character classification of 50 classes. Therefore
+    cross entropy loss should be used. It is optimized using Adam optimizer. The training
+    loop is as follows. For simplicity, no test set has created, but the model is
+    evaluated with the training set once again at the end of each epoch to keep track
+    on the progress.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This program can run for a long time, especially on CPU! In order to preserve
+    the fruit of work, the best model ever found is saved for future reuse.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running the above may produce the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The cross entropy almost always decreasing in each epoch. This means probably
+    the model is not fully converged and you can train it for more epochs. Upon the
+    training loop completed, you should have the file `single-char.pth` created to
+    contain the best model weight ever found, as well as the character-to-integer
+    mapping used by this model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For completeness, below is tying everything above into one script:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Generating Text with an LSTM Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Given the model is well trained, generating text using the trained LSTM network
+    is relatively straightforward. Firstly, you need to recreate the network and load
+    the trained model weight from the saved checkpoint. Then you need to create some
+    prompt for the model to start on. The prompt can be anything that the model can
+    understand. It is a seed sequence to be given to the model to obtain one generated
+    character. Then, the generated character is added to the end of this sequence,
+    and trim off the first character to maintain the consistent length. This process
+    is repeated for as long as you want to predict new characters (e.g., a sequence
+    of 1,000 characters in length). You can pick a random input pattern as your seed
+    sequence, then print generated characters as you generate them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A simple way to generate prompt is to pick a random sample from the original
+    dataset, e.g., with the `raw_text` obtained in the previous section, a prompt
+    can be created as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: But you should be reminded that you need to transform it since this prompt is
+    a string while the model expects a vector of integers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The entire code is merely as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running this example first outputs the prompt used, then each character as
+    it is generated. For example, below are the results from one run of this text
+    generator. The prompt was:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The generated text was:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s note some observations about the generated text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It can emit line breaks. The original text limited the line width to 80 characters
+    and the generative model attempted to replicate this pattern
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The characters are separated into word-like groups, and some groups are actual
+    English words (e.g., “the,” “said,” and “rabbit”), but many are not (e.g., “thite,”
+    “soteet,” and “tha”).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Some of the words in sequence make sense (e.g., “i don’t know the“), but many
+    do not (e.g., “he were thing“).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The fact that this character-based model of the book produces output like this
+    is very impressive. It gives you a sense of the learning capabilities of LSTM
+    networks. However, the results are not perfect. In the next section, you will
+    look at improving the quality of results by developing a much larger LSTM network.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using a Larger LSTM Network
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Recall that LSTM is a recurrent neural network. It takes a sequence as input,
+    which in each step of the sequence, the input is mixed with its internal states
+    to produce an output. Hence the output from LSTM is also a sequence. In the above,
+    the output from the last time step is taken for further processing in the neural
+    network but those from earlier steps are discarded. However, it is not necessarily
+    the case. You can treat the sequence output from one LSTM layer as input to another
+    LSTM layer. Then, you are building a larger network.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similar to convolutional neural networks, a stacked LSTM network is supposed
+    to have the earlier LSTM layers to learn low level features while the later LSTM
+    layers to learn the high level features. It may not be always useful but you can
+    try it out to see whether the model can produce a better result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In PyTorch, making a stacked LSTM layer is easy. Let’s modify the above model
+    into the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The only change is on the parameter to `nn.LSTM()`: you set `num_layers=2`
+    instead of 1 to add another LSTM layer. But between the two LSTM layers, you also
+    added a dropout layer through the parameter `dropout=0.2`. Replacing this model
+    with the previous is all the change you need to make. Rerun the training you should
+    see the below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should see the the cross entropy here is lower than that in the previous
+    section. This means this model is performing better. In fact, with this model,
+    you can see the generated text looks more sensible:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: Not only words are spelled correctly, the text is also more English-like. Since
+    the cross-entropy loss is still decreasing as you trained the model, you can assume
+    the model is not converged yet. You can expect to make the model better if you
+    increased the training epoch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For completeness, below is the complete code for using this new model, including
+    training and text generation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Faster Training with GPU
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Running programs from this post can be pathetically slow. Even if you have a
+    GPU, you will not see immediate improvement. It is because the design of PyTorch,
+    it may not use your GPU automatically. However, if you have a CUDA-capable GPU,
+    you can improve the performance a lot by carefully moving the heavy computation
+    away from your CPU.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A PyTorch model is a program of tensor calculation. The tensors can be stored
+    in GPU or in CPU. Operation can be carried out as long as all the operators are
+    in the same device. In this particular example, the model weight (i.e., those
+    of the LSTM layers and the fully connected layer) can be moved to GPU. By doing
+    so, the input should also be moved to the GPU before execution and the output
+    will also be stored in the GPU unless you move it back.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In PyTorch, you can check if you have a CUDA-capable GPU using the following
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It returns a boolean to indicate if you can use GPU, which in turn, depends
+    on the hardware model you have, whether your OS has the appropriate library installed,
+    and whether your PyTorch is compiled with corresponding GPU support. If everything
+    works in concert, you can create a device and assign your model to it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If your model is running on CUDA device but your input tensor is not, you will
+    see PyTorch complain about that and fail to proceed. To move your tensor to the
+    CUDA device, you should run like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Which the `.to(device)` part will do the magic. But remember that `y_pred`
+    produced above will also be on the CUDA device. Hence you should do the same when
+    you run the loss function. Modifying the above program to make it capable to run
+    on GPU will become the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Compare to the code in the previous section, you should see they are essentially
+    the same. Except the CUDA device is detected with the line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: which will be your GPU or fall back to CPU if no CUDA device is found. Afterward,
+    `.to(device)` is added at several strategic location to move the computation to
+    the GPU.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This character text model is a popular way of generating text using recurrent
+    neural networks. Below are some more resources and tutorials on the topic if you
+    are interested in going deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Andrej Karpathy. [The Unreasonable Effectiveness of Recurrent Neural Networks.](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
+    May 2015.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Lars Eidnes. [Auto-Generating Clickbait With Recurrent Neural Networks](https://larseidnes.com/2015/10/13/auto-generating-clickbait-with-recurrent-neural-networks/).
+    2015.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: PyTorch tutorial. [Sequence Models and Long Short-Term Memory Networks](https://pytorch.org/tutorials/beginner/nlp/sequence_models_tutorial.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Papers
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: 'Ilya Sutskever, James Martens, and Geoffrey Hinton. “[Generating Text with
+    Recurrent Neural Networks](https://www.cs.utoronto.ca/~ilya/pubs/2011/LANG-RNN.pdf)”.
+    In: Proceedings of the 28th International Conference on Machine Learning. Bellevue,
+    WA, USA, 2011.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[`nn.LSTM` in PyTorch documentation](https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you discovered how you can develop an LSTM recurrent neural network
+    for text generation in PyTorch. After completing this post, you know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to find text for classical books for free as dataset for your machine learning
+    model
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train an LSTM network for text sequences
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use a LSTM network to generate text sequencesHow to optimize deep learning
+    training in PyTorch using CUDA devices
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

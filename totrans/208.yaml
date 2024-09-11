@@ -1,0 +1,425 @@
+- en: Adding a Custom Attention Layer to a Recurrent Neural Network in Keras
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/adding-a-custom-attention-layer-to-recurrent-neural-network-in-keras/](https://machinelearningmastery.com/adding-a-custom-attention-layer-to-recurrent-neural-network-in-keras/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Deep learning networks have gained immense popularity in the past few years.
+    The “attention mechanism” is integrated with deep learning networks to improve
+    their performance. Adding an attention component to the network has shown significant
+    improvement in tasks such as machine translation, image recognition, text summarization,
+    and similar applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This tutorial shows how to add a custom attention layer to a network built using
+    a recurrent neural network. We’ll illustrate an end-to-end application of time
+    series forecasting using a very simple dataset. The tutorial is designed for anyone
+    looking for a basic understanding of how to add user-defined layers to a deep
+    learning network and use this simple example to build more complex applications.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Which methods are required to create a custom attention layer in Keras
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to incorporate the new layer in a network built with SimpleRNN
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Adding A Custom Attention Layer To Recurrent Neural Network In Keras <br>
+    Photo by ](../Images/06b5dee1135e454d349a3ee2458af08d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/yahya-ehsan-L895sqROaGw-unsplash-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Adding a custom attention layer to a recurrent neural network in Keras
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by Yahya Ehsan, some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing a simple dataset for time series forecasting
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use a network built via SimpleRNN for time series forecasting
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Adding a custom attention layer to the SimpleRNN network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Prerequisites
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: It is assumed that you are familiar with the following topics. You can click
+    the links below for an overview.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[What is Attention?](https://machinelearningmastery.com/what-is-attention/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The attention mechanism from scratch](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[An introduction to RNN and the math that powers them](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Understanding simple recurrent neural networks in Keras](https://machinelearningmastery.com/understanding-simple-recurrent-neural-networks-in-keras/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Dataset
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The focus of this article is to gain a basic understanding of how to build
+    a custom attention layer to a deep learning network. For this purpose, let’s use
+    a very simple example of a Fibonacci sequence, where one number is constructed
+    from the previous two numbers. The first 10 numbers of the sequence are shown
+    below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, …
+  prefs: []
+  type: TYPE_NORMAL
+- en: When given the previous ‘t’ numbers, can you get a machine to accurately reconstruct
+    the next number? This would mean discarding all the previous inputs except the
+    last two and performing the correct operation on the last two numbers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this tutorial, you’ll construct the training examples from `t` time steps
+    and use the value at `t+1` as the target. For example, if `t=3`, then the training
+    examples and the corresponding target values would look as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/da6f5bfe1757b58101a99aa09faceed4.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/fib.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The SimpleRNN Network
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this section, you’ll write the basic code to generate the dataset and use
+    a SimpleRNN network to predict the next number of the Fibonacci sequence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Import Section
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Let’s first write the import section:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Preparing the Dataset
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The following function generates a sequence of n Fibonacci numbers (not counting
+    the starting two values). If `scale_data` is set to True, then it would also use
+    the `MinMaxScaler` from scikit-learn to scale the values between 0 and 1\. Let’s
+    see its output for `n=10`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Next, we need a function `get_fib_XY()` that reformats the sequence into training
+    examples and target values to be used by the Keras input layer. When given `time_steps`
+    as a parameter, `get_fib_XY()` constructs each row of the dataset with `time_steps`
+    number of columns. This function not only constructs the training set and test
+    set from the Fibonacci sequence but also shuffles the training examples and reshapes
+    them to the required TensorFlow format, i.e., `total_samples x time_steps x features`.
+    Also, the function returns the `scaler` object that scales the values if `scale_data`
+    is set to `True`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s generate a small training set to see what it looks like. We have set `time_steps=3`
+    and `total_fib_numbers=12`, with approximately 70% of the examples going toward
+    the test points. Note the training and test examples have been shuffled by the
+    `permutation()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Setting Up the Network
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Now let’s set up a small network with two layers. The first one is the `SimpleRNN`
+    layer, and the second one is the `Dense` layer. Below is a summary of the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Train the Network and Evaluate
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The next step is to add code that generates a dataset, trains the network, and
+    evaluates it. This time around, we’ll scale the data between 0 and 1\. We don’t
+    need to pass the `scale_data` parameter as its default value is `True`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As output, you’ll see the progress of the training and the following values
+    for the mean square error:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Adding a Custom Attention Layer to the Network
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In Keras, it is easy to create a custom layer that implements attention by
+    subclassing the `Layer` class. The Keras guide lists clear steps for [creating
+    a new layer via subclassing](https://keras.io/guides/making_new_layers_and_models_via_subclassing/).
+    You’ll use those guidelines here. All the weights and biases corresponding to
+    a single layer are encapsulated by this class. You need to write the `__init__`
+    method as well as override the following methods:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`build()`: The Keras guide recommends adding weights in this method once the
+    size of the inputs is known. This method “lazily” creates weights. The built-in
+    function `add_weight()` can be used to add the weights and biases of the attention
+    layer.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`call()`: The `call()` method implements the mapping of inputs to outputs.
+    It should implement the forward pass during training.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Call Method for the Attention Layer
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The call method of the attention layer has to compute the alignment scores,
+    weights, and context. You can go through the details of these parameters in Stefania’s
+    excellent article on [The Attention Mechanism from Scratch](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/).
+    You’ll implement the Bahdanau attention in your `call()` method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The good thing about inheriting a layer from the Keras `Layer` class and adding
+    the weights via the `add_weights()` method is that weights are automatically tuned.
+    Keras does an equivalent of “reverse engineering” of the operations/computations
+    of the `call()` method and calculates the gradients during training. It is important
+    to specify `trainable=True` when adding the weights. You can also add a `train_step()`
+    method to your custom layer and specify your own method for weight training if
+    needed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The code below implements the custom attention layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: RNN Network with Attention Layer
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Let’s now add an attention layer to the RNN network you created earlier. The
+    function `create_RNN_with_attention()` now specifies an RNN layer, an attention
+    layer, and a Dense layer in the network. Make sure to set `return_sequences=True`
+    when specifying the SimpleRNN. This will return the output of the hidden units
+    for all the previous time steps.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s look at a summary of the model with attention.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Train and Evaluate the Deep Learning Network with Attention
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: It’s time to train and test your model and see how it performs in predicting
+    the next Fibonacci number of a sequence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You’ll see the training progress as output and the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see that even for this simple example, the mean square error on the
+    test set is lower with the attention layer. You can achieve better results with
+    hyper-parameter tuning and model selection. Try this out on more complex problems
+    and by adding more layers to the network. You can also use the `scaler` object
+    to scale the numbers back to their original values.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can take this example one step further by using LSTM instead of SimpleRNN,
+    or you can build a network via convolution and pooling layers. You can also change
+    this to an encoder-decoder network if you like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consolidated Code
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The entire code for this tutorial is pasted below if you would like to try it.
+    Note that your outputs would be different from the ones given in this tutorial
+    because of the stochastic nature of this algorithm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Deep Learning Essentials](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365)
+    by Wei Di, Anurag Bhardwaj, and Jianing Wei.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=as_li_ss_tl?dchild=1&keywords=deep+learning&qid=1606171954&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=0a0c58945768a65548b639df6d1a98ed&language=en_US)
+    by Ian Goodfellow, Joshua Bengio, and Aaron Courville.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Papers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
+    2014.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[A Tour of Recurrent Neural Network Algorithms for Deep Learning.](https://machinelearningmastery.com/recurrent-neural-network-algorithms-for-deep-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[What is Attention?](https://machinelearningmastery.com/what-is-attention/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The attention mechanism from scratch.](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[An introduction to RNN and the math that powers them.](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Understanding simple recurrent neural networks in Keras.](https://machinelearningmastery.com/understanding-simple-recurrent-neural-networks-in-keras/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[How to Develop an Encoder-Decoder Model with Attention in Keras](https://machinelearningmastery.com/encoder-decoder-attention-sequence-to-sequence-prediction-keras/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered how to add a custom attention layer to a deep
+    learning network using Keras.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to override the Keras `Layer` class.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The method `build()` is required to add weights to the attention layer.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `call()` method is required for specifying the mapping of inputs to outputs
+    of the attention layer.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to add a custom attention layer to the deep learning network built using
+    SimpleRNN.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions about RNNs discussed in this post? Ask your questions
+    in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

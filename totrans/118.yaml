@@ -1,0 +1,261 @@
+- en: Building a Logistic Regression Classifier in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/building-a-logistic-regression-classifier-in-pytorch/](https://machinelearningmastery.com/building-a-logistic-regression-classifier-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Logistic regression is a type of regression that predicts the probability of
+    an event. It is used for classification problems and has many applications in
+    the fields of machine learning, artificial intelligence, and data mining.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The formula of logistic regression is to apply a sigmoid function to the output
+    of a linear function. This article discusses how you can build a logistic regression
+    classifier. While previously you have been working on a single-varable dataset,
+    here we’ll be using a popular MNIST dataset to train and test our model. After
+    going through this article, you’ll learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use logistic regression in PyTorch and how it can be applied to real-world
+    problems.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to load and analyze torchvision datasets.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build and train a logistic regression classifier on image datasets.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/28a7557c7e2c6b605f4a0e2e67d166d0.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a Logistic Regression Classifier in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Catgirlmutant](https://unsplash.com/photos/hLIetAds3Lw). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in four parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: The MNIST Dataset
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Load Dataset into DataLoader
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build the Model with `nn.Module`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training the Classifier
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The MNIST Dataset
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You will train and test a logistic regression model with MNIST dataset. This
+    dataset contains 6000 images for training and 10000 images for testing the out-of-sample
+    performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The MNIST dataset is so popular that it is part of PyTorch. Here is how you
+    can load the training and testing samples of the MNIST dataset in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The dataset will be downloaded and extracted to the directory as below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s verify number of training and testing samples in the dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: It prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Each sample in the dataset is a pair of image and label. To inspect the data
+    type and size of the first element in the training data, you can use `type()`
+    and `size()` methods.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This prints
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can access samples from a dataset using list indexing. The first sample
+    in the dataset is a `FloatTensor` and it is a $28\times 28$-pixel image in grayscale
+    (i.e., one channel), hence the size `[1, 28, 28]`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, let’s check the labels of the first two samples in the training set.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: This shows
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: From the above, you can see that the first two images in the training set represent
+    “5” and “0”. Let’s show these two images to confirm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: You should see these two digits:![](../Images/66bfa85d438950020f784e6cf5259c4b.png)![](../Images/c6011e672c8069f7ea8cd237745f13a1.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Load Dataset into DataLoader
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Usually, you do not use the dataset directly in training but through a `DataLoader`
+    class. This allows you to read data in batches, not samples.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following, data is loaded into a `DataLoader` with batch size at 32.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Build the Model with `nn.Module`
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s build the model class with `nn.Module` for our logistic regression model.
+    This class is similar to that in the previous posts but the numbers of input and
+    output are configurable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: This model will take a $28\times 28$-pixel image of handwritten digits as input
+    and classify them into one of the 10 output classes of digits 0 to 9\. So, here
+    is how you can instantiate the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Training the Classifier
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You will train this model with stochastic gradient descent as the optimizer
+    with learning rate 0.001 and cross-entropy as the loss metric.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Then, the model is trained for 50 epochs. Note that you have use `view()` method
+    to flatten the image matrices into rows to fit the same of the logistic regression
+    model input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'During training, you should see the progress like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: You have achieved an accuracy of around 86% by training the model for only 50
+    epochs. Accuracy can be improved further if the model is trained longer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s visualize how the graphs for loss and accuracy look like. The following
+    is the loss:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/acd89162656245a2a714c05fcd7782ef.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'And this is for accuracy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/25e77d43f70ce546f9391207e11c6388.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to build a multi-class logistic regression
+    classifier in PyTorch. Particularly, you learned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to use logistic regression in PyTorch and how it can be applied to real-world
+    problems.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to load and analyze torchvision datasets.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build and train a logistic regression classifier on image datasets.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

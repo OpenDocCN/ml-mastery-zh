@@ -1,0 +1,329 @@
+- en: Using Dropout Regularization in PyTorch Models
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/using-dropout-regularization-in-pytorch-models/](https://machinelearningmastery.com/using-dropout-regularization-in-pytorch-models/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '[Dropout](https://machinelearningmastery.com/dropout-for-regularizing-deep-neural-networks/)
+    is a simple and powerful regularization technique for neural networks and deep
+    learning models.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this post, you will discover the Dropout regularization technique and how
+    to apply it to your models in PyTorch models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After reading this post, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How the Dropout regularization technique works
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use Dropout on your input layers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use Dropout on your hidden layers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to tune the dropout level on your problem
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/53f7b7fdd299d10c88720ea518639304.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Dropout Regularization in PyTorch Models
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Priscilla Fraire](https://unsplash.com/photos/65dCe4Zuek4). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This post is divided into six parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dropout Regularization for Neural Networks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Dropout Regularization in PyTorch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Dropout on the Input Layer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Dropout on the Hidden Layers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Dropout in Evaluation Mode
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tips for Using Dropout
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Dropout Regularization for Neural Networks
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Dropout is a regularization technique for neural network models proposed around
+    2012 to 2014\. It is a layer in the neural network. During training of a neural
+    network model, it will take the output from its previous layer, randomly select
+    some of the neurons and zero them out before passing to the next layer, effectively
+    ignored them. This means that their contribution to the activation of downstream
+    neurons is temporally removed on the forward pass, and any weight updates are
+    not applied to the neuron on the backward pass.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When the model is used for inference, dropout layer is just to scale all the
+    neurons constantly to compensate the effect of dropping out during training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dropout is destructive but surprisingly can improve the model’s accuracy. As
+    a neural network learns, neuron weights settle into their context within the network.
+    Weights of neurons are tuned for specific features, providing some specialization.
+    Neighboring neurons come to rely on this specialization, which, if taken too far,
+    can result in a fragile model too specialized for the training data. This reliance
+    on context for a neuron during training is referred to as complex co-adaptations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can imagine that if neurons are randomly dropped out of the network during
+    training, other neurons will have to step in and handle the representation required
+    to make predictions for the missing neurons. This is believed to result in multiple
+    independent internal representations being learned by the network.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The effect is that the network becomes less sensitive to the specific weights
+    of neurons. This, in turn, results in a network capable of better generalization
+    and less likely to overfit the training data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dropout Regularization in PyTorch
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You do not need to randomly select elements from a PyTorch tensor to implement
+    dropout manually. The `nn.Dropout()` layer from PyTorch can be introduced into
+    your model. It is implemented by randomly selecting nodes to be dropped out with
+    a given probability $p$ (e.g., 20%) while in the training loop. In PyTorch, the
+    dropout layer further scale the resulting tensor by a factor of $\dfrac{1}{1-p}$
+    so the average tensor value is maintained. Thanks to this scaling, the dropout
+    layer operates at inference will be an identify function (i.e., no effect, simply
+    copy over the input tensor as output tensor). You should make sure to turn the
+    model into inference mode when evaluating the the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s see how to use `nn.Dropout()` in a PyTorch model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The examples will use the [Sonar dataset](http://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks)).
+    This is a binary classification problem that aims to correctly identify rocks
+    and mock-mines from sonar chirp returns. It is a good test dataset for neural
+    networks because all the input values are numerical and have the same scale.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The dataset can be [downloaded from the UCI Machine Learning repository](http://archive.ics.uci.edu/ml/machine-learning-databases/undocumented/connectionist-bench/sonar/sonar.all-data).
+    You can place the sonar dataset in your current working directory with the file
+    name *sonar.csv*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will evaluate the developed models using scikit-learn with 10-fold cross
+    validation in order to tease out differences in the results better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are 60 input values and a single output value. The input values are standardized
+    before being used in the network. The baseline neural network model has two hidden
+    layers, the first with 60 units and the second with 30\. Stochastic gradient descent
+    is used to train the model with a relatively low learning rate and momentum.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The full baseline model is listed below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Running the example generates an estimated classification accuracy of 82%.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using Dropout on the Input Layer
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Dropout can be applied to input neurons called the visible layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the example below, a new Dropout layer between the input and the first hidden
+    layer was added. The dropout rate is set to 20%, meaning one in five inputs will
+    be randomly excluded from each update cycle.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Continuing from the baseline example above, the code below exercises the same
+    network with input dropout:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Running the example provides a slight drop in classification accuracy, at least
+    on a single test run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Using Dropout on Hidden Layers
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Dropout can be applied to hidden neurons in the body of your network model.
+    This is more common.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the example below, Dropout is applied between the two hidden layers and
+    between the last hidden layer and the output layer. Again a dropout rate of 20%
+    is used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: You can see that in this case, adding dropout layer improved the accuracy a
+    bit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Dropout in Evaluation Mode
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Dropout will randomly reset some of the input to zero. If you wonder what happens
+    after you have finished training, the answer is nothing! The PyTorch dropout layer
+    should run like an identity function when the model is in evaluation mode. That’s
+    why you have `model.eval()` before you evaluate the model. This is important because
+    the goal of dropout layer is to make sure the network learn enough clues about
+    the input for the prediction, rather than depend on a rare phenomenon in the data.
+    But on inference, you should provide as much information as possible to the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tips for Using Dropout
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The original paper on Dropout provides experimental results on a suite of standard
+    machine learning problems. As a result, they provide a number of useful heuristics
+    to consider when using Dropout in practice.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generally, use a small dropout value of 20%-50% of neurons, with 20% providing
+    a good starting point. A probability too low has minimal effect, and a value too
+    high results in under-learning by the network.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use a larger network. You are likely to get better performance when Dropout
+    is used on a larger network, giving the model more of an opportunity to learn
+    independent representations.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use Dropout on incoming (visible) as well as hidden units. Application of Dropout
+    at each layer of the network has shown good results.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Use a large learning rate with decay and a large momentum. Increase your learning
+    rate by a factor of 10 to 100 and use a high momentum value of 0.9 or 0.99.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Constrain the size of network weights. A large learning rate can result in very
+    large network weights. Imposing a constraint on the size of network weights, such
+    as max-norm regularization, with a size of 4 or 5 has been shown to improve results.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Below are resources you can use to learn more about Dropout in neural networks
+    and deep learning models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Papers
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Dropout: A Simple Way to Prevent Neural Networks from Overfitting](http://jmlr.org/papers/v15/srivastava14a.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Improving neural networks by preventing co-adaptation of feature detectors](http://arxiv.org/abs/1207.0580)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Online materials
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[How does the dropout method work in deep learning?](https://www.quora.com/How-does-the-dropout-method-work-in-deep-learning)
+    on Quora'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[nn.Dropout](https://pytorch.org/docs/stable/generated/torch.nn.Dropout.html)
+    from PyTorch documentation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you discovered the Dropout regularization technique for deep
+    learning models. You learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What Dropout is and how it works
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can use Dropout on your own deep learning models.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tips for getting the best results from Dropout on your own models.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

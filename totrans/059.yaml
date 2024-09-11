@@ -1,0 +1,411 @@
+- en: K-Means Clustering in OpenCV and Application for Color Quantization
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/k-means-clustering-in-opencv-and-application-for-color-quantization/](https://machinelearningmastery.com/k-means-clustering-in-opencv-and-application-for-color-quantization/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The k-means clustering algorithm is an unsupervised machine learning technique
+    that seeks to group similar data into distinct clusters to uncover patterns in
+    the data that may not be apparent to the naked eye.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is possibly the most widely known algorithm for data clustering and is implemented
+    in the OpenCV library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will learn how to apply OpenCV’s k-means clustering algorithm
+    for color quantization of images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What data clustering is within the context of machine learning.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying the k-means clustering algorithm in OpenCV to a simple two-dimensional
+    dataset containing distinct data clusters.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply the k-means clustering algorithm in OpenCV for color quantization
+    of images.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started. [![](../Images/a6e0f013e8c42b7e01ab4d0b8ba34a90.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_cover-scaled.jpg)
+  prefs: []
+  type: TYPE_NORMAL
+- en: K-Means Clustering for Color Quantization Using OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Billy Huynh](https://unsplash.com/photos/W8KTS-mhFUE), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Clustering as an Unsupervised Machine Learning Task
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Discovering k-Means Clustering in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Color Quantization Using k-Means
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Clustering as an Unsupervised Machine Learning Task**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Cluster analysis is an unsupervised learning technique.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It involves automatically grouping data into distinct groups (or clusters),
+    where the data within each cluster are similar but different from those in the
+    other clusters. It aims to uncover patterns in the data that may not be apparent
+    before clustering.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many different clustering algorithms, as explained in [this tutorial](https://machinelearningmastery.com/clustering-algorithms-with-python/),
+    with k-means clustering being one of the most widely known.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The k-means clustering algorithm takes unlabelled data points. It seeks to assign
+    them to *k* clusters, where each data point belongs to the cluster with the nearest
+    cluster center, and the center of each cluster is taken as the mean of the data
+    points that belong to it. The algorithm requires that the user provide the value
+    of k as an input; hence, this value needs to be known a priori or tuned according
+    to the data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Discovering k-Means Clustering in OpenCV**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Let’s first consider applying k-means clustering to a simple two-dimensional
+    dataset containing distinct data clusters before moving on to more complex tasks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For this purpose, we shall be generating a dataset consisting of 100 data points
+    (specified by `n_samples`), which are equally divided into 5 Gaussian clusters
+    (identified by `centers`) having a standard deviation set to 1.5 (determined by
+    `cluster_std`). To be able to replicate the results, let’s also define a value
+    for `random_state`, which we’re going to set to 10:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above should generate the following plot of data points:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/319ff12ce9d55196edeb9a23cc6e770b.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_1-e1678295533468.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scatter Plot of Dataset Consisting of 5 Gaussian Clusters
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we look at this plot, we may already be able to visually distinguish one
+    cluster from another, which means that this should be a sufficiently straightforward
+    task for the k-means clustering algorithm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In OpenCV, the k-means algorithm is not part of the `ml` module but can be
+    called directly. To be able to use it, we need to specify values for its input
+    arguments as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The input, unlabelled `data`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The number, `K`, of required clusters.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The termination criteria, `TERM_CRITERIA_EPS` and `TERM_CRITERIA_MAX_ITER`,
+    defining the desired accuracy and the maximum number of iterations, respectively,
+    which, when reached, the algorithm iteration should stop.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The number of `attempts`, denoting the number of times the algorithm will be
+    executed with different initial labeling to find the best cluster compactness.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the cluster centers will be initialized, whether random, user-supplied,
+    or through a center initialization method such as kmeans++, as specified by the
+    parameter `flags`.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The k-means clustering algorithm in OpenCV returns:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The `compactness` of each cluster, computed as the sum of the squared distance
+    of each data point to its corresponding cluster center. A smaller compactness
+    value indicates that the data points are distributed closer to their corresponding
+    cluster center and, hence, the cluster is more compact.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The predicted cluster labels `y_pred`, associate each input data point with
+    its corresponding cluster.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `centers` coordinates of each cluster of data points.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Let’s now apply the k-means clustering algorithm to the dataset generated earlier.
+    Note that we are type-casting the input data to `float32`, as expected by the
+    `kmeans()` function in OpenCV:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code above generates the following plot, where each data point is now colored
+    according to its assigned cluster, and the cluster centers are marked in red:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/c60732be9dc64ea2fbe9a905b5cbc9f2.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_2-e1678295496224.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scatter Plot of Dataset With Clusters Identified Using k-Means Clustering
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete code listing is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Color Quantization Using k-Means**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: One of the applications for k-means clustering is the color quantization of
+    images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Color quantization refers to the process of reducing the number of distinct
+    colors that are used in the representation of an image.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Color quantization is critical for displaying images with many colors on devices
+    that can only display a limited number of colors, usually due to memory limitations,
+    and enables efficient compression of certain types of images.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*[*Color quantization*](https://en.wikipedia.org/wiki/Color_quantization)*,
+    2023.**'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*In this case, the data points that we will provide to the k-means clustering
+    algorithm are the RGB values of each image pixel. As we shall be seeing, we will
+    provide these values in the form of an $M \times 3$ array, where $M$ denotes the
+    number of pixels in the image.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s try out the k-means clustering algorithm on [this image](https://unsplash.com/photos/rgP93cPsVEc),
+    which I have named *bricks.jpg*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/da6bd527cbf965bea444c4e02959f2f7.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_4.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The dominant colors that stand out in this image are red, orange, yellow, green,
+    and blue. However, many shadows and glints introduce additional shades and colors
+    to the dominant ones.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We’ll start by first reading the image using OpenCV’s `imread` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Remember](https://machinelearningmastery.com/?p=14402&preview=true) that OpenCV
+    loads this image in BGR rather than RGB order. There is no need to convert it
+    to RGB before feeding it to the k-means clustering algorithm because the latter
+    will still group similar colors no matter in which order the pixel values are
+    specified. However, since we are making use of Matplotlib to display the images,
+    we’ll convert it to RGB so that we may display the quantized result correctly
+    later on:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we have mentioned earlier, the next step involves reshaping the image to
+    an $M \times 3$ array, and we may then proceed to apply k-means clustering to
+    the resulting array values using several clusters that correspond to the number
+    of dominant colors we have mentioned above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the code snippet below, I have also included a line that prints out the
+    number of unique RGB pixel values from the total number of pixels in the image.
+    We find that we have 338,742 unique RGB values out of 14,155,776 pixels, which
+    is substantial:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At this point, we shall proceed to apply the actual RGB values of the cluster
+    centers to the predicted pixel labels and reshape the resulting array to the shape
+    of the original image before displaying it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Printing again the number of unique RGB values in the quantized image, we find
+    that these have now lessened to the number of clusters that we had specified to
+    the k-means algorithm:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we look at the color quantized image, we find that the pixels belonging
+    to the yellow and orange bricks have been grouped into the same cluster, possibly
+    due to the similarity of their RGB values. In contrast, one of the clusters aggregates
+    pixels belonging to regions of shadow:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/eee1d51f72bdba4fb4f026fa267916ee.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_3-e1678295458313.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Color Quantized Image Using k-Means Clustering with 5 Clusters
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now try changing the value specifying the number of clusters for the k-means
+    clustering algorithm and investigate its effect on the quantization result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete code listing is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 10 Clustering Algorithms With Python, [https://machinelearningmastery.com/clustering-algorithms-with-python/](https://machinelearningmastery.com/clustering-algorithms-with-python/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: K-Means Clustering in OpenCV, [https://docs.opencv.org/3.4/d1/d5c/tutorial_py_kmeans_opencv.html](https://docs.opencv.org/3.4/d1/d5c/tutorial_py_kmeans_opencv.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: k-means clustering, [https://en.wikipedia.org/wiki/K-means_clustering](https://en.wikipedia.org/wiki/K-means_clustering)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to apply OpenCV’s k-means clustering algorithm
+    for color quantization of images.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What data clustering is within the context of machine learning.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Applying the k-means clustering algorithm in OpenCV to a simple two-dimensional
+    dataset containing distinct data clusters.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply the k-means clustering algorithm in OpenCV for color quantization
+    of images.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.*
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,216 @@
+- en: Easier Experimenting in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/easier-experimenting-in-python/](https://machinelearningmastery.com/easier-experimenting-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When we work on a machine learning project, we quite often need to experiment
+    with multiple alternatives. Some features in Python allow us to try out different
+    options without much effort. In this tutorial, we are going to see some tips to
+    make our experiments faster.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After finishing this tutorial, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to leverage a duck-typing feature to easily swap functions and objects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How making components into drop-in replacements for  each other can help experiments
+    run faster
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/0975618a0760ede0fe8c1345db6a7e39.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Easier experimenting in Python. Photo by [Jake Givens](https://unsplash.com/photos/iR8m2RRo-z4).
+    Some rights reserved
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is in three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Workflow of a machine learning project
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Functions as objects
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Caveats
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Workflow of a Machine Learning Project
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Consider a very simple machine learning project as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This is a typical machine learning project workflow. We have a stage of preprocessing
+    the data, then training a model, and afterward, evaluating our result. But in
+    each step, we may want to try something different. For example, we may wonder
+    if normalizing the data would make it better. So we may rewrite the code above
+    into the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: So far, so good. But what if we keep experimenting with different datasets,
+    different models, or different score functions? Each time, we keep flipping between
+    using a scaler and not would mean a lot of code change, and it would be quite
+    easy to make mistakes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Because Python supports duck typing, we can see that the following two classifier
+    models implemented the same interface:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Therefore, we can simply select between these two version and keep everything
+    intact. We can say these two models are **drop-in replacements** for each other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Making use of this property, we can create a toggle variable to control the
+    design choice we make:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By toggling the variable `USE_SCALER` between `True` and `False`, we can select
+    whether a scaler should be applied. A more complex example would be to select
+    among different scaler and the classifier models, such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A complete example is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you go one step further, you may even skip the toggle variable and use a
+    string directly for a quick experiment:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Functions as Objects
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In Python, functions are first-class citizens. You can assign functions to a
+    variable. Indeed, functions are objects in Python, as are classes (the classes
+    themselves, not only incarnations of classes). Therefore, we can use the same
+    technique as above to experiment with similar functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The above is similar to calling `np.random.normal(size=(10,5))`, but we hold
+    the function in a variable for the convenience of swapping one function with another.
+    Note that since we call the functions with the same argument, we have to make
+    sure all variations will accept it. In case it is not, we may need some additional
+    lines of code to make a wrapper. For example, in the case of generating Student’s
+    t distribution, we need an additional parameter for the degree of freedom:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: This works because in the above, `np.random.normal`, `np.random.uniform`, and `t_wrapper`
+    as we defined, are all drop-in replacements of each other.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Caveats
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Machine learning differs from other programming projects because there are more
+    uncertainties in the workflow. When you build a web page or build a game, you
+    have a picture in your mind of what to achieve. But there is some exploratory
+    work in machine learning projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You will probably use some source code control system like git or Mercurial
+    to manage your source code development history in other projects. In machine learning
+    projects, however, we are trying out different **combinations** of many steps.
+    Using git to manage the different variations may not fit, not to say sometimes
+    may be overkill. Therefore, using a toggle variable to control the flow should
+    allow us to try out different things faster. This is especially handy when we
+    are working on our projects in Jupyter notebooks.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, as we put multiple versions of code together, we made the program clumsy
+    and less readable. It is better to do some clean-up after we confirm what to do.
+    This will help us with maintenance in the future.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '*Fluent Python*, second edition, by Luciano Ramalho, [https://www.amazon.com/dp/1492056359/](https://www.amazon.com/dp/1492056359/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you’ve seen how the duck typing property in Python helps
+    us create drop-in replacements. Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Duck typing can help us switch between alternatives easily in a machine learning
+    workflow
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can make use of a toggle variable to experiment among alternatives
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,416 @@
+- en: Implementing the Transformer Decoder from Scratch in TensorFlow and Keras
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras/](https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: There are many similarities between the Transformer encoder and decoder, such
+    as their implementation of multi-head attention, layer normalization, and a fully
+    connected feed-forward network as their final sub-layer. Having implemented the
+    [Transformer encoder](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras),
+    we will now go ahead and apply our knowledge in implementing the Transformer decoder
+    as a further step toward implementing the complete Transformer model. Your end
+    goal remains to apply the complete model to Natural Language Processing (NLP).
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover how to implement the Transformer decoder
+    from scratch in TensorFlow and Keras.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The layers that form part of the Transformer decoder
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement the Transformer decoder from scratch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/351cb0d6443fe8eb0f558ada27032ec4.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/decoder_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Implementing the Transformer decoder from scratch in TensorFlow and Keras
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [François Kaiser](https://unsplash.com/photos/8Ceyil3gIog), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recap of the Transformer Architecture
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Transformer Decoder
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Implementing the Transformer Decoder From Scratch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Decoder Layer
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Transformer Decoder
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Testing Out the Code
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you are already familiar with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[The Transformer model](https://machinelearningmastery.com/the-transformer-model/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The scaled dot-product attention](https://machinelearningmastery.com/?p=13364&preview=true)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The multi-head attention](https://machinelearningmastery.com/?p=13351&preview=true)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Transformer positional encoding](https://machinelearningmastery.com/the-transformer-positional-encoding-layer-in-keras-part-2/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Transformer encoder](https://machinelearningmastery.com/?p=13389&preview=true)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Recap of the Transformer Architecture**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Recall](https://machinelearningmastery.com/the-transformer-model/) having
+    seen that the Transformer architecture follows an encoder-decoder structure. The
+    encoder, on the left-hand side, is tasked with mapping an input sequence to a
+    sequence of continuous representations; the decoder, on the right-hand side, receives
+    the output of the encoder together with the decoder output at the previous time
+    step to generate an output sequence.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The encoder-decoder structure of the Transformer architecture
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: In generating an output sequence, the Transformer does not rely on recurrence
+    and convolutions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You have seen that the decoder part of the Transformer shares many similarities
+    in its architecture with the encoder. This tutorial will explore these similarities.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Transformer Decoder**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Similar to the [Transformer encoder](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras),
+    the Transformer decoder also consists of a stack of $N$ identical layers. The
+    Transformer decoder, however, implements an additional multi-head attention block
+    for a total of three main sub-layers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The first sub-layer comprises a multi-head attention mechanism that receives
+    the queries, keys, and values as inputs.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The second sub-layer comprises a second multi-head attention mechanism.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The third sub-layer comprises a fully-connected feed-forward network.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[![](../Images/b5ece98aba8f016010f010adfd5a8097.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The decoder block of the Transformer architecture
+  prefs: []
+  type: TYPE_NORMAL
+- en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each one of these three sub-layers is also followed by layer normalization,
+    where the input to the layer normalization step is its corresponding sub-layer
+    input (through a residual connection) and output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: On the decoder side, the queries, keys, and values that are fed into the first
+    multi-head attention block also represent the same input sequence. However, this
+    time around, it is the *target* sequence that is embedded and augmented with positional
+    information before being supplied to the decoder. On the other hand, the second
+    multi-head attention block receives the encoder output in the form of keys and
+    values and the normalized output of the first decoder attention block as the queries.
+    In both cases, the dimensionality of the queries and keys remains equal to $d_k$,
+    whereas the dimensionality of the values remains equal to $d_v$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Vaswani et al. introduce regularization into the model on the decoder side,
+    too, by applying dropout to the output of each sub-layer (before the layer normalization
+    step), as well as to the positional encodings before these are fed into the decoder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s now see how to implement the Transformer decoder from scratch in TensorFlow
+    and Keras.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Implementing the Transformer Decoder from Scratch**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**The Decoder Layer**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Since you have already implemented the required sub-layers when you covered
+    the [implementation of the Transformer encoder](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras),
+    you will create a class for the decoder layer that makes use of these sub-layers
+    straight away:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice here that since the code for the different sub-layers had been saved
+    into several Python scripts (namely, *multihead_attention.py* and *encoder.py*),
+    it was necessary to import them to be able to use the required classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'As you did for the Transformer encoder, you will now create the class method,
+    `call()`, that implements all the decoder sub-layers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The multi-head attention sub-layers can also receive a padding mask or a look-ahead
+    mask. As a brief reminder of what was said in a [previous tutorial](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras),
+    the *padding* mask is necessary to suppress the zero padding in the input sequence
+    from being processed along with the actual input values. The *look-ahead* mask
+    prevents the decoder from attending to succeeding words, such that the prediction
+    for a particular word can only depend on known outputs for the words that come
+    before it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The same `call()` class method can also receive a `training` flag to only apply
+    the Dropout layers during training when the flag’s value is set to `True`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Transformer Decoder**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The Transformer decoder takes the decoder layer you have just implemented and
+    replicates it identically $N$ times.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You will create the following `Decoder()` class to implement the Transformer
+    decoder:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: As in the Transformer encoder, the input to the first multi-head attention block
+    on the decoder side receives the input sequence after this would have undergone
+    a process of word embedding and positional encoding. For this purpose, an instance
+    of the `PositionEmbeddingFixedWeights` class (covered in [this tutorial](https://machinelearningmastery.com/the-transformer-positional-encoding-layer-in-keras-part-2/))
+    is initialized, and its output assigned to the `pos_encoding` variable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The final step is to create a class method, `call()`, that applies word embedding
+    and positional encoding to the input sequence and feeds the result, together with
+    the encoder output, to $N$ decoder layers:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code listing for the full Transformer decoder is the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Testing Out the Code**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'You will work with the parameter values specified in the paper, [Attention
+    Is All You Need](https://arxiv.org/abs/1706.03762), by Vaswani et al. (2017):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'As for the input sequence, you will work with dummy data for the time being
+    until you arrive at the stage of [training the complete Transformer model](https://machinelearningmastery.com/training-the-transformer-model)
+    in a separate tutorial, at which point you will use actual sentences:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Next, you will create a new instance of the `Decoder` class, assigning its
+    output to the `decoder` variable, subsequently passing in the input arguments,
+    and printing the result. You will set the padding and look-ahead masks to `None`
+    for the time being, but you will return to these when you implement the complete
+    Transformer model:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Tying everything together produces the following code listing:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Running this code produces an output of shape (*batch size*, *sequence length*,
+    *model dimensionality*). Note that you will likely see a different output due
+    to the random initialization of the input sequence and the parameter values of
+    the Dense layers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
+    2021'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered how to implement the Transformer decoder from
+    scratch in TensorFlow and Keras.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The layers that form part of the Transformer decoder
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement the Transformer decoder from scratch
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,301 @@
+- en: 'Image Feature Extraction in OpenCV: Edges and Corners'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/opencv_edges_and_corners/](https://machinelearningmastery.com/opencv_edges_and_corners/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In the world of computer vision and image processing, the ability to extract
+    meaningful features from images is important. These features serve as vital inputs
+    for various downstream tasks, such as object detection and classification. There
+    are multiple ways to find these features. The naive way is to count the pixels.
+    But in OpenCV, there are many routines to help you extract features from an image.
+    In this post, you will see how OpenCV can help find some high-level features.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Corner and edges can be extracted from an image
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What are the common algorithms available in OpenCV for extracting corners and
+    edges
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/53a71141b9fec057868923016859fea3.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Image Feature Extraction in OpenCV: Edges and Corners'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Michael Barth](https://unsplash.com/photos/gray-building-under-calm-sky-7Yp3v4Ol1jI),
+    some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Understanding Image Feature Extraction
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Canny Edge Detection in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Harris Corner Detection in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you are already familiar with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Reading and displaying images using OpenCV](https://machinelearningmastery.com/?p=14402&preview=true)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Understanding Image Feature Extraction
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Image feature extraction involves identifying and representing distinctive structures
+    within an image. Reading the pixels of an image is certainly one. But this is
+    a low-level feature. A high-level feature of an image can be anything from edges,
+    corners, or even more complex textures and shapes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Features are characteristics of an image. With these unique characteristics,
+    you may be able to distinguish one image from another. This is the first step
+    in computer vision. By extracting these features, you can create representations
+    that are more compact and meaningful than merely the pixels of the image. It helps
+    further analysis and processing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In the following, you will learn the two basic but very common feature extraction
+    algorithms. Both of them return a pixel-based classification in the format of
+    numpy arrays.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Canny Edge Detection in OpenCV
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Over the years, there have been many algorithms developed for image feature
+    extraction. They are not machine learning models, but closer to deterministic
+    algorithms. These algorithms each aimed at a particular feature.
+  prefs: []
+  type: TYPE_NORMAL
+- en: OpenCV provides a rich set of tools and functions for image feature extraction.
+    Let’s start with the first, Canny edge detection.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Finding lines in an image is probably the simplest feature extraction. Its goal
+    is to identify which pixel is on an edge. An edge is defined as a gradient on
+    the pixel intensity. In other words, if there is an abrupt color change, it is
+    considered an edge. But there are more details to it, so noises are excluded.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s consider the following image and save it as `image.jpg` in the local
+    directory:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://unsplash.com/photos/VSLPOL9PwB8](https://unsplash.com/photos/VSLPOL9PwB8)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'An example of finding and illustrating edges is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above, the image is converted into grayscale and then called `cv2.Canny()`
+    function. Grayscale images are required in many feature extraction algorithm because
+    many are designed to work on a single color channel.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The argument to the `cv2.Canny()` function takes two numerical values, for minimum
+    and maximum thresholds respectively. They are used in the **hysteresis thresholding**
+    to consolidate pixels into edges. The higher the maximum, only the stronger edges
+    are kept in the result. The higher the minimum, however, you will see more “disconnected
+    edges” returned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This function returns an numpy array that matched the pixel dimension of the
+    image, which the value is either 0 (not on an edge) or 255 (on an edge). The code
+    above color those pixels in blue. The result is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/270cb779b61c2c5d48a8b0b85fa7f47f.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Result of Canny edge detection
+  prefs: []
+  type: TYPE_NORMAL
+- en: Original photo by [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8),
+    some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You should see the blue lines above marked the door and window and also outlined
+    each brick. You adjust the two thresholds to see a different result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Harris Corner Detection in OpenCV
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Harris Corner Detection is a method used to identify significant variations
+    in intensity, which often correspond to the corners of objects in an image. OpenCV
+    offers a simple and efficient implementation of this technique, allowing us to
+    detect corners that serve as prominent features for image analysis and matching.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Extracting corners from an image can be done in three steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Convert the image into grayscale, because Harris corner detection algorithm
+    works only on a single color channel
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Run `cv2.cornerHarris(image, blockSize, ksize, k)` and get a score for every
+    pixel
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Identify which pixel is at the corner by comparing the score against the image
+    maximum
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The argument to `cornerHarris()` function include the neighborhood size `blockSize`
+    and a kernel size `ksize`. Both are small positive integers but the latter must
+    be an odd number. The final argument `k` is a positive floating point value that
+    controls the sensitivity of corner detection. Too large such a value will make
+    the algorithm mistake a corner as an edge. You may need to experiment with its
+    value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'An example code, running Harris corner detection on the same image above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The image produced will be as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/4217f16f4749ab12366b58e4c60f9e84.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Result of Harris corner detection
+  prefs: []
+  type: TYPE_NORMAL
+- en: Original photo by [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8),
+    some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The red dots were drawn by the `cv2.circle()` function inside the for loop above.
+    They are just for illustration. The key idea is that the algorithm gives a score
+    of each pixel of the image to tell how much it is believed to be a corner, or
+    on an edge, or “flat” (i.e., neither). You need to control the sensitivity of
+    your conclusion by comparing the score to the maximum among the entire image,
+    in the line
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result is a Boolean numpy array `corners`, which is then converted into
+    an array of coordinates using the `np.argwhere()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: From the image above, you can see that Harris corner detection is not perfect,
+    but if the corner is obvious enough, it can be detected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Websites**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: OpenCV Feature Detection and Description, [https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html](https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: OpenCV Canny Edge Detection, [https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html](https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to apply OpenCV’s Canny Edge Detection and
+    Harris Corner Detection algorithms on an image
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: These are pixel-based algorithms that classify each pixel into edge or non-edge,
+    or corner or non-corner
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to apply these algorithms using OpenCV functions to an image and interpret
+    the result
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: If you have any questions, please put into the comment below.
+  prefs: []
+  type: TYPE_NORMAL

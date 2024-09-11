@@ -1,0 +1,457 @@
+- en: How to Create Images Using Stable Diffusion Web UI
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/how-to-create-images-using-stable-diffusion-web-ui/](https://machinelearningmastery.com/how-to-create-images-using-stable-diffusion-web-ui/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Launching the Stable Diffusion Web UI can be done in one command. After that,
+    you can control the image generation pipeline from a browser. The pipeline has
+    a lot of moving parts and all are important in one way or another. To effectively
+    command Stable Diffusion to generate images, you should recognize the widgets
+    from your browser and know what they can do. In this post, you will learn the
+    many components in the Stable Diffusion Web UI and how they affect the image you
+    create.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
+    Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/96ead67ff34eb97ce9e3b16b6f5e5a19.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: How to Create Images Using Stable Diffusion Web UI
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Kelly Sikkema](https://unsplash.com/photos/yellow-click-pen-on-white-printer-paper-gcHFXsdcmJE).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is in four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Launching the Web UI
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The txt2img Tab
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The img2img Tab
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Other Functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Launching the Web UI
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'After you prepared your Python environment, downloaded the web UI code, and
+    stored the model checkpoints in the appropriate directory, you can launch the
+    web UI using the following command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The web UI can be customized by editing the variables in `webui-user.sh`. One
+    example is to allow the web UI server to run from one computer while you launch
+    your browser from another, which you need to add the following line to `webui-user.sh`
+    to allow the server to be accessed over the network:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/fb82e6aae8df34c3acaff318ea8eed89.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Running `./webui.sh` will launch a server for Stable Diffusion
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'By default, the command `./webui.sh` will launch a server at port 7860, and
+    you can access it from your browser. If you run it from your desktop, you can
+    use the URL `http://127.0.0.1:7860`; but if it is from another computer, you need
+    to use that computer’s IP address instead of `127.0.0.1`. Your browser should
+    show an UI like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/a09538f9c34820eb0451ba5e93dc6796.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Stable Diffusion web UI
+  prefs: []
+  type: TYPE_NORMAL
+- en: At the top left corner, you can see a dropdown box to select the checkpoint.
+    The checkpoint provide different style of drawing, such as more realistic like
+    a photograph or more like a cartoon. You can store multiple checkpoints in the
+    model directory but only one is used in the pipeline. Below the dropdown, you
+    have multiple “tabs” that you can generate image differently. Each tab has different
+    set of widgets. Most of them are to provide parameters to a generation pipeline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s understand what knobs and parameters are available to generate a desired
+    image. These parameters, together, help nudge the algorithm in the right direction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The txt2img Tab
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The launch page of the UI shows the txt2img tab—a fundamental feature of Stable
+    Diffusion for transforming text prompts into images. As the name suggests, this
+    allows us to describe the image we want or don’t want as **text** to the algorithm,
+    which then converts it into an embedding vector to generate the image. Refer to
+    the screenshot above, you have the widgets as explained as the following.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Checkpoint** as labeled by ①. This dropdown menu lets us select models. Ensure
+    that model files are placed in the correct folder, as detailed in the model installation
+    guidelines (covered in the last chapter). A buffet of checkpoints and safe-tensors
+    is available at [https://civitai.com/](https://civitai.com/).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Refresh Button** as labeled by ②. Found next to the checkpoint dropdown,
+    this button updates the list of available models. It is used to refresh the list
+    if you added a new model to the checkpoint folder but do not want to restart the
+    web UI server.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prompt Text Box** as labeled by ③. This is the place where the description
+    of the expected image goes. Providing detailed and specific prompts (which will
+    be covered in detail in the next post), along with keywords, enhances the generation
+    process.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Negative Prompt Text Box** as labeled by ④. Optional but important when employing
+    v2 models, the negative prompt helps specify what should not be a part of the
+    images. In general, what we don’t want is less specific and can be saved for many
+    use cases.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Sampling Method** and **Steps** as labeled by ⑤ and ⑥. The first diffusion
+    algorithm requires more than a hundred steps to create an image but we found ways
+    to speed up. These parameters determine the denoising process algorithm and the
+    number of sampling steps. The choice of sampling method influences the balance
+    between speed and quality.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: To balance speed, quality, and having good convergence, DPM++ 2M Karras with
+    20 – 30 steps or UniPC with 20-30 steps are some good options. On the other hand,
+    DPM++ SDE Karras with 10-15 steps or DDIM with 10-15 steps offer one of the best
+    quality images but with slower convergence.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**Width** and **Height** as labeled by ⑦ and ⑧. They specify the output image
+    size, ensuring compatibility with the chosen model. Adjustments are recommended
+    based on whether v1 or v2 models are used. Usually you keep the default of 512×512
+    pixels and you change it only if you want a different aspect ratio.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Batch Count** and **Size** as labeled by ⑨ and ⑩. These settings control
+    the times the image generation pipeline runs and the number of images generated
+    per run. The batch size is how many images are generated in one single generation.
+    The batch count is the number of generations.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A batch size of one with a higher batch count is recommended to generate multiple
+    higher-resolution images with the least consumption of peak resources. It’s slower,
+    but the quality of the images is much higher than just running batches of 512×512
+    images.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: Since the image generation is a random process, generating multiple images in
+    batches allows you to select the best outcome from several.
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+- en: '**Classifier Free Guidance Scale** as labeled by ⑪. The Classifier Free Guidance
+    (CFG) scale parameter allows us to control how much the model should adhere to
+    the prompt, ranging from mostly ignoring it (value of 1) to strictly following
+    it (value of 30). Talking about extremes, a very low value of CFG score would
+    mean that the prompt is mostly disregarded and the image generated is random.
+    This might not serve the purpose of using txt2img. On the other hand, a high value
+    of CFG forces the system to stick to the prompt but might distort the image itself.
+    This is analogous to overfitting the prompt.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Random seed** as labeled by ⑫. The seed value influences the initial random
+    tensor in the latent space, controlling the image’s content. Fixing the seed is
+    useful for maintaining reproducibility while tweaking prompts.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can try it out by describing what you want to generate in the prompt box
+    (in plain English unless you replaced the default embedding model). Once you set
+    up these and click the “Generate” button at top right, you can see the Stable
+    Diffusion model create images for you gradually. Below an an example for the prompt
+    “Extraterrestrial exploring a jungle”, with all other parameters as default.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/56d816e35c16afe74782c3cca7faa75e.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'As mentioned above, the image generated is in the size as specified by the
+    width and height parameters. If you need an image bigger than that, you can check
+    the “Hires. fix” (high-resolution fix) box, and click one the triangle to expand
+    the box for more options:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/97a2e9b37ae0200b5f3b3e9f5fc1f3b1.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Parameters under “Hires. fix”
+  prefs: []
+  type: TYPE_NORMAL
+- en: This applies a **super-resolution** deep learning model to the output of Stable
+    Diffusion. It addresses the native resolution limitation of Stable Diffusion,
+    providing an upscaling feature for images generated at a smaller size. We can
+    choose from various upscaling and adjustment parameters such as “upscale by” (the
+    multiple for width and height of the image) to achieve the desired results.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Choosing the best images from the batch and then resizing from the img2img tab
+    to upscale the resolution is generally recommended, rather than asking the Stable
+    Diffusion model to generate a giant output directly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The img2img Tab
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Next to the txt2img tab, the img2img tab is where users leverage image-to-image
+    functions. Common use cases include **inpainting**, **sketching**, and transforming
+    one image into another.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'While you still see the prompt and negative prompt text box, the img2img tab
+    allows users to perform image-to-image transformations. A typical process involves:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dragging and dropping a base image onto the img2img subtab under “Generation”
+    section
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Adjusting width or height to maintain the aspect ratio of the new image.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Setting sampling method, sampling steps, and batch size.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Writing a prompt for the new image.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Pressing the Generate button to create images, with denoising strength adjustments.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Other parameters in the img2img tab include resizing mode and denoising strength,
+    controlling how much the image changes during the transformation.
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '![](../Images/1b7fc1b4ab0be1a6680117b69c6c2810.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: A typical workflow with img2img
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the most important settings is the **denoising strength**. It signifies
+    the amount of artistic freedom the model has over the input image. A low value
+    of this parameter means that the style of the image must be retained while a higher
+    value means the least restriction in terms of styling, colors, etc.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let us understand this better using two examples with the same input prompt
+    “woman wearing sunglasses” below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/25239ef5d208f4782b9f3817c2c5b215.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Using img2img to make a headshot to wear sunglasses.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In the first example, an image is uploaded to the img2img subtab, the denoising
+    strength is set to 0.4, entered the prompt, then clicked “Generate”. The image
+    generated will show at the right. The generated image retained almost everything
+    except the face, including the input image’s color and style. It accurately reflects
+    the instruction on the prompt: wearing sunglasses.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The second example has a higher value of denoising strength of 0.7, thus allowing
+    the algorithm to generate more random images. Let’s also set the batch count to
+    4 so to create more outputs. The color, pose, and style are all different in the
+    four candidate images on the right, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/384057cfbae1b5a6622041a9534feb71.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Increasing the denoising strength will generate images more deviated from the
+    input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Sketch and Inpainting
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In addition to uploading an image, users can sketch the initial picture using
+    the color sketch tool, enabling creative modifications or entirely new compositions.
+    The sketch function allows users to input a background image, sketch in color,
+    and generate images based on the sketch and accompanying prompt.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A widely used function in the img2img tab is **inpaint**, which addresses minor
+    defects in generated images. Besides uploading an image, you can also send an
+    image generated from the txt2img tab to the img2img tab for inpainting. Afterward,
+    you can draw on the image to create a mask. Adjustments to denoising strength,
+    mask content, and batch size influence the inpainting process, too. An example
+    is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/b170a3551c2ecddf2c314dca4c40e5eb.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Add a reading glass to a portrait by inpainting
+  prefs: []
+  type: TYPE_NORMAL
+- en: You draw a mask on the input image for where the reading glass should be. When
+    you draw, you can zoom and pan using keyboard shortcuts, enhancing precision when
+    working on smaller areas. Keyboard shortcuts include Alt+Wheel (Option+Wheel in
+    macOS) for zooming, Ctrl+Wheel for adjusting brush size, “R” for resetting zoom,
+    “S” for entering/exiting the full screen, and holding “F” while moving the cursor
+    to pan. Once you finished creating the mask, you say “reading glasses” in the
+    prompt text box and click “Generate”.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you think drawing a mask on the browser is too difficult, you can use other
+    drawing tools such as Photoshop to create a mask image. Then on the “Inpaint upload”
+    tab to upload the image and the mask separately.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can also set the batch size to create multiple images at once, all based
+    on the same prompt and input. This allows you to select the best output from a
+    bulk of variations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The above example retains the original image but adds reading glasses using
+    the inpainting feature by drawing roughly a structure of the glasses over the
+    masked area of the image. Some of the notable settings for inpainting include
+    the mask blur (how far the pixels outside the mask can be changed), inpaint area
+    (whether the mask means to keep or to change), and denoising strength signifying
+    the surrounding area for producing the change.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/5fecd8353aedd40bf1fd6e720a91bfad.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Some useful parameters for inpainting
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A more advanced version of inpainting is **inpaint sketch**. While inpainting,
+    you create a mask and only the masked part of the image is regenerated based on
+    the prompt. In inpaint sketch, you draw on the image with color pencils such that
+    what you drew together with the prompt controls the output. As an example, the
+    same reading glasses prompt generates a pair of glasses in red frame because the
+    sketch was in red:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/49eae2184954f3361352ed80d9770c95.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Reading glasses with red frame is creating using inpaint sketch
+  prefs: []
+  type: TYPE_NORMAL
+- en: Other Functions
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'As you already noticed, the web UI has more than txt2img and img2img. In fact,
+    you can add more features to the web UI by installing **extensions**. In the following,
+    some of the top-level tabs are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Extras Tab**: It allow you to provide an image for resizing. Technically,
+    you are invoking only the superresolution step of the pipeline.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**PNG Info**: If you generated an image and saved it as PNG file on your disk,
+    the details of how this image was generated are stored in the EXIF data of the
+    image. This tool helps to retrieve parameter values such as prompts and settings
+    from the generated images that you upload.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Settings Tab**: A lot of settings can be adjusted in this tab, including
+    the directory to models and outputs. One of the most useful setting is “Face restoration”.
+    This feature applies an additional model designed to restore defects on faces.
+    Users can select a face restoration model in the Settings tab and apply it to
+    every generated image in the txt2img tab. Adjustments to the CodeFormer weight
+    parameter can fine-tune the restoration effect.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '![](../Images/302dc9b43a2531202df38d2252ef5f52.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Face restoration settings using CodeFormer model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Readings
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The best resources for learning about the web UI is the wiki page of the tool
+    on GitHub:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Stable Diffusion WebUI wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you learned how to invoke the Stable Diffusion Web UI from your
+    browser.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While Stable Diffusion is such a powerful tool, it still lacks precise control
+    over certain attributes of the output. It faces issues surrounding degraded image
+    quality and inaccurate colors in certain scenarios. You should bear in mind of
+    its limitation when you use it. The world of AI-generated imagery is getting better
+    each day and faster than ever. In the next post, let us understand some powerful
+    prompting techniques to stretch the limits of the generated images.
+  prefs: []
+  type: TYPE_NORMAL

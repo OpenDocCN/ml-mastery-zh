@@ -1,0 +1,452 @@
+- en: The Chain Rule of Calculus for Univariate and Multivariate Functions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/the-chain-rule-of-calculus-for-univariate-and-multivariate-functions/](https://machinelearningmastery.com/the-chain-rule-of-calculus-for-univariate-and-multivariate-functions/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The chain rule allows us to find the derivative of composite functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is computed extensively by the backpropagation algorithm, in order to train
+    feedforward neural networks. By applying the chain rule in an efficient manner
+    while following a specific order of operations, the backpropagation algorithm
+    calculates the error gradient of the loss function with respect to each weight
+    of the network.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover the chain rule of calculus for univariate
+    and multivariate functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A composite function is the combination of two (or more) functions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The chain rule allows us to find the derivative of a composite function.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The chain rule can be generalised to multivariate functions, and represented
+    by a tree diagram.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The chain rule is applied extensively by the backpropagation algorithm in order
+    to calculate the error gradient of the loss function with respect to each weight.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/2620f761808e96cdeecdd27c66aef534.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Chain Rule of Calculus for Univariate and Multivariate Functions
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Pascal Debrunner](https://unsplash.com/photos/WuwKphhRQSM), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Composite Functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Chain Rule
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Generalized Chain Rule
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Application in Machine Learning
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Prerequisites**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'For this tutorial, we assume that you already know what are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Multivariate functions](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The power rule](https://machinelearningmastery.com/the-power-product-and-quotient-rules/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The gradient of a function](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can review these concepts by clicking on the links given above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Composite Functions**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have, so far, met functions of single and multiple variables (so called,
+    *univariate* and *multivariate* functions, respectively). We shall now extend
+    both to their *composite* forms. We will, eventually, see how to apply the chain
+    rule in order to find their derivative, but more on this shortly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*A composite function is the combination of two functions. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 49, [Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
+    2016.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Consider two functions of a single independent variable, *f*(*x*) = 2*x* –
+    1 and *g*(*x*) = *x*³. Their composite function can be defined as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*h* = *g*(*f*(*x*))'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this operation, *g* is a function of *f.* This means that *g* is applied
+    to the result of applying the function, *f*, to *x*, producing *h*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s consider a concrete example using the functions specified above to understand
+    this better.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose that *f*(*x*) and *g*(*x*) are two systems in cascade, receiving an
+    input *x* = 5:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/8fbb5d64574dfd6bad96b4fff0e690e2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Two Systems in Cascade Representing a Composite Function
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Since *f*(*x*) is the first system in the cascade (because it is the inner
+    function in the composite), its output is worked out first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*f*(5) = (2 × 5) – 1 = 9'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This result is then passed on as input to *g*(*x*), the second system in the
+    cascade (because it is the outer function in the composite) to produce the net
+    result of the composite function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*g*(9) = 9³ = 729'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We could have, alternatively, computed the net result at one go, if we had
+    performed the following computation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*h* = *g*(*f*(*x*)) = (2*x* – 1)³ = 729'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The composition of functions can also be considered as a *chaining* process,
+    to use a more familiar term, where the output of one function feeds into the next
+    one in the chain.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*With composite functions, the order matters. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 49, [Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
+    2016.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Keep in mind that the composition of functions is a *non-commutative* process,
+    which means that swapping the order of *f*(*x*) and *g*(*x*) in the cascade (or
+    chain) does not produce the same results. Hence:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*g*(*f*(*x*)) ≠ *f*(*g*(*x*))'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The composition of functions can also be extended to the multivariate case:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*h* = *g*(*r, s, t*) = *g*(*r*(*x, y*), *s*(*x, y*), *t*(*x, y*)) = *g*(***f***(*x,
+    y*))'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, ***f***(*x, y*) is a vector-valued function of two independent variables
+    (or inputs), *x* and *y*. It is made up of three components (for this particular
+    example) that are *r*(*x, y*), *s*(*x, y*) and *t*(*x, y*), and which are also
+    known as the *component* functions of ***f***.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This means that ***f***(*x*, *y*) will map two inputs to three outputs, and
+    will then feed these three outputs into the consecutive system in the chain, *g*(*r*,
+    *s*, *t*), to produce *h*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Chain Rule**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The chain rule allows us to find the derivative of a composite function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s first define how the chain rule differentiates a composite function,
+    and then break it into its separate components to understand it better. If we
+    had to consider again the composite function, *h* = *g*(*f*(*x*)), then its derivative
+    as given by the chain rule is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/ac23240523ee438f4654d1a45e4ca31e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, *u* is the output of the inner function *f* (hence, *u* = *f*(*x*)), which
+    is then fed as input to the next function *g* to produce *h* (hence, *h* = *g*(*u*)).
+    Notice, therefore, how the chain rule relates the net output, *h*, to the input,
+    *x*, through an *intermediate variable*, *u*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Recall that the composite function is defined as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*h*(*x*) = *g*(*f*(*x*)) = (2*x* – 1)³'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The first component of the chain rule, *dh* / *du*, tells us to start by finding
+    the derivative of the outer part of the composite function, while ignoring whatever
+    is inside. For this purpose, we shall apply the power rule:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ((2*x* – 1)³)’ = 3(2*x* – 1)²
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The result is then multiplied to the second component of the chain rule, *du*
+    / *dx*, which is the derivative of the inner part of the composite function, this
+    time ignoring whatever is outside:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: ( (2*x* – 1)’ )³ = 2
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The derivative of the composite function as defined by the chain rule is, then,
+    the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*h*’ = 3(2*x* – 1)² × 2 = 6(2*x* – 1)²'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have, hereby, considered a simple example, but the concept of applying the
+    chain rule to more complicated functions remains the same. We shall be considering
+    more challenging functions in a separate tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Generalized Chain Rule**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We can generalize the chain rule beyond the univariate case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Consider the case where ***x*** ∈ ℝ^m and ***u*** ∈ ℝ^n, which means that the
+    inner function, *f*, maps *m* inputs to *n* outputs, while the outer function,
+    *g*, receives *n* inputs to produce an output, *h*. For *i* = 1, …, *m * the generalized
+    chain rule states:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/f6efd1b84d59a08cf0fd3b415bafb33c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Or in its more compact form, for *j* = 1, …, *n*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/dc847ea7935e9df18602e3948e565661.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_5.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recall that we employ the use of partial derivatives when we are finding the
+    gradient of a function of multiple variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can also visualize the workings of the chain rule by a tree diagram.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Suppose that we have a composite function of two independent variables, *x*[1]
+    and *x*[2], defined as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*h* = *g*(***f***(*x*[1], *x*[2])) = *g*(*u*[1](*x*[1], *x*[2]), *u*[2](*x*[1],
+    *x*[2]))'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here, *u*[1] and *u*[2] act as the intermediate variables. Its tree diagram
+    would be represented as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/c6c32326e74d02e31ced1e55c21ddecc.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Representing the Chain Rule by a Tree Diagram
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In order to derive the formula for each of the inputs, *x*[1] and *x*[2], we
+    can start from the left hand side of the tree diagram, and follow its branches
+    rightwards. In this manner, we find that we form the following two formulae (the
+    branches being summed up have been colour coded for simplicity):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/c943645be10828c8f62a3d21714ffcd3.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_6.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice how the chain rule relates the net output, *h*, to each of the inputs,
+    *x**[i]*, through the intermediate variables, *u**[j]*. This is a concept that
+    the backpropagation algorithm applies extensively to optimize the weights of a
+    neural network.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Application in Machine Learning**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Observe how similar the tree diagram is to the typical representation of a neural
+    network (although we usually represent the latter by placing the inputs on the
+    left hand side and the outputs on the right hand side). We can apply the chain
+    rule to a neural network through the use of the backpropagation algorithm, in
+    a very similar manner as to how we have applied it to the tree diagram above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*An area where the chain rule is used to an extreme is deep learning, where
+    the function value* ***y****is computed as a many-level function composition. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 159, [Mathematics for Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
+    2020.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'A neural network can, indeed, be represented by a massive nested composite
+    function. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '***y*** = *f*[K] ( *f*[K – 1] ( … ( *f*[1](***x***)) … ))'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, ***x*** are the inputs to the neural network (for example, the images)
+    whereas ***y*** are the outputs (for example, the class labels). Every function,
+    *f*[i], for *i* = 1, …, *K*, is characterized by its own weights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Applying the chain rule to such a composite function allows us to work backwards
+    through all of the hidden layers making up the neural network, and efficiently
+    calculate the error gradient of the loss function with respect to each weight,
+    *w*[i], of the network until we arrive to the input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
+    2016.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Mathematics for Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered the chain rule of calculus for univariate and
+    multivariate functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A composite function is the combination of two (or more) functions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The chain rule allows us to find the derivative of a composite function.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The chain rule can be generalised to multivariate functions, and represented
+    by a tree diagram.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The chain rule is applied extensively by the backpropagation algorithm in order
+    to calculate the error gradient of the loss function with respect to each weight.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

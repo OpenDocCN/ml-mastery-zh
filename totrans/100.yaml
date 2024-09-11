@@ -1,0 +1,574 @@
+- en: A Gentle Introduction to Unit Testing in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-unit-testing-in-python/](https://machinelearningmastery.com/a-gentle-introduction-to-unit-testing-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Unit testing is a method for testing software that looks at the smallest testable
+    pieces of code, called units, which are tested for correct operation. By doing
+    unit testing, we can verify that each part of the code, including helper functions
+    that may not be exposed to the user, works correctly and as intended.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The idea is that we are independently checking each small piece of our program
+    to ensure that it works. This contrasts with regression and integration testing,
+    which tests that the different parts of the program work well together and as
+    intended.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this post, you will discover how to implement unit testing in Python using
+    two popular unit testing frameworks: the built-in PyUnit framework and the PyTest
+    framework.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unit testing libraries in Python such as PyUnit and PyTest
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Checking expected function behavior through the use of unit tests
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started!![](../Images/9387df1b101457bd8a20d9afde5e585f.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Gentle Introduction to Unit Testing in Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Bee Naturalles](https://unsplash.com/photos/IRM9qgZdlW0). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The tutorial is divided into five parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are unit tests, and why are they important?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is Test Driven Development (TDD)?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using Python’s built-in PyUnit framework
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Using PyTest library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Unit testing in action
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What Are Unit Tests, and Why Are They Important?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Remember doing math back in school, completing different arithmetic procedures
+    before combining them to get the correct answer? Imagine how you would check to
+    ensure that the calculations done at each step were correct, and you didn’t make
+    any careless mistakes or miswrote anything.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, extend that idea to code! We wouldn’t want to have to constantly look through
+    our code to statically verify its correctness, so how would you create a test
+    to ensure that the following piece of code actually returns the area of the rectangle?
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: We could run the code with a few test examples and see if it returns the expected
+    output.
+  prefs: []
+  type: TYPE_NORMAL
+- en: That’s the idea of a unit test! A unit test is a test that checks a single component
+    of code, usually modularized as a function, and ensures that it performs as expected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unit tests are an important part of regression testing to ensure that the code
+    still functions as expected after making changes to the code and helps ensure
+    code stability. After making changes to our code, we can run the unit tests we
+    have created previously to ensure that the existing functionality in other parts
+    of the codebase has not been impacted by our changes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Another key benefit of unit tests is that they help easily isolate errors. Imagine
+    running the entire project and receiving a string of errors. How would we go about
+    debugging our code?
+  prefs: []
+  type: TYPE_NORMAL
+- en: That’s where unit tests come in. We can analyze the outputs of our unit tests
+    to see if any component of our code has been throwing errors and start debugging
+    from there. That’s not to say that unit testing can always help us find the bug,
+    but it allows for a much more convenient starting point before we start looking
+    at the integration of components in integration testing.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For the rest of the article, we will be showing how to do unit testing by testing
+    the functions in this Rectangle class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that we have motivated unit tests, let’s explore how exactly we can use
+    unit tests as part of our development pipeline and how to implement them in Python!
+  prefs: []
+  type: TYPE_NORMAL
+- en: Test Driven Development
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Testing is so important to good software development that there’s even a software
+    development process based on testing, Test Driven Development (TDD). Three rules
+    of TDD proposed by Robert C. Martin are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*You are not allowed to write any production code unless it is to make a failing
+    unit test pass.*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*You are not allowed to write any more of a unit test than is sufficient to
+    fail, and compilation failures are failures.*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*You are not allowed to write any more production code than is sufficient to
+    pass the one failing unit test.*'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The key idea of TDD is that we base our software development around a set of
+    unit tests that we have created, which makes unit testing the heart of the TDD
+    software development process. This way, you are assured that you have a test for
+    every component you develop.
+  prefs: []
+  type: TYPE_NORMAL
+- en: TDD is also biased toward having smaller tests which means tests that are more
+    specific and test fewer components at a time. This aids in tracking down errors,
+    and smaller tests are also easier to read and understand since there are fewer
+    components at play in a single run.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It doesn’t mean you must use TDD for your projects. But you may consider that
+    as a method to develop your code and the tests at the same time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using Python Built-in PyUnit Framework
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You might be wondering, why do we need unit testing frameworks since Python
+    and other languages offer the `assert` keyword? Unit testing frameworks help automate
+    the testing process and allow us to run multiple tests on the same function with
+    different parameters, check for expected exceptions, and many others.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'PyUnit is Python’s built-in unit testing framework and Python’s version of
+    the corresponding JUnit testing framework for Java. To get started building a
+    test file, we need to import the `unittest` library to use PyUnit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then, we can get started writing out first unit test. Unit tests in PyUnit
+    are structured as subclasses of the `unittest.TestCase` class, and we can override
+    the `runTest()` method to perform our own unit tests which check conditions using
+    different assert functions in `unittest.TestCase`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: That’s our first unit test! It checks if the `rectangle.get_area()` method returns
+    the correct area for a rectangle with width = 2 and length = 3\. We use `self.assertEqual`
+    instead of simply using `assert` to allow the `unittest` library to allow the
+    runner to accumulate all test cases and produce a report.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using the different assert functions in `unittest.TestCase` also gives us a
+    better ability to test different behaviors such as `self.assertRaises(exception)`.
+    This allows us to check if a certain block of code produces an expected exception.
+  prefs: []
+  type: TYPE_NORMAL
+- en: To run the unit test, we make a call to `unittest.main()` in our program,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Since the code returns the expected output for this case, it returns that the
+    tests run successfully, with the output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The complete code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Note:** While in the above, our business logic `Rectangle` class and our
+    test code `TestGetAreaRectangle` are put together. In reality, you may put them
+    in separate files and `import` the business logic into your test code. This can
+    help you better manage the code.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can also nest multiple unit tests together in one subclass of `unittest.TestCase`,
+    by naming methods in the new subclass with the “`test`” prefix, for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running this will give us our first error:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can see the unit test that failed, which is the `test_negative_case` as highlighted
+    in the output along with the stderr message since `get_area()` doesn’t return
+    -1 as we expected in our test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are many different kinds of assert functions defined in the unittest.
+    For example, we can use the TestCase class:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can even check whether a particular exception was thrown during execution:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, we look at building up our tests. What if we had some code that we needed
+    to run to set up before running each test? Well, we can override the setUp method
+    in unittest.TestCase.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the above code example, we have overridden the `setUp()` method from `unittest.TestCase`,
+    with our own `setUp()` method that initializes a `Rectangle` object. This `setUp()`
+    method is run prior to each unit test and is helpful in avoiding code duplication
+    when multiple tests rely on the same piece of code to set up the test. This is
+    similar to the `@Before` decorator in JUnit.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Likewise, there is a `tearDown()` method that we can override as well for code
+    to be executed after each test.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To run the method only once per TestCase class, we can also use the setUpClass
+    method as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above code is only run once per TestCase instead of once per test run as
+    is the case with setUp.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To help us organize tests and select which set of tests we want to run, we
+    can aggregate test cases into test suites which help to group tests that should
+    executed together into a single object:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here, we also introduce another way to run tests in PyUnit by using the `unittest.TextTestRunner`
+    class, which allows us to run specific test suites.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: This gives the same output as running the file from the command line and calling
+    `unittest.main()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Bringing everything together, this is what the complete script for the unit
+    test would look like:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: This is just the tip of the iceberg with what you can do with PyUnit. We can
+    also write tests that look for exception messages that match a regex expression
+    or `setUp`/`tearDown` methods that are run only once—(`setUpClass`), for example.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using PyTest
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'PyTest is an alternative to the built-in unittest module. To get started with
+    PyTest, you will first need to install it, which you can do using:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: To write tests, you just need to write functions with names prefixed with “`test`,”
+    and PyTest’s test discovery procedure will be able to find your tests, e.g.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: You will notice that PyTest uses Python’s built-in `assert` keyword instead
+    of its own set of assert functions as PyUnit does, which might make it slightly
+    more convenient since we can avoid searching for the different assert functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'After saving this into a file `test_file.py`, we can run PyTest unit test by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And this gives us the output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may notice that while in PyUnit, we need to invoke the test routine by a
+    runner or calling `unittest.main()`. But in PyTest, we simply pass the file to
+    the module. The PyTest module will collect all the functions defined with prefix
+    `test` and call them one by one. And then it will verify if any exception is raised
+    by the `assert` statement. It can be more convenient to allow the tests to stay
+    with the business logic.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PyTest also supports grouping functions together in classes, but the class should
+    be named with prefix “`Test`” (with uppercase T), e.g.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Running this with PyTest will produce the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The complete code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: To implement the setup and teardown code for our tests, PyTest has an extremely
+    flexible fixture system, where fixtures are functions that have a return value.
+    PyTest’s fixture system allows sharing of fixtures across classes, modules, packages,
+    or sessions, and fixtures that can call other fixtures as arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here we include a simple introduction to PyTest’s fixture system:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: The above code introduces Rectangle as a fixture, and PyTest matches the rectangle
+    in the argument list of `test_negative_case` with the fixture and provides `test_negative_case`
+    with its own set of outputs from the rectangle function. It does this for every
+    other test. However, note that fixtures can be requested more than once per test
+    and for each test, the fixture is only run once, and the result is cached. This
+    means that all references to that fixture during the running of an individual
+    test are referencing the same return value (which is important if the return value
+    is a reference type).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The complete code is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Like PyUnit, PyTest has a lot of other functionality that will allow you to
+    build more comprehensive and advanced unit tests.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unit Testing in Action
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Now, we’ll explore unit testing in action. For our example, we’ll be testing
+    a function that gets stock data from Yahoo Finance using `pandas_datareader` and
+    do this in PyUnit:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This function gets the stock data on a particular stock ticker by crawling
+    from the Yahoo Finance website and returns the pandas DataFrame. This can fail
+    in multiple ways. For example, the data reader may fail to return anything (if
+    Yahoo Finance is down) or return a DataFrame with missing columns or missing data
+    in the columns (if the source restructured its website). Therefore, we should
+    provide multiple test functions to check for multiple modes of failure:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Our series of unit tests above check if certain columns are present (`test_columns_present`),
+    whether the dataframe is non-empty (`test_non_empty`), whether the “high” and
+    “low” columns are really the high and low of the same row (`test_high_low`), and
+    whether the most recent data in the DataFrame was within the last 7 days (`test_most_recent_within_week`).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Imagine you are doing a machine learning project that consumes the stock market
+    data. Having a unit test framework can help you identify if your data preprocessing
+    is working as expected.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Using these unit tests, we are able to identify if there was a material change
+    in the output of our function, and this can be a part of a Continuous Integration
+    (CI) process. We can also attach other unit tests as required depending on the
+    functionality that we depend on from that function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For completeness, here’s an equivalent version for PyTest:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: Building unit tests might seem time consuming and tedious, but they can be a
+    critical part of any CI pipeline and are invaluable tools for catching bugs early
+    on before they move further down the pipeline and become more costly to address.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*If you like it then you should have put a test on it.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*— Software Engineering at Google*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Libraries
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: unittest module (and the list of [assert methods](https://docs.python.org/3/library/unittest.html#assert-methods)),
+    [https://docs.python.org/3/library/unittest.html](https://docs.python.org/3/library/unittest.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: PyTest, [https://docs.pytest.org/en/7.0.x/](https://docs.pytest.org/en/7.0.x/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Test Driven Development (TDD), [https://www.ibm.com/garage/method/practices/code/practice_test_driven_development/](https://www.ibm.com/garage/method/practices/code/practice_test_driven_development/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Python Unit Testing Framework, [http://pyunit.sourceforge.net/pyunit.html](http://pyunit.sourceforge.net/pyunit.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '*Software Engineering at Google*, by Titus Winters, Tom Manshreck, and Hyrum
+    Wright [https://www.amazon.com/dp/1492082791](https://www.amazon.com/dp/1492082791)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '*Practice of Programming*, by Brian Kernighan and Rob Pike (Chapters 5 and
+    6), [https://www.amazon.com/dp/020161586X](https://www.amazon.com/dp/020161586X)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, you discovered what unit testing is and how to use two popular
+    libraries in Python to conduct unit testing (PyUnit, PyTest). You have also learned
+    how to configure unit tests and have seen an example of a use case for unit testing
+    in the data science pipeline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: what unit testing is, and why it is useful
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: how unit testing fits within the Test Driven Development pipeline
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: how to do unit testing in Python using PyUnit and PyTest
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

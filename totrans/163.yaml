@@ -1,0 +1,269 @@
+- en: Calculating Derivatives in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/calculating-derivatives-in-pytorch/](https://machinelearningmastery.com/calculating-derivatives-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Derivatives are one of the most fundamental concepts in calculus. They describe
+    how changes in the variable inputs affect the function outputs. The objective
+    of this article is to provide a high-level introduction to calculating derivatives
+    in PyTorch for those who are new to the framework. PyTorch offers a convenient
+    way to calculate derivatives for user-defined functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While we always have to deal with backpropagation (an algorithm known to be
+    the backbone of a neural network) in neural networks, which optimizes the parameters
+    to minimize the error in order to achieve higher classification accuracy; concepts
+    learned in this article will be used in later posts on deep learning for image
+    processing and other computer vision problems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After going through this tutorial, you’ll learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to calculate derivatives in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use autograd in PyTorch to perform auto differentiation on tensors.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: About the computation graph that involves different nodes and leaves, allowing
+    you to calculate the gradients in a simple possible manner (using the chain rule).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to calculate partial derivatives in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement the derivative of functions with respect to multiple values.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/ad88d3f66693834ec70e4a5d9f09c4e2.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Calculating Derivatives in PyTorch
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Jossuha Théophile](https://unsplash.com/photos/H-CZjCQfsFw). Some
+    rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Differentiation in Autograd**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The autograd – an auto differentiation module in PyTorch – is used to calculate
+    the derivatives and optimize the parameters in neural networks. It is intended
+    primarily for gradient computations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before we start, let’s load up some necessary libraries we’ll use in this tutorial.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s use a simple tensor and set the `requires_grad` parameter to true.
+    This allows us to perform automatic differentiation and lets PyTorch evaluate
+    the derivatives using the given value which, in this case, is 3.0.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: We’ll use a simple equation $y=3x^2$ as an example and take the derivative with
+    respect to variable `x`. So, let’s create another tensor according to the given
+    equation. Also, we’ll apply a neat method `.backward` on the variable `y` that
+    forms acyclic graph storing the computation history, and evaluate the result with
+    `.grad` for the given value.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, we have obtained a value of 18, which is correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Computational Graph**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: PyTorch generates derivatives by building a backwards graph behind the scenes,
+    while tensors and backwards functions are the graph’s nodes. In a graph, PyTorch
+    computes the derivative of a tensor depending on whether it is a leaf or not.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PyTorch will not evaluate a tensor’s derivative if its leaf attribute is set
+    to True. We won’t go into much detail about how the backwards graph is created
+    and utilized, because the goal here is to give you a high-level knowledge of how
+    PyTorch makes use of the graph to calculate derivatives.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'So, let’s check how the tensors `x` and `y` look internally once they are created.
+    For `x`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'and for `y`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, each tensor has been assigned with a particular set of attributes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The `data` attribute stores the tensor’s data while the `grad_fn` attribute
+    tells about the node in the graph. Likewise, the `.grad` attribute holds the result
+    of the derivative. Now that you have learnt some basics about the autograd and
+    computational graph in PyTorch, let’s take a little more complicated equation
+    $y=6x^2+2x+4$ and calculate the derivative. The derivative of the equation is
+    given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\frac{dy}{dx} = 12x+2$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Evaluating the derivative at $x = 3$,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\left.\frac{dy}{dx}\right\vert_{x=3} = 12\times 3+2 = 38$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, let’s see how PyTorch does that,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The derivative of the equation is 38, which is correct.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Implementing Partial Derivatives of Functions**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: PyTorch also allows us to calculate partial derivatives of functions. For example,
+    if we have to apply partial derivation to the following function,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$f(u,v) = u^3+v^2+4uv$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Its derivative with respect to $u$ is,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\frac{\partial f}{\partial u} = 3u^2 + 4v$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, the derivative with respect to $v$ will be,
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$\frac{\partial f}{\partial v} = 2v + 4u$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Now, let’s do it the PyTorch way, where $u = 3$ and $v = 4$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We’ll create `u`, `v` and `f` tensors and apply the `.backward` attribute on
+    `f` in order to compute the derivative. Finally, we’ll evaluate the derivative
+    using the `.grad` with respect to the values of `u` and `v`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Derivative of Functions with Multiple Values**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'What if we have a function with multiple values and we need to calculate the
+    derivative with respect to its multiple values? For this, we’ll make use of the
+    sum attribute to (1) produce a scalar-valued function, and then (2) take the derivative.
+    This is how we can see the ‘function vs. derivative’ plot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/f8701266f80e6797e39c5a0f5cb8c2bf.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the two `plot()` function above, we extract the values from PyTorch tensors
+    so we can visualize them. The `.detach` method doesn’t allow the graph to further
+    track the operations. This makes it easy for us to convert a tensor to a numpy
+    array.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you learned how to implement derivatives on various functions
+    in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to calculate derivatives in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use autograd in PyTorch to perform auto differentiation on tensors.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: About the computation graph that involves different nodes and leaves, allowing
+    you to calculate the gradients in a simple possible manner (using the chain rule).
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to calculate partial derivatives in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement the derivative of functions with respect to multiple values.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

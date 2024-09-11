@@ -1,0 +1,821 @@
+- en: 'PyTorch Tutorial: How to Develop Deep Learning Models with Python'
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/pytorch-tutorial-develop-deep-learning-models/](https://machinelearningmastery.com/pytorch-tutorial-develop-deep-learning-models/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Predictive modeling with deep learning is a skill that modern developers need
+    to know.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PyTorch is the premier open-source deep learning framework developed and maintained
+    by Facebook.
+  prefs: []
+  type: TYPE_NORMAL
+- en: At its core, PyTorch is a mathematical library that allows you to perform efficient
+    computation and automatic differentiation on graph-based models. Achieving this
+    directly is challenging, although thankfully, the modern PyTorch API provides
+    classes and idioms that allow you to easily develop a suite of deep learning models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover a step-by-step guide to developing deep
+    learning models in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The difference between Torch and PyTorch and how to install and confirm PyTorch
+    is working.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The five-step life-cycle of PyTorch models and how to define, fit, and evaluate
+    models.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to develop PyTorch deep learning models for regression, classification,
+    and predictive modeling tasks.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![PyTorch Tutorial - How to Develop Deep Learning Models](../Images/13ff658685e88a714278b5d716b7a04a.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: PyTorch Tutorial – How to Develop Deep Learning Models
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Dimitry B](https://flickr.com/photos/ru_boff/14863560864/)., some
+    rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PyTorch Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The focus of this tutorial is on using the PyTorch API for common deep learning
+    model development tasks; we will not be diving into the math and theory of deep
+    learning. For that, I recommend [starting with this excellent book](https://amzn.to/2Y8JuBv).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The best way to learn deep learning in python is by doing. Dive in. You can
+    circle back for more theory later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: I have designed each code example to use best practices and to be standalone
+    so that you can copy and paste it directly into your project and adapt it to your
+    specific needs. This will give you a massive head start over trying to figure
+    out the API from official documentation alone.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is a large tutorial, and as such, it is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to Install PyTorch
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: What Are Torch and PyTorch?
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How to Install PyTorch
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How to Confirm PyTorch Is Installed
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: PyTorch Deep Learning Model Life-Cycle
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Step 1: Prepare the Data'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Step 2: Define the Model'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Step 3: Train the Model'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Step 4: Evaluate the Model'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Step 5: Make Predictions'
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How to Develop PyTorch Deep Learning Models
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How to Develop an MLP for Binary Classification
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How to Develop an MLP for Multiclass Classification
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How to Develop an MLP for Regression
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: How to Develop a CNN for Image Classification
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You Can Do Deep Learning in Python!
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Work through this tutorial. It will take you 60 minutes, max!
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**You do not need to understand everything (at least not right now)**. Your
+    goal is to run through the tutorial end-to-end and get a result. You do not need
+    to understand everything on the first pass. List down your questions as you go.
+    Make heavy use of the API documentation to learn about all of the functions that
+    you’re using.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**You do not need to know the math first**. Math is a compact way of describing
+    how algorithms work, specifically tools from linear algebra, probability, and
+    calculus. These are not the only tools that you can use to learn how algorithms
+    work. You can also use code and explore algorithm behavior with different inputs
+    and outputs. Knowing the math will not tell you what algorithm to choose or how
+    to best configure it. You can only discover that through carefully controlled
+    experiments.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**You do not need to know how the algorithms work**. It is important to know
+    about the limitations and how to configure deep learning algorithms. But learning
+    about algorithms can come later. You need to build up this algorithm knowledge
+    slowly over a long period of time. Today, start by getting comfortable with the
+    platform.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**You do not need to be a Python programmer**. The syntax of the Python language
+    can be intuitive if you are new to it. Just like other languages, focus on function
+    calls (e.g. function()) and assignments (e.g. a = “b”). This will get you most
+    of the way. You are a developer; you know how to pick up the basics of a language
+    really fast. Just get started and dive into the details later.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**You do not need to be a deep learning expert**. You can learn about the benefits
+    and limitations of various algorithms later, and there are plenty of tutorials
+    that you can read to brush up on the steps of a deep learning project.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1\. How to Install PyTorch
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this section, you will discover what PyTorch is, how to install it, and how
+    to confirm that it is installed correctly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1.1\. What Are Torch and PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PyTorch](https://github.com/pytorch/pytorch) is an open-source Python library
+    for deep learning developed and maintained by Facebook.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The project started in 2016 and quickly became a popular framework among developers
+    and researchers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Torch](https://github.com/torch/torch7) (*Torch7*) is an open-source project
+    for deep learning written in C and generally used via the Lua interface. It was
+    a precursor project to PyTorch and is no longer actively developed. PyTorch includes
+    “*Torch*” in the name, acknowledging the prior torch library with the “*Py*” prefix
+    indicating the Python focus of the new project.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The PyTorch API is simple and flexible, making it a favorite for academics and
+    researchers in the development of new deep learning models and applications. The
+    extensive use has led to many extensions for specific applications (such as text,
+    computer vision, and audio data), and may pre-trained models that can be used
+    directly. As such, it may be the most popular library used by academics.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The flexibility of PyTorch comes at the cost of ease of use, especially for
+    beginners, as compared to simpler interfaces like [Keras](https://machinelearningmastery.com/tensorflow-tutorial-deep-learning-with-tf-keras/).
+    The choice to use PyTorch instead of Keras gives up some ease of use, a slightly
+    steeper learning curve, and more code for more flexibility, and perhaps a more
+    vibrant academic community.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1.2\. How to Install PyTorch
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Before installing PyTorch, ensure that you have Python installed, such as Python
+    3.6 or higher.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If you don’t have Python installed, you can install it using Anaconda. This
+    tutorial will show you how:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[How to Setup Your Python Environment for Machine Learning With Anaconda](https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There are many ways to install the PyTorch open-source deep learning library.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The most common, and perhaps simplest, way to install PyTorch on your workstation
+    is by using pip.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, on the command line, you can type:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Perhaps the most popular application of deep learning is for [computer vision](https://machinelearningmastery.com/what-is-computer-vision/),
+    and the PyTorch computer vision package is called “[torchvision](https://github.com/pytorch/vision/tree/master/torchvision).”
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Installing torchvision is also highly recommended and it can be installed as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you prefer to use an installation method more specific to your platform
+    or package manager, you can see a complete list of installation instructions here:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PyTorch Installation Guide](https://pytorch.org/get-started/locally/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: There is no need to set up the GPU now.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All examples in this tutorial will work just fine on a modern CPU. If you want
+    to configure PyTorch for your GPU, you can do that after completing this tutorial.
+    Don’t get distracted!
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1.3\. How to Confirm PyTorch Is Installed
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Once PyTorch is installed, it is important to confirm that the library was installed
+    successfully and that you can start using it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Don’t skip this step.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If PyTorch is not installed correctly or raises an error on this step, you won’t
+    be able to run the examples later.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create a new file called *versions.py* and copy and paste the following code
+    into the file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Save the file, then open your command line and change directory to where you
+    saved the file.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Then type:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should then see output like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: This confirms that PyTorch is installed correctly and that we are all using
+    the same version.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This also shows you how to run a Python script from the command line. I recommend
+    running all code from the command line in this manner, and not from a notebook
+    or an IDE.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 2\. PyTorch Deep Learning Model Life-Cycle
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this section, you will discover the life-cycle for a deep learning model
+    and the PyTorch API that you can use to define models.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A model has a life-cycle, and this very simple knowledge provides the backbone
+    for both modeling a dataset and understanding the PyTorch API.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The five steps in the life-cycle are as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 1\. Prepare the Data.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 2\. Define the Model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 3\. Train the Model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 4\. Evaluate the Model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 5\. Make Predictions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s take a closer look at each step in turn.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Note**: There are many ways to achieve each of these steps using the PyTorch
+    API, although I have aimed to show you the simplest, or most common, or most idiomatic.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you discover a better approach, let me know in the comments below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Step 1: Prepare the Data'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The first step is to load and prepare your data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Neural network models require numerical input data and numerical output data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can use standard Python libraries to load and prepare tabular data, like
+    CSV files. For example, Pandas can be used to load your CSV file, and tools from
+    scikit-learn can be used to encode categorical data, such as class labels.
+  prefs: []
+  type: TYPE_NORMAL
+- en: PyTorch provides the [Dataset class](https://pytorch.org/docs/stable/data.html#torch.utils.data.Dataset)
+    that you can extend and customize to load your dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, the constructor of your dataset object can load your data file
+    (e.g. a CSV file). You can then override the *__len__()* function that can be
+    used to get the length of the dataset (number of rows or samples), and the *__getitem__()*
+    function that is used to get a specific sample by index.
+  prefs: []
+  type: TYPE_NORMAL
+- en: When loading your dataset, you can also perform any required transforms, such
+    as scaling or encoding.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A skeleton of a custom *Dataset* class is provided below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once loaded, PyTorch provides the [DataLoader class](https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader)
+    to navigate a *Dataset* instance during the training and evaluation of your model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A *DataLoader* instance can be created for the training dataset, test dataset,
+    and even a validation dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The [random_split() function](https://pytorch.org/docs/stable/data.html#torch.utils.data.random_split)
+    can be used to split a dataset into train and test sets. Once split, a selection
+    of rows from the *Dataset* can be provided to a DataLoader, along with the batch
+    size and whether the data should be shuffled every epoch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, we can define a *DataLoader* by passing in a selected sample of
+    rows in the dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Once defined, a *DataLoader* can be enumerated, yielding one batch worth of
+    samples each iteration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Step 2: Define the Model'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The next step is to define a model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The idiom for defining a model in PyTorch involves defining a class that extends
+    the [Module class](https://pytorch.org/docs/stable/nn.html#module).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The constructor of your class defines the layers of the model and the forward()
+    function is the override that defines how to forward propagate input through the
+    defined layers of the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many layers are available, such as [Linear](https://pytorch.org/docs/stable/nn.html#torch.nn.Linear)
+    for fully connected layers, [Conv2d](https://pytorch.org/docs/stable/nn.html#torch.nn.Conv2d)
+    for convolutional layers, and [MaxPool2d](https://pytorch.org/docs/stable/nn.html#torch.nn.MaxPool2d)
+    for pooling layers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Activation functions can also be defined as layers, such as [ReLU](https://pytorch.org/docs/stable/nn.html#torch.nn.ReLU),
+    [Softmax](https://pytorch.org/docs/stable/nn.html#torch.nn.Softmax), and [Sigmoid](https://pytorch.org/docs/stable/nn.html#torch.nn.Sigmoid).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Below is an example of a simple MLP model with one layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The weights of a given layer can also be initialized after the layer is defined
+    in the constructor.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Common examples include the [Xavier](https://pytorch.org/docs/stable/nn.init.html#torch.nn.init.xavier_uniform_)
+    and [He weight](https://pytorch.org/docs/stable/nn.init.html#torch.nn.init.kaiming_uniform_)
+    initialization schemes. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Step 3: Train the Model'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The training process requires that you define a loss function and an optimization
+    algorithm.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Common loss functions include the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[BCELoss](https://pytorch.org/docs/stable/nn.html#torch.nn.BCELoss): Binary
+    cross-entropy loss for binary classification.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[CrossEntropyLoss](https://pytorch.org/docs/stable/nn.html#torch.nn.CrossEntropyLoss):
+    Categorical cross-entropy loss for multi-class classification.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[MSELoss](https://pytorch.org/docs/stable/nn.html#torch.nn.MSELoss): Mean squared
+    loss for regression.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For more on loss functions generally, see the tutorial:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Loss and Loss Functions for Training Deep Learning Neural Networks](https://machinelearningmastery.com/loss-and-loss-functions-for-training-deep-learning-neural-networks/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Stochastic gradient descent is used for optimization, and the standard algorithm
+    is provided by the [SGD class](https://pytorch.org/docs/stable/optim.html#torch.optim.SGD),
+    although other versions of the algorithm are available, such as [Adam](https://pytorch.org/docs/stable/optim.html#torch.optim.Adam).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Training the model involves enumerating the *DataLoader* for the training dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First, a loop is required for the number of training epochs. Then an inner loop
+    is required for the mini-batches for stochastic gradient descent.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Each update to the model involves the same general pattern comprised of:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Clearing the last error gradient.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A forward pass of the input through the model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Calculating the loss for the model output.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Backpropagating the error through the model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Update the model in an effort to reduce loss.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Step 4: Evaluate the model'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Once the model is fit, it can be evaluated on the test dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This can be achieved by using the *DataLoader* for the test dataset and collecting
+    the predictions for the test set, then comparing the predictions to the expected
+    values of the test set and calculating a performance metric.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Step 5: Make predictions'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: A fit model can be used to make a prediction on new data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, you might have a single image or a single row of data and want
+    to make a prediction.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This requires that you wrap the data in a [PyTorch Tensor](https://pytorch.org/docs/stable/tensors.html)
+    data structure.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Tensor is just the PyTorch version of a NumPy array for holding data. It also
+    allows you to perform the automatic differentiation tasks in the model graph,
+    like calling *backward()* when training the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The prediction too will be a Tensor, although you can retrieve the NumPy array
+    by [detaching the Tensor](https://pytorch.org/docs/stable/autograd.html#torch.Tensor.detach)
+    from the automatic differentiation graph and calling the NumPy function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now that we are familiar with the PyTorch API at a high-level and the model
+    life-cycle, let’s look at how we can develop some standard deep learning models
+    from scratch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 3\. How to Develop PyTorch Deep Learning Models
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this section, you will discover how to develop, evaluate, and make predictions
+    with standard deep learning models, including Multilayer Perceptrons (MLP) and
+    Convolutional Neural Networks (CNN).
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Multilayer Perceptron model, or MLP for short, is a standard fully connected
+    neural network model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is comprised of layers of nodes where each node is connected to all outputs
+    from the previous layer and the output of each node is connected to all inputs
+    for nodes in the next layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: An MLP is a model with one or more fully connected layers. This model is appropriate
+    for tabular data, that is data as it looks in a table or spreadsheet with one
+    column for each variable and one row for each variable. There are three predictive
+    modeling problems you may want to explore with an MLP; they are binary classification,
+    multiclass classification, and regression.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s fit a model on a real dataset for each of these cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Note**: The models in this section are effective, but not optimized. See
+    if you can improve their performance. Post your findings in the comments below.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 3.1\. How to Develop an MLP for Binary Classification
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: We will use the Ionosphere binary (two class) classification dataset to demonstrate
+    an MLP for binary classification.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This dataset involves predicting whether there is a structure in the atmosphere
+    or not given radar returns.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The dataset will be downloaded automatically using Pandas, but you can learn
+    more about it here.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Ionosphere Dataset (csv)](https://raw.githubusercontent.com/jbrownlee/Datasets/master/ionosphere.csv).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ionosphere Dataset Description](https://raw.githubusercontent.com/jbrownlee/Datasets/master/ionosphere.names).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We will use a [LabelEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html)
+    to encode the string labels to integer values 0 and 1\. The model will be fit
+    on 67 percent of the data, and the remaining 33 percent will be used for evaluation,
+    split using the [train_test_split() function](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It is a good practice to use ‘*relu*‘ activation with a ‘*He Uniform*‘ weight
+    initialization. This combination goes a long way to overcome the problem of [vanishing
+    gradients](https://machinelearningmastery.com/how-to-fix-vanishing-gradients-using-the-rectified-linear-activation-function/)
+    when training deep neural network models. For more on ReLU, see the tutorial:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[A Gentle Introduction to the Rectified Linear Unit (ReLU)](https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The model predicts the probability of class 1 and uses the sigmoid activation
+    function. The model is optimized using stochastic gradient descent and seeks to
+    minimize the [binary cross-entropy loss](https://machinelearningmastery.com/cross-entropy-for-machine-learning/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: The complete example is listed below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Running the example first reports the shape of the train and test datasets,
+    then fits the model and evaluates it on the test dataset. Finally, a prediction
+    is made for a single row of data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Note**: Your [results may vary](https://machinelearningmastery.com/different-results-each-time-in-machine-learning/)
+    given the stochastic nature of the algorithm or evaluation procedure, or differences
+    in numerical precision. Consider running the example a few times and compare the
+    average outcome.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://amzn.to/2Y8JuBv), 2016.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Programming PyTorch for Deep Learning: Creating and Deploying Deep Learning
+    Applications](https://amzn.to/2LA71Gq), 2018.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deep Learning with PyTorch](https://amzn.to/2Yw2s5q), 2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deep Learning for Coders with fastai and PyTorch: AI Applications Without
+    a PhD](https://amzn.to/2P0MQDM), 2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: PyTorch Project
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[PyTorch Homepage](https://pytorch.org/).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PyTorch Documentation](https://pytorch.org/docs/stable/index.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PyTorch Installation Guide](https://pytorch.org/get-started/locally/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PyTorch, Wikipedia](https://en.wikipedia.org/wiki/PyTorch).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PyTorch on GitHub](https://github.com/pytorch/pytorch).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[torch.utils.data API](https://pytorch.org/docs/stable/data.html).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[torch.nn API](https://pytorch.org/docs/stable/nn.html).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[torch.nn.init API](https://pytorch.org/docs/stable/nn.init.html).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[torch.optim API](https://pytorch.org/docs/stable/optim.html).'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[torch.Tensor API](https://pytorch.org/docs/stable/tensors.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered a step-by-step guide to developing deep learning
+    models in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The difference between Torch and PyTorch and how to install and confirm PyTorch
+    is working.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The five-step life-cycle of PyTorch models and how to define, fit, and evaluate
+    models.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to develop PyTorch deep learning models for regression, classification,
+    and predictive modeling tasks.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

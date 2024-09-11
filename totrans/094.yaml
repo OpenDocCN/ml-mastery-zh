@@ -1,0 +1,381 @@
+- en: Scientific Functions in NumPy and SciPy
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/scientific-functions-in-numpy-and-scipy/](https://machinelearningmastery.com/scientific-functions-in-numpy-and-scipy/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Python is a general-purpose computation language, but it is very welcomed in
+    scientific computing. It can replace R and Matlab in many cases, thanks to some
+    libraries in the Python ecosystem. In machine learning, we use some mathematical
+    or statistical functions extensively, and often, we will find NumPy and SciPy
+    useful. In the following, we will have a brief overview of what NumPy and SciPy
+    provide and some tips for using them.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After finishing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What NumPy and SciPy provide for your project
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to quickly speed up NumPy code using numba
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started!![](../Images/8a66d78bdafab3162c4d63b3e4be46ec.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Scientific Functions in NumPy and SciPy
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Nothing Ahead](https://www.pexels.com/photo/magnifying-glass-on-textbook-4494641/).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: NumPy as a tensor library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Functions from SciPy
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Speeding up with numba
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: NumPy as a Tensor Library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: While the list and tuple in Python are how we manage arrays natively, NumPy
+    provides us the array capabilities closer to C or Java in the sense that we can
+    enforce all elements of the same data type and, in the case of high dimensional
+    arrays, in a regular shape in each dimension. Moreover, carrying out the same
+    operation in the NumPy array is usually faster than in Python natively because
+    the code in NumPy is highly optimized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'There are a thousand functions provided by NumPy, and you should consult NumPy’s
+    documentation for the details. Some common usage can be found in the following
+    cheat sheet:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/27ea50f02d24d979dc6694655a719481.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/cheatsheet.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: NumPy Cheat Sheet. Copyright 2022 MachineLearningMastery.com
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are some cool features from NumPy that are worth mentioning as they are
+    helpful for machine learning projects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For instance, if we want to plot a 3D curve, we would compute $z=f(x,y)$ for
+    a range of $x$ and $y$ and then plot the result in the $xyz$-space. We can generate
+    the range with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For $z=f(x,y)=\sqrt{1-x^2-(y/2)^2}$, we may need a nested for-loop to scan
+    each value on arrays `x` and `y` and do the computation. But in NumPy, we can
+    use `meshgrid` to expand two 1D arrays into two 2D arrays in the sense that by
+    matching the indices, we get all the combinations as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/63be7afc5683451c422e60eb0b8d1e70.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: In the above, the 2D array `xx` produced by `meshgrid()` has identical values
+    on the same column, and `yy` has identical values on the same row. Hence element-wise
+    operations on `xx` and `yy` are essentially operations on the $xy$-plane. This
+    is why it works and why we can plot the ellipsoid above.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Another nice feature in NumPy is a function to expand the dimension. Convolutional
+    layers in the neural network usually expect 3D images, namely, pixels in 2D, and
+    the different color channels as the third dimension. It works for color images
+    using RGB channels, but we have only one channel in grayscale images. For example,
+    the digits dataset in scikit-learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This shows that there are 1797 images from this dataset, and each is in 8×8
+    pixels. This is a grayscale dataset that shows each pixel is a value of darkness.
+    We add the 4th axis to this array (i.e., convert a 3D array into a 4D array) so
+    each image is in 8x8x1 pixels:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'A handy feature in working with the NumPy array is Boolean indexing and fancy
+    indexing. For example, if we have a 2D array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'we can check if all values in a column are positive:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This shows only the first two columns are all positive. Note that it is a length-5
+    one-dimensional array, which is the same size as axis 1 of array `X`. If we use
+    this Boolean array as an index on axis 1, we select the subarray for only where
+    the index is positive:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If a list of integers is used in lieu of the Boolean array above, we select
+    from `X` according to the index matching the list. NumPy calls this fancy indexing.
+    So below, we can select the first two columns twice and form a new array:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Functions from SciPy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: SciPy is a sister project of NumPy. Hence, you will mostly see SciPy functions
+    expecting NumPy arrays as arguments or returning one. SciPy provides a lot more
+    functions that are less commonly used or more advanced.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'SciPy functions are organized under submodules. Some common submodules are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`scipy.cluster.hierarchy`: Hierarchical clustering'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scipy.fft`: Fast Fourier transform'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scipy.integrate`: Numerical integration'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scipy.interpolate`: Interpolation and spline functions'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scipy.linalg`: Linear algebra'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scipy.optimize`: Numerical optimization'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scipy.signal`: Signal processing'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scipy.sparse`: Sparse matrix representation'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scipy.special`: Some exotic mathematical functions'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`scipy.stats`: Statistics, including probability distributions'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: But never assume SciPy can cover everything. For time series analysis, for example,
+    it is better to depend on the `statsmodels` module instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have covered a lot of examples using `scipy.optimize` in other posts. It
+    is a great tool to find the minimum of a function using, for example, Newton’s
+    method. Both NumPy and SciPy have the `linalg` submodule for linear algebra, but
+    those in SciPy are more advanced, such as the function to do QR decomposition
+    or matrix exponentials.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Maybe the most used feature of SciPy is the `stats` module. In both NumPy and
+    SciPy, we can generate multivariate Gaussian random numbers with non-zero correlation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/28987164ebb562fe0132bb780ba659ca.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'But if we want to reference the distribution function itself, it is best to
+    depend on SciPy. For example, the famous 68-95-99.7 rule is referring to the standard
+    normal distribution, and we can get the exact percentage from SciPy’s cumulative
+    distribution functions:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'So we see that we expect a 68.269% probability that values fall within one
+    standard deviation from the mean in a normal distribution. Conversely, we have
+    the percentage point function as the inverse function of the cumulative distribution
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: So this means if the values are in a normal distribution, we expect a 99% probability
+    (one-tailed probability) that the value will not be more than 2.32 standard deviations
+    beyond the mean.
+  prefs: []
+  type: TYPE_NORMAL
+- en: These are examples of how SciPy can give you an extra mile over what NumPy gives
+    you.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Speeding Up with numba
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: NumPy is faster than native Python because many of the operations are implemented
+    in C and use optimized algorithms. But there are times when we want to do something,
+    but NumPy is still too slow.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It may help if you ask `numba` to further optimize it by parallelizing or moving
+    the operation to GPU if you have one. You need to install the `numba` module first:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And it may take a while if you need to compile `numba` into a Python module.
+    Afterward, if you have a function that is purely NumPy operations, you can add
+    the `numba` decorator to speed it up:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: What it does is use a just-in-time compiler to vectorize the operation so it
+    can run faster. You can see the best performance improvement if your function
+    is running many times in your program (e.g., the update function in gradient descent)
+    because the overhead of running the compiler can be amortized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, below is an implementation of the t-SNE algorithm to transform
+    784-dimensional data into 2-dimensional. We are not going to explain the t-SNE
+    algorithm in detail, but it needs many iterations to converge. The following code
+    shows how we can use `numba` to optimize the inner loop functions (and it demonstrates
+    some NumPy usage as well). It takes a few minutes to finish. You may try to remove
+    the `@numba.jit` decorators afterward. It will take a considerably longer time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: API documentations
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[NumPy user guide](https://numpy.org/doc/stable/user/index.html#user)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[SciPy user guide](https://docs.scipy.org/doc/scipy/tutorial/index.html#user-guide)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Numba documentation](https://numba.pydata.org/numba-doc/dev/index.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you saw a brief overview of the functions provided by NumPy
+    and SciPy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to work with NumPy arrays
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: A few functions provided by SciPy to help
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to make NumPy code faster by using the JIT compiler from numba
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

@@ -1,0 +1,407 @@
+- en: The Transformer Positional Encoding Layer in Keras, Part 2
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/the-transformer-positional-encoding-layer-in-keras-part-2/](https://machinelearningmastery.com/the-transformer-positional-encoding-layer-in-keras-part-2/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In [part 1, a gentle introduction to positional encoding in transformer models](https://machinelearningmastery.com/a-gentle-introduction-to-positional-encoding-in-transformer-models-part-1),
+    we discussed the positional encoding layer of the transformer model. We also showed
+    how you could implement this layer and its functions yourself in Python. In this
+    tutorial, you’ll implement the positional encoding layer in Keras and Tensorflow.
+    You can then use this layer in a complete transformer model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Text vectorization in Keras
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Embedding layer in Keras
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to subclass the embedding layer and write your own positional encoding layer.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/c49220b4a30fb49a2b6d0819242de294.png)](https://machinelearningmastery.com/wp-content/uploads/2022/02/ijaz-rafi-photo-1551102076-9f8bb5f3f897.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The transformer positional encoding layer in Keras, part 2
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by Ijaz Rafi. Some rights reserved
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Text vectorization and embedding layer in Keras
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Writing your own positional encoding layer in Keras
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Randomly initialized and tunable embeddings
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Fixed weight embeddings from [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Graphical view of the output of the positional encoding layer
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The Import Section
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'First, let’s write the section to import all the required libraries:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The Text Vectorization Layer
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s start with a set of English phrases that are already preprocessed and
+    cleaned. The text vectorization layer creates a dictionary of words and replaces
+    each word with its corresponding index in the dictionary. Let’s see how you can
+    map these two sentences using the text vectorization layer:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: I am a robot
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: you too robot
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Note the text has already been converted to lowercase with all the punctuation
+    marks and noise in the text removed. Next, convert these two phrases to vectors
+    of a fixed length 5\. The `TextVectorization` layer of Keras requires a maximum
+    vocabulary size and the required length of an output sequence for initialization.
+    The output of the layer is a tensor of shape:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`(number of sentences, output sequence length)`'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The following code snippet uses the `adapt` method to generate a vocabulary.
+    It next creates a vectorized representation of the text.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Embedding Layer
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The Keras `Embedding` layer converts integers to dense vectors. This layer maps
+    these integers to random numbers, which are later tuned during the training phase.
+    However, you also have the option to set the mapping to some predefined weight
+    values (shown later). To initialize this layer, you need to specify the maximum
+    value of an integer to map, along with the length of the output sequence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Word Embeddings
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Let’s see how the layer converts the `vectorized_text` to tensors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The output has been annotated with some comments, as shown below. Note that
+    you will see a different output every time you run this code because the weights
+    have been initialized randomly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![Word embeddings.](../Images/bf60b0857bca389b9fb20cb1009a3674.png)](https://machinelearningmastery.com/wp-content/uploads/2022/02/PEKeras_a.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Word embeddings. This output will be different every time you run the code because
+    of the random numbers involved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Position Embeddings
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: You also need the embeddings for the corresponding positions. The maximum positions
+    correspond to the output sequence length of the `TextVectorization` layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: The output is shown below:[![Position Indices Embedding. ](../Images/cca2e4e47dade3ba170cdd2eb0c3393e.png)](https://machinelearningmastery.com/wp-content/uploads/2022/02/PEKeras_b.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Position indices embedding
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Output of Positional Encoding Layer in Transformers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In a transformer model, the final output is the sum of both the word embeddings
+    and the position embeddings. Hence, when you set up both embedding layers, you
+    need to make sure that the `output_length` is the same for both.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: The output is shown below, annotated with comments. Again, this will be different
+    from your run of the code because of the random weight initialization.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/ca74f591c2ab37e5ff0ab5dfe3069bfb.png)](https://machinelearningmastery.com/wp-content/uploads/2022/02/PEKeras_c.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The final output after adding word embedding and position embedding
+  prefs: []
+  type: TYPE_NORMAL
+- en: SubClassing the Keras Embedding Layer
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: When implementing a transformer model, you’ll have to write your own position
+    encoding layer. This is quite simple, as the basic functionality is already provided
+    for you. This [Keras example](https://keras.io/examples/nlp/neural_machine_translation_with_transformer/)
+    shows how you can subclass the `Embedding` layer to implement your own functionality.
+    You can add more methods to it as you require.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: Let’s run this layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Positional Encoding in Transformers: Attention Is All You Need'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Note the above class creates an embedding layer that has trainable weights.
+    Hence, the weights are initialized randomly and tuned in to the training phase.The
+    authors of [Attention Is All You Need](https://arxiv.org/abs/1706.03762) have
+    specified a positional encoding scheme, as shown below. You can read the full
+    details in [part 1](https://machinelearningmastery.com/a-gentle-introduction-to-positional-encoding-in-transformer-models-part-1)
+    of this tutorial:\begin{eqnarray}
+  prefs: []
+  type: TYPE_NORMAL
+- en: P(k, 2i) &=& \sin\Big(\frac{k}{n^{2i/d}}\Big)\\
+  prefs: []
+  type: TYPE_NORMAL
+- en: P(k, 2i+1) &=& \cos\Big(\frac{k}{n^{2i/d}}\Big)
+  prefs: []
+  type: TYPE_NORMAL
+- en: \end{eqnarray}If you want to use the same positional encoding scheme, you can
+    specify your own embedding matrix, as discussed in [part 1](https://machinelearningmastery.com/a-gentle-introduction-to-positional-encoding-in-transformer-models-part-1),
+    which shows how to create your own embeddings in NumPy. When specifying the `Embedding`
+    layer, you need to provide the positional encoding matrix as weights along with
+    `trainable=False`. Let’s create another positional embedding class that does exactly
+    this. [PRE9]
+  prefs: []
+  type: TYPE_NORMAL
+- en: Next, we set up everything to run this layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Visualizing the Final Embedding
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In order to visualize the embeddings, let’s take two bigger sentences: one
+    technical and the other one just a quote. We’ll set up the `TextVectorization`
+    layer along with the positional encoding layer and see what the final output looks
+    like.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now let’s see what the random embeddings look like for both phrases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![Random embeddings](../Images/f7e01002176d1edc12b5dbfe2bac9c92.png)](https://machinelearningmastery.com/wp-content/uploads/2022/02/PEKeras1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Random embeddings
+  prefs: []
+  type: TYPE_NORMAL
+- en: The embedding from the fixed weights layer are visualized below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![Embedding using sinusoidal positional encoding](../Images/20b112bbd293286cb12154715a6c5724.png)](https://machinelearningmastery.com/wp-content/uploads/2022/02/PEKeras2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Embedding using sinusoidal positional encoding
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can see that the embedding layer initialized using the default parameter
+    outputs random values. On the other hand, the fixed weights generated using sinusoids
+    create a unique signature for every phrase with information on each word position
+    encoded within it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can experiment with tunable or fixed-weight implementations for your particular
+    application.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Transformers for natural language processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798)
+    by Denis Rothman'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Papers
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[The Transformer Attention Mechanism](https://machinelearningmastery.com/the-transformer-attention-mechanism/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Transformer Model](https://machinelearningmastery.com/the-transformer-model/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Transformer Model for Language Understanding](https://www.tensorflow.org/text/tutorials/transformer)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Using Pre-Trained Word Embeddings in a Keras Model](https://blog.keras.io/using-pre-trained-word-embeddings-in-a-keras-model.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[English-to-Spanish translation with a sequence-to-sequence Transformer](https://keras.io/examples/nlp/neural_machine_translation_with_transformer/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[A Gentle Introduction to Positional Encoding in Transformer Models, Part 1](https://machinelearningmastery.com/a-gentle-introduction-to-positional-encoding-in-transformer-models-part-1)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered the implementation of positional encoding layer
+    in Keras.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Text vectorization layer in Keras
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Positional encoding layer in Keras
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Creating your own class for positional encoding
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setting your own weights for the positional encoding layer in Keras
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions about positional encoding discussed in this post?
+    Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

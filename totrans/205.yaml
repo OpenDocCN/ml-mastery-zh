@@ -1,0 +1,468 @@
+- en: An Introduction to Recurrent Neural Networks and the Math That Powers Them
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: When it comes to sequential or time series data, traditional feedforward networks
+    cannot be used for learning and prediction. A mechanism is required to retain
+    past or historical information to forecast future values. Recurrent neural networks,
+    or RNNs for short, are a variant of the conventional feedforward artificial neural
+    networks that can deal with sequential data and can be trained to hold knowledge
+    about the past.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recurrent neural networks
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is meant by unfolding an RNN
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How weights are updated in an RNN
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Various RNN architectures
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/7cc83734cfb02749069a23ab57ea3444.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/IMG_9527-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: An introduction to recurrent neural networks and the math that powers Them.
+    Photo by Mehreen Saeed, some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into two parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The working of an RNN
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Unfolding in time
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Backpropagation through time algorithm
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Different RNN architectures and variants
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Prerequisites
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial assumes that you are already familiar with artificial neural
+    networks and the backpropagation algorithm. If not, you can go through this very
+    nice tutorial, [Calculus in Action: Neural Networks,](https://machinelearningmastery.com/calculus-in-action-neural-networks/)
+    by Stefania Cristina. The tutorial also explains how a gradient-based backpropagation
+    algorithm is used to train a neural network.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What Is a Recurrent Neural Network
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A recurrent neural network (RNN) is a special type of artificial neural network
+    adapted to work for time series data or data that involves sequences. Ordinary
+    feedforward neural networks are only meant for data points that are independent
+    of each other. However, if we have data in a sequence such that one data point
+    depends upon the previous data point, we need to modify the neural network to
+    incorporate the dependencies between these data points. RNNs have the concept
+    of “memory” that helps them store the states or information of previous inputs
+    to generate the next output of the sequence.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Unfolding a Recurrent Neural Network
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '![Recurrent neural network. Compressed representation (top), unfolded network
+    (bottom).](../Images/cd3f7fd245e6dfad17246978f4dbf0db.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Recurrent neural network. Compressed representation (top), unfolded network
+    (bottom).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'A simple RNN has a feedback loop, as shown in the first diagram of the above
+    figure. The feedback loop shown in the gray rectangle can be unrolled in three
+    time steps to produce the second network of the above figure. Of course, you can
+    vary the architecture so that the network unrolls $k$ time steps. In the figure,
+    the following notation is used:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $x_t \in R$ is the input at time step $t$. To keep things simple, we assume
+    that $x_t$ is a scalar value with a single feature. You can extend this idea to
+    a $d$-dimensional feature vector.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $y_t \in R$ is the output of the network at time step $t$. We can produce multiple
+    outputs in the network, but for this example, we assume that there is one output.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $h_t \in R^m$ vector stores the values of the hidden units/states at time $t$.
+    This is also called the current context. $m$ is the number of hidden units. $h_0$
+    vector is initialized to zero.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $w_x \in R^{m}$ are weights associated with inputs in the recurrent layer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $w_h \in R^{mxm}$ are weights associated with hidden units in the recurrent
+    layer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $w_y \in R^m$ are weights associated with hidden units to output units
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $b_h \in R^m$ is the bias associated with the recurrent layer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: $b_y \in R$ is the bias associated with the feedforward layer
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'At every time step, we can unfold the network for $k$ time steps to get the
+    output at time step $k+1$. The unfolded network is very similar to the feedforward
+    neural network. The rectangle in the unfolded network shows an operation taking
+    place. So, for example, with an activation function f:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$h_{t+1} = f(x_t, h_t, w_x, w_h, b_h) = f(w_{x} x_t + w_{h} h_t + b_h)$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The output $y$ at time $t$ is computed as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: y_{t} = f(h_t, w_y) = f(w_y \cdot h_t + b_y)
+  prefs: []
+  type: TYPE_NORMAL
+- en: $$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, $\cdot$ is the dot product.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Hence, in the feedforward pass of an RNN, the network computes the values of
+    the hidden units and the output after $k$ time steps. The weights associated with
+    the network are shared temporally. Each recurrent layer has two sets of weights:
+    one for the input and the second for the hidden unit. The last feedforward layer,
+    which computes the final output for the kth time step, is just like an ordinary
+    layer of a traditional feedforward network.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Activation Function
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'We can use any activation function we like in the recurrent neural network.
+    Common choices are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Sigmoid function: $\frac{1}{1+e^{-x}}$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Tanh function: $\frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Relu function: max$(0,x)$'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training a Recurrent Neural Network
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The backpropagation algorithm of an artificial neural network is modified to
+    include the unfolding in time to train the weights of the network. This algorithm
+    is based on computing the gradient vector and is called backpropagation in time
+    or BPTT algorithm for short. The pseudo-code for training is given below. The
+    value of $k$ can be selected by the user for training. In the pseudo-code below,
+    $p_t$ is the target value at time step t:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Repeat till the stopping criterion is met:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Set all $h$ to zero.
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Repeat for t = 0 to n-k
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Forward propagate the network over the unfolded network for $k$ time steps to
+    compute all $h$ and $y$
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: 'Compute the error as: $e = y_{t+k}-p_{t+k}$'
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Backpropagate the error across the unfolded network and update the weights
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Types of RNNs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are different types of recurrent neural networks with varying architectures.
+    Some examples are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: One to One
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[![](../Images/5341b851181341091ad2f4c78f50a126.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnn2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, there is a single $(x_t, y_t)$ pair. Traditional neural networks employ
+    a one-to-one architecture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One to Many
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[![](../Images/8a8fb6a9d31d955c716888615c17e439.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnn3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In one-to-many networks, a single input at $x_t$ can produce multiple outputs,
+    e.g., $(y_{t0}, y_{t1}, y_{t2})$. Music generation is an example area where one-to-many
+    networks are employed.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many to One
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[![](../Images/dd52e137329632205eb70efc2fc44560.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnn4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this case, many inputs from different time steps produce a single output.
+    For example, $(x_t, x_{t+1}, x_{t+2})$ can produce a single output $y_t$. Such
+    networks are employed in sentiment analysis or emotion detection, where the class
+    label depends upon a sequence of words.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Many to Many
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[![](../Images/2d802d4f961ff8d1127d8a0ae46f573f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnn5.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are many possibilities for many-to-many. An example is shown above, where
+    two inputs produce three outputs. Many-to-many networks are applied in machine
+    translation, e.g., English to French or vice versa translation systems.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Advantages and Shortcomings of RNNs
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'RNNs have various advantages, such as:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ability to handle sequence data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ability to handle inputs of varying lengths
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Ability to store or “memorize” historical information
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'The disadvantages are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The computation can be very slow.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The network does not take into account future inputs to make decisions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Vanishing gradient problem, where the gradients used to compute the weight update
+    may get very close to zero, preventing the network from learning new weights.
+    The deeper the network, the more pronounced this problem is.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Different RNN Architectures
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'There are different variations of RNNs that are being applied practically in
+    machine learning problems:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bidirectional Recurrent Neural Networks (BRNN)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: In BRNN, inputs from future time steps are used to improve the accuracy of the
+    network. It is like knowing the first and last words of a sentence to predict
+    the middle words.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Gated Recurrent Units (GRU)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: These networks are designed to handle the vanishing gradient problem. They have
+    a reset and update gate. These gates determine which information is to be retained
+    for future predictions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Long Short Term Memory (LSTM)
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[LSTMs](https://machinelearningmastery.com/time-series-prediction-lstm-recurrent-neural-networks-python-keras/)
+    were also designed to address the vanishing gradient problem in RNNs. LSTMs use
+    three gates called input, output, and forget gate. Similar to GRU, these gates
+    determine which information to retain.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Deep Learning Essentials](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365) by
+    Wei Di, Anurag Bhardwaj, and Jianing Wei.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=as_li_ss_tl?dchild=1&keywords=deep+learning&qid=1606171954&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=0a0c58945768a65548b639df6d1a98ed&language=en_US)
+    by Ian Goodfellow, Joshua Bengio, and Aaron Courville.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Wikipedia article on BPTT](https://en.wikipedia.org/wiki/Backpropagation_through_time)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[A Tour of Recurrent Neural Network Algorithms for Deep Learning](https://machinelearningmastery.com/recurrent-neural-network-algorithms-for-deep-learning/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[A Gentle Introduction to Backpropagation Through Time](https://machinelearningmastery.com/gentle-introduction-backpropagation-time/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered recurrent neural networks and their various
+    architectures.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How a recurrent neural network handles sequential data
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Unfolding in time in a recurrent neural network
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is backpropagation in time
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Advantages and disadvantages of RNNs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Various architectures and variants of RNNs
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions about RNNs discussed in this post? Ask your questions
+    in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

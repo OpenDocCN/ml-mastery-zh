@@ -1,0 +1,265 @@
+- en: Running Stable Diffusion with Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/running-stable-diffusion-with-python/](https://machinelearningmastery.com/running-stable-diffusion-with-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Stable Diffusion is a deep learning model that can generate pictures. In essence,
+    it is a program in which you can provide input (such as a text prompt) and get
+    back a tensor that represents an array of pixels, which, in turn, you can save
+    as an image file. There’s no requirement that you must use a particular user interface.
+    Before any user interface is available, you are supposed to run Stable Diffusion
+    in code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, we will see how you can use the `diffusers` library from Hugging
+    Face to run Stable Diffusion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After finishing this tutorial, you will learn
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to install the `diffusers` library and its dependencies
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to create a pipeline in `diffusers`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to fine tune your image generation process
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
+    Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/b30ccb65f63b9a59926a30d8a657f565.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Running Stable Diffusion in Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Himanshu Choudhary](https://unsplash.com/photos/orange-tabby-cat-lying-on-ground-RLo7QtKLyAY).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduction to the Diffusers Library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Customizing the Stable Diffusion Pipeline
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Other Modules in the Diffusers Library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction to the Diffusers Library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Stable Diffusion has taken the text-to-image generation world by storm. Its
+    ability to produce high-quality, detailed images from textual descriptions makes
+    it a powerful tool for artists, designers, and anyone with a creative spark. With
+    the Stable Diffusion model file, you can rebuild the deep learning model using
+    PyTorch, but you will need to write a lot of code to use it because there are
+    many steps involved. The Hugging Face Diffusers library can harness Stable Diffusion’s
+    potential and let you craft your own dreamlike creations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Before you use it, you should install the diffusers library in your Python
+    environment:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: These Python packages have a lot of dependencies, including PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this post, you will use the pipeline function in the diffuers library. It
+    is called a pipeline because not a single deep learning model allows you to generate
+    pictures from your input, but many smaller models work in tandem to achieve that.
+    Let’s look at an example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'These are the few lines of code to generate a picture, and save it in PNG format
+    to `cat.png`. This is an example of the generated picture:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/331984db9fff0d71aeed19f863bbd244.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: A picture generated with Stable Diffusion pipeline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, a lot of work is being done on the backend. You passed on a text prompt.
+    This prompt has been converted into a numerical tensor using a pretrained embedding
+    model. The tensor is then passed on to the Stable Diffusion model, downloaded
+    from the Hugging Face repository “CompVis/stable-diffusion-v1-4” (the official
+    Stable Diffusion v1.4 model). This model will be run with 30 steps and the DDPM
+    scheduler. The output from the Stable Diffusion model will be a floating point
+    tensor, which has to be converted into pixel values before you can save it. All
+    these are accomplished by chaining the components with a pipeline into the object
+    `pipe`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Customizing the Stable Diffusion Pipeline
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the previous code, you download a pretrained model from the Hugging Face
+    repository. Even for the same repository, different “variants” of the same model
+    are available. Mostly, the default variant uses a 32-bit floating point, which
+    is suitable for running on both CPU and GPU. The variant you used in the code
+    above is `fp16`, which is to use 16-bit floating point. It is not always available
+    and not always named as such. You should check the corresponding repository to
+    learn more details.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because the variant used is for 16-bit floating point, you specified the `torch_dtype`
+    to use `torch.float16` as well. Note that most CPUs cannot work with 16-bit floating
+    points (also known as half-precision floats), but it works for GPUs. Hence, you
+    saw that the pipeline created was passed on to the GPU using the statement `pipe.to("cuda")`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can try the following modification, which you should be able to observe
+    a much slower generation because it is run on CPU:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: However, suppose you have been using the Stable Diffusion Web UI and downloaded
+    the third-party model for Stable Diffusion. In that case, you should be familiar
+    with model files saved in SafeTensors format. This is in a different format than
+    the above Hugging Face repository. Most notably, the repository would include
+    a `config.json` file to describe how to use the model, but such information should
+    be inferred from a SafeTensor model file instead.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'You can still use the model files you downloaded. For example, with the following
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This code uses `StableDiffusionPipeline.from_single_file()` instead of `StableDiffusionPipeline.from_pretrained()`.
+    The argument to this function is presumed to be the path to the model file. It
+    will figure out that the file is in SafeTensors format. It is the neatness of
+    the `diffusers` library that nothing else needs to be changed after you swapped
+    how to create the pipeline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that each Pipeline assumes a certain architecture. For example, there is
+    `StableDiffusionXLPipeline` from `diffusers` library solely for Stable Diffusion
+    XL. You cannot use the model file with the wrong pipeline builder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can see that the most important parameters of the Stable Diffusion image
+    generation process are described in the `pipe()` function call when you triggered
+    the process. For example, you can specify the scheduler, step size, and CFG scale.
+    The scheduler indeed has another set of configuration parameters. You can choose
+    among the many schedulers supported by the `diffuers` library, which you can find
+    in the details in the diffusers API manual.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, the following is to use a faster alternative, the Euler Scheduler,
+    and keep everything else the same:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Other Modules in the Diffusers Library
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The `StableDiffusionPipeline` is not the only pipeline in the `diffusers` library.
+    As mentioned above, you have `StableDiffusionXLPipeline` for the XL models, but
+    there are much more. For example, if you are not just providing a text prompt
+    but invoking the Stable Diffusion model with img2img, you have to use `StableDiffusionImg2ImgPipeline`.
+    You can provide an image of the PIL object as an argument to the pipeline. You
+    can check out the available pipelines from the `diffusers` documentation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/overview](https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/overview)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Even with the many different pipeline, you should find all of them work similarly.
+    The workflow is highly similar to the example code above. You should find it easy
+    to use without any need to understand the detailed mechanism behind the scene.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[diffusers API manual](https://huggingface.co/docs/diffusers/main/en/index)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Overview of Stable Diffusion Pipelines](https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/overview)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The StableDiffusionPipeline API](https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/text2img)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Euler Scheduler API](https://huggingface.co/docs/diffusers/main/en/api/schedulers/euler)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[DDPM Scheduler API](https://huggingface.co/docs/diffusers/main/en/api/schedulers/ddpm)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you discovered how to use the `diffusers` library from Hugging
+    Face. In particular, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to create a pipeline to create an image from a prompt
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can reuse your local model file instead of dynamically download from
+    repository online
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What other pipeline models are available from the diffusers library
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

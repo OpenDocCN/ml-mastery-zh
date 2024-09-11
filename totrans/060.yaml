@@ -1,0 +1,522 @@
+- en: Training a Haar Cascade Object Detector in OpenCV
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/training-a-haar-cascade-object-detector-in-opencv/](https://machinelearningmastery.com/training-a-haar-cascade-object-detector-in-opencv/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Using a Haar cascade classifier in OpenCV is simple. You just need to provide
+    the trained model in an XML file to create the classifier. Training one from scratch,
+    however, is not so straightforward. In this tutorial, you will see how the training
+    should be like. In particular, you will learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What are the tools to train a Haar cascade in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to prepare data for training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to run the training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/dfc96e66aab3732163b1d9403e8efe6f.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training a Haar Cascade Object Detector in OpenCV
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Adrià Crehuet Cano](https://unsplash.com/photos/children-playing-soccer-LIhB1_mAGhY).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into five parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Problem of Training Cascade Classifier in OpenCV
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Setup of Environment
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Overview of the Training of Cascade Classifier
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Prepare Training DAta
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Training Haar Cascade Classifier
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Problem of Training Cascade Classifier in OpenCV
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: OpenCV has been around for many years and has many versions. OpenCV 5 is in
+    development at the time of writing and the recommended version is OpenCV 4, or
+    version 4.8.0, to be precise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There has been a lot of clean-up between OpenCV 3 and OpenCV 4\. Most notably
+    a large amount of code has been rewritten. The change is substantial and quite
+    a number of functions are changed. This included the tool to train the Haar cascade
+    classifier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: A cascade classifier is not a simple model like SVM that you can train easily.
+    It is an ensemble model that uses AdaBoost. Therefore, the training involves multiple
+    steps. OpenCV 3 has a command line tool to help do such training, but the tool
+    has been broken in OpenCV 4\. The fix is not available yet.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Therefore, it is only possible to train a Haar cascade classifier using OpenCV
+    3\. Fortunately, you can discard it after the training and revert to OpenCV 4
+    once you save the model in an XML file. This is what you are going to do in this
+    post.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You cannot have OpenCV 3 and OpenCV 4 co-exist in Python. Therefore, it is recommended
+    to create a separate environment for training. In Python, you can use the `venv`
+    module to create a virtual environment, which is simply to create a separate set
+    of installed modules. Alternatives would be using Anaconda or Pyenv, which are
+    different architectures under the same philosophy. Among all of the above, you
+    should see the Anaconda environment as the easiest for this task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Machine Learning with OpenCV?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Setup of Environment
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'It is easier if you’re using Anaconda, you can use the following command to
+    create and use a new environment and name it as “cvtrain”:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You know you’re ready if you find the command `opencv_traincascade` is available:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you’re using `pyenv` or `venv`, you need more steps. First, create an environment
+    and install OpenCV (you should notice the different name of the package than Anaconda
+    ecosystem):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This allows you to run Python programs using OpenCV but you do not have the
+    command line tools for training. To get the tools, you need to compile them from
+    source code by following these steps:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Download OpenCV source code and switch to 3.4 branch
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Create the build directory separate from the repository directory:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: 'Prepare the build directory with `cmake` tool, and referring to the OpenCV
+    repository:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: Run `make` to compile (you may need to have the developer libraries installed
+    in your system first)
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+- en: The tools you need will be in the `bin/` directory, as shown by the last command
+    above
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The command line tools needed are `opencv_traincascade` and `opencv_createsamples`.
+    The rest of this post assumes you have these tools available.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview of the Training of Cascade Classifier
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You are going to train a **cascade classifier** using OpenCV tools. The classifier
+    is an ensemble model using AdaBoost. Simply, multiple smaller models are created
+    where each of them is weak in classification. Combined, it becomes a strong classifier
+    with a good rates of precision and recall.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Each of the **weak classifiers** is a binary classifier. To train them, you
+    need some positive samples and negative samples. The negative samples are easy:
+    You provide some random pictures to OpenCV and let OpenCV select a rectangular
+    region (better if there are no target objects in these pictures). The positive
+    samples, however, are provided as an image and the bounding box in which the object
+    lies perfectly in the box.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Once these datasets are provided, OpenCV will extract the Haar features from
+    both and use them to train many classifiers. Haar features are from partitioning
+    the positive or negative samples into rectangular regions. How the partitioning
+    is done involves some randomness. Therefore, it takes time for OpenCV to find
+    the best way to derive the Haar features for this classification task.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In OpenCV, you just need to provide the training data in image files in a format
+    that OpenCV can read (such as JPEG or PNG). For negative samples, all it needs
+    is a plain text file of their filenames. For positive samples, an “info file”
+    is required, which is a plaintext file with the details of the filename, how many
+    objects are in the picture, and the corresponding bounding boxes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The positive data samples for training should be in a binary format. OpenCV
+    provides a tool `opencv_createsamples` to generate the binary format from the
+    “info file”. Then these positive samples, together with the negative samples,
+    are provided to another tool `opencv_traincascade` to run the training and produce
+    the model output in the format of an XML file. This is the XML file you can load
+    into a OpenCV Haar cascade classifier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Prepare Training Data
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Let’s consider creating a **cat face** detector. To train such a detector,
+    you need the dataset first. One possibility is the Oxford-IIIT Pet Dataset, at
+    this location:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[https://www.robots.ox.ac.uk/~vgg/data/pets/](https://www.robots.ox.ac.uk/~vgg/data/pets/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'This is an 800MB dataset, a small one by the standards of computer vision datasets.
+    The images are annotated in the Pascal VOC format. In short, each image has a
+    corresponding XML file that looks like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: XHTML
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: The XML file tells you which image file it is referring to (`Abyssinian_100.jpg`
+    in the example above), and what object it contains, with the bounding box between
+    the tags `<bndbox></bndbox>`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'To extract the bounding boxes from the XML file, you can use the following
+    function:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'An example of the dictionary returned by the above function is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With these, it is easy to create the dataset for the training: In the Oxford-IIT
+    Pet dataset, the photos are either cats or dogs. You can let all dog photos as
+    negative samples. Then all the cat photos will be positive samples with appropriate
+    bounding box set.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The “info file” that OpenCV expects for positive samples is a plaintext file
+    with each line in the following format:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: The number following the filename is the count of bounding boxes on that image.
+    Each bounding box is a positive sample. What follows it are the bounding boxes.
+    Each box is specified by the pixel coordinate at its top left corner and the width
+    and height of the box. For the best result of the Haar cascade classifier, the
+    bounding box should be in the same aspect ratio as the model expects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Assume the Pet dataset you downloaded is located in the directory `dataset/`,
+    which you should see the files are organized like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'With this, it is easy to create the “info file” for positive samples and the
+    list of negative sample files, using the following program:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: This program scans all the XML files from the dataset, then extracts the bounding
+    boxes from each if it is a cat photo. The list `negative` will hold the paths
+    to dog photos. The list `positive` will hold the paths to cat photos as well as
+    the bounding boxes in the format described above, each line as one string. After
+    the loop, these two lists are written to the disk as files `negative.dat` and
+    `positive.dat`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The content of `negative.dat` is trivial. The content of `postiive.dat` is
+    like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The step before you run the training is to convert `positive.dat` into a binary
+    format. This is done using the following command line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: This command should be run in the same directory as `positive.dat` such that
+    the dataset images can be found. The output of this command will be `positive.vec`.
+    It is also known as the “vec file”. In doing so, you need to specify the width
+    and height of the window using `-w` and `-h` arguments. This is to resize the
+    image cropped by the bounding box into this pixel size before writing to the vec
+    file. This should also match the window size specified when you run the training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training Haar Cascade Classifier
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Training a classifier takes time. It is done in multiple stages. Intermediate
+    files are to be written in each stage, and once all the stages are completed,
+    you will have the trained model saved in an XML file. OpenCV expects all these
+    generated files to be stored in a directory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Run the training process is indeed straightforward. Let’s consider creating
+    a new directory `cat_detect` to store the generated files. Once the directory
+    is created, you can run the training using the command line tool `opencv_traincascade`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Note the use of `positive.vec` as positive samples and `negative.dat` as negative
+    samples. Also note that, the `-w` and `-h` parameters are same as what you used
+    previously in the `opencv_createsamples` command. Other command line arguments
+    are explained as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '`-data <dirname>`: Where the trained classifier is stored. This directory should
+    already exist'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-vec <filename>`: The vec file of positive samples'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-bg <filename>`: The list of negative samples, also known as “background”
+    images'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-numPos <N>`: number of positive samples used in training for every stage'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-numNeg <N>`: number of negative samples used in training for every stage'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-numStages <N>`: number of cascade stages to be trained'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-w <width>` and `-h <height>`: The pixel size for an object. This must be
+    the same as used during training samples creation with `opencv_createsamples`
+    tool'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-minHitRate <rate>`: The minimum desired true positive rate for each stage.
+    Training a stage would not terminate until this is met.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-maxFalseAlarmRate <rate>`: The maximum desired false positive rate for each
+    stage. Training a stage would not terminate until this is met.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-maxDepth <N>`: maximum depth of a weak tree'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '`-maxWeakCount <N>`: maximum number of weak trees for every stage'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Not all of these arguments are required. But you should try different combinations
+    to see if you can train a better detector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'During training, you will see the following screen:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should notice that the training run for $N$ stages is numbered 0 to $N-1$.
+    Some stages may take longer to train. At the beginning, the training parameters
+    are displayed to make clear what it is doing. Then in each stage, a table will
+    be printed, one row at a time. The table shows three columns: The feature number
+    `N`, the hit rate `HR` (true positive rate) and the false alarm rate `FA` (false
+    positive rate).'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Before stage 0, you should see it printed `minHitRate` of 0.995 and `maxFalseAlarmRate`
+    of 0.5\. Therefore, each stage will find many Haar features until the classifier
+    can keep the hit rate above 0.995 while the false alarm rate is below 0.5\. Ideally
+    you want the hit rate be 1 and the false alarm rate be 0\. Since Haar cascade
+    is an ensemble, you get a correct prediction if you are right in the majority.
+    Approximately, you can consider the classifier of $n$ stages with hit rate $p$
+    and false alarm rate $q$ to have overall hit rate $p^n$ and overall false alarm
+    rate $q^n$. In the above setting, $n=10$, $p>0.995$, $q<0.5$. Therefore, the overall
+    false alarm rate would be below 0.1% and overall hit rate above 95%.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This training command takes over 3 hours to finish on a modern computer. The
+    output will be named `cascade.xml` under the output directory. You can check the
+    result with a sample code like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: The result would depends on how well your model trained, and also depends on
+    the arguments you passed on into `detectMultiScale()`. See the previous post for
+    how to set up these arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The above code runs the detector in one image from the dataset. You may see
+    a result like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/4b31463ae32fac80dacce33d99039295.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Example output using the trained Haar cascade object detector
+  prefs: []
+  type: TYPE_NORMAL
+- en: You see some false positives, but the cat’s face has been detected. There are
+    multiple ways to improve the quality. For example, the training dataset you used
+    above does not use a square bounding box, while you used a square shape for training
+    and detection. Adjusting the dataset may improve. Similarly, the other parameters
+    you used on the training command line also affect the result. However, you should
+    be aware that Haar cascade detector is very fast but the more stages you use,
+    the slower it will be.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you want to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Websites
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: OpenCV [tutorial on cascade classifier training](https://docs.opencv.org/4.x/dc/d88/tutorial_traincascade.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[FAQ: OpenCV Haartraining](https://www.computer-vision-software.com/blog/2009/11/faq-opencv-haartraining/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Tutorial: OpenCV Haartraining](https://web.archive.org/web/20220804065334/http://note.sonots.com/SciSoftware/haartraining.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this post, you learned how to train a Haar cascade object detector in OpenCV.
+    In particular, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to prepare data for the Haar cascade training
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to run the training process in the command line
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use OpenCV 3.x to train the detector and use the trained model in OpenCV
+    4.x
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

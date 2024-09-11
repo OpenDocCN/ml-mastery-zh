@@ -1,0 +1,294 @@
+- en: The Power of Pipelines
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/the-power-of-pipelines/](https://machinelearningmastery.com/the-power-of-pipelines/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Machine learning projects often require the execution of a sequence of data
+    preprocessing steps followed by a learning algorithm. Managing these steps individually
+    can be cumbersome and error-prone. This is where `sklearn` pipelines come into
+    play. This post will explore how pipelines automate critical aspects of machine
+    learning workflows, such as data preprocessing, feature engineering, and the incorporation
+    of machine learning algorithms.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/6b3185917d2454cd5c46bae0270eab6c.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Power of Pipelines
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Quinten de Graaf](https://unsplash.com/photos/metal-pipe-between-trees-at-daytime-L4gN0aeaPY4).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What is a Pipeline?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Elevating Our Model with Advanced Transformations
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Handling Missing Data with Imputation in Pipelines
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is a Pipeline?
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: A pipeline is used to automate and encapsulate the sequence of various transformation
+    steps and the final estimator into one object. By defining a pipeline, you ensure
+    that the same sequence of steps is applied to both the training and the testing
+    data, enhancing the reproducibility and reliability of your model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s demonstrate the implementation of a pipeline and compare it with a traditional
+    approach without a pipeline. Consider a simple scenario where we want to predict
+    house prices based on the quality of a house, using the ‘OverallQual’ feature
+    from the Ames Housing dataset. Here’s a side-by-side comparison of performing
+    5-fold cross-validation with and without using a pipeline:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Both methods yield exactly the same results:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here is a visual to illustrate this basic pipeline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/5b031830d67ae48fbefab9e52a8fe4fb.png)](https://machinelearningmastery.com/the-power-of-pipelines/screenshot-2024-04-29-at-14-13-12/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This example uses a straightforward case with only one feature. Still, as models
+    grow more complex, pipelines can manage multiple preprocessing steps, such as
+    scaling, encoding, and dimensionality reduction, before applying the model.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Building on our foundational understanding of sklearn pipelines, let’s expand
+    our scenario to include feature engineering — an essential step in improving model
+    performance. Feature engineering involves creating new features from the existing
+    data that might have a stronger relationship with the target variable. In our
+    case, we suspect that the interaction between the quality of a house and its living
+    area could be a better predictor of the house price than either feature alone.
+    Here’s another side-by-side comparison of performing 5-fold cross-validation with
+    and without using a pipeline:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Both methods produce the same results again:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: This output indicates that using a pipeline, we encapsulate feature engineering
+    within our model training process, making it an integral part of the cross-validation.
+    With pipelines, each cross-validation fold will now generate the ‘Quality Weighted
+    Area’ feature within the pipeline, ensuring that our feature engineering step
+    is validated correctly, avoiding data leakage and, thus, producing a more reliable
+    estimate of model performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here is a visual to illustrate how we used the `FunctionTransformer` as part
+    of our preprocessing step in this pipeline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/e460ddab4bf29095440249d8725d5981.png)](https://machinelearningmastery.com/the-power-of-pipelines/screenshot-2024-04-29-at-14-23-54/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The pipelines above ensure that our feature engineering and preprocessing efforts
+    accurately reflect the model’s performance metrics. As we continue, we’ll venture
+    into more advanced territory, showcasing the robustness of pipelines when dealing
+    with various preprocessing tasks and different types of variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Elevating Our Model with Advanced Transformations
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Our next example incorporates a cubic transformation, engineered features, and
+    categorical encoding and includes raw features without any transformation. This
+    exemplifies how a pipeline can handle a mix of data types and transformations,
+    streamlining the preprocessing and modeling steps into a cohesive process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Feature engineering is an art that often requires a creative touch. By applying
+    a cubic transformation to the ‘OverallQual’ feature, we hypothesize that the non-linear
+    relationship between quality and price could be better captured. Additionally,
+    we engineer a ‘QualityArea’ feature, which we believe might interact more significantly
+    with the sale price than the individual features alone. We also cater to the categorical
+    features ‘Neighborhood’, ‘ExterQual’, and ‘KitchenQual’ by employing one-hot encoding,
+    a crucial step in preparing textual data for modeling. We pass it directly into
+    the model to ensure that the valuable temporal information from ‘YearBuilt’ is
+    not transformed unnecessarily. The above pipeline yields the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: With an impressive mean CV R² score of 0.850, this pipeline demonstrates the
+    substantial impact of thoughtful feature engineering and preprocessing on model
+    performance. It highlights pipeline efficiency and scalability and underscores
+    their strategic importance in building robust predictive models. Here is a visual
+    to illustrate this pipeline.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/09a80c5c90f1d3c48d356351dbd1ae73.png)](https://machinelearningmastery.com/the-power-of-pipelines/screenshot-2024-04-29-at-14-38-48/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The true advantage of this methodology lies in its unified workflow. By elegantly
+    combining feature engineering, transformations, and model evaluation into a single,
+    coherent process, pipelines greatly enhance the accuracy and validity of our predictive
+    models. This advanced example reinforces the concept that, with pipelines, complexity
+    does not come at the cost of clarity or performance in machine learning workflows.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Handling Missing Data with Imputation in Pipelines
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The reality of most datasets, especially large ones, is that they often contain
+    missing values. Neglecting to handle these missing values can lead to significant
+    biases or errors in your predictive models. In this section, we will demonstrate
+    how to seamlessly integrate data imputation into our pipeline to ensure that our
+    linear regression model is robust against such issues.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In a previous post, we delved into the depths of missing data, [manually imputing
+    missing values](https://machinelearningmastery.com/classifying_variables/) in
+    the Ames dataset without using pipelines. Building on that foundation, we now
+    introduce how to streamline and automate imputation within our pipeline framework,
+    providing a more efficient and error-proof approach suitable even for those new
+    to the concept.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We have chosen to use a `SimpleImputer` to handle the missing values for the
+    ‘BsmtQual’ (Basement Quality) feature, a categorical variable in our dataset.
+    The `SimpleImputer` will replace missing values with the constant ‘None’, indicating
+    the absence of a basement. Post-imputation, we employ a `OneHotEncoder` to convert
+    this categorical data into a numerical format suitable for our linear model. By
+    nesting this imputation within our pipeline, we ensure that the imputation strategy
+    is correctly applied during both the training and testing phases, thus preventing
+    any data leakage and maintaining the integrity of our model evaluation through
+    cross-validation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here’s how we integrate this into our pipeline setup:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The use of `SimpleImputer` in our pipeline helps efficiently handle missing
+    data. When coupled with the rest of the preprocessing steps and the linear regression
+    model, the complete setup allows us to evaluate the true impact of our preprocessing
+    choices on model performance.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Here is a visual of our pipeline which includes missing data imputation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/26b53385afcc1efcd29a075e6db30c2f.png)](https://machinelearningmastery.com/the-power-of-pipelines/screenshot-2024-04-30-at-12-36-48/)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This integration showcases the flexibility of sklearn pipelines and emphasizes
+    how essential preprocessing steps, like imputation, are seamlessly included in
+    the machine learning workflow, enhancing the model’s reliability and accuracy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[sklearn.pipeline.Pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Streamline Your Machine Learning Workflow with Scikit-learn Pipelines](https://www.kdnuggets.com/streamline-your-machine-learning-workflow-with-scikit-learn-pipelines)
+    by Abid Ali Awan'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Ames Housing Dataset & Data Dictionary**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this post, we explored the utilization of sklearn pipelines, culminating
+    in the sophisticated integration of data imputation for handling missing values
+    within a linear regression context. We illustrated the seamless automation of
+    data preprocessing steps, feature engineering, and the inclusion of advanced transformations
+    to refine our model’s performance. The methodology highlighted in this post is
+    not only about maintaining the workflow’s efficiency but also about ensuring the
+    consistency and accuracy of the predictive models we aspire to build.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The foundational concept of sklearn pipelines and how they encapsulate a sequence
+    of data transformations and a final estimator.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: When integrated into pipelines, feature engineering can enhance model performance
+    by creating new, more predictive features.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The strategic use of `SimpleImputer` within pipelines to handle missing data
+    effectively, preventing data leakage and improving model reliability.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions? Please ask your questions in the comments below,
+    and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

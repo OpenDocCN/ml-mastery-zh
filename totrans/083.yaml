@@ -1,0 +1,409 @@
+- en: Static Analyzers in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/static-analyzers-in-python/](https://machinelearningmastery.com/static-analyzers-in-python/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Static analyzers are tools that help you check your code without really running
+    your code. The most basic form of static analyzers is the syntax highlighters
+    in your favorite editors. If you need to compile your code (say, in C++), your
+    compiler, such as LLVM, may also provide some static analyzer functions to warn
+    you about potential issues (e.g., mistaken assignment “`=`” for equality “`==`”
+    in C++). In Python, we have some tools to identify potential errors or point out
+    violations of coding standards.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After finishing this tutorial, you will learn some of these tools. Specifically,
+  prefs: []
+  type: TYPE_NORMAL
+- en: What can the tools Pylint, Flake8, and mypy do?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What are coding style violations?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How can we use type hints to help analyzers identify potential bugs?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/af4ac8df86aea43068b7641185d5001c.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Static Analyzers in Python
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Skylar Kang](https://www.pexels.com/photo/blooming-sea-lavender-flowers-on-rough-surface-6044187/).
+    Some rights reserved
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is in three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Introduction to Pylint
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction to Flake8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Introduction to mypy
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Pylint
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Lint was the name of a static analyzer for C created a long time ago. Pylint
+    borrowed its name and is one of the most widely used static analyzers. It is available
+    as a Python package, and we can install it with `pip`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then we have the command `pylint` available in our system.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Pylint can check one script or the entire directory. For example, if we have
+    the following script saved as `lenet5-notworking.py`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We can ask Pylint to tell us how good our code is before even running it:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The output is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: If you provide the root directory of a module to Pylint, all components of the
+    module will be checked by Pylint. In that case, you will see the path of different
+    files at the beginning of each line.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are several things to note here. First, the complaints from Pylint are
+    in different categories. Most commonly we would see issues on convention (i.e.,
+    a matter of style), warnings (i.e., the code may run in a sense not consistent
+    with what you intended to do), and error (i.e., the code may fail to run and throw
+    exceptions). They are identified by the code such as E0601, where the first letter
+    is the category.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pylint may give false positives. In the example above, we see Pylint flagged
+    the import from `tensorflow.keras.datasets` as an error. It is caused by an optimization
+    in the Tensorflow package that not everything would be scanned and loaded by Python
+    when we import Tensorflow, but a LazyLoader is created to help load only the necessary
+    part of a large package. This saves significant time in starting the program,
+    but it also confuses Pylint in that we seem to import something that doesn’t exist.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Furthermore, one of the key feature of Pylint is to help us make our code align
+    with the PEP8 coding style. When we define a function without a docstring, for
+    instance, Pylint will complain that we didn’t follow the coding convention even
+    if the code is not doing anything wrong.
+  prefs: []
+  type: TYPE_NORMAL
+- en: But the most important use of Pylint is to help us identify potential issues.
+    For example, we misspelled `y_train` as `Y_train` with an uppercase `Y`. Pylint
+    will tell us that we are using a variable without assigning any value to it. It
+    is not straightforwardly telling us what went wrong, but it definitely points
+    us to the right spot to proofread our code. Similarly, when we define the variable
+    `model` on line 23, Pylint told us that there is a variable of the same name at
+    the outer scope. Hence the reference to `model` later on may not be what we were
+    thinking. Similarly, unused imports may be just that we misspelled the name of
+    the modules.
+  prefs: []
+  type: TYPE_NORMAL
+- en: All these are **hints** provided by Pylint. We still have to use our judgement
+    to correct our code (or ignore Pylint’s complaints).
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'But if you know what Pylint should stop complaining about, you can request
+    to ignore those. For example, we know the `import` statements are fine, so we
+    can invoke Pylint with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, all errors of code E0611 will be ignored by Pylint. You can disable multiple
+    codes by a comma-separated list, e.g.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you want to disable some issues on only a specific line or a specific part
+    of the code, you can put special comments to your code, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The magic keyword `pylint:` will introduce Pylint-specific instructions. The
+    code E0611 and the name `no-name-in-module` are the same. In the example above,
+    Pylint will complain about the last two import statements but not the first two
+    because of those special comments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Flake8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The tool Flake8 is indeed a wrapper over PyFlakes, McCabe, and pycodestyle.
+    When you install flake8 with:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: you will install all these dependencies.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Similar to Pylint, we have the command `flake8` after installing this package,
+    and we can pass in a script or a directory for analysis. But the focus of Flake8
+    is inclined toward coding style. Hence we would see the following output for the
+    same code as above:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: The error codes beginning with letter E are from pycodestyle, and those beginning
+    with letter F are from PyFlakes. We can see it complains about coding style issues
+    such as the use of `(5,5)` for not having a space after the comma. We can also
+    see it can identify the use of variables before assignment. But it does not catch
+    some *code smells* such as the function `createmodel()`that reuses the variable
+    `model` that was already defined in outer scope.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similar to Pylint, we can also ask Flake8 to ignore some complaints. For example,
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Those lines will not be printed in the output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: We can also use magic comments to disable some complaints, e.g.,
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Flake8 will look for the comment `# noqa:` to skip some complaints on those
+    particular lines.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Mypy
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Python is not a typed language so, unlike C or Java, you do not need to declare
+    the types of some functions or variables before use. But lately, Python has introduced
+    type hint notation, so we can specify what type a function or variable **intended**
+    to be without enforcing its compliance like a typed language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: One of the biggest benefits of using type hints in Python is to provide additional
+    information for static analyzers to check. Mypy is the tool that can understand
+    type hints. Even without type hints, Mypy can still provide complaints similar
+    to Pylint and Flake8.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can install Mypy from PyPI:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then the example above can be provided to the `mypy` command:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We see similar errors as Pylint above, although sometimes not as precise (e.g.,
+    the issue with the variable `y_train`). However we see one characteristic of mypy
+    above: It expects all libraries we used to come with a stub so the type checking
+    can be done. This is because type hints are **optional**. In case the code from
+    a library does not provide type hints, the code can still work, but mypy cannot
+    verify. Some of the libraries have **typing stubs** available that enables mypy
+    to check them better.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let’s consider another example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: This program is supposed to load a HDF5 file (such as a Keras model) and print
+    every attribute and data stored in it. We used the `h5py` module (which does not
+    have a typing stub, and hence mypy cannot identify the types it used), but we
+    added type hints to the function we defined, `dumphdf5()`. This function expects
+    the filename of a HDF5 file and prints everything stored inside. At the end, the
+    number of datasets stored will be returned.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When we save this script into `dumphdf5.py` and pass it into mypy, we will
+    see the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: We misused our function so that an opened file object is passed into `dumphdf5()`
+    instead of just the filename (as a string). Mypy can identify this error. We also
+    declared that the function should return an integer, but we didn’t have the return
+    statement in the function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, there is one more error in this code that mypy didn’t identify. Namely,
+    the use of the variable `count` in the inner function `recur_dump()` should be
+    declared `nonlocal` because it is defined out of scope. This error can be caught
+    by Pylint and Flake8, but mypy missed it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following is the complete, corrected code with no more errors. Note that
+    we added the magic comment “`# type: ignore`” at the first line to mute the typing
+    stubs warning from mypy:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: In conclusion, the three tools we introduced above can be complementary to each
+    other. You may consider to run all of them to look for any possible bugs in your
+    code or improve the coding style. Each tool allows some configuration, either
+    from the command line or from a config file, to customize for your needs (e.g.,
+    how long a line should be too long to deserve a warning?). Using a static analyzer
+    is also a way to help yourself develop better programming skills.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Articles**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: PEP8, [https://peps.python.org/pep-0008/](https://peps.python.org/pep-0008/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Google Python Style Guide, [https://google.github.io/styleguide/pyguide.html](https://google.github.io/styleguide/pyguide.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Software packages**'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Pylint User Manual, [https://pylint.pycqa.org/en/latest/index.html](https://pylint.pycqa.org/en/latest/index.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Flake8, [https://flake8.pycqa.org/en/latest/](https://flake8.pycqa.org/en/latest/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: mypy, [https://mypy.readthedocs.io/en/stable/](https://mypy.readthedocs.io/en/stable/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you’ve seen how some common static analyzers can help you
+    write better Python code. Specifically you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The strengths and weaknesses of three tools: Pylint, Flake8, and mypy'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to customize the behavior of these tools
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to understand the complaints made by these analyzers
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

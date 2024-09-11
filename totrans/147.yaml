@@ -1,0 +1,252 @@
+- en: Building a Softmax Classifier for Images in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/building-a-softmax-classifier-for-images-in-pytorch/](https://machinelearningmastery.com/building-a-softmax-classifier-for-images-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Softmax classifier is a type of classifier in supervised learning. It is an
+    important building block in deep learning networks and the most popular choice
+    among deep learning practitioners.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Softmax classifier is suitable for multiclass classification, which outputs
+    the probability for each of the classes.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This tutorial will teach you how to build a softmax classifier for images data.
+    You will learn how to prepare the dataset, and then learn how to implement softmax
+    classifier using PyTorch. Particularly, you’ll learn:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: About the Fashion-MNIST dataset.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can use a Softmax classifier for images in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build and train a multi-class image classifier in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to plot the results after model training.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/1c11e009d1de000b1f5b02bf7c9745cb.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Building a Softmax Classifier for Images in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [Joshua J. Cotten](https://unsplash.com/photos/Ge1t87lvyRM). Some
+    rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in three parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Preparing the Dataset
+  prefs:
+  - PREF_UL
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build the Model
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Train the Model
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Preparing the Dataset
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The dataset you will use here is Fashion-MNIST. It is a pre-processed and well-organized
+    dataset consisting of 70,000 images, with 60,000 images for training data and
+    10,000 images for testing data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Each example in the dataset is a $28\times 28$ pixels grayscale image with a
+    total pixel count of 784\. The dataset has 10 classes, and each image is labelled
+    as a fashion item, which is associated with an integer label from 0 through 9.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This dataset can be loaded from `torchvision`. To make the training faster,
+    we limit the dataset to 4000 samples:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'At the first time you fetch the fashion-MNIST dataset, you will see PyTorch
+    downloading it from Internet and saving to a local directory named `data`:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: The dataset `train_data` above is a list of tuples, which each tuple is an image
+    (in the form of a Python Imaging Library object) and an integer label.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s plot the first 10 images in the dataset with matplotlib.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should see an image like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/c04cd8b1b12cba01ef7be6dd805a3558.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: 'PyTorch needs the dataset in PyTorch tensors. Hence you will convert this data
+    by applying the transforms, using the `ToTensor()` method from PyTorch transforms.
+    This transform can be done transparently in torchvision’s dataset API:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Before proceeding to the model, let’s also split our data into train and validation
+    sets in such a way that the first 3500 images is the training set and the rest
+    is for validation. Normally we want to shuffle the data before the split but we
+    can skip this step to make our code concise.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Build the Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In order to build a custom softmax module for image classification, we’ll use
+    `nn.Module` from the PyTorch library. To keep things simple, we build a model
+    of just one layer.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s instantiate our model object. It takes a one-dimensional vector as
+    input and predicts for 10 different classes. Let’s also check how parameters are
+    initialized.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should see the model’s weight are randomly initialized but it should be
+    in the shape like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Train the Model
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: You will use stochastic gradient descent for model training along with cross-entropy
+    loss. Let’s fix the learning rate at 0.01\. To help training, let’s also load
+    the data into a dataloader for both training and validation sets, and set the
+    batch size at 16.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Now, let’s put everything together and train our model for 200 epochs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You should see the progress printed once every 10 epochs:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: As you can see, the accuracy of the model increases after every epoch and its
+    loss decreases. Here, the accuracy you achieved for the softmax images classifier
+    is around 85 percent. If you use more data and increase the number of epochs,
+    the accuracy may get a lot better. Now let’s see how the plots for loss and accuracy
+    look like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First the loss plot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: which should look like the following:![](../Images/d73205d0bd1c939a2ef02fb9c20601ee.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Here is the model accuracy plot:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: which is like the one below:![](../Images/cdd1308460c6a5ac3b348f0f26ca2fda.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Putting everything together, the following is the complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned how to build a softmax classifier for images
+    data. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: About the Fashion-MNIST dataset.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How you can use a softmax classifier for images in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build and train a multiclass image classifier in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to plot the results after model training.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

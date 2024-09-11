@@ -1,0 +1,218 @@
+- en: Training a Multi-Target Multilinear Regression Model in PyTorch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/training-a-multi-target-multilinear-regression-model-in-pytorch/](https://machinelearningmastery.com/training-a-multi-target-multilinear-regression-model-in-pytorch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The multi-target multilinear regression model is a type of machine learning
+    model that takes single or multiple features as input to make multiple predictions.
+    In our earlier post, we discussed how to make simple predictions with multilinear
+    regression and generate multiple outputs. Here we’ll build our model and train
+    it on a dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In this post, we’ll generate a dataset and define our model with an optimizer
+    and a loss function. Then, we’ll train our model and visualize the results of
+    the training process. Particularly, we’ll explain:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to train a multi-target multilinear regression model in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to generate a simple dataset and feed it to the model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build the model using built-in packages in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train the model with mini-batch gradient descent and visualize the results.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/20dd0b8f625749a1ba6b7e6c17770e84.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Training a Multi-Target Multilinear Regression Model in PyTorch.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Picture by [drown_in_city](https://unsplash.com/photos/vQsjbfODtak). Some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This tutorial is in four parts; they are
+  prefs: []
+  type: TYPE_NORMAL
+- en: Create Data Class
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Build the Model with `nn.Module`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Train with Mini-Batch Gradient Descent
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Plot the Progress
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Create Data Class
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We need data to train our model. In PyTorch, we can make use of the `Dataset`
+    class. Firstly, we’ll create our data class that includes data constructer, the
+    `__getitem__()` method that returns data samples from the data, and the `__len__()`
+    method that allows us to check data length. We generate the data, based on a linear
+    model, in the constructor. Note that `torch.mm()` is used for **m**atrix **m**ultiplication
+    and the shapes of tensors should be set in such a way to allow the multiplication.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, we can create the dataset object that will be used in training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Want to Get Started With Deep Learning with PyTorch?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Build the Model with `nn.Module`
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: PyTorch’s `nn.Module` contains all the methods and attributes we need to build
+    our multilinear regression model. This package will help us to build more sophisticated
+    neural network architectures in the future tutorials of the series.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We’ll make our model class a subclass of the `nn.Module` package, allowing us
+    to inherit all the incorporated functionalities. Our model will include a constructor
+    and a `forward()` function to make predictions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: As we have to deal with multiple outputs, let’s create a model object with two
+    inputs and two outputs. We’ll list the model parameters as well.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is what the parameters look like, which the weights are randomized initially.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Here’s what the output looks like.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: We’ll train the model using stochastic gradient descent, keeping the learning
+    rate at 0.1\. For measuring the model loss, we’ll use mean square error.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: PyTorch has a `DataLoader` class which allows us to feed the data into the model.
+    This not only allow us to load the data but also can apply various transformations
+    in realtime. Before we start the training, let’s define our dataloader object
+    and define the batch size.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
+    It provides **self-study tutorials** with **working code**.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Train with Mini-Batch Gradient Descent
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: With all things set, we can create our training loop to train the model. We
+    create an empty list to store the model loss and train the model for 20 epochs.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you run this, you should see the output similar to the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Plot the Progress
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Because it is a linear regression model, the training should be fast. We can
+    visualize how the model loss decreases after every epoch during the training process.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: '![](../Images/ba883c0ac9a4adb6b94a7d1f76a1f3d3.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: Putting everything together, the following is the complete code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you learned what are the steps required to train a muti-target
+    Multilinear Regression model in PyTorch. Particularly, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to train a multi-target Multilinear Regression Model in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to generate a simple dataset and feed it to the model.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to build the model using built-in packages in PyTorch.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to train the model with Mini-Batch Gradient Descent and visualize the results.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

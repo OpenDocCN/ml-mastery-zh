@@ -1,0 +1,534 @@
+- en: Differential and Integral Calculus – Differentiate with Respect to Anything
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/differential-and-integral-calculus-differentiate-with-respect-to-anything/](https://machinelearningmastery.com/differential-and-integral-calculus-differentiate-with-respect-to-anything/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Integral calculus was one of the greatest discoveries of Newton and Leibniz.
+    Their work independently led to the proof, and recognition of the importance of
+    the fundamental theorem of calculus, which linked integrals to derivatives. With
+    the discovery of integrals, areas and volumes could thereafter be studied.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Integral calculus is the second half of the calculus journey that we will be
+    exploring.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover the relationship between differential and
+    integral calculus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The concepts of differential and integral calculus are linked together by the
+    fundamental theorem of calculus.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By applying the fundamental theorem of calculus, we can compute the integral
+    to find the area under a curve.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In machine learning, the application of integral calculus can provide us with
+    a metric to assess the performance of a classifier.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/a672e10c8332a859d1d4059b8b4969de.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/integral_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Differential and Integral Calculus – Differentiate with Respect to Anything
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Maxime Lebrun](https://unsplash.com/@flub), some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Differential and Integral Calculus – What is the Link?
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Fundamental Theorem of Calculus
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Sweeping Area Analogy
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Fundamental Theorem of Calculus – Part 1
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The Fundamental Theorem of Calculus – Part 2
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Integration Example
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Application of Integration in Machine Learning
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Differential and Integral Calculus – What is the Link?**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In our journey through calculus so far, we have learned that differential calculus
+    is concerned with the [measurement of the rate of change](https://machinelearningmastery.com/key-concepts-in-calculus-rate-of-change/).
+    We have also discovered [differentiation](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives/),
+    and applied it to [different functions from first principles](https://machinelearningmastery.com/derivative-of-the-sine-and-cosine/).
+    We have even understood how to apply [rules to arrive to the derivative faster](https://machinelearningmastery.com/the-power-product-and-quotient-rules/).
+  prefs: []
+  type: TYPE_NORMAL
+- en: But we are only half way through the journey.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*From A twenty-first-century vantage point, calculus is often seen as the mathematics
+    of change. It quantifies change using two big concepts: derivatives and integrals.
+    Derivatives model rates of change … Integrals model the accumulation of change
+    …*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 141, [Infinite Powers](https://www.amazon.com/Infinite-Powers-Calculus-Reveals-Universe/dp/0358299284/ref=as_li_ss_tl?dchild=1&keywords=joy+of+x&qid=1606170381&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=17ed7cfdd9b7dd013730d0699a8652a1&language=en_US),
+    2020.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '[Recall](https://machinelearningmastery.com/what-is-calculus/) having said
+    that calculus comprises two phases: cutting and rebuilding.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The cutting phase breaks down a curved shape into infinitesimally small and
+    straight pieces that can be studied separately, such as by applying derivatives
+    to model their rate of change, or *slope*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This half of the calculus journey is called *differential* calculus, and we
+    have already looked into it in some detail.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The rebuilding phase gathers the infinitesimally small and straight pieces,
+    and sums them back together in an attempt to study the original whole. In this
+    manner, we can determine the area or volume of regular and irregular shapes after
+    having cut them into infinitely thin slices. This second half of the calculus
+    journey is what we shall be exploring next. It is called *integral* calculus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The important theorem that links the two concepts together is called the *fundamental
+    theorem of calculus*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Fundamental Theorem of Calculus**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In order to work our way towards understanding the fundamental theorem of calculus,
+    let’s revisit the [car’s position and velocity example](https://machinelearningmastery.com/?p=12598&preview=true):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/3e26b032057f157e712745d0115a7c78.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/applications_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Line Plot of the Car’s Position Against Time
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/bd4b8ce069e6321b3a9ae4192d7cb89c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/applications_2.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Line Plot of the Car’s Velocity Against Time
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'In computing the derivative we had solved the *forward* problem, where we found
+    the velocity from the slope of the position graph at any time, *t*. But what if
+    we would like to solve the *backward* problem, where we are given the velocity
+    graph, *v*(*t*), and wish to find the distance travelled? The solution to this
+    problem is to calculate the *area under the curve* (the shaded region) up to time,
+    *t*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/cca5ee00aa2a8d601f31e7200652626e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/integral_9.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Shaded Region is the Area Under the Curve
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We do not have a specific formula to define the area of the shaded region directly.
+    But we can apply the mathematics of calculus to cut the shaded region under the
+    curve into many infinitely thin rectangles, for which we have a formula:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/c25bb81d2e944be05ad1ee224682653b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/integral_10-1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Cutting the Shaded Region Into Many Rectangles of Width, Δt
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we consider the *i*^(th) rectangle, chosen arbitrarily to span the time
+    interval Δ*t*, we can define its area as its length times its width:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: area_of_rectangle = *v*(*t**[i]*) Δ*t**[i]*
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can have as many rectangles as necessary in order to span the interval of
+    interest, which in this case is the shaded region under the curve. For simplicity,
+    let’s denote this closed interval by [*a*, *b*]. Finding the area of this shaded
+    region (and, hence, the distance travelled), then reduces to finding the sum of
+    the *n* number of rectangles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: total_area = *v*(*t*[0]) Δ*t*[0] *+ v*(*t*[1]) Δ*t*[1] *+ … + v*(*t*[n]) Δ*t*[n]
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can express this sum even more compactly by applying the Riemann sum with
+    sigma notation:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/41a5e79ef63b289b0edda383d5258222.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/integral_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we cut (or divide) the region under the curve by a finite number of rectangles,
+    then we find that the Riemann sum gives us an *approximation* of the area, since
+    the rectangles will not fit the area under the curve exactly. If we had to position
+    the rectangles so that their upper left or upper right corners touch the curve,
+    the Riemann sum gives us either an underestimate or an overestimate of the true
+    area, respectively. If the midpoint of each rectangle had to touch the curve,
+    then the part of the rectangle protruding above the curve *roughly* compensates
+    for the gap between the curve and neighbouring rectangles:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/9e283bd238e4d416c6c5b6ade6b7b3dd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/integral_11.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Approximating the Area Under the Curve with Left Sums
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/f31a57cc49ea59bc203240fbf039d1a5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/integral_12.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Approximating the Area Under the Curve with Right Sums
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/3fb447612759209566ab062f71fcecbb.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/integral_13.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Approximating the Area Under the Curve with Midpoint Sums
+  prefs: []
+  type: TYPE_NORMAL
+- en: The solution to finding the *exact* area under the curve, is to reduce the rectangles’
+    width so much that they become *infinitely* thin (recall the Infinity Principle
+    in calculus). In this manner, the rectangles would be covering the entire region,
+    and in summing their areas we would be finding the *definite integral*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The definite integral (“simple” definition): The exact area under a curve
+    between t = a and t = b is given by the definite integral, which is defined as
+    the limit of a Riemann sum …*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 227, [Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
+    2016.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The definite integral can, then, be defined by the Riemann sum as the number
+    of rectangles, *n*, approaches infinity. Let’s also denote the area under the
+    curve by *A*(*t*). Then:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/ca73a0bda0a14a7f2d04523b5ee6751c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/integral_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Note that the notation now changes into the integral symbol, ∫, replacing sigma,
+    Σ. The reason behind this change is, merely, to indicate that we are summing over
+    a huge number of thinly sliced rectangles. The expression on the left hand side
+    reads as, the integral of *v*(*t*) from *a* to *b*, and the process of finding
+    the integral is called *integration*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Sweeping Area Analogy**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Perhaps a simpler analogy to help us relate integration to differentiation,
+    is to imagine holding one of the thinly cut slices and dragging it rightwards
+    under the curve in infinitesimally small steps. As it moves rightwards, the thinly
+    cut slice will sweep a larger area under the curve, while its height will change
+    according to the shape of the curve. The question that we would like to answer
+    is, at which *rate* does the area accumulate as the thin slice sweeps rightwards?
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Let *dt* denote each infinitesimal step traversed by the sweeping slice, and
+    *v*(*t*) its height at any time, *t*. Then the infinitesimal area, *dA*(*t*),
+    of this thin slice can be found by multiplying its height, *v*(*t*), to its infinitesimal
+    width, *dt*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*dA*(*t*) = *v*(*t*) *dt*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Dividing the equation by *dt* gives us the derivative of *A*(*t*), and tells
+    us that the rate at which the area accumulates is equal to the height of the curve,
+    *v*(*t*), at time, *t*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*dA*(*t*) / *dt* = *v*(*t*)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can finally define the fundamental theorem of calculus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Fundamental Theorem of Calculus – Part 1**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'We found that an area, *A*(*t*), swept under a function, *v*(*t*), can be defined
+    by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/ec821ac0e36089b29aaeffb2c92c07ad.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/integral_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We have also found that the rate at which the area is being swept is equal
+    to the original function, *v*(*t*):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*dA*(*t*) / *dt* = *v*(*t*)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'This brings us to the first part of the fundamental theorem of calculus, which
+    tells us that if *v*(*t*) is continuous on an interval, [*a*, *b*], and if it
+    is also the derivative of *A*(*t*), then *A*(*t*) is the *antiderivative* of *v*(*t*):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*A’*(*t*) = *v*(*t*)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Or in simpler terms, integration is the reverse operation of differentiation.
+    Hence, if we first had to integrate *v*(*t*) and then differentiate the result,
+    we would get back the original function, *v*(*t*):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/20b33e680ec37848a4c7266aa52dfc84.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/integral_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The Fundamental Theorem of Calculus – Part 2**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: The second part of the theorem gives us a shortcut for computing the integral,
+    without having to take the longer route of computing the limit of a Riemann sum.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'It states that if the function, *v*(*t*), is continuous on an interval, [*a*,
+    *b*], then:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/dd3af912cf545ae28f29595410329757.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/integral_5.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, *F*(*t*) is any antiderivative of *v*(*t*), and the integral is defined
+    as the subtraction of the antiderivative evaluated at *a* and *b*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hence, the second part of the theorem computes the integral by subtracting the
+    area under the curve between some starting point, *C*, and the lower limit, *a*,
+    from the area between the same starting point, *C*, and the upper limit, *b*.
+    This, effectively, calculates the area of interest between *a* and *b*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Since the constant, *C*, defines the point on the *x*-axis at which the sweep
+    starts, the simplest antiderivative to consider is the one with *C* = 0\. Nonetheless,
+    any antiderivative with any value of *C* can be used, which simply sets the starting
+    point to a different position on the *x*-axis.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Integration Example**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Consider the function, *v*(*t*) = *x*³. By applying the power rule, we can easily
+    find its derivative, *v’*(*t*) = 3x². The antiderivative of 3*x*² is again *x*³
+    – we perform the reverse operation to obtain the original function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Now suppose that we have a different function, *g*(*t*) = *x*³ + 2\. Its derivative
+    is also 3x², and so is the derivative of yet another function, *h*(*t*) = *x*³
+    – 5\. Both of these functions (and other similar ones) have *x*³ as their antiderivative.
+    Hence, we specify the family of all antiderivatives of 3x² by the *indefinite*
+    integral:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/7d9bf6a4114c7c89da5ebb28d986492c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/integral_6.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The indefinite integral does not define the limits between which the area under
+    the curve is being calculated. The constant, *C*, is included to compensate for
+    the lack of information about the limits, or the starting point of the sweep.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'If we do have knowledge of the limits, then we can simply apply the second
+    fundamental theorem of calculus to compute the *definite* integral:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/d12a7cfabcd71bc0ea8bba37c2c85e6f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/integral_7.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: We can simply set *C* to zero, because it will not change the result in this
+    case.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Application of Integration in Machine Learning**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have considered the car’s velocity curve, *v*(*t*), as a familiar example
+    to understand the relationship between integration and differentiation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*But you can use this adding-up-areas-of-rectangles scheme to add up tiny bits
+    of anything — distance, volume, or energy, for example. In other words, the area
+    under the curve doesn’t have to stand for an actual area. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 214, [Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
+    2016.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: One of the important steps of successfully applying machine learning techniques
+    includes the choice of appropriate performance metrics. In deep learning, for
+    instance, it is common practice to measure *precision* and *recall*.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Precision is the fraction of detections reported by the model that were correct,
+    while recall is the fraction of true events that were detected.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 423, [Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
+    2017.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: It is also common practice to, then, plot the precision and recall on a Precision-Recall
+    (PR) curve, placing the recall on the *x*-axis and the precision on the *y*-axis.
+    It would be desirable that a classifier is characterised by both high recall and
+    high precision, meaning that the classifier can detect many of the true events
+    correctly. Such a good classification performance would be characterised by a
+    higher area under the PR curve.
+  prefs: []
+  type: TYPE_NORMAL
+- en: You can probably already tell where this is going.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The area under the PR curve can, indeed, be calculated by applying integral
+    calculus, permitting us to characterise the performance of the classifier.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
+    2016.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Infinite Powers](https://www.amazon.com/Infinite-Powers-Calculus-Reveals-Universe/dp/0358299284/ref=as_li_ss_tl?dchild=1&keywords=joy+of+x&qid=1606170381&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=17ed7cfdd9b7dd013730d0699a8652a1&language=en_US),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[The Hitchhiker’s Guide to Calculus](https://www.amazon.com/Hitchhikers-Calculus-Classroom-Resource-Materials/dp/1470449625/ref=as_li_ss_tl?dchild=1&keywords=The+Hitchhiker%27s+Guide+to+Calculus&qid=1606170787&sr=8-1&linkCode=sl1&tag=inspiredalgor-20&linkId=f8875fa9736746bf29d78fc0c55553d8&language=en_US),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered the relationship between differential and integral
+    calculus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The concepts of differential and integral calculus are linked together by the
+    fundamental theorem of calculus.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: By applying the fundamental theorem of calculus, we can compute the integral
+    to find the area under a curve.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: In machine learning, the application of integral calculus can provide us with
+    a metric to assess the performance of a classifier.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,204 @@
+- en: The Strategic Use of Sequential Feature Selector for Housing Price Predictions
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/the-strategic-use-of-sequential-feature-selector-for-housing-price-predictions/](https://machinelearningmastery.com/the-strategic-use-of-sequential-feature-selector-for-housing-price-predictions/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: To understand housing prices better, simplicity and clarity in our models are
+    key. Our aim with this post is to demonstrate how straightforward yet powerful
+    techniques in feature selection and engineering can lead to creating an effective,
+    simple linear regression model. Working with the Ames dataset, we use a Sequential
+    Feature Selector (SFS) to identify the most impactful numeric features and then
+    enhance our model’s accuracy through thoughtful feature engineering.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '![](../Images/7191b4fc5d8692c5c8dca04a63ddfcb3.png)'
+  prefs: []
+  type: TYPE_IMG
+- en: The Strategic Use of Sequential Feature Selector for Housing Price Predictions
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Mahrous Houses](https://unsplash.com/photos/brown-and-black-table-lamp-on-black-wooden-shelf-kUCTWQG9IJo).
+    Some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This post is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Identifying the Most Predictive Numeric Feature
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Evaluating Individual Features’ Predictive Power
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Enhancing Predictive Accuracy with Feature Engineering
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Identifying the Most Predictive Numeric Feature
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In the initial segment of our exploration, we embark on a mission to identify
+    the most predictive numeric feature within the Ames dataset. This is achieved
+    by applying Sequential Feature Selector (SFS), a tool designed to sift through
+    features and select the one that maximizes our model’s predictive accuracy. The
+    process is straightforward, focusing solely on numeric columns and excluding any
+    with missing values to ensure a clean and robust analysis:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: This result notably challenges the initial presumption that the area might be
+    the most predictive feature for housing prices. Instead, it underscores the **significance
+    of overall quality**, suggesting that, contrary to initial expectations, quality
+    is the paramount consideration for buyers. It is important to note that the Sequential
+    Feature Selector [utilizes cross-validation with a default of five folds (cv=5)](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SequentialFeatureSelector.html)
+    to evaluate the performance of each feature subset. This approach ensures that
+    the selected feature—reflected by the highest mean cross-validation R² score—is
+    robust and likely to generalize well on unseen data.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Evaluating Individual Features’ Predictive Power
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Building upon our initial findings, we delve deeper to rank features by their
+    predictive capabilities. Employing cross-validation, we evaluate each feature
+    independently, calculating their mean R² scores from cross-validation to ascertain
+    their individual contributions to the model’s accuracy.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: These findings underline the key role of overall quality (“OverallQual”), as
+    well as the importance of living area (“GrLivArea”) and first-floor space (“1stFlrSF”)
+    in the context of housing price predictions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enhancing Predictive Accuracy with Feature Engineering
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In the final stride of our journey, we employ feature engineering to create
+    a novel feature, “Quality Weighted Area,” by multiplying ‘OverallQual’ by ‘GrLivArea’.
+    This fusion aims to synthesize a more powerful predictor, encapsulating both the
+    quality and size dimensions of a property.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This will output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: This remarkable increase in R² score vividly demonstrates the efficacy of combining
+    features to capture more nuanced aspects of data, providing a compelling case
+    for the thoughtful application of feature engineering in predictive modeling.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further****Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: APIs
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[sklearn.feature_selection.SequentialFeatureSelector](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SequentialFeatureSelector.html)
+    API'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Tutorials
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[A practical introduction to sequential feature selection](https://www.yourdatateacher.com/2023/02/15/a-practical-introduction-to-sequential-feature-selection/)
+    by Gianluca Malato'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Ames Housing Dataset & Data Dictionary**'
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Through this three-part exploration, you have navigated the process of pinpointing
+    and enhancing predictors for housing price predictions with an emphasis on simplicity.
+    Starting with identifying the most predictive feature using a Sequential Feature
+    Selector (SFS), we discovered that overall quality is paramount. This initial
+    step was crucial, especially since our goal was to create the best simple linear
+    regression model, leading us to exclude categorical features for a streamlined
+    analysis. The exploration led us from identifying overall quality as the key predictor
+    using Sequential Feature Selector (SFS) to evaluating the impacts of living area
+    and first-floor space. Creating “Quality Weighted Area,” a feature blending quality
+    with size, notably enhanced our model’s accuracy. The journey through feature
+    selection and engineering underscored the power of simplicity in improving real
+    estate predictive models, offering deeper insights into what truly influences
+    housing prices. This exploration emphasizes that with the right techniques, even
+    simple models can yield profound insights into complex datasets like Ames’ housing
+    prices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The value of Sequential Feature Selection in revealing the most important predictors
+    for housing prices.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The importance of quality over size when predicting housing prices in Ames,
+    Iowa.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How merging features into a “Quality Weighted Area” enhances model accuracy.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have experiences with feature selection or engineering you would like
+    to share, or questions about the process? Please ask your questions or give us
+    feedback in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

@@ -1,0 +1,497 @@
+- en: Command Line Arguments for Your Python Script
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/command-line-arguments-for-your-python-script/](https://machinelearningmastery.com/command-line-arguments-for-your-python-script/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Working on a machine learning project means we need to experiment. Having a
+    way to configure your script easily will help you move faster. In Python, we have
+    a way to adapt the code from a command line. In this tutorial, we are going to
+    see how we can leverage the command line arguments to a Python script to help
+    you work better in your machine learning project.
+  prefs: []
+  type: TYPE_NORMAL
+- en: After finishing this tutorial, you will learn
+  prefs: []
+  type: TYPE_NORMAL
+- en: Why we would like to control a Python script in a command line
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How we can work in a command line efficiently
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.![](../Images/c9f3ac961769a235f2a8293ea0ac8dca.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Command line arguments for your Python script. Photo by [insung yoon](https://unsplash.com/photos/Uaf6XwW4n10).
+    Some rights reserved
+  prefs: []
+  type: TYPE_NORMAL
+- en: Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is in three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Running a Python script in command line
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Working on the command line
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Alternative to command line arguments
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Running a Python Script in Command Line
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: There are many ways to run a Python script. Someone may run it as part of a
+    Jupyter notebook. Someone may run it in an IDE. But in all platforms, it is always
+    possible to run a Python script in command line. In Windows, you have the command
+    prompt or PowerShell (or, even better, the [Windows Terminal](https://aka.ms/terminal)).
+    In macOS or Linux, you have the Terminal or xterm. Running a Python script in
+    command line is powerful because you can pass in additional parameters to the
+    script.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following script allows us to pass in values from the command line into
+    Python:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'We save these few lines into a file and run it in command line with an argument:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Then, you will see it takes our argument, converts it into an integer, adds
+    one to it, and prints. The list `sys.argv` contains the name of our script and
+    all the arguments (all strings), which in the above case, is `["commandline.py",
+    "15"]`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'When you run a command line with a more complicated set of arguments, it takes
+    some effort to process the list `sys.argv`. Therefore, Python provided the library
+    `argparse` to help. This assumes GNU-style, which can be explained using the following
+    example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: The optional arguments are introduced by “`-`” or “`--`“, where a single hyphen
+    will carry a single character “short option” (such as `-a`, `-B`, and `-v` above),
+    and two hyphens are for multiple characters “long options” (such as `--exclude` and `--ignore-existing` above).
+    The optional arguments may have additional parameters, such as in `-B 1024` or `--exclude="*.pyc";` the `1024` and `"*.pyc"` are
+    parameters to `-B` and `--exclude`, respectively. Additionally, we may also have
+    compulsory arguments, which we just put into the command line. The part `192.168.0.3:/tmp/` and `./`
+    above are examples. The order of compulsory arguments is important. For example,
+    the `rsync` command above will copy files from `192.168.0.3:/tmp/` to `./` instead
+    of the other way round.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The following replicates the above example in Python using argparse:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you run the above script, you will see:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This means you didn’t provide the compulsory arguments for `src` and `dest`.
+    Perhaps the best reason to use argparse is to get a help screen for free if you
+    provided `-h` or `--help` as the argument, like the following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'While the script did nothing real, if you provided the arguments as required,
+    you will see this:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: The parser object created by `ArgumentParser()` has a `parse_args()` method
+    that reads `sys.argv` and returns a **namespace** object. This is an object that
+    carries attributes, and we can read them using `args.ignore_existing`, for example.
+    But usually, it is easier to handle if it is a Python dictionary. Hence we can
+    convert it into one using `vars(args)`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Usually, for all optional arguments, we provide the long option and sometimes
+    also the short option. Then we can access the value provided from the command
+    line using the long option as the key (with the hyphen replaced with an underscore
+    or the single-character short option as the key if we don’t have a long version).
+    The “positional arguments” are not optional, and their names are provided in the
+    `add_argument()` function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are multiple types of arguments. For the optional arguments, sometimes
+    we use them as Boolean flags, but sometimes we expect them to bring in some data.
+    In the above, we use `action="store_true"` to make that option set to `False` by
+    default and toggle to `True` if it is specified. For the other option, such as `-B`
+    above, by default, it expects additional data to go following it.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can further require an argument to be a specific type. For example, in the
+    `-B` option above, we can make it expect integer data by adding `type` like the
+    following:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And if we provided the wrong type, argparse will help terminate our program
+    with an informative error message:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: Working on the Command Line
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Empowering your Python script with command line arguments can bring it to a
+    new level of reusability. First, let’s look at a simple example of fitting an
+    ARIMA model to a GDP time series. World Bank collects historical GDP data from
+    many countries. We can make use of the `pandas_datareader` package to read the
+    data. If you haven’t installed it yet, you can use `pip` (or `conda` if you installed
+    Anaconda) to install the package:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The code for the GDP data that we use is `NY.GDP.MKTP.CN`; we can get the data
+    of a country in the form of a pandas DataFrame by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we can tidy up the DataFrame a bit using the tools provided by pandas:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Fitting an ARIMA model and using the model for predictions is not difficult.
+    In the following, we fit it using the first 40 data points and forecast for the
+    next 3\. Then compare the forecast with the actual in terms of relative error:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Putting it all together, and after a little polishing, the following is the
+    complete code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'This script prints the following output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The above code is short, but we made it flexible enough by holding some parameters
+    in variables. We can change the above code to use argparse so that we can change
+    some parameters from the command line, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If we run the code above in a command line, we can see it can now accept arguments:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: In the last command above, we pass in `-c NO` to apply the same model to the
+    GDP data of Norway (NO) instead of Sweden (SE). Hence, without the risk of messing
+    up the code, we reused our code for a different dataset.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The power of introducing a command line argument is that we can easily test
+    our code with varying parameters. For example, we want to see if the ARIMA(1,1,1)
+    model is a good model for predicting GDP, and we want to verify with a different
+    time window of the Nordic countries:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Denmark (DK)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Finland (FI)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Iceland (IS)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Norway (NO)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Sweden (SE)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'We want to check for the window of 40 years but with different starting points
+    (since 1960, 1965, 1970, 1975). Depending on the OS, you can build a for loop
+    in Linux and mac using the bash shell syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Or, as the shell syntax permits, we can put everything in one line:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Shell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Or even better, give some information at each iteration of the loop, and we
+    get our script run multiple times:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'If you’re using Windows, you can use the following syntax in command prompt:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: MS DOS
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'or the following in PowerShell:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: PowerShell
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Both should produce the same result.
+  prefs: []
+  type: TYPE_NORMAL
+- en: While we can put a similar loop inside our Python script, sometimes it is easier
+    if we can do it at the command line. It could be more convenient when we are exploring
+    different options. Moreover, by taking the loop outside of the Python code, we
+    can be assured that every time we run the script, it is independent because we
+    will not share any variables between iterations.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Alternative to command line arguments
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 'Using command line arguments is not the only way to pass in data to your Python
+    script. At least, there are several other ways too:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: using environment variables
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: using config files
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: 'Environment variables are features from your OS to keep a small amount of data
+    in memory. We can read environment variables in Python using the following syntax:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For example, in Linux, the above two-line script will work with the shell as
+    follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'In Windows, the syntax inside the command prompt is similar:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You may also add or edit environment variables in Windows using the dialog
+    in the Control Panel:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/23d798dcb84df48ae0025afb7b30d707.png)](https://machinelearningmastery.com/wp-content/uploads/2022/02/Env-Variable.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: So we may keep the parameters to the script in some environment variables and
+    let the script adapt its behavior, like setting up command line arguments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In case we have a lot of options to set, it is better to save the options to
+    a file rather than overwhelming the command line. Depending on the format we chose,
+    we can use the `configparser` or `json` module from Python to read the Windows
+    INI format or JSON format, respectively. We may also use the third-party library
+    PyYAML to read the YAML format.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For the above example running the ARIMA model on GDP data, we can modify the
+    code to use a YAML config file:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The YAML config file is named as `config.yaml`, and its content is as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'Then we can run the above code and obtain the same result as before. The JSON
+    counterpart is very similar, where we use the `load()` function from the `json` module:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'And the JSON config file, `config.json`, would be:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: You may learn more about the syntax of [JSON](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON) and [YAML](https://en.wikipedia.org/wiki/YAML) for
+    your project. But the idea here is that we can separate the data and algorithm
+    for better reusability of our code.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Libraries
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: argparse module, [https://docs.python.org/3/library/argparse.html](https://docs.python.org/3/library/argparse.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Pandas Data Reader, [https://pandas-datareader.readthedocs.io/en/latest/](https://pandas-datareader.readthedocs.io/en/latest/)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: ARIMA in statsmodels, [https://www.statsmodels.org/devel/generated/statsmodels.tsa.arima.model.ARIMA.html](https://www.statsmodels.org/devel/generated/statsmodels.tsa.arima.model.ARIMA.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: configparser module, [https://docs.python.org/3/library/configparser.html](https://docs.python.org/3/library/configparser.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: json module, [https://docs.python.org/3/library/json.html](https://docs.python.org/3/library/json.html)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: PyYAML, [https://pyyaml.org/wiki/PyYAMLDocumentation](https://pyyaml.org/wiki/PyYAMLDocumentation)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Articles
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: Working with JSON, [https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: YAML on Wikipedia, [https://en.wikipedia.org/wiki/YAML](https://en.wikipedia.org/wiki/YAML)
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+- en: '*Python Cookbook*, third edition, by David Beazley and Brian K. Jones, [https://www.amazon.com/dp/1449340377/](https://www.amazon.com/dp/1449340377/)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In this tutorial, you’ve seen how we can use the command line for more efficient
+    control of our Python script. Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How we can pass in parameters to your Python script using the argparse module
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How we can efficiently control the argparse-enabled Python script in a terminal
+    under different OS
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can also use environment variables or config files to pass in parameters
+    to a Python script
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL

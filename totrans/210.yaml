@@ -1,0 +1,368 @@
+- en: The Attention Mechanism from Scratch
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/the-attention-mechanism-from-scratch/](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The attention mechanism was introduced to improve the performance of the encoder-decoder
+    model for machine translation. The idea behind the attention mechanism was to
+    permit the decoder to utilize the most relevant parts of the input sequence in
+    a flexible manner, by a weighted combination of all the encoded input vectors,
+    with the most relevant vectors being attributed the highest weights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover the attention mechanism and its implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How the attention mechanism uses a weighted sum of all the encoder hidden states
+    to flexibly focus the attention of the decoder on the most relevant parts of the
+    input sequence
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the attention mechanism can be generalized for tasks where the information
+    may not necessarily be related in a sequential fashion
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement the general attention mechanism in Python with NumPy and SciPy
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my book [Building Transformer Models with
+    Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
+    It provides **self-study tutorials** with **working code** to guide you into building
+    a fully-working transformer model that can'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*translate sentences from one language to another*...'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/e1a7f93adea13197ba00d0dc7219b38e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/attention_mechanism_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The attention mechanism from scratch
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Nitish Meena](https://unsplash.com/photos/RbbdzZBKRDY), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The Attention Mechanism
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The General Attention Mechanism
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The General Attention Mechanism with NumPy and SciPy
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**The Attention Mechanism**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The attention mechanism was introduced by [Bahdanau et al. (2014)](https://arxiv.org/abs/1409.0473) to
+    address the bottleneck problem that arises with the use of a fixed-length encoding
+    vector, where the decoder would have limited access to the information provided
+    by the input. This is thought to become especially problematic for long and/or
+    complex sequences, where the dimensionality of their representation would be forced
+    to be the same as for shorter or simpler sequences.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[Note](https://machinelearningmastery.com/how-does-attention-work-in-encoder-decoder-recurrent-neural-networks/) that
+    Bahdanau et al.’s *attention mechanism* is divided into the step-by-step computations
+    of the *alignment scores*, the *weights,* and the *context vector*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Alignment scores**: The alignment model takes the encoded hidden states,
+    $\mathbf{h}_i$, and the previous decoder output, $\mathbf{s}_{t-1}$, to compute
+    a score, $e_{t,i}$, that indicates how well the elements of the input sequence
+    align with the current output at the position, $t$. The alignment model is represented
+    by a function, $a(.)$, which can be implemented by a feedforward neural network:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$e_{t,i} = a(\mathbf{s}_{t-1}, \mathbf{h}_i)$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Weights**: The weights, $\alpha_{t,i}$, are computed by applying a softmax
+    operation to the previously computed alignment scores:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$\alpha_{t,i} = \text{softmax}(e_{t,i})$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Context vector**: A unique context vector, $\mathbf{c}_t$, is fed into the
+    decoder at each time step. It is computed by a weighted sum of all, $T$, encoder
+    hidden states:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$\mathbf{c}_t = \sum_{i=1}^T \alpha_{t,i} \mathbf{h}_i$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Bahdanau et al. implemented an RNN for both the encoder and decoder.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, the attention mechanism can be re-formulated into a general form that
+    can be applied to any sequence-to-sequence (abbreviated to seq2seq) task, where
+    the information may not necessarily be related in a sequential fashion.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*In other words, the database doesn’t have to consist of the hidden RNN states
+    at different steps, but could contain any kind of information instead.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – [Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '**The General Attention Mechanism**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The general attention mechanism makes use of three main components, namely the
+    *queries*, $\mathbf{Q}$, the *keys*, $\mathbf{K}$, and the *values*, $\mathbf{V}$.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you had to compare these three components to the attention mechanism as proposed
+    by Bahdanau et al., then the query would be analogous to the previous decoder
+    output, $\mathbf{s}_{t-1}$, while the values would be analogous to the encoded
+    inputs, $\mathbf{h}_i$. In the Bahdanau attention mechanism, the keys and values
+    are the same vector.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*In this case, we can think of the vector $\mathbf{s}_{t-1}$ as a query executed
+    against a database of key-value pairs, where the keys are vectors and the hidden
+    states $\mathbf{h}_i$ are the values.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – [Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'The general attention mechanism then performs the following computations:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Each query vector, $\mathbf{q} = \mathbf{s}_{t-1}$, is matched against a database
+    of keys to compute a score value. This matching operation is computed as the dot
+    product of the specific query under consideration with each key vector, $\mathbf{k}_i$:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$e_{\mathbf{q},\mathbf{k}_i} = \mathbf{q} \cdot \mathbf{k}_i$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The scores are passed through a softmax operation to generate the weights:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$\alpha_{\mathbf{q},\mathbf{k}_i} = \text{softmax}(e_{\mathbf{q},\mathbf{k}_i})$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The generalized attention is then computed by a weighted sum of the value vectors,
+    $\mathbf{v}_{\mathbf{k}_i}$, where each value vector is paired with a corresponding
+    key:'
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: $$\text{attention}(\mathbf{q}, \mathbf{K}, \mathbf{V}) = \sum_i \alpha_{\mathbf{q},\mathbf{k}_i}
+    \mathbf{v}_{\mathbf{k}_i}$$
+  prefs: []
+  type: TYPE_NORMAL
+- en: Within the context of machine translation, each word in an input sentence would
+    be attributed its own query, key, and value vectors. These vectors are generated
+    by multiplying the encoder’s representation of the specific word under consideration
+    with three different weight matrices that would have been generated during training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In essence, when the generalized attention mechanism is presented with a sequence
+    of words, it takes the query vector attributed to some specific word in the sequence
+    and scores it against each key in the database. In doing so, it captures how the
+    word under consideration relates to the others in the sequence. Then it scales
+    the values according to the attention weights (computed from the scores) to retain
+    focus on those words relevant to the query. In doing so, it produces an attention
+    output for the word under consideration.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Building Transformer Models with Attention?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 12-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**The General Attention Mechanism with NumPy and SciPy**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section will explore how to implement the general attention mechanism using
+    the NumPy and SciPy libraries in Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For simplicity, you will initially calculate the attention for the first word
+    in a sequence of four. You will then generalize the code to calculate an attention
+    output for all four words in matrix form.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hence, let’s start by first defining the word embeddings of the four different
+    words to calculate the attention. In actual practice, these word embeddings would
+    have been generated by an encoder; however, for this particular example, you will
+    define them manually.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: The next step generates the weight matrices, which you will eventually multiply
+    to the word embeddings to generate the queries, keys, and values. Here, you shall
+    generate these weight matrices randomly; however, in actual practice, these would
+    have been learned during training.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Notice how the number of rows of each of these matrices is equal to the dimensionality
+    of the word embeddings (which in this case is three) to allow us to perform the
+    matrix multiplication.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Subsequently, the query, key, and value vectors for each word are generated
+    by multiplying each word embedding by each of the weight matrices.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: Considering only the first word for the time being, the next step scores its
+    query vector against all the key vectors using a dot product operation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: The score values are subsequently passed through a softmax operation to generate
+    the weights. Before doing so, it is common practice to divide the score values
+    by the square root of the dimensionality of the key vectors (in this case, three)
+    to keep the gradients stable.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: Finally, the attention output is calculated by a weighted sum of all four value
+    vectors.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'For faster processing, the same calculations can be implemented in matrix form
+    to generate an attention output for all four words in one go:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deep Learning Essentials](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365),
+    2018.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Papers**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
+    2014.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered the attention mechanism and its implementation.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How the attention mechanism uses a weighted sum of all the encoder hidden states
+    to flexibly focus the attention of the decoder to the most relevant parts of the
+    input sequence
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the attention mechanism can be generalized for tasks where the information
+    may not necessarily be related in a sequential fashion
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to implement the general attention mechanism with NumPy and SciPy
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

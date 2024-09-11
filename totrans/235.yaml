@@ -1,0 +1,331 @@
+- en: A Gentle Introduction to Multivariate Calculus
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: It is often desirable to study functions that depend on many variables.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Multivariate calculus provides us with the tools to do so by extending the concepts
+    that we find in calculus, such as the computation of the rate of change, to multiple
+    variables. It plays an essential role in the process of training a neural network,
+    where the gradient is used extensively to update the model parameters.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover a gentle introduction to multivariate calculus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A multivariate function depends on several input variables to produce an output.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The gradient of a multivariate function is computed by finding the derivative
+    of the function in different directions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Multivariate calculus is used extensively in neural networks to update the model
+    parameters.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/77042ca75d4aefde985eee4c69640fd5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A Gentle Introduction to Multivariate Calculus
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Luca Bravo](https://unsplash.com/photos/O453M2Liufs), some rights
+    reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Re-Visiting the Concept of a Function
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Derivatives of Multi-Variate Functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Application of Multivariate Calculus in Machine Learning
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Re-Visiting the Concept of a Function**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: We have already familiarised ourselves with the [concept of a function](https://machinelearningmastery.com/what-you-need-to-know-before-you-get-started-a-brief-tour-of-calculus-pre-requisites/),
+    as a rule that defines the relationship between a dependent variable and an independent
+    variable. We have seen that a function is often represented by *y* = *f*(*x*),
+    where both the input (or the independent variable), *x*, and the output (or the
+    dependent variable), *y*, are single real numbers.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Such a function that takes a single, independent variable and defines a one-to-one
+    mapping between the input and output, is called a *univariate* function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: For example, let’s say that we are attempting to forecast the weather based
+    on the temperature alone. In this case, the weather is the dependent variable
+    that we are trying to forecast, which is a function of the temperature as the
+    input variable. Such a problem can, therefore, be easily framed into a univariate
+    function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, let’s say that we now want to base our weather forecast on the humidity
+    level and the wind speed too, in addition to the temperature. We cannot do so
+    by means of a univariate function, where the output depends solely on a single
+    input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Hence, we turn our attention to *multivariate* functions, so called because
+    these functions can take several variables as input.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Formally, we can express a multivariate function as a mapping between several
+    real input variables, *n*, to a real output:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/816aacfa60e89e67d5d91e1784739693.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'For example, consider the following parabolic surface:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*f*(*x*, *y*) = *x*² *+* 2*y*²'
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is a multivariate function that takes two variables, *x* and *y*, as input,
+    hence *n* = 2, to produce an output. We can visualise it by graphing its values
+    for *x* and *y* between -1 and 1.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/44fa50b7e0fc3c24ec68acf05d037ab4.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Three-Dimensional Plot of a Parabolic Surface
+  prefs: []
+  type: TYPE_NORMAL
+- en: Similarly, we can have multivariate functions that take more variables as input.
+    Visualising them, however, may be difficult due to the number of dimensions involved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can even generalize the concept of a function further by considering functions
+    that map multiple inputs, *n*, to multiple outputs, *m*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/eb11e99a314d7926d2a4b250ad766c07.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: These functions are more often referred to as *vector-valued* functions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Derivatives of Multi-Variate Functions**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '[Recall](https://machinelearningmastery.com/key-concepts-in-calculus-rate-of-change/)
+    that calculus is concerned with the study of the rate of change. For some univariate
+    function, *g*(*x*), this can be achieved by computing its derivative:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/3ad857dc764440a06e08644f1dd6e1a8.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_5.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The generalization of the derivative to functions of several variables is
+    the gradient. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*– Page 146, [Mathematics of Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
+    2020.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: The technique to finding the gradient of a function of several variables involves
+    varying each one of the variables at a time, while keeping the others constant.
+    In this manner, we would be taking the *partial derivative* of our multivariate
+    function with respect to each variable, each time.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The gradient is then the collection of these partial derivatives. *'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: '*– Page 146, [Mathematics of Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
+    2020.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'In order to visualize this technique better, let’s start off by considering
+    a simple univariate quadratic function of the form:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*g*(*x*) = *x*²'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/83b0642b76e21e5331b42a28ffae2f33.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_2.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Line Plot of a Univariate Quadratic Function
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Finding the derivative of this function at some point, *x*, requires the application
+    of the equation for *g*’(*x*) that we have defined earlier. We can, alternatively,
+    take a shortcut by using the power rule to find that:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*g’(x*) = 2*x*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Furthermore*,* if we had to imagine slicing open the parabolic surface considered
+    earlier, with a plane passing through *y* = 0, we realise that the resulting cross-section
+    of *f*(*x*, *y*) is the quadratic curve, *g*(*x*) = *x*². Hence, we can calculate
+    the derivative (or the steepness, or *slope*) of the parabolic surface in the
+    direction of *x*, by taking the derivative of *f*(*x*, *y*) but keeping *y* constant.
+    We refer to this as the *partial* derivative of *f*(*x*, *y*) with respect to
+    *x*, and denote it by *∂* to signify that there are more variables in addition
+    to *x* but these are not being considered for the time being. Therefore, the partial
+    derivative with respect to *x* of *f*(*x*, *y*) is:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/1c5eb5e86e975b879e40140dd9ab1f2c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_6.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'We can similarly hold *x* constant (or, in other words, find the cross-section
+    of the parabolic surface by slicing it with a plane passing through a constant
+    value of *x*) to find the partial derivative of *f*(*x*, *y*) with respect to
+    *y*, as follows:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/82353d266baa166da8826979cbb88ef6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_7.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'What we have essentially done is that we have found the univariate derivative
+    of *f*(*x*, *y*) in each of the *x* and *y* directions. Combining the two univariate
+    derivatives as the final step, gives us the multivariate derivative (or the gradient):'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/41f2e7489096d30f85982a20df255b23.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_8.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The same technique remains valid for functions of higher dimensions.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Application of Multivariate Calculus in Machine Learning**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Partial derivatives are used extensively in neural networks to update the model
+    parameters (or weights).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[We had seen](https://machinelearningmastery.com/calculus-in-machine-learning-why-it-works/)
+    that, in minimizing some error function, an optimization algorithm will seek to
+    follow its gradient downhill. If this error function was univariate, and hence
+    a function of a single independent weight, then optimizing it would simply involve
+    computing its univariate derivative.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: However, a neural network comprises many weights (each attributed to a different
+    neuron) of which the error is a function. Hence, updating the weight values requires
+    that the gradient of the error curve is calculated with respect to all of these
+    weights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: This is where the application of multivariate calculus comes into play.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The gradient of the error curve is calculated by finding the partial derivative
+    of the error with respect to each weight; or in other terms, finding the derivative
+    of the error function by keeping all weights constant except the one under consideration.
+    This allows each weight to be updated independently of the others, to reach the
+    goal of finding an optimal set of weights.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Mathematics for Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Algorithms for Optimization](https://www.amazon.com/Algorithms-Optimization-Press-Mykel-Kochenderfer/dp/0262039427/ref=sr_1_1?dchild=1&keywords=algorithms+for+optimization&qid=1624019308&sr=8-1),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_4?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-4),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered a gentle introduction to multivariate calculus.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: A multivariate function depends on several input variables to produce an output.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The gradient of a multivariate function is computed by finding the derivative
+    of the function in different directions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Multivariate calculus is used extensively in neural networks to update the model
+    parameters.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

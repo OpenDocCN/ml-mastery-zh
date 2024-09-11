@@ -1,0 +1,493 @@
+- en: More Special Features in Python
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/python-special-features/](https://machinelearningmastery.com/python-special-features/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Python is an awesome programming language! It is one of the most popular languages
+    for developing AI and machine learning applications. With a very easy-to-learn
+    syntax, Python has some special features that distinguish it from other languages.
+    In this tutorial, we’ll talk about some unique attributes of the Python programming
+    language.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Constructs for list and dictionary comprehension
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use the zip and enumerate functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What are function contexts and decorators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: What is the purpose of generators in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
+    including *step-by-step tutorials* and the *Python source code* files for all
+    examples.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Let’s get started.[![](../Images/d72e3c6b8343429d3dd3f7df0e770326.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/m-mani.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python Special Features
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by M Mani, some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Tutorial Overview
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into four parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: List and dictionary comprehension
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Zip and enumerate functions
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Function contexts and decorators
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Generators in Python with an example of Keras generator
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Import Section
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: The libraries used in this tutorial are imported in the code below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE0]'
+  prefs: []
+  type: TYPE_PRE
+- en: List Comprehension
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'List comprehension provides a short, simple syntax for creating new lists from
+    existing ones. For example, suppose we require a new list, where each new item
+    is the old item multiplied by 3\. One method is to use a `for` loop as shown below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE1]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE2]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'The shorter method using list comprehension requires only a single line of
+    code:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE3]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE4]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'You can even create a new list based on a special criterion. For example, if
+    we want only even numbers added to the new list:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE5]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE6]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'It is also possible to have an `else` associated with the above. For example,
+    we can leave all even numbers intact and replace the odd numbers with zero:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE7]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE8]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'List comprehension can also used to replace nested loops. For example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE9]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE10]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'can be done as follows, with two “for” inside the list comprehension:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE11]'
+  prefs: []
+  type: TYPE_PRE
+- en: Syntax
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'Syntax for list comprehension is given by:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*newlist = [expression for item in iterable if condition == True]*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: or
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*newList = [expression if condition == True else expression for item in iterable]*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Python for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Dictionary Comprehension
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'Dictionary comprehension is similar to list comprehension, except now we have
+    (key, value) pairs. Here is an example; we’ll modify each value of the dictionary
+    by concatenating the string ‘number ‘ to each value:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE12]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE13]'
+  prefs: []
+  type: TYPE_PRE
+- en: Again, conditionals are also possible. We can choose to add (key, value) pairs
+    based on a criterion in the new dictionary.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE14]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE15]'
+  prefs: []
+  type: TYPE_PRE
+- en: Enumerators and Zip in Python
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In Python, an iterable is defined as any data structure that can return all
+    its items, one at a time. This way, you can use a `for` loop to further process
+    all items one by one. Python has two additional constructs that make `for` loops
+    easier to use, i.e., `enumerate()` and `zip()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Enumerate
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'In traditional programming languages, you need a loop variable to iterate through
+    different values of a container. In Python, this is simplified by giving you access
+    to a loop variable along with one value of the iterable object. The `enumerate(x)`
+    function returns two iterables. One iterable varies from 0 to len(x)-1\. The other
+    is an iterable with a value equal to items of x. An example is shown below:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE16]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE17]'
+  prefs: []
+  type: TYPE_PRE
+- en: 'By default, enumerate starts at 0, but we can start at some other number if
+    we specify it. This is useful in some situations, for example:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE18]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[PRE19]'
+  prefs: []
+  type: TYPE_PRE
+- en: Zip
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Zip allows you to create an iterable object of tuples. Zip takes as an argument
+    multiple containers $(m_1, m_2, \ldots, m_n)$ and creates the i-th tuple by pairing
+    one item from each container. The i-th tuple is then $(m_{1i}, m_{2i}, \ldots,
+    m_{ni})$. If the passed objects have different lengths, then the total number
+    of tuples formed has a length equal to the minimum length of passed objects.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Below are examples of using both `zip()` and `enumerate().`
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE20]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE21]'
+  prefs: []
+  type: TYPE_PRE
+- en: Function Context
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Python allows nested functions, where you can define an inner function within
+    an outer function. There are some awesome features related to nested functions
+    in Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The outer function can return a handle to the inner function.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The inner function retains all its environment and variables local to it and
+    in its enclosing function even if the outer function ends its execution.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: An example is given below, with an explanation in the comments.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE22]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE23]'
+  prefs: []
+  type: TYPE_PRE
+- en: Decorators in Python
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Decorators are a powerful feature of Python. You can use decorators to customize
+    the working of a class or a function. Think of them as a function applied to another
+    function. Use the function name with the `@` symbol to define the decorator function
+    on the decorated function. The decorator takes a function as an argument, giving
+    a lot of flexibility.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Consider the following function `square_decorator()` that takes a function as
+    an argument and also returns a function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The inner nested function `square_it()`takes an argument `arg.`
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: The `square_it()`function applies the function to `arg` and squares the result.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: We can pass a function such as `sin` to `square_decorator()`, which in turn
+    would return $\sin^2(x)$.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: You can also write your own customized function and use the `square_decorator()`
+    function on it using the special @ symbol as shown below. The function `plus_one(x)`
+    returns `x+1`. This function is decorated by the `square_decorator(),` and hence
+    we get $(x+1)^2$.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[PRE24]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE25]'
+  prefs: []
+  type: TYPE_PRE
+- en: Generators in Python
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Generators in Python allow you to generate sequences. Instead of writing a `return`
+    statement, a generator returns multiple values via multiple `yield` statements.
+    The first call to the function returns the first value from yield. The second
+    call returns the second value from yield and so on.
+  prefs: []
+  type: TYPE_NORMAL
+- en: The generator function can be invoked via `next().`Every time `next()` is called,
+    the next `yield` value is returned. An example of generating the Fibonacci sequence
+    up to a given number `x` is shown below.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE26]'
+  prefs: []
+  type: TYPE_PRE
+- en: Output
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE27]'
+  prefs: []
+  type: TYPE_PRE
+- en: Example of Data Generator in Keras
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: 'One use of a generator is the data generator in Keras. It is useful because
+    we do not want to keep all data in memory but want to create it on the fly when
+    the training loop needs it. Remember, in Keras, a neural network model is trained
+    in batches, so a generator is to emit batches of data. The function below is from
+    our previous post, “[Using CNN for financial time series prediction](https://machinelearningmastery.com/using-cnn-for-financial-time-series-prediction/)“:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE28]'
+  prefs: []
+  type: TYPE_PRE
+- en: The function above is to pick a random row of a pandas dataframe as a starting
+    point and clip the next several rows as a one-time interval sample. This process
+    is repeated several times to collect many time intervals into one batch. When
+    we collect enough interval samples, at the second to the last line in the above
+    function, the batch is dispatched using the `yield` command. You may have already
+    noticed that generator functions do not have a return statement. In this example,
+    the function will run forever. This is useful and necessary because it allows
+    our Keras training process to run as many epochs as we want.
+  prefs: []
+  type: TYPE_NORMAL
+- en: If we do not use a generator, we will need to convert the dataframe into all
+    possible time intervals and keep them in memory for the training loop. This will
+    be a lot of repeating data (because the time intervals are overlapping) and take
+    up a lot of memory.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Because it is useful, Keras has some generator function predefined in the library.
+    Below is an example of the `ImageDataGenerator()`. We have loaded the `cifar10`
+    dataset of 32×32 images in `x_train`. The data is connected to the generator via
+    `the flow()` method. The `next()` function returns the next batch of data. In
+    the example below, there are 4 calls to `next()`. In each case, 8 images are returned
+    as the batch size is 8.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Below is the entire code that also displays all images after every call to `next()`.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[PRE29]'
+  prefs: []
+  type: TYPE_PRE
+- en: '[![](../Images/cf093fbd42e38b864c68b3e206eec0a2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/Untitled-1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Further Reading
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Python Documentation
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Python Documentation at python.org](https://docs.python.org/3/contents.html)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Books
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Think Python: How to Think Like a Computer Scientist](https://greenteapress.com/thinkpython/html/index.html)
+    by Allen B. Downey'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Programming in Python 3: A Complete Introduction to the Python Language](https://www.amazon.com/Programming-Python-Complete-Introduction-Language-ebook-dp-B001OFK2DK/dp/B001OFK2DK/ref=mt_other?_encoding=UTF8&me=&qid=1638910263)
+    by Mark Summerfield'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Python Programming: An Introduction to Computer Science](https://www.amazon.com/Python-Programming-Introduction-Computer-Science/dp/1590282418/ref=sr_1_1?s=books&ie=UTF8&qid=1441293398&sr=1-1&keywords=Python+Zelle&pebp=1441293404611&perid=1B2BP6WM3RQHW4CY6990)
+    by John Zelle'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: API Reference
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Keras ImageDataGenerator](https://www.tensorflow.org/api_docs/python/tf/keras/preprocessing/image/ImageDataGenerator)'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Summary
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered some special features of Python.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: The purpose of list and dictionary comprehension
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to use zip and enumerate
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Nested functions, function contexts, and decorators
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Generators in Python and the ImageDataGenerator in Python
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions about the Python features discussed in this post?
+    Ask your questions in the comments below, and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL

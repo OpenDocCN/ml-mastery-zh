@@ -1,0 +1,333 @@
+- en: Higher-Order Derivatives
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: 原文：[https://machinelearningmastery.com/higher-order-derivatives/](https://machinelearningmastery.com/higher-order-derivatives/)
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Higher-order derivatives can capture information about a function that first-order
+    derivatives on their own cannot capture.
+  prefs: []
+  type: TYPE_NORMAL
+- en: First-order derivatives can capture important information, such as the rate
+    of change, but on their own they cannot distinguish between local minima or maxima,
+    where the rate of change is zero for both. Several optimization algorithms address
+    this limitation by exploiting the use of higher-order derivatives, such as in
+    Newton’s method where the second-order derivatives are used to reach the local
+    minimum of an optimization function.
+  prefs: []
+  type: TYPE_NORMAL
+- en: In this tutorial, you will discover how to compute higher-order univariate and
+    multivariate derivatives.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'After completing this tutorial, you will know:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to compute the higher-order derivatives of univariate functions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to compute the higher-order derivatives of multivariate functions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the second-order derivatives can be exploited in machine learning by second-order
+    optimization algorithms.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Let’s get started.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/172c5a452062a099fb70b71428da7038.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/higher_order_cover-scaled.jpg)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Higher-Order Derivatives
+  prefs: []
+  type: TYPE_NORMAL
+- en: Photo by [Jairph](https://unsplash.com/photos/aT2jMKShKIs), some rights reserved.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Tutorial Overview**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'This tutorial is divided into three parts; they are:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Higher-Order Derivatives of Univariate Functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Higher-Order Derivatives of Multivariate Functions
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Application in Machine Learning
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Higher-Order Derivatives of Univariate Functions**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In addition to [first-order derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives/),
+    which we have seen can provide us with important information about a function,
+    such as its instantaneous [rate of change](https://machinelearningmastery.com/key-concepts-in-calculus-rate-of-change/),
+    higher-order derivatives can also be equally useful. For example, the second derivative
+    can measure the [acceleration](https://machinelearningmastery.com/applications-of-derivatives/)
+    of a moving object, or it can help an optimization algorithm distinguish between
+    a local maximum and a local minimum.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Computing higher-order (second, third or higher) derivatives of univariate functions
+    is not that difficult.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*The second derivative of a function is just the derivative of its first derivative.
+    The third derivative is the derivative of the second derivative, the fourth derivative
+    is the derivative of the third, and so on.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 147, [Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
+    2016.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: 'Hence, computing higher-order derivatives simply involves differentiating the
+    function repeatedly. In order to do so, we can simply apply our knowledge of the
+    [power rule](https://machinelearningmastery.com/the-power-product-and-quotient-rules/).
+    Let’s consider the function, *f*(*x*) = x³ + 2x² – 4x + 1, as an example. Then:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'First derivative: *f*’(*x*) = 3*x*² + 4*x* – 4'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Second derivative: *f*’’(*x*) = 6*x* + 4'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Third derivative: *f*’’’(*x*) = 6'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fourth derivative: *f *^((4))(*x*) = 0'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Fifth derivative: *f *^((5))(*x*) = 0 *etc.*'
+  prefs: []
+  type: TYPE_NORMAL
+- en: What we have done here is that we have first applied the power rule to *f*(*x*)
+    to obtain its first derivative, *f*’(*x*), then applied the power rule to the
+    first derivative in order to obtain the second, and so on. The derivative will,
+    eventually, go to zero as differentiation is applied repeatedly.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The application of the [product and quotient rules](https://machinelearningmastery.com/the-power-product-and-quotient-rules/)
+    also remains valid in obtaining higher-order derivatives, but their computation
+    can become messier and messier as the order increases. The general Leibniz rule
+    simplifies the task in this aspect, by generalising the product rule to:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/b64895456ce4e79d3d23584147c2cd27.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/higher_order_1.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: Here, the term, *n*! / *k*!(*n* – *k*)!, is the binomial coefficient from the
+    binomial theorem, while *f *^(*^k*^) and *g*^(*^k*^) denote the *k*^(th) derivative
+    of the functions, *f* and *g*, respectively.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Therefore, finding the first and second derivatives (and, hence, substituting
+    for *n* = 1 and *n* = 2, respectively), by the general Leibniz rule, gives us:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: (*fg*)^((1)) = (*fg*)’ = *f *^((1)) *g* + *f* *g*^((1))
+  prefs: []
+  type: TYPE_NORMAL
+- en: (*fg*)^((2)) = (*fg*)’’ = *f *^((2)) *g* + 2*f *^((1)) *g*^((1)) + *f* *g*^((2))
+  prefs: []
+  type: TYPE_NORMAL
+- en: Notice the familiar first derivative as defined by the product rule. The Leibniz
+    rule can also be used to find higher-order derivatives of rational functions,
+    since the quotient can be effectively expressed into a product of the form, *f*
+    *g*^(-1).
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Higher-Order Derivatives of Multivariate Functions**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'The definition of higher-order [partial derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)
+    of [multivariate functions](https://machinelearningmastery.com/?p=12606&preview=true)
+    is analogous to the univariate case: the *n*^(th) order partial derivative for
+    *n* > 1, is computed as the partial derivative of the (*n* – 1)^(th) order partial
+    derivative. For example, taking the second partial derivative of a function with
+    two variables results in four, second partial derivatives: two *own* partial derivatives,
+    *f**[xx]* and *f**[yy]*, and two cross partial derivatives, *f**[xy]* and *f**[yx]*.'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*To take a “derivative,” we must take a partial derivative with respect to
+    x or y, and there are four ways to do it: x then x, x then y, y then x, y then
+    y.*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 371, [Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
+    2020.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: Let’s consider the multivariate function, *f*(*x*, *y*) = *x*² + 3*xy* + 4*y*²,
+    for which we would like to find the second partial derivatives. The process starts
+    with finding its first-order partial derivatives, first:[![](../Images/fa6f803d0acf16dd170b4da48d0cece0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/higher_order_2.png)
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The four, second-order partial derivatives are then found by repeating the
+    process of finding the partial derivatives, of the partial derivatives. The *own*
+    partial derivatives are the most straightforward to find, since we simply repeat
+    the partial differentiation process, with respect to either *x* or *y*, a second
+    time:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/7afb832169b7ad7ac5bc57accfaacd8e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/higher_order_3.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'The cross partial derivative of the previously found *f**[x]* (that is, the
+    partial derivative with respect to *x*) is found by taking the partial derivative
+    of the result with respect to *y*, giving us *f**[xy]*. Similarly, taking the
+    partial derivative of *f**[y]* with respect to *x*, gives us *f**[yx]*:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: '[![](../Images/b0693ee100120ea030fadfc3ff86d163.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/higher_order_4.png)'
+  prefs: []
+  type: TYPE_NORMAL
+- en: It is not by accident that the cross partial derivatives give the same result.
+    This is defined by Clairaut’s theorem, which states that as long as the cross
+    partial derivatives are continuous, then they are equal.
+  prefs: []
+  type: TYPE_NORMAL
+- en: Want to Get Started With Calculus for Machine Learning?
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: Take my free 7-day email crash course now (with sample code).
+  prefs: []
+  type: TYPE_NORMAL
+- en: Click to sign-up and also get a free PDF Ebook version of the course.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Application in Machine Learning**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In machine learning, it is the second-order derivative that is mostly used.
+    We had [previously mentioned](https://machinelearningmastery.com/applications-of-derivatives/)
+    that the second derivative can provide us with information that the first derivative
+    on its own cannot capture. Specifically, it can tell us whether a critical point
+    is a local minimum or maximum (based on whether the second derivative is greater
+    or smaller than zero, respectively), for which the first derivative would, otherwise,
+    be zero in both cases.
+  prefs: []
+  type: TYPE_NORMAL
+- en: There are several *second-order* optimization algorithms that leverage this
+    information, one of which is Newton’s method.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '*Second-order information, on the other hand, allows us to make a quadratic
+    approximation of the objective function and approximate the right step size to
+    reach a local minimum …*'
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: ''
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: – Page 87, [Algorithms for Optimization](https://www.amazon.com/Algorithms-Optimization-Press-Mykel-Kochenderfer/dp/0262039427/ref=sr_1_1?dchild=1&keywords=algorithms+for+optimization&qid=1624019308&sr=8-1),
+    2019.
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+- en: In the univariate case, Newton’s method uses a second-order Taylor series expansion
+    to perform the quadratic approximation around some point on the objective function.
+    The update rule for Newton’s method, which is obtained by setting the derivative
+    to zero and solving for the root, involves a division operation by the second
+    derivative. If Newton’s method is extended to multivariate optimization, the derivative
+    is replaced by the gradient, while the reciprocal of the second derivative is
+    replaced with the inverse of the Hessian matrix.
+  prefs: []
+  type: TYPE_NORMAL
+- en: We shall be covering the Hessian and Taylor Series approximations, which leverage
+    the use of higher-order derivatives, in separate tutorials.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Further Reading**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: This section provides more resources on the topic if you are looking to go deeper.
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Books**'
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+- en: '[Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
+    2020.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
+    2016.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
+    2017.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '[Algorithms for Optimization](https://www.amazon.com/Algorithms-Optimization-Press-Mykel-Kochenderfer/dp/0262039427/ref=sr_1_1?dchild=1&keywords=algorithms+for+optimization&qid=1624019308&sr=8-1),
+    2019.'
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: '**Summary**'
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: In this tutorial, you discovered how to compute higher-order univariate and
+    multivariate derivatives.
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Specifically, you learned:'
+  prefs: []
+  type: TYPE_NORMAL
+- en: How to compute the higher-order derivatives of univariate functions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How to compute the higher-order derivatives of multivariate functions.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: How the second-order derivatives can be exploited in machine learning by second-order
+    optimization algorithms.
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+- en: Do you have any questions?
+  prefs: []
+  type: TYPE_NORMAL
+- en: Ask your questions in the comments below and I will do my best to answer.
+  prefs: []
+  type: TYPE_NORMAL
