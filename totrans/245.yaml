@@ -1,485 +1,737 @@
 - en: A Gentle Introduction to Limits and Continuity
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 极限和连续性的温和介绍
 - en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity/](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity/](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity/)
 - en: There is no denying that calculus is a difficult subject. However, if you learn
     the fundamentals, you will not only be able to grasp the more complex concepts
     but also find them fascinating. To understand machine learning algorithms, you
     need to understand concepts such as gradient of a function, Hessians of a matrix,
     and optimization, etc. The concept of limits and continuity serves as a foundation
     for all these topics.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 毫无疑问，微积分是一个难度较大的学科。然而，如果你掌握了基础知识，你不仅能够理解更复杂的概念，还会觉得它们非常有趣。要理解机器学习算法，你需要了解诸如函数的梯度、矩阵的赫西矩阵以及优化等概念。极限和连续性的概念为所有这些主题提供了基础。
 - en: In this post, you will discover how to evaluate the limit of a function, and
     how to determine if a function is continuous or not.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你将学习如何评估一个函数的极限，以及如何确定一个函数是否连续。
 - en: 'After reading this post, you will be able to:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 阅读完这篇文章后，你将能够：
 - en: Determine if a function f(x) has a limit as x approaches a certain value
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 确定一个函数 f(x) 当 x 趋近于某个值时是否存在极限
 - en: Evaluate the limit of a function f(x) as x approaches a
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 计算一个函数 f(x) 当 x 趋近于 a 时的极限
 - en: Determine if a function is continuous at a point or in an interval
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 确定一个函数在某点或区间内是否连续
 - en: Let’s get started.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们开始吧。
 - en: Tutorial Overview
+  id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: This tutorial is divided into two parts
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两个部分
 - en: Limits
+  id: totrans-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 极限
 - en: Determine if the limit of a function exists for a certain point
+  id: totrans-12
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 确定函数在某点的极限是否存在
 - en: Compute the limit of a function for a certain point
+  id: totrans-13
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 计算函数在某点的极限
 - en: Formal definition of a limit
+  id: totrans-14
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 极限的正式定义
 - en: Examples of limits
+  id: totrans-15
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 极限的例子
 - en: Left and right hand limits
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 左极限和右极限
 - en: Continuity
+  id: totrans-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 连续性
 - en: Definition of continuity
+  id: totrans-18
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 连续性的定义
 - en: Determine if a function is continuous at a point or within an interval
+  id: totrans-19
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 确定一个函数在某点或区间内是否连续
 - en: Examples of continuous functions
+  id: totrans-20
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 连续函数的例子
 - en: '[![A Gentle Introduction to Limits and Continuity](../Images/c5e6d533049015c2adfcbc3201abae70.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/mainpic.png)'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![极限和连续性的温和介绍](../Images/c5e6d533049015c2adfcbc3201abae70.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/mainpic.png)'
 - en: A Gentle Introduction to Limits and Continuity
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 极限和连续性的温和介绍
 - en: Photo by Mehreen Saeed, some rights reserved.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 摄影：Mehreen Saeed，部分版权保留。
 - en: A Simple Example
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个简单的例子
 - en: 'Let’s start by looking at a simple function f(x) given by:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们先来看一个简单的函数 f(x)，由以下给出：
 - en: f(x) = 1+x
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: f(x) = 1+x
 - en: What happens to f(x) near -1?
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: f(x) 在 -1 附近会发生什么？
 - en: We can see that f(x) gets closer and closer to 0 as x gets closer and closer
     -1, from either side of x=-1\. At x=-1, the function is exactly zero. We say that
     f(x) has a limit equal to 0, when x approaches -1.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以看到，f(x) 在 x 越来越接近 -1 时，f(x) 越来越接近 0，无论是从 x=-1 的哪一侧。 在 x=-1 时，函数正好为零。我们说当
+    x 趋近于 -1 时，f(x) 的极限等于 0。
 - en: '[![](../Images/cbcee3a26af84ead0df5380da70c8f29.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limit1.png)'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/cbcee3a26af84ead0df5380da70c8f29.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limit1.png)'
 - en: Extend the Example
+  id: totrans-30
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 扩展例子
 - en: 'Extending the problem. Let’s define g(x):'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 扩展问题。让我们定义 g(x)：
 - en: g(x) = (1-x^2)/(1+x)
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: g(x) = (1-x^2)/(1+x)
 - en: 'We can simplify the expression for g(x) as:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将 g(x) 的表达式简化为：
 - en: g(x) = (1-x)(1+x)/(1+x)
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: g(x) = (1-x)(1+x)/(1+x)
 - en: 'If the denominator is not zero then g(x) can be simplified as:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果分母不为零，则 g(x) 可以简化为：
 - en: g(x) = 1-x,  if x ≠ -1
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: g(x) = 1-x, 如果 x ≠ -1
 - en: 'However, at (x = -1), the denominator is zero and we cannot divide by zero.
     So it looks like there is a hole in the function at x=-1\. Despite the presence
     of this hole, g(x) gets closer and closer to 2 as x gets closer and closer -1,
     as shown in the figure:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，在 (x = -1) 处，分母为零，我们无法除以零。所以在 x=-1 处似乎存在一个孔。尽管存在这个孔，g(x) 在 x 趋近于 -1 时仍然越来越接近
+    2，如图所示：
 - en: '[![](../Images/8a137995305f8bc124e40789fbf94894.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limit2.png)'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/8a137995305f8bc124e40789fbf94894.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limit2.png)'
 - en: 'This is the basic idea of a limit. If g(x) is defined in an open interval that
     does not include -1, and g(x) gets closer and closer to 2, as x approaches -1,
     we write this as:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是极限的基本概念。如果 g(x) 在不包含 -1 的开区间内定义，并且当 x 趋近于 -1 时，g(x) 越来越接近 2，我们写作：
 - en: lim(x→-1) g(x) = 2
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(x→-1) g(x) = 2
 - en: In general, for any function f(x), if f(x) gets closer and closer to a value
     L, as x gets closer and closer to k, we define the limit of f(x) as x approaches
     k, as L. This is written as:[![limit f(x) = L as x approaches k](../Images/7b46fe2c8cf153246d44082c0ec43c6f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/l1.png)
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 一般来说，对于任何函数 f(x)，如果 f(x) 在 x 趋近于 k 时越来越接近一个值 L，我们定义 f(x) 在 x 接近 k 时的极限为 L。这个定义写作：[![limit
+    f(x) = L as x approaches k](../Images/7b46fe2c8cf153246d44082c0ec43c6f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/l1.png)
 - en: Left and Right Hand Limits
+  id: totrans-42
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 左极限和右极限
 - en: 'For the function g(x), it doesn’t matter whether we increase x to get closer
     to -1 (approach -1 from left) or decrease x to get closer to -1 (approach -1 from
     right), g(x) still gets closer and closer to 2\. This is shown in the figure below:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于函数 g(x)，无论我们是增加 x 以接近 -1（从左接近 -1），还是减少 x 以接近 -1（从右接近 -1），g(x) 都会越来越接近 2。这在下面的图中展示了：
 - en: '[![](../Images/5c7650cac3aed71014e060f9339ade93.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limit3.png)'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/5c7650cac3aed71014e060f9339ade93.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limit3.png)'
 - en: This gives rise to the notion of one-sided limits. The left hand limit is defined
     on an interval to the left of -1, which does not include -1, e.g., (-1.003, -1).
     As we approach -1 from the left, g(x) gets closer to 2.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这引出了单侧极限的概念。左极限在 -1 左侧的区间上定义，不包括 -1，例如 (-1.003, -1)。当我们从左侧接近 -1 时，g(x) 趋近于 2。
 - en: 'Similarly, the right hand limit is defined on an open interval to the right
     of -1 and does not include -1, e.g., (-1, 0.997). As we approach -1 from the right,
     the right hand limit of g(x) is 2\. Both the left and right hand limits are written
     as follows:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似地，右极限在 -1 右侧的开区间上定义，不包括 -1，例如 (-1, 0.997)。当我们从右侧接近 -1 时，g(x) 的右极限为 2。左极限和右极限都写作：
 - en: '[![](../Images/1dd6a35ca2dc837560d9e16007c84873.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/l2.png)'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/1dd6a35ca2dc837560d9e16007c84873.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/l2.png)'
 - en: We say that f(x) has a limit L as x approaches k, if both its left and right
     hand limits are equal. Therefore, this is another way of testing whether a function
     has a limit at a specific point, i..e, [![](../Images/f867774d87bea8e796e6e3bd87b01d75.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/l3.png)
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们说 f(x) 在 x 接近 k 时有极限 L，如果它的左极限和右极限都相等。因此，这是一种测试函数在特定点是否有极限的另一种方法，即，[![](../Images/f867774d87bea8e796e6e3bd87b01d75.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/l3.png)
 - en: Formal Definition of a Limit
+  id: totrans-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 极限的正式定义
 - en: In mathematics, we need to have an exact definition of everything. To define
     a limit formally, we’ll use the the notion of the Greek letter ????. The mathematics
     community agrees to use ???? for arbitrarily small positive numbers, which means
     we can make ???? as small as we like and it can be as close to zero as we like,
     provided ????>0 (so ???? cannot be zero).
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 在数学中，我们需要对一切有一个精确的定义。为了正式定义极限，我们将使用希腊字母????的概念。数学界一致同意使用????表示任意小的正数，这意味着我们可以将????变得任意小，并且它可以接近于零，只要????>0（因此????不能为零）。
 - en: 'The limit of f(x) is L as x approaches k, if for every ????>0, there is a positive
     number ????>0, such that:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果对于每一个 ?????0，都存在一个正数 ?????0，使得：
 - en: if 0<|????−????|<???? then |????(????)−????|<????
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果 0<|????−????|<????，则 |????(????)−????|<????
 - en: 'The definition is quite straightforward. x-k is the difference of x from k
     and |x-k| is the distance of x from k that ignores the sign of the difference.
     Similarly, |f(x)-L| is the distance of f(x) from L. Hence, the definition says
     that when the distance of x from k approaches an arbitrary small value, the distance
     of f(x) from L also approaches a very small value. The figure below is a good
     illustration of the above definition:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个定义非常简单。x-k 是 x 与 k 的差异，|x-k| 是 x 与 k 之间的距离，不考虑差异的符号。类似地，|f(x)-L| 是 f(x) 与
+    L 之间的距离。因此，定义表示当 x 与 k 之间的距离接近任意小的值时，f(x) 与 L 之间的距离也接近一个非常小的值。下面的图很好地说明了这个定义：
 - en: '[![](../Images/0247f75b9c3bf32b9a128b5ab1e375d1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limit4.png)'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/0247f75b9c3bf32b9a128b5ab1e375d1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limit4.png)'
 - en: Examples of Limits
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 极限的例子
 - en: 'The figure below illustrates a few examples, which are also explained below:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面的图展示了一些例子，并在下面进行了说明：
 - en: '[![](../Images/881c200b71b2e7e40cd5092d1d1fe631.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limitExample.png)'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/881c200b71b2e7e40cd5092d1d1fe631.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/limitExample.png)'
 - en: 1.1 Example with Absolute Value
+  id: totrans-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 1.1 绝对值示例
 - en: f_1(x) = |x|
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: f_1(x) = |x|
 - en: The limit of f_1(x) exists at all values of x, e.g., lim(x→0) f_1(x) = 0.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: f_1(x) 的极限在所有 x 值上都存在，例如，lim(x→0) f_1(x) = 0。
 - en: 1.2 Example with a Polynomial
+  id: totrans-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 1.2 多项式示例
 - en: f_2(x) = x^2 + 3x + 1
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: f_2(x) = x^2 + 3x + 1
 - en: The limit of f_2(x) exists for all values of x, e..g, lim(x→1) f_2(x) = 1+3+1
     = 5.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: f_2(x) 的极限在所有 x 值上都存在，例如，lim(x→1) f_2(x) = 1+3+1 = 5。
 - en: 1.3 Example with Infinity
+  id: totrans-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 1.3 无限的例子
 - en: f_3(x) = 1/x,  if x>0
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: f_3(x) = 1/x,  如果 x>0
 - en: f_3(x) = 0,   if x<=0
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: f_3(x) = 0,   如果 x<=0
 - en: For the above as x becomes larger and larger, the value of f_3(x) gets smaller
     and smaller, approaching zero. Hence, lim(x→∞) f_3(x) = 0.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于上述情况，当 x 越来越大时，f_3(x) 的值越来越小，趋近于零。因此，lim(x→∞) f_3(x) = 0。
 - en: Example of Functions that Don’t have a Limit
+  id: totrans-68
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 不具有极限的函数示例
 - en: 'From the definition of the limit, we can see that the following functions do
     not have a limit:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 从极限的定义可以看出，以下函数没有极限：
 - en: 2.1 The Unit Step Function
+  id: totrans-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 2.1 单位阶跃函数
 - en: 'The unit step function H(x) is given by:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 单位阶跃函数 H(x) 定义为：
 - en: H(x) = 0,  if x<0
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: H(x) = 0,  如果 x<0
 - en: H(x) = 1,  otherwise
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: H(x) = 1,  否则
 - en: As we get closer and closer to 0 from the left, the function remains a zero.
     However, as soon as we reach x=0, H(x) jumps to 1, and hence H(x) does not have
     a limit as x approaches zero. This function has a left hand limit equal to zero
     and a right hand limit equal to 1.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们从左侧越来越接近 0 时，函数保持为零。然而，一旦我们到达 x=0，H(x) 跳到 1，因此 H(x) 在 x 趋近于零时没有极限。这个函数在左侧的极限等于零，而右侧的极限等于
+    1。
 - en: The left and right hand limits do not agree, as x→0, hence H(x) does not have
     a limit as x approaches 0\. Here, we used the equality of left and right hand
     limits as a test to check if a function has a limit at a particular point.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 左侧和右侧的极限不一致，因为 x→0 时，H(x) 没有极限。因此，这里我们使用左右侧极限的相等作为检验函数在某点是否有极限的测试。
 - en: 2.2 The Reciprocal Function
+  id: totrans-76
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 2.2 倒数函数
 - en: 'Consider h_1(x):'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑 h_1(x)：
 - en: h_1(x) = 1/(x-1)
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: h_1(x) = 1/(x-1)
 - en: As we approach x=1 from the left side, the function tends to have large negative
     values. As we approach x=1, from the right, h_1(x)  increases to large positive
     values. So when x is close to 1, the values of h_1(x) do not stay close to a fixed
     real value. Hence, the limit does not exist for x→1.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们从左侧接近 x=1 时，函数趋向于大的负值。当我们从右侧接近 x=1 时，h_1(x) 增加到大的正值。因此，当 x 接近 1 时，h_1(x)
+    的值不会接近一个固定的实数值。因此，x→1 的极限不存在。
 - en: 2.3 The Ceil Function
+  id: totrans-80
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 2.3 向上取整函数
 - en: Consider the ceil function that rounds a real number with a non-zero fractional
     part to the next integer value. Hence, lim(x→1) ceil(x) does not exist. In fact
     ceil(x) does not have a limit at any integer value.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑向上取整函数，它将带有非零小数部分的实数四舍五入到下一个整数值。因此，lim(x→1) ceil(x) 不存在。实际上，ceil(x) 在任何整数值上都没有极限。
 - en: 'All the above examples are shown in the figure below:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有上述示例都在下图中展示：
 - en: '[![](../Images/a5a02e49ac59484ad89497e49c35ede0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/nolimit-1.png)'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/a5a02e49ac59484ad89497e49c35ede0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/nolimit-1.png)'
 - en: Continuity
+  id: totrans-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 连续性
 - en: 'If you have understood the notion of a limit, then it is easy to understand
     continuity. A function f(x) is continuous at a point a, if the following three
     conditions are met:'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你理解了极限的概念，那么理解连续性就容易了。函数 f(x) 在点 a 连续，如果满足以下三个条件：
 - en: f(a) should exist
+  id: totrans-86
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: f(a) 应该存在
 - en: f(x) has a limit as x approaches a
+  id: totrans-87
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: f(x) 在 x 趋近于 a 时有极限
 - en: The limit of f(x) as x->a is equal to f(a)
+  id: totrans-88
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 当 x 趋近于 a 时，f(x) 的极限等于 f(a)
 - en: 'If all of the above hold true, then the function is continuous at the point
     a. Some examples follow:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果以上条件都成立，那么函数在点 a 处是连续的。以下是一些示例：
 - en: Examples of Continuity
+  id: totrans-90
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 连续性的示例
 - en: 'The concept of continuity is closely related to limits. If the function is
     defined at a point, has no jumps at that point, and has a limit at that point,
     then it is continuous at that point. The figure below shows some examples, which
     are explained below:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 连续性的概念与极限密切相关。如果函数在某点定义良好、在该点没有跳跃，并且在该点有极限，那么它在该点是连续的。下图展示了一些示例，并在下文中解释：
 - en: '[![](../Images/8eb92e46be07690ba1eb8d23d7d2934f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/cont.png)'
+  id: totrans-92
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[![](../Images/8eb92e46be07690ba1eb8d23d7d2934f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/cont.png)'
 - en: 3.1 The Square Function
+  id: totrans-93
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.1 平方函数
 - en: 'The following function f_4(x) is continuous for all values of x:'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下函数 f_4(x) 对所有 x 值都是连续的：
 - en: f_4(x) = x^2
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: f_4(x) = x^2
 - en: 3.2 The Rational Function
+  id: totrans-96
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.2 有理函数
 - en: 'Our previously used function g(x):'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: '我们之前使用的函数 g(x):'
 - en: g(x) = (1-x^2)/(1+x)
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: g(x) = (1-x^2)/(1+x)
 - en: g(x) is continuous everywhere except at x=-1.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: g(x) 在除了 x=-1 之外的所有地方都是连续的。
 - en: We can modify g(x) as g**(x):*
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将 g(x) 修改为 g**(x):*
 - en: '*g**(x) = (1-x^2)/(1+x), if x ≠ -1'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: '*g**(x) = (1-x^2)/(1+x)，如果 x ≠ -1'
 - en: g*(x) = 2, otherwise
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: g*(x) = 2, 否则
 - en: Now we have a function that is continuous for all values of x.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们有一个对所有 x 值都连续的函数。
 - en: 3.3 The Reciprocal Function
+  id: totrans-104
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3.3 倒数函数
 - en: 'Going back to our previous example of f_3(x):'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: '回到我们之前的例子 f_3(x):'
 - en: f_3(x) = 1/x,  if x>0
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: f_3(x) = 1/x, 如果 x>0
 - en: f_3(x) = 0,  if x<=0
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: f_3(x) = 0, 如果 x<=0
 - en: f_3(x) is continuous everywhere, except at x=0 as the value of f_3(x) has a
     big jump at x=0\. Hence, there is a discontinuity at x=0.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: f_3(x) 在除 x=0 外的所有地方都是连续的，因为在 x=0 时 f_3(x) 的值有一个很大的跳跃。因此，在 x=0 处存在不连续性。
 - en: Further Reading
+  id: totrans-109
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
     Math is all about practice, and below is a list of resources that will provide
     more exercises and examples on this topic.
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多相关资源，如果你想深入了解。数学全在于练习，下面是一些提供更多练习和例子的资源列表。
 - en: Resource Page
+  id: totrans-111
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 资源页面
 - en: Jason Brownlee’s excellent resource on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning/).
+  id: totrans-112
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 杰森·布朗利关于[机器学习的微积分书籍](https://machinelearningmastery.com/calculus-books-for-machine-learning/)的优秀资源。
 - en: Books
+  id: totrans-113
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Thomas’ Calculus](https://www.amazon.com/Thomas-Calculus-14th-Joel-Hass/dp/0134438981/ref=as_li_ss_tl?ie=UTF8&linkCode=sl1&tag=inspiredalgor-20&linkId=1fcceb2171bd06294b60a6aa4cd51550&language=en_US),
     14th edition, 2017\. (based on the original works of George B. Thomas, revised
     by Joel Hass, Christopher Heil, Maurice Weir).'
+  id: totrans-114
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[托马斯的微积分](https://www.amazon.com/Thomas-Calculus-14th-Joel-Hass/dp/0134438981/ref=as_li_ss_tl?ie=UTF8&linkCode=sl1&tag=inspiredalgor-20&linkId=1fcceb2171bd06294b60a6aa4cd51550&language=en_US)，第14版，2017年（基于乔治·B·托马斯的原著，由乔尔·哈斯、克里斯托弗·海尔、莫里斯·维尔修订）。'
 - en: '[Calculus](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US),
     3rd Edition, 2017\. (Gilbert Strang).'
+  id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US)，第3版，2017年（吉尔伯特·斯特朗）。'
 - en: '[Calculus](https://www.amazon.com/Calculus-James-Stewart/dp/1285740629/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-6&linkCode=sl1&tag=inspiredalgor-20&linkId=3bbba00479751e9e9bf3990c98f629c7&language=en_US),
     8th edition, 2015\. (James Stewart).'
+  id: totrans-116
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://www.amazon.com/Calculus-James-Stewart/dp/1285740629/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-6&linkCode=sl1&tag=inspiredalgor-20&linkId=3bbba00479751e9e9bf3990c98f629c7&language=en_US)，第8版，2015年（詹姆斯·斯图尔特）。'
 - en: Summary
+  id: totrans-117
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this post, you discovered calculus concepts on limits and continuity.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你了解了关于极限和连续性的微积分概念。
 - en: 'Specifically, you learned:'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: Whether a function has a limit when approaching a point
+  id: totrans-120
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 函数在接近某一点时是否存在极限
 - en: Whether a function is continuous at a point or within an interval
+  id: totrans-121
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 函数是否在某一点或区间内连续
 - en: Do you have any questions? Ask your questions in the comments below and I will
     do my best to answer.
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？请在下方评论中提问，我会尽力回答。

@@ -1,230 +1,344 @@
 - en: The Transformer Model
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Transformer模型
 - en: 原文：[https://machinelearningmastery.com/the-transformer-model/](https://machinelearningmastery.com/the-transformer-model/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/the-transformer-model/](https://machinelearningmastery.com/the-transformer-model/)
 - en: We have already familiarized ourselves with the concept of self-attention as
     implemented by the Transformer attention mechanism for neural machine translation.
     We will now be shifting our focus to the details of the Transformer architecture
     itself to discover how self-attention can be implemented without relying on the
     use of recurrence and convolutions.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经熟悉了由Transformer注意力机制实现的自注意力概念，用于神经机器翻译。现在我们将把焦点转移到Transformer架构的细节上，以探索如何在不依赖于递归和卷积的情况下实现自注意力。
 - en: In this tutorial, you will discover the network architecture of the Transformer
     model.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您将了解Transformer模型的网络架构。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将了解：
 - en: How the Transformer architecture implements an encoder-decoder structure without
     recurrence and convolutions
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer架构如何实现编码器-解码器结构而不依赖于递归和卷积
 - en: How the Transformer encoder and decoder work
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer编码器和解码器的工作原理
 - en: How the Transformer self-attention compares to the use of recurrent and convolutional
     layers
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer自注意力与使用递归和卷积层的比较
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书[Building Transformer Models with Attention](https://machinelearningmastery.com/transformer-models-with-attention/)来启动您的项目**。它提供了具有**工作代码**的**自学教程**，指导您构建一个完全工作的Transformer模型，能够'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将一种语言的句子翻译成另一种语言*...'
 - en: Let’s get started.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/36719df57407f049d28f29163b226ac0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_cover-1-scaled.jpg)'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/36719df57407f049d28f29163b226ac0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_cover-1-scaled.jpg)'
 - en: The Transformer Model
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer模型
 - en: Photo by [Samule Sun](https://unsplash.com/photos/vuMTQj6aQQ0), some rights
     reserved.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Samule Sun](https://unsplash.com/photos/vuMTQj6aQQ0)拍摄，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是：
 - en: The Transformer Architecture
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer架构
 - en: The Encoder
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编码器
 - en: The Decoder
+  id: totrans-18
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 解码器
 - en: 'Sum Up: The Transformer Model'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 总结：Transformer模型
 - en: Comparison to Recurrent and Convolutional Layers
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 与递归和卷积层的比较
 - en: '**Prerequisites**'
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**先决条件**'
 - en: 'For this tutorial, we assume that you are already familiar with:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设您已经熟悉：
 - en: '[The concept of attention](https://machinelearningmastery.com/what-is-attention/)'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[注意力机制的概念](https://machinelearningmastery.com/what-is-attention/)'
 - en: '[The attention mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[注意力机制](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
 - en: '[The Transformer attention mechanism](https://machinelearningmastery.com/the-transformer-attention-mechanism)'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer注意力机制](https://machinelearningmastery.com/the-transformer-attention-mechanism)'
 - en: '**The Transformer Architecture**'
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Transformer架构**'
 - en: The Transformer architecture follows an encoder-decoder structure but does not
     rely on recurrence and convolutions in order to generate an output.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer架构遵循编码器-解码器结构，但不依赖于递归和卷积以生成输出。
 - en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
 - en: The  encoder-decoder structure of the Transformer architecture
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer架构的编码器-解码器结构
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 摘自“[Attention Is All You Need](https://arxiv.org/abs/1706.03762)”
 - en: In a nutshell, the task of the encoder, on the left half of the Transformer
     architecture, is to map an input sequence to a sequence of continuous representations,
     which is then fed into a decoder.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，Transformer架构左半部分的编码器的任务是将输入序列映射到一系列连续的表示，然后输入到解码器中。
 - en: The decoder, on the right half of the architecture, receives the output of the
     encoder together with the decoder output at the previous time step to generate
     an output sequence.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 解码器位于架构的右半部分，接收来自编码器的输出以及前一个时间步的解码器输出，生成一个输出序列。
 - en: '*At each step the model is auto-regressive, consuming the previously generated
     symbols as additional input when generating the next.*'
+  id: totrans-33
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*在每一步中，模型都是自回归的，生成下一个符号时会消耗先前生成的符号作为额外的输入。*'
 - en: ''
+  id: totrans-34
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  id: totrans-35
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [注意力机制](https://arxiv.org/abs/1706.03762)，2017年。'
 - en: '**The Encoder**'
+  id: totrans-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**编码器**'
 - en: '[![](../Images/64c247dcde7ce423e196af0e42321858.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_1.png)'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/64c247dcde7ce423e196af0e42321858.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_1.png)'
 - en: The encoder block of the Transformer architecture
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 架构的编码器块
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 取自“[注意力机制](https://arxiv.org/abs/1706.03762)“
 - en: 'The encoder consists of a stack of $N$ = 6 identical layers, where each layer
     is composed of two sublayers:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 编码器由 $N$ = 6 个相同的层组成，每个层由两个子层组成：
 - en: The first sublayer implements a multi-head self-attention mechanism. [You have
     seen](https://machinelearningmastery.com/the-transformer-attention-mechanism)
     that the multi-head mechanism implements $h$ heads that receive a (different)
     linearly projected version of the queries, keys, and values, each to produce $h$
     outputs in parallel that are then used to generate a final result.
+  id: totrans-41
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 第一个子层实现了多头自注意力机制。[你已经看到](https://machinelearningmastery.com/the-transformer-attention-mechanism)
+    多头机制实现了 $h$ 个头，每个头接收查询、键和值的（不同的）线性投影版本，每个头并行生成 $h$ 个输出，然后用于生成最终结果。
 - en: 'The second sublayer is a fully connected feed-forward network consisting of
     two linear transformations with Rectified Linear Unit (ReLU) activation in between:'
+  id: totrans-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 第二个子层是一个全连接的前馈网络，由两个线性变换组成，中间有ReLU激活：
 - en: $$\text{FFN}(x) = \text{ReLU}(\mathbf{W}_1 x + b_1) \mathbf{W}_2 + b_2$$
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\text{FFN}(x) = \text{ReLU}(\mathbf{W}_1 x + b_1) \mathbf{W}_2 + b_2$$
 - en: The six layers of the Transformer encoder apply the same linear transformations
     to all the words in the input sequence, but *each* layer employs different weight
     ($\mathbf{W}_1, \mathbf{W}_2$) and bias ($b_1, b_2$) parameters to do so.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 编码器的六层将相同的线性变换应用于输入序列中的所有单词，但*每*层使用不同的权重（$\mathbf{W}_1, \mathbf{W}_2$）和偏置（$b_1,
+    b_2$）参数来实现。
 - en: Furthermore, each of these two sublayers has a residual connection around it.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，这两个子层都有绕它们的残差连接。
 - en: 'Each sublayer is also succeeded by a normalization layer, $\text{layernorm}(.)$,
     which normalizes the sum computed between the sublayer input, $x$, and the output
     generated by the sublayer itself, $\text{sublayer}(x)$:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个子层之后还跟着一个标准化层，$\text{layernorm}(.)$，它对子层输入 $x$ 和子层生成的输出 $\text{sublayer}(x)$
+    之间计算的和进行归一化：
 - en: $$\text{layernorm}(x + \text{sublayer}(x))$$
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\text{layernorm}(x + \text{sublayer}(x))$$
 - en: An important consideration to keep in mind is that the Transformer architecture
     cannot inherently capture any information about the relative positions of the
     words in the sequence since it does not make use of recurrence. This information
     has to be injected by introducing *positional encodings* to the input embeddings.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要注意的一点是，Transformer 架构本质上不能捕获序列中单词之间的相对位置信息，因为它不使用递归。此信息必须通过引入*位置编码*到输入嵌入中来注入。
 - en: The positional encoding vectors are of the same dimension as the input embeddings
     and are generated using sine and cosine functions of different frequencies. Then,
     they are simply summed to the input embeddings in order to *inject* the positional
     information.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 位置编码向量的维度与输入嵌入相同，使用不同频率的正弦和余弦函数生成。然后，它们简单地与输入嵌入求和，以*注入*位置信息。
 - en: '**The Decoder **'
+  id: totrans-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**解码器**'
 - en: '[![](../Images/b5ece98aba8f016010f010adfd5a8097.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_2.png)'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/b5ece98aba8f016010f010adfd5a8097.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_2.png)'
 - en: The decoder block of the Transformer architecture
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 架构的解码器块
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 取自“[注意力机制](https://arxiv.org/abs/1706.03762)“
 - en: The decoder shares several similarities with the encoder.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 解码器与编码器有几个相似之处。
 - en: 'The decoder also consists of a stack of $N$ = 6 identical layers that are each
     composed of three sublayers:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 解码器也由 $N$ = 6 个相同的层组成，每层包含三个子层：
 - en: 'The first sublayer receives the previous output of the decoder stack, augments
     it with positional information, and implements multi-head self-attention over
     it. While the encoder is designed to attend to all words in the input sequence
@@ -236,235 +350,349 @@
     the values produced by the scaled multiplication of matrices $\mathbf{Q}$ and
     $\mathbf{K}$. This masking is implemented by suppressing the matrix values that
     would otherwise correspond to illegal connections:'
+  id: totrans-56
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 第一个子层接收解码器堆栈的先前输出，用位置信息增强，并在其上实现多头自注意力。虽然编码器被设计为无论输入序列中单词的位置如何都能关注，解码器修改为只关注前面的单词。因此，在多头注意力机制中（并行实现多个单注意力函数），通过引入一个掩码来阻止由缩放矩阵$\mathbf{Q}$和$\mathbf{K}$乘法产生的值。这种屏蔽通过抑制矩阵值来实现，否则这些值将对应于非法连接：
 - en: $$
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \text{mask}(\mathbf{QK}^T) =
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: \text{mask}(\mathbf{QK}^T) =
 - en: \text{mask} \left( \begin{bmatrix}
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: \text{mask} \left( \begin{bmatrix}
 - en: e_{11} & e_{12} & \dots & e_{1n} \\
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: e_{11} & e_{12} & \dots & e_{1n} \\
 - en: e_{21} & e_{22} & \dots & e_{2n} \\
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: e_{21} & e_{22} & \dots & e_{2n} \\
 - en: \vdots & \vdots & \ddots & \vdots \\
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: \vdots & \vdots & \ddots & \vdots \\
 - en: e_{m1} & e_{m2} & \dots & e_{mn} \\
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: e_{m1} & e_{m2} & \dots & e_{mn} \\
 - en: \end{bmatrix} \right) =
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{bmatrix} \right) =
 - en: \begin{bmatrix}
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{bmatrix}
 - en: e_{11} & -\infty & \dots & -\infty \\
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: e_{11} & -\infty & \dots & -\infty \\
 - en: e_{21} & e_{22} & \dots & -\infty \\
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: e_{21} & e_{22} & \dots & -\infty \\
 - en: \vdots & \vdots & \ddots & \vdots \\
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: \vdots & \vdots & \ddots & \vdots \\
 - en: e_{m1} & e_{m2} & \dots & e_{mn} \\
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: e_{m1} & e_{m2} & \dots & e_{mn} \\
 - en: \end{bmatrix}
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{bmatrix}
 - en: $$
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: '[![](../Images/bdffca1b5f416aed7741d5b03a4acf82.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/tour_3.png)'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/bdffca1b5f416aed7741d5b03a4acf82.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/tour_3.png)'
 - en: The multi-head attention in the decoder implements several masked, single-attention
     functions
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 在解码器中的多头注意力机制实现了几个掩码的单注意力功能。
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 取自“[注意力机制是你所需要的](https://arxiv.org/abs/1706.03762)”
 - en: '*The masking makes the decoder unidirectional (unlike the bidirectional encoder).*'
+  id: totrans-75
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*屏蔽使得解码器单向（不像双向编码器）。*'
 - en: ''
+  id: totrans-76
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019.'
+  id: totrans-77
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [Python深度学习进阶](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)，2019年。'
 - en: The second layer implements a multi-head self-attention mechanism similar to
     the one implemented in the first sublayer of the encoder. On the decoder side,
     this multi-head mechanism receives the queries from the previous decoder sublayer
     and the keys and values from the output of the encoder. This allows the decoder
     to attend to all the words in the input sequence.
+  id: totrans-78
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 第二层实现了一种类似于编码器第一子层中实现的多头自注意力机制。在解码器侧，这个多头机制接收来自前一个解码器子层的查询，并从编码器的输出中获取键和值。这使得解码器能够关注输入序列中的所有单词。
 - en: The third layer implements a fully connected feed-forward network, similar to
     the one implemented in the second sublayer of the encoder.
+  id: totrans-79
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 第三层实现一个全连接的前馈网络，类似于编码器第二子层中实现的网络。
 - en: Furthermore, the three sublayers on the decoder side also have residual connections
     around them and are succeeded by a normalization layer.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，解码器侧的三个子层周围还有残差连接，并且后接一个标准化层。
 - en: Positional encodings are also added to the input embeddings of the decoder in
     the same manner as previously explained for the encoder.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 位置编码也以与编码器相同的方式添加到解码器的输入嵌入中。
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-82
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始构建带有注意力的Transformer模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在获取我的免费12天电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得免费的课程PDF电子书版本。
 - en: '**Sum Up: The Transformer Model**'
+  id: totrans-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结：Transformer模型**'
 - en: 'The Transformer model runs as follows:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer模型的运行如下：
 - en: Each word forming an input sequence is transformed into a $d_{\text{model}}$-dimensional
     embedding vector.
+  id: totrans-87
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 形成输入序列的每个单词都转换为一个$d_{\text{model}}$维嵌入向量。
 - en: Each embedding vector representing an input word is augmented by summing it
     (element-wise) to a positional encoding vector of the same $d_{\text{model}}$
     length, hence introducing positional information into the input.
+  id: totrans-88
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 每个表示输入词的嵌入向量通过与相同 $d_{\text{model}}$ 长度的位置信息向量逐元素相加，从而将位置信息引入输入。
 - en: The augmented embedding vectors are fed into the encoder block consisting of
     the two sublayers explained above. Since the encoder attends to all words in the
     input sequence, irrespective if they precede or succeed the word under consideration,
     then the Transformer encoder is *bidirectional*.
+  id: totrans-89
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 增强的嵌入向量被输入到包含上述两个子层的编码器块中。由于编码器会关注输入序列中的所有词，无论这些词是否在当前考虑的词之前或之后，因此Transformer编码器是*双向的*。
 - en: The decoder receives as input its own predicted output word at time-step, $t
     – 1$.
+  id: totrans-90
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 解码器在时间步 $t – 1$ 收到其自身预测的输出词作为输入。
 - en: The input to the decoder is also augmented by positional encoding in the same
     manner done on the encoder side.
+  id: totrans-91
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 解码器的输入也通过与编码器侧相同的方式进行位置编码增强。
 - en: The augmented decoder input is fed into the three sublayers comprising the decoder
     block explained above. Masking is applied in the first sublayer in order to stop
     the decoder from attending to the succeeding words. At the second sublayer, the
     decoder also receives the output of the encoder, which now allows the decoder
     to attend to all the words in the input sequence.
+  id: totrans-92
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 增强的解码器输入被输入到包含上述三个子层的解码器块中。掩蔽被应用于第一个子层，以防止解码器关注后续词。在第二个子层，解码器还接收到编码器的输出，这使得解码器能够关注输入序列中的所有词。
 - en: The output of the decoder finally passes through a fully connected layer, followed
     by a softmax layer, to generate a prediction for the next word of the output sequence.
+  id: totrans-93
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 解码器的输出最终经过一个全连接层，然后是一个softmax层，以生成对输出序列下一个词的预测。
 - en: '**Comparison to Recurrent and Convolutional Layers**'
+  id: totrans-94
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**与递归层和卷积层的比较**'
 - en: '[Vaswani et al. (2017)](https://arxiv.org/abs/1706.03762) explain that their
     motivation for abandoning the use of recurrence and convolutions was based on
     several factors:'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Vaswani et al. (2017)](https://arxiv.org/abs/1706.03762) 解释了他们放弃使用递归和卷积的动机是基于几个因素：'
 - en: Self-attention layers were found to be faster than recurrent layers for shorter
     sequence lengths and can be restricted to consider only a neighborhood in the
     input sequence for very long sequence lengths.
+  id: totrans-96
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 自注意力层在处理较短序列长度时比递归层更快，并且对于非常长的序列长度，可以限制只考虑输入序列中的一个邻域。
 - en: The number of sequential operations required by a recurrent layer is based on
     the sequence length, whereas this number remains constant for a self-attention
     layer.
+  id: totrans-97
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 递归层所需的序列操作数是基于序列长度的，而自注意力层的这个数字保持不变。
 - en: In convolutional neural networks, the kernel width directly affects the long-term
     dependencies that can be established between pairs of input and output positions.
     Tracking long-term dependencies would require using large kernels or stacks of
     convolutional layers that could increase the computational cost.
+  id: totrans-98
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在卷积神经网络中，卷积核的宽度直接影响输入和输出位置对之间可以建立的长期依赖关系。追踪长期依赖关系需要使用大卷积核或卷积层堆栈，这可能会增加计算成本。
 - en: '**Further Reading**'
+  id: totrans-99
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你希望深入了解这个话题，本节提供了更多资源。
 - en: '**Books**'
+  id: totrans-101
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019.'
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019。'
 - en: '**Papers**'
+  id: totrans-103
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017。'
 - en: '**Summary**'
+  id: totrans-105
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered the network architecture of the Transformer
     model.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了Transformer模型的网络架构。
 - en: 'Specifically, you learned:'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How the Transformer architecture implements an encoder-decoder structure without
     recurrence and convolutions
+  id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer架构如何在没有递归和卷积的情况下实现编码器-解码器结构
 - en: How the Transformer encoder and decoder work
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer编码器和解码器如何工作
 - en: How the Transformer self-attention compares to recurrent and convolutional layers
+  id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer自注意力与递归层和卷积层的比较
 - en: Do you have any questions?
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论中提出你的问题，我会尽力回答。

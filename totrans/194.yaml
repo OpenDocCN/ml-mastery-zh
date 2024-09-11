@@ -1,11 +1,15 @@
 - en: Joining the Transformer Encoder and Decoder Plus Masking
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 结合 Transformer 编码器和解码器及掩码
 - en: 原文：[https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking/](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking/](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking/)
 - en: We have arrived at a point where we have implemented and tested the Transformer
     [encoder](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)
     and [decoder](https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras)
@@ -14,499 +18,774 @@
     the input values that will not be considered in the encoder or decoder computations.
     Our end goal remains to apply the complete model to Natural Language Processing
     (NLP).
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经分别实现并测试了 Transformer [编码器](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)
+    和 [解码器](https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras)，现在可以将它们结合成一个完整的模型。我们还将了解如何创建填充和前瞻掩码，以抑制在编码器或解码器计算中不考虑的输入值。我们的最终目标是将完整模型应用于自然语言处理（NLP）。
 - en: In this tutorial, you will discover how to implement the complete Transformer
     model and create padding and look-ahead masks.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现如何实现完整的 Transformer 模型并创建填充和前瞻掩码。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解到：
 - en: How to create a padding mask for the encoder and decoder
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为编码器和解码器创建填充掩码
 - en: How to create a look-ahead mask for the decoder
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为解码器创建前瞻掩码
 - en: How to join the Transformer encoder and decoder into a single model
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将 Transformer 编码器和解码器结合成一个模型
 - en: How to print out a summary of the encoder and decoder layers
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何打印出编码器和解码器层的总结
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 开始吧。
 - en: '[![](../Images/52e6d5d2d85b424ddde866069d042527.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/model_cover-scaled.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/52e6d5d2d85b424ddde866069d042527.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/model_cover-scaled.jpg)'
 - en: Joining the Transformer encoder and decoder and Masking
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 结合 Transformer 编码器和解码器及掩码
 - en: Photo by [John O’Nolan](https://unsplash.com/photos/ykeLTANUQyE), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [John O’Nolan](https://unsplash.com/photos/ykeLTANUQyE) 提供，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into four parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四个部分：
 - en: Recap of the Transformer Architecture
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 架构回顾
 - en: Masking
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 掩码
 - en: Creating a Padding Mask
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建填充掩码
 - en: Creating a Look-Ahead Mask
+  id: totrans-18
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建前瞻掩码
 - en: Joining the Transformer Encoder and Decoder
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 结合 Transformer 编码器和解码器
 - en: Creating an Instance of the Transformer Model
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建 Transformer 模型的实例
 - en: Printing Out a Summary of the Encoder and Decoder Layers
+  id: totrans-21
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 打印出编码器和解码器层的总结
 - en: '**Prerequisites**'
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**先决条件**'
 - en: 'For this tutorial, we assume that you are already familiar with:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设你已经熟悉：
 - en: '[The Transformer model](https://machinelearningmastery.com/the-transformer-model/)'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 模型](https://machinelearningmastery.com/the-transformer-model/)'
 - en: '[The Transformer encoder](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 编码器](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)'
 - en: '[The Transformer decoder](https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras)'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 解码器](https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras)'
 - en: '**Recap of the Transformer Architecture**'
+  id: totrans-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Transformer 架构回顾**'
 - en: '[Recall](https://machinelearningmastery.com/the-transformer-model/) having
     seen that the Transformer architecture follows an encoder-decoder structure. The
     encoder, on the left-hand side, is tasked with mapping an input sequence to a
     sequence of continuous representations; the decoder, on the right-hand side, receives
     the output of the encoder together with the decoder output at the previous time
     step to generate an output sequence.'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '[回顾](https://machinelearningmastery.com/the-transformer-model/)我们已经看到 Transformer
+    架构遵循编码器-解码器结构。左侧的编码器负责将输入序列映射到连续表示序列；右侧的解码器接收编码器的输出以及上一个时间步的解码器输出，以生成输出序列。'
 - en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
 - en: The encoder-decoder structure of the Transformer architecture
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer架构的编码器-解码器结构
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 取自“[Attention Is All You Need](https://arxiv.org/abs/1706.03762)”
 - en: In generating an output sequence, the Transformer does not rely on recurrence
     and convolutions.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在生成输出序列时，Transformer不依赖于递归和卷积。
 - en: You have seen how to implement the Transformer encoder and decoder separately.
     In this tutorial, you will join the two into a complete Transformer model and
     apply padding and look-ahead masking to the input values.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 您已经看到如何分别实现Transformer编码器和解码器。在本教程中，您将把两者结合起来，形成一个完整的Transformer模型，并在输入值上应用填充和前瞻掩码。
 - en: Let’s start first by discovering how to apply masking.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先了解如何应用掩码。
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书 [使用注意力构建Transformer模型](https://machinelearningmastery.com/transformer-models-with-attention/)
+    启动您的项目**。它提供了**自学教程**和**工作代码**，指导您构建一个完全工作的Transformer模型'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将句子从一种语言翻译成另一种语言*…'
 - en: '**Masking**'
+  id: totrans-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**掩码**'
 - en: '**Creating a Padding Mask**'
+  id: totrans-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**创建填充掩码**'
 - en: You should already be familiar with the importance of masking the input values
     before feeding them into the encoder and decoder.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 您应该已经了解在将其馈送到编码器和解码器之前对输入值进行掩码的重要性。
 - en: As you will see when you proceed to [train the Transformer model](https://machinelearningmastery.com/training-the-transformer-model),
     the input sequences fed into the encoder and decoder will first be zero-padded
     up to a specific sequence length. The importance of having a padding mask is to
     make sure that these zero values are not processed along with the actual input
     values by both the encoder and decoder.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您继续[训练Transformer模型](https://machinelearningmastery.com/training-the-transformer-model)时，将把输入序列馈送到编码器和解码器之前，首先将其零填充到特定的序列长度。填充掩码的重要性在于确保这些零值不会与编码器和解码器同时处理的实际输入值混合在一起。
 - en: 'Let’s create the following function to generate a padding mask for both the
     encoder and decoder:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们创建以下函数为编码器和解码器生成填充掩码：
 - en: Python
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Upon receiving an input, this function will generate a tensor that marks by
     a value of *one* wherever the input contains a value of *zero*.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 收到输入后，此函数将生成一个张量，标记输入包含零值处的地方为*一*。
 - en: 'Hence, if you input the following array:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，如果您输入以下数组：
 - en: Python
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Then the output of the `padding_mask` function would be the following:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么 `padding_mask` 函数的输出将如下所示：
 - en: Python
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '**Creating a Look-Ahead Mask**'
+  id: totrans-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**创建前瞻掩码**'
 - en: A look-ahead mask is required to prevent the decoder from attending to succeeding
     words, such that the prediction for a particular word can only depend on known
     outputs for the words that come before it.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要前瞻掩码以防止解码器关注后续的单词，这样特定单词的预测仅能依赖于其之前的已知输出。
 - en: 'For this purpose, let’s create the following function to generate a look-ahead
     mask for the decoder:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，让我们创建以下函数以为解码器生成前瞻掩码：
 - en: Python
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'You will pass to it the length of the decoder input. Let’s make this length
     equal to 5, as an example:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 您将向其传递解码器输入的长度。让我们以5为例：
 - en: Python
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Then the output that the `lookahead_mask` function returns is the following:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么 `lookahead_mask` 函数返回的输出如下：
 - en: Python
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Again, the *one* values mask out the entries that should not be used. In this
     manner, the prediction of every word only depends on those that come before it.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次，*一* 值掩盖了不应使用的条目。因此，每个单词的预测仅依赖于其之前的单词。
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-63
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始构建使用注意力的Transformer模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就注册我的免费12天电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可免费获取课程的PDF电子书版本。
 - en: '**Joining the Transformer Encoder and Decoder**'
+  id: totrans-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**连接Transformer编码器和解码器**'
 - en: 'Let’s start by creating the class, `TransformerModel`, which inherits from
     the `Model` base class in Keras:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先创建`TransformerModel`类，它继承自Keras中的`Model`基类：
 - en: Python
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Our first step in creating the `TransformerModel` class is to initialize instances
     of the `Encoder` and `Decoder` classes implemented earlier and assign their outputs
     to the variables, `encoder` and `decoder`, respectively. If you saved these classes
     in separate Python scripts, do not forget to import them. I saved my code in the
     Python scripts *encoder.py* and *decoder.py*, so I need to import them accordingly.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建`TransformerModel`类的第一步是初始化先前实现的`Encoder`和`Decoder`类的实例，并将它们的输出分别分配给变量`encoder`和`decoder`。如果你将这些类保存到单独的Python脚本中，不要忘记导入它们。我将代码保存在Python脚本*encoder.py*和*decoder.py*中，所以我需要相应地导入它们。
 - en: You will also include one final dense layer that produces the final output,
     as in the Transformer architecture of [Vaswani et al. (2017)](https://arxiv.org/abs/1706.03762).
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 你还将包括一个最终的全连接层，生成最终的输出，类似于[Vaswani et al. (2017)](https://arxiv.org/abs/1706.03762)中的Transformer架构。
 - en: Next, you shall create the class method, `call()`, to feed the relevant inputs
     into the encoder and decoder.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，你将创建类方法`call()`，以将相关输入送入编码器和解码器。
 - en: 'A padding mask is first generated to mask the encoder input, as well as the
     encoder output, when this is fed into the second self-attention block of the decoder:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先生成一个填充掩码，以掩盖编码器输入和编码器输出，当这些被送入解码器的第二个自注意力块时：
 - en: Python
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'A padding mask and a look-ahead mask are then generated to mask the decoder
     input. These are combined together through an element-wise `maximum` operation:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后生成一个填充掩码和一个前瞻掩码，以掩盖解码器输入。通过逐元素`maximum`操作将它们结合在一起：
 - en: Python
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Next, the relevant inputs are fed into the encoder and decoder, and the Transformer
     model output is generated by feeding the decoder output into one final dense layer:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，将相关输入送入编码器和解码器，并通过将解码器输出送入一个最终的全连接层来生成Transformer模型输出：
 - en: Python
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Combining all the steps gives us the following complete code listing:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有步骤结合起来，得到以下完整的代码清单：
 - en: Python
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Note that you have performed a small change to the output that is returned by
     the `padding_mask` function. Its shape is made broadcastable to the shape of the
     attention weight tensor that it will mask when you train the Transformer model.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，你对`padding_mask`函数返回的输出进行了小的更改。它的形状被调整为可广播到它在训练Transformer模型时将要掩盖的注意力权重张量的形状。
 - en: '**Creating an Instance of the Transformer Model**'
+  id: totrans-86
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**创建Transformer模型的实例**'
 - en: 'You will work with the parameter values specified in the paper, [Attention
     Is All You Need](https://arxiv.org/abs/1706.03762), by Vaswani et al. (2017):'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将使用[Vaswani et al. (2017)](https://arxiv.org/abs/1706.03762)论文中指定的参数值：
 - en: Python
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'As for the input-related parameters, you will work with dummy values for now
     until you arrive at the stage of [training the complete Transformer model](https://machinelearningmastery.com/training-the-transformer-model).
     At that point, you will use actual sentences:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 至于输入相关的参数，你暂时将使用虚拟值，直到你达到[训练完整的Transformer模型](https://machinelearningmastery.com/training-the-transformer-model)的阶段。到那时，你将使用实际的句子：
 - en: Python
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE12]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'You can now create an instance of the `TransformerModel` class as follows:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 你现在可以按如下方式创建`TransformerModel`类的实例：
 - en: Python
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE13]'
+  id: totrans-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'The complete code listing is as follows:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码清单如下：
 - en: Python
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE14]'
+  id: totrans-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '**Printing Out a Summary of the Encoder and Decoder Layers**'
+  id: totrans-99
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**打印编码器和解码器层的摘要**'
 - en: 'You may also print out a summary of the encoder and decoder blocks of the Transformer
     model. The choice to print them out separately will allow you to be able to see
     the details of their individual sub-layers. In order to do so, add the following
     line of code to the `__init__()` method of both the `EncoderLayer` and `DecoderLayer`
     classes:'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 你还可以打印出Transformer模型的编码器和解码器块的摘要。选择单独打印它们将使你能够查看各个子层的详细信息。为此，将以下代码行添加到`EncoderLayer`和`DecoderLayer`类的`__init__()`方法中：
 - en: Python
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE15]'
+  id: totrans-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'Then you need to add the following method to the `EncoderLayer` class:'
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后你需要将以下方法添加到`EncoderLayer`类中：
 - en: Python
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE16]'
+  id: totrans-105
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'And the following method to the `DecoderLayer` class:'
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 以及以下方法到`DecoderLayer`类：
 - en: Python
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE17]'
+  id: totrans-108
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'This results in the `EncoderLayer` class being modified as follows (the three
     dots under the `call()` method mean that this remains the same as the one that
     was implemented [here](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)):'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 这导致`EncoderLayer`类被修改如下（`call()`方法下的三个点表示与[这里](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)实现的内容相同）：
 - en: Python
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE18]'
+  id: totrans-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: Similar changes can be made to the `DecoderLayer` class too.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似的更改也可以应用于 `DecoderLayer` 类。
 - en: 'Once you have the necessary changes in place, you can proceed to create instances
     of the `EncoderLayer` and `DecoderLayer` classes and print out their summaries
     as follows:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你完成了必要的更改，你可以继续创建 `EncoderLayer` 和 `DecoderLayer` 类的实例，并按如下方式打印它们的总结：
 - en: Python
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE19]'
+  id: totrans-115
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'The resulting summary for the encoder is the following:'
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 对编码器的结果总结如下：
 - en: Python
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE20]'
+  id: totrans-118
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'While the resulting summary for the decoder is the following:'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 而解码器的结果总结如下：
 - en: Python
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE21]'
+  id: totrans-121
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: '**Further Reading**'
+  id: totrans-122
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你希望深入了解。
 - en: '**Books**'
+  id: totrans-124
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019'
+  id: totrans-125
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)，2019'
 - en: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
     2021'
+  id: totrans-126
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798)，2021'
 - en: '**Papers**'
+  id: totrans-127
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
+  id: totrans-128
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762)，2017'
 - en: '**Summary**'
+  id: totrans-129
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered how to implement the complete Transformer model
     and create padding and look-ahead masks.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何实现完整的 Transformer 模型以及创建填充和前瞻掩码。
 - en: 'Specifically, you learned:'
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to create a padding mask for the encoder and decoder
+  id: totrans-132
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为编码器和解码器创建填充掩码
 - en: How to create a look-ahead mask for the decoder
+  id: totrans-133
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为解码器创建前瞻掩码
 - en: How to join the Transformer encoder and decoder into a single model
+  id: totrans-134
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将 Transformer 编码器和解码器组合成一个单一模型
 - en: How to print out a summary of the encoder and decoder layers
+  id: totrans-135
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何打印出编码器和解码器层的总结
 - en: Do you have any questions?
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below and I will do my best to answer.
+  id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提出你的问题，我会尽力回答。

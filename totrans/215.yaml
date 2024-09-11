@@ -1,12 +1,16 @@
 - en: 'Method of Lagrange Multipliers: The Theory Behind Support Vector Machines (Part
     3: Implementing An SVM From Scratch In Python)'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 拉格朗日乘数法：支持向量机背后的理论（第3部分：在 Python 中从头开始实现 SVM）
 - en: 原文：[https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-3-implementing-an-svm-from-scratch-in-python/](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-3-implementing-an-svm-from-scratch-in-python/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-3-implementing-an-svm-from-scratch-in-python/](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-3-implementing-an-svm-from-scratch-in-python/)
 - en: The mathematics that powers a support vector machine (SVM) classifier is beautiful.
     It is important to not only learn the basic model of an SVM but also know how
     you can implement the entire model from scratch. This is a continuation of our
@@ -15,663 +19,1034 @@
     of this series we discussed the mathematical model behind a linear SVM. In this
     tutorial, we’ll show how you can build an SVM linear classifier using the optimization
     routines shipped with Python’s SciPy library.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 支持向量机（SVM）分类器背后的数学是美丽的。重要的是不仅要学习 SVM 的基本模型，还要知道如何从头开始实现整个模型。这是我们关于 SVM 的系列教程的延续。在本系列的
+    [第1部分](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case)
+    和 [第2部分](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-2-the-non-separable-case)
+    中，我们讨论了线性 SVM 背后的数学模型。在本教程中，我们将展示如何使用 Python 的 SciPy 库中提供的优化例程构建 SVM 线性分类器。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将了解：
 - en: How to use SciPy’s optimization routines
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 SciPy 的优化例程
 - en: How to define the objective function
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何定义目标函数
 - en: How to define bounds and linear constraints
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何定义界限和线性约束
 - en: How to implement your own SVM classifier in Python
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 Python 中实现自己的 SVM 分类器
 - en: Let’s get started.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/61e8306c5410b11740e6ad2ef285cc14.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/Untitled.png)'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/61e8306c5410b11740e6ad2ef285cc14.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/Untitled.png)'
 - en: 'Method Of Lagrange Multipliers: The Theory Behind Support Vector Machines (Part
     3: Implementing An SVM From Scratch In Python)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 拉格朗日乘数法：支持向量机背后的理论（第3部分：在 Python 中从头开始实现 SVM）
 - en: Sculpture Gyre by Thomas Sayre, Photo by Mehreen Saeed, some rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 由 Thomas Sayre 创作的雕塑 Gyre，摄影师 Mehreen Saeed，部分权利保留。
 - en: Tutorial Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into 2 parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为 2 部分；它们是：
 - en: The optimization problem of an SVM
+  id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: SVM 的优化问题
 - en: Solution of the optimization problem in Python
+  id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在 Python 中解决优化问题
 - en: Define the objective function
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 定义目标函数
 - en: Define the bounds and linear constraints
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 定义界限和线性约束
 - en: Solve the problem with different C values
+  id: totrans-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用不同的 C 值解决问题
 - en: Pre-requisites
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 先决条件
 - en: For this tutorial, it is assumed that you are already familiar with the following
     topics. You can click on the individual links to get more details.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，假设您已经熟悉以下主题。您可以单击各个链接获取更多详细信息。
 - en: '[A Gentle Introduction to Optimization / Mathematical Programming](https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming/)'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[优化/数学规划的温和介绍](https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming/)'
 - en: '[A Gentle Introduction To Method Of Lagrange Multipliers](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[拉格朗日乘数法的温和介绍](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)'
 - en: '[Lagrange Multiplier Approach with Inequality Constraints](https://machinelearningmastery.com/lagrange-multiplier-approach-with-inequality-constraints/)'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[拉格朗日乘数法与不等式约束](https://machinelearningmastery.com/lagrange-multiplier-approach-with-inequality-constraints/)'
 - en: '[Method Of Lagrange Multipliers: The Theory Behind Support Vector Machines
     (Part 1: The Separable Case)](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case))'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[拉格朗日乘数法：支持向量机背后的理论（第1部分：可分离情况）](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case))'
 - en: '[Method Of Lagrange Multipliers: The Theory Behind Support Vector Machines
     (Part 2: The Non-Separable Case](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-2-the-non-separable-case)'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[拉格朗日乘子的法则：支持向量机背后的理论（第 2 部分：不可分离情况）](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-2-the-non-separable-case)'
 - en: Notations and Assumptions
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 符号和假设
 - en: 'A basic SVM machine assumes a binary classification problem. Suppose, we have
     $m$ training points, each point being an $n$-dimensional vector. We’ll use the
     following notations:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 基本的 SVM 机器假设是一个二分类问题。假设我们有 $m$ 个训练点，每个点是一个 $n$ 维向量。我们将使用以下符号：
 - en: '$m$: Total training points'
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$m$: 总训练点数'
 - en: '$n$: Dimensionality of each training point'
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$n$: 每个训练点的维度'
 - en: '$x$: Data point, which is an $n$-dimensional vector'
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$x$: 数据点，是一个 $n$ 维向量'
 - en: '$i$: Subscript used to index the training points. $0 \leq i < m$'
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$i$: 用于索引训练点的下标。 $0 \leq i < m$'
 - en: '$k$: Subscript used to index the training points. $0 \leq k < m$'
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$k$: 用于索引训练点的下标。 $0 \leq k < m$'
 - en: '$j$: Subscript used to index each dimension of a training point'
+  id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$j$: 用于索引训练点每个维度的下标'
 - en: '$t$: Label of a data point. It is an $m$-dimensional vector, with $t_i \in
     \{-1, +1\}$'
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$t$: 数据点的标签。它是一个 $m$ 维向量，其中 $t_i \in \{-1, +1\}$'
 - en: '$T$: Transpose operator'
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$T$: 转置操作符'
 - en: '$w$: Weight vector denoting the coefficients of the hyperplane. It is also
     an $n$-dimensional vector'
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$w$: 权重向量，表示超平面的系数。它也是一个 $n$ 维向量'
 - en: '$\alpha$: Vector of Lagrange multipliers, also an $m$-dimensional vector'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$\alpha$: 拉格朗日乘子向量，也是一个 $m$ 维向量'
 - en: '$C$: User defined penalty factor/regularization constant'
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$C$: 用户定义的惩罚因子/正则化常数'
 - en: The SVM Optimization Problem
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: SVM 优化问题
 - en: 'The SVM classifier maximizes the following Lagrange dual given by:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: SVM 分类器最大化以下拉格朗日对偶：
 - en: $$
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: L_d = -\frac{1}{2} \sum_i \sum_k \alpha_i \alpha_k t_i t_k (x_i)^T (x_k) + \sum_i
     \alpha_i
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: L_d = -\frac{1}{2} \sum_i \sum_k \alpha_i \alpha_k t_i t_k (x_i)^T (x_k) + \sum_i
+    \alpha_i
 - en: $$
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'The above function is subject to the following constraints:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述函数受以下约束条件的限制：
 - en: \begin{eqnarray}
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{eqnarray}
 - en: 0 \leq \alpha_i \leq C, & \forall i\\
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 0 \leq \alpha_i \leq C, & \forall i\\
 - en: \sum_i \alpha_i t_i = 0& \\
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: \sum_i \alpha_i t_i = 0& \\
 - en: \end{eqnarray}
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{eqnarray}
 - en: All we have to do is find the Lagrange multiplier $\alpha$ associated with each
     training point, while satisfying the above constraints.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们要做的就是找到与每个训练点相关的拉格朗日乘子 $\alpha$，同时满足上述约束条件。
 - en: Want to Get Started With Calculus for Machine Learning?
+  id: totrans-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始学习机器学习的微积分？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就拿我的免费 7 天电子邮件速成课程（附样例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费 PDF 电子书版本。
 - en: Python Implementation of SVM
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: SVM 的 Python 实现
 - en: We’ll use the SciPy optimize package to find the optimal values of Lagrange
     multipliers, and compute the soft margin and the separating hyperplane.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用 SciPy 优化包来找到拉格朗日乘子的最佳值，并计算软间隔和分离超平面。
 - en: Import Section and Constants
+  id: totrans-55
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 导入部分和常量
 - en: Let’s write the import section for optimization, plotting and synthetic data
     generation.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们编写优化、绘图和合成数据生成的导入部分。
 - en: Python
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: We also need the following constant to detect all alphas numerically close to
     zero, so we need to define our own threshold for zero.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还需要以下常量来检测所有数值接近零的 alpha，因此我们需要定义自己的零阈值。
 - en: Python
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Defining the Data Points and Labels
+  id: totrans-62
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 定义数据点和标签
 - en: Let’s define a very simple dataset, the corresponding labels and a simple routine
     for plotting this data. Optionally, if a string of alphas is given to the plotting
     function, then it will also label all support vectors with their corresponding
     alpha values. Just to recall support vectors are those points for which $\alpha>0$.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们定义一个非常简单的数据集、相应的标签和一个简单的绘图例程。可选地，如果给定一串 alpha 给绘图函数，它还将标记所有支持向量及其对应的 alpha
+    值。仅供回顾，支持向量是那些 $\alpha>0$ 的点。
 - en: Python
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '[![](../Images/6711a1196ab44cac89c2e2cea620d083.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/svm1.png)'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/6711a1196ab44cac89c2e2cea620d083.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/svm1.png)'
 - en: The `minimize()` Function
+  id: totrans-67
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '`minimize()` 函数'
 - en: 'Let’s look at the `minimize()` function in `scipy.optimize` library. It requires
     the following arguments:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们来看看 `scipy.optimize` 库中的 `minimize()` 函数。它需要以下参数：
 - en: The objective function to minimize. Lagrange dual in our case.
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 需要最小化的目标函数。在我们的情况下是拉格朗日对偶。
 - en: The initial values of variables with respect to which the minimization takes
     place. In this problem, we have to determine the Lagrange multipliers $\alpha$.
     We’ll initialize all $\alpha$ randomly.
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 变量的初始值，关于这些变量进行最小化。在这个问题中，我们需要确定拉格朗日乘子 $\alpha$。我们将随机初始化所有 $\alpha$。
 - en: The method to use for optimization. We’ll use `trust-constr`.
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 用于优化的方法。我们将使用 `trust-constr`。
 - en: The linear constraints on $\alpha$.
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 对 $\alpha$ 的线性约束。
 - en: The bounds on $\alpha$.
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $\alpha$ 的边界。
 - en: Defining the Objective Function
+  id: totrans-74
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 定义目标函数
 - en: Our objective function is $L_d$ defined above, which has to be maximized. As
     we are using the `minimize()` function, we have to multiply $L_d$ by (-1) to maximize
     it. Its implementation is given below. The first parameter for the objective function
     is the variable w.r.t. which the optimization takes place. We also need the training
     points and the corresponding labels as additional arguments.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的目标函数是上述定义的 $L_d$，需要最大化。由于我们使用 `minimize()` 函数，所以需要将 $L_d$ 乘以 (-1) 来进行最大化。其实现如下。目标函数的第一个参数是优化时的变量。我们还需要训练点和相应的标签作为额外参数。
 - en: You can shorten the code for the `lagrange_dual()` function given below by using
     matrices. However, in this tutorial, it is kept very simple to make everything
     clear.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过使用矩阵来简化下面的 `lagrange_dual()` 函数的代码。然而，在本教程中，它保持非常简单，以使一切更加清晰。
 - en: Python
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Defining the Linear Constraints
+  id: totrans-79
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 定义线性约束
 - en: 'The linear constraint on alpha for each point is given by:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于每个点的 alpha 的线性约束为：
 - en: $$
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \sum_i \alpha_i t_i = 0
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: \sum_i \alpha_i t_i = 0
 - en: $$
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'We can also write this as:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们也可以写成：
 - en: $$
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \alpha_0 t_0 + \alpha_1 t_1 + \ldots \alpha_m t_m = 0
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: \alpha_0 t_0 + \alpha_1 t_1 + \ldots \alpha_m t_m = 0
 - en: $$
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'The `LinearConstraint()` method requires all constraints to be written as matrix
     form, which is:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: '`LinearConstraint()` 方法要求所有约束以矩阵形式书写，即：'
 - en: \begin{equation}
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{equation}
 - en: 0 =
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 0 =
 - en: \begin{bmatrix}
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{bmatrix}
 - en: t_0 & t_1 & \ldots t_m
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: t_0 & t_1 & \ldots t_m
 - en: \end{bmatrix}
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{bmatrix}
 - en: \begin{bmatrix}
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{bmatrix}
 - en: \alpha_0\\ \alpha_1 \\ \vdots \\ \alpha_m
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: \alpha_0\\ \alpha_1 \\ \vdots \\ \alpha_m
 - en: \end{bmatrix}
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{bmatrix}
 - en: = 0
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: = 0
 - en: \end{equation}
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{equation}
 - en: The first matrix is the first parameter in the `LinearConstraint()` method.
     The left and right bounds are the second and third arguments.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个矩阵是 `LinearConstraint()` 方法中的第一个参数。左边界和右边界是第二个和第三个参数。
 - en: Python
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Output
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出
 - en: '[PRE5]'
+  id: totrans-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Defining the Bounds
+  id: totrans-104
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 定义边界
 - en: The bounds on alpha are defined using the `Bounds()` method. All alphas are
     constrained to lie between 0 and $C$. Here is an example for $C=10$.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: alpha 的边界通过 `Bounds()` 方法定义。所有 alpha 都被限制在 0 和 $C$ 之间。以下是 $C=10$ 的示例。
 - en: Python
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-107
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Output
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出
 - en: '[PRE7]'
+  id: totrans-109
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Defining the Function to Find Alphas
+  id: totrans-110
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 定义查找 Alphas 的函数
 - en: Let’s write the overall routine to find the optimal values of `alpha` when given
     the parameters `x`, `t`, and `C`. The objective function requires the additional
     arguments `x` and `t`, which are passed via args in `minimize()`.
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们编写一个例程来寻找给定参数 `x`、`t` 和 `C` 时的最优 `alpha` 值。目标函数需要额外的参数 `x` 和 `t`，这些参数通过 `minimize()`
+    的 args 传递。
 - en: Python
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-113
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Determining the Hyperplane
+  id: totrans-114
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 确定超平面
 - en: 'The expression for the hyperplane is given by:'
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 超平面的表达式为：
 - en: $$
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: w^T x + w_0 = 0
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: w^T x + w_0 = 0
 - en: $$
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'For the hyperplane, we need the weight vector $w$ and the constant $w_0$. The
     weight vector is given by:'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于超平面，我们需要权重向量 $w$ 和常数 $w_0$。权重向量由以下公式给出：
 - en: $$
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: w = \sum_i \alpha_i t_i x_i
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: w = \sum_i \alpha_i t_i x_i
 - en: $$
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: If there are too many training points, it’s best to use only support vectors
     with $\alpha>0$ to compute the weight vector.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果训练点过多，最好只使用 $\alpha>0$ 的支持向量来计算权重向量。
 - en: 'For $w_0$, we’ll compute it from each support vector $s$, for which $\alpha_s
     < C$, and then take the average. For a single support vector $x_s$, $w_0$ is given
     by:'
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 $w_0$，我们将从每个支持向量 $s$ 计算，对于这些支持向量 $\alpha_s < C$，然后取其平均值。对于单个支持向量 $x_s$，$w_0$
+    由以下公式给出：
 - en: $$
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: w_0 = t_s – w^T x_s
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: w_0 = t_s – w^T x_s
 - en: $$
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: A support vector’s alpha cannot be numerically exactly equal to C. Hence, we
     can subtract a small constant from C to find all support vectors with $\alpha_s
     < C$. This is done in the `get_w0()` function.
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 支持向量的 alpha 不能在数值上完全等于 C。因此，我们可以从 C 中减去一个小常数，以找到所有 $\alpha_s < C$ 的支持向量。这在 `get_w0()`
+    函数中完成。
 - en: Python
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-130
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Classifying Test Points
+  id: totrans-131
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 分类测试点
 - en: 'To classify a test point $x_{test}$, we use the sign of $y(x_{test})$ as:'
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 要对测试点 $x_{test}$ 进行分类，我们使用 $y(x_{test})$ 的符号，如下：
 - en: $$
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \text{label}_{x_{test}} = \text{sign}(y(x_{test})) = \text{sign}(w^T x_{test}
     + w_0)
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: \text{label}_{x_{test}} = \text{sign}(y(x_{test})) = \text{sign}(w^T x_{test}
+    + w_0)
 - en: $$
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'Let’s write the corresponding function that can take as argument an array of
     test points along with $w$ and $w_0$ and classify various points. We have also
     added a second function for calculating the misclassification rate:'
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们编写相应的函数，可以将测试点的数组与 $w$ 和 $w_0$ 作为参数传入，并对各种点进行分类。我们还添加了第二个函数来计算错误分类率：
 - en: Python
+  id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-138
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Plotting the Margin and Hyperplane
+  id: totrans-139
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 绘制边界和超平面
 - en: Let’s also define functions to plot the hyperplane and the soft margin.
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还将定义绘制超平面和软边界的函数。
 - en: Python
+  id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-142
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Powering Up The SVM
+  id: totrans-143
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 强化 SVM
 - en: It’s now time to run the SVM. The function `display_SVM_result()` will help
     us visualize everything. We’ll initialize alpha to random values, define C and
     find the best values of alpha in this function. We’ll also plot the hyperplane,
     the margin and the data points. The support vectors would also be labelled by
     their corresponding alpha value. The title of the plot would be the percentage
     of errors and number of support vectors.
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在是运行 SVM 的时候了。`display_SVM_result()` 函数将帮助我们可视化一切。我们将 alpha 初始化为随机值，定义 C，并在此函数中找到最佳的
+    alpha 值。我们还将绘制超平面、边界和数据点。支持向量也将通过其对应的 alpha 值进行标记。图的标题将是错误的百分比和支持向量的数量。
 - en: Python
+  id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE12]'
+  id: totrans-146
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '[![](../Images/6d21cd8f9e3aabbca53d7d43d2797583.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/svm2.png)'
+  id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/6d21cd8f9e3aabbca53d7d43d2797583.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/svm2.png)'
 - en: The Effect of `C`
+  id: totrans-148
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '`C` 的影响'
 - en: If you change the value of `C` to $\infty$, then the soft margin turns into
     a hard margin, with no toleration for errors. The problem we defined above is
     not solvable in this case. Let’s generate an artificial set of points and look
     at the effect of `C` on classification. To understand the entire problem, we’ll
     use a simple dataset, where the positive and negative examples are separable.
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你将 `C` 的值更改为 $\infty$，那么软边界将变成硬边界，不容忍错误。在这种情况下，我们定义的问题是不可解的。让我们生成一组人工点并观察
+    `C` 对分类的影响。为了理解整个问题，我们将使用一个简单的数据集，其中正例和负例是可分的。
 - en: 'Below are the points generated via `make_blobs()`:'
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是通过 `make_blobs()` 生成的点：
 - en: Python
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE13]'
+  id: totrans-152
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '[![](../Images/d7b12af690efcde3c5b1ac891ad4092a.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/svm3.png)'
+  id: totrans-153
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/d7b12af690efcde3c5b1ac891ad4092a.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/svm3.png)'
 - en: Now let’s define different values of C and run the code.
+  id: totrans-154
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们定义不同的 C 值并运行代码。
 - en: Python
+  id: totrans-155
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE14]'
+  id: totrans-156
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '[![](../Images/0ac6abb53632bf1496bf8a6208fe9d14.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/svm4.png)Comments
     on the Result'
+  id: totrans-157
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[![](../Images/0ac6abb53632bf1496bf8a6208fe9d14.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/svm4.png)对结果的评论'
 - en: The above is a nice example, which shows that increasing $C$, decreases the
     margin. A high value of $C$ adds a stricter penalty on errors. A smaller value
     allows a wider margin and more misclassification errors. Hence, $C$ defines a
     tradeoff between the maximization of margin and classification errors.
+  id: totrans-158
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述例子很好地展示了当 $C$ 增加时，边界变小。较高的 $C$ 值对错误施加了更严格的惩罚。较小的值允许更宽的边界和更多的错误分类。因此，$C$ 定义了边界最大化和分类错误之间的权衡。
 - en: Consolidated Code
+  id: totrans-159
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 整合代码
 - en: Here is the consolidated code, that you can paste in your Python file and run
     it at your end. You can experiment with different values of $C$ and try out the
     different optimization methods given as arguments to the `minimize()` function.
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是整合后的代码，你可以将其粘贴到你的 Python 文件中并在本地运行。你可以尝试不同的 $C$ 值，并尝试 `minimize()` 函数中作为参数给出的不同优化方法。
 - en: Python
+  id: totrans-161
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE15]'
+  id: totrans-162
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Further Reading
+  id: totrans-163
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解，可以参考这些资源。
 - en: Books
+  id: totrans-165
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Pattern Recognition and Machine Learning](https://www.amazon.com/Pattern-Recognition-Learning-Information-Statistics/dp/0387310738)
     by Christopher M. Bishop'
+  id: totrans-166
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[模式识别与机器学习](https://www.amazon.com/Pattern-Recognition-Learning-Information-Statistics/dp/0387310738)
+    由 Christopher M. Bishop 著'
 - en: Articles
+  id: totrans-167
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[Support Vector Machines for Machine Learning](https://machinelearningmastery.com/support-vector-machines-for-machine-learning/)'
+  id: totrans-168
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[机器学习中的支持向量机](https://machinelearningmastery.com/support-vector-machines-for-machine-learning/)'
 - en: '[A Tutorial on Support Vector Machines for Pattern Recognition](https://www.di.ens.fr/~mallat/papiers/svmtutorial.pdf)
     by Christopher J.C. Burges'
+  id: totrans-169
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[支持向量机模式识别教程](https://www.di.ens.fr/~mallat/papiers/svmtutorial.pdf) 由 Christopher
+    J.C. Burges 著'
 - en: API Reference
+  id: totrans-170
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: API 参考
 - en: '[SciPy’s optimization library](https://docs.scipy.org/doc/scipy/reference/tutorial/optimize.html)'
+  id: totrans-171
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[SciPy 的优化库](https://docs.scipy.org/doc/scipy/reference/tutorial/optimize.html)'
 - en: '[Scikit-learn’s sample generation library (sklearn.datasets)](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.datasets)'
+  id: totrans-172
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Scikit-learn 的样本生成库 (sklearn.datasets)](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.datasets)'
 - en: '[NumPy random number generator](https://numpy.org/doc/stable/reference/random/generated/numpy.random.rand.html)'
+  id: totrans-173
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[NumPy 随机数生成器](https://numpy.org/doc/stable/reference/random/generated/numpy.random.rand.html)'
 - en: Summary
+  id: totrans-174
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you discovered how to implement an SVM classifier from scratch.
+  id: totrans-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学会了如何从头开始实现 SVM 分类器。
 - en: 'Specifically, you learned:'
+  id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to write the objective function and constraints for the SVM optimization
     problem
+  id: totrans-177
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为 SVM 优化问题编写目标函数和约束
 - en: How to write code to determine the hyperplane from Lagrange multipliers
+  id: totrans-178
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何编写代码从拉格朗日乘子确定超平面
 - en: The effect of C on determining the margin
+  id: totrans-179
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: C 对确定边界的影响
 - en: Do you have any questions about SVMs discussed in this post? Ask your questions
     in the comments below and I will do my best to answer.
+  id: totrans-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 你对本文讨论的支持向量机（SVM）有任何问题吗？在下面的评论中提问，我会尽力回答。

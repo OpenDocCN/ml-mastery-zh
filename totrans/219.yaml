@@ -1,686 +1,1079 @@
 - en: Lagrange Multiplier Approach with Inequality Constraints
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 具有不等式约束的拉格朗日乘子法
 - en: 原文：[https://machinelearningmastery.com/lagrange-multiplier-approach-with-inequality-constraints/](https://machinelearningmastery.com/lagrange-multiplier-approach-with-inequality-constraints/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/lagrange-multiplier-approach-with-inequality-constraints/](https://machinelearningmastery.com/lagrange-multiplier-approach-with-inequality-constraints/)
 - en: In a previous post, we introduced the [method of Lagrange multipliers](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)
     to find local minima or local maxima of a function with equality constraints.
     The same method can be applied to those with inequality constraints as well.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在之前的文章中，我们介绍了[拉格朗日乘子法](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)用于寻找具有等式约束的函数的局部最小值或最大值。同样的方法也可以应用于具有不等式约束的情况。
 - en: In this tutorial, you will discover the method of Lagrange multipliers applied
     to find the local minimum or maximum of a function when inequality constraints
     are present, optionally together with equality constraints.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您将发现拉格朗日乘子法应用于当存在不等式约束时寻找函数的局部最小值或最大值的方法，也可以与等式约束一起使用。
 - en: After completing this tutorial, you will know
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将了解
 - en: How to find points of local maximum or minimum of a function with equality constraints
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何找到具有等式约束的函数的局部最大值或最小值
 - en: Method of Lagrange multipliers with equality constraints
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 具有等式约束的拉格朗日乘子法
 - en: Let’s get started.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![Lagrange Multiplier Approach with Inequality Constraints](../Images/3bcfc4cf00942cfcadcc9024019a6378.png)'
+  id: totrans-8
   prefs: []
   type: TYPE_IMG
+  zh: '![具有不等式约束的拉格朗日乘子法](../Images/3bcfc4cf00942cfcadcc9024019a6378.png)'
 - en: Lagrange Multiplier Approach with Inequality Constraints
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 具有不等式约束的拉格朗日乘子法
 - en: Photo by [Christine Roy](https://unsplash.com/@agent_illustrateur), some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Christine Roy](https://unsplash.com/@agent_illustrateur) 提供，保留所有权利。
 - en: Prerequisites
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 前提条件
 - en: 'For this tutorial, we assume that you already have reviewed:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设您已审阅：
 - en: '[Derivative of functions](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives/)'
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[函数的导数](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives/)'
 - en: '[Function of several variables, partial derivatives and gradient vectors](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[多个变量的函数、偏导数和梯度向量](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
 - en: '[A gentle introduction to optimization](https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming)'
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[优化的温和介绍](https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming)'
 - en: '[Gradient descent](https://machinelearningmastery.com/a-gentle-introduction-to-gradient-descent-procedure)'
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[梯度下降](https://machinelearningmastery.com/a-gentle-introduction-to-gradient-descent-procedure)'
 - en: as well as
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 以及
 - en: '[A Gentle Introduction To Method Of Lagrange Multipliers](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[拉格朗日乘子法的温和介绍](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)'
 - en: You can review these concepts by clicking on the links above.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以通过点击上述链接来回顾这些概念。
 - en: Constrained Optimization and Lagrangians
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 受限优化和拉格朗日函数
 - en: Extending from our [previous post](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/),
     a constrained optimization problem can be generally considered as
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 从我们[之前的帖子](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)扩展，受限优化问题通常可以看作是
 - en: $$
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: \min && f(X) \\
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: \min && f(X) \\
 - en: \textrm{subject to} && g(X) &= 0 \\
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: \textrm{subject to} && g(X) &= 0 \\
 - en: '&& h(X) &\ge 0 \\'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '&& h(X) &\ge 0 \\'
 - en: '&& k(X) &\le 0'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '&& k(X) &\le 0'
 - en: \end{aligned}
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: where $X$ is a scalar or vector values. Here, $g(X)=0$ is the equality constraint,
     and $h(X)\ge 0$, $k(X)\le 0$ are inequality constraints. Note that we always use
     $\ge$ and $\le$ rather than $\gt$ and $\lt$ in optimization problems because the
     former defined a **closed set** in mathematics from where we should look for the
     value of $X$. These can be many constraints of each type in an optimization problem.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中 $X$ 是标量或向量值。这里，$g(X)=0$ 是等式约束，而 $h(X)\ge 0$，$k(X)\le 0$ 是不等式约束。请注意，我们在优化问题中总是使用
+    $\ge$ 和 $\le$，而不是 $\gt$ 和 $\lt$，因为前者定义了数学中的**闭集**，我们应该从中寻找 $X$ 的值。这些约束在优化问题中可以有很多种。
 - en: 'The equality constraints are easy to handle but the inequality constraints
     are not. Therefore, one way to make it easier to tackle is to convert the inequalities
     into equalities, by introducing **slack variables**:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 等式约束易于处理，但不等式约束则不然。因此，简化处理的一种方法是将不等式转化为等式，引入**松弛变量**：
 - en: $$
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: \min && f(X) \\
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: \min && f(X) \\
 - en: \textrm{subject to} && g(X) &= 0 \\
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: \textrm{subject to} && g(X) &= 0 \\
 - en: '&& h(X) – s^2 &= 0 \\'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '&& h(X) – s^2 &= 0 \\'
 - en: '&& k(X) + t^2 &= 0'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '&& k(X) + t^2 &= 0'
 - en: \end{aligned}
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: When something is negative, adding a certain positive quantity into it will
     make it equal to zero, and vice versa. That quantity is the slack variable; the
     $s^2$ and $t^2$ above are examples. We deliberately put $s^2$ and $t^2$ terms
     there to denote that they must not be negative.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 当某些事物是负的时候，向其添加一定的正量将使其等于零，反之亦然。这个量就是松弛变量；上述的$s^2$和$t^2$就是例子。我们特意将$s^2$和$t^2$项放在那里以表示它们不能为负。
 - en: 'With the slack variables introduced, we can use the Lagrange multipliers approach
     to solve it, in which the Lagrangian is defined as:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 引入松弛变量后，我们可以使用拉格朗日乘子法来解决问题，其中拉格朗日函数定义如下：
 - en: $$
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: L(X, \lambda, \theta, \phi) = f(X) – \lambda g(X) – \theta (h(X)-s^2) + \phi
     (k(X)+t^2)
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: L(X, \lambda, \theta, \phi) = f(X) – \lambda g(X) – \theta (h(X)-s^2) + \phi
+    (k(X)+t^2)
 - en: $$
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: It is useful to know that, for the optimal solution $X^*$ to the problem, the
     inequality constraints are either having the equality holds (which the slack variable
     is zero), or not. For those inequality constraints with their equality hold are
     called the active constraints. Otherwise, the inactive constraints. In this sense,
     you can consider that the equality constraints are always active.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 了解对于问题的最优解$X^*$来说，不等式约束要么等式成立（此时松弛变量为零），要么不成立是很有用的。这些等式成立的不等式约束被称为激活约束。否则，是非激活约束。从这个意义上说，你可以认为等式约束总是激活的。
 - en: The Complementary Slackness Condition
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 互补松弛条件
 - en: 'The reason we need to know whether a constraint is active or not is because
     of the Krush-Kuhn-Tucker (KKT) conditions. Precisely, the KKT conditions describe
     what happens when $X^*$ is the optimal solution to a constrained optimization
     problem:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要知道约束条件是否处于激活状态，这是因为克拉斯-库恩-塔克 (KKT) 条件。准确地说，KKT 条件描述了在$X^*$是受约束优化问题的最优解时会发生什么：
 - en: The gradient of the Lagrangian function is zero
+  id: totrans-48
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 拉格朗日函数的梯度为零
 - en: All constraints are satisfied
+  id: totrans-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 所有约束条件均满足
 - en: The inequality constraints satisfied complementary slackness condition
+  id: totrans-50
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 不等式约束满足互补松弛条件
 - en: The most important of them is the complementary slackness condition. While we
     learned that optimization problem with equality constraint can be solved using
     Lagrange multiplier which the gradient of the Lagrangian is zero at the optimal
     solution, the complementary slackness condition extends this to the case of inequality
     constraint by saying that at the optimal solution $X^*$, either the Lagrange multiplier
     is zero or the corresponding inequality constraint is active.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 最重要的是互补松弛条件。虽然我们了解到，通过等式约束的优化问题可以使用拉格朗日乘子来解决，即拉格朗日函数的梯度在最优解处为零，互补松弛条件通过说在最优解$X^*$处，要么拉格朗日乘子为零，要么对应的不等式约束是激活的，将此扩展到不等式约束的情况。
 - en: The use of complementary slackness condition is to help us explore different
     cases in solving the optimization problem. It is the best to be explained with
     an example.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用互补松弛条件有助于我们探索解决优化问题的不同情况。最好通过一个例子来解释。
 - en: 'Example 1: Mean-variance portfolio optimization'
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 示例1：均值-方差组合优化
 - en: This is an example from finance. If we have 1 dollar and were to engage in two
     different investments, in which their return is modeled as a bi-variate Gaussian
     distribution. How much should we invest in each to minimize the overall variance
     in return?
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个来自金融领域的例子。如果我们有1美元并且打算进行两种不同的投资，其中它们的回报被建模为双变量高斯分布。我们应该如何分配资金以最小化整体回报的方差？
 - en: 'This optimization problem, also known as Markowitz mean-variance portfolio
     optimization, is formulated as:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 此优化问题，也称为马尔科维茨均值-方差组合优化，可以表述为：
 - en: $$
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: \min && f(w_1, w_2) &= w_1^2\sigma_1^2+w_2^2\sigma_2^2+2w_1w_2\sigma_{12} \\
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: \min && f(w_1, w_2) &= w_1^2\sigma_1^2+w_2^2\sigma_2^2+2w_1w_2\sigma_{12} \\
 - en: \textrm{subject to} && w_1+w_2 &= 1 \\
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: \textrm{subject to} && w_1+w_2 &= 1 \\
 - en: '&& w_1 &\ge 0 \\'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '&& w_1 &\ge 0 \\'
 - en: '&& w_1 &\le 1'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '&& w_1 &\le 1'
 - en: \end{aligned}
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'which the last two are to bound the weight of each investment to between 0
     and 1 dollar. Let’s assume $\sigma_1^2=0.25$, $\sigma_2^2=0.10$, $\sigma_{12}
     = 0.15$ Then the Lagrangian function is defined as:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中最后两个约束用于将每项投资的权重限制在 0 到 1 美元之间。假设 $\sigma_1^2=0.25$，$\sigma_2^2=0.10$，$\sigma_{12}
+    = 0.15$，那么拉格朗日函数定义为：
 - en: $$
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: L(w_1,w_2,\lambda,\theta,\phi) =& 0.25w_1^2+0.1w_2^2+0.3w_1w_2 \\
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: L(w_1,w_2,\lambda,\theta,\phi) =& 0.25w_1^2+0.1w_2^2+0.3w_1w_2 \\
 - en: '&- \lambda(w_1+w_2-1) \\'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '&- \lambda(w_1+w_2-1) \\'
 - en: '&- \theta(w_1-s^2) – \phi(w_1-1+t^2)'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '&- \theta(w_1-s^2) – \phi(w_1-1+t^2)'
 - en: \end{aligned}
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'and we have the gradients:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们有梯度：
 - en: $$
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: \frac{\partial L}{\partial w_1} &= 0.5w_1+0.3w_2-\lambda-\theta-\phi \\
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial w_1} &= 0.5w_1+0.3w_2-\lambda-\theta-\phi \\
 - en: \frac{\partial L}{\partial w_2} &= 0.2w_2+0.3w_1-\lambda \\
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial w_2} &= 0.2w_2+0.3w_1-\lambda \\
 - en: \frac{\partial L}{\partial\lambda} &= 1-w_1-w_2 \\
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial\lambda} &= 1-w_1-w_2 \\
 - en: \frac{\partial L}{\partial\theta} &= s^2-w_1 \\
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial\theta} &= s^2-w_1 \\
 - en: \frac{\partial L}{\partial\phi} &= 1-w_1-t^2
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial\phi} &= 1-w_1-t^2
 - en: \end{aligned}
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'From this point onward, the complementary slackness condition have to be considered.
     We have two slack variables $s$ and $t$ and the corresponding Lagrange multipliers
     are $\theta$ and $\phi$. We now have to consider whether a slack variable is zero
     (which the corresponding inequality constraint is active) or the Lagrange multiplier
     is zero (the constraint is inactive). There are four possible cases:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 从这一点开始，必须考虑互补松弛条件。我们有两个松弛变量 $s$ 和 $t$，相应的拉格朗日乘子是 $\theta$ 和 $\phi$。现在我们需要考虑一个松弛变量是否为零（对应的不等式约束是激活的）或拉格朗日乘子是否为零（约束是不激活的）。有四种可能的情况：
 - en: $\theta=\phi=0$ and $s^2>0$, $t^2>0$
+  id: totrans-83
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $\theta=\phi=0$ 和 $s^2>0$，$t^2>0$
 - en: $\theta\ne 0$ but $\phi=0$, and $s^2=0$, $t^2>0$
+  id: totrans-84
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $\theta\ne 0$ 但 $\phi=0$，并且 $s^2=0$，$t^2>0$
 - en: $\theta=0$ but $\phi\ne 0$, and $s^2>0$, $t^2=0$
+  id: totrans-85
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $\theta=0$ 但 $\phi\ne 0$，并且 $s^2>0$，$t^2=0$
 - en: $\theta\ne 0$ and $\phi\ne 0$, and $s^2=t^2=0$
+  id: totrans-86
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $\theta\ne 0$ 和 $\phi\ne 0$，并且 $s^2=t^2=0$
 - en: For case 1, using $\partial L/\partial\lambda=0$, $\partial L/\partial w_1=0$
     and $\partial L/\partial w_2=0$ we get
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于案例 1，使用 $\partial L/\partial\lambda=0$，$\partial L/\partial w_1=0$ 和 $\partial
+    L/\partial w_2=0$ 我们得到
 - en: $$
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{align}
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{align}
 - en: w_2 &= 1-w_1 \\
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: w_2 &= 1-w_1 \\
 - en: 0.5w_1 + 0.3w_2 &= \lambda \\
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 0.5w_1 + 0.3w_2 &= \lambda \\
 - en: 0.3w_1 + 0.2w_2 &= \lambda
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 0.3w_1 + 0.2w_2 &= \lambda
 - en: \end{align}
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{align}
 - en: $$
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: which we get $w_1=-1$, $w_2=2$, $\lambda=0.1$. But with $\partial L/\partial\theta=0$,
     we get $s^2=-1$, which we cannot find a solution ($s^2$ cannot be negative). Thus
     this case is infeasible.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们得到 $w_1=-1$，$w_2=2$，$\lambda=0.1$。但通过 $\partial L/\partial\theta=0$，我们得到 $s^2=-1$，这没有解
+    ($s^2$ 不能为负)。因此这个案例不可行。
 - en: For case 2, with $\partial L/\partial\theta=0$ we get $w_1=0$. Hence from $\partial
     L/\partial\lambda=0$, we know $w_2=1$. And with $\partial L/\partial w_2=0$, we
     found $\lambda=0.2$ and from $\partial L/\partial w_1$ we get $\phi=0.1$. In this
     case, the objective function is 0.1
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于案例 2，通过 $\partial L/\partial\theta=0$ 我们得到 $w_1=0$。因此，从 $\partial L/\partial\lambda=0$
+    我们知道 $w_2=1$。并且通过 $\partial L/\partial w_2=0$，我们找到 $\lambda=0.2$，从 $\partial L/\partial
+    w_1$ 我们得到 $\phi=0.1$。在这种情况下，目标函数的值为 0.1
 - en: For case 3, with $\partial L/\partial\phi=0$ we get $w_1=1$. Hence from $\partial
     L/\partial\lambda=0$, we know $w_2=0$. And with $\partial L/\partial w_2=0$, we
     get $\lambda=0.3$ and from $\partial L/\partial w_1$ we get $\theta=0.2$. In this
     case, the objective function is 0.25
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于案例 3，通过 $\partial L/\partial\phi=0$ 我们得到 $w_1=1$。因此，从 $\partial L/\partial\lambda=0$
+    我们知道 $w_2=0$。并且通过 $\partial L/\partial w_2=0$，我们得到 $\lambda=0.3$，从 $\partial L/\partial
+    w_1$ 我们得到 $\theta=0.2$。在这种情况下，目标函数的值为 0.25
 - en: For case 4, we get $w_1=0$ from $\partial L/\partial\theta=0$ but $w_1=1$ from
     $\partial L/\partial\phi=0$. Hence this case is infeasible.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于案例 4，通过 $\partial L/\partial\theta=0$ 我们得到 $w_1=0$，但通过 $\partial L/\partial\phi=0$
+    我们得到 $w_1=1$。因此这个案例不可行。
 - en: Comparing the objective function from case 2 and case 3, we see that the value
     from case 2 is lower. Hence that is taken as our solution to the optimization
     problem, with the optimal solution attained at $w_1=0$, $w_2=1$.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 比较案例 2 和案例 3 的目标函数值，我们看到案例 2 的值更低。因此，我们将其作为优化问题的解，最优解为 $w_1=0$，$w_2=1$。
 - en: As an exercise, you can retry the above with $\sigma_{12}=-0.15$. The solution
     would be 0.0038 attained when $w_1=\frac{5}{13}$, with the two inequality constraints
     inactive.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为练习，你可以重新尝试上述问题，$\sigma_{12}=-0.15$。解决方案将是 0.0038，当 $w_1=\frac{5}{13}$，两个不等式约束不激活时。
 - en: Want to Get Started With Calculus for Machine Learning?
+  id: totrans-101
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始学习机器学习中的微积分吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费 7 天电子邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费 PDF 电子书版本。
 - en: 'Example 2: Water-filling algorithm'
+  id: totrans-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 示例 2：水填充算法
 - en: This is an example from communication engineering. If we have a channel (say,
     a wireless bandwidth) in which the noise power is $N$ and the signal power is
     $S$, the channel capacity (in terms of bits per second) is proportional to $\log_2(1+S/N)$.
     If we have $k$ similar channels, each has its own noise and signal level, the
     total capacity of all channels is the sum $\sum_i \log_2(1+S_i/N_i)$.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个来自通信工程的例子。如果我们有一个信道（例如，一个无线带宽），其噪声功率为 $N$，信号功率为 $S$，则信道容量（以每秒比特数计）与 $\log_2(1+S/N)$
+    成正比。如果我们有 $k$ 个类似的信道，每个信道都有其自身的噪声和信号水平，则所有信道的总容量是 $\sum_i \log_2(1+S_i/N_i)$ 的总和。
 - en: Assume we are using a battery that can give only 1 watt of power and this power
     have to distribute to the $k$ channels (denoted as $p_1,\cdots,p_k$). Each channel
     may have different attenuation so at the end, the signal power is discounted by
     a gain $g_i$ for each channel. Then the maximum total capacity we can achieve
     by using these $k$ channels is formulated as an optimization problem
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们使用的电池只能提供 1 瓦特的功率，这个功率必须分配到 $k$ 个信道（记作 $p_1,\cdots,p_k$）。每个信道可能有不同的衰减，因此最终，信号功率会被每个信道的增益
+    $g_i$ 折扣。然后，利用这 $k$ 个信道可以达到的最大总容量被表述为一个优化问题
 - en: $$
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: \max && f(p_1,\cdots,p_k) &= \sum_{i=1}^k \log_2\left(1+\frac{g_ip_i}{n_i}\right)
     \\
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: \max && f(p_1,\cdots,p_k) &= \sum_{i=1}^k \log_2\left(1+\frac{g_ip_i}{n_i}\right)
+    \\
 - en: \textrm{subject to} && \sum_{i=1}^k p_i &= 1 \\
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: \textrm{受限于} && \sum_{i=1}^k p_i &= 1 \\
 - en: '&& p_1,\cdots,p_k &\ge 0 \\'
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: '&& p_1,\cdots,p_k &\ge 0 \\'
 - en: \end{aligned}
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: For convenience of differentiation, we notice $\log_2x=\log x/\log 2$ and $\log(1+g_ip_i/n_i)=\log(n_i+g_ip_i)-\log(n_i)$,
     hence the objective function can be replaced with
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了方便微分，我们注意到 $\log_2x=\log x/\log 2$ 和 $\log(1+g_ip_i/n_i)=\log(n_i+g_ip_i)-\log(n_i)$，因此目标函数可以替换为
 - en: $$
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: f(p_1,\cdots,p_k) = \sum_{i=1}^k \log(n_i+g_ip_i)
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: f(p_1,\cdots,p_k) = \sum_{i=1}^k \log(n_i+g_ip_i)
 - en: $$
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: Assume we have $k=3$ channels, each has noise level of 1.0, 0.9, 1.0 respectively,
     and the channel gain is 0.9, 0.8, 0.7, then the optimization problem is
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们有 $k=3$ 个信道，每个信道的噪声水平分别为 1.0、0.9、1.0，信道增益为 0.9、0.8、0.7，则优化问题为
 - en: $$
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: \max && f(p_1,p_2,p_k) &= \log(1+0.9p_1) + \log(0.9+0.8p_2) + \log(1+0.7p_3)\\
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: \max && f(p_1,p_2,p_k) &= \log(1+0.9p_1) + \log(0.9+0.8p_2) + \log(1+0.7p_3)\\
 - en: \textrm{subject to} && p_1+p_2+p_3 &= 1 \\
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: \textrm{受限于} && p_1+p_2+p_3 &= 1 \\
 - en: '&& p_1,p_2,p_3 &\ge 0'
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: '&& p_1,p_2,p_3 &\ge 0'
 - en: \end{aligned}
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: We have three inequality constraints here. The Lagrangian function is defined
     as
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们这里有三个不等式约束。拉格朗日函数定义为
 - en: $$
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: '& L(p_1,p_2,p_3,\lambda,\theta_1,\theta_2,\theta_3) \\'
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: '& L(p_1,p_2,p_3,\lambda,\theta_1,\theta_2,\theta_3) \\'
 - en: =\ & \log(1+0.9p_1) + \log(0.9+0.8p_2) + \log(1+0.7p_3) \\
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: =\ & \log(1+0.9p_1) + \log(0.9+0.8p_2) + \log(1+0.7p_3) \\
 - en: '& – \lambda(p_1+p_2+p_3-1) \\'
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: '& – \lambda(p_1+p_2+p_3-1) \\'
 - en: '& – \theta_1(p_1-s_1^2) – \theta_2(p_2-s_2^2) – \theta_3(p_3-s_3^2)'
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: '& – \theta_1(p_1-s_1^2) – \theta_2(p_2-s_2^2) – \theta_3(p_3-s_3^2)'
 - en: \end{aligned}
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: The gradient is therefore
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 梯度因此为
 - en: $$
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: \frac{\partial L}{\partial p_1} & = \frac{0.9}{1+0.9p_1}-\lambda-\theta_1 \\
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial p_1} & = \frac{0.9}{1+0.9p_1}-\lambda-\theta_1 \\
 - en: \frac{\partial L}{\partial p_2} & = \frac{0.8}{0.9+0.8p_2}-\lambda-\theta_2
     \\
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial p_2} & = \frac{0.8}{0.9+0.8p_2}-\lambda-\theta_2
+    \\
 - en: \frac{\partial L}{\partial p_3} & = \frac{0.7}{1+0.7p_3}-\lambda-\theta_3 \\
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial p_3} & = \frac{0.7}{1+0.7p_3}-\lambda-\theta_3 \\
 - en: \frac{\partial L}{\partial\lambda} &= 1-p_1-p_2-p_3 \\
+  id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial\lambda} &= 1-p_1-p_2-p_3 \\
 - en: \frac{\partial L}{\partial\theta_1} &= s_1^2-p_1 \\
+  id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial\theta_1} &= s_1^2-p_1 \\
 - en: \frac{\partial L}{\partial\theta_2} &= s_2^2-p_2 \\
+  id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial\theta_2} &= s_2^2-p_2 \\
 - en: \frac{\partial L}{\partial\theta_3} &= s_3^2-p_3 \\
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial\theta_3} &= s_3^2-p_3 \\
 - en: \end{aligned}
+  id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-146
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'But now we have 3 slack variables and we have to consider 8 cases:'
+  id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 但现在我们有 3 个松弛变量，需要考虑 8 种情况：
 - en: $\theta_1=\theta_2=\theta_3=0$, hence none of $s_1^2,s_2^2,s_3^2$ are zero
+  id: totrans-148
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $\theta_1=\theta_2=\theta_3=0$，因此 $s_1^2,s_2^2,s_3^2$ 均非零
 - en: $\theta_1=\theta_2=0$ but $\theta_3\ne 0$, hence only $s_3^2=0$
+  id: totrans-149
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $\theta_1=\theta_2=0$ 但 $\theta_3\ne 0$，因此仅有 $s_3^2=0$
 - en: $\theta_1=\theta_3=0$ but $\theta_2\ne 0$, hence only $s_2^2=0$
+  id: totrans-150
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $\theta_1=\theta_3=0$ 但 $\theta_2\ne 0$，因此仅有 $s_2^2=0$
 - en: $\theta_2=\theta_3=0$ but $\theta_1\ne 0$, hence only $s_1^2=0$
+  id: totrans-151
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $\theta_2=\theta_3=0$ 但 $\theta_1\ne 0$，因此仅有 $s_1^2=0$
 - en: $\theta_1=0$ but $\theta_2,\theta_3$ non-zero, hence only $s_2^2=s_3^2=0$
+  id: totrans-152
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $\theta_1=0$ 但 $\theta_2,\theta_3$ 非零，因此仅有 $s_2^2=s_3^2=0$
 - en: $\theta_2=0$ but $\theta_1,\theta_3$ non-zero, hence only $s_1^2=s_3^2=0$
+  id: totrans-153
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $\theta_2=0$ 但 $\theta_1,\theta_3$ 非零，因此仅有 $s_1^2=s_3^2=0$
 - en: $\theta_3=0$ but $\theta_1,\theta_2$ non-zero, hence only $s_1^2=s_2^2=0$
+  id: totrans-154
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $\theta_3=0$ 但 $\theta_1,\theta_2$ 非零，因此仅有 $s_1^2=s_2^2=0$
 - en: all of $\theta_1,\theta_2,\theta_3$ are non-zero, hence $s_1^2=s_2^2=s_3^2=0$
+  id: totrans-155
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 所有的 $\theta_1,\theta_2,\theta_3$ 都非零，因此 $s_1^2=s_2^2=s_3^2=0$
 - en: Immediately we can tell case 8 is infeasible since from $\partial L/\partial\theta_i=0$
     we can make $p_1=p_2=p_3=0$ but it cannot make $\partial L/\partial\lambda=0$.
+  id: totrans-156
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以立即得出案例 8 不可行，因为从 $\partial L/\partial\theta_i=0$ 我们可以使 $p_1=p_2=p_3=0$，但无法使
+    $\partial L/\partial\lambda=0$。
 - en: For case 1, we have
+  id: totrans-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于案例 1，我们有
 - en: $$
+  id: totrans-158
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \frac{0.9}{1+0.9p_1}=\frac{0.8}{0.9+0.8p_2}=\frac{0.7}{1+0.7p_3}=\lambda
+  id: totrans-159
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{0.9}{1+0.9p_1}=\frac{0.8}{0.9+0.8p_2}=\frac{0.7}{1+0.7p_3}=\lambda
 - en: $$
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: from $\partial L/\partial p_1=\partial L/\partial p_2=\partial L/\partial p_3=0$.
     Together with $p_3=1-p_1-p_2$ from $\partial L/\partial\lambda=0$, we found the
     solution to be $p_1=0.444$, $p_2=0.430$, $p_3=0.126$, and the objective function
     $f(p_1,p_2,p_3)=0.639$.
+  id: totrans-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 从 $\partial L/\partial p_1=\partial L/\partial p_2=\partial L/\partial p_3=0$。结合
+    $p_3=1-p_1-p_2$ 从 $\partial L/\partial\lambda=0$，我们找到解为 $p_1=0.444$，$p_2=0.430$，$p_3=0.126$，目标函数
+    $f(p_1,p_2,p_3)=0.639$。
 - en: For case 2, we have $p_3=0$ from $\partial L/\partial\theta_3=0$. Further, using
     $p_2=1-p_1$ from $\partial L/\partial\lambda=0$, and
+  id: totrans-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于案例 2，我们有 $p_3=0$ 从 $\partial L/\partial\theta_3=0$。进一步，使用 $p_2=1-p_1$ 从 $\partial
+    L/\partial\lambda=0$，以及
 - en: $$
+  id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \frac{0.9}{1+0.9p_1}=\frac{0.8}{0.9+0.8p_2}=\lambda
+  id: totrans-164
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{0.9}{1+0.9p_1}=\frac{0.8}{0.9+0.8p_2}=\lambda
 - en: $$
+  id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: from $\partial L/\partial p_1=\partial L/\partial p_2=0$, we can solve for $p_1=0.507$
     and $p_2=0.493$. The objective function $f(p_1,p_2,p_3)=0.634$.
+  id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 从 $\partial L/\partial p_1=\partial L/\partial p_2=0$，我们可以解得 $p_1=0.507$ 和 $p_2=0.493$。目标函数
+    $f(p_1,p_2,p_3)=0.634$。
 - en: Similarly in case 3, $p_2=0$ and we solved $p_1=0.659$ and $p_3=0.341$, with
     the objective function $f(p_1,p_2,p_3)=0.574$.
+  id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样在案例 3 中，$p_2=0$，我们解得 $p_1=0.659$ 和 $p_3=0.341$，目标函数 $f(p_1,p_2,p_3)=0.574$。
 - en: In case 4, we have $p_1=0$, $p_2=0.652$, $p_3=0.348$, and the objective function
     $f(p_1,p_2,p_3)=0.570$.
+  id: totrans-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 在案例 4 中，我们有 $p_1=0$，$p_2=0.652$，$p_3=0.348$，目标函数 $f(p_1,p_2,p_3)=0.570$。
 - en: Case 5 we have $p_2=p_3=0$ and hence $p_3=1$. Thus we have the objective function
     $f(p_1,p_2,p_3)=0.0.536$.
+  id: totrans-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 案例 5 中我们有 $p_2=p_3=0$，因此 $p_3=1$。因此我们有目标函数 $f(p_1,p_2,p_3)=0.0.536$。
 - en: Similarly in case 6 and case 7, we have $p_2=1$ and $p_1=1$ respectively. The
     objective function attained 0.531 and 0.425 respectively.
+  id: totrans-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样在案例 6 和案例 7 中，我们分别有 $p_2=1$ 和 $p_1=1$。目标函数分别为 0.531 和 0.425。
 - en: Comparing all these cases, we found that the maximum value that the objective
     function attained is in case 1\. Hence the solution to this optimization problem
     is
+  id: totrans-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 比较所有这些情况，我们发现目标函数的最大值出现在案例 1。因此，该优化问题的解是
 - en: $p_1=0.444$, $p_2=0.430$, $p_3=0.126$, with $f(p_1,p_2,p_3)=0.639$.
+  id: totrans-172
   prefs: []
   type: TYPE_NORMAL
+  zh: $p_1=0.444$，$p_2=0.430$，$p_3=0.126$，目标函数 $f(p_1,p_2,p_3)=0.639$。
 - en: Extensions and Further Reading
+  id: totrans-173
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 扩展阅读
 - en: While in the above example, we introduced the slack variables into the Lagrangian
     function, some books may prefer not to add the slack variables but to limit the
     Lagrange multipliers for inequality constraints as positive. In that case you
     may see the Lagrangian function written as
+  id: totrans-174
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述例子中，我们将松弛变量引入了拉格朗日函数，一些书籍可能更倾向于不添加松弛变量，而是将拉格朗日乘子限制为正值。在这种情况下，你可能会看到拉格朗日函数写作
 - en: $$
+  id: totrans-175
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: L(X, \lambda, \theta, \phi) = f(X) – \lambda g(X) – \theta h(X) + \phi k(X)
+  id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: L(X, \lambda, \theta, \phi) = f(X) – \lambda g(X) – \theta h(X) + \phi k(X)
 - en: $$
+  id: totrans-177
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: but requires $\theta\ge 0;\phi\ge 0$.
+  id: totrans-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 但需要 $\theta\ge 0;\phi\ge 0$。
 - en: The Lagrangian function is also useful to apply to primal-dual approach for
     finding the maximum or minimum. This is particularly helpful if the objectives
     or constraints are non-linear, which the solution may not be easily found.
+  id: totrans-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 拉格朗日函数在原对偶方法中也很有用，用于找到最大值或最小值。如果目标或约束是非线性的，这特别有帮助，因为解决方案可能不容易找到。
 - en: 'Some books that covers this topic are:'
+  id: totrans-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些涵盖此主题的书籍包括：
 - en: '[Convex Optimization](https://amzn.com/0521833787) by Stephen Boyd and Lieven
     Vandenberghe, 2004'
+  id: totrans-181
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[凸优化](https://amzn.com/0521833787) 由 Stephen Boyd 和 Lieven Vandenberghe 著，2004'
 - en: Chapter 4 of [Deep Learning](https://amzn.com/0262035618) by Ian Goodfellow
     et al, 2016
+  id: totrans-182
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习](https://amzn.com/0262035618) 第四章，作者 Ian Goodfellow 等，2016'
 - en: Summary
+  id: totrans-183
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you discovered how the method of Lagrange multipliers can
     be applied to inequality constraints. Specifically, you learned:'
+  id: totrans-184
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了如何将拉格朗日乘子方法应用于不等式约束。具体而言，你学到了：
 - en: Lagrange multipliers and the Lagrange function in presence of inequality constraints
+  id: totrans-185
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 拉格朗日乘子和拉格朗日函数在不等式约束存在时
 - en: How to use KKT conditions to solve an optimization problem when inequality constraints
     are given
+  id: totrans-186
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何利用 KKT 条件解决给定不等式约束的优化问题

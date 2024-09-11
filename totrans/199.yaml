@@ -1,12 +1,16 @@
 - en: How to Implement Scaled Dot-Product Attention from Scratch in TensorFlow and
     Keras
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何在 TensorFlow 和 Keras 中从零开始实现缩放点积注意力
 - en: 原文：[https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras/](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras/](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras/)
 - en: Having familiarized ourselves with the theory behind the [Transformer model](https://machinelearningmastery.com/the-transformer-model/)
     and its [attention mechanism](https://machinelearningmastery.com/the-transformer-attention-mechanism/),
     we’ll start our journey of implementing a complete Transformer model by first
@@ -15,132 +19,202 @@
     an important component of both the Transformer encoder and decoder. Our end goal
     will be to apply the complete Transformer model to Natural Language Processing
     (NLP).
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在熟悉了 [Transformer 模型](https://machinelearningmastery.com/the-transformer-model/)
+    及其 [注意力机制](https://machinelearningmastery.com/the-transformer-attention-mechanism/)
+    的理论之后，我们将开始实现一个完整的 Transformer 模型，首先了解如何实现缩放点积注意力。缩放点积注意力是多头注意力的核心部分，而多头注意力又是
+    Transformer 编码器和解码器的重要组件。我们的最终目标是将完整的 Transformer 模型应用于自然语言处理（NLP）。
 - en: In this tutorial, you will discover how to implement scaled dot-product attention
     from scratch in TensorFlow and Keras.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将学习如何在 TensorFlow 和 Keras 中从零开始实现缩放点积注意力。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将知道：
 - en: The operations that form part of the scaled dot-product attention mechanism
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构成缩放点积注意力机制的一部分操作
 - en: How to implement the scaled dot-product attention mechanism from scratch
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从零开始实现缩放点积注意力机制
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请阅读我的书籍 [构建带有注意力的 Transformer 模型](https://machinelearningmastery.com/transformer-models-with-attention/)。它提供了**自学教程**和**实用代码**，指导你构建一个完全工作的
+    Transformer 模型。'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '*如何将句子从一种语言翻译成另一种语言*...'
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/8a5d9b579cb4921e621da8a05c7dd42b.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/dotproduct_cover.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/8a5d9b579cb4921e621da8a05c7dd42b.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/dotproduct_cover.jpg)'
 - en: How to implement scaled dot-product attention from scratch in TensorFlow and
     Keras
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何在 TensorFlow 和 Keras 中从零开始实现缩放点积注意力
 - en: Photo by [Sergey Shmidt](https://unsplash.com/photos/koy6FlCCy5s), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：[谢尔盖·施密特](https://unsplash.com/photos/koy6FlCCy5s)，版权所有。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是：
 - en: Recap of the Transformer Architecture
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 架构回顾
 - en: The Transformer Scaled Dot-Product Attention
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 缩放点积注意力
 - en: Implementing the Scaled Dot-Product Attention From Scratch
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从零开始实现缩放点积注意力
 - en: Testing Out the Code
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 代码测试
 - en: '**Prerequisites**'
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**前提条件**'
 - en: 'For this tutorial, we assume that you are already familiar with:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设你已经熟悉：
 - en: '[The concept of attention](https://machinelearningmastery.com/what-is-attention/)'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[注意力的概念](https://machinelearningmastery.com/what-is-attention/)'
 - en: '[The attention mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[注意力机制](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
 - en: '[The Transfomer attention mechanism](https://machinelearningmastery.com/the-transformer-attention-mechanism)'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 注意力机制](https://machinelearningmastery.com/the-transformer-attention-mechanism)'
 - en: '[The Transformer model](https://machinelearningmastery.com/the-transformer-model/)'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 模型](https://machinelearningmastery.com/the-transformer-model/)'
 - en: '**Recap of the Transformer Architecture**'
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Transformer 架构回顾**'
 - en: '[Recall](https://machinelearningmastery.com/the-transformer-model/) having
     seen that the Transformer architecture follows an encoder-decoder structure. The
     encoder, on the left-hand side, is tasked with mapping an input sequence to a
     sequence of continuous representations; the decoder, on the right-hand side, receives
     the output of the encoder together with the decoder output at the previous time
     step to generate an output sequence.'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '[回忆起](https://machinelearningmastery.com/the-transformer-model/) 见过 Transformer
+    架构遵循编码器-解码器结构。编码器位于左侧，负责将输入序列映射到一系列连续表示；解码器位于右侧，接收编码器的输出以及前一时间步的解码器输出，生成输出序列。'
 - en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
 - en: The encoder-decoder structure of the Transformer architecture
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 架构的编码器-解码器结构
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 取自 “[注意力机制是你所需要的](https://arxiv.org/abs/1706.03762)”
 - en: In generating an output sequence, the Transformer does not rely on recurrence
     and convolutions.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 在生成输出序列时，Transformer 不依赖于递归和卷积。
 - en: You have seen that the decoder part of the Transformer shares many similarities
     in its architecture with the encoder. One of the core components that both the
     encoder and decoder share within their multi-head attention blocks is the *scaled
     dot-product attention*.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 您已经看到 Transformer 的解码器部分在其架构中与编码器有许多相似之处。在它们的多头注意力块内，编码器和解码器共享的核心组件之一是*缩放点积注意力*。
 - en: '**The Transformer Scaled Dot-Product Attention**'
+  id: totrans-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**Transformer 缩放点积注意力机制**'
 - en: First, [recall](https://machinelearningmastery.com/the-transformer-attention-mechanism/)
     the queries, keys, and values as the important components you will work with.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，[回想一下](https://machinelearningmastery.com/the-transformer-attention-mechanism/)
+    查询（queries）、键（keys）和值（values）作为你将要处理的重要组件。
 - en: In the encoder stage, they each carry the same input sequence after this has
     been embedded and augmented by positional information. Similarly, on the decoder
     side, the queries, keys, and values fed into the first attention block represent
@@ -150,8 +224,11 @@
     the first attention block as the queries. The dimensionality of the queries and
     keys is denoted by $d_k$, whereas the dimensionality of the values is denoted
     by $d_v$.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在编码器阶段，它们在嵌入并通过位置信息增强之后携带相同的输入序列。类似地，在解码器侧，进入第一个注意力块的查询、键和值代表同样经过嵌入和通过位置信息增强的目标序列。解码器的第二个注意力块接收编码器输出作为键和值，并接收第一个注意力块的归一化输出作为查询。查询和键的维度由
+    $d_k$ 表示，而值的维度由 $d_v$ 表示。
 - en: 'The scaled dot-product attention receives these queries, keys, and values as
     inputs and first computes the dot-product of the queries with the keys. The result
     is subsequently scaled by the square root of $d_k$, producing the attention scores.
@@ -160,37 +237,56 @@
     multiplication operation. This entire process can be explained mathematically
     as follows, where $\mathbf{Q}$, $\mathbf{K}$ and $\mathbf{V}$ denote the queries,
     keys, and values, respectively:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 缩放点积注意力将这些查询、键和值作为输入，并首先计算查询与键的点积。然后结果被 $d_k$ 的平方根缩放，生成注意力分数。然后将它们输入 softmax
+    函数，得到一组注意力权重。最后，注意力权重通过加权乘法操作来缩放值。整个过程可以用数学方式解释如下，其中 $\mathbf{Q}$、$\mathbf{K}$
+    和 $\mathbf{V}$ 分别表示查询、键和值：
 - en: $$\text{attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax} \left(
     \frac{\mathbf{Q} \mathbf{K}^\mathsf{T}}{\sqrt{d_k}} \right) \mathbf{V}$$
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\text{attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax} \left(
+    \frac{\mathbf{Q} \mathbf{K}^\mathsf{T}}{\sqrt{d_k}} \right) \mathbf{V}$$
 - en: 'Each multi-head attention block in the Transformer model implements a scaled
     dot-product attention operation as shown below:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 模型中的每个多头注意力块实现了如下所示的缩放点积注意力操作：
 - en: '[![](../Images/4d8487f6c824c4eeb7ce4a062b8c6e14.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/dotproduct_1.png)'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/4d8487f6c824c4eeb7ce4a062b8c6e14.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/dotproduct_1.png)'
 - en: Scaled dot-product attention and multi-head attention
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 缩放点积注意力和多头注意力
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 取自“[注意力机制是你所需要的一切](https://arxiv.org/abs/1706.03762)”
 - en: You may note that the scaled dot-product attention can also apply a mask to
     the attention scores before feeding them into the softmax function.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可能注意到，在将注意力分数输入到softmax函数之前，缩放点积注意力也可以应用一个掩码。
 - en: Since the word embeddings are zero-padded to a specific sequence length, a *padding
     mask* needs to be introduced in order to prevent the zero tokens from being processed
     along with the input in both the encoder and decoder stages. Furthermore, a *look-ahead
     mask* is also required to prevent the decoder from attending to succeeding words,
     such that the prediction for a particular word can only depend on known outputs
     for the words that come before it.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于单词嵌入被零填充到特定的序列长度，需要引入一个*填充掩码*，以防止零令牌与编码器和解码器阶段的输入一起处理。此外，还需要一个*前瞻掩码*，以防止解码器关注后续单词，从而特定单词的预测只能依赖于其前面已知的单词输出。
 - en: These look-ahead and padding masks are applied inside the scaled dot-product
     attention set to -$\infty$ all the values in the input to the softmax function
     that should not be considered. For each of these large negative inputs, the softmax
@@ -199,224 +295,344 @@
     to the implementation of the [encoder](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)
     and [decoder](https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras)
     blocks in separate tutorials.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些前瞻和填充掩码应用于缩放点积注意力中，将输入到softmax函数中的所有值设置为-$\infty$，这些值不应考虑。对于每个这些大负输入，softmax函数将产生一个接近零的输出值，有效地屏蔽它们。当你进入单独的教程实现[编码器](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)和[解码器](https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras)块时，这些掩码的用途将变得更加清晰。
 - en: For the time being, let’s see how to implement the scaled dot-product attention
     from scratch in TensorFlow and Keras.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 暂时先看看如何在TensorFlow和Keras中从零开始实现缩放点积注意力。
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-45
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用注意力机制构建Transformer模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就免费获取我为期12天的电子邮件快速课程（带有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: '**Implementing the Scaled Dot-Product Attention from Scratch**'
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**从零开始实现缩放点积注意力**'
 - en: For this purpose, you will create a class called `DotProductAttention` that
     inherits from the `Layer` base class in Keras.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，您将创建一个名为`DotProductAttention`的类，该类继承自Keras中的`Layer`基类。
 - en: 'In it, you will create the class method, `call()`, that takes as input arguments
     the queries, keys, and values, as well as the dimensionality, $d_k$, and a mask
     (that defaults to `None`):'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 在其中，您将创建类方法`call()`，该方法接受查询、键和值作为输入参数，还有维度$d_k$和一个掩码（默认为`None`）：
 - en: Python
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The first step is to perform a dot-product operation between the queries and
     the keys, transposing the latter. The result will be scaled through a division
     by the square root of $d_k$. You will add the following line of code to the `call()`
     class method:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一步是在查询和键之间执行点积运算，然后转置后者。结果将通过除以$d_k$的平方根进行缩放。您将在`call()`类方法中添加以下代码行：
 - en: Python
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Next, you will check whether the `mask` argument has been set to a value that
     is not the default `None`.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，您将检查`mask`参数是否已设置为非默认值`None`。
 - en: 'The mask will contain either `0` values to indicate that the corresponding
     token in the input sequence should be considered in the computations or a `1` to
     indicate otherwise. The mask will be multiplied by -1e9 to set the `1` values
     to large negative numbers (remember having mentioned this in the previous section),
     subsequently applied to the attention scores:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 掩码将包含`0`值，表示应在计算中考虑输入序列中的相应标记，或者`1`表示相反。掩码将乘以-1e9以将`1`值设置为大负数（请记住在前一节中提到过这一点），然后应用于注意力分数：
 - en: Python
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The attention scores will then be passed through a softmax function to generate
     the attention weights:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，注意力分数将通过softmax函数传递以生成注意力权重：
 - en: Python
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The final step weights the values with the computed attention weights through
     another dot-product operation:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一步是通过另一个点积操作用计算出的注意力权重加权值：
 - en: Python
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The complete code listing is as follows:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码列表如下：
 - en: Python
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '**Testing Out the Code**'
+  id: totrans-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**测试代码**'
 - en: 'You will be working with the parameter values specified in the paper, [Attention
     Is All You Need](https://arxiv.org/abs/1706.03762), by Vaswani et al. (2017):'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将使用论文中指定的参数值，[Attention Is All You Need](https://arxiv.org/abs/1706.03762)，由Vaswani等人（2017年）：
 - en: Python
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'As for the sequence length and the queries, keys, and values, you will be working
     with dummy data for the time being until you arrive at the stage of [training
     the complete Transformer model](https://machinelearningmastery.com/training-the-transformer-model)
     in a separate tutorial, at which point you will use actual sentences. Similarly,
     for the mask,  leave it set to its default value for the time being:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 至于序列长度和查询、键、值，你将暂时使用虚拟数据，直到你在另一个教程中进入[训练完整 Transformer 模型](https://machinelearningmastery.com/training-the-transformer-model)的阶段，那时你将使用实际句子。同样，对于掩码，暂时将其保持为默认值：
 - en: Python
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: In the complete Transformer model, values for the sequence length and the queries,
     keys, and values will be obtained through a process of word tokenization and embedding.
     You will be covering this in a separate tutorial.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 在完整的 Transformer 模型中，序列长度及查询、键、值的值将通过词语标记化和嵌入过程获得。你将在另一个教程中覆盖这些内容。
 - en: 'Returning to the testing procedure, the next step is to create a new instance
     of the `DotProductAttention` class, assigning its output to the `attention` variable:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 回到测试过程，下一步是创建`DotProductAttention`类的新实例，将其输出分配给`attention`变量：
 - en: Python
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Since the `DotProductAttention` class inherits from the `Layer` base class,
     the `call()` method of the former will be automatically invoked by the magic `__call()__`
     method of the latter. The final step is to feed in the input arguments and print
     the result:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于`DotProductAttention`类继承自`Layer`基类，前者的`call()`方法将由后者的魔术`__call()__`方法自动调用。最后一步是输入参数并打印结果：
 - en: Python
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Tying everything together produces the following code listing:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 将一切结合起来产生以下代码列表：
 - en: Python
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Running this code produces an output of shape (*batch size*, *sequence length*,
     *values dimensionality*). Note that you will likely see a different output due
     to the random initialization of the queries, keys, and values.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行此代码会产生一个形状为 (*batch size*, *sequence length*, *values dimensionality*) 的输出。请注意，由于查询、键和值的随机初始化，你可能会看到不同的输出。
 - en: Python
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '**Further Reading**'
+  id: totrans-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多资源，如果你想深入了解这个话题。
 - en: '**Books**'
+  id: totrans-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019'
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深入学习 Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)，2019年'
 - en: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
     2021'
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[自然语言处理中的 Transformer](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798)，2021年'
 - en: '**Papers**'
+  id: totrans-94
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762)，2017年'
 - en: '**Summary**'
+  id: totrans-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered how to implement scaled dot-product attention
     from scratch in TensorFlow and Keras.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何在 TensorFlow 和 Keras 中从头实现缩放点积注意力机制。
 - en: 'Specifically, you learned:'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The operations that form part of the scaled dot-product attention mechanism
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 组成缩放点积注意力机制的一部分操作
 - en: How to implement the scaled dot-product attention mechanism from scratch
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从头实现缩放点积注意力机制
 - en: Do you have any questions?
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提问，我会尽力回答。

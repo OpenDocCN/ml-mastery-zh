@@ -1,405 +1,617 @@
 - en: The Power, Product and Quotient Rules
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 幂法则、乘积法则和商法则
 - en: 原文：[https://machinelearningmastery.com/the-power-product-and-quotient-rules/](https://machinelearningmastery.com/the-power-product-and-quotient-rules/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/the-power-product-and-quotient-rules/](https://machinelearningmastery.com/the-power-product-and-quotient-rules/)
 - en: Optimization, as one of the core processes in many machine learning algorithms,
     relies on the use of derivatives in order to decide in which manner to update
     a model’s parameter values, to maximize or minimize an objective function.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 优化作为许多机器学习算法中的核心过程之一，依赖于导数的使用，以决定如何更新模型的参数值，以最大化或最小化目标函数。
 - en: This tutorial will continue exploring the different techniques by which we can
     find the derivatives of functions. In particular, we will be exploring the power,
     product and quotient rules, which we can use to arrive to the derivatives of functions
     faster than if we had to find every derivative from first principles. Hence, for
     functions that are especially challenging, keeping such rules at hand to find
     their derivatives will become increasingly important.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程将继续探索我们可以用来找到函数导数的不同技术。特别是，我们将探索幂法则、乘积法则和商法则，这些规则可以帮助我们比从头开始逐一求导更快地得到函数的导数。因此，对于那些特别具有挑战性的函数，掌握这些规则以便找到它们的导数将变得越来越重要。
 - en: In this tutorial, you will discover the power, product and quotient rules to
     find the derivative of functions.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您将学习如何使用幂法则、乘积法则和商法则来求解函数的导数。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将了解：
 - en: The power rule to follow when finding the derivative of a variable base, raised
     to a fixed power.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在寻找一个变量基数（提升到固定幂）的导数时应遵循的幂法则。
 - en: How the product rule allows us to find the derivative of a function that is
     defined as the product of another two (or more) functions.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 乘积法则如何帮助我们找到一个函数的导数，该函数被定义为另两个（或更多）函数的乘积。
 - en: How the quotient rule allows us to find the derivative of a function that is
     the ratio of two differentiable functions.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 商法则如何帮助我们找到一个函数的导数，该函数是两个可微分函数的比值。
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/beec3f7ffffac3da4f4ad2d0b8dde97b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_cover-scaled.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/beec3f7ffffac3da4f4ad2d0b8dde97b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_cover-scaled.jpg)'
 - en: The Power, Product and Quotient Rules
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 幂法则、乘积法则和商法则
 - en: Photo by [Andreas M](https://unsplash.com/photos/vSN9eB6ghio), some rights reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Andreas M](https://unsplash.com/photos/vSN9eB6ghio)提供，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分，它们是：
 - en: The Power Rule
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 幂法则
 - en: The Product Rule
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 乘积法则
 - en: The Quotient Rule
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 商法则
 - en: '**The Power Rule**'
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**幂法则**'
 - en: If we have a variable base raised to a fixed power, the rule to follow in order
     to find its derivative is to bring down the power in front of the variable base,
     and then subtract the power by 1.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们有一个变量基数提升到固定幂，则寻找其导数的规则是将幂放在变量基数的前面，然后将幂减去 1。
 - en: 'For example, if we have the function, *f*(*x*) = *x**²*, of which we would
     like to find the derivative, we first bring down 2 in front of *x* and then reduce
     the power by 1:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，如果我们有函数 *f*(*x*) = *x**²*，我们想要找到它的导数，我们首先将 2 放在 *x* 前面，然后将幂减少 1：
 - en: '*f*(*x*) = *x**²*'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f*(*x*) = *x**²*'
 - en: '*f*’(*x*) = 2*x*'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f*’(*x*) = 2*x*'
 - en: 'For the purpose of understanding better where this rule comes from, let’s take
     the longer route and find the derivative of *f*(*x*) by starting from the definition
     of a derivative:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了更好地理解这个规则的来源，让我们走一条较长的路，从导数的定义出发来找到 *f*(*x*) 的导数：
 - en: '[![](../Images/cf52bb1e12ab928b800f3a3c25f0d739.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_1.png)'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/cf52bb1e12ab928b800f3a3c25f0d739.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_1.png)'
 - en: 'Here, we substitute for *f*(*x*) = *x**²* and then proceed to simplify the
     expression:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们用 *f*(*x*) = *x**²* 进行替代，然后简化表达式：
 - en: '[![](../Images/02bd702c3d2e1fe17e40f5387547c8ca.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_2.png)'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/02bd702c3d2e1fe17e40f5387547c8ca.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_2.png)'
 - en: As *h* approaches a value of 0, then this limit approaches 2*x*, which tallies
     with the result that we have obtained earlier using the power rule.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 当 *h* 接近 0 时，该极限接近 2*x*，这与我们之前使用幂法则获得的结果相符。
 - en: If applied to *f*(*x*) = *x*, the power rule give us a value of 1\. That is
     because, when we bring a value of 1 in front of *x*, and then subtract the power
     by 1, what we are left with is a value of 0 in the exponent. Since, *x*⁰ = 1,
     then *f*’(*x*) = (1) (*x*⁰)= 1.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果应用于 *f*(*x*) = *x*，幂法则给出的值是 1。这是因为，当我们将 1 带到 *x* 前面，然后将幂减去 1，我们剩下的是指数为 0 的值。由于
+    *x*⁰ = 1，所以 *f*’(*x*) = (1) (*x*⁰) = 1。
 - en: '*The best way to understand this derivative is to realize that f(x) = x is
     a line that fits the form y = mx + b because f(x) = x is the same as f(x) = 1x
     + 0 (or y = 1x + 0). The slope (m) of this line is 1, so the derivative equals
     1\. Or you can just memorize that the derivative of x is 1\. But if you forget
     both of these ideas, you can always use the power rule. *'
+  id: totrans-29
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*理解这个导数的最佳方法是意识到 f(x) = x 是一个符合 y = mx + b 形式的直线，因为 f(x) = x 与 f(x) = 1x +
+    0（或 y = 1x + 0）相同。这条直线的斜率（m）是 1，因此导数等于 1。或者你也可以记住 x 的导数是 1。如果你忘记了这两个观点，你总是可以使用幂法则。*'
 - en: ''
+  id: totrans-30
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Page 131, [Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
     2016.
+  id: totrans-31
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 第 131 页，[《傻瓜微积分》](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US)，2016。
 - en: 'The power rule can be applied to any power, be it positive, negative, or a
     fraction. We can also apply it to radical functions by first expressing their
     exponent (or power) as a fraction:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 幂法则适用于任何幂，无论是正数、负数还是分数。我们还可以通过首先将其指数（或幂）表示为分数来应用它到根函数上：
 - en: '*f*(*x*) = √*x* = *x*^(1/2)'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f*(*x*) = √*x* = *x*^(1/2)'
 - en: '*f’*(*x*) = (1 / 2) *x*^(-1/2)'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f’*(*x*) = (1 / 2) *x*^(-1/2)'
 - en: '**The Product Rule**'
+  id: totrans-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**乘积法则**'
 - en: 'Suppose that we now have a function, *f*(*x*), of which we would like to find
     the derivative, which is the product of another two functions, *u*(*x*) = 2*x*²
     and *v*(*x*) = *x*³:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们现在有一个函数 *f*(*x*)，我们希望找到其导数，该函数是另外两个函数的乘积，*u*(*x*) = 2*x*² 和 *v*(*x*) = *x*³：
 - en: '*f*(*x*) = *u*(*x*) *v*(*x*) = (2*x*²) (*x*³)'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f*(*x*) = *u*(*x*) *v*(*x*) = (2*x*²) (*x*³)'
 - en: 'In order to investigate how to go about finding the derivative of *f*(*x*),
     let’s first start with finding the derivative of the product of *u*(*x*) and *v*(*x*)
     directly:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了调查如何找到 *f*(*x*) 的导数，让我们首先直接计算 *u*(*x*) 和 *v*(*x*) 的乘积的导数：
 - en: (*u*(*x*) *v*(*x*))’ = ((2*x*²) (*x*³))’ = (2*x*⁵)’ = 10*x*⁴
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: (*u*(*x*) *v*(*x*))’ = ((2*x*²) (*x*³))’ = (2*x*⁵)’ = 10*x*⁴
 - en: 'Now let’s investigate what happens if we, otherwise, had to compute the derivatives
     of the functions separately first and then multiply them afterwards:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们调查一下如果我们分别计算函数的导数然后再将它们相乘会发生什么：
 - en: '*u’*(*x*) *v’*(*x*) = (2*x*²)’ (*x*³)’ = (4*x*) (3*x*²) = 12*x*³'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '*u’*(*x*) *v’*(*x*) = (2*x*²)’ (*x*³)’ = (4*x*) (3*x*²) = 12*x*³'
 - en: It is clear that the second result does not tally with the first one, and that
     is because we have not applied the *product rule*.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 很明显，第二个结果与第一个结果不一致，这是因为我们没有应用 *乘积法则*。
 - en: 'The product rule tells us that the derivative of the product of two functions
     can be found as:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 乘积法则告诉我们，两个函数乘积的导数可以按如下方式计算：
 - en: '*f’*(*x*) = *u’*(*x*) *v*(*x*) + *u*(*x*) *v’*(*x*)'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f’*(*x*) = *u’*(*x*) *v*(*x*) + *u*(*x*) *v’*(*x*)'
 - en: 'We can arrive at the product rule if we our work our way through by applying
     the properties of limits, starting again with the definition of a derivative:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们通过应用极限的性质来推导乘积法则，从导数的定义开始，我们可以得到乘积法则：
 - en: '[![](../Images/fe2b3242686ce47714bf2cfb135d5379.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_3.png)'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/fe2b3242686ce47714bf2cfb135d5379.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_3.png)'
 - en: 'We know that *f*(*x*) = *u*(*x*) *v*(*x*) and, hence, we can substitute for
     *f*(*x*) and *f*(*x* + *h*):'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们知道 *f*(*x*) = *u*(*x*) *v*(*x*)，因此，我们可以代入 *f*(*x*) 和 *f*(*x* + *h*)：
 - en: '[![](../Images/050101dcdd28b628bbd7a3f57b4d79e1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_4.png)'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/050101dcdd28b628bbd7a3f57b4d79e1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_4.png)'
 - en: 'At this stage, our aim is to factorise the numerator into several limits that
     can, then, be evaluated separately. For this purpose, the subtraction of terms,
     *u*(*x*) *v*(*x + h*) – *u*(*x*) *v*(*x + h*), shall be introduced into the numerator.
     Its introduction does not change the definition of *f*’(*x*) that we have just
     obtained, but it will help us factorise the numerator:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个阶段，我们的目标是将分子因式分解成几个可以分别计算的极限。为此，分母的减法项 *u*(*x*) *v*(*x + h*) – *u*(*x*) *v*(*x
+    + h*) 将被引入。它的引入并不改变我们刚刚得到的 *f*’(*x*) 的定义，但它将帮助我们因式分解分子：
 - en: '[![](../Images/fbbae7e0472035a154e9ab57088038ca.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_5.png)'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/fbbae7e0472035a154e9ab57088038ca.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_5.png)'
 - en: 'The resulting expression appears complicated, however, if we take a closer
     look we realize that we have common terms that can be factored out:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 所得表达式看起来复杂，但是仔细观察后我们意识到可以因式分解出共同项：
 - en: '[![](../Images/a77347b92737adab962475f04c2c60b0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_6-e1624272833744.png)'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/a77347b92737adab962475f04c2c60b0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_6-e1624272833744.png)'
 - en: 'The expression can be simplified further by applying the limit laws that let
     us separate the sums and products into separate limits:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过应用极限法则，我们可以进一步简化表达式，将和与乘积分离开来：
 - en: '[![](../Images/806c13fb2a03c1cad3988a4eacb52c8b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_7.png)'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/806c13fb2a03c1cad3988a4eacb52c8b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_7.png)'
 - en: The solution to our problem has now become clearer. We can see that the first
     and last terms in the simplified expression correspond to the definition of the
     derivative of *u*(*x*) and *v*(*x*), which we can denote by *u*(*x*)’ and *v*(*x*)’,
     respectively. The second term approaches the continuous and differentiable function,
     *v*(*x*), as *h* approaches 0, whereas the third term is *u*(*x*).
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们的问题解决方案变得更加清晰。我们可以看到简化表达式中的第一项和最后一项对应于 *u*(*x*) 和 *v*(*x*) 的导数的定义，我们可以分别用
+    *u*(*x*)’ 和 *v*(*x*)’ 表示。第二项在 *h* 接近 0 时逼近连续可微分函数 *v*(*x*)，而第三项是 *u*(*x*)。
 - en: 'Hence, we arrive again at the product rule:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们再次得出乘积法则：
 - en: '*f’*(*x*) = *u’*(*x*) *v*(*x*) + *u*(*x*) *v’*(*x*)'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f’*(*x*) = *u’*(*x*) *v*(*x*) + *u*(*x*) *v’*(*x*)'
 - en: 'With this new tool in hand, let’s reconsider finding *f*’(*x*) when *u*(*x*)
     = 2*x*² and *v*(*x*) = *x*³:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这个新工具，让我们重新考虑当 *u*(*x*) = 2*x*² 和 *v*(*x*) = *x*³ 时如何找到 *f*’(*x*)：
 - en: '*f’*(*x*) = *u’*(*x*) *v*(*x*) + *u*(*x*) *v’*(*x*)'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f’*(*x*) = *u’*(*x*) *v*(*x*) + *u*(*x*) *v’*(*x*)'
 - en: '*f’*(*x*) = (4*x*) (*x*³) + (2*x*²) (3*x*²) = 4*x*⁴ + 6*x*⁴ = 10*x*⁴'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f’*(*x*) = (4*x*) (*x*³) + (2*x*²) (3*x*²) = 4*x*⁴ + 6*x*⁴ = 10*x*⁴'
 - en: The resulting derivative now correctly matches the derivative of the product,
     (*u*(*x*) *v*(*x*))’, that we have obtained earlier.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 所得到的导数现在正确地匹配了我们之前得到的乘积 (*u*(*x*) *v*(*x*))’ 的导数。
 - en: 'This was a fairly simple example that we could have computed directly in the
     first place. However, we might have more complex problems involving functions
     that cannot be multiplied directly, to which we can easily apply the product rule.
     For example:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个相当简单的例子，我们本可以直接计算出来。然而，我们可能会遇到更复杂的涉及无法直接相乘的函数的问题，这时我们可以轻松地应用乘积法则。例如：
 - en: '*f*(*x*) = *x*² sin *x*'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f*(*x*) = *x*² sin *x*'
 - en: '*f’*(*x*) = (*x*²)’ (sin *x*) + (*x*²) (sin *x*)’ *=* 2*x* sin *x* + *x*² cos
     *x*'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f’*(*x*) = (*x*²)’ (sin *x*) + (*x*²) (sin *x*)’ *=* 2*x* sin *x* + *x*² cos
+    *x*'
 - en: 'We can even extend the product rule to more than two functions. For example,
     say *f*(*x*) is now defined as the product of three functions, *u*(*x*), *v*(*x*)
     and *w*(*x*):'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们甚至可以将乘积法则扩展到超过两个函数的情况。例如，假设 *f*(*x*) 现在定义为三个函数 *u*(*x*)、*v*(*x*) 和 *w*(*x*)
+    的乘积：
 - en: '*f*(*x*) = *u*(*x*) *v*(*x*) *w*(*x*)'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f*(*x*) = *u*(*x*) *v*(*x*) *w*(*x*)'
 - en: 'We can apply the product rule as follows:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以如下应用乘积法则：
 - en: '*f*’(*x*) = *u*’(*x*) *v*(*x*) *w*(*x*) + *u*(*x*) *v*’(*x*) *w*(*x*) + *u*(*x*)
     *v*(*x*) *w*’(*x*)'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f*’(*x*) = *u*’(*x*) *v*(*x*) *w*(*x*) + *u*(*x*) *v’*(*x*) *w*(*x*) + *u*(*x*)
+    *v*(*x*) *w’*(*x*)'
 - en: '**The Quotient Rule**'
+  id: totrans-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**商规则**'
 - en: 'Similarly, the quotient rule tells us how to find the derivative of a function,
     *f*(*x*), that is the ratio of two differentiable functions, *u*(*x*) and *v*(*x*):'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样，商规则告诉我们如何找到一个函数 *f*(*x*) 的导数，这个函数是两个可微分函数 *u*(*x*) 和 *v*(*x*) 的比值：
 - en: '[![](../Images/daabf9ecbb238f69f94cebeb6e478eb3.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_8.png)'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/daabf9ecbb238f69f94cebeb6e478eb3.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_8.png)'
 - en: 'We can derive the quotient rule from first principles as we have done for the
     product rule, that is by starting off with the definition of a derivative and
     applying the properties of limits. Or we can take a shortcut and derive the quotient
     rule using the product rule itself. Let’s take this route this time around:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以像求乘法法则那样从基本原理推导商法则，即从导数的定义开始并应用极限的性质。或者我们可以走捷径，使用乘法法则本身来推导商法则。这一次我们采用这种方法：
 - en: '[![](../Images/9db9c5154f939889d2059517dff3ae38.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_9.png)'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/9db9c5154f939889d2059517dff3ae38.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_9.png)'
 - en: 'We can apply the product rule on *u*(*x*) to obtain:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以在 *u*(*x*) 上应用乘法法则以获得：
 - en: '*u*’(*x*) = *f*’(*x*) *v*(*x*) + *f*(*x*) *v*’(*x*)'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '*u*’(*x*) = *f*’(*x*) *v*(*x*) + *f*(*x*) *v*’(*x*)'
 - en: 'Solving back for *f*’(*x*) gives us:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过求解 *f*’(*x*) 得到：
 - en: '[![](../Images/67fbe65a2acaef2aa180fef5c550889d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_10.png)'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/67fbe65a2acaef2aa180fef5c550889d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_10.png)'
 - en: 'One final step substitutes for *f*(*x*) to arrive to the quotient rule:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一步代入 *f*(*x*) 来得到商法则：
 - en: '[![](../Images/e3b5ec4338a7e4b405dff39267454bd9.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_11.png)'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/e3b5ec4338a7e4b405dff39267454bd9.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_11.png)'
 - en: 'We had seen how to find the [derivative of the sine and cosine functions](https://machinelearningmastery.com/?p=12518&preview=true).
     Using the quotient rule, we can now find the derivative of the tangent function
     too:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经看到如何找到[正弦和余弦函数的导数](https://machinelearningmastery.com/?p=12518&preview=true)。使用商法则，我们现在也可以找到正切函数的导数：
 - en: '*f*(*x*) = tan *x* = sin *x* / cos *x*'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f*(*x*) = tan *x* = sin *x* / cos *x*'
 - en: 'Applying the quotient rule and simplifying the resulting expression:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 应用商法则并简化结果表达式：
 - en: '[![](../Images/8644490abaa6ca1be52e35cc879d60b0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_12.png)'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/8644490abaa6ca1be52e35cc879d60b0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_12.png)'
 - en: 'From the Pythagorean identity in trigonometry, we know that cos²*x* + sin²*x*
     = 1, hence:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 从三角函数中的勾股恒等式我们知道 cos²*x* + sin²*x* = 1，因此：
 - en: '[![](../Images/36699ea94633c3e735a836420cfc38c2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_13.png)'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/36699ea94633c3e735a836420cfc38c2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rules_13.png)'
 - en: Therefore, using the quotient rule, we have easily found that the derivative
     of tangent is the squared secant function.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，使用商法则，我们轻松找到了正切的导数是平方的正割函数。
 - en: '**Further Reading**'
+  id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: '**Books**'
+  id: totrans-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
     2016.'
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[《傻瓜微积分》](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US)，2016年。'
 - en: '**Articles**'
+  id: totrans-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**文章**'
 - en: '[Power rule, Wikipedia](https://en.wikipedia.org/wiki/Power_rule).'
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[幂法则，维基百科](https://en.wikipedia.org/wiki/Power_rule)。'
 - en: '[Product rule, Wikipedia](https://en.wikipedia.org/wiki/Product_rule).'
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[乘法法则，维基百科](https://en.wikipedia.org/wiki/Product_rule)。'
 - en: '[Quotient rule, Wikipedia](https://en.wikipedia.org/wiki/Quotient_rule).'
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[商法则，维基百科](https://en.wikipedia.org/wiki/Quotient_rule)。'
 - en: '**Summary**'
+  id: totrans-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered how to apply the power, product and quotient
     rules to find the derivative of functions.
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学会了如何应用幂法则、乘法法则和商法则来找出函数的导数。
 - en: 'Specifically, you learned:'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The power rule to follow when finding the derivative of a variable base, raised
     to a fixed power.
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 计算变量基数（提升到固定幂次）的导数时遵循的幂法则。
 - en: How the product rule allows us to find the derivative of a function that is
     defined as the product of another two (or more) functions.
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 乘法法则如何使我们能够找到定义为两个（或更多）函数乘积的函数的导数。
 - en: How the quotient rule allows us to find the derivative of a function that is
     the ratio of two differentiable functions.
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 商法则如何使我们能够找到一个是两个可微函数比率的函数的导数。
 - en: Do you have any questions?
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below and I will do my best to answer.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提问，我会尽力回答。

@@ -1,488 +1,753 @@
 - en: Derivative of the Sine and Cosine
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 正弦和余弦的导数
 - en: 原文：[https://machinelearningmastery.com/derivative-of-the-sine-and-cosine/](https://machinelearningmastery.com/derivative-of-the-sine-and-cosine/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/derivative-of-the-sine-and-cosine/](https://machinelearningmastery.com/derivative-of-the-sine-and-cosine/)
 - en: Many machine learning algorithms involve an optimization process for different
     purposes. Optimization refers to the problem of minimizing or maximizing an objective
     function by altering the value of its inputs.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多机器学习算法涉及不同目的的优化过程。优化是指通过改变输入值来最小化或最大化目标函数的问题。
 - en: Optimization algorithms rely on the use of derivatives in order to understand
     how to alter (increase or decrease) the input values to the objective function,
     in order to minimize or maximize it. It is, therefore, important that the objective
     function under consideration is *differentiable*.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 优化算法依赖于导数来理解如何改变（增加或减少）目标函数的输入值，以最小化或最大化目标函数。因此，考虑中的目标函数必须是*可导*的。
 - en: The two fundamental trigonometric functions, the sine and cosine, offer a good
     opportunity to understand the manoeuvres that might be required in finding the
     derivatives of differentiable functions. These two functions become especially
     important if we think of them as the fundamental building blocks of more complex
     functions.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 两个基本的三角函数，即正弦和余弦，为理解求导的操作提供了良好的机会。这两个函数变得特别重要，如果我们将它们视为更复杂函数的基本构建块。
 - en: In this tutorial, you will discover how to find the derivative of the sine and
     cosine functions.
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现如何找到正弦和余弦函数的导数。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: How to find the derivative of the sine and cosine functions by applying several
     rules from algebra, trigonometry and limits.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过应用代数、三角学和极限中的几个规则来找到正弦和余弦函数的导数。
 - en: How to find the derivative of the sine and cosine functions in Python.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 Python 中求正弦函数和余弦函数的导数。
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/97c5645a8219d98eb5f0d79847aaf479.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_cover-scaled.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/97c5645a8219d98eb5f0d79847aaf479.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_cover-scaled.jpg)'
 - en: Derivative of the Sine and Cosine
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 正弦和余弦的导数
 - en: Photo by [Tim Marshall](https://unsplash.com/photos/9tta3btd8hE), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Tim Marshall](https://unsplash.com/photos/9tta3btd8hE) 提供，部分版权保留。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三部分，它们是：
 - en: The Derivative of the Sine Function
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 正弦函数的导数
 - en: The Derivative of the Cosine Function
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 余弦函数的导数
 - en: Finding Derivatives in Python
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 Python 中求导
 - en: '**The Derivative of the Sine Function**'
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**正弦函数的导数**'
 - en: 'The derivative *f’*(*x*) of some function, *f*, at a particular point, *x*,
     may be specified as:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 某个函数 *f* 在特定点 *x* 的导数 *f’*(*x*) 可以定义为：
 - en: '[![](../Images/e58745938f14729e7cb18c1b4571cf96.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_1.png)'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/e58745938f14729e7cb18c1b4571cf96.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_1.png)'
 - en: 'We shall start by considering the sine function. Hence, let’s first substitute
     for *f*(*x*) = sin *x*:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将从考虑正弦函数开始。因此，首先将 *f*(*x*) = sin *x* 代入：
 - en: '[![](../Images/c95a2ec2cdc227097606864e09a2f195.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_2.png)'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/c95a2ec2cdc227097606864e09a2f195.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_2.png)'
 - en: 'If we have a look at the trigonometric identities, we find that we may apply
     the *addition formula* to expand the sin(*x* + *h*) term:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们查看三角恒等式，我们发现可以应用*加法公式*来展开 sin(*x* + *h*) 项：
 - en: sin(*x* + *y*) = sin *x* cos *y* + cos *x* sin *y*
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: sin(*x* + *y*) = sin *x* cos *y* + cos *x* sin *y*
 - en: 'Indeed, by substituting *y* with *h* we can define the derivative of sin *x*
     as:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 确实，通过将 *y* 替换为 *h*，我们可以定义 sin *x* 的导数为：
 - en: '[![](../Images/cd1aefebe1b15aeb067b21590c3b8cd6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_3.png)'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/cd1aefebe1b15aeb067b21590c3b8cd6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_3.png)'
 - en: 'We may simplify the expression further by applying one of the limit laws, which
     states that the limit of a sum of functions is equal to the sum of their limits:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过应用限制法则进一步简化表达式，该法则指出函数和的极限等于其极限的和：
 - en: '[![](../Images/3fff4bd866a2790e6b4202a21bd1fe31.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_4.png)'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/3fff4bd866a2790e6b4202a21bd1fe31.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_4.png)'
 - en: 'We may simplify even further by bringing out any common factor that is a function
     of *x*. In this manner, we can factorise the expression to obtain the sum of two
     separate limits that do not depend on *x*:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以进一步简化，通过提取任何与 *x* 相关的共同因子。这样，我们可以将表达式因式分解以得到两个不依赖于 *x* 的独立极限的和：
 - en: '[![](../Images/663df64c9c34ab0e71b480e8aadc582d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_5.png)'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/663df64c9c34ab0e71b480e8aadc582d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_5.png)'
 - en: Solving each of these two limits will give us the derivative of sin *x*.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 求解这两个极限中的每一个将给出*sin x*的导数。
 - en: Let’s start by tackling the first limit.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从处理第一个极限开始。
 - en: '[Recall](https://machinelearningmastery.com/what-you-need-to-know-before-you-get-started-a-brief-tour-of-calculus-pre-requisites/)
     that we may represent angle, *h* in radians, on the unit circle. The sine of *h*
     would then be given by the perpendicular to the x-axis (*BC*), at the point that
     meets the unit circle:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '[回顾](https://machinelearningmastery.com/what-you-need-to-know-before-you-get-started-a-brief-tour-of-calculus-pre-requisites/)
+    我们可以在单位圆上以弧度表示角度 *h*。则 *h* 的正弦值由垂直于 x 轴的 *BC* 表示，该点与单位圆相交：'
 - en: '[![](../Images/1d01afe359f6ab56889b7d5d5ffa2633.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_diagrams_1.png)'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/1d01afe359f6ab56889b7d5d5ffa2633.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_diagrams_1.png)'
 - en: Representing angle, *h*, on the unit circle
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 在单位圆上表示角度 *h*
 - en: 'We will be comparing the area of different sectors and triangles, with sides
     subtending the angle *h*, in an attempt to infer how ((sin *h*) / *h*) behaves
     as the value of *h* approaches zero. For this purpose, consider first the area
     of sector *OAB*:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将比较不同扇形和三角形的面积，边缘与角*h*相对，以推测当*h*的值接近零时，((sin *h*) / *h*) 的行为。为此，首先考虑扇形 *OAB*
+    的面积：
 - en: '[![](../Images/3ca1fff1409be14f1d8ba1300016bb68.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_diagrams_2.png)'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/3ca1fff1409be14f1d8ba1300016bb68.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_diagrams_2.png)'
 - en: Finding the area of sector, *OAB*
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算扇形 *OAB* 的面积
 - en: 'The area of a sector can be defined in terms of the circle radius, *r*, and
     the length of the arc *AB*, *h*. Since the circle under consideration is the *unit*
     circle, then *r* = 1:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 扇形的面积可以用圆的半径 *r* 和弧长 *AB*，即 *h*，来定义。由于考虑的圆是 *单位* 圆，因此 *r* = 1：
 - en: area_of_sector_OAB = *r h* / 2 = *h* / 2
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: area_of_sector_OAB = *r h* / 2 = *h* / 2
 - en: We can compare the area of the sector *OAB* that we have just found, to the
     area of the *triangle OAB* within the same sector.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将我们刚刚找到的扇形 *OAB* 的面积与同一扇形内的 *三角形 OAB* 的面积进行比较。
 - en: '[![](../Images/86cb573874ef6d59618742d966a6a5a0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_diagrams_3.png)'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/86cb573874ef6d59618742d966a6a5a0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_diagrams_3.png)'
 - en: Finding the area of triangle, *OAB*
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算三角形 *OAB* 的面积
 - en: 'The area of this triangle is defined in terms of its height, *BC* = sin *h*,
     and the length of its base, *OA* = 1:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个三角形的面积是以其高度 *BC* = sin *h* 和底边长度 *OA* = 1 为定义的：
 - en: area_of_triangle_OAB = (*BC*) (*OA*) / 2 = (sin *h*) / 2
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: area_of_triangle_OAB = (*BC*) (*OA*) / 2 = (sin *h*) / 2
 - en: 'Since we can clearly see that the area of the triangle, *OAB*, that we have
     just considered is smaller that the area of the sector that it is contained within,
     then we may say that:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们可以清楚地看到，我们刚才考虑的三角形 *OAB* 的面积小于它所包含的扇形的面积，因此我们可以说：
 - en: (sin *h)* / 2 < *h* / 2
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: (sin *h*) / 2 < *h* / 2
 - en: (sin *h*) / *h* < 1
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: (sin *h*) / *h* < 1
 - en: This is the first piece of information that we have obtained regarding the behaviour
     of ((sin *h*) */* *h*), which tells us that its upper limit value will not exceed
     1\.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我们获得的关于((sin *h*) */* *h*)的行为的第一条信息，这告诉我们它的上限值不会超过1。
 - en: 'Let us now proceed to consider a second triangle, *OAB’*, that is characterised
     by a larger area than that of sector, *OAB*. We can use this triangle to provide
     us with the second piece of information about the behaviour of ((sin *h*) */*
     *h*), which is its lower limit value:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们考虑第二个三角形 *OAB'*，其面积大于扇形 *OAB* 的面积。我们可以使用这个三角形来提供关于((sin *h*) */* *h*) 的第二条信息，即它的下限值：
 - en: '[![](../Images/666f15ac7d773d71b285878a91c0ce84.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_diagrams_04.png)'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/666f15ac7d773d71b285878a91c0ce84.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_diagrams_04.png)'
 - en: Comparing similar triangles, *OAB* and *OAB’*
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 比较相似的三角形 *OAB* 和 *OAB’*
 - en: 'Applying the properties of similar triangles to relate *OAB’* to *OCB*, gives
     us information regarding the length, *B’A*, that we need to compute the area of
     the triangle:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 应用相似三角形的性质将 *OAB’* 关联到 *OCB*，提供了计算三角形面积所需的长度 *B’A* 的信息：
 - en: '*B’A* / *OA* = *BC* / *OC* = (sin *h*) / (cos *h*)'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '*B’A* / *OA* = *BC* / *OC* = (sin *h*) / (cos *h*)'
 - en: 'Hence, the area of triangle *OAB’* may be computed as:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，三角形 *OAB’* 的面积可以计算为：
 - en: area_of_triangle_OAB’ = (*B’A*) (*OA*) / 2 = (sin *h*) / (2 cos *h*)
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: area_of_triangle_OAB’ = (*B’A*) (*OA*) / 2 = (sin *h*) / (2 cos *h*)
 - en: 'Comparing the area of triangle *OAB’* to that of sector *OAB*, we can see that
     the former is now larger:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 比较三角形 *OAB’* 和扇形 *OAB* 的面积，我们可以看到前者现在更大：
 - en: '*h* / 2 < (sin *h*) / (2 cos *h*)'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: '*h* / 2 < (sin *h*) / (2 cos *h*)'
 - en: cos *h* < (sin *h*) / *h*
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: cos *h* < (sin *h*) / *h*
 - en: This is the second piece of information that we needed, which tells us that
     the lower limit value of ((sin *h*) */* *h*) does not drop below cos *h*. We also
     know that as *h* approaches 0, the value of cos *h* approaches 1.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我们所需的第二条信息，它告诉我们 ((sin *h*) */* *h*) 的下界值不会低于 cos *h*。我们还知道，随着 *h* 趋近于 0，cos
+    *h* 的值趋近于 1。
 - en: Hence, putting the two pieces of information together, we find that as *h* becomes
     smaller and smaller, the value of ((sin *h*) */* *h*) itself is *squeezed* to
     1 by its lower and upper limits. This is, indeed, referred to as the *squeeze*
     or *sandwich* theorem.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，将这两条信息结合起来，我们发现随着 *h* 越来越小，((sin *h*) */* *h*) 的值被其上下界限 *挤压* 到 1。这实际上被称为
+    *挤压* 或 *夹挤* 定理。
 - en: Let’s now proceed to tackle the second limit.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们继续解决第二个极限。
 - en: 'By applying standard algebraic rules:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过应用标准的代数规则：
 - en: '[![](../Images/fe941febd4512232421d746cce77004d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_6.png)'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/fe941febd4512232421d746cce77004d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_6.png)'
 - en: 'We can manipulate the second limit as follows:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以如下操作第二个极限：
 - en: '[![](../Images/f81a719a89e784ceede553c551e087a6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_7.png)'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/f81a719a89e784ceede553c551e087a6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_7.png)'
 - en: 'We can then express this limit in terms of sine, by applying the Pythagorean
     identity from trigonometry, sin²*h* = 1 – cos²*h*:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过应用三角学中的毕达哥拉斯恒等式 sin² *h* = 1 – cos² *h* 来用正弦表达这个极限：
 - en: '[![](../Images/84f936e4c6d065dfc5148efc0ad6a6e2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_8.png)'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/84f936e4c6d065dfc5148efc0ad6a6e2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_8.png)'
 - en: 'Followed by the application of another limit law, which states that the limit
     of a product is equal to the product of the separate limits:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 随后应用另一种极限法则，该法则指出乘积的极限等于各个极限的乘积：
 - en: '[![](../Images/950e01bfe87186993a65b707b56adb67.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_9.png)'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/950e01bfe87186993a65b707b56adb67.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_9.png)'
 - en: We have already tackled the first limit of this product, and we have found that
     this has a value of 1.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经解决了这个乘积的第一个极限，并发现其值为 1。
 - en: 'The second limit of this product is characterised by a cos *h* in the denominator,
     which approaches a value of 1 as *h* becomes smaller. Hence, the denominator of
     the second limit approaches a value of 2 as h approaches 0\. The sine term in
     the numerator, on the other hand, attains a value of 0 as *h* approaches 0\. This
     drives not only the second limit, but also the entire product limit to 0:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个乘积的第二个极限的特征是分母中有一个 cos *h*，随着 *h* 的减小，cos *h* 接近 1。因此，第二个极限的分母随着 *h* 趋近于 0，接近值
+    2。另一方面，分子中的正弦项在 *h* 趋近于 0 时达到 0。这不仅使第二个极限，也使整个乘积极限趋向于 0：
 - en: '[![](../Images/a6016518abc3fc78f516fdc15a1d55fa.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_10.png)'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/a6016518abc3fc78f516fdc15a1d55fa.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_10.png)'
 - en: 'Putting everything together, we may finally arrive to the following conclusion:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合考虑所有因素，我们最终可以得出以下结论：
 - en: '[![](../Images/33254fd24959645815080e0474d59557.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_11.png)'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/33254fd24959645815080e0474d59557.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_11.png)'
 - en: sin’(*x*) = (1) (cos *x*) + (0) (sin *x*)
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: sin’(*x*) = (1) (cos *x*) + (0) (sin *x*)
 - en: sin’(*x*) = cos *x*
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: sin’(*x*) = cos *x*
 - en: This, finally, tells us that the derivative of sin *x* is simply cos *x*.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 这最终告诉我们 sin *x* 的导数就是 cos *x*。
 - en: '**The Derivative of the Cosine Function**'
+  id: totrans-79
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**余弦函数的导数**'
 - en: 'Similarly, we can calculate the derivative of the cosine function by re-using
     the knowledge that we have gained in finding the derivative of the sine function.
     Substituting for *f*(*x*) = cos *x*:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样，我们可以通过重新利用找到正弦函数导数的知识来计算余弦函数的导数。将 *f*(*x*) = cos *x* 代入：
 - en: '[![](../Images/319bde341670d8d09a3ebd3cc8a07253.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_12.png)'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/319bde341670d8d09a3ebd3cc8a07253.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_12.png)'
 - en: 'The *addition formula* is now applied to expand the cos(*x* + *h*) term as
     follows:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在应用*加法公式*来展开 cos(*x* + *h*) 项，如下所示：
 - en: cos(*x* + *y*) = cos *x* cos *y* + sin *x* sin *y*
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: cos(*x* + *y*) = cos *x* cos *y* + sin *x* sin *y*
 - en: 'Which again leads to the summation of two limits:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 这又导致了两个极限的求和：
 - en: '[![](../Images/1a2888188876fa1ed3fd335a8f40094d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_13.png)'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/1a2888188876fa1ed3fd335a8f40094d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_13.png)'
 - en: 'We can quickly realise that we have already evaluated these two limits in the
     process of finding the derivative of sine; the first limit approaches 1, whereas
     the second limit approaches 0, as the value of *h* become smaller:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以很快发现，我们已经在寻找正弦函数导数的过程中评估了这两个极限；第一个极限趋近于 1，而第二个极限趋近于 0，随着 *h* 的值变小：
 - en: cos’(*x*) = (1) (-sin *x*) + (0) (cos *x*)
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: cos’(*x*) = (1) (-sin *x*) + (0) (cos *x*)
 - en: cos’(*x*) = -sin *x*
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: cos’(*x*) = -sin *x*
 - en: Which, ultimately, tells us that the derivative of cos *x* is conversely -sin
     *x*.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 这最终告诉我们余弦函数的导数恰好是 -sin *x*。
 - en: The importance of the derivatives that we have just found lies in their definition
     of the *rate of change* of the function under consideration, at some particular
     angle, *h*. For instance, if we had to recall the graph of the periodic sine function,
     we can observe that its first positive peak coincides with an angle of π / 2 radians.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们刚刚找到的导数的重要性在于它们定义了函数在某个特定角度 *h* 下的*变化率*。例如，如果我们回顾周期性正弦函数的图形，我们可以观察到它的第一个正峰值恰好与
+    π / 2 弧度的角度重合。
 - en: '[![](../Images/e769485aec4bbadb62bfcc599b42732d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_14.png)'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/e769485aec4bbadb62bfcc599b42732d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/derivative_14.png)'
 - en: Line Plot of the Periodic Sine Function
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 周期性正弦函数的线性图
 - en: 'We can use the derivative of the sine function in order to compute directly
     the rate of change, or slope, of the tangent line at this peak on the graph:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以利用正弦函数的导数来直接计算图表上这个峰值处切线的变化率或斜率：
 - en: sin’(π / 2) = cos(π / 2) = 0
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: sin’(π / 2) = cos(π / 2) = 0
 - en: We find that this result corresponds well with the fact that the peak of the
     sine function is, indeed, a stationary point with zero rate of change.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们发现这一结果与正弦函数的峰值确实是一个变化率为零的静止点这一事实相符。
 - en: A similar exercise can be easily carried out to compute the rate of change of
     the tangent line at different angles, for both the sine and cosine functions.
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似的练习可以很容易地进行，以计算不同角度下切线的变化率，适用于正弦和余弦函数。
 - en: '**Finding Derivatives in Python**'
+  id: totrans-97
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**在 Python 中求导**'
 - en: In this section, we shall be finding the derivatives of the sine and cosine
     functions in Python.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一部分，我们将使用 Python 计算正弦和余弦函数的导数。
 - en: For this purpose, we will be making use of the SymPy library, which will let
     us deal with the computation of mathematical objects symbolically. This means
     that the SymPy library will let us define and manipulate the sine and cosine functions,
     with unevaluated variables, in symbolic form. We will be able to define a variable
     as symbol by making use of *symbols* in Python, whereas to take the derivatives
     we shall be using the *diff* function.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，我们将利用 SymPy 库，它允许我们以符号形式处理数学对象的计算。这意味着 SymPy 库将使我们能够定义和操作未评估变量的正弦和余弦函数。我们可以通过使用
+    Python 中的 *symbols* 来定义变量为符号，而求导则使用 *diff* 函数。
 - en: Before proceeding further, let us first load the required libraries.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 在进一步操作之前，我们首先加载所需的库。
 - en: '[PRE0]'
+  id: totrans-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: We can now proceed to define a variable *x* in symbolic form, which means that
     we can work with *x* without having to assign it a value.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们可以定义一个符号形式的变量 *x*，这意味着我们可以使用 *x* 而不需要为其赋值。
 - en: '[PRE1]'
+  id: totrans-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Next, we can find the derivative of the sine and cosine function with respect
     to *x*, using the *diff* function.
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们可以使用`diff`函数找出正弦和余弦函数关于*x*的导数。
 - en: '[PRE2]'
+  id: totrans-105
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: We find that the *diff* function correctly returns *cos*(*x*) as the derivative
     of sine, and –*sin*(*x*) as the derivative of cosine.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们发现`diff`函数正确地返回了*cos*(*x*)作为正弦的导数，以及–*sin*(*x*)作为余弦的导数。
 - en: Python
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-108
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The *diff* function can take multiple derivatives too. For example, we can find
     the second derivative for both sine and cosine by passing *x* twice.
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: '`diff`函数也可以进行多次导数。例如，我们可以通过将*x*传递两次来找出正弦和余弦的第二导数。'
 - en: '[PRE4]'
+  id: totrans-110
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: This means that, in finding the second derivative, we are taking the derivative
     of the derivative of each function. For example, to find the second derivative
     of the sine function, we take the derivative of *cos*(*x*), its first derivative.
     We can find the second derivative for the cosine function by similarly taking
     the derivative of –*sin*(*x*), its first derivative.
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着，在寻找第二导数时，我们实际上是在计算每个函数的导数的导数。例如，要找出正弦函数的第二导数，我们需要对*cos*(*x*)，即它的第一次导数，进行导数计算。我们也可以通过类似的方式计算余弦函数的第二导数，即对–*sin*(*x*)，它的第一次导数，进行导数计算。
 - en: '[PRE5]'
+  id: totrans-112
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: We can, alternatively, pass the number 2 to the diff function to indicate that
     we are interested in finding the second derivative.
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以将数字2传递给`diff`函数，以指示我们感兴趣于找到第二导数。
 - en: '[PRE6]'
+  id: totrans-114
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Tying all of this together, the complete example of finding the derivative of
     the sine and cosine functions is listed below.
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 将这些内容结合起来，下面列出了寻找正弦和余弦函数导数的完整示例。
 - en: '[PRE7]'
+  id: totrans-116
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '**Further Reading**'
+  id: totrans-117
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多的资源，如果你希望深入了解这个主题。
 - en: '**Books**'
+  id: totrans-119
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[The Hitchhiker’s Guide to Calculus](https://www.amazon.com/Hitchhikers-Calculus-Classroom-Resource-Materials/dp/1470449625/ref=as_li_ss_tl?dchild=1&keywords=The+Hitchhiker%27s+Guide+to+Calculus&qid=1606170787&sr=8-1&linkCode=sl1&tag=inspiredalgor-20&linkId=f8875fa9736746bf29d78fc0c55553d8&language=en_US),
     2019.'
+  id: totrans-120
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分的搭便车指南](https://www.amazon.com/Hitchhikers-Calculus-Classroom-Resource-Materials/dp/1470449625/ref=as_li_ss_tl?dchild=1&keywords=The+Hitchhiker%27s+Guide+to+Calculus&qid=1606170787&sr=8-1&linkCode=sl1&tag=inspiredalgor-20&linkId=f8875fa9736746bf29d78fc0c55553d8&language=en_US)，2019年。'
 - en: '[Algorithms for Optimization](https://www.amazon.com/Algorithms-Optimization-Press-Mykel-Kochenderfer/dp/0262039427/ref=sr_1_1?dchild=1&keywords=algorithms+for+optimization&qid=1624019308&sr=8-1),
     2019.'
+  id: totrans-121
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[优化算法](https://www.amazon.com/Algorithms-Optimization-Press-Mykel-Kochenderfer/dp/0262039427/ref=sr_1_1?dchild=1&keywords=algorithms+for+optimization&qid=1624019308&sr=8-1)，2019年。'
 - en: '**Summary**'
+  id: totrans-122
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered how to find the derivative of the sine and
     cosine functions.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了如何找出正弦和余弦函数的导数。
 - en: 'Specifically, you learned:'
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to find the derivative of the sine and cosine functions by applying several
     rules from algebra, trigonometry and limits.
+  id: totrans-125
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过应用代数、三角学和极限的一些规则来找出正弦和余弦函数的导数。
 - en: How to find the derivative of the sine and cosine functions in Python.
+  id: totrans-126
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在Python中找到正弦和余弦函数的导数。
 - en: Do you have any questions?
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below and I will do my best to answer.
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提出你的问题，我会尽力回答。

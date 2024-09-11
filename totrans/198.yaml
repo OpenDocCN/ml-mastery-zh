@@ -1,11 +1,15 @@
 - en: How to Implement Multi-Head Attention from Scratch in TensorFlow and Keras
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何在 TensorFlow 和 Keras 中从头实现多头注意力机制
 - en: 原文：[https://machinelearningmastery.com/how-to-implement-multi-head-attention-from-scratch-in-tensorflow-and-keras/](https://machinelearningmastery.com/how-to-implement-multi-head-attention-from-scratch-in-tensorflow-and-keras/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/how-to-implement-multi-head-attention-from-scratch-in-tensorflow-and-keras/](https://machinelearningmastery.com/how-to-implement-multi-head-attention-from-scratch-in-tensorflow-and-keras/)
 - en: We have already familiarized ourselves with the theory behind the [Transformer
     model](https://machinelearningmastery.com/the-transformer-model/) and its [attention
     mechanism](https://machinelearningmastery.com/the-transformer-attention-mechanism/).
@@ -15,164 +19,247 @@
     product attention into a multi-head attention mechanism, which is a core component.
     Our end goal remains to apply the complete model to Natural Language Processing
     (NLP).
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经熟悉了 [Transformer 模型](https://machinelearningmastery.com/the-transformer-model/)
+    及其 [注意力机制](https://machinelearningmastery.com/the-transformer-attention-mechanism/)
+    的理论。我们已经开始了实现完整模型的旅程，学习如何 [实现缩放点积注意力](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras)。现在，我们将进一步将缩放点积注意力封装成多头注意力机制，这是核心组成部分。我们的最终目标是将完整模型应用于自然语言处理（NLP）。
 - en: In this tutorial, you will discover how to implement multi-head attention from
     scratch in TensorFlow and Keras.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您将了解如何在 TensorFlow 和 Keras 中从头实现多头注意力机制。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将了解：
 - en: The layers that form part of the multi-head attention mechanism.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 形成多头注意力机制的层。
 - en: How to implement the multi-head attention mechanism from scratch.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从头实现多头注意力机制。
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动您的项目**，使用我的书籍 [使用注意力构建 Transformer 模型](https://machinelearningmastery.com/transformer-models-with-attention/)。它提供了
+    **自学教程** 和 **工作代码**，指导您构建一个完全工作的 Transformer 模型，可用于'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将句子从一种语言翻译成另一种语言*...'
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/19463d287d4ba96be0d0b7013886bc1c.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/multihead_cover-scaled.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/19463d287d4ba96be0d0b7013886bc1c.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/multihead_cover-scaled.jpg)'
 - en: How to implement multi-head attention from scratch in TensorFlow and Keras
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何在 TensorFlow 和 Keras 中从头实现多头注意力机制
 - en: Photo by [Everaldo Coelho](https://unsplash.com/photos/YfldCpQuKt4), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Everaldo Coelho](https://unsplash.com/photos/YfldCpQuKt4) 拍摄，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们分别是：
 - en: Recap of the Transformer Architecture
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 架构回顾
 - en: The Transformer Multi-Head Attention
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 多头注意力
 - en: Implementing Multi-Head Attention From Scratch
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从头实现多头注意力
 - en: Testing Out the Code
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 测试代码
 - en: '**Prerequisites**'
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**先决条件**'
 - en: 'For this tutorial, we assume that you are already familiar with:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设您已经熟悉：
 - en: '[The concept of attention](https://machinelearningmastery.com/what-is-attention/)'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[注意力的概念](https://machinelearningmastery.com/what-is-attention/)'
 - en: '[The Transfomer attention mechanism](https://machinelearningmastery.com/the-transformer-attention-mechanism)'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 注意力机制](https://machinelearningmastery.com/the-transformer-attention-mechanism)'
 - en: '[The Transformer model](https://machinelearningmastery.com/the-transformer-model/)'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 模型](https://machinelearningmastery.com/the-transformer-model/)'
 - en: '[The scaled dot-product attention](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras)'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[缩放点积注意力](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras)'
 - en: '**Recap of the Transformer Architecture**'
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Transformer 架构回顾**'
 - en: '[Recall](https://machinelearningmastery.com/the-transformer-model/) having
     seen that the Transformer architecture follows an encoder-decoder structure. The
     encoder, on the left-hand side, is tasked with mapping an input sequence to a
     sequence of continuous representations; the decoder, on the right-hand side, receives
     the output of the encoder together with the decoder output at the previous time
     step to generate an output sequence.'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '[回顾](https://machinelearningmastery.com/the-transformer-model/)你已经看到Transformer架构遵循编码器-解码器结构。左侧的编码器负责将输入序列映射到连续表示序列；右侧的解码器接收编码器的输出以及前一个时间步骤的解码器输出，以生成输出序列。'
 - en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
 - en: The encoder-decoder structure of the Transformer architecture
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer架构的编码器-解码器结构
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 摘自“[Attention Is All You Need](https://arxiv.org/abs/1706.03762)”
 - en: In generating an output sequence, the Transformer does not rely on recurrence
     and convolutions.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 在生成输出序列时，Transformer不依赖递归和卷积。
 - en: You have seen that the decoder part of the Transformer shares many similarities
     in its architecture with the encoder. One of the core mechanisms that both the
     encoder and decoder share is the *multi-head attention* mechanism.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 你已经看到，Transformer的解码器部分在架构上与编码器有许多相似之处。编码器和解码器共同拥有的核心机制之一是*多头注意力*机制。
 - en: '**The Transformer Multi-Head Attention**'
+  id: totrans-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**Transformer多头注意力**'
 - en: 'Each multi-head attention block is made up of four consecutive levels:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个多头注意力块由四个连续的层组成：
 - en: On the first level, three linear (dense) layers that each receive the queries,
     keys, or values
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在第一层，三个线性（稠密）层分别接收查询、键或值。
 - en: On the second level, a scaled dot-product attention function. The operations
     performed on both the first and second levels are repeated *h* times and performed
     in parallel, according to the number of heads composing the multi-head attention
     block.
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在第二层，一个缩放点积注意力函数。第一层和第二层执行的操作会根据组成多头注意力块的头数重复执行*h*次，并且并行进行。
 - en: On the third level, a concatenation operation that joins the outputs of the
     different heads
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在第三层，一个连接操作将不同头部的输出连接起来。
 - en: On the fourth level, a final linear (dense) layer that produces the output
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在第四层，一个最终的线性（稠密）层生成输出。
 - en: '[![](../Images/49d312ed799331ac86c88962132369f2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/tour_4.png)'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/49d312ed799331ac86c88962132369f2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/tour_4.png)'
 - en: Multi-head attention
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 多头注意力
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 摘自“[Attention Is All You Need](https://arxiv.org/abs/1706.03762)”
 - en: '[Recall](https://machinelearningmastery.com/the-transformer-attention-mechanism/)
     as well the important components that will serve as building blocks for your implementation
     of the multi-head attention:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '[回顾](https://machinelearningmastery.com/the-transformer-attention-mechanism/)一下将作为多头注意力实现构建块的重要组件：'
 - en: The **queries**, **keys,** and **values**: These are the inputs to each multi-head
     attention block. In the encoder stage, they each carry the same input sequence
     after this has been embedded and augmented by positional information. Similarly,
@@ -183,52 +270,74 @@
     output of the first decoder attention block as the queries. The dimensionality
     of the queries and keys is denoted by $d_k$, whereas the dimensionality of the
     values is denoted by $d_v$.
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**查询**、**键**和**值**：这些是每个多头注意力块的输入。在编码器阶段，它们携带相同的输入序列，该序列在经过嵌入和位置编码信息增强后，作为输入提供。同样，在解码器端，输入到第一个注意力块的查询、键和值代表了经过嵌入和位置编码信息增强后的相同目标序列。解码器的第二个注意力块接收来自编码器的输出，形式为键和值，并且将第一个解码器注意力块的归一化输出作为查询。查询和键的维度由$d_k$表示，而值的维度由$d_v$表示。'
 - en: The **projection matrices**: When applied to the queries, keys, and values,
     these projection matrices generate different subspace representations of each.
     Each attention *head* then works on one of these projected versions of the queries,
     keys, and values. An additional projection matrix is also applied to the output
     of the multi-head attention block after the outputs of each individual head would
     have been concatenated together. The projection matrices are learned during training.
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**投影矩阵**：当应用于查询、键和值时，这些投影矩阵会生成每个的不同子空间表示。每个注意力*头*然后对这些查询、键和值的投影版本中的一个进行处理。另一个投影矩阵也会应用于多头注意力块的输出，在每个单独的头的输出被连接在一起之后。投影矩阵在训练过程中学习得到。'
 - en: Let’s now see how to implement the multi-head attention from scratch in TensorFlow
     and Keras.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们来看看如何在TensorFlow和Keras中从零实现多头注意力。
 - en: '**Implementing Multi-Head Attention from Scratch**'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '**从零实现多头注意力**'
 - en: 'Let’s start by creating the class, `MultiHeadAttention`, which inherits from
     the `Layer` base class in Keras and initialize several instance attributes that
     you shall be working with (attribute descriptions may be found in the comments):'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们从创建`MultiHeadAttention`类开始，它继承自Keras中的`Layer`基类，并初始化一些你将使用的实例属性（属性描述可以在注释中找到）：
 - en: Python
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Here note that an instance of the `DotProductAttention` class that was implemented
     earlier has been created, and its output was assigned to the variable `attention`.
     [Recall](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras)
     that you implemented the `DotProductAttention` class as follows:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意到之前实现的`DotProductAttention`类的一个实例已经被创建，并且它的输出被分配给了变量`attention`。[回顾](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras)你是这样实现`DotProductAttention`类的：
 - en: Python
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Next, you will be reshaping the *linearly projected* queries, keys, and values
     in such a manner as to allow the attention heads to be computed in parallel.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，你将重新调整*线性投影*后的查询、键和值，以便能够并行计算注意力头。
 - en: The queries, keys, and values will be fed as input into the multi-head attention
     block having a shape of (*batch size*, *sequence length*, *model dimensionality*),
     where the *batch size* is a hyperparameter of the training process, the *sequence
@@ -237,44 +346,66 @@
     of the model. They are then passed through the respective dense layer to be linearly
     projected to a shape of (*batch size*, *sequence length*, *queries*/*keys*/*values
     dimensionality*).
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 查询、键和值将作为输入传入多头注意力块，其形状为（*batch size*，*sequence length*，*model dimensionality*），其中*batch
+    size*是训练过程中的一个超参数，*sequence length*定义了输入/输出短语的最大长度，*model dimensionality*是模型所有子层生成的输出的维度。然后，它们会通过各自的密集层，线性投影到（*batch
+    size*，*sequence length*，*queries*/*keys*/*values dimensionality*）的形状。
 - en: 'The linearly projected queries, keys, and values will be rearranged into (*batch
     size*, *number of heads*, *sequence length*, *depth*), by first reshaping them
     into (*batch size*, *sequence length*, *number of heads*, *depth*) and then transposing
     the second and third dimensions. For this purpose, you will create the class method,
     `reshape_tensor`, as follows:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 线性投影后的查询、键和值将被重新排列为（*batch size*，*number of heads*，*sequence length*，*depth*），首先将它们重塑为（*batch
+    size*，*sequence length*，*number of heads*，*depth*），然后转置第二和第三维。为此，你将创建类方法`reshape_tensor`，如下所示：
 - en: Python
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The `reshape_tensor` method receives the linearly projected queries, keys, or
     values as input (while setting the flag to `True`) to be rearranged as previously
     explained. Once the multi-head attention output has been generated, this is also
     fed into the same function (this time setting the flag to `False`) to perform
     a reverse operation, effectively concatenating the results of all heads together.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '`reshape_tensor`方法接收线性投影后的查询、键或值作为输入（同时将标志设置为`True`）以进行如前所述的重新排列。一旦生成了多头注意力输出，它也会被传入相同的函数（这次将标志设置为`False`）以执行反向操作，从而有效地将所有头的结果连接在一起。'
 - en: 'Hence, the next step is to feed the linearly projected queries, keys, and values
     into the `reshape_tensor` method to be rearranged, then feed them into the scaled
     dot-product attention function. In order to do so, let’s create another class
     method, `call`, as follows:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，下一步是将线性投影后的查询、键和值输入到 `reshape_tensor` 方法中进行重排，然后将它们输入到缩放点积注意力函数中。为此，让我们创建另一个类方法
+    `call`，如下所示：
 - en: Python
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Note that the `reshape_tensor` method can also receive a mask (whose value defaults
     to `None`) as input, in addition to the queries, keys, and values.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，`reshape_tensor` 方法除了接收查询、键和值作为输入外，还可以接收一个掩码（默认值为`None`）。
 - en: '[Recall](https://machinelearningmastery.com/the-transformer-model/) that the
     Transformer model introduces a *look-ahead mask* to prevent the decoder from attending
     to succeeding words, such that the prediction for a particular word can only depend
@@ -283,167 +414,261 @@
     needs to be introduced to prevent the zero values from being processed along with
     the input. These look-ahead and padding masks can be passed on to the scaled-dot
     product attention through the `mask` argument.'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '[回顾](https://machinelearningmastery.com/the-transformer-model/) Transformer
+    模型引入了一个 *前瞻掩码* 以防止解码器关注后续单词，从而使得对特定单词的预测只能依赖于其前面的已知输出。此外，由于词嵌入被零填充到特定的序列长度，还需要引入一个
+    *填充掩码* 以防止零值与输入一起被处理。这些前瞻掩码和填充掩码可以通过 `mask` 参数传递给缩放点积注意力。'
 - en: Once you have generated the multi-head attention output from all the attention
     heads, the final steps are to concatenate back all outputs together into a tensor
     of shape (*batch size*, *sequence length*, *values dimensionality*) and passing
     the result through one final dense layer. For this purpose, you will add the next
     two lines of code to the `call` method.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你从所有注意力头中生成了多头注意力输出，最后的步骤是将所有输出连接成一个形状为（*批大小*，*序列长度*，*值的维度*）的张量，并通过一个最终的全连接层。为此，你将向
+    `call` 方法添加以下两行代码。
 - en: Python
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Putting everything together, you have the following implementation of the multi-head
     attention:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容整合在一起，你会得到以下的多头注意力实现：
 - en: Python
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-69
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始构建具有注意力机制的 Transformer 模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费12天电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并获得课程的免费 PDF 电子书版本。
 - en: '**Testing Out the Code**'
+  id: totrans-72
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**测试代码**'
 - en: 'You will be working with the parameter values specified in the paper, [Attention
     Is All You Need](https://arxiv.org/abs/1706.03762), by Vaswani et al. (2017):'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将使用 Vaswani 等人（2017）在论文 [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
+    中指定的参数值：
 - en: Python
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'As for the sequence length and the queries, keys, and values, you will be working
     with dummy data for the time being until you arrive at the stage of [training
     the complete Transformer model](https://machinelearningmastery.com/training-the-transformer-model)
     in a separate tutorial, at which point you will be using actual sentences:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 至于序列长度以及查询、键和值，你将暂时使用虚拟数据，直到你到达另一个教程中 [训练完整 Transformer 模型](https://machinelearningmastery.com/training-the-transformer-model)
+    的阶段，到时你将使用实际句子：
 - en: Python
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: In the complete Transformer model, values for the sequence length and the queries,
     keys, and values will be obtained through a process of word tokenization and embedding.
     We will be covering this in a separate tutorial.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 在完整的 Transformer 模型中，序列长度以及查询、键和值的值将通过词标记化和嵌入过程获得。我们将在另一个教程中覆盖这部分内容。
 - en: 'Returning to the testing procedure, the next step is to create a new instance
     of the `MultiHeadAttention` class, assigning its output to the `multihead_attention`
     variable:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 回到测试过程，下一步是创建 `MultiHeadAttention` 类的新实例，并将其输出赋值给 `multihead_attention` 变量：
 - en: Python
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Since the `MultiHeadAttention` class inherits from the `Layer` base class,
     the `call()` method of the former will be automatically invoked by the magic `__call()__`
     method of the latter. The final step is to pass in the input arguments and print
     the result:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于 `MultiHeadAttention` 类继承自 `Layer` 基类，因此前者的 `call()` 方法将由后者的魔法 `__call()__`
+    方法自动调用。最后一步是传入输入参数并打印结果：
 - en: Python
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Tying everything together produces the following code listing:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容整合在一起，生成以下代码清单：
 - en: Python
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Running this code produces an output of shape (*batch size*, *sequence length*,
     *model dimensionality*). Note that you will likely see a different output due
     to the random initialization of the queries, keys, and values and the parameter
     values of the dense layers.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行这段代码将会产生形状为（*批量大小*，*序列长度*，*模型维度*）的输出。请注意，由于查询、键和值的随机初始化以及密集层的参数值，可能会看到不同的输出。
 - en: Python
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '**Further Reading**'
+  id: totrans-92
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想深入了解这个主题，本节提供了更多资源。
 - en: '**Books**'
+  id: totrans-94
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019'
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python深度学习进阶](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)，2019'
 - en: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
     2021'
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[自然语言处理中的变形金刚](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798)，2021'
 - en: '**Papers**'
+  id: totrans-97
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[注意力机制就是一切](https://arxiv.org/abs/1706.03762)，2017'
 - en: '**Summary**'
+  id: totrans-99
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered how to implement multi-head attention from
     scratch in TensorFlow and Keras.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学会了如何在TensorFlow和Keras中从头实现多头注意力机制。
 - en: 'Specifically, you learned:'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The layers that form part of the multi-head attention mechanism
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构成多头注意力机制的层
 - en: How to implement the multi-head attention mechanism from scratch
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从头实现多头注意力机制
 - en: Do you have any questions?
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提出你的问题，我会尽力回答。

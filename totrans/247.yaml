@@ -1,365 +1,533 @@
 - en: 'Calculus in Machine Learning: Why it Works'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 机器学习中的微积分：为什么它有效
 - en: 原文：[https://machinelearningmastery.com/calculus-in-machine-learning-why-it-works/](https://machinelearningmastery.com/calculus-in-machine-learning-why-it-works/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/calculus-in-machine-learning-why-it-works/](https://machinelearningmastery.com/calculus-in-machine-learning-why-it-works/)
 - en: Calculus is one of the core mathematical concepts in machine learning that permits
     us to understand the internal workings of different machine learning algorithms.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 微积分是机器学习中的核心数学概念之一，它使我们能够理解不同机器学习算法的内部工作原理。
 - en: One of the important applications of calculus in machine learning is the gradient
     descent algorithm, which, in tandem with backpropagation, allows us to train a
     neural network model.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 微积分在机器学习中的一个重要应用是梯度下降算法，它与反向传播一起使我们能够训练神经网络模型。
 - en: In this tutorial, you will discover the integral role of calculus in machine
     learning.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现微积分在机器学习中的关键作用。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将知道：
 - en: Calculus plays an integral role in understanding the internal workings of machine
     learning algorithms, such as the gradient descent algorithm for minimizing an
     error function.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 微积分在理解机器学习算法的内部工作原理中发挥着重要作用，例如用于最小化误差函数的梯度下降算法。
 - en: Calculus provides us with the necessary tools to optimise complex objective
     functions as well as functions with multidimensional inputs, which are representative
     of different machine learning applications.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 微积分为我们提供了优化复杂目标函数以及具有多维输入的函数所需的工具，这些函数代表了不同的机器学习应用。
 - en: Let’s get started.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/2343173724de7d980235b08b0537a98d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_cover-scaled.jpg)'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/2343173724de7d980235b08b0537a98d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_cover-scaled.jpg)'
 - en: 'Calculus in Machine Learning: Why it Works'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 机器学习中的微积分：为什么它有效
 - en: Photo by [Hasmik Ghazaryan Olson](https://unsplash.com/photos/N9OQ2ZHNwCs),
     some rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Hasmik Ghazaryan Olson](https://unsplash.com/photos/N9OQ2ZHNwCs) 提供，保留部分权利。
 - en: '**Tutorial Overview**'
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两部分，它们是：
 - en: Calculus in Machine Learning
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 机器学习中的微积分
 - en: Why Calculus in Machine Learning Works
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么微积分在机器学习中有效
 - en: '**Calculus in Machine Learning**'
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**机器学习中的微积分**'
 - en: A neural network model, whether shallow or deep, implements a function that
     maps a set of inputs to expected outputs.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络模型，无论是浅层还是深层，都会实现一个将一组输入映射到期望输出的函数。
 - en: The function implemented by the neural network is learned through a training
     process, which iteratively searches for a set of weights that best enable the
     neural network to model the variations in the training data.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络实现的函数通过训练过程学习，该过程迭代地搜索一组权重，以使神经网络能够最好地模拟训练数据的变化。
 - en: '*A very simple type of function is a linear mapping from a single input to
     a single output. *'
+  id: totrans-19
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*一种非常简单的函数类型是从单一输入到单一输出的线性映射。*'
 - en: ''
+  id: totrans-20
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*Page 187, Deep Learning, 2019.*'
+  id: totrans-21
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*《深度学习》第187页，2019年。*'
 - en: '*Such a linear function can be represented by the equation of a line having
     a slope, *m*, and a y-intercept, *c*:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '*这样的线性函数可以用一个具有斜率 *m* 和 y 截距 *c* 的直线方程表示：*'
 - en: '*y* = *mx* + *c*'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '*y* = *mx* + *c*'
 - en: Varying each of parameters, *m* and *c*, produces different linear models that
     define different input-output mappings.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 变化每个参数 *m* 和 *c* 会产生定义不同输入输出映射的不同线性模型。
 - en: '[![](../Images/06f2f48544438dc59d5aeb0f3b1b0664.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_1.png)'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/06f2f48544438dc59d5aeb0f3b1b0664.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_1.png)'
 - en: Line Plot of Different Line Models Produced by Varying the Slope and Intercept
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过变化斜率和截距产生的不同线性模型的线图
 - en: Taken from Deep Learning
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 取自《深度学习》
 - en: The process of learning the mapping function, therefore, involves the approximation
     of these model parameters, or *weights*, that result in the minimum error between
     the predicted and target outputs. This error is calculated by means of a loss
     function, cost function, or error function, as often used interchangeably, and
     the process of minimizing the loss is referred to as *function optimization*.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，学习映射函数的过程涉及到这些模型参数或 *权重* 的近似，这些参数会导致预测输出与目标输出之间的最小误差。这个误差通过损失函数、成本函数或误差函数（通常可以互换使用）来计算，而最小化损失的过程称为
+    *函数优化*。
 - en: We can apply differential calculus to the process of function optimization.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将微分计算应用于函数优化过程。
 - en: In order to understand better how differential calculus can be applied to function
     optimization, let us return to our specific example of having a linear mapping
     function.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了更好地理解如何将微分计算应用于函数优化，我们回到具有线性映射函数的具体示例。
 - en: Say that we have some dataset of single input features, *x*, and their corresponding
     target outputs, *y*. In order to measure the error on the dataset, we shall be
     taking the sum of squared errors (SSE), computed between the predicted and target
     outputs, as our loss function.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们有一些单输入特征的数据显示，*x*，以及它们对应的目标输出，*y*。为了衡量数据集上的误差，我们将计算预测输出和目标输出之间的平方误差和（SSE），作为我们的损失函数。
 - en: Carrying out a parameter sweep across different values for the model weights,
     *w[0]* = *m* and *w[1]* = *c*, generates individual error profiles that are convex
     in shape.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 对模型权重的不同值进行参数扫描，*w[0]* = *m* 和 *w[1]* = *c*，生成了形状为凸形的个别误差轮廓。
 - en: '[![](../Images/6dc7ec225202bd839f403a3092a7b026.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_2.png)'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/6dc7ec225202bd839f403a3092a7b026.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_2.png)'
 - en: Line Plots of Error (SSE) Profiles Generated When Sweeping Across a Range of
     Values for the Slope and Intercept
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 错误（SSE）轮廓的线图，当在斜率和截距的范围内进行扫描时生成
 - en: Taken from Deep Learning
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 摘自《深度学习》
 - en: Combining the individual error profiles generates a three-dimensional error
     surface that is also convex in shape. This error surface is contained within a
     weight space, which is defined by the swept ranges of values for the model weights,
     *w[0]* and *w[1]*.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 结合个别误差轮廓生成了一个三维误差面，该面也呈凸形。这个误差面位于一个权重空间内，该空间由模型权重的扫掠范围定义，*w[0]* 和 *w[1]*。
 - en: '[![](../Images/7ff228ddf4932af3e3b783f0fb109a9c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_3.png)'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/7ff228ddf4932af3e3b783f0fb109a9c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_3.png)'
 - en: Three-Dimensional Plot of the Error (SSE) Surface Generated When Both Slope
     and Intercept are Varied
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 当斜率和截距都变化时生成的误差（SSE）面三维图
 - en: Taken from Deep Learning
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 摘自《深度学习》
 - en: Moving across this weight space is equivalent to moving between different linear
     models. Our objective is to identify the model that best fits the data among all
     possible alternatives. The best model is characterised by the lowest error on
     the dataset, which corresponds with the lowest point on the error surface.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个权重空间中移动相当于在不同线性模型之间移动。我们的目标是识别在所有可能的备选模型中最适合数据的模型。最佳模型的特征是数据集上的最低误差，这与误差面的最低点相对应。
 - en: '*A convex or bowl-shaped error surface is incredibly useful for learning a
     linear function to model a dataset because it means that the learning process
     can be framed as a search for the lowest point on the error surface. The standard
     algorithm used to find this lowest point is known as gradient descent. *'
+  id: totrans-41
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*一个凸形或碗状的误差面对于学习线性函数以建模数据集是非常有用的，因为这意味着学习过程可以被框定为在误差面上寻找最低点。用来寻找这个最低点的标准算法被称为梯度下降。*'
 - en: ''
+  id: totrans-42
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*Page 194, Deep Learning, 2019.*'
+  id: totrans-43
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*第194页，《深度学习》，2019年。*'
 - en: '*The gradient descent algorithm, as the optimization algorithm, will seek to
     reach the lowest point on the error surface by following its gradient downhill.
     This descent is based upon the computation of the gradient, or slope, of the error
     surface.'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '*梯度下降算法作为优化算法，将通过沿着误差面的梯度下坡来寻求达到误差面的最低点。这种下降是基于对误差面梯度或斜率的计算。*'
 - en: This is where differential calculus comes into the picture.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是微分计算发挥作用的地方。
 - en: '*Calculus, and in particular differentiation, is the field of mathematics that
     deals with rates of change.*'
+  id: totrans-46
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*微积分，特别是微分，是处理变化率的数学领域。*'
 - en: ''
+  id: totrans-47
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*Page 198, Deep Learning, 2019.*'
+  id: totrans-48
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*第198页，《深度学习》，2019年。*'
 - en: '*More formally, let us denote the function that we would like to optimize by:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '*更正式地说，我们可以将我们希望优化的函数表示为：*'
 - en: '*error =* f(*weights*)'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '*error =* f(*weights*)'
 - en: By computing the rate of change, or the slope, of the error with respect to
     the weights, the gradient descent algorithm can decide on how to change the weights
     in order to keep reducing the error.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过计算误差相对于权重的变化率或斜率，梯度下降算法可以决定如何改变权重以继续减少误差。
 - en: '**Why Calculus in Machine Learning Works**'
+  id: totrans-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**为何微积分在机器学习中有效**'
 - en: The error function that we have considered to optimize is relatively simple,
     because it is convex and characterised by a single global minimum.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们考虑优化的误差函数相对简单，因为它是凸的，且具有单一的全局最小值。
 - en: Nonetheless, in the context of machine learning, we often need to optimize more
     complex functions that can make the optimization task very challenging. Optimization
     can become even more challenging if the input to the function is also multidimensional.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管如此，在机器学习的背景下，我们通常需要优化更复杂的函数，这使得优化任务变得非常具有挑战性。如果函数的输入也是多维的，优化可能会变得更加困难。
 - en: Calculus provides us with the necessary tools to address both challenges.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 微积分为我们提供了解决这两种挑战所需的工具。
 - en: 'Suppose that we have a more generic function that we wish to minimize, and
     which takes a real input, *x*, to produce a real output, *y*:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们有一个更通用的函数，希望将其最小化，该函数接受一个实数输入*x*，并产生一个实数输出*y*：
 - en: '*y* = f(*x*)'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '*y* = f(*x*)'
 - en: Computing the rate of change at different values of *x* is useful because it
     gives us an indication of the changes that we need to apply to *x*, in order to
     obtain the corresponding changes in *y*.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 在不同的*x*值处计算变化率是有用的，因为这能指示我们需要对*x*进行的变化，以获得*y*的相应变化。
 - en: Since we are minimizing the function, our goal is to reach a point that obtains
     as low a value of f(*x*) as possible that is also characterised by zero rate of
     change; hence, a global minimum. Depending on the complexity of the function,
     this may not necessarily be possible since there may be many local minima or saddle
     points that the optimisation algorithm may remain caught into.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们在最小化函数，我们的目标是找到一个使f(*x*)值尽可能低且具有零变化率的点；因此，这是一个全局最小值。根据函数的复杂性，这可能不一定可行，因为可能存在许多局部最小值或鞍点，优化算法可能会被困在其中。
 - en: '*In the context of deep learning, we optimize functions that may have many
     local minima that are not optimal, and many saddle points surrounded by very flat
     regions. *'
+  id: totrans-60
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*在深度学习的背景下，我们优化的函数可能有许多局部最小值，这些局部最小值并不理想，还有许多被非常平坦区域包围的鞍点。*'
 - en: ''
+  id: totrans-61
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*Page 84, Deep Learning, 2017.*'
+  id: totrans-62
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*第84页，《深度学习》，2017年。*'
 - en: '*Hence, within the context of deep learning, we often accept a suboptimal solution
     that may not necessarily correspond to a global minimum, so long as it corresponds
     to a very low value of f(*x*).'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '*因此，在深度学习的背景下，我们通常接受一个可能不一定对应全局最小值的次优解，只要它对应一个非常低的f(*x*)值。*'
 - en: '[![](../Images/9733b001cd18cf11fc3094249e73a168.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_4.png)'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/9733b001cd18cf11fc3094249e73a168.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/calculus_in_machine_learning_4.png)'
 - en: Line Plot of Cost Function to Minimize Displaying Local and Global Minima
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 成本函数的折线图显示局部和全局最小值
 - en: Taken from Deep Learning
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 摘自《深度学习》
 - en: If the function we are working with takes multiple inputs, calculus also provides
     us with the concept of *partial derivatives*; or in simpler terms, a method to
     calculate the rate of change of *y* with respect to changes in each one of the
     inputs, *x**[i]*, while holding the remaining inputs constant.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们处理的函数有多个输入，微积分还为我们提供了*偏导数*的概念；或者更简单地说，计算*y*相对于每一个输入*x**[i]*变化的变化率，同时保持其他输入不变的方法。
 - en: '*This is why each of the weights is updated independently in the gradient descent
     algorithm: the weight update rule is dependent on the partial derivative of the
     SSE for each weight, and because there is a different partial derivative for each
     weight, there is a separate weight update rule for each weight. *'
+  id: totrans-68
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*这就是为什么在梯度下降算法中，每个权重独立更新的原因：权重更新规则依赖于每个权重的SSE偏导数，由于每个权重都有不同的偏导数，因此每个权重都有单独的更新规则。*'
 - en: ''
+  id: totrans-69
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*Page 200, Deep Learning, 2019.*'
+  id: totrans-70
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*第200页，《深度学习》，2019年。*'
 - en: '*Hence, if we consider again the minimization of an error function, calculating
     the partial derivative for the error with respect to each specific weight permits
     that each weight is updated independently of the others.'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: '*因此，如果我们再次考虑误差函数的最小化，计算误差相对于每个特定权重的偏导数允许每个权重独立于其他权重进行更新。*'
 - en: This also means that the gradient descent algorithm may not follow a straight
     path down the error surface. Rather, each weight will be updated in proportion
     to the local gradient of the error curve. Hence, one weight may be updated by
     a larger amount than another, as much as needed for the gradient descent algorithm
     to reach the function minimum.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 这也意味着梯度下降算法可能不会沿着误差表面沿直线下降。相反，每个权重将根据误差曲线的局部梯度进行更新。因此，一个权重可能比另一个权重更新得更多，以便梯度下降算法达到函数的最小值。
 - en: '**Further Reading**'
+  id: totrans-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: '**Books**'
+  id: totrans-75
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_4?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-4),
     2019.'
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_4?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-4)，2019。'
 - en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
     2017.'
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1)，2017。'
 - en: '**Summary**'
+  id: totrans-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered the integral role of calculus in machine learning.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了微积分在机器学习中的核心作用。
 - en: 'Specifically, you learned:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: Calculus plays an integral role in understanding the internal workings of machine
     learning algorithms, such as the gradient descent algorithm that minimizes an
     error function based on the computation of the rate of change.
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 微积分在理解机器学习算法的内部机制中扮演着重要角色，例如，梯度下降算法根据变化率的计算来最小化误差函数。
 - en: The concept of the rate of change in calculus can also be exploited to minimise
     more complex objective functions that are not necessarily convex in shape.
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 微积分中变化率的概念也可以用来最小化更复杂的目标函数，这些函数不一定是凸形的。
 - en: The calculation of the partial derivative, another important concept in calculus,
     permits us to work with functions that take multiple inputs.
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 偏导数的计算是微积分中的另一个重要概念，它使我们能够处理多个输入的函数。
 - en: Do you have any questions?
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below and I will do my best to answer.*****
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提问，我会尽力回答。*****

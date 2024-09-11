@@ -1,97 +1,142 @@
 - en: What Is Attention?
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 什么是注意力？
 - en: 原文：[https://machinelearningmastery.com/what-is-attention/](https://machinelearningmastery.com/what-is-attention/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/what-is-attention/](https://machinelearningmastery.com/what-is-attention/)
 - en: Attention is becoming increasingly popular in machine learning, but what makes
     it such an attractive concept? What is the relationship between attention applied
     in artificial neural networks and its biological counterpart? What components
     would one expect to form an attention-based system in machine learning?
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意力在机器学习中越来越受欢迎，但是什么使它成为一个如此吸引人的概念？在人工神经网络中应用的注意力与其生物学对应物之间有什么关系？在机器学习中，人们可以期待什么组件形成一个基于注意力的系统？
 - en: In this tutorial, you will discover an overview of attention and its application
     in machine learning.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现注意力的概述及其在机器学习中的应用。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: A brief overview of how attention can manifest itself in the human brain
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 简要概述注意力如何在大脑中表现
 - en: The components that make up an attention-based system and how these are inspired
     by biological attention
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 组成基于注意力的系统的组件及其如何受到生物学注意力的启发
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参考我的书 [构建具有注意力的变换器模型](https://machinelearningmastery.com/transformer-models-with-attention/)。它提供了**自学教程**和**工作代码**，帮助你构建一个完全可用的变换器模型。'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将句子从一种语言翻译成另一种语言*...'
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/82c53327289d2beef0800aeb35231bb2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/what_is_attention_cover-scaled.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/82c53327289d2beef0800aeb35231bb2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/what_is_attention_cover-scaled.jpg)'
 - en: What is attention?
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 什么是注意力？
 - en: Photo by [Rod Long](https://unsplash.com/photos/J-ygvQbilXU), some rights reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：[Rod Long](https://unsplash.com/photos/J-ygvQbilXU)，保留部分权利。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两部分；它们是：
 - en: Attention
+  id: totrans-15
   prefs:
   - PREF_UL
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 注意力
 - en: Attention in Machine Learning
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 机器学习中的注意力
 - en: '**Attention**'
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**注意事项**'
 - en: Attention is a widely investigated concept that has often been studied in conjunction
     with arousal, alertness, and engagement with one’s surroundings.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意力是一个广泛研究的概念，通常与唤醒、警觉性和与周围环境的参与有关。
 - en: '*In its most generic form, attention could be described as merely an overall
     level of alertness or ability to engage with surroundings.*'
+  id: totrans-19
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*在最一般的形式下，注意力可以被描述为对周围环境的总体警觉性或参与能力。*'
 - en: ''
+  id: totrans-20
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Attention in Psychology, Neuroscience, and Machine Learning](https://www.frontiersin.org/articles/10.3389/fncom.2020.00029/full),
     2020.'
+  id: totrans-21
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [心理学、神经科学和机器学习中的注意力](https://www.frontiersin.org/articles/10.3389/fncom.2020.00029/full)，2020年。'
 - en: '*Visual* attention is one of the areas most often studied from both the neuroscientific
     and psychological perspectives.'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '*视觉* 注意力是神经科学和心理学领域中最常研究的领域之一。'
 - en: When a subject is presented with different images, the eye movements that the
     subject performs can reveal the *salient* image parts that the subject’s attention
     is most attracted to. In their review of computational models for visual attention,
@@ -99,8 +144,11 @@
     that such salient image parts are often characterized by visual attributes, including
     intensity contrast, oriented edges, corners and junctions, and motion. The human
     brain attends to these salient visual features at different neuronal stages.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 当一个对象面对不同的图像时，该对象的眼动可以揭示出*显著*的图像部分，这些部分是对象的注意力最感兴趣的。在对视觉注意力的计算模型进行回顾时，[Itti
+    和 Koch (2001)](https://authors.library.caltech.edu/40408/1/391.pdf)提到这些显著的图像部分通常由视觉属性特征，包括强度对比、定向边缘、角落和交点以及运动所特征化。人脑在不同的神经阶段关注这些显著的视觉特征。
 - en: '*Neurons at the earliest stages are tuned to simple visual attributes such
     as intensity contrast, colour opponency, orientation, direction and velocity of
     motion, or stereo disparity at several spatial scales. Neuronal tuning becomes
@@ -108,97 +156,129 @@
     visual areas, such that higher-level visual areas include neurons that respond
     only to corners or junctions, shape-from-shading cues or views of specific real-world
     objects.*'
+  id: totrans-24
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*早期的神经元对简单的视觉属性如强度对比、颜色对抗、方向、运动方向和速度，或在多个空间尺度上的立体视差进行了调节。神经元的调节随着从低级到高级视觉区域的进展而变得越来越专业，以至于高级视觉区域包括仅对角点或交点、从阴影中获取形状线索或特定现实世界物体的视图做出反应的神经元。*'
 - en: ''
+  id: totrans-25
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – [Computational Modelling of Visual Attention](https://authors.library.caltech.edu/40408/1/391.pdf),
     2001.
+  id: totrans-26
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – [计算视觉注意力建模](https://authors.library.caltech.edu/40408/1/391.pdf)，2001年。
 - en: Interestingly, research has also observed that different subjects tend to be
     attracted to the same salient visual cues.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 有趣的是，研究还观察到不同的对象往往被相同的显著视觉线索所吸引。
 - en: Research has also discovered several forms of interaction between memory and
     attention. Since the human brain has a limited memory capacity, then selecting
     which information to store becomes crucial in making the best use of the limited
     resources. The human brain does so by relying on attention, such that it dynamically
     stores in memory the information that the human subject most pays attention to.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 研究还发现了记忆和注意力之间的几种交互形式。由于人脑的记忆容量有限，因此选择存储哪些信息在最大程度利用有限资源上变得至关重要。人脑通过依赖注意力来实现这一点，从而动态地将受关注的信息存储在记忆中。
 - en: '**Attention in Machine Learning**'
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**机器学习中的注意力**'
 - en: Implementing the attention mechanism in artificial neural networks does not
     necessarily track the biological and psychological mechanisms of the human brain.
     Instead, it is the ability to dynamically highlight and use the *salient* parts
     of the information at hand—in a similar manner as it does in the human brain—that
     makes attention such an attractive concept in machine learning.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 在人工神经网络中实现注意力机制并不一定追踪人脑的生物学和心理学机制。相反，使注意力在机器学习中如此有吸引力的概念是它能够动态地突出和利用手头信息中的*显著*部分，这与人脑的处理方式类似。
 - en: 'Think of an attention-based system consisting of three components:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象一个由三个组件组成的基于注意力的系统：
 - en: '*A process that “reads” raw data (such as source words in a source sentence),
     and converts them into distributed representations, with one feature vector associated
     with each word position. *'
+  id: totrans-32
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '*一个“读取”原始数据（如源句子中的源词）并将其转换为分布式表示的过程，每个词位置都关联一个特征向量。*'
 - en: ''
+  id: totrans-33
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*A list of feature vectors storing the output of the reader. This can be understood
     as a “memory” containing a sequence of facts, which can be retrieved later, not
     necessarily in the same order, without having to visit all of them.*'
+  id: totrans-34
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '*存储读取器输出的特征向量列表。这可以理解为一个包含事实序列的“记忆”，这些事实可以在之后检索，顺序不一定相同，无需访问全部内容。*'
 - en: ''
+  id: totrans-35
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*A process that “exploits” the content of the memory to sequentially perform
     a task, at each time step having the ability put attention on the content of one
     memory element (or a few, with a different weight).*'
+  id: totrans-36
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '*一个“利用”记忆内容来顺序执行任务的过程，每一步都能将注意力集中在一个记忆元素（或几个，具有不同权重）上。*'
 - en: ''
+  id: totrans-37
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – Page 491, [Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
     2017.
+  id: totrans-38
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – 第491页，[深度学习](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1)，2017年。
 - en: Let’s take the encoder-decoder framework as an example since it is within such
     a framework that the attention mechanism was first introduced.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 以编码器-解码器框架为例，因为在这样的框架中首次引入了注意力机制。
 - en: If we are processing an input sequence of words, then this will first be fed
     into an encoder, which will output a vector for every element in the sequence.
     This corresponds to the first component of our attention-based system, as explained
     above.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们处理一个输入的词序列，这将首先被送入一个编码器，该编码器会为序列中的每个元素输出一个向量。这对应于我们前面提到的基于注意力的系统的第一个组件。
 - en: A list of these vectors (the second component of the attention-based system
     above), together with the decoder’s previous hidden states, will be exploited
     by the attention mechanism to dynamically highlight which of the input information
     will be used to generate the output.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些向量列表（上面基于注意力系统的第二个组成部分），连同解码器的先前隐藏状态，将被注意机制利用来动态突出显示将用于生成输出的输入信息。
 - en: At each time step, the attention mechanism then takes the previous hidden state
     of the decoder and the list of encoded vectors, using them to generate unnormalized
     *score* values that indicate how well the elements of the input sequence align
@@ -210,24 +290,32 @@
     by the computed weights to generate a *context vector*. This attention process
     forms the third component of the attention-based system above. It is this context
     vector that is then fed into the decoder to generate a translated output.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 在每个时间步中，注意机制会取解码器的先前隐藏状态和编码向量列表，利用它们生成未归一化的*分数*值，表明输入序列的元素与当前输出的对齐程度如何。由于生成的分数值需要相对重要性，它们通过
+    softmax 函数进行归一化以生成*权重*。在 softmax 归一化之后，所有权重值将位于 [0, 1] 区间并加起来为 1，这意味着它们可以被解释为概率。最后，编码向量通过计算得到的权重进行缩放，生成*上下文向量*。这个注意过程形成了上面基于注意力系统的第三个组成部分。然后将这个上下文向量送入解码器以生成翻译输出。
 - en: '*This type of artificial attention is thus a form of iterative re-weighting.
     Specifically, it dynamically highlights different components of a pre-processed
     input as they are needed for output generation. This makes it flexible and context
     dependent, like biological attention. *'
+  id: totrans-43
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*这种类型的人工注意力因此是一种迭代重新加权的形式。具体来说，它会动态突出显示预处理输入的不同组件，因为它们对输出生成是必要的。这使其像生物学的注意力一样灵活和上下文相关。*'
 - en: ''
+  id: totrans-44
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Attention in Psychology, Neuroscience, and Machine Learning](https://www.frontiersin.org/articles/10.3389/fncom.2020.00029/full),
     2020.'
+  id: totrans-45
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [心理学、神经科学和机器学习中的注意力](https://www.frontiersin.org/articles/10.3389/fncom.2020.00029/full)，2020年。'
 - en: The process implemented by a system that incorporates an attention mechanism
     contrasts with one that does not. In the latter, the encoder would generate a
     fixed-length vector irrespective of the input’s length or complexity. In the absence
@@ -235,83 +323,123 @@
     the input, the decoder would only have access to the limited information that
     would be encoded within the fixed-length vector. This would potentially result
     in the decoder missing important information.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 包含注意机制的系统实施的过程与不包含的系统相比有所不同。在后者中，编码器会生成一个固定长度的向量，而不考虑输入的长度或复杂性。在没有突出显示整个输入中显著信息的机制的情况下，解码器只能访问编码在固定长度向量中的有限信息。这可能导致解码器错过重要信息。
 - en: The attention mechanism was initially proposed to process sequences of words
     in machine translation, which have an implied temporal aspect to them. However,
     it can be generalized to process information that can be static and not necessarily
     related in a sequential fashion, such as in the context of image processing. You
     will see how this generalization can be achieved in a separate tutorial.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意机制最初是为了处理机器翻译中的单词序列提出的，这些序列具有暗含的时间因素。然而，它可以推广到处理静态信息，不一定以顺序方式相关，比如在图像处理的背景下。您将看到如何在单独的教程中实现这种泛化。
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用带注意力机制的Transformer模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费12天电子邮件快速课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可获得课程的免费PDF电子书版本。
 - en: '**Further Reading**'
+  id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了关于该主题的更多资源，如果您希望深入了解。
 - en: '**Books**'
+  id: totrans-53
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Deep Learning Essentials](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365),
     2018.'
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习基础](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365)，2018年。'
 - en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
     2017.'
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1)，2017年。'
 - en: '**Papers**'
+  id: totrans-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[Attention in Psychology, Neuroscience, and Machine Learning](https://www.frontiersin.org/articles/10.3389/fncom.2020.00029/full),
     2020.'
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[心理学、神经科学和机器学习中的注意力](https://www.frontiersin.org/articles/10.3389/fncom.2020.00029/full)，2020年。'
 - en: '[Computational Modelling of Visual Attention](https://authors.library.caltech.edu/40408/1/391.pdf),
     2001.'
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[视觉注意力的计算建模](https://authors.library.caltech.edu/40408/1/391.pdf)，2001年。'
 - en: '**Summary**'
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered an overview of attention and its application
     in machine learning.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了注意力的概述及其在机器学习中的应用。
 - en: 'Specifically, you learned:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: A brief overview of how attention can manifest itself in the human brain
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 注意力如何在大脑中表现的简要概述
 - en: The components that make up an attention-based system and how these are inspired
     by biological attention
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 组成注意力系统的各个部分及其如何受到生物学注意力的启发
 - en: Do you have any questions?
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论中提问，我会尽力回答。

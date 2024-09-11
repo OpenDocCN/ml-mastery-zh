@@ -1,151 +1,227 @@
 - en: A Gentle Introduction To Gradient Descent Procedure
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 梯度下降过程的温和介绍
 - en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-gradient-descent-procedure/](https://machinelearningmastery.com/a-gentle-introduction-to-gradient-descent-procedure/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-gradient-descent-procedure/](https://machinelearningmastery.com/a-gentle-introduction-to-gradient-descent-procedure/)
 - en: Gradient descent procedure is a method that holds paramount importance in machine
     learning. It is often used for minimizing error functions in classification and
     regression problems. It is also used in training neural networks, and deep learning
     architectures.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 梯度下降过程在机器学习中具有至关重要的意义。它常用于最小化分类和回归问题中的误差函数，也用于训练神经网络和深度学习架构。
 - en: In this tutorial, you will discover the gradient descent procedure.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现梯度下降过程。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解到：
 - en: Gradient descent method
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 梯度下降方法
 - en: Importance of gradient descent in machine learning
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 梯度下降在机器学习中的重要性
 - en: Let’s get started.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![A Gentle Introduction to gradient descent. Photo by Mehreen Saeed, some
     rights reserved.](../Images/ccb6c9a8177a2d9c7e554ace919b3efa.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/IMG_9313-scaled.jpg)'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![对梯度下降的温和介绍。照片由 Mehreen Saeed 提供，部分权利保留。](../Images/ccb6c9a8177a2d9c7e554ace919b3efa.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/IMG_9313-scaled.jpg)'
 - en: A Gentle Introduction to gradient descent. Photo by Mehreen Saeed, some rights
     reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 对梯度下降的温和介绍。照片由 Mehreen Saeed 提供，部分权利保留。
 - en: Tutorial Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两个部分，它们是：
 - en: Gradient descent procedure
+  id: totrans-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 梯度下降过程
 - en: Solved example of gradient descent procedure
+  id: totrans-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 梯度下降过程的示例
 - en: Prerequisites
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 前提条件
 - en: 'For this tutorial the prerequisite knowledge of the following topics is assumed:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，假定你已具备以下主题的知识：
 - en: A function of several variables
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多变量函数
 - en: '[Partial derivatives and gradient vectors](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[偏导数和梯度向量](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
 - en: You can review these concepts by clicking on the link given above.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过点击上面的链接来复习这些概念。
 - en: Gradient Descent Procedure
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 梯度下降过程
 - en: The gradient descent procedure is an algorithm for finding the minimum of a
     function.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 梯度下降过程是一个用于寻找函数最小值的算法。
 - en: Suppose we have a function f(x), where x is a tuple of several variables,i.e.,
     x = (x_1, x_2, …x_n). Also, suppose that the gradient of f(x) is given by ∇f(x).
     We want to find the value of the variables (x_1, x_2, …x_n) that give us the minimum
     of the function. At any iteration t, we’ll denote the value of the tuple x by
     x[t]. So x[t][1] is the value of x_1 at iteration t, x[t][2] is the value of x_2
     at iteration t, e.t.c.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们有一个函数 f(x)，其中 x 是多个变量的元组，即 x = (x_1, x_2, …x_n)。还假设 f(x) 的梯度为 ∇f(x)。我们希望找到使函数最小的变量值
+    (x_1, x_2, …x_n)。在任何迭代 t 中，我们用 x[t] 表示元组 x 的值。所以 x[t][1] 是迭代 t 中 x_1 的值，x[t][2]
+    是迭代 t 中 x_2 的值，依此类推。
 - en: The Notation
+  id: totrans-22
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 符号说明
 - en: 'We have the following variables:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们有以下变量：
 - en: t = Iteration number
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: t = 迭代次数
 - en: T = Total iterations
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: T = 总迭代次数
 - en: n = Total variables  in the domain of f  (also called the dimensionality of
     x)
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: n = f 的定义域中的总变量（也称为 x 的维度）
 - en: j = Iterator for variable number, e.g., x_j represents the jth variable
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: j = 变量编号的迭代器，例如，x_j 表示第 j 个变量
 - en: ???? = Learning rate
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ???? = 学习率
 - en: ∇f(x[t]) = Value of the gradient vector of f at iteration t
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ∇f(x[t]) = 迭代 t 时 f 的梯度向量值
 - en: The Training Method
+  id: totrans-30
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 训练方法
 - en: The steps for the gradient descent algorithm are given below. This is also called
     the training method.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 梯度下降算法的步骤如下。这也被称为训练方法。
 - en: Choose a random initial point x_initial and set x[0] = x_initial
+  id: totrans-32
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 选择一个随机的初始点 x_initial 并设置 x[0] = x_initial
 - en: For iterations t=1..T
+  id: totrans-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对于迭代 t=1..T
 - en: Update x[t] = x[t-1] – ????∇f(x[t-1])
+  id: totrans-34
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 更新 x[t] = x[t-1] – ????∇f(x[t-1])
 - en: It is as simple as that!
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 就是这么简单！
 - en: The learning rate ???? is a user defined variable for the gradient descent procedure.
     Its value lies in the range [0,1].
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 学习率 ???? 是梯度下降过程中的用户定义变量，其值在 [0,1] 范围内。
 - en: The above method says that at each iteration we have to update the value of
     x by taking a small step in the direction of the negative of the gradient vector.
     If ????=0, then there will be no change in x. If ????=1, then it is like taking
@@ -153,152 +229,231 @@
     ???? is set to a small value like 0.05 or 0.1\. It can also be variable during
     the training procedure. So your algorithm can start with a large value (e.g. 0.8)
     and then reduce it to smaller values.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述方法说明在每次迭代时，我们需要通过朝梯度向量负方向小步移动来更新 x 的值。如果 ????=0，则 x 不会变化。如果 ????=1，则相当于在梯度向量的负方向上迈出大步。通常，
+    ???? 设置为小值如 0.05 或 0.1。它也可以在训练过程中变化。因此你的算法可以从较大的值（例如 0.8）开始，然后逐渐减小到较小的值。
 - en: Want to Get Started With Calculus for Machine Learning?
+  id: totrans-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始学习机器学习的微积分吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就报名我的免费 7 天电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得免费 PDF 电子书版课程。
 - en: Example of Gradient Descent
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 梯度下降的示例
 - en: 'Let’s find the minimum of the following function of two variables, whose graphs
     and contours are shown in the figure below:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们找出下列两个变量的函数的最小值，其图形和轮廓如下图所示：
 - en: f(x,y) = x**x + 2y**y
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: f(x,y) = x**x + 2y**y
 - en: '[![Graph and contours of f(x,y) = x*x + 2y*y](../Images/677e92ebb420e0bb877b853edb3a8b96.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/gradientDescent1.png)'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![f(x,y) = x*x + 2y*y 的图形和轮廓](../Images/677e92ebb420e0bb877b853edb3a8b96.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/gradientDescent1.png)'
 - en: Graph and contours of f(x,y) = x*x + 2y*y
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: f(x,y) = x*x + 2y*y 的图形和轮廓
 - en: 'The general form of the gradient vector is given by:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 梯度向量的一般形式为：
 - en: ∇f(x,y) = 2xi + 4yj
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: ∇f(x,y) = 2xi + 4yj
 - en: Two iterations of the algorithm, T=2 and ????=0.1 are shown below
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 显示了算法的两个迭代 T=2 和 ????=0.1
 - en: Initial t=0
+  id: totrans-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 初始 t=0
 - en: 'x[0] = (4,3)     # This is just a randomly chosen point'
+  id: totrans-50
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'x[0] = (4,3)     # 这只是一个随机选择的点'
 - en: At t = 1
+  id: totrans-51
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在 t = 1 时
 - en: x[1] = x[0] – ????∇f(x[0])
+  id: totrans-52
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: x[1] = x[0] – ????∇f(x[0])
 - en: x[1] = (4,3) – 0.1*(8,12)
+  id: totrans-53
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: x[1] = (4,3) – 0.1*(8,12)
 - en: x[1] = (3.2,1.8)
+  id: totrans-54
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: x[1] = (3.2,1.8)
 - en: At t=2
+  id: totrans-55
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在 t=2 时
 - en: x[2] = x[1] – ????∇f(x[1])
+  id: totrans-56
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: x[2] = x[1] – ????∇f(x[1])
 - en: x[2] = (3.2,1.8) – 0.1*(6.4,7.2)
+  id: totrans-57
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: x[2] = (3.2,1.8) – 0.1*(6.4,7.2)
 - en: x[2] = (2.56,1.08)
+  id: totrans-58
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: x[2] = (2.56,1.08)
 - en: If you keep running the above iterations, the procedure will eventually end
     up at the point where the function is minimum, i.e., (0,0).
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你持续运行上述迭代过程，最终程序会到达函数最小值的点，即 (0,0)。
 - en: 'At iteration t=1, the algorithm is illustrated in the figure below:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 在迭代 t=1 时，算法如图所示：
 - en: '[![Illustration of gradient descent procedure](../Images/316758996fd4b1cb60527bcde73300c3.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/gradientDescent2.png)'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![梯度下降过程的示意图](../Images/316758996fd4b1cb60527bcde73300c3.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/gradientDescent2.png)'
 - en: Illustration of gradient descent procedure
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 梯度下降过程的示意图
 - en: How Many Iterations to Run?
+  id: totrans-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 需要运行多少次迭代？
 - en: Normally gradient descent is run till the value of x does not change or the
     change in x is below a certain threshold. The stopping criterion can also be a
     user defined maximum number of iterations (that we defined earlier as T).
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，梯度下降会运行到 x 的值不再改变或 x 的变化低于某个阈值。停止准则也可以是用户定义的最大迭代次数（我们之前定义为 T）。
 - en: Adding Momentum
+  id: totrans-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 添加动量
 - en: 'Gradient descent can run into problems such as:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 梯度下降可能会遇到如下问题：
 - en: Oscillate between two or more points
+  id: totrans-67
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在两个或多个点之间震荡
 - en: Get trapped in a local minimum
+  id: totrans-68
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 陷入局部最小值
 - en: Overshoot and miss the minimum point
+  id: totrans-69
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 超越并错过最小点
 - en: 'To take care of the above problems, a momentum term can be added to the update
     equation of gradient descent algorithm as:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了处理上述问题，可以在梯度下降算法的更新方程中添加动量项，如下所示：
 - en: x[t] = x[t-1] – ????∇f(x[t-1]) + ????*Δx[t-1]
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: x[t] = x[t-1] – ????∇f(x[t-1]) + ????*Δx[t-1]
 - en: where Δx[t-1] represents the change in x, i.e.,
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中 Δx[t-1] 代表 x 的变化，即：
 - en: Δx[t] = x[t] – x[t-1]
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: Δx[t] = x[t] – x[t-1]
 - en: The initial change at t=0 is a zero vector. For this problem Δx[0] = (0,0).
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 t=0 时的初始变化是零向量。对于这个问题 Δx[0] = (0,0)。
 - en: About Gradient Ascent
+  id: totrans-75
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 关于梯度上升
 - en: There is a related gradient ascent procedure, which finds the maximum of a function.
     In gradient descent we follow the direction of the rate of maximum decrease of
     a function. It is the direction of the negative gradient vector. Whereas, in gradient
@@ -306,126 +461,191 @@
     is the direction pointed to by the positive gradient vector. We can also write
     a maximization problem in terms of a maximization problem by adding a negative
     sign to f(x), i.e.,
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有一个相关的梯度上升过程，用于寻找函数的最大值。在梯度下降中，我们沿着函数的最大减少率的方向前进，这就是负梯度向量的方向。而在梯度上升中，我们沿着函数最大增加率的方向前进，这就是正梯度向量的方向。我们也可以通过对f(x)加上负号来将最大化问题转化为最小化问题，即，
 - en: '[PRE0]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Why Is The Gradient Descent Important In Machine Learning?
+  id: totrans-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为什么梯度下降在机器学习中重要？
 - en: The gradient descent algorithm is often employed in machine learning problems.
     In many classification and regression tasks, the mean square error function is
     used to fit a model to the data. The gradient descent procedure is used to identify
     the optimal model parameters that lead to the lowest mean square error.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 梯度下降算法常用于机器学习问题。在许多分类和回归任务中，均方误差函数用于将模型拟合到数据。梯度下降过程用于识别导致最低均方误差的最佳模型参数。
 - en: Gradient ascent is used similarly, for problems that involve maximizing a function.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 梯度上升用于类似的情境，解决涉及最大化函数的问题。
 - en: Extensions
+  id: totrans-81
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 扩展
 - en: This section lists some ideas for extending the tutorial that you may wish to
     explore.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节列出了一些你可能希望探索的教程扩展想法。
 - en: Hessian matrix
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 黑塞矩阵
 - en: Jacobian
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 雅可比矩阵
 - en: If you explore any of these extensions, I’d love to know. Post your findings
     in the comments below.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你探索了这些扩展内容，我很乐意知道。请在下方评论中发布你的发现。
 - en: Further Reading
+  id: totrans-86
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你希望深入了解。
 - en: Tutorials
+  id: totrans-88
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[Derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[导数](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
 - en: '[Slopes and tangents](https://machinelearningmastery.com/a-gentle-introduction-to-slopes-and-tangents)'
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[斜率和切线](https://machinelearningmastery.com/a-gentle-introduction-to-slopes-and-tangents)'
 - en: '[Gradient descent for machine learning](https://machinelearningmastery.com/gradient-descent-for-machine-learning/)'
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[机器学习中的梯度下降](https://machinelearningmastery.com/gradient-descent-for-machine-learning/)'
 - en: '[What is gradient in machine learning](https://machinelearningmastery.com/gradient-in-machine-learning/)'
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[什么是机器学习中的梯度](https://machinelearningmastery.com/gradient-in-machine-learning/)'
 - en: '[Partial derivatives and gradient vectors](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[偏导数和梯度向量](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
 - en: Resources
+  id: totrans-94
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 资源
 - en: Additional resources on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning/)
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于 [机器学习中的微积分书籍](https://machinelearningmastery.com/calculus-books-for-machine-learning/)
+    的额外资源
 - en: Books
+  id: totrans-96
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Thomas’ Calculus](https://amzn.to/35Yeolv), 14th edition, 2017\. (based on
     the original works of George B. Thomas, revised by Joel Hass, Christopher Heil,
     Maurice Weir)'
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[托马斯微积分](https://amzn.to/35Yeolv)，第14版，2017年。（基于George B. Thomas的原著，由Joel Hass、Christopher
+    Heil、Maurice Weir修订）'
 - en: '[Calculus](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US),
     3rd Edition, 2017\. (Gilbert Strang)'
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US)，第3版，2017年。（Gilbert
+    Strang）'
 - en: '[Calculus](https://amzn.to/3kS9I52), 8th edition, 2015\. (James Stewart)'
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://amzn.to/3kS9I52)，第8版，2015年。（James Stewart）'
 - en: Summary
+  id: totrans-100
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you discovered the algorithm for gradient descent. Specifically,
     you learned:'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了梯度下降的算法。具体来说，你学到了：
 - en: Gradient descent procedure
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 梯度下降过程
 - en: How to apply gradient descent procedure to find the minimum of a function
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何应用梯度下降过程来找到函数的最小值
 - en: How to transform a maximization problem into a minimization problem
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将一个最大化问题转化为最小化问题
 - en: Do you have any questions?
+  id: totrans-105
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below and I will do my best to answer.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论中提出你的问题，我会尽力回答。

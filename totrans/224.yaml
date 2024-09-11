@@ -1,452 +1,679 @@
 - en: The Chain Rule of Calculus for Univariate and Multivariate Functions
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 一元和多元函数的链式法则
 - en: 原文：[https://machinelearningmastery.com/the-chain-rule-of-calculus-for-univariate-and-multivariate-functions/](https://machinelearningmastery.com/the-chain-rule-of-calculus-for-univariate-and-multivariate-functions/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/the-chain-rule-of-calculus-for-univariate-and-multivariate-functions/](https://machinelearningmastery.com/the-chain-rule-of-calculus-for-univariate-and-multivariate-functions/)
 - en: The chain rule allows us to find the derivative of composite functions.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 链式法则使我们能够找到复合函数的导数。
 - en: It is computed extensively by the backpropagation algorithm, in order to train
     feedforward neural networks. By applying the chain rule in an efficient manner
     while following a specific order of operations, the backpropagation algorithm
     calculates the error gradient of the loss function with respect to each weight
     of the network.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 反向传播算法广泛计算它，以训练前馈神经网络。通过以高效的方式应用链式法则，同时遵循特定的操作顺序，反向传播算法计算损失函数相对于网络每个权重的误差梯度。
 - en: In this tutorial, you will discover the chain rule of calculus for univariate
     and multivariate functions.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现一元和多元函数的链式法则。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: A composite function is the combination of two (or more) functions.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 复合函数是两个（或更多）函数的组合。
 - en: The chain rule allows us to find the derivative of a composite function.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 链式法则使我们能够找到复合函数的导数。
 - en: The chain rule can be generalised to multivariate functions, and represented
     by a tree diagram.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 链式法则可以推广到多元函数，并通过树形图表示。
 - en: The chain rule is applied extensively by the backpropagation algorithm in order
     to calculate the error gradient of the loss function with respect to each weight.
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 链式法则在反向传播算法中被广泛应用，以计算损失函数相对于每个权重的误差梯度。
 - en: Let’s get started.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/2620f761808e96cdeecdd27c66aef534.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_cover-scaled.jpg)'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/2620f761808e96cdeecdd27c66aef534.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_cover-scaled.jpg)'
 - en: The Chain Rule of Calculus for Univariate and Multivariate Functions
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 一元和多元函数的链式法则
 - en: Photo by [Pascal Debrunner](https://unsplash.com/photos/WuwKphhRQSM), some rights
     reserved.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：[Pascal Debrunner](https://unsplash.com/photos/WuwKphhRQSM)，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into four parts; they are:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四部分，分别是：
 - en: Composite Functions
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 复合函数
 - en: The Chain Rule
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 链式法则
 - en: The Generalized Chain Rule
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 广义链式法则
 - en: Application in Machine Learning
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在机器学习中的应用
 - en: '**Prerequisites**'
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**前提条件**'
 - en: 'For this tutorial, we assume that you already know what are:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们假设你已经知道以下内容：
 - en: '[Multivariate functions](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/)'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[多元函数](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/)'
 - en: '[The power rule](https://machinelearningmastery.com/the-power-product-and-quotient-rules/)'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[幂法则](https://machinelearningmastery.com/the-power-product-and-quotient-rules/)'
 - en: '[The gradient of a function](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[函数的梯度](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
 - en: You can review these concepts by clicking on the links given above.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过点击上面给出的链接来复习这些概念。
 - en: '**Composite Functions**'
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**复合函数**'
 - en: We have, so far, met functions of single and multiple variables (so called,
     *univariate* and *multivariate* functions, respectively). We shall now extend
     both to their *composite* forms. We will, eventually, see how to apply the chain
     rule in order to find their derivative, but more on this shortly.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们已经遇到了单变量和多变量函数（即*一元*和*多元*函数）。现在，我们将这两者扩展到它们的*复合*形式。我们最终将看到如何应用链式法则来求导，但稍后会详细讲解。
 - en: '*A composite function is the combination of two functions. *'
+  id: totrans-28
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*复合函数是两个函数的组合。*'
 - en: ''
+  id: totrans-29
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – Page 49, [Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
     2016.
+  id: totrans-30
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – 第49页，[傻瓜微积分](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US)，2016年。
 - en: 'Consider two functions of a single independent variable, *f*(*x*) = 2*x* –
     1 and *g*(*x*) = *x*³. Their composite function can be defined as follows:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑两个单一自变量的函数，*f*(*x*) = 2*x* – 1 和 *g*(*x*) = *x*³。它们的复合函数可以定义如下：
 - en: '*h* = *g*(*f*(*x*))'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '*h* = *g*(*f*(*x*))'
 - en: In this operation, *g* is a function of *f.* This means that *g* is applied
     to the result of applying the function, *f*, to *x*, producing *h*.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此操作中，*g* 是 *f* 的一个函数。这意味着 *g* 应用于将函数 *f* 应用到 *x* 上的结果，生成 *h*。
 - en: Let’s consider a concrete example using the functions specified above to understand
     this better.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们用上述指定的函数来考虑一个具体的例子，以便更好地理解。
 - en: 'Suppose that *f*(*x*) and *g*(*x*) are two systems in cascade, receiving an
     input *x* = 5:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设 *f*(*x*) 和 *g*(*x*) 是两个级联系统，接收输入 *x* = 5：
 - en: '[![](../Images/8fbb5d64574dfd6bad96b4fff0e690e2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_1.png)'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/8fbb5d64574dfd6bad96b4fff0e690e2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_1.png)'
 - en: Two Systems in Cascade Representing a Composite Function
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 级联中的两个系统表示一个复合函数
 - en: 'Since *f*(*x*) is the first system in the cascade (because it is the inner
     function in the composite), its output is worked out first:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于 *f*(*x*) 是级联中的第一个系统（因为它是复合函数中的内层函数），所以它的输出首先被计算：
 - en: '*f*(5) = (2 × 5) – 1 = 9'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f*(5) = (2 × 5) – 1 = 9'
 - en: 'This result is then passed on as input to *g*(*x*), the second system in the
     cascade (because it is the outer function in the composite) to produce the net
     result of the composite function:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后将此结果作为输入传递给 *g*(*x*)，即级联中的第二个系统（因为它是复合函数中的外层函数），以产生复合函数的最终结果：
 - en: '*g*(9) = 9³ = 729'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '*g*(9) = 9³ = 729'
 - en: 'We could have, alternatively, computed the net result at one go, if we had
     performed the following computation:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们执行以下计算，可以一次性得到最终结果：
 - en: '*h* = *g*(*f*(*x*)) = (2*x* – 1)³ = 729'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '*h* = *g*(*f*(*x*)) = (2*x* – 1)³ = 729'
 - en: The composition of functions can also be considered as a *chaining* process,
     to use a more familiar term, where the output of one function feeds into the next
     one in the chain.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数的复合也可以被认为是一个*链式*过程，使用一个更熟悉的术语，即一个函数的输出传递给链中的下一个函数。
 - en: '*With composite functions, the order matters. *'
+  id: totrans-45
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*复合函数中，顺序是重要的。*'
 - en: ''
+  id: totrans-46
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – Page 49, [Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
     2016.
+  id: totrans-47
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – 第49页， [《傻瓜微积分》](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US)，2016年。
 - en: 'Keep in mind that the composition of functions is a *non-commutative* process,
     which means that swapping the order of *f*(*x*) and *g*(*x*) in the cascade (or
     chain) does not produce the same results. Hence:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 请记住，函数的复合是一个*非交换*的过程，这意味着在级联（或链）中交换 *f*(*x*) 和 *g*(*x*) 的顺序不会产生相同的结果。因此：
 - en: '*g*(*f*(*x*)) ≠ *f*(*g*(*x*))'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '*g*(*f*(*x*)) ≠ *f*(*g*(*x*))'
 - en: 'The composition of functions can also be extended to the multivariate case:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数的复合也可以扩展到多变量情况：
 - en: '*h* = *g*(*r, s, t*) = *g*(*r*(*x, y*), *s*(*x, y*), *t*(*x, y*)) = *g*(***f***(*x,
     y*))'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '*h* = *g*(*r, s, t*) = *g*(*r*(*x, y*), *s*(*x, y*), *t*(*x, y*)) = *g*(***f***(*x,
+    y*))'
 - en: Here, ***f***(*x, y*) is a vector-valued function of two independent variables
     (or inputs), *x* and *y*. It is made up of three components (for this particular
     example) that are *r*(*x, y*), *s*(*x, y*) and *t*(*x, y*), and which are also
     known as the *component* functions of ***f***.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，***f***(*x, y*) 是一个两自变量（或输入）的向量值函数（在这个特定例子中），由三个组件（*r*(*x, y*), *s*(*x,
+    y*) 和 *t*(*x, y*)）组成，也被称为 ***f*** 的*组件*函数。
 - en: This means that ***f***(*x*, *y*) will map two inputs to three outputs, and
     will then feed these three outputs into the consecutive system in the chain, *g*(*r*,
     *s*, *t*), to produce *h*.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着 ***f***(*x*, *y*) 将两个输入映射到三个输出，然后将这三个输出传递给链中的连续系统 *g*(*r*, *s*, *t*)，以生成
+    *h*。
 - en: Want to Get Started With Calculus for Machine Learning?
+  id: totrans-54
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始学习用于机器学习的微积分吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即报名参加我的免费7天电子邮件速成课程（附样例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费 PDF Ebook 版本。
 - en: '**The Chain Rule**'
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**链式法则**'
 - en: The chain rule allows us to find the derivative of a composite function.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 链式法则允许我们找到复合函数的导数。
 - en: 'Let’s first define how the chain rule differentiates a composite function,
     and then break it into its separate components to understand it better. If we
     had to consider again the composite function, *h* = *g*(*f*(*x*)), then its derivative
     as given by the chain rule is:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先定义链式法则如何区分复合函数，然后将其拆分成单独的组件以便更好地理解。如果我们重新考虑复合函数 *h* = *g*(*f*(*x*))，那么其导数由链式法则给出为：
 - en: '[![](../Images/ac23240523ee438f4654d1a45e4ca31e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_3.png)'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/ac23240523ee438f4654d1a45e4ca31e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_3.png)'
 - en: Here, *u* is the output of the inner function *f* (hence, *u* = *f*(*x*)), which
     is then fed as input to the next function *g* to produce *h* (hence, *h* = *g*(*u*)).
     Notice, therefore, how the chain rule relates the net output, *h*, to the input,
     *x*, through an *intermediate variable*, *u*.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，*u* 是内函数 *f* 的输出（因此，*u* = *f*(*x*)），然后作为输入提供给下一个函数 *g* 以生成 *h*（因此，*h* =
+    *g*(*u*)）。因此，注意链式法则如何通过一个 *中间变量*，*u*，将最终输出 *h* 与输入 *x* 相关联。
 - en: 'Recall that the composite function is defined as follows:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 回顾一下复合函数的定义如下：
 - en: '*h*(*x*) = *g*(*f*(*x*)) = (2*x* – 1)³'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '*h*(*x*) = *g*(*f*(*x*)) = (2*x* – 1)³'
 - en: 'The first component of the chain rule, *dh* / *du*, tells us to start by finding
     the derivative of the outer part of the composite function, while ignoring whatever
     is inside. For this purpose, we shall apply the power rule:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 链式法则的第一个部分，*dh* / *du*，告诉我们首先找到复合函数外部部分的导数，同时忽略内部部分。为此，我们将应用幂法则：
 - en: ((2*x* – 1)³)’ = 3(2*x* – 1)²
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: ((2*x* – 1)³)’ = 3(2*x* – 1)²
 - en: 'The result is then multiplied to the second component of the chain rule, *du*
     / *dx*, which is the derivative of the inner part of the composite function, this
     time ignoring whatever is outside:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果然后乘以链式法则的第二个部分 *du* / *dx*，这是复合函数内部部分的导数，这次忽略外部部分：
 - en: ( (2*x* – 1)’ )³ = 2
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: ( (2*x* – 1)’ )³ = 2
 - en: 'The derivative of the composite function as defined by the chain rule is, then,
     the following:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 由链式法则定义的复合函数的导数如下：
 - en: '*h*’ = 3(2*x* – 1)² × 2 = 6(2*x* – 1)²'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '*h*’ = 3(2*x* – 1)² × 2 = 6(2*x* – 1)²'
 - en: We have, hereby, considered a simple example, but the concept of applying the
     chain rule to more complicated functions remains the same. We shall be considering
     more challenging functions in a separate tutorial.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在这里考虑了一个简单的例子，但将链式法则应用于更复杂函数的概念保持不变。我们将在另一个教程中考虑更具挑战性的函数。
 - en: '**The Generalized Chain Rule**'
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**广义链式法则**'
 - en: We can generalize the chain rule beyond the univariate case.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将链式法则推广到单变量情况之外。
 - en: 'Consider the case where ***x*** ∈ ℝ^m and ***u*** ∈ ℝ^n, which means that the
     inner function, *f*, maps *m* inputs to *n* outputs, while the outer function,
     *g*, receives *n* inputs to produce an output, *h*. For *i* = 1, …, *m * the generalized
     chain rule states:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑 ***x*** ∈ ℝ^m 和 ***u*** ∈ ℝ^n 的情况，这意味着内函数 *f* 将 *m* 个输入映射到 *n* 个输出，而外函数 *g*
+    接收 *n* 个输入以产生一个输出 *h*。对于 *i* = 1, …, *m*，广义链式法则表述为：
 - en: '[![](../Images/f6efd1b84d59a08cf0fd3b415bafb33c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_4.png)'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/f6efd1b84d59a08cf0fd3b415bafb33c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_4.png)'
 - en: 'Or in its more compact form, for *j* = 1, …, *n*:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 或以其更简洁的形式，对于 *j* = 1, …, *n*：
 - en: '[![](../Images/dc847ea7935e9df18602e3948e565661.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_5.png)'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/dc847ea7935e9df18602e3948e565661.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_5.png)'
 - en: Recall that we employ the use of partial derivatives when we are finding the
     gradient of a function of multiple variables.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 回顾一下，当我们寻找多变量函数的梯度时，我们使用偏导数。
 - en: We can also visualize the workings of the chain rule by a tree diagram.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以通过树状图来可视化链式法则的工作过程。
 - en: 'Suppose that we have a composite function of two independent variables, *x*[1]
     and *x*[2], defined as follows:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们有一个由两个独立变量 *x*[1] 和 *x*[2] 组成的复合函数，定义如下：
 - en: '*h* = *g*(***f***(*x*[1], *x*[2])) = *g*(*u*[1](*x*[1], *x*[2]), *u*[2](*x*[1],
     *x*[2]))'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: '*h* = *g*(***f***(*x*[1], *x*[2])) = *g*(*u*[1](*x*[1], *x*[2]), *u*[2](*x*[1],
+    *x*[2]))'
 - en: 'Here, *u*[1] and *u*[2] act as the intermediate variables. Its tree diagram
     would be represented as follows:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，*u*[1] 和 *u*[2] 充当中间变量。它的树状图表示如下：
 - en: '[![](../Images/c6c32326e74d02e31ced1e55c21ddecc.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_2.png)'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/c6c32326e74d02e31ced1e55c21ddecc.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_2.png)'
 - en: Representing the Chain Rule by a Tree Diagram
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过树状图表示链式法则
 - en: 'In order to derive the formula for each of the inputs, *x*[1] and *x*[2], we
     can start from the left hand side of the tree diagram, and follow its branches
     rightwards. In this manner, we find that we form the following two formulae (the
     branches being summed up have been colour coded for simplicity):'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了推导每个输入 *x*[1] 和 *x*[2] 的公式，我们可以从树状图的左侧开始，沿着其分支向右移动。以这种方式，我们发现形成了以下两个公式（为了简单起见，分支的和已被着色）：
 - en: '[![](../Images/c943645be10828c8f62a3d21714ffcd3.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_6.png)'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/c943645be10828c8f62a3d21714ffcd3.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/chain_rule_6.png)'
 - en: Notice how the chain rule relates the net output, *h*, to each of the inputs,
     *x**[i]*, through the intermediate variables, *u**[j]*. This is a concept that
     the backpropagation algorithm applies extensively to optimize the weights of a
     neural network.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意链式法则如何通过中间变量 *u**[j]* 将网络输出 *h* 与每个输入 *x**[i]* 关联起来。这是反向传播算法广泛应用的概念，用于优化神经网络的权重。
 - en: '**Application in Machine Learning**'
+  id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**在机器学习中的应用**'
 - en: Observe how similar the tree diagram is to the typical representation of a neural
     network (although we usually represent the latter by placing the inputs on the
     left hand side and the outputs on the right hand side). We can apply the chain
     rule to a neural network through the use of the backpropagation algorithm, in
     a very similar manner as to how we have applied it to the tree diagram above.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 观察树状图与典型神经网络表示的相似性（尽管我们通常通过将输入放在左侧，输出放在右侧来表示神经网络）。我们可以通过反向传播算法将链式法则应用于神经网络，与上面应用于树状图的方式非常相似。
 - en: '*An area where the chain rule is used to an extreme is deep learning, where
     the function value* ***y****is computed as a many-level function composition. *'
+  id: totrans-89
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*链式法则极端使用的一个领域是深度学习，其中函数值***y***被计算为多个层级的函数组合。*'
 - en: ''
+  id: totrans-90
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – Page 159, [Mathematics for Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
     2020.
+  id: totrans-91
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – 第159页，[《机器学习数学》](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US)，2020年。
 - en: 'A neural network can, indeed, be represented by a massive nested composite
     function. For example:'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络确实可以表示为一个巨大的嵌套复合函数。例如：
 - en: '***y*** = *f*[K] ( *f*[K – 1] ( … ( *f*[1](***x***)) … ))'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: '***y*** = *f*[K] ( *f*[K – 1] ( … ( *f*[1](***x***)) … ))'
 - en: Here, ***x*** are the inputs to the neural network (for example, the images)
     whereas ***y*** are the outputs (for example, the class labels). Every function,
     *f*[i], for *i* = 1, …, *K*, is characterized by its own weights.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，***x*** 是神经网络的输入（例如，图像），而 ***y*** 是输出（例如，类别标签）。每个函数 *f*[i]，对于 *i* = 1，…，*K*，都有自己的权重。
 - en: Applying the chain rule to such a composite function allows us to work backwards
     through all of the hidden layers making up the neural network, and efficiently
     calculate the error gradient of the loss function with respect to each weight,
     *w*[i], of the network until we arrive to the input.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 将链式法则应用于这样的复合函数使我们能够反向遍历构成神经网络的所有隐藏层，并有效计算损失函数相对于每个权重 *w*[i] 的误差梯度，直到到达输入。
 - en: '**Further Reading**'
+  id: totrans-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多资源，供您深入研究。
 - en: '**Books**'
+  id: totrans-98
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
     2016.'
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[《傻瓜微积分》](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US)，2016年。'
 - en: '[Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
     2020.'
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[《单变量与多变量微积分》](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf)，2020年。'
 - en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
     2017.'
+  id: totrans-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[《深度学习》](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1)，2017年。'
 - en: '[Mathematics for Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
     2020.'
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[机器学习的数学](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US)，2020年。'
 - en: '**Summary**'
+  id: totrans-103
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered the chain rule of calculus for univariate and
     multivariate functions.
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了用于单变量和多变量函数的链式法则。
 - en: 'Specifically, you learned:'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: A composite function is the combination of two (or more) functions.
+  id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 复合函数是两个（或更多）函数的组合。
 - en: The chain rule allows us to find the derivative of a composite function.
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 链式法则允许我们找到复合函数的导数。
 - en: The chain rule can be generalised to multivariate functions, and represented
     by a tree diagram.
+  id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 链式法则可以推广到多变量函数，并通过树形图表示。
 - en: The chain rule is applied extensively by the backpropagation algorithm in order
     to calculate the error gradient of the loss function with respect to each weight.
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 链式法则被反向传播算法广泛应用，用于计算损失函数关于每个权重的误差梯度。
 - en: Do you have any questions?
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below and I will do my best to answer.
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论中提问，我会尽力回答。

@@ -1,208 +1,313 @@
 - en: A Gentle Introduction to Multivariate Calculus
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 多变量微积分的温和介绍
 - en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/)
 - en: It is often desirable to study functions that depend on many variables.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 研究依赖于多个变量的函数通常是令人向往的。
 - en: Multivariate calculus provides us with the tools to do so by extending the concepts
     that we find in calculus, such as the computation of the rate of change, to multiple
     variables. It plays an essential role in the process of training a neural network,
     where the gradient is used extensively to update the model parameters.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 多变量微积分通过将我们在微积分中发现的概念（如变化率的计算）扩展到多个变量，为我们提供了工具。它在训练神经网络的过程中起着至关重要的作用，其中梯度被广泛用于更新模型参数。
 - en: In this tutorial, you will discover a gentle introduction to multivariate calculus.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现多变量微积分的温和介绍。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解到：
 - en: A multivariate function depends on several input variables to produce an output.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多变量函数依赖于多个输入变量来产生输出。
 - en: The gradient of a multivariate function is computed by finding the derivative
     of the function in different directions.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多变量函数的梯度是通过在不同方向上找到函数的导数来计算的。
 - en: Multivariate calculus is used extensively in neural networks to update the model
     parameters.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多变量微积分在神经网络中被广泛使用，以更新模型参数。
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/77042ca75d4aefde985eee4c69640fd5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_cover-scaled.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/77042ca75d4aefde985eee4c69640fd5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_cover-scaled.jpg)'
 - en: A Gentle Introduction to Multivariate Calculus
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 多变量微积分的温和介绍
 - en: Photo by [Luca Bravo](https://unsplash.com/photos/O453M2Liufs), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源 [Luca Bravo](https://unsplash.com/photos/O453M2Liufs)，版权所有。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是：
 - en: Re-Visiting the Concept of a Function
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 重新审视函数的概念
 - en: Derivatives of Multi-Variate Functions
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多变量函数的导数
 - en: Application of Multivariate Calculus in Machine Learning
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多变量微积分在机器学习中的应用
 - en: '**Re-Visiting the Concept of a Function**'
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**重新审视函数的概念**'
 - en: We have already familiarised ourselves with the [concept of a function](https://machinelearningmastery.com/what-you-need-to-know-before-you-get-started-a-brief-tour-of-calculus-pre-requisites/),
     as a rule that defines the relationship between a dependent variable and an independent
     variable. We have seen that a function is often represented by *y* = *f*(*x*),
     where both the input (or the independent variable), *x*, and the output (or the
     dependent variable), *y*, are single real numbers.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经对[函数的概念](https://machinelearningmastery.com/what-you-need-to-know-before-you-get-started-a-brief-tour-of-calculus-pre-requisites/)有所了解，即一个定义因变量和自变量之间关系的规则。我们看到，函数通常表示为*y*
+    = *f*(*x*)，其中输入（或自变量）*x*和输出（或因变量）*y*都是单个实数。
 - en: Such a function that takes a single, independent variable and defines a one-to-one
     mapping between the input and output, is called a *univariate* function.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样的函数接受一个单一的独立变量，并在输入和输出之间定义一对一的映射，称为*单变量*函数。
 - en: For example, let’s say that we are attempting to forecast the weather based
     on the temperature alone. In this case, the weather is the dependent variable
     that we are trying to forecast, which is a function of the temperature as the
     input variable. Such a problem can, therefore, be easily framed into a univariate
     function.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，假设我们尝试仅基于温度来预报天气。在这种情况下，天气是我们试图预测的因变量，它是温度（输入变量）的函数。因此，这样的问题可以很容易地框定为一个单变量函数。
 - en: However, let’s say that we now want to base our weather forecast on the humidity
     level and the wind speed too, in addition to the temperature. We cannot do so
     by means of a univariate function, where the output depends solely on a single
     input.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，假设我们现在不仅基于温度，还想根据湿度水平和风速来进行天气预报。我们不能通过单变量函数来做到这一点，因为单变量函数的输出仅依赖于单一输入。
 - en: Hence, we turn our attention to *multivariate* functions, so called because
     these functions can take several variables as input.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们将注意力转向*多变量*函数，因为这些函数可以接受多个变量作为输入。
 - en: 'Formally, we can express a multivariate function as a mapping between several
     real input variables, *n*, to a real output:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 从形式上讲，我们可以将多变量函数表示为多个实数输入变量 *n* 到一个实数输出的映射：
 - en: '[![](../Images/816aacfa60e89e67d5d91e1784739693.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_3.png)'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/816aacfa60e89e67d5d91e1784739693.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_3.png)'
 - en: 'For example, consider the following parabolic surface:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，考虑以下抛物面：
 - en: '*f*(*x*, *y*) = *x*² *+* 2*y*²'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '*f*(*x*, *y*) = *x*² *+* 2*y*²'
 - en: This is a multivariate function that takes two variables, *x* and *y*, as input,
     hence *n* = 2, to produce an output. We can visualise it by graphing its values
     for *x* and *y* between -1 and 1.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个多变量函数，接受两个变量，*x* 和 *y*，作为输入，因此 *n* = 2，生成一个输出。我们可以通过绘制 *x* 和 *y* 在 -1 到
+    1 之间的值来进行可视化。
 - en: '[![](../Images/44fa50b7e0fc3c24ec68acf05d037ab4.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_1.png)'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/44fa50b7e0fc3c24ec68acf05d037ab4.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_1.png)'
 - en: Three-Dimensional Plot of a Parabolic Surface
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 抛物面的三维图
 - en: Similarly, we can have multivariate functions that take more variables as input.
     Visualising them, however, may be difficult due to the number of dimensions involved.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样，我们可以有接受更多变量作为输入的多变量函数。然而，由于涉及的维度数量，进行可视化可能会很困难。
 - en: 'We can even generalize the concept of a function further by considering functions
     that map multiple inputs, *n*, to multiple outputs, *m*:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们甚至可以进一步推广函数的概念，考虑那些将多个输入 *n* 映射到多个输出 *m* 的函数：
 - en: '[![](../Images/eb11e99a314d7926d2a4b250ad766c07.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_4.png)'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/eb11e99a314d7926d2a4b250ad766c07.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_4.png)'
 - en: These functions are more often referred to as *vector-valued* functions.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些函数通常被称为*向量值*函数。
 - en: '**Derivatives of Multi-Variate Functions**'
+  id: totrans-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**多变量函数的导数**'
 - en: '[Recall](https://machinelearningmastery.com/key-concepts-in-calculus-rate-of-change/)
     that calculus is concerned with the study of the rate of change. For some univariate
     function, *g*(*x*), this can be achieved by computing its derivative:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '[回顾](https://machinelearningmastery.com/key-concepts-in-calculus-rate-of-change/)
+    微积分涉及变化率的研究。对于某些单变量函数，*g*(*x*)，这可以通过计算其导数来实现：'
 - en: '[![](../Images/3ad857dc764440a06e08644f1dd6e1a8.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_5.png)'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/3ad857dc764440a06e08644f1dd6e1a8.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_5.png)'
 - en: '*The generalization of the derivative to functions of several variables is
     the gradient. *'
+  id: totrans-38
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*导数在多个变量的函数中的推广是梯度。*'
 - en: ''
+  id: totrans-39
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*– Page 146, [Mathematics of Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
     2020.*'
+  id: totrans-40
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*– 第146页, [机器学习的数学](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
+    2020.*'
 - en: The technique to finding the gradient of a function of several variables involves
     varying each one of the variables at a time, while keeping the others constant.
     In this manner, we would be taking the *partial derivative* of our multivariate
     function with respect to each variable, each time.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 查找多个变量函数的梯度的技术涉及每次改变其中一个变量，同时保持其他变量不变。这样，我们每次都会对多变量函数关于每个变量进行*偏导数*计算。
 - en: '*The gradient is then the collection of these partial derivatives. *'
+  id: totrans-42
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*梯度则是这些偏导数的集合。*'
 - en: ''
+  id: totrans-43
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*– Page 146, [Mathematics of Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
     2020.*'
+  id: totrans-44
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*– 第146页, [机器学习的数学](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
+    2020.*'
 - en: 'In order to visualize this technique better, let’s start off by considering
     a simple univariate quadratic function of the form:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了更好地可视化这种技术，让我们首先考虑一个形式简单的单变量二次函数：
 - en: '*g*(*x*) = *x*²'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '*g*(*x*) = *x*²'
 - en: '[![](../Images/83b0642b76e21e5331b42a28ffae2f33.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_2.png)'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/83b0642b76e21e5331b42a28ffae2f33.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_2.png)'
 - en: Line Plot of a Univariate Quadratic Function
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 单变量二次函数的线图
 - en: 'Finding the derivative of this function at some point, *x*, requires the application
     of the equation for *g*’(*x*) that we have defined earlier. We can, alternatively,
     take a shortcut by using the power rule to find that:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 在某个点*x*上找到这个函数的导数，需要应用我们之前定义的*g*’(*x*)的方程。我们可以选择使用幂法则来简化计算：
 - en: '*g’(x*) = 2*x*'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '*g’(x*) = 2*x*'
 - en: 'Furthermore*,* if we had to imagine slicing open the parabolic surface considered
     earlier, with a plane passing through *y* = 0, we realise that the resulting cross-section
     of *f*(*x*, *y*) is the quadratic curve, *g*(*x*) = *x*². Hence, we can calculate
@@ -212,120 +317,179 @@
     *x*, and denote it by *∂* to signify that there are more variables in addition
     to *x* but these are not being considered for the time being. Therefore, the partial
     derivative with respect to *x* of *f*(*x*, *y*) is:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，如果我们要想象切开之前考虑的抛物面，并且用一条通过*y* = 0的平面来切割，我们会发现*f*(*x*, *y*)的横截面是二次曲线，*g*(*x*)
+    = *x*²。因此，我们可以通过对*f*(*x*, *y*)进行导数计算（或称陡度，或*slope*），在*x*方向上得到抛物面的导数，同时保持*y*不变。我们称之为*f*(*x*,
+    *y*)关于*x*的*偏导*，用*∂*表示，以说明除了*x*之外还有更多变量，但这些变量暂时不考虑。因此，*f*(*x*, *y*)关于*x*的偏导数为：
 - en: '[![](../Images/1c5eb5e86e975b879e40140dd9ab1f2c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_6.png)'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/1c5eb5e86e975b879e40140dd9ab1f2c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_6.png)'
 - en: 'We can similarly hold *x* constant (or, in other words, find the cross-section
     of the parabolic surface by slicing it with a plane passing through a constant
     value of *x*) to find the partial derivative of *f*(*x*, *y*) with respect to
     *y*, as follows:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以类似地保持*x*不变（换句话说，通过用一条通过*x*的平面来切割抛物面，以找到抛物面在*y*方向上的横截面），以找到*f*(*x*, *y*)关于*y*的偏导数，如下所示：
 - en: '[![](../Images/82353d266baa166da8826979cbb88ef6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_7.png)'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/82353d266baa166da8826979cbb88ef6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_7.png)'
 - en: 'What we have essentially done is that we have found the univariate derivative
     of *f*(*x*, *y*) in each of the *x* and *y* directions. Combining the two univariate
     derivatives as the final step, gives us the multivariate derivative (or the gradient):'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们基本上做的是找到*f*(*x*, *y*)在*x*和*y*方向上的单变量导数。将两个单变量导数结合起来作为最终步骤，给我们提供了多变量导数（或梯度）：
 - en: '[![](../Images/41f2e7489096d30f85982a20df255b23.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_8.png)'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/41f2e7489096d30f85982a20df255b23.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/multivariate_8.png)'
 - en: The same technique remains valid for functions of higher dimensions.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 相同的技术适用于更高维度的函数。
 - en: '**Application of Multivariate Calculus in Machine Learning**'
+  id: totrans-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**多变量微积分在机器学习中的应用**'
 - en: Partial derivatives are used extensively in neural networks to update the model
     parameters (or weights).
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 偏导数在神经网络中被广泛用于更新模型参数（或权重）。
 - en: '[We had seen](https://machinelearningmastery.com/calculus-in-machine-learning-why-it-works/)
     that, in minimizing some error function, an optimization algorithm will seek to
     follow its gradient downhill. If this error function was univariate, and hence
     a function of a single independent weight, then optimizing it would simply involve
     computing its univariate derivative.'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '[我们曾看到过](https://machinelearningmastery.com/calculus-in-machine-learning-why-it-works/)
+    在最小化某些误差函数时，优化算法会试图沿着其梯度下坡。如果这个误差函数是单变量的，因此是一个单一独立权重的函数，那么优化它就只是计算其单变量导数。'
 - en: However, a neural network comprises many weights (each attributed to a different
     neuron) of which the error is a function. Hence, updating the weight values requires
     that the gradient of the error curve is calculated with respect to all of these
     weights.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，神经网络包含许多权重（每个权重对应一个不同的神经元），误差是这些权重的函数。因此，更新权重值需要计算误差曲线对所有这些权重的梯度。
 - en: This is where the application of multivariate calculus comes into play.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是多变量微积分应用的地方。
 - en: The gradient of the error curve is calculated by finding the partial derivative
     of the error with respect to each weight; or in other terms, finding the derivative
     of the error function by keeping all weights constant except the one under consideration.
     This allows each weight to be updated independently of the others, to reach the
     goal of finding an optimal set of weights.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 错误曲线的梯度通过计算误差对每个权重的偏导数来得到；换句话说，就是通过保持除当前考虑的权重以外的所有权重不变来求误差函数的导数。这使得每个权重可以独立更新，从而达到找到最佳权重集的目标。
 - en: '**Further Reading**'
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解，可以参考。
 - en: '**Books**'
+  id: totrans-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
     2020.'
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[单变量与多变量微积分](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf)，2020。'
 - en: '[Mathematics for Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
     2020.'
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[机器学习数学](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US)，2020。'
 - en: '[Algorithms for Optimization](https://www.amazon.com/Algorithms-Optimization-Press-Mykel-Kochenderfer/dp/0262039427/ref=sr_1_1?dchild=1&keywords=algorithms+for+optimization&qid=1624019308&sr=8-1),
     2019.'
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[优化算法](https://www.amazon.com/Algorithms-Optimization-Press-Mykel-Kochenderfer/dp/0262039427/ref=sr_1_1?dchild=1&keywords=algorithms+for+optimization&qid=1624019308&sr=8-1)，2019。'
 - en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_4?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-4),
     2019.'
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_4?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-4)，2019。'
 - en: '**Summary**'
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered a gentle introduction to multivariate calculus.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了对多变量微积分的温和介绍。
 - en: 'Specifically, you learned:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: A multivariate function depends on several input variables to produce an output.
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多变量函数依赖于多个输入变量以产生输出。
 - en: The gradient of a multivariate function is computed by finding the derivative
     of the function in different directions.
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多变量函数的梯度是通过在不同方向上求函数的导数来计算的。
 - en: Multivariate calculus is used extensively in neural networks to update the model
     parameters.
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多变量微积分在神经网络中被广泛使用，用于更新模型参数。
 - en: Do you have any questions?
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有什么问题吗？
 - en: Ask your questions in the comments below and I will do my best to answer.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论中提问，我会尽力回答。

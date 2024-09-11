@@ -1,273 +1,406 @@
 - en: A Gentle Introduction to the Laplacian
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 拉普拉斯算子的简要介绍
 - en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-the-laplacian/](https://machinelearningmastery.com/a-gentle-introduction-to-the-laplacian/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-the-laplacian/](https://machinelearningmastery.com/a-gentle-introduction-to-the-laplacian/)
 - en: The Laplace operator was first applied to the study of celestial mechanics,
     or the motion of objects in outer space, by Pierre-Simon de Laplace, and as such
     has been named after him.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 拉普拉斯算子首次应用于天体力学研究，即外太空物体的运动，由皮埃尔-西蒙·拉普拉斯提出，因此以他的名字命名。
 - en: The Laplace operator has since been used to describe many different phenomena,
     from electric potentials, to the diffusion equation for heat and fluid flow, and
     quantum mechanics. It has also been recasted to the discrete space, where it has
     been used in applications related to image processing and spectral clustering.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 自那时以来，拉普拉斯算子被用来描述许多不同的现象，从电位，到热和流体流动的扩散方程，以及量子力学。它也被转化为离散空间，在与图像处理和谱聚类相关的应用中得到了应用。
 - en: In this tutorial, you will discover a gentle introduction to the Laplacian.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现对拉普拉斯算子的简要介绍。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将知道：
 - en: The definition of the Laplace operator and how it relates to divergence.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 拉普拉斯算子的定义以及它与散度的关系。
 - en: How the Laplace operator relates to the Hessian.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 拉普拉斯算子与海森矩阵的关系。
 - en: How the continuous Laplace operator has been recasted to discrete-space, and
     applied to image processing and spectral clustering.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 连续拉普拉斯算子如何被转化为离散空间，并应用于图像处理和谱聚类。
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/bd996487ef7c4122daab549f82bc3d51.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_cover-scaled.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/bd996487ef7c4122daab549f82bc3d51.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_cover-scaled.jpg)'
 - en: A Gentle Introduction to the Laplacian
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 拉普拉斯算子的简要介绍
 - en: Photo by [Aziz Acharki](https://unsplash.com/photos/7nsqPSnYCoY), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Aziz Acharki](https://unsplash.com/photos/7nsqPSnYCoY) 提供，部分版权保留。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两部分；它们是：
 - en: The Laplacian
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 拉普拉斯算子
 - en: The Concept of Divergence
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**散度的概念**'
 - en: The Continuous Laplacian
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 连续拉普拉斯算子
 - en: The Discrete Laplacian
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 离散拉普拉斯算子
 - en: '**Prerequisites**'
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**先决条件**'
 - en: 'For this tutorial, we assume that you already know what are:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设你已经知道以下内容：
 - en: '[The gradient of a function](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[函数的梯度](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
 - en: '[Higher-order derivatives](https://machinelearningmastery.com/?p=12675&preview=true)'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[高阶导数](https://machinelearningmastery.com/?p=12675&preview=true)'
 - en: '[Multivariate functions](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/)'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[多变量函数](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/)'
 - en: '[The Hessian matrix](https://machinelearningmastery.com/a-gentle-introduction-to-hessian-matrices)'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[海森矩阵](https://machinelearningmastery.com/a-gentle-introduction-to-hessian-matrices)'
 - en: You can review these concepts by clicking on the links given above.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过点击上述链接来复习这些概念。
 - en: '**The Laplacian**'
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**拉普拉斯算子**'
 - en: The Laplace operator (or Laplacian, as it is often called) is the divergence
     of the gradient of a function.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 拉普拉斯算子（或称为拉普拉斯算子）是一个函数梯度的散度。
 - en: In order to comprehend the previous statement better, it is best that we start
     by understanding the concept of *divergence*.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了更好地理解前述陈述，我们最好从理解*散度*的概念开始。
 - en: '**The Concept of Divergence**'
+  id: totrans-29
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**散度的概念**'
 - en: Divergence is a vector operator that operates on a vector field. The latter
     can be thought of as representing a flow of a liquid or gas, where each vector
     in the vector field represents a velocity vector of the moving fluid.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 散度是一个对向量场进行操作的向量算子。后者可以被看作表示液体或气体的流动，其中向量场中的每个向量代表移动流体的速度向量。
 - en: '*Roughly speaking, divergence measures the tendency of the fluid to collect
     or disperse at a point …*'
+  id: totrans-31
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*粗略地说，散度测量了流体在一点上聚集或分散的趋势……*'
 - en: ''
+  id: totrans-32
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – Page 432, [Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
     2020.
+  id: totrans-33
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – 第432页，[单变量与多变量微积分](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf)，2020年。
 - en: '[![](../Images/e7c4e529d00b185f6e353d992269d7a1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_1.png)'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/e7c4e529d00b185f6e353d992269d7a1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_1.png)'
 - en: Part of the Vector Field of (sin *y*, cos *x*)
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: （sin *y*，cos *x*）的矢量场的一部分
 - en: 'Using the nabla (or del) operator, ∇, the divergence is denoted by ∇ **^.**
     and produces a scalar value when applied to a vector field, measuring the quantity
     of *fluid* at each point. In Cartesian coordinates, the divergence of a vector
     field, **F** = ⟨*f*, *g*, *h*⟩, is given by:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 nabla（或 del）算子 ∇，散度用 ∇ **^.** 表示，并在应用于矢量场时产生一个标量值，测量每一点的*流量*。在笛卡尔坐标系中，矢量场
+    **F** = ⟨*f*，*g*，*h*⟩ 的散度由下式给出：
 - en: '[![](../Images/bf7190d04b03baaec2d7152e626520e4.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_2.png)'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/bf7190d04b03baaec2d7152e626520e4.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_2.png)'
 - en: Although the divergence computation involves the application of the divergence
     operator (rather than a multiplication operation), the dot in its notation is
     reminiscent of the dot product, which involves the multiplication of the components
     of two equal-length sequences (in this case, ∇ and **F**) and the summation of
     the resulting terms.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管散度计算涉及到散度算子（而不是乘法操作）的应用，但其符号中的点让人联想到点积，这涉及到两个等长序列（在这种情况下为 ∇ 和 **F**）的组件的乘法以及结果项的求和。
 - en: '**The Continuous Laplacian**'
+  id: totrans-39
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**连续拉普拉斯算子**'
 - en: Let’s return back to the definition of the Laplacian.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们回到拉普拉斯算子的定义。
 - en: '[Recall](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)
     that the gradient of a two-dimensional function, *f*, is given by:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '[回顾](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)，二维函数
+    *f* 的梯度由下式给出：'
 - en: '[![](../Images/b478275de077ba1f44c1769b95109c16.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_3.png)'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/b478275de077ba1f44c1769b95109c16.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_3.png)'
 - en: 'Then, the Laplacian (that is, the divergence of the gradient) of *f* can be
     defined by the sum of unmixed [second partial derivatives](https://machinelearningmastery.com/?p=12675&preview=true):'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，*f* 的拉普拉斯算子（即梯度的散度）可以通过未混合的[二阶偏导数](https://machinelearningmastery.com/?p=12675&preview=true)的和来定义：
 - en: '[![](../Images/14431e223e5953efbd50695b96269b30.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_4.png)'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/14431e223e5953efbd50695b96269b30.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_4.png)'
 - en: 'It can, equivalently, be considered as the trace (tr) of the function’s [Hessian](https://machinelearningmastery.com/a-gentle-introduction-to-hessian-matrices),
     *H*(*f*). The trace defines the sum of the elements on the main diagonal of a
     square *n*×*n* matrix, which in this case is the Hessian, and also the sum of
     its *eigenvalues*. Recall that the Hessian matrix contains the [own](https://machinelearningmastery.com/?p=12675&preview=true)
     (or unmixed) second partial derivatives on the diagonal:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 它可以等效地被视为函数的[Hessian矩阵](https://machinelearningmastery.com/a-gentle-introduction-to-hessian-matrices)的迹（tr），*H*(*f*)。迹定义了一个*
+    n*×* n* 矩阵主对角线上的元素之和，在这里是Hessian矩阵，同时也是它的*特征值*之和。回顾一下，Hessian矩阵在对角线上包含[本身](https://machinelearningmastery.com/?p=12675&preview=true)（或未混合）的二阶偏导数：
 - en: '[![](../Images/f07bac3b896f61248a5fc138f44f483c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_5.png)'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/f07bac3b896f61248a5fc138f44f483c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_5.png)'
 - en: 'An important property of the trace of a matrix is its invariance to a *change
     of basis*. We have already defined the Laplacian in Cartesian coordinates. In
     polar coordinates, we would define it as follows:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 矩阵迹的一个重要性质是其对*基底变化*的不变性。我们已经在笛卡尔坐标系中定义了拉普拉斯算子。在极坐标系中，我们将其定义如下：
 - en: '[![](../Images/8568c474d2fda0219e433886fd251007.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_6.png)'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/8568c474d2fda0219e433886fd251007.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_6.png)'
 - en: The invariance of the trace to a change of basis means that the Laplacian can
     be defined in different coordinate spaces, but it would give the same value at
     some point (*x*, *y*) in the Cartesian coordinate space, and at the same point
     (*r*, *θ*) in the polar coordinate space.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 迹对基底变化的不变性意味着拉普拉斯算子可以在不同的坐标空间中定义，但它在笛卡尔坐标空间中的某一点（*x*，*y*）和在极坐标空间中的同一点（*r*，*θ*）给出的值是相同的。
 - en: Recall that we had also mentioned that the second derivative can provide us
     with information regarding the curvature of a function. Hence, intuitively, we
     can consider the Laplacian to also provide us with information regarding the local
     curvature of a function, through this summation of second derivatives.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 回想一下，我们还提到过二阶导数可以为我们提供有关函数曲率的信息。因此，直观地说，我们可以认为拉普拉斯算子也通过这些二阶导数的总和为我们提供有关函数局部曲率的信息。
 - en: The continuous Laplace operator has been used to describe many physical phenomena,
     such as electric potentials, and the diffusion equation for heat flow.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 连续拉普拉斯算子已被用来描述许多物理现象，如电势和热传导方程。
 - en: Want to Get Started With Calculus for Machine Learning?
+  id: totrans-52
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始机器学习的微积分吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在立即参加我的免费7天电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: '**The Discrete Laplacian**'
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**离散拉普拉斯算子**'
 - en: Analogous to the continuous Laplace operator, is the discrete one, so formulated
     in order to be applied to a discrete grid of, say, pixel values in an image, or
     to a graph.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于连续的拉普拉斯算子，离散版本是为了应用于图像中的离散网格，比如像素值或者图中的节点。
 - en: Let’s have a look at how the Laplace operator can be recasted for both applications.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们来看看拉普拉斯算子如何在两种应用中重新构造。
 - en: In image processing, the Laplace operator is realized in the form of a digital
     filter that, when applied to an image, can be used for edge detection. In a sense,
     we can consider the Laplacian operator used in image processing to, also, provide
     us with information regarding the manner in which the function curves (or *bends*)
     at some particular point, (*x*, *y*).
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 在图像处理中，拉普拉斯算子以数字滤波器的形式实现，当应用于图像时，可用于边缘检测。从某种意义上说，我们可以认为在图像处理中使用的拉普拉斯算子也能提供关于函数在某个特定点
+    (*x*, *y*) 曲线（或*bends*）的信息。
 - en: 'In this case, the discrete Laplacian operator (or filter) is constructed by
     combining two, one-dimensional second derivative filters, into a single two-dimensional
     one:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，离散拉普拉斯算子（或滤波器）通过将两个一维二阶导数滤波器组合成一个二维滤波器来构建：
 - en: '[![](../Images/0b502d64cc2f6df26aed276a77ea7224.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_7.png)'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/0b502d64cc2f6df26aed276a77ea7224.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/laplacian_7.png)'
 - en: In machine learning, the information provided by the discrete Laplace operator
     as derived from a graph can be used for the purpose of data clustering.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 在机器学习中，从图中派生的离散拉普拉斯算子提供的信息可用于数据聚类的目的。
 - en: 'Consider a graph, *G* = (*V*, *E*), having a finite number of *V* vertices
     and *E* edges. Its Laplacian matrix, *L*, can be defined in terms of the degree
     matrix, *D*, containing information about the connectivity of each vertex, and
     the adjacency matrix, *A*, which indicates pairs of vertices that are adjacent
     in the graph:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑一个图，*G* = (*V*, *E*)，有限个*V*个顶点和*E*条边。它的拉普拉斯矩阵*L*可以用度矩阵*D*来定义，包含每个顶点连接信息，以及邻接矩阵*A*，指示图中相邻顶点对：
 - en: '*L* = *D* – *A*'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '*L* = *D* - *A*'
 - en: Spectral clustering can be carried out by applying some standard clustering
     method (such as *k*-means) on the eigenvectors of the Laplacian matrix, hence
     partitioning the graph nodes (or the data points) into subsets.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过在拉普拉斯矩阵的特征向量上应用一些标准聚类方法（如*k*-means），可以执行谱聚类，从而将图的节点（或数据点）分割成子集。
 - en: One issue that can arise in doing so relates to a problem of scalability with
     large datasets, where the eigen-decomposition (or the extraction of the eigenvectors)
     of the Laplacian matrix may be prohibitive. The use of deep learning has been
@@ -275,88 +408,132 @@
     a deep neural network is trained such that its outputs approximate the eigenvectors
     of the graph Laplacian. The neural network, in this case, is trained using a constrained
     optimization approach, to enforce the orthogonality of the network outputs.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样做可能会引发一个与大型数据集的可扩展性问题有关的问题，其中拉普拉斯矩阵的特征分解可能是禁止的。已经提出使用深度学习来解决这个问题，其中训练深度神经网络使其输出近似于图拉普拉斯的特征向量。在这种情况下，神经网络通过约束优化方法进行训练，以强制其输出的正交性。
 - en: '**Further Reading**'
+  id: totrans-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您希望深入了解此主题，本节提供了更多资源。
 - en: '**Books**'
+  id: totrans-68
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
     2020.'
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[单变量与多变量微积分](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf)，2020年。'
 - en: '[Handbook of Image and Video Processing](https://www.amazon.com/Handbook-Processing-Communications-Networking-Multimedia-dp-0121197921/dp/0121197921/ref=mt_other?_encoding=UTF8&me=&qid=1626692109),
     2005.'
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[图像与视频处理手册](https://www.amazon.com/Handbook-Processing-Communications-Networking-Multimedia-dp-0121197921/dp/0121197921/ref=mt_other?_encoding=UTF8&me=&qid=1626692109)，2005年。'
 - en: '**Articles**'
+  id: totrans-71
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**文章**'
 - en: '[Laplace operator, Wikipedia](https://en.wikipedia.org/wiki/Laplace_operator).'
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[拉普拉斯算子，维基百科](https://en.wikipedia.org/wiki/Laplace_operator)。'
 - en: '[Divergence, Wikipedia](https://en.wikipedia.org/wiki/Divergence).'
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[散度，维基百科](https://en.wikipedia.org/wiki/Divergence)。'
 - en: '[Discrete Laplace operator, Wikipedia](https://en.wikipedia.org/wiki/Discrete_Laplace_operator).'
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[离散拉普拉斯算子，维基百科](https://en.wikipedia.org/wiki/Discrete_Laplace_operator)。'
 - en: '[Laplacian matrix, Wikipedia](https://en.wikipedia.org/wiki/Laplacian_matrix).'
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[拉普拉斯矩阵，维基百科](https://en.wikipedia.org/wiki/Laplacian_matrix)。'
 - en: '[Spectral clustering, Wikipedia](https://en.wikipedia.org/wiki/Spectral_clustering).'
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[谱聚类，维基百科](https://en.wikipedia.org/wiki/Spectral_clustering)。'
 - en: '**Papers**'
+  id: totrans-77
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[SpectralNet: Spectral Clustering Using Deep Neural Networks](https://arxiv.org/pdf/1801.01587.pdf),
     2018.'
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[SpectralNet: 使用深度神经网络的谱聚类](https://arxiv.org/pdf/1801.01587.pdf)，2018年。'
 - en: '**Summary**'
+  id: totrans-79
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered a gentle introduction to the Laplacian.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了对拉普拉斯算子的温和介绍。
 - en: 'Specifically, you learned:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体而言，你学习了：
 - en: The definition of the Laplace operator and how it relates to divergence.
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 拉普拉斯算子的定义以及它与散度的关系。
 - en: How the Laplace operator relates to the Hessian.
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 拉普拉斯算子如何与海森矩阵相关。
 - en: How the continuous Laplace operator has been recasted to discrete-space, and
     applied to image processing and spectral clustering.
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 连续拉普拉斯算子如何被转换为离散空间，并应用于图像处理和谱聚类。
 - en: Do you have any questions?
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below and I will do my best to answer.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论中提问，我会尽力回答。

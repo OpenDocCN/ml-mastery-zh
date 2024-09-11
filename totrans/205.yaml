@@ -1,97 +1,142 @@
 - en: An Introduction to Recurrent Neural Networks and the Math That Powers Them
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 循环神经网络及其数学基础介绍
 - en: 原文：[https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/)
 - en: When it comes to sequential or time series data, traditional feedforward networks
     cannot be used for learning and prediction. A mechanism is required to retain
     past or historical information to forecast future values. Recurrent neural networks,
     or RNNs for short, are a variant of the conventional feedforward artificial neural
     networks that can deal with sequential data and can be trained to hold knowledge
     about the past.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于序列或时间序列数据，传统的前馈网络无法用于学习和预测。需要一种机制来保留过去或历史信息，以预测未来的值。循环神经网络，简称RNN，是一种变体的前馈人工神经网络，可以处理序列数据，并且可以被训练以保留有关过去的知识。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: Recurrent neural networks
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 循环神经网络
 - en: What is meant by unfolding an RNN
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 展开RNN是什么意思
 - en: How weights are updated in an RNN
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: RNN中的权重如何更新
 - en: Various RNN architectures
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 各种RNN架构
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参阅我的书籍[构建具有注意力机制的变换器模型](https://machinelearningmastery.com/transformer-models-with-attention/)。它提供了**自学教程**和**可运行的代码**，引导你构建一个完全可工作的变换器模型。'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将句子从一种语言翻译成另一种语言*…'
 - en: Let’s get started.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/7cc83734cfb02749069a23ab57ea3444.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/IMG_9527-scaled.jpg)'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/7cc83734cfb02749069a23ab57ea3444.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/IMG_9527-scaled.jpg)'
 - en: An introduction to recurrent neural networks and the math that powers Them.
     Photo by Mehreen Saeed, some rights reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 循环神经网络及其数学基础介绍。照片由Mehreen Saeed提供，保留部分权利。
 - en: Tutorial Overview
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两部分；它们是：
 - en: The working of an RNN
+  id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: RNN的工作原理
 - en: Unfolding in time
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 时间上的展开
 - en: Backpropagation through time algorithm
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 反向传播时间算法
 - en: Different RNN architectures and variants
+  id: totrans-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 不同的RNN架构和变体
 - en: Prerequisites
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 先决条件
 - en: 'This tutorial assumes that you are already familiar with artificial neural
     networks and the backpropagation algorithm. If not, you can go through this very
     nice tutorial, [Calculus in Action: Neural Networks,](https://machinelearningmastery.com/calculus-in-action-neural-networks/)
     by Stefania Cristina. The tutorial also explains how a gradient-based backpropagation
     algorithm is used to train a neural network.'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '本教程假设你已经熟悉人工神经网络和反向传播算法。如果没有，你可以阅读Stefania Cristina的这篇非常好的教程，[Calculus in Action:
+    Neural Networks](https://machinelearningmastery.com/calculus-in-action-neural-networks/)。该教程还解释了如何使用基于梯度的反向传播算法来训练神经网络。'
 - en: What Is a Recurrent Neural Network
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是循环神经网络
 - en: A recurrent neural network (RNN) is a special type of artificial neural network
     adapted to work for time series data or data that involves sequences. Ordinary
     feedforward neural networks are only meant for data points that are independent
@@ -100,369 +145,548 @@
     incorporate the dependencies between these data points. RNNs have the concept
     of “memory” that helps them store the states or information of previous inputs
     to generate the next output of the sequence.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 循环神经网络（RNN）是一种特殊的人工神经网络，适用于时间序列数据或涉及序列的数据。普通的前馈神经网络仅适用于彼此独立的数据点。然而，如果我们有一个数据序列，其中一个数据点依赖于之前的数据点，我们需要修改神经网络以纳入这些数据点之间的依赖关系。RNN具有“记忆”的概念，帮助它们存储先前输入的状态或信息，以生成序列的下一个输出。
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始构建具有注意力机制的变换器模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即领取我的免费12天电子邮件速成课程（含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费PDF电子书版本。
 - en: Unfolding a Recurrent Neural Network
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 循环神经网络的展开
 - en: '![Recurrent neural network. Compressed representation (top), unfolded network
     (bottom).](../Images/cd3f7fd245e6dfad17246978f4dbf0db.png)'
+  id: totrans-27
   prefs: []
   type: TYPE_IMG
+  zh: '![递归神经网络。压缩表示（上），展开网络（下）。](../Images/cd3f7fd245e6dfad17246978f4dbf0db.png)'
 - en: Recurrent neural network. Compressed representation (top), unfolded network
     (bottom).
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 递归神经网络。压缩表示（上），展开网络（下）。
 - en: 'A simple RNN has a feedback loop, as shown in the first diagram of the above
     figure. The feedback loop shown in the gray rectangle can be unrolled in three
     time steps to produce the second network of the above figure. Of course, you can
     vary the architecture so that the network unrolls $k$ time steps. In the figure,
     the following notation is used:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 简单的 RNN 有一个反馈回路，如上图的第一个图示所示。图中灰色矩形内的反馈回路可以展开为三个时间步，以产生上图中的第二个网络。当然，你可以改变架构，使得网络展开
+    $k$ 个时间步。在图中，使用了以下符号：
 - en: $x_t \in R$ is the input at time step $t$. To keep things simple, we assume
     that $x_t$ is a scalar value with a single feature. You can extend this idea to
     a $d$-dimensional feature vector.
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $x_t \in R$ 是时间步 $t$ 的输入。为了简化问题，我们假设 $x_t$ 是一个具有单一特征的标量值。你可以将这个概念扩展到一个 $d$ 维特征向量。
 - en: $y_t \in R$ is the output of the network at time step $t$. We can produce multiple
     outputs in the network, but for this example, we assume that there is one output.
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $y_t \in R$ 是网络在时间步 $t$ 的输出。我们可以在网络中产生多个输出，但在这个例子中，我们假设只有一个输出。
 - en: $h_t \in R^m$ vector stores the values of the hidden units/states at time $t$.
     This is also called the current context. $m$ is the number of hidden units. $h_0$
     vector is initialized to zero.
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $h_t \in R^m$ 向量存储时间 $t$ 的隐藏单元/状态的值。这也称为当前上下文。$m$ 是隐藏单元的数量。$h_0$ 向量初始化为零。
 - en: $w_x \in R^{m}$ are weights associated with inputs in the recurrent layer
+  id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $w_x \in R^{m}$ 是与递归层中的输入相关的权重
 - en: $w_h \in R^{mxm}$ are weights associated with hidden units in the recurrent
     layer
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $w_h \in R^{mxm}$ 是与递归层中的隐藏单元相关的权重
 - en: $w_y \in R^m$ are weights associated with hidden units to output units
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $w_y \in R^m$ 是与隐藏单元到输出单元相关的权重
 - en: $b_h \in R^m$ is the bias associated with the recurrent layer
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $b_h \in R^m$ 是与递归层相关的偏置
 - en: $b_y \in R$ is the bias associated with the feedforward layer
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $b_y \in R$ 是与前馈层相关的偏置
 - en: 'At every time step, we can unfold the network for $k$ time steps to get the
     output at time step $k+1$. The unfolded network is very similar to the feedforward
     neural network. The rectangle in the unfolded network shows an operation taking
     place. So, for example, with an activation function f:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 在每个时间步，我们可以将网络展开 $k$ 个时间步，以获取时间步 $k+1$ 的输出。展开的网络非常类似于前馈神经网络。展开网络中的矩形表示一个操作。因此，例如，使用激活函数
+    f：
 - en: $$h_{t+1} = f(x_t, h_t, w_x, w_h, b_h) = f(w_{x} x_t + w_{h} h_t + b_h)$$
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: $$h_{t+1} = f(x_t, h_t, w_x, w_h, b_h) = f(w_{x} x_t + w_{h} h_t + b_h)$$
 - en: 'The output $y$ at time $t$ is computed as:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 时间 $t$ 的输出 $y$ 计算如下：
 - en: $$
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: y_{t} = f(h_t, w_y) = f(w_y \cdot h_t + b_y)
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: $y_{t} = f(h_t, w_y) = f(w_y \cdot h_t + b_y)$
 - en: $$
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: Here, $\cdot$ is the dot product.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里，$\cdot$ 是点积。
 - en: 'Hence, in the feedforward pass of an RNN, the network computes the values of
     the hidden units and the output after $k$ time steps. The weights associated with
     the network are shared temporally. Each recurrent layer has two sets of weights:
     one for the input and the second for the hidden unit. The last feedforward layer,
     which computes the final output for the kth time step, is just like an ordinary
     layer of a traditional feedforward network.'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，在 RNN 的前馈过程中，网络在 $k$ 个时间步后计算隐藏单元和输出的值。与网络相关的权重是时间共享的。每个递归层有两组权重：一组用于输入，另一组用于隐藏单元。最后的前馈层，即计算第
+    $k$ 个时间步的最终输出的层，就像传统前馈网络中的普通层一样。
 - en: The Activation Function
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 激活函数
 - en: 'We can use any activation function we like in the recurrent neural network.
     Common choices are:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以在递归神经网络中使用任何我们喜欢的激活函数。常见的选择有：
 - en: 'Sigmoid function: $\frac{1}{1+e^{-x}}$'
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Sigmoid 函数：$\frac{1}{1+e^{-x}}$
 - en: 'Tanh function: $\frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}$'
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Tanh 函数：$\frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}$
 - en: 'Relu function: max$(0,x)$'
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Relu 函数：max$(0,x)$
 - en: Training a Recurrent Neural Network
+  id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 训练递归神经网络
 - en: 'The backpropagation algorithm of an artificial neural network is modified to
     include the unfolding in time to train the weights of the network. This algorithm
     is based on computing the gradient vector and is called backpropagation in time
     or BPTT algorithm for short. The pseudo-code for training is given below. The
     value of $k$ can be selected by the user for training. In the pseudo-code below,
     $p_t$ is the target value at time step t:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 人工神经网络的反向传播算法被修改以包括时间展开以训练网络的权重。该算法基于计算梯度向量，称为时间反向传播或简称为BPTT算法。下面给出了训练的伪代码。用户可以选择训练的
+    $k$ 值。在下面的伪代码中，$p_t$ 是时间步 t 的目标值：
 - en: 'Repeat till the stopping criterion is met:'
+  id: totrans-53
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 重复直到满足停止准则：
 - en: Set all $h$ to zero.
+  id: totrans-54
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将所有的 $h$ 设置为零。
 - en: Repeat for t = 0 to n-k
+  id: totrans-55
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从 t = 0 到 n-k 重复
 - en: Forward propagate the network over the unfolded network for $k$ time steps to
     compute all $h$ and $y$
+  id: totrans-56
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在展开的网络上向前传播网络 $k$ 个时间步以计算所有的 $h$ 和 $y$
 - en: 'Compute the error as: $e = y_{t+k}-p_{t+k}$'
+  id: totrans-57
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 计算误差为：$e = y_{t+k}-p_{t+k}$
 - en: Backpropagate the error across the unfolded network and update the weights
+  id: totrans-58
   prefs:
   - PREF_IND
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在展开网络上反向传播错误并更新权重
 - en: Types of RNNs
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: RNN的类型
 - en: 'There are different types of recurrent neural networks with varying architectures.
     Some examples are:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 有不同类型的递归神经网络，具有不同的架构。一些示例包括：
 - en: One to One
+  id: totrans-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 一对一
 - en: '[![](../Images/5341b851181341091ad2f4c78f50a126.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnn2.png)'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/5341b851181341091ad2f4c78f50a126.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnn2.png)'
 - en: Here, there is a single $(x_t, y_t)$ pair. Traditional neural networks employ
     a one-to-one architecture.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一个单一的 $(x_t, y_t)$ 对。传统的神经网络采用一对一的架构。
 - en: One to Many
+  id: totrans-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 一对多
 - en: '[![](../Images/8a8fb6a9d31d955c716888615c17e439.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnn3.png)'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/8a8fb6a9d31d955c716888615c17e439.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnn3.png)'
 - en: In one-to-many networks, a single input at $x_t$ can produce multiple outputs,
     e.g., $(y_{t0}, y_{t1}, y_{t2})$. Music generation is an example area where one-to-many
     networks are employed.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 在一对多网络中，单个输入 $x_t$ 可以产生多个输出，例如 $(y_{t0}, y_{t1}, y_{t2})$。音乐生成是一对多网络应用的示例领域。
 - en: Many to One
+  id: totrans-67
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 多对一
 - en: '[![](../Images/dd52e137329632205eb70efc2fc44560.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnn4.png)'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/dd52e137329632205eb70efc2fc44560.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnn4.png)'
 - en: In this case, many inputs from different time steps produce a single output.
     For example, $(x_t, x_{t+1}, x_{t+2})$ can produce a single output $y_t$. Such
     networks are employed in sentiment analysis or emotion detection, where the class
     label depends upon a sequence of words.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，来自不同时间步的多个输入产生单个输出。例如，$(x_t, x_{t+1}, x_{t+2})$ 可以产生单个输出 $y_t$。这样的网络用于情感分析或情绪检测，其中类别标签依赖于一系列单词。
 - en: Many to Many
+  id: totrans-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 多对多
 - en: '[![](../Images/2d802d4f961ff8d1127d8a0ae46f573f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnn5.png)'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/2d802d4f961ff8d1127d8a0ae46f573f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnn5.png)'
 - en: There are many possibilities for many-to-many. An example is shown above, where
     two inputs produce three outputs. Many-to-many networks are applied in machine
     translation, e.g., English to French or vice versa translation systems.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 有许多可能性适用于多对多。上面显示了一个例子，其中两个输入产生三个输出。多对多网络应用于机器翻译，例如英语到法语或其反向翻译系统。
 - en: Advantages and Shortcomings of RNNs
+  id: totrans-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 循环神经网络（RNN）的优点和缺点
 - en: 'RNNs have various advantages, such as:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: RNN具有各种优点，例如：
 - en: Ability to handle sequence data
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 能够处理序列数据
 - en: Ability to handle inputs of varying lengths
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 能够处理不同长度的输入
 - en: Ability to store or “memorize” historical information
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 能够存储或“记忆”历史信息
 - en: 'The disadvantages are:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 缺点包括：
 - en: The computation can be very slow.
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 计算可能非常缓慢。
 - en: The network does not take into account future inputs to make decisions.
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 网络在做决策时不考虑未来的输入。
 - en: Vanishing gradient problem, where the gradients used to compute the weight update
     may get very close to zero, preventing the network from learning new weights.
     The deeper the network, the more pronounced this problem is.
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 梯度消失问题，即用于计算权重更新的梯度可能非常接近零，阻止网络学习新的权重。网络越深，这个问题越显著。
 - en: Different RNN Architectures
+  id: totrans-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 不同的RNN架构
 - en: 'There are different variations of RNNs that are being applied practically in
     machine learning problems:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 不同变体的RNN正在实际应用于机器学习问题中：
 - en: Bidirectional Recurrent Neural Networks (BRNN)
+  id: totrans-84
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 双向递归神经网络（BRNN）
 - en: In BRNN, inputs from future time steps are used to improve the accuracy of the
     network. It is like knowing the first and last words of a sentence to predict
     the middle words.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 在BRNN中，未来时间步的输入用于提高网络的准确性。这就像知道一句话的首尾词来预测中间的词。
 - en: Gated Recurrent Units (GRU)
+  id: totrans-86
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 门控递归单元（GRU）
 - en: These networks are designed to handle the vanishing gradient problem. They have
     a reset and update gate. These gates determine which information is to be retained
     for future predictions.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些网络旨在处理梯度消失问题。它们具有重置和更新门，这些门决定哪些信息将被保留用于未来的预测。
 - en: Long Short Term Memory (LSTM)
+  id: totrans-88
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 长短期记忆（LSTM）
 - en: '[LSTMs](https://machinelearningmastery.com/time-series-prediction-lstm-recurrent-neural-networks-python-keras/)
     were also designed to address the vanishing gradient problem in RNNs. LSTMs use
     three gates called input, output, and forget gate. Similar to GRU, these gates
     determine which information to retain.'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: '[LSTM](https://machinelearningmastery.com/time-series-prediction-lstm-recurrent-neural-networks-python-keras/)
+    也旨在解决递归神经网络中的梯度消失问题。LSTM使用三个门，分别是输入门、输出门和遗忘门。类似于GRU，这些门决定保留哪些信息。'
 - en: Further Reading
+  id: totrans-90
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多相关资源，如果你想深入了解这一主题。
 - en: Books
+  id: totrans-92
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Deep Learning Essentials](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365) by
     Wei Di, Anurag Bhardwaj, and Jianing Wei.'
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习要点](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365)
+    由魏迪、阿努拉格·巴尔德瓦杰和魏剑宁编著。'
 - en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=as_li_ss_tl?dchild=1&keywords=deep+learning&qid=1606171954&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=0a0c58945768a65548b639df6d1a98ed&language=en_US)
     by Ian Goodfellow, Joshua Bengio, and Aaron Courville.'
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=as_li_ss_tl?dchild=1&keywords=deep+learning&qid=1606171954&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=0a0c58945768a65548b639df6d1a98ed&language=en_US)
+    由伊恩·古德费洛、约书亚·本吉奥和亚伦·库维尔编著。'
 - en: Articles
+  id: totrans-95
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[Wikipedia article on BPTT](https://en.wikipedia.org/wiki/Backpropagation_through_time)'
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[关于BPTT的维基百科文章](https://en.wikipedia.org/wiki/Backpropagation_through_time)'
 - en: '[A Tour of Recurrent Neural Network Algorithms for Deep Learning](https://machinelearningmastery.com/recurrent-neural-network-algorithms-for-deep-learning/)'
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[递归神经网络算法概述](https://machinelearningmastery.com/recurrent-neural-network-algorithms-for-deep-learning/)'
 - en: '[A Gentle Introduction to Backpropagation Through Time](https://machinelearningmastery.com/gentle-introduction-backpropagation-time/)'
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[回溯传播的温和介绍](https://machinelearningmastery.com/gentle-introduction-backpropagation-time/)'
 - en: Summary
+  id: totrans-99
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you discovered recurrent neural networks and their various
     architectures.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了递归神经网络及其各种架构。
 - en: 'Specifically, you learned:'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How a recurrent neural network handles sequential data
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 递归神经网络如何处理序列数据
 - en: Unfolding in time in a recurrent neural network
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在递归神经网络中随时间展开
 - en: What is backpropagation in time
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是时间中的回溯传播
 - en: Advantages and disadvantages of RNNs
+  id: totrans-105
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 递归神经网络的优缺点
 - en: Various architectures and variants of RNNs
+  id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 递归神经网络的各种架构和变体
 - en: Do you have any questions about RNNs discussed in this post? Ask your questions
     in the comments below, and I will do my best to answer.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 你对本文讨论的递归神经网络有任何问题吗？请在下面的评论中提出问题，我会尽力回答。

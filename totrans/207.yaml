@@ -1,133 +1,195 @@
 - en: The Bahdanau Attention Mechanism
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Bahdanau 注意力机制
 - en: 原文：[https://machinelearningmastery.com/the-bahdanau-attention-mechanism/](https://machinelearningmastery.com/the-bahdanau-attention-mechanism/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/the-bahdanau-attention-mechanism/](https://machinelearningmastery.com/the-bahdanau-attention-mechanism/)
 - en: Conventional encoder-decoder architectures for machine translation encoded every
     source sentence into a fixed-length vector, regardless of its length, from which
     the decoder would then generate a translation. This made it difficult for the
     neural network to cope with long sentences, essentially resulting in a performance
     bottleneck.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于机器翻译的传统编码器-解码器架构将每个源句编码成一个固定长度的向量，无论其长度如何，解码器将生成一个翻译。这使得神经网络难以处理长句子，实质上导致了性能瓶颈。
 - en: The Bahdanau attention was proposed to address the performance bottleneck of
     conventional encoder-decoder architectures, achieving significant improvements
     over the conventional approach.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: Bahdanau 注意力被提出来解决传统编码器-解码器架构的性能瓶颈，相较于传统方法实现了显著改进。
 - en: In this tutorial, you will discover the Bahdanau attention mechanism for neural
     machine translation.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您将了解神经机器翻译的Bahdanau注意力机制。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将了解：
 - en: Where the Bahdanau attention derives its name from and the challenge it addresses
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Bahdanau 注意力机制名称的来源及其解决的挑战
 - en: The role of the different components that form part of the Bahdanau encoder-decoder
     architecture
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 形成 Bahdanau 编码器-解码器架构的不同组成部分的角色
 - en: The operations performed by the Bahdanau attention algorithm
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Bahdanau 注意力算法执行的操作
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动您的项目**，使用我的书籍[使用注意力构建Transformer模型](https://machinelearningmastery.com/transformer-models-with-attention/)。它提供了**自学教程**和**工作代码**，指导您构建一个完全工作的Transformer模型，可以'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将一种语言的句子翻译成另一种语言*...'
 - en: Let’s get started.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/c8a989f14f362b9b362099dbcec133b2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/bahdanau_cover-scaled.jpg)'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/c8a989f14f362b9b362099dbcec133b2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/bahdanau_cover-scaled.jpg)'
 - en: The Bahdanau attention mechanism
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: Bahdanau 注意力机制
 - en: Photo by [Sean Oulashin](https://unsplash.com/photos/KMn4VEeEPR8), some rights
     reserved.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Sean Oulashin](https://unsplash.com/photos/KMn4VEeEPR8)拍摄，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概览**'
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两部分；它们是：
 - en: Introduction to the Bahdanau Attention
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 介绍Bahdanau 注意力
 - en: The Bahdanau Architecture
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Bahdanau 架构
 - en: The Encoder
+  id: totrans-19
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编码器
 - en: The Decoder
+  id: totrans-20
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 解码器
 - en: The Bahdanau Attention Algorithm
+  id: totrans-21
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Bahdanau 注意力算法
 - en: '**Prerequisites**'
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**先决条件**'
 - en: 'For this tutorial, we assume that you are already familiar with:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设您已经熟悉：
 - en: '[Recurrent Neural Networks (RNNs)](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/)'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[递归神经网络（RNNs）](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/)'
 - en: '[The encoder-decoder RNN architecture](https://machinelearningmastery.com/encoder-decoder-recurrent-neural-network-models-neural-machine-translation/)'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[编码器-解码器RNN架构](https://machinelearningmastery.com/encoder-decoder-recurrent-neural-network-models-neural-machine-translation/)'
 - en: '[The concept of attention](https://machinelearningmastery.com/what-is-attention/)'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[注意力的概念](https://machinelearningmastery.com/what-is-attention/)'
 - en: '[The attention mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[注意力机制](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
 - en: '**Introduction to the Bahdanau Attention**'
+  id: totrans-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**介绍Bahdanau注意力**'
 - en: The Bahdanau attention mechanism inherited its name from the first author of
     the paper in which it was published.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: Bahdanau 注意力机制的名称源自其发表论文的第一作者。
 - en: It follows the work of [Cho et al. (2014)](https://arxiv.org/abs/1406.1078)
     and [Sutskever et al. (2014)](https://arxiv.org/abs/1409.3215), who also employed
     an RNN encoder-decoder framework for neural machine translation, specifically
     by encoding a variable-length source sentence into a fixed-length vector. The
     latter would then be decoded into a variable-length target sentence.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 它遵循了[Cho et al. (2014)](https://arxiv.org/abs/1406.1078)和[Sutskever et al. (2014)](https://arxiv.org/abs/1409.3215)的研究，他们也采用了RNN编码器-解码器框架进行神经机器翻译，具体通过将变长的源句子编码成固定长度的向量，然后再解码为变长的目标句子。
 - en: '[Bahdanau et al. (2014)](https://arxiv.org/abs/1409.0473) argued that this
     encoding of a variable-length input into a fixed-length vector *squashes* the
     information of the source sentence, irrespective of its length, causing the performance
@@ -135,321 +197,468 @@
     of the input sentence. The approach they proposed replaces the fixed-length vector
     with a variable-length one to improve the translation performance of the basic
     encoder-decoder model.'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Bahdanau et al. (2014)](https://arxiv.org/abs/1409.0473)认为，将变长输入编码为固定长度向量会*挤压*源句子的的信息，无论其长度如何，导致基本的编码器-解码器模型随着输入句子长度的增加而性能迅速恶化。他们提出的方法用变长向量替代固定长度向量，以提高基本编码器-解码器模型的翻译性能。'
 - en: '*The most important distinguishing feature of this approach from the basic
     encoder-decoder is that it does not attempt to encode a whole input sentence into
     a single fixed-length vector. Instead, it encodes the input sentence into a sequence
     of vectors and chooses a subset of these vectors adaptively while decoding the
     translation.*'
+  id: totrans-32
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*这种方法与基本的编码器-解码器方法的最重要的区别在于，它不会试图将整个输入句子编码为单一的固定长度向量。相反，它将输入句子编码为向量序列，并在解码翻译时自适应地选择这些向量的子集。*'
 - en: ''
+  id: totrans-33
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
     2014.'
+  id: totrans-34
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [通过联合学习对齐和翻译的神经机器翻译](https://arxiv.org/abs/1409.0473)，2014年。'
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始构建带有注意力的Transformer模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费12天电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费PDF电子书版本。
 - en: '**The Bahdanau Architecture**'
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Bahdanau架构**'
 - en: 'The main components in use by the Bahdanau encoder-decoder architecture are
     the following:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: Bahdanau编码器-解码器架构使用的主要组件如下：
 - en: $\mathbf{s}_{t-1}$ is the *hidden decoder state* at the previous time step,
     $t-1$.
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $\mathbf{s}_{t-1}$是前一时间步$t-1$的*隐藏解码器状态*。
 - en: $\mathbf{c}_t$ is the *context vector* at time step, $t$. It is uniquely generated
     at each decoder step to generate a target word, $y_t$.
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $\mathbf{c}_t$是时间步$t$的*上下文向量*。它在每个解码器步骤中独特生成，以生成目标单词$y_t$。
 - en: $\mathbf{h}_i$ is an *annotation* that captures the information contained in
     the words forming the entire input sentence, $\{ x_1, x_2, \dots, x_T \}$, with
     strong focus around the $i$-th word out of $T$ total words.
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $\mathbf{h}_i$是一个*注释*，它捕捉了构成整个输入句子$\{ x_1, x_2, \dots, x_T \}$的单词中的信息，特别关注第$i$个单词（共$T$个单词）。
 - en: $\alpha_{t,i}$ is a *weight* value assigned to each annotation, $\mathbf{h}_i$,
     at the current time step, $t$.
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $\alpha_{t,i}$是分配给当前时间步$t$的每个注释$\mathbf{h}_i$的*权重*值。
 - en: $e_{t,i}$ is an *attention score* generated by an alignment model, $a(.)$, that
     scores how well $\mathbf{s}_{t-1}$ and $\mathbf{h}_i$ match.
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $e_{t,i}$是由对齐模型$a(.)$生成的*注意力分数*，用来评分$\mathbf{s}_{t-1}$和$\mathbf{h}_i$的匹配程度。
 - en: 'These components find their use at different stages of the Bahdanau architecture,
     which employs a bidirectional RNN as an encoder and an RNN decoder, with an attention
     mechanism in between:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些组件在Bahdanau架构的不同阶段发挥作用，该架构使用双向RNN作为编码器，RNN解码器，并且在两者之间有一个注意力机制：
 - en: '[![](../Images/d1493932911ca344b8f22c6cc7eda5f1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/bahdanau_1.png)'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/d1493932911ca344b8f22c6cc7eda5f1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/bahdanau_1.png)'
 - en: The Bahdanau architecture
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: Bahdanau架构
 - en: Taken from “[Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473)“
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 摘自“[通过联合学习对齐和翻译的神经机器翻译](https://arxiv.org/abs/1409.0473)“
 - en: '**The Encoder**'
+  id: totrans-49
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**编码器**'
 - en: The role of the encoder is to generate an annotation, $\mathbf{h}_i$, for every
     word, $x_i$, in an input sentence of length $T$ words.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 编码器的角色是为输入句子中每个单词$x_i$生成一个注释$\mathbf{h}_i$，输入句子的长度为$T$个单词。
 - en: 'For this purpose, Bahdanau et al. employ a bidirectional RNN, which reads the
     input sentence in the forward direction to produce a forward hidden state, $\overrightarrow{\mathbf{h}_i}$,
     and then reads the input sentence in the reverse direction to produce a backward
     hidden state, $\overleftarrow{\mathbf{h}_i}$. The annotation for some particular
     word, $x_i$, concatenates the two states:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了实现这一目的，Bahdanau 等人采用了一个双向 RNN，它首先正向读取输入句子以生成前向隐藏状态 $\overrightarrow{\mathbf{h}_i}$，然后反向读取输入句子以生成后向隐藏状态
+    $\overleftarrow{\mathbf{h}_i}$。对于某个特定词 $x_i$，其注释将这两个状态连接起来：
 - en: $$\mathbf{h}_i = \left[ \overrightarrow{\mathbf{h}_i^T} \; ; \; \overleftarrow{\mathbf{h}_i^T}
     \right]^T$$
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\mathbf{h}_i = \left[ \overrightarrow{\mathbf{h}_i^T} \; ; \; \overleftarrow{\mathbf{h}_i^T}
+    \right]^T$$
 - en: The idea behind generating each annotation in this manner was to capture a summary
     of both the preceding and succeeding words.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 以这种方式生成每个注释的思想是捕获前面和后面单词的摘要。
 - en: '*In this way, the annotation $\mathbf{h}_i$ contains the summaries of both
     the preceding words and the following words.*'
+  id: totrans-54
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*通过这种方式，注释 $\mathbf{h}_i$ 包含了前面单词和后续单词的摘要。*'
 - en: ''
+  id: totrans-55
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
     2014.'
+  id: totrans-56
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [神经机器翻译：联合学习对齐和翻译](https://arxiv.org/abs/1409.0473)，2014年。'
 - en: The generated annotations are then passed to the decoder to generate the context
     vector.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成的注释然后传递给解码器以生成上下文向量。
 - en: '**The Decoder**'
+  id: totrans-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**解码器**'
 - en: The role of the decoder is to produce the target words by focusing on the most
     relevant information contained in the source sentence. For this purpose, it makes
     use of an attention mechanism.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 解码器的作用是通过关注源句子中包含的最相关信息来生成目标词语。为此，它利用了一个注意力机制。
 - en: '*Each time the proposed model generates a word in a translation, it (soft-)searches
     for a set of positions in a source sentence where the most relevant information
     is concentrated. The model then predicts a target word based on the context vectors
     associated with these source positions and all the previous generated target words.*'
+  id: totrans-60
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*每当提议的模型在翻译中生成一个词时，它（软）搜索源句子中信息最集中的一组位置。然后，基于与这些源位置相关的上下文向量和之前生成的所有目标词语，模型预测目标词语。*'
 - en: ''
+  id: totrans-61
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
     2014.'
+  id: totrans-62
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [神经机器翻译：联合学习对齐和翻译](https://arxiv.org/abs/1409.0473)，2014年。'
 - en: 'The decoder takes each annotation and feeds it to an alignment model, $a(.)$,
     together with the previous hidden decoder state, $\mathbf{s}_{t-1}$. This generates
     an attention score:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 解码器将每个注释与对齐模型 $a(.)$ 和前一个隐藏解码器状态 $\mathbf{s}_{t-1}$ 一起提供，这生成一个注意力分数：
 - en: $$e_{t,i} = a(\mathbf{s}_{t-1}, \mathbf{h}_i)$$
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: $$e_{t,i} = a(\mathbf{s}_{t-1}, \mathbf{h}_i)$$
 - en: The function implemented by the alignment model here combines $\mathbf{s}_{t-1}$
     and $\mathbf{h}_i$ using an addition operation. For this reason, the attention
     mechanism implemented by Bahdanau et al. is referred to as *additive attention*.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里由对齐模型实现的函数将 $\mathbf{s}_{t-1}$ 和 $\mathbf{h}_i$ 使用加法操作组合起来。因此，Bahdanau 等人实现的注意力机制被称为*加性注意力*。
 - en: 'This can be implemented in two ways, either (1) by applying a weight matrix,
     $\mathbf{W}$, over the concatenated vectors, $\mathbf{s}_{t-1}$ and $\mathbf{h}_i$,
     or (2) by applying the weight matrices, $\mathbf{W}_1$ and $\mathbf{W}_2$, to
     $\mathbf{s}_{t-1}$ and $\mathbf{h}_i$ separately:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可以通过两种方式实现，要么 (1) 在连接向量 $\mathbf{s}_{t-1}$ 和 $\mathbf{h}_i$ 上应用权重矩阵 $\mathbf{W}$，要么
+    (2) 分别对 $\mathbf{s}_{t-1}$ 和 $\mathbf{h}_i$ 应用权重矩阵 $\mathbf{W}_1$ 和 $\mathbf{W}_2$：
 - en: $$a(\mathbf{s}_{t-1}, \mathbf{h}_i) = \mathbf{v}^T \tanh(\mathbf{W}[\mathbf{h}_i
     \; ; \; \mathbf{s}_{t-1}])$$
+  id: totrans-67
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $$a(\mathbf{s}_{t-1}, \mathbf{h}_i) = \mathbf{v}^T \tanh(\mathbf{W}[\mathbf{h}_i
+    \; ; \; \mathbf{s}_{t-1}])$$
 - en: $$a(\mathbf{s}_{t-1}, \mathbf{h}_i) = \mathbf{v}^T \tanh(\mathbf{W}_1 \mathbf{h}_i
     + \mathbf{W}_2 \mathbf{s}_{t-1})$$
+  id: totrans-68
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $$a(\mathbf{s}_{t-1}, \mathbf{h}_i) = \mathbf{v}^T \tanh(\mathbf{W}_1 \mathbf{h}_i
+    + \mathbf{W}_2 \mathbf{s}_{t-1})$$
 - en: Here, $\mathbf{v}$ is a weight vector.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里，$\mathbf{v}$ 是一个权重向量。
 - en: The alignment model is parametrized as a feedforward neural network and jointly
     trained with the remaining system components.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 对齐模型被参数化为一个前馈神经网络，并与其余系统组件一起进行训练。
 - en: 'Subsequently, a softmax function is applied to each attention score to obtain
     the corresponding weight value:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 随后，对每个注意力分数应用 softmax 函数以获得相应的权重值：
 - en: $$\alpha_{t,i} = \text{softmax}(e_{t,i})$$
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\alpha_{t,i} = \text{softmax}(e_{t,i})$$
 - en: The application of the softmax function essentially normalizes the annotation
     values to a range between 0 and 1; hence, the resulting weights can be considered
     probability values. Each probability (or weight) value reflects how important
     $\mathbf{h}_i$ and $\mathbf{s}_{t-1}$ are in generating the next state, $\mathbf{s}_t$,
     and the next output, $y_t$.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: softmax 函数的应用本质上将注释值归一化到 0 到 1 的范围，因此，结果权重可以视为概率值。每个概率（或权重）值反映了 $\mathbf{h}_i$
+    和 $\mathbf{s}_{t-1}$ 在生成下一个状态 $\mathbf{s}_t$ 和下一个输出 $y_t$ 时的重要性。
 - en: '*Intuitively, this implements a mechanism of attention in the decoder. The
     decoder decides parts of the source sentence to pay attention to. By letting the
     decoder have an attention mechanism, we relieve the encoder from the burden of
     having to encode all information in the source sentence into a fixed-length vector.*'
+  id: totrans-74
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*直观地说，这在解码器中实现了一个注意力机制。解码器决定要关注源句子的哪些部分。通过让解码器具备注意力机制，我们减轻了编码器必须将源句子中的所有信息编码成固定长度向量的负担。*'
 - en: ''
+  id: totrans-75
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
     2014.'
+  id: totrans-76
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [神经机器翻译：通过联合学习对齐和翻译](https://arxiv.org/abs/1409.0473)，2014年。'
 - en: 'This is finally followed by the computation of the context vector as a weighted
     sum of the annotations:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 最终计算上下文向量作为注释的加权和：
 - en: $$\mathbf{c}_t = \sum^T_{i=1} \alpha_{t,i} \mathbf{h}_i$$
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\mathbf{c}_t = \sum^T_{i=1} \alpha_{t,i} \mathbf{h}_i$$
 - en: '**The Bahdanau Attention Algorithm**'
+  id: totrans-79
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**Bahdanau 注意力算法**'
 - en: 'In summary, the attention algorithm proposed by Bahdanau et al. performs the
     following operations:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 总结来说，Bahdanau 等人提出的注意力算法执行以下操作：
 - en: The encoder generates a set of annotations, $\mathbf{h}_i$, from the input sentence.
+  id: totrans-81
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编码器从输入句子生成一组注释 $\mathbf{h}_i$。
 - en: These annotations are fed to an alignment model and the previous hidden decoder
     state. The alignment model uses this information to generate the attention scores,
     $e_{t,i}$.
+  id: totrans-82
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这些注释被输入到对齐模型和之前的隐藏解码器状态中。对齐模型使用这些信息生成注意力分数 $e_{t,i}$。
 - en: A softmax function is applied to the attention scores, effectively normalizing
     them into weight values, $\alpha_{t,i}$, in a range between 0 and 1\.
+  id: totrans-83
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对注意力分数应用了 softmax 函数，将其有效地归一化为权重值，$\alpha_{t,i}$，范围在 0 到 1 之间。
 - en: Together with the previously computed annotations, these weights are used to
     generate a context vector, $\mathbf{c}_t$, through a weighted sum of the annotations.
+  id: totrans-84
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 结合先前计算的注释，这些权重用于通过注释的加权和生成上下文向量 $\mathbf{c}_t$。
 - en: The context vector is fed to the decoder together with the previous hidden decoder
     state and the previous output to compute the final output, $y_t$.
+  id: totrans-85
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 上下文向量与之前的隐藏解码器状态和先前输出一起输入解码器，以计算最终输出 $y_t$。
 - en: Steps 2-6 are repeated until the end of the sequence.
+  id: totrans-86
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 步骤 2-6 会重复直到序列结束。
 - en: Bahdanau et al. tested their architecture on the task of English-to-French translation.
     They reported that their model significantly outperformed the conventional encoder-decoder
     model, regardless of the sentence length.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: Bahdanau 等人对其架构进行了英法翻译任务的测试。他们报告称，他们的模型显著优于传统的编码器-解码器模型，无论句子长度如何。
 - en: There have been several improvements over the Bahdanau attention proposed, such
     as those of [Luong et al. (2015)](https://arxiv.org/abs/1508.04025), which we
     shall review in a separate tutorial.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 已经有几个对 Bahdanau 注意力的改进，例如 [Luong 等人 (2015)](https://arxiv.org/abs/1508.04025)
+    提出的改进，我们将在单独的教程中回顾。
 - en: '**Further Reading**'
+  id: totrans-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: '**Books**'
+  id: totrans-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019.'
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深入学习与 Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)，2019年。'
 - en: '**Papers**'
+  id: totrans-93
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
     2014.'
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[神经机器翻译：通过联合学习对齐和翻译](https://arxiv.org/abs/1409.0473)，2014年。'
 - en: '**Summary**'
+  id: totrans-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered the Bahdanau attention mechanism for neural
     machine translation.
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了 Bahdanau 注意力机制在神经机器翻译中的应用。
 - en: 'Specifically, you learned:'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: Where the Bahdanau attention derives its name from and the challenge it addresses.
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Bahdanau 注意力的名字来源于哪里以及它所解决的挑战。
 - en: The role of the different components that form part of the Bahdanau encoder-decoder
     architecture
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 组成 Bahdanau 编码器-解码器架构的不同组件的作用
 - en: The operations performed by the Bahdanau attention algorithm
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Bahdanau 注意力算法执行的操作
 - en: Do you have any questions?
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有什么问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提出你的问题，我会尽力回答。

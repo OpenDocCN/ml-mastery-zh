@@ -1,11 +1,15 @@
 - en: A Gentle Introduction to Positional Encoding in Transformer Models, Part 1
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 变压器模型位置编码的温和介绍，第1部分
 - en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-positional-encoding-in-transformer-models-part-1/](https://machinelearningmastery.com/a-gentle-introduction-to-positional-encoding-in-transformer-models-part-1/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-positional-encoding-in-transformer-models-part-1/](https://machinelearningmastery.com/a-gentle-introduction-to-positional-encoding-in-transformer-models-part-1/)
 - en: In languages, the order of the words and their position in a sentence really
     matters. The meaning of the entire sentence can change if the words are re-ordered.
     When implementing NLP solutions, recurrent neural networks have an inbuilt mechanism
@@ -15,345 +19,528 @@
     the information regarding the order of words in a sentence. Positional encoding
     is the scheme through which the knowledge of the order of objects in a sequence
     is maintained.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在语言中，单词的顺序及其在句子中的位置确实很重要。如果重新排列单词，整个句子的意义可能会发生变化。在实现自然语言处理解决方案时，递归神经网络有一个内置机制来处理序列的顺序。然而，变压器模型不使用递归或卷积，将每个数据点视为彼此独立。因此，模型中明确添加了位置编码，以保留句子中单词的顺序信息。位置编码是一种保持序列中对象顺序知识的方案。
 - en: 'For this tutorial, we’ll simplify the notations used in this remarkable paper,
     [Attention Is All You Need](https://arxiv.org/abs/1706.03762) by Vaswani et al. After
     completing this tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将简化Vaswani等人那篇卓越论文中使用的符号，[Attention Is All You Need](https://arxiv.org/abs/1706.03762)。完成本教程后，你将了解：
 - en: What is positional encoding, and why it’s important
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是位置编码，为什么重要
 - en: Positional encoding in transformers
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 变压器中的位置编码
 - en: Code and visualize a positional encoding matrix in Python using NumPy
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用NumPy在Python中编写并可视化位置编码矩阵
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书** [Building Transformer Models with Attention](https://machinelearningmastery.com/transformer-models-with-attention/)
+    **启动你的项目**。它提供了**自学教程**和**可运行的代码**，指导你构建一个完全可运行的变压器模型'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将句子从一种语言翻译成另一种语言*…'
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/94214676d9c91a14c9b6559a1f59e28b.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/muhammad-murtaza-ghani-CIVbJZR8aAk-unsplash-scaled.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/94214676d9c91a14c9b6559a1f59e28b.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/muhammad-murtaza-ghani-CIVbJZR8aAk-unsplash-scaled.jpg)'
 - en: A gentle introduction to positional encoding in transformer models
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 变压器模型中位置编码的温和介绍
 - en: Photo by [Muhammad Murtaza Ghani](https://unsplash.com/@murtaza327?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
     on [Unsplash](https://unsplash.com/s/photos/free-pakistan?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText),
     some rights reserved
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Muhammad Murtaza Ghani](https://unsplash.com/@murtaza327?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+    提供，来自 [Unsplash](https://unsplash.com/s/photos/free-pakistan?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)，部分权利保留
 - en: Tutorial Overview
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into four parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四个部分，它们是：
 - en: What is positional encoding
+  id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 什么是位置编码
 - en: Mathematics behind positional encoding in transformers
+  id: totrans-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 变压器中位置编码背后的数学
 - en: Implementing the positional encoding matrix using NumPy
+  id: totrans-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用NumPy实现位置编码矩阵
 - en: Understanding and visualizing the positional encoding matrix
+  id: totrans-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 理解并可视化位置编码矩阵
 - en: What Is Positional Encoding?
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是位置编码？
 - en: Positional encoding describes the location or position of an entity in a sequence
     so that each position is assigned a unique representation. There are many reasons
     why a single number, such as the index value, is not used to represent an item’s
     position in transformer models. For long sequences, the indices can grow large
     in magnitude. If you normalize the index value to lie between 0 and 1, it can
     create problems for variable length sequences as they would be normalized differently.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 位置编码描述了实体在序列中的位置或位置，以便每个位置分配一个唯一的表示。许多原因导致在变压器模型中不使用单一数字（如索引值）来表示项的位置。对于长序列，索引可能会变得非常大。如果将索引值归一化到0和1之间，则可能会对变长序列造成问题，因为它们会被不同地归一化。
 - en: Transformers use a smart positional encoding scheme, where each position/index
     is mapped to a vector. Hence, the output of the positional encoding layer is a
     matrix, where each row of the matrix represents an encoded object of the sequence
     summed with its positional information. An example of the matrix that encodes
     only the positional information is shown in the figure below.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformers 使用一种智能的位置编码方案，其中每个位置/索引映射到一个向量。因此，位置编码层的输出是一个矩阵，其中矩阵的每一行表示序列中编码对象与其位置信息的和。下图展示了仅编码位置信息的矩阵示例。
 - en: '[![](../Images/352dc9fefeea3b3944ef08622a876ab3.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE1.png)'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/352dc9fefeea3b3944ef08622a876ab3.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE1.png)'
 - en: A Quick Run-Through of the Trigonometric Sine Function
+  id: totrans-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 三角函数正弦函数的快速回顾
 - en: 'This is a quick recap of sine functions; you can work equivalently with cosine
     functions. The function’s range is [-1,+1]. The frequency of this waveform is
     the number of cycles completed in one second. The wavelength is the distance over
     which the waveform repeats itself. The wavelength and frequency for different
     waveforms are shown below:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是对正弦函数的快速回顾；你也可以用余弦函数进行等效操作。该函数的范围是 [-1,+1]。该波形的频率是每秒完成的周期数。波长是波形重复自身的距离。不同波形的波长和频率如下所示：
 - en: '[![](../Images/bb9f8b228167306f5b4ded76a4f0b5d3.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE2.png)'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/bb9f8b228167306f5b4ded76a4f0b5d3.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE2.png)'
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始构建具有注意力机制的 Transformer 模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费12天邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并且还可以获得课程的免费 PDF 电子书版本。
 - en: Positional Encoding Layer in Transformers
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Transformer 中的位置信息编码层
 - en: 'Let’s dive straight into this. Suppose you have an input sequence of length
     $L$ and require the position of the $k^{th}$ object within this sequence. The
     positional encoding is given by sine and cosine functions of varying frequencies:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们直接进入正题。假设你有一个长度为 $L$ 的输入序列，并且需要该序列中第 $k^{th}$ 对象的位置。位置编码由具有不同频率的正弦和余弦函数给出：
 - en: \begin{eqnarray}
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{eqnarray}
 - en: P(k, 2i) &=& \sin\Big(\frac{k}{n^{2i/d}}\Big)\\
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: P(k, 2i) &=& \sin\Big(\frac{k}{n^{2i/d}}\Big)\\
 - en: P(k, 2i+1) &=& \cos\Big(\frac{k}{n^{2i/d}}\Big)
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: P(k, 2i+1) &=& \cos\Big(\frac{k}{n^{2i/d}}\Big)
 - en: \end{eqnarray}
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{eqnarray}
 - en: 'Here:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里：
 - en: '$k$: Position of an object in the input sequence, $0 \leq k < L/2$'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '$k$: 输入序列中对象的位置，$0 \leq k < L/2$'
 - en: '$d$: Dimension of the output embedding space'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '$d$: 输出嵌入空间的维度'
 - en: '$P(k, j)$: Position function for mapping a position $k$ in the input sequence
     to index $(k,j)$ of the positional matrix'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '$P(k, j)$: 用于将输入序列中的位置 $k$ 映射到位置矩阵的索引 $(k,j)$ 的位置函数'
 - en: '$n$: User-defined scalar, set to 10,000 by the authors of [Attention Is All
     You Need](https://arxiv.org/abs/1706.03762).'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '$n$: 用户定义的标量，由 [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
+    的作者设定为 10,000。'
 - en: '$i$: Used for mapping to column indices $0 \leq i < d/2$, with a single value
     of $i$ maps to both sine and cosine functions'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '$i$: 用于映射到列索引 $0 \leq i < d/2$，一个单独的 $i$ 值同时映射到正弦和余弦函数'
 - en: In the above expression, you can see that even positions correspond to a sine
     function and odd positions correspond to cosine functions.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述表达式中，你可以看到偶数位置对应于正弦函数，而奇数位置对应于余弦函数。
 - en: Example
+  id: totrans-42
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 示例
 - en: To understand the above expression, let’s take an example of the phrase “I am
     a robot,” with n=100 and d=4\. The following table shows the positional encoding
     matrix for this phrase. In fact, the positional encoding matrix would be the same
     for any four-letter phrase with n=100 and d=4.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了理解上述表达式，让我们以短语 “I am a robot” 为例，设定 n=100 和 d=4。下表显示了该短语的位置信息编码矩阵。实际上，对于任何四字母短语，位置信息编码矩阵在
+    n=100 和 d=4 的情况下都是相同的。
 - en: '[![](../Images/9ef448bb75e651a4fbbb04ff18d7e5a7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE3.png)'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/9ef448bb75e651a4fbbb04ff18d7e5a7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE3.png)'
 - en: Coding the Positional Encoding Matrix from Scratch
+  id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 从头开始编码位置编码矩阵
 - en: Here is a short Python code to implement positional encoding using NumPy. The
     code is simplified to make the understanding of positional encoding easier.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是一个简短的 Python 代码示例，用于使用 NumPy 实现位置编码。代码经过简化，以便更容易理解位置编码。
 - en: Python
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Output
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出
 - en: '[PRE1]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Understanding the Positional Encoding Matrix
+  id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 理解位置编码矩阵
 - en: To understand the positional encoding, let’s start by looking at the sine wave
     for different positions with n=10,000 and d=512.Python
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了理解位置编码，让我们先来看不同位置的正弦波，n=10,000 和 d=512。Python
 - en: '[PRE2]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The following figure is the output of the above code:[![](../Images/b683d3a2e132ce6a7884a319b06538ff.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE4.png)
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 下图是上述代码的输出：[![](../Images/b683d3a2e132ce6a7884a319b06538ff.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE4.png)
 - en: Sine wave for different position indices
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 不同位置索引的正弦波
 - en: 'You can see that each position $k$ corresponds to a different sinusoid, which
     encodes a single position into a vector. If you look closely at the positional
     encoding function, you can see that the wavelength for a fixed $i$ is given by:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到每个位置 $k$ 对应一个不同的正弦波，它将单个位置编码成一个向量。如果你仔细查看位置编码函数，你会发现固定的 $i$ 的波长由下式给出：
 - en: $$
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \lambda_{i} = 2 \pi n^{2i/d}
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: \lambda_{i} = 2 \pi n^{2i/d}
 - en: $$
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: Hence, the wavelengths of the sinusoids form a geometric progression and vary
     from $2\pi$ to $2\pi n$. The scheme for positional encoding has a number of advantages.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，正弦波的波长形成了几何级数，并从 $2\pi$ 变化到 $2\pi n$。位置编码方案有许多优点。
 - en: The sine and cosine functions have values in [-1, 1], which keeps the values
     of the positional encoding matrix in a normalized range.
+  id: totrans-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 正弦和余弦函数的值在 [-1, 1] 范围内，这保持了位置编码矩阵值在规范化范围内。
 - en: As the sinusoid for each position is different, you have a unique way of encoding
     each position.
+  id: totrans-62
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 由于每个位置的正弦波不同，你有一种唯一的方式来编码每个位置。
 - en: You have a way of measuring or quantifying the similarity between different
     positions, hence enabling you to encode the relative positions of words.
+  id: totrans-63
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你有一种方法来衡量或量化不同位置之间的相似性，从而使你能够编码单词的相对位置。
 - en: Visualizing the Positional Matrix
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 可视化位置矩阵
 - en: 'Let’s visualize the positional matrix on bigger values. Use Python’s `matshow()`
     method from the `matplotlib` library. Setting n=10,000 as done in the original
     paper, you get the following:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们在更大的数值上可视化位置矩阵。使用 Python 的 `matshow()` 方法，来自 `matplotlib` 库。将 n=10,000 设置为原始论文中的值，你会得到如下结果：
 - en: Python
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '[![](../Images/fc424f5aba32b4c00664bde095000553.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE5.png)'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/fc424f5aba32b4c00664bde095000553.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE5.png)'
 - en: The positional encoding matrix for n=10,000, d=512, sequence length=100
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 n=10,000, d=512, 序列长度=100 的位置编码矩阵
 - en: What Is the Final Output of the Positional Encoding Layer?
+  id: totrans-70
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 位置编码层的最终输出是什么？
 - en: The positional encoding layer sums the positional vector with the word encoding
     and outputs this matrix for the subsequent layers. The entire process is shown
     below.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 位置编码层将位置向量与单词编码相加，并输出该矩阵以供后续层使用。整个过程如下所示。
 - en: '[![](../Images/08056ae40c6b19a2317f2134ee231931.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE6.png)'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/08056ae40c6b19a2317f2134ee231931.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/PE6.png)'
 - en: The positional encoding layer in the transformer
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 中的位置编码层
 - en: Further Reading
+  id: totrans-74
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你希望深入了解。
 - en: Books
+  id: totrans-76
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Transformers for natural language processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
     by Denis Rothman.'
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[用于自然语言处理的 Transformers](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798)，作者
+    Denis Rothman。'
 - en: Papers
+  id: totrans-78
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 论文
 - en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762)，2017年。'
 - en: Articles
+  id: totrans-80
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[The Transformer Attention Mechanism](https://machinelearningmastery.com/the-transformer-attention-mechanism/)'
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 注意力机制](https://machinelearningmastery.com/the-transformer-attention-mechanism/)'
 - en: '[The Transformer Model](https://machinelearningmastery.com/the-transformer-model/)'
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 模型](https://machinelearningmastery.com/the-transformer-model/)'
 - en: '[Transformer model for language understanding](https://www.tensorflow.org/text/tutorials/transformer)'
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[用于语言理解的 Transformer 模型](https://www.tensorflow.org/text/tutorials/transformer)'
 - en: Summary
+  id: totrans-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you discovered positional encoding in transformers.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了变压器中的位置编码。
 - en: 'Specifically, you learned:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: What is positional encoding, and why it is needed.
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是位置编码，它为何需要。
 - en: How to implement positional encoding in Python using NumPy
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 NumPy 在 Python 中实现位置编码
 - en: How to visualize the positional encoding matrix
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何可视化位置编码矩阵
 - en: Do you have any questions about positional encoding discussed in this post?
     Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中讨论的位置编码有任何问题吗？请在下面的评论中提出您的问题，我会尽力回答。

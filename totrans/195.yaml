@@ -1,11 +1,15 @@
 - en: Implementing the Transformer Decoder from Scratch in TensorFlow and Keras
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 TensorFlow 和 Keras 中从零开始实现 Transformer 解码器
 - en: 原文：[https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras/](https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras/](https://machinelearningmastery.com/implementing-the-transformer-decoder-from-scratch-in-tensorflow-and-keras/)
 - en: There are many similarities between the Transformer encoder and decoder, such
     as their implementation of multi-head attention, layer normalization, and a fully
     connected feed-forward network as their final sub-layer. Having implemented the
@@ -13,172 +17,261 @@
     we will now go ahead and apply our knowledge in implementing the Transformer decoder
     as a further step toward implementing the complete Transformer model. Your end
     goal remains to apply the complete model to Natural Language Processing (NLP).
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 编码器和解码器之间存在许多相似之处，例如它们实现了多头注意力机制、层归一化以及作为最终子层的全连接前馈网络。在实现了[Transformer
+    编码器](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)之后，我们现在将继续应用我们的知识来实现
+    Transformer 解码器，作为实现完整 Transformer 模型的进一步步骤。您的最终目标是将完整模型应用于自然语言处理（NLP）。
 - en: In this tutorial, you will discover how to implement the Transformer decoder
     from scratch in TensorFlow and Keras.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您将学习如何在 TensorFlow 和 Keras 中从零开始实现 Transformer 解码器。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将了解：
 - en: The layers that form part of the Transformer decoder
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构成 Transformer 解码器的层
 - en: How to implement the Transformer decoder from scratch
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从零开始实现 Transformer 解码器
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用我的书籍[使用注意力构建 Transformer 模型](https://machinelearningmastery.com/transformer-models-with-attention/)**启动您的项目**。它提供了具有**工作代码**的**自学教程**，引导您构建一个完全工作的
+    Transformer 模型，可以
 - en: '*translate sentences from one language to another*...'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将一种语言的句子翻译成另一种语言*...'
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/351cb0d6443fe8eb0f558ada27032ec4.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/decoder_cover-scaled.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/351cb0d6443fe8eb0f558ada27032ec4.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/decoder_cover-scaled.jpg)'
 - en: Implementing the Transformer decoder from scratch in TensorFlow and Keras
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 TensorFlow 和 Keras 中从零开始实现 Transformer 解码器
 - en: Photo by [François Kaiser](https://unsplash.com/photos/8Ceyil3gIog), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [François Kaiser](https://unsplash.com/photos/8Ceyil3gIog) 拍摄，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分，它们是：
 - en: Recap of the Transformer Architecture
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 架构回顾
 - en: The Transformer Decoder
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 解码器
 - en: Implementing the Transformer Decoder From Scratch
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 TensorFlow 和 Keras 中从零开始实现 Transformer 解码器
 - en: The Decoder Layer
+  id: totrans-18
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 解码器层
 - en: The Transformer Decoder
+  id: totrans-19
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 解码器
 - en: Testing Out the Code
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 测试代码
 - en: '**Prerequisites**'
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**先决条件**'
 - en: 'For this tutorial, we assume that you are already familiar with:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程假设您已经熟悉以下内容：
 - en: '[The Transformer model](https://machinelearningmastery.com/the-transformer-model/)'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 模型](https://machinelearningmastery.com/the-transformer-model/)'
 - en: '[The scaled dot-product attention](https://machinelearningmastery.com/?p=13364&preview=true)'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[缩放点积注意力机制](https://machinelearningmastery.com/?p=13364&preview=true)'
 - en: '[The multi-head attention](https://machinelearningmastery.com/?p=13351&preview=true)'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[多头注意力机制](https://machinelearningmastery.com/?p=13351&preview=true)'
 - en: '[The Transformer positional encoding](https://machinelearningmastery.com/the-transformer-positional-encoding-layer-in-keras-part-2/)'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 位置编码](https://machinelearningmastery.com/the-transformer-positional-encoding-layer-in-keras-part-2/)'
 - en: '[The Transformer encoder](https://machinelearningmastery.com/?p=13389&preview=true)'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 编码器](https://machinelearningmastery.com/?p=13389&preview=true)'
 - en: '**Recap of the Transformer Architecture**'
+  id: totrans-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Transformer 架构回顾**'
 - en: '[Recall](https://machinelearningmastery.com/the-transformer-model/) having
     seen that the Transformer architecture follows an encoder-decoder structure. The
     encoder, on the left-hand side, is tasked with mapping an input sequence to a
     sequence of continuous representations; the decoder, on the right-hand side, receives
     the output of the encoder together with the decoder output at the previous time
     step to generate an output sequence.'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '[回忆](https://machinelearningmastery.com/the-transformer-model/)已经看到，Transformer
+    架构遵循编码器-解码器结构。编码器在左侧负责将输入序列映射到连续表示的序列；解码器在右侧接收编码器输出以及前一时间步的解码器输出，生成输出序列。'
 - en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
 - en: The encoder-decoder structure of the Transformer architecture
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 架构的编码器-解码器结构
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 取自“[注意力机制全是你需要的](https://arxiv.org/abs/1706.03762)“
 - en: In generating an output sequence, the Transformer does not rely on recurrence
     and convolutions.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在生成输出序列时，Transformer 不依赖于循环和卷积。
 - en: You have seen that the decoder part of the Transformer shares many similarities
     in its architecture with the encoder. This tutorial will explore these similarities.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 您已经看到 Transformer 的解码器部分在架构上与编码器有许多相似之处。本教程将探索这些相似之处。
 - en: '**The Transformer Decoder**'
+  id: totrans-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Transformer 解码器**'
 - en: 'Similar to the [Transformer encoder](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras),
     the Transformer decoder also consists of a stack of $N$ identical layers. The
     Transformer decoder, however, implements an additional multi-head attention block
     for a total of three main sub-layers:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于[Transformer 编码器](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)，Transformer
+    解码器也由 $N$ 个相同层的堆叠组成。然而，Transformer 解码器还实现了一个额外的多头注意力块，总共有三个主要子层：
 - en: The first sub-layer comprises a multi-head attention mechanism that receives
     the queries, keys, and values as inputs.
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第一子层包括一个多头注意力机制，接收查询（queries）、键（keys）和值（values）作为输入。
 - en: The second sub-layer comprises a second multi-head attention mechanism.
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第二子层包括第二个多头注意力机制。
 - en: The third sub-layer comprises a fully-connected feed-forward network.
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第三子层包括一个全连接的前馈网络。
 - en: '[![](../Images/b5ece98aba8f016010f010adfd5a8097.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_2.png)'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/b5ece98aba8f016010f010adfd5a8097.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_2.png)'
 - en: The decoder block of the Transformer architecture
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 架构的解码器块
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 取自“[注意力机制全是你需要的](https://arxiv.org/abs/1706.03762)“
 - en: Each one of these three sub-layers is also followed by layer normalization,
     where the input to the layer normalization step is its corresponding sub-layer
     input (through a residual connection) and output.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 这三个子层中的每一个后面都跟着层归一化，层归一化步骤的输入是其对应的子层输入（通过残差连接）和输出。
 - en: On the decoder side, the queries, keys, and values that are fed into the first
     multi-head attention block also represent the same input sequence. However, this
     time around, it is the *target* sequence that is embedded and augmented with positional
@@ -187,62 +280,92 @@
     values and the normalized output of the first decoder attention block as the queries.
     In both cases, the dimensionality of the queries and keys remains equal to $d_k$,
     whereas the dimensionality of the values remains equal to $d_v$.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在解码器端，进入第一个多头注意力块的查询、键和值也代表相同的输入序列。然而，这一次是将*目标*序列嵌入并增强了位置信息，然后才提供给解码器。另一方面，第二个多头注意力块接收编码器输出作为键和值，并接收第一个解码器注意力块的归一化输出作为查询。在这两种情况下，查询和键的维度保持等于$d_k$，而值的维度保持等于$d_v$。
 - en: Vaswani et al. introduce regularization into the model on the decoder side,
     too, by applying dropout to the output of each sub-layer (before the layer normalization
     step), as well as to the positional encodings before these are fed into the decoder.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: Vaswani 等人还通过对每个子层的输出（在层归一化步骤之前）以及传入解码器的位置编码应用 dropout 来在解码器端引入正则化。
 - en: Let’s now see how to implement the Transformer decoder from scratch in TensorFlow
     and Keras.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们来看一下如何从头开始在 TensorFlow 和 Keras 中实现 Transformer 解码器。
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-47
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始构建带有注意力机制的 Transformer 模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费 12 天电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取免费的 PDF 电子书版本课程。
 - en: '**Implementing the Transformer Decoder from Scratch**'
+  id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**从头开始实现 Transformer 解码器**'
 - en: '**The Decoder Layer**'
+  id: totrans-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**解码器层**'
 - en: 'Since you have already implemented the required sub-layers when you covered
     the [implementation of the Transformer encoder](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras),
     you will create a class for the decoder layer that makes use of these sub-layers
     straight away:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于你在[实现 Transformer 编码器](https://machinelearningmastery.com/implementing-the-transformer-encoder-from-scratch-in-tensorflow-and-keras)时已经实现了所需的子层，因此你将创建一个解码器层类，直接利用这些子层：
 - en: Python
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Notice here that since the code for the different sub-layers had been saved
     into several Python scripts (namely, *multihead_attention.py* and *encoder.py*),
     it was necessary to import them to be able to use the required classes.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，由于不同子层的代码已经保存到多个 Python 脚本（即 *multihead_attention.py* 和 *encoder.py*）中，因此需要导入它们才能使用所需的类。
 - en: 'As you did for the Transformer encoder, you will now create the class method,
     `call()`, that implements all the decoder sub-layers:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你在 Transformer 编码器中所做的那样，你现在将创建 `call()` 类方法，来实现所有解码器子层：
 - en: Python
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The multi-head attention sub-layers can also receive a padding mask or a look-ahead
     mask. As a brief reminder of what was said in a [previous tutorial](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras),
     the *padding* mask is necessary to suppress the zero padding in the input sequence
@@ -250,167 +373,259 @@
     prevents the decoder from attending to succeeding words, such that the prediction
     for a particular word can only depend on known outputs for the words that come
     before it.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 多头注意力子层还可以接收填充掩码或前瞻掩码。简要提醒一下在[之前的教程](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras)中提到的内容，*填充*掩码是必要的，以防止输入序列中的零填充被处理与实际输入值一起处理。*前瞻*掩码防止解码器关注后续单词，这样对特定单词的预测只能依赖于前面单词的已知输出。
 - en: The same `call()` class method can also receive a `training` flag to only apply
     the Dropout layers during training when the flag’s value is set to `True`.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 相同的 `call()` 类方法也可以接收一个 `training` 标志，以便仅在训练期间应用 Dropout 层，当标志的值设置为 `True` 时。
 - en: '**The Transformer Decoder**'
+  id: totrans-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**Transformer 解码器**'
 - en: The Transformer decoder takes the decoder layer you have just implemented and
     replicates it identically $N$ times.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 解码器将你刚刚实现的解码器层复制 $N$ 次。
 - en: 'You will create the following `Decoder()` class to implement the Transformer
     decoder:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将创建以下 `Decoder()` 类来实现 Transformer 解码器：
 - en: Python
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: As in the Transformer encoder, the input to the first multi-head attention block
     on the decoder side receives the input sequence after this would have undergone
     a process of word embedding and positional encoding. For this purpose, an instance
     of the `PositionEmbeddingFixedWeights` class (covered in [this tutorial](https://machinelearningmastery.com/the-transformer-positional-encoding-layer-in-keras-part-2/))
     is initialized, and its output assigned to the `pos_encoding` variable.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 Transformer 编码器一样，解码器侧第一个多头注意力块的输入接收经过词嵌入和位置编码处理后的输入序列。为此，初始化一个 `PositionEmbeddingFixedWeights`
+    类的实例（在[这个教程](https://machinelearningmastery.com/the-transformer-positional-encoding-layer-in-keras-part-2/)中介绍），并将其输出分配给
+    `pos_encoding` 变量。
 - en: 'The final step is to create a class method, `call()`, that applies word embedding
     and positional encoding to the input sequence and feeds the result, together with
     the encoder output, to $N$ decoder layers:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一步是创建一个类方法 `call()`，该方法将词嵌入和位置编码应用于输入序列，并将结果与编码器输出一起馈送到 $N$ 个解码器层：
 - en: Python
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The code listing for the full Transformer decoder is the following:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整 Transformer 解码器的代码清单如下：
 - en: Python
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '**Testing Out the Code**'
+  id: totrans-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**测试代码**'
 - en: 'You will work with the parameter values specified in the paper, [Attention
     Is All You Need](https://arxiv.org/abs/1706.03762), by Vaswani et al. (2017):'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 您将使用文献《[Attention Is All You Need](https://arxiv.org/abs/1706.03762)》（Vaswani等人，2017年）中指定的参数值：
 - en: Python
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'As for the input sequence, you will work with dummy data for the time being
     until you arrive at the stage of [training the complete Transformer model](https://machinelearningmastery.com/training-the-transformer-model)
     in a separate tutorial, at which point you will use actual sentences:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 至于输入序列，暂时您将使用虚拟数据，直到您在单独的教程中[训练完整的Transformer模型](https://machinelearningmastery.com/training-the-transformer-model)，届时您将使用实际的句子：
 - en: Python
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Next, you will create a new instance of the `Decoder` class, assigning its
     output to the `decoder` variable, subsequently passing in the input arguments,
     and printing the result. You will set the padding and look-ahead masks to `None`
     for the time being, but you will return to these when you implement the complete
     Transformer model:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，您将创建`Decoder`类的新实例，将其输出分配给`decoder`变量，随后传入输入参数并打印结果。目前，您将把填充和前瞻掩码设置为`None`，但在实现完整的Transformer模型时将返回到这些设置：
 - en: Python
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Tying everything together produces the following code listing:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容综合起来，得到以下代码清单：
 - en: Python
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Running this code produces an output of shape (*batch size*, *sequence length*,
     *model dimensionality*). Note that you will likely see a different output due
     to the random initialization of the input sequence and the parameter values of
     the Dense layers.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行此代码会生成形状为（*批大小*，*序列长度*，*模型维度*）的输出。请注意，由于输入序列的随机初始化和密集层参数值的不同，您可能会看到不同的输出。
 - en: Python
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '**Further Reading**'
+  id: totrans-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多有关该主题的资源，如果您希望深入了解。
 - en: '**Books**'
+  id: totrans-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**图书**'
 - en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019'
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python深度学习进阶](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
+    2019'
 - en: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
     2021'
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[自然语言处理的Transformer](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
+    2021'
 - en: '**Papers**'
+  id: totrans-94
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
 - en: '**Summary**'
+  id: totrans-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered how to implement the Transformer decoder from
     scratch in TensorFlow and Keras.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您学习了如何在TensorFlow和Keras中从头开始实现Transformer解码器。
 - en: 'Specifically, you learned:'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体而言，您学习了：
 - en: The layers that form part of the Transformer decoder
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 组成Transformer解码器的层
 - en: How to implement the Transformer decoder from scratch
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从头开始实现Transformer解码器
 - en: Do you have any questions?
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 您有什么问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提出您的问题，我将尽力回答。

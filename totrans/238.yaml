@@ -1,372 +1,565 @@
 - en: A Gentle Introduction to Indeterminate Forms and L’Hospital’s Rule
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 温和介绍未定型和洛必达法则
 - en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-indeterminate-forms-and-lhospitals-rule/](https://machinelearningmastery.com/a-gentle-introduction-to-indeterminate-forms-and-lhospitals-rule/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-indeterminate-forms-and-lhospitals-rule/](https://machinelearningmastery.com/a-gentle-introduction-to-indeterminate-forms-and-lhospitals-rule/)
 - en: Indeterminate forms are often encountered when evaluating limits of functions,
     and limits in turn play an important role in mathematics and calculus. They are
     essential for learning about derivatives, gradients, Hessians, and a lot more.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在评估函数的极限时，经常会遇到未定型，极限在数学和微积分中扮演着重要角色。它们对学习导数、梯度、黑塞矩阵以及更多内容至关重要。
 - en: In this tutorial, you will discover how to evaluate the limits of indeterminate
     forms and the L’Hospital’s rule for solving them.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将学习如何评估未定型的极限以及解决它们的洛必达法则。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: How to evaluate the limits of functions having indeterminate types of the form
     0/0 and ∞/∞
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何评估具有 0/0 和 ∞/∞ 未定型形式的函数的极限
 - en: L’Hospital’s rule for evaluating indeterminate types
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 洛必达法则用于评估未定型
 - en: How to convert more complex indeterminate types and apply L’Hospital’s rule
     to them
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何转换更复杂的未定型并将洛必达法则应用于它们
 - en: Let’s get started.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 开始吧。
 - en: '[![A Gentle Introduction to Indeterminate Forms and L’Hospital’s Rule Photo
     credits, Mehreen Saeed, some rights reserved.](../Images/4f1c6c59d904f6be8fc7ee7aa5091808.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/IMG_9247-scaled.jpg)'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![温和介绍未定型和洛必达法则，照片由 Mehreen Saeed 提供，保留所有权利。](../Images/4f1c6c59d904f6be8fc7ee7aa5091808.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/IMG_9247-scaled.jpg)'
 - en: A Gentle Introduction to Indeterminate Forms and L’Hospital’s Rule Photo by
     Mehreen Saeed, some rights reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 温和介绍未定型和洛必达法则，照片由 Mehreen Saeed 提供，保留所有权利。
 - en: Tutorial Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into 2 parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为 2 部分；它们是：
 - en: The indeterminate forms of type 0/0 and ∞/∞
+  id: totrans-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 0/0 和 ∞/∞ 的未定型
 - en: How to apply L’Hospital’s rule to these types
+  id: totrans-14
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如何将洛必达法则应用于这些类型
 - en: Solved examples of these two indeterminate types
+  id: totrans-15
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这两种未定型的解题示例
 - en: More complex indeterminate types
+  id: totrans-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 更复杂的未定型
 - en: How to convert the more complex indeterminate types to 0/0 and ∞/∞ forms
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如何将更复杂的未定型转换为 0/0 和 ∞/∞ 形式
 - en: Solved examples of such types
+  id: totrans-18
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这类类型的解题示例
 - en: Prerequisites
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 前提条件
 - en: 'This tutorial requires a basic understanding of the following two topics:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程需要对以下两个主题有基本了解：
 - en: '[Limits and Continuity](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity)'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[极限与连续性](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity)'
 - en: '[Evaluating limits](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits)'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[评估极限](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits)'
 - en: If you are not familiar with these topics, you can review them by clicking the
     above links.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你不熟悉这些主题，可以通过点击上述链接进行复习。
 - en: What are Indeterminate Forms?
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是未定型？
 - en: 'When evaluating limits, we come across situations where the [basic rules for
     evaluating limits](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits)
     might fail. For example, we can apply the quotient rule in case of rational functions:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在评估极限时，我们会遇到[评估极限的基本规则](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits)可能会失效的情况。例如，对于有理函数，我们可以应用商法则：
 - en: lim(x→a) f(x)/g(x) = (lim(x→a)f(x))/(lim(x→a)g(x))          if lim(x→a)g(x)≠0
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(x→a) f(x)/g(x) = (lim(x→a)f(x))/(lim(x→a)g(x))          如果 lim(x→a)g(x)≠0
 - en: 'The above rule can only be applied if the expression in the denominator does
     not approach zero as x approaches a. A more complicated situation arises if both
     the numerator and denominator both approach zero as x approaches a. This is called
     an indeterminate form of type 0/0\. Similarly, there are indeterminate forms of
     the type ∞/∞, given by:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 只有在分母中的表达式在 x 接近 a 时不趋近于零时，才能应用上述规则。如果当 x 接近 a 时，分子和分母都趋近于零，则会出现更复杂的情况。这被称为
+    0/0 的未定型。同样，还有 ∞/∞ 的未定型，表示为：
 - en: lim(x→a) f(x)/g(x) = (lim(x→a)f(x))/(lim(x→a)g(x)) when lim(x→a)f(x)=∞ and lim(x→a)g(x)=∞
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(x→a) f(x)/g(x) = (lim(x→a)f(x))/(lim(x→a)g(x)) 当 lim(x→a)f(x)=∞ 和 lim(x→a)g(x)=∞
 - en: What is L’Hospital’s Rule?
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是洛必达法则？
 - en: 'The L’Hospital rule states the following:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 洛必达法则如下：
 - en: '[![L''Hospital rule](../Images/4c337ca00d088fa9a381ac750321ec53.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rule.png)'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![洛必达法则](../Images/4c337ca00d088fa9a381ac750321ec53.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/rule.png)'
 - en: L’Hospital’s rule
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 洛必达法则
 - en: When to Apply L’Hospital’s Rule
+  id: totrans-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 何时应用洛必达法则
 - en: 'An important point to note is that L’Hospital’s rule is only applicable when
     the conditions for f(x) and g(x) are met. For example:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要注意的重要一点是，洛必达法则仅在满足 f(x) 和 g(x) 的条件时适用。例如：
 - en: lim(????→0) sin(x)/(x+1) Cannot apply L’Hospital’s rule as it’s not 0/0 form
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: lim(????→0) sin(x)/(x+1) 不能应用洛必达法则，因为这不是 0/0 形式
 - en: lim(????→0) sin(x)/x Can apply the rule as it’s 0/0 form
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: lim(????→0) sin(x)/x 可以应用该法则，因为这是 0/0 形式
 - en: lim(????→∞) (e^x)/(1/x+1) Cannot apply L’Hospital’s rule as it’s not ∞/∞ form
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: lim(????→∞) (e^x)/(1/x+1) 不能应用洛必达法则，因为这不是 ∞/∞ 形式
 - en: lim(????→∞) (e^x)/x Can apply L’Hospital’s rule as it is ∞/∞ form
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: lim(????→∞) (e^x)/x 可以应用洛必达法则，因为这是 ∞/∞ 形式
 - en: Examples of 0/0 and ∞/∞
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 0/0 和 ∞/∞ 的示例
 - en: Some examples of these two types, and how to solve them are shown below. You
     can also refer to the figure below to refer to these functions.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面展示了一些这两种类型的示例以及如何解决它们。你还可以参考下图中的函数。
 - en: 'Example 1.1: 0/0'
+  id: totrans-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '示例 1.1: 0/0'
 - en: Evaluate lim(????→2) ln(x-1)/(x-2) (See the left graph in the figure)
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算 lim(????→2) ln(x-1)/(x-2) （见图中的左侧图）
 - en: '[![lim(????→2) ln(x-1)/(x-2)=1](../Images/4afeea316d5bc47499ed342d4be99554.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex11.png)'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![lim(????→2) ln(x-1)/(x-2)=1](../Images/4afeea316d5bc47499ed342d4be99554.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex11.png)'
 - en: lim(????→2) ln(x-1)/(x-2)=1
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(????→2) ln(x-1)/(x-2)=1
 - en: 'Example 1.2: ∞/∞'
+  id: totrans-45
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '示例 1.2: ∞/∞'
 - en: Evaluate lim(????→∞) ln(x)/x (See the right graph in the figure)
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算 lim(????→∞) ln(x)/x （见图中的右侧图）
 - en: '[![lim(????→∞) ln(x)/x=0](../Images/59f743b8d85b0355a4808db77311c8b1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex12.png)'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![lim(????→∞) ln(x)/x=0](../Images/59f743b8d85b0355a4808db77311c8b1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex12.png)'
 - en: lim(????→∞) ln(x)/x=0
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(????→∞) ln(x)/x=0
 - en: '[![Graphs of examples 1.1 and 1.2](../Images/1cbf611a8751998f2d9fddcd25758b66.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/hosp1.png)'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![示例 1.1 和 1.2 的图像](../Images/1cbf611a8751998f2d9fddcd25758b66.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/hosp1.png)'
 - en: Graphs of examples 1.1 and 1.2
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 示例 1.1 和 1.2 的图像
 - en: More Indeterminate Forms
+  id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 更多不确定形式
 - en: The L’Hospital rule only tells us how to deal with 0/0 or ∞/∞ forms. However,
     there are more indeterminate forms that involve products, differences, and powers.
     So how do we deal with the rest? We can use some clever tricks in mathematics
     to convert products, differences and powers into quotients. This can enable us
     to easily apply L’Hospital rule to almost all indeterminate forms. The table below
     shows various indeterminate forms and how to deal with them.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 洛必达法则仅告诉我们如何处理 0/0 或 ∞/∞ 形式。然而，还有更多涉及乘积、差值和幂的不确定形式。那么我们如何处理剩下的呢？我们可以使用一些数学巧妙的方法将乘积、差值和幂转换为商。这可以使我们几乎在所有不确定形式中轻松应用洛必达法则。下表展示了各种不确定形式以及如何处理它们。
 - en: '[![How to solve more complex indeterminate forms](../Images/35e4a76281de7329a1827495a8f04ea5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/hosp2.png)'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![如何解决更复杂的不确定形式](../Images/35e4a76281de7329a1827495a8f04ea5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/hosp2.png)'
 - en: How to solve more complex indeterminate forms
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何解决更复杂的不确定形式
 - en: Examples
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 示例
 - en: The following examples show how you can convert one indeterminate form to either
     0/0 or ∞/∞ form and apply L’Hospital’s rule to solve the limit. After the worked
     out examples you can also look at the graphs of all the functions whose limits
     are calculated.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下示例展示了如何将一种不确定形式转换为 0/0 或 ∞/∞ 形式，并应用洛必达法则来求解极限。在解决示例之后，你还可以查看所有计算了极限的函数的图像。
 - en: 'Example 2.1: 0.∞'
+  id: totrans-57
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '示例 2.1: 0.∞'
 - en: Evaluate lim(????→∞) x.sin(1/x) (See the first graph in the figure)
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算 lim(????→∞) x.sin(1/x) （见图中的第一张图）
 - en: '[![lim(????→∞) x.sin(1/x)=1](../Images/f92015a7d6b4d8186902610f3887a513.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex21.png)'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![lim(????→∞) x.sin(1/x)=1](../Images/f92015a7d6b4d8186902610f3887a513.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex21.png)'
 - en: lim(????→∞) x.sin(1/x)=1
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(????→∞) x.sin(1/x)=1
 - en: 'Example 2.2: ∞-∞'
+  id: totrans-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '示例 2.2: ∞-∞'
 - en: Evaluate lim(????→0) 1/(1-cos(x)) – 1/x (See the second graph in the figure
     below)
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算 lim(????→0) 1/(1-cos(x)) – 1/x （见下图的第二张图）
 - en: '[![lim(????→0) 1/(1-cos(x)) - 1/x = ∞](../Images/3f79ec8d6b75158b4e6433fe4b054fd7.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex22.png)'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![lim(????→0) 1/(1-cos(x)) - 1/x = ∞](../Images/3f79ec8d6b75158b4e6433fe4b054fd7.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex22.png)'
 - en: lim(????→0) 1/(1-cos(x)) – 1/x =∞
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(????→0) 1/(1-cos(x)) – 1/x = ∞
 - en: 'Example 2.3: Power form'
+  id: totrans-65
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 示例2.3：幂型
 - en: Evaluate lim(????→∞) (1+x)^(1/x) (See the third graph in the figure below)
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 评估 lim(????→∞) (1+x)^(1/x)（参见下面图形中的第三张图）
 - en: '[![lim(????→∞) (1+x)^(1/x)=1](../Images/c3289a40a43e2e0056247255dcd858f8.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex23.png)'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![lim(????→∞) (1+x)^(1/x)=1](../Images/c3289a40a43e2e0056247255dcd858f8.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/ex23.png)'
 - en: lim(????→∞) (1+x)^(1/x)=1
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(????→∞) (1+x)^(1/x)=1
 - en: '[![Graphs of examples 2.1, 2.2, and 2.3](../Images/395967e73f577b87aefd3e9685a3dd97.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/hosp3.png)'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![示例2.1、2.2和2.3的图形](../Images/395967e73f577b87aefd3e9685a3dd97.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/hosp3.png)'
 - en: Graphs of examples 2.1, 2.2, and 2.3
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 示例2.1、2.2和2.3的图形
 - en: Extensions
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 扩展
 - en: This section lists some ideas for extending the tutorial that you may wish to
     explore.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节列出了一些扩展教程的想法，你可能希望探索。
 - en: Cauchy’s Mean Value Theorem
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 柯西均值定理
 - en: Rolle’s theorem
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 罗尔定理
 - en: If you explore any of these extensions, I’d love to know. Post your findings
     in the comments below.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你探索了这些扩展功能，我很想知道。请在下面的评论中分享你的发现。
 - en: Further Reading
+  id: totrans-76
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: Tutorials
+  id: totrans-78
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[Limits and Continuity](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity)'
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[极限与连续性](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity)'
 - en: '[Evaluating limits](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits)'
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[评估极限](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits)'
 - en: '[Derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[导数](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
 - en: Resources
+  id: totrans-82
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 资源
 - en: Additional resources on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning/)
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于[机器学习的微积分书籍](https://machinelearningmastery.com/calculus-books-for-machine-learning/)的额外资源
 - en: Books
+  id: totrans-84
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Thomas’ Calculus](https://amzn.to/35Yeolv), 14th edition, 2017\. (based on
     the original works of George B. Thomas, revised by Joel Hass, Christopher Heil,
     Maurice Weir)'
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[托马斯微积分](https://amzn.to/35Yeolv)，第14版，2017年。（基于乔治·B·托马斯的原著，由乔尔·哈斯、克里斯托弗·海尔、莫里斯·韦尔修订）'
 - en: '[Calculus](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US),
     3rd Edition, 2017\. (Gilbert Strang)'
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US)，第3版，2017年。（吉尔伯特·斯特朗）'
 - en: '[Calculus](https://amzn.to/3kS9I52), 8th edition, 2015\. (James Stewart)'
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://amzn.to/3kS9I52)，第8版，2015年。（詹姆斯·斯图尔特）'
 - en: Summary
+  id: totrans-88
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you discovered the concept of indeterminate forms and how
     to evaluate them.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了不确定型的概念及其评估方法。
 - en: 'Specifically, you learned:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学习了：
 - en: Indeterminate forms of type 0/0 and ∞/∞
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 类型0/0和∞/∞的不确定形式
 - en: L’Hospital rule for evaluating types 0/0 and ∞/∞
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 评估类型0/0和∞/∞的洛必达法则
 - en: Indeterminate forms of type 0.∞, ∞-∞, and power forms, and how to evaluate them.
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 类型0.∞、∞-∞和幂型的不确定形式，以及如何评估它们。
 - en: Do you have any questions?
+  id: totrans-94
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below and I will do my best to answer.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提问，我会尽力回答。

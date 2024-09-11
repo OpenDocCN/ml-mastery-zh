@@ -1,434 +1,678 @@
 - en: A Gentle Introduction To Method Of Lagrange Multipliers
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '**拉格朗日乘数法的温和介绍**'
 - en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)
 - en: The method of Lagrange multipliers is a simple and elegant method of finding
     the local minima or local maxima of a function subject to equality or inequality
     constraints. Lagrange multipliers are also called undetermined multipliers. In
     this tutorial we’ll talk about this method when given equality constraints.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 拉格朗日乘数法是一种简单而优雅的方法，用于在存在等式或不等式约束时找到函数的局部最小值或局部最大值。拉格朗日乘数也称为未确定乘数。在本教程中，我们将讨论当给定等式约束时的这种方法。
 - en: In this tutorial, you will discover the method of Lagrange multipliers and how
     to find the local minimum or maximum of a function when equality constraints are
     present.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将探索拉格朗日乘数法以及如何在存在等式约束时找到函数的局部最小值或最大值。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: How to find points of local maximum or minimum of a function with equality constraints
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在等式约束下找到函数的局部最大值或最小值
 - en: Method of Lagrange multipliers with equality constraints
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 带等式约束的拉格朗日乘数法
 - en: Let’s get started.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/16f32fc7da801d54fc126634e0bdfee7.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/IMG_4464-scaled.jpg)'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/16f32fc7da801d54fc126634e0bdfee7.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/IMG_4464-scaled.jpg)'
 - en: A Gentle Introduction To Method Of Lagrange Multipliers. Photo by Mehreen Saeed,
     some rights reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**拉格朗日乘数法的温和介绍**。照片由 Mehreen Saeed 提供，保留部分权利。'
 - en: Tutorial Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into 2 parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为 2 部分；它们是：
 - en: Method of Lagrange multipliers with equality constraints
+  id: totrans-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 带等式约束的拉格朗日乘数法
 - en: Two solved examples
+  id: totrans-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 两个解决示例
 - en: '**Prerequisites**'
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**前提条件**'
 - en: 'For this tutorial, we assume that you already know what are:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设你已经了解以下内容：
 - en: '[Derivative of functions](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives/)'
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[函数的导数](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives/)'
 - en: '[Function of several variables, partial derivatives and gradient vectors](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[多变量函数、偏导数和梯度向量](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
 - en: '[A gentle introduction to optimization](https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming)'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[优化的温和介绍](https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming)'
 - en: '[Gradient descent ](https://machinelearningmastery.com/a-gentle-introduction-to-gradient-descent-procedure)'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[梯度下降](https://machinelearningmastery.com/a-gentle-introduction-to-gradient-descent-procedure)'
 - en: You can review these concepts by clicking on the links given above.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过点击上面给出的链接来复习这些概念。
 - en: '**What Is The Method Of Lagrange Multipliers With Equality Constraints?**'
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**拉格朗日乘数法的等式约束是什么？**'
 - en: 'Suppose we have the following optimization problem:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们有以下优化问题：
 - en: Minimize f(x)
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 最小化 f(x)
 - en: 'Subject to:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 主题：
 - en: g_1(x) = 0
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: g_1(x) = 0
 - en: g_2(x) = 0
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: g_2(x) = 0
 - en: …
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: …
 - en: g_n(x) = 0
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: g_n(x) = 0
 - en: The method of Lagrange multipliers first constructs a function called the Lagrange
     function as given by the following expression.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 拉格朗日乘数法首先构造一个称为拉格朗日函数的函数，如下式所示。
 - en: L(x, **????**) = f(x) + ????_1 g_1(x) + ????_2 g_2(x) + … + ????_n g_n(x)
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: L(x, **????**) = f(x) + ????_1 g_1(x) + ????_2 g_2(x) + … + ????_n g_n(x)
 - en: Here **????**represents a vector of Lagrange multipliers, i.e.,
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里**????**表示拉格朗日乘数的一个向量，即：
 - en: '**????**= [ ????_1, ????_2, …, ????_n]^T'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '**????**= [ ????_1, ????_2, …, ????_n]^T'
 - en: 'To find the points of local minimum of f(x) subject to the equality constraints,
     we find the stationary points of the Lagrange function L(x, **????**), i.e., we
     solve the following equations:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 要在等式约束下找到 f(x) 的局部最小值，我们求解拉格朗日函数 L(x, **????**）的驻点，即我们解以下方程：
 - en: ∇xL = 0
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: ∇xL = 0
 - en: ∂L/∂????_i = 0 (for i = 1..n)
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: ∂L/∂????_i = 0（对于 i = 1..n）
 - en: Hence, we get a total of m+n equations to solve, where
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们得到总共 m+n 个方程需要求解，其中
 - en: m = number of variables in domain of f
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: m = f 的变量数量
 - en: n = number of equality constraints.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: n = 等式约束的数量。
 - en: 'In short, the points of local minimum would be the solution of the following
     equations:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，局部最小值点将是以下方程的解：
 - en: ∂L/∂x_j = 0 (for j = 1..m)
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: ∂L/∂x_j = 0（对于 j = 1..m）
 - en: g_i(x) = 0 (for i = 1..n)
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: g_i(x) = 0（对于 i = 1..n）
 - en: Want to Get Started With Calculus for Machine Learning?
+  id: totrans-42
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习机器学习的微积分吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在获取我的免费 7 天电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并免费获得课程的 PDF 电子书版本。
 - en: Solved Examples
+  id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 已解决的示例
 - en: This section contains two solved examples. If you solve both of them, you’ll
     get a pretty good idea on how to apply the method of Lagrange multipliers to functions
     of more than two variables, and a higher number of equality constraints.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节包含两个已解决的示例。如果你解决了这两个问题，你将对如何将拉格朗日乘子法应用于两个以上变量的函数以及更多的等式约束有一个很好的了解。
 - en: '**Example 1: One Equality Constraint**'
+  id: totrans-47
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**示例 1：一个等式约束**'
 - en: 'Let’s solve the following minimization problem:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们解决以下最小化问题：
 - en: Minimize: f(x) = x^2 + y^2
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 最小化： f(x) = x^2 + y^2
 - en: Subject to: x + 2y – 1 = 0
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 约束条件： x + 2y – 1 = 0
 - en: 'The first step is to construct the Lagrange function:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一步是构建拉格朗日函数：
 - en: L(x, y, ????) = x^2 + y^2 + ????(x + 2y – 1)
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: L(x, y, ????) = x^2 + y^2 + ????(x + 2y – 1)
 - en: 'We have the following three equations to solve:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们有以下三个方程需要解：
 - en: ∂L/∂x = 0
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: ∂L/∂x = 0
 - en: 2x + ???? = 0      (1)
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 2x + ???? = 0      (1)
 - en: ∂L/∂y = 0
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: ∂L/∂y = 0
 - en: 2y + 2???? = 0     (2)
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 2y + 2???? = 0     (2)
 - en: ∂L/∂???? = 0
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: ∂L/∂???? = 0
 - en: x + 2y -1 = 0    (3)
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: x + 2y -1 = 0    (3)
 - en: 'Using (1) and (2), we get:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 (1) 和 (2)，我们得到：
 - en: ???? = -2x = -y
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: ???? = -2x = -y
 - en: 'Plugging this in (3) gives us:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 将其代入 (3) 得到：
 - en: x = 1/5
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: x = 1/5
 - en: y = 2/5
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: y = 2/5
 - en: Hence, the local minimum point lies at (1/5, 2/5) as shown in the right figure.
     The left figure shows the graph of the function.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，局部最小点位于 (1/5, 2/5)，如右图所示。左图显示了函数的图像。
 - en: '[![Graph of function (left), contours, constraint and local minima (right)](../Images/db7dab43ae38af987da4d70b20e5b1f4.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/lagrange2.png)'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![函数图（左），轮廓线、约束和局部最小值（右）](../Images/db7dab43ae38af987da4d70b20e5b1f4.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/lagrange2.png)'
 - en: Graph of function (left). Contours, constraint and local minima (right)
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数图（左）。轮廓线、约束和局部最小值（右）
 - en: '**Example 2: Two Equality Constraints**'
+  id: totrans-68
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**示例 2：两个等式约束**'
 - en: 'Suppose we want to find the minimum of the following function subject to the
     given constraints:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们想要在给定约束下找到以下函数的最小值：
 - en: minimize g(x, y) = x^2 + 4y^2
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 最小化 g(x, y) = x^2 + 4y^2
 - en: 'Subject to:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 约束条件：
 - en: x + y = 0
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: x + y = 0
 - en: x^2 + y^2 – 1 = 0
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: x^2 + y^2 – 1 = 0
 - en: 'The solution of this problem can be found by first constructing the Lagrange
     function:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个问题的解可以通过首先构建拉格朗日函数来找到：
 - en: L(x, y, ????_1, ????_2) = x^2 + 4y^2 + ????_1(x + y) + ????_2(x^2 + y^2 – 1)
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: L(x, y, ????_1, ????_2) = x^2 + 4y^2 + ????_1(x + y) + ????_2(x^2 + y^2 – 1)
 - en: 'We have 4 equations to solve:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要解 4 个方程：
 - en: ∂L/∂x = 0
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: ∂L/∂x = 0
 - en: 2x + ????_1 + 2x ????_2 = 0    (1)
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 2x + ????_1 + 2x ????_2 = 0    (1)
 - en: ∂L/∂y = 0
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: ∂L/∂y = 0
 - en: 8y + ????_1 + 2y ????_2 = 0    (2)
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 8y + ????_1 + 2y ????_2 = 0    (2)
 - en: ∂L/∂????_1 = 0
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: ∂L/∂????_1 = 0
 - en: x + y = 0         (3)
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: x + y = 0         (3)
 - en: ∂L/∂????_2 = 0
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: ∂L/∂????_2 = 0
 - en: x^2 + y^2 – 1 = 0    (4)
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: x^2 + y^2 – 1 = 0    (4)
 - en: 'Solving the above system of equations gives us two solutions for (x,y), i.e.
     we get the two points:'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 解上述方程组可得到 (x,y) 的两个解，即我们得到两个点：
 - en: (1/sqrt(2), -1/sqrt(2))
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: (1/sqrt(2), -1/sqrt(2))
 - en: (-1/sqrt(2), 1/sqrt(2))
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: (-1/sqrt(2), 1/sqrt(2))
 - en: The function along with its constraints and local minimum are shown below.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数及其约束条件和局部最小值如下所示。
 - en: '[![Graph of function (left). Contours, constraint and local minima (right)](../Images/bad2871677f34f743a942c91e469600b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/lagrange1.png)'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![函数图（左），轮廓线、约束和局部最小值（右）](../Images/bad2871677f34f743a942c91e469600b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/lagrange1.png)'
 - en: Graph of function (left). Contours, constraint and local minima (right)
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数图（左）。轮廓线、约束和局部最小值（右）
 - en: Relationship to Maximization Problems
+  id: totrans-91
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 与最大化问题的关系
 - en: If you have a function to maximize, you can solve it in a similar manner, keeping
     in mind that maximization and minimization are equivalent problems, i.e.,
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你有一个需要最大化的函数，可以以类似的方式解决，记住最大化和最小化是等价的问题，即，
 - en: maximize f(x)                 is equivalent to                   minimize -f(x)
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 最大化 f(x)                 等同于                   最小化 -f(x)
 - en: Importance Of The Method Of Lagrange Multipliers In Machine Learning
+  id: totrans-94
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 拉格朗日乘子法在机器学习中的重要性
 - en: Many well known machine learning algorithms make use of the method of Lagrange
     multipliers. For example, the theoretical foundations of principal components
     analysis (PCA) are built using the method of Lagrange multipliers with equality
     constraints. Similarly, the optimization problem in support vector machines SVMs
     is also solved using this method. However, in SVMS, inequality constraints are
     also involved.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多知名的机器学习算法都使用了拉格朗日乘数法。例如，主成分分析（PCA）的理论基础是使用具有等式约束的拉格朗日乘数法构建的。类似地，支持向量机（SVM）的优化问题也使用这种方法解决。然而，在SVM中，还涉及到不等式约束。
 - en: '**Extensions**'
+  id: totrans-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**扩展**'
 - en: This section lists some ideas for extending the tutorial that you may wish to
     explore.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节列出了一些可能希望探索的扩展教程的想法。
 - en: Optimization with inequality constraints
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 带有不等式约束的优化
 - en: KKT conditions
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: KKT条件
 - en: Support vector machines
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 支持向量机
 - en: If you explore any of these extensions, I’d love to know. Post your findings
     in the comments below.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你探索了这些扩展中的任何一个，我很想知道。请在下方评论中发布你的发现。
 - en: '**Further Reading**'
+  id: totrans-102
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多资源，供你深入了解该主题。
 - en: '**Tutorials**'
+  id: totrans-104
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**教程**'
 - en: '[Derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
+  id: totrans-105
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[导数](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
 - en: '[Gradient descent for machine learning](https://machinelearningmastery.com/gradient-descent-for-machine-learning/)'
+  id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[机器学习中的梯度下降](https://machinelearningmastery.com/gradient-descent-for-machine-learning/)'
 - en: '[What is gradient in machine learning](https://machinelearningmastery.com/gradient-in-machine-learning/)'
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[机器学习中的梯度是什么](https://machinelearningmastery.com/gradient-in-machine-learning/)'
 - en: '[Partial derivatives and gradient vectors](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[偏导数和梯度向量](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
 - en: '[How to choose an optimization algorithm](https://machinelearningmastery.com/tour-of-optimization-algorithms/)'
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[如何选择优化算法](https://machinelearningmastery.com/tour-of-optimization-algorithms/)'
 - en: '**Resources**'
+  id: totrans-110
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**资源**'
 - en: Additional resources on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning/)
+  id: totrans-111
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于[机器学习中的微积分书籍](https://machinelearningmastery.com/calculus-books-for-machine-learning/)的额外资源
 - en: '**Books**'
+  id: totrans-112
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Thomas’ Calculus](https://amzn.to/35Yeolv), 14th edition, 2017\. (based on
     the original works of George B. Thomas, revised by Joel Hass, Christopher Heil,
     Maurice Weir)'
+  id: totrans-113
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[托马斯微积分](https://amzn.to/35Yeolv)，第14版，2017年（基于乔治·B·托马斯的原著，由乔尔·哈斯、克里斯托弗·海尔、莫里斯·威尔修订）'
 - en: '[Calculus](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US),
     3rd Edition, 2017\. (Gilbert Strang)'
+  id: totrans-114
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US)，第3版，2017年（吉尔伯特·斯特朗）'
 - en: '[Calculus](https://amzn.to/3kS9I52), 8th edition, 2015\. (James Stewart)'
+  id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://amzn.to/3kS9I52)，第8版，2015年（詹姆斯·斯图尔特）'
 - en: '**Summary**'
+  id: totrans-116
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: 'In this tutorial, you discovered what is the method of Lagrange multipliers.
     Specifically, you learned:'
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了拉格朗日乘数法。具体来说，你学到了：
 - en: Lagrange multipliers and the Lagrange function
+  id: totrans-118
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 拉格朗日乘数与拉格朗日函数
 - en: How to solve an optimization problem when equality constraints are given
+  id: totrans-119
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在给定等式约束的情况下解决优化问题
 - en: '**Do you have any questions?**'
+  id: totrans-120
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**你有任何问题吗？**'
 - en: Ask your questions in the comments below and I will do my best to answer.
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论中提出你的问题，我会尽力回答。

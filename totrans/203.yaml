@@ -1,597 +1,910 @@
 - en: The Transformer Attention Mechanism
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Transformer 注意力机制
 - en: 原文：[https://machinelearningmastery.com/the-transformer-attention-mechanism/](https://machinelearningmastery.com/the-transformer-attention-mechanism/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/the-transformer-attention-mechanism/](https://machinelearningmastery.com/the-transformer-attention-mechanism/)
 - en: Before the introduction of the Transformer model, the use of attention for neural
     machine translation was implemented by RNN-based encoder-decoder architectures.
     The Transformer model revolutionized the implementation of attention by dispensing
     with recurrence and convolutions and, alternatively, relying solely on a self-attention
     mechanism.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在引入 Transformer 模型之前，用于神经机器翻译的注意力使用 RNN-based 编码器-解码器架构实现。Transformer 模型通过摒弃循环和卷积，并仅依赖自注意力机制，彻底改变了注意力的实现方式。
 - en: We will first focus on the Transformer attention mechanism in this tutorial
     and subsequently review the Transformer model in a separate one.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们首先关注 Transformer 注意力机制，随后在另一个教程中回顾 Transformer 模型。
 - en: In this tutorial, you will discover the Transformer attention mechanism for
     neural machine translation.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您将了解神经机器翻译的 Transformer 注意力机制。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将了解到：
 - en: How the Transformer attention differed from its predecessors
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 注意力机制与其前身有何不同
 - en: How the Transformer computes a scaled-dot product attention
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 如何计算缩放点积注意力
 - en: How the Transformer computes multi-head attention
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 如何计算多头注意力
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动您的项目**，阅读我的书 [使用注意力构建 Transformer 模型](https://machinelearningmastery.com/transformer-models-with-attention/)。它提供了带有
+    **工作代码** 的 **自学教程**，引导您构建一个完全可工作的 Transformer 模型，能够'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将句子从一种语言翻译成另一种语言*...'
 - en: Let’s get started.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/f35da8fadb4385fc1d2a6f98fc1e061d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_cover.jpg)'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/f35da8fadb4385fc1d2a6f98fc1e061d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/transformer_cover.jpg)'
 - en: The Transformer attention mechanism
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 注意力机制
 - en: Photo by [Andreas Gücklhorn](https://unsplash.com/photos/mawU2PoJWfU), some
     rights reserved.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Andreas Gücklhorn](https://unsplash.com/photos/mawU2PoJWfU) 提供，某些权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概览**'
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两部分；它们是：
 - en: Introduction to the Transformer Attention
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 介绍 Transformer 注意力机制
 - en: The Transformer Attention
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 注意力机制
 - en: Scaled-Dot Product Attention
+  id: totrans-19
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 缩放点积注意力
 - en: Multi-Head Attention
+  id: totrans-20
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多头注意力
 - en: '**Prerequisites**'
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**先决条件**'
 - en: 'For this tutorial, we assume that you are already familiar with:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设您已经熟悉：
 - en: '[The concept of attention](https://machinelearningmastery.com/what-is-attention/)'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[注意力的概念](https://machinelearningmastery.com/what-is-attention/)'
 - en: '[The attention mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[注意力机制](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
 - en: '[The Bahdanau attention mechanism](https://machinelearningmastery.com/?p=12940&preview=true)'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Bahdanau 注意力机制](https://machinelearningmastery.com/?p=12940&preview=true)'
 - en: '[The Luong attention mechanism](https://machinelearningmastery.com/the-luong-attention-mechanism/)'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Luong 注意力机制](https://machinelearningmastery.com/the-luong-attention-mechanism/)'
 - en: '**Introduction to the Transformer Attention**'
+  id: totrans-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**介绍 Transformer 注意力机制**'
 - en: Thus far, you have familiarized yourself with using an attention mechanism in
     conjunction with an RNN-based encoder-decoder architecture. Two of the most popular
     models that implement attention in this manner have been those proposed by [Bahdanau
     et al. (2014)](https://arxiv.org/abs/1409.0473) and [Luong et al. (2015)](https://arxiv.org/abs/1508.04025).
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，您已经熟悉了在 RNN-based 编码器-解码器架构中使用注意力机制。其中两个最流行的模型是由 [Bahdanau et al. (2014)](https://arxiv.org/abs/1409.0473)
+    和 [Luong et al. (2015)](https://arxiv.org/abs/1508.04025) 提出的。
 - en: The Transformer architecture revolutionized the use of attention by dispensing
     with recurrence and convolutions, on which the formers had extensively relied.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 架构通过摒弃依赖于循环和卷积的方式，彻底改变了注意力的使用。
 - en: '*… the Transformer is the first transduction model relying entirely on self-attention
     to compute representations of its input and output without using sequence-aligned
     RNNs or convolution.*'
+  id: totrans-30
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*… 变压器是第一个完全依赖自注意力计算输入和输出表示的转导模型，而无需使用序列对齐的 RNN 或卷积。*'
 - en: ''
+  id: totrans-31
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  id: totrans-32
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [注意力机制全靠它](https://arxiv.org/abs/1706.03762)，2017。'
 - en: In their paper, “Attention Is All You Need,” [Vaswani et al. (2017)](https://arxiv.org/abs/1706.03762)
     explain that the Transformer model, alternatively, relies solely on the use of
     self-attention, where the representation of a sequence (or sentence) is computed
     by relating different words in the same sequence.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在他们的论文《注意力机制全靠它》中，[Vaswani 等人 (2017)](https://arxiv.org/abs/1706.03762) 解释了变压器模型如何完全依赖于自注意力机制，其中序列（或句子）的表示是通过关联同一序列中的不同单词来计算的。
 - en: '*Self-attention, sometimes called intra-attention, is an attention mechanism
     relating different positions of a single sequence in order to compute a representation
     of the sequence.*'
+  id: totrans-34
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*自注意力，有时称为内注意力，是一种注意力机制，通过关联单个序列的不同位置来计算该序列的表示。*'
 - en: ''
+  id: totrans-35
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  id: totrans-36
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [注意力机制全靠它](https://arxiv.org/abs/1706.03762)，2017。'
 - en: '**The Transformer Attention**'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '**变压器注意力机制**'
 - en: 'The main components used by the Transformer attention are the following:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 变压器注意力机制使用的主要组件如下：
 - en: $\mathbf{q}$ and $\mathbf{k}$ denoting vectors of dimension, $d_k$, containing
     the queries and keys, respectively
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $\mathbf{q}$ 和 $\mathbf{k}$ 分别表示维度为 $d_k$ 的查询和键向量
 - en: $\mathbf{v}$ denoting a vector of dimension, $d_v$, containing the values
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $\mathbf{v}$ 表示维度为 $d_v$ 的值向量
 - en: $\mathbf{Q}$, $\mathbf{K}$, and $\mathbf{V}$ denoting matrices packing together
     sets of queries, keys, and values, respectively.
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $\mathbf{Q}$、$\mathbf{K}$ 和 $\mathbf{V}$ 分别表示打包在一起的查询、键和值的矩阵。
 - en: $\mathbf{W}^Q$, $\mathbf{W}^K$ and $\mathbf{W}^V$ denoting projection matrices
     that are used in generating different subspace representations of the query, key,
     and value matrices
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $\mathbf{W}^Q$、$\mathbf{W}^K$ 和 $\mathbf{W}^V$ 分别表示用于生成查询、键和值矩阵不同子空间表示的投影矩阵
 - en: $\mathbf{W}^O$ denoting a projection matrix for the multi-head output
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $\mathbf{W}^O$ 表示用于多头输出的投影矩阵
 - en: In essence, the attention function can be considered a mapping between a query
     and a set of key-value pairs to an output.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 实质上，注意力函数可以被视为查询与一组键值对之间的映射，得到一个输出。
 - en: '*The output is computed as a weighted sum of the values, where the weight assigned
     to each value is computed by a compatibility function of the query with the corresponding
     key.*'
+  id: totrans-45
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*输出作为值的加权和计算，其中每个值分配的权重由查询与相应键的兼容性函数计算得出。*'
 - en: ''
+  id: totrans-46
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  id: totrans-47
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [注意力机制全靠它](https://arxiv.org/abs/1706.03762)，2017。'
 - en: Vaswani et al. propose a *scaled dot-product attention* and then build on it
     to propose *multi-head attention*. Within the context of neural machine translation,
     the query, keys, and values that are used as inputs to these attention mechanisms
     are different projections of the same input sentence.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: Vaswani 等人提出了一种 *缩放点积注意力*，并在此基础上提出了 *多头注意力*。在神经机器翻译的背景下，作为这些注意力机制输入的查询、键和值是同一句输入的不同投影。
 - en: Intuitively, therefore, the proposed attention mechanisms implement self-attention
     by capturing the relationships between the different elements (in this case, the
     words) of the same sentence.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 直观地说，提出的注意力机制通过捕捉同一句子中不同元素（在这种情况下是单词）之间的关系来实现自注意力。
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始构建带有注意力机制的变压器模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费 12 天电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击以注册并获取课程的免费 PDF 电子书版本。
 - en: '**Scaled Dot-Product Attention**'
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**缩放点积注意力**'
 - en: The Transformer implements a scaled dot-product attention, which follows the
     procedure of the [general attention mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)
     that you had previously seen.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 变压器实现了一种缩放点积注意力，这遵循了你之前见过的 [通用注意力机制](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)
+    的过程。
 - en: As the name suggests, the scaled dot-product attention first computes a *dot
     product* for each query, $\mathbf{q}$, with all of the keys, $\mathbf{k}$. It
     subsequently divides each result by $\sqrt{d_k}$ and proceeds to apply a softmax
     function. In doing so, it obtains the weights that are used to *scale* the values,
     $\mathbf{v}$.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如名称所示，缩放点积注意力首先对每个查询$\mathbf{q}$与所有键$\mathbf{k}$计算一个*点积*。随后，它将每个结果除以$\sqrt{d_k}$，并应用softmax函数。这样，它获得了用于*缩放*值$\mathbf{v}$的权重。
 - en: '[![](../Images/bdffca1b5f416aed7741d5b03a4acf82.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/tour_3.png)'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/bdffca1b5f416aed7741d5b03a4acf82.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/tour_3.png)'
 - en: Scaled dot-product attention
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 缩放点积注意力
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 取自“[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
 - en: 'In practice, the computations performed by the scaled dot-product attention
     can be efficiently applied to the entire set of queries simultaneously. In order
     to do so, the matrices—$\mathbf{Q}$, $\mathbf{K}$, and $\mathbf{V}$—are supplied
     as inputs to the attention function:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，缩放点积注意力执行的计算可以高效地同时应用于整个查询集。为此，矩阵—$\mathbf{Q}$、$\mathbf{K}$和$\mathbf{V}$—作为输入提供给注意力函数：
 - en: $$\text{attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax} \left(
     \frac{QK^T}{\sqrt{d_k}} \right) V$$
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\text{attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax} \left(
+    \frac{QK^T}{\sqrt{d_k}} \right) V$$
 - en: Vaswani et al. explain that their scaled dot-product attention is identical
     to the multiplicative attention of [Luong et al. (2015)](https://arxiv.org/abs/1508.04025),
     except for the added scaling factor of $\tfrac{1}{\sqrt{d_k}}$.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: Vaswani等人解释说，他们的缩放点积注意力与[Luong等人（2015）](https://arxiv.org/abs/1508.04025)的乘法注意力是相同的，唯一的不同是添加了缩放因子$\tfrac{1}{\sqrt{d_k}}$。
 - en: This scaling factor was introduced to counteract the effect of having the dot
     products grow large in magnitude for large values of $d_k$, where the application
     of the softmax function would then return extremely small gradients that would
     lead to the infamous vanishing gradients problem. The scaling factor, therefore,
     serves to pull the results generated by the dot product multiplication down, preventing
     this problem.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 引入这个缩放因子的目的是为了抵消当$d_k$的值很大时，点积增长幅度较大的效果，此时应用softmax函数会返回极小的梯度，导致著名的梯度消失问题。因此，缩放因子旨在将点积乘法生成的结果拉低，从而防止这个问题。
 - en: Vaswani et al. further explain that their choice of opting for multiplicative
     attention instead of the additive attention of [Bahdanau et al. (2014)](https://arxiv.org/abs/1409.0473) was
     based on the computational efficiency associated with the former.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: Vaswani等人进一步解释说，他们选择乘法注意力而非[Bahdanau等人（2014）](https://arxiv.org/abs/1409.0473)的加法注意力是基于前者的计算效率。
 - en: '*… dot-product attention is much faster and more space-efficient in practice
     since it can be implemented using highly optimized matrix multiplication code.*'
+  id: totrans-64
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*…点积注意力在实践中要快得多且空间效率更高，因为它可以使用高度优化的矩阵乘法代码实现。*'
 - en: ''
+  id: totrans-65
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  id: totrans-66
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
 - en: 'Therefore, the step-by-step procedure for computing the scaled-dot product
     attention is the following:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，计算缩放点积注意力的逐步过程如下：
 - en: 'Compute the alignment scores by multiplying the set of queries packed in the
     matrix, $\mathbf{Q}$, with the keys in the matrix, $\mathbf{K}$. If the matrix,
     $\mathbf{Q}$, is of the size $m \times d_k$, and the matrix, $\mathbf{K}$, is
     of the size, $n \times d_k$, then the resulting matrix will be of the size $m
     \times n$:'
+  id: totrans-68
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 通过将查询矩阵$\mathbf{Q}$中的查询集合与矩阵$\mathbf{K}$中的键相乘来计算对齐分数。如果矩阵$\mathbf{Q}$的大小为$m
+    \times d_k$，而矩阵$\mathbf{K}$的大小为$n \times d_k$，则结果矩阵的大小将为$m \times n$：
 - en: $$
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \mathbf{QK}^T =
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: \mathbf{QK}^T =
 - en: \begin{bmatrix}
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{bmatrix}
 - en: e_{11} & e_{12} & \dots & e_{1n} \\
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: e_{11} & e_{12} & \dots & e_{1n} \\
 - en: e_{21} & e_{22} & \dots & e_{2n} \\
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: e_{21} & e_{22} & \dots & e_{2n} \\
 - en: \vdots & \vdots & \ddots & \vdots \\
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: \vdots & \vdots & \ddots & \vdots \\
 - en: e_{m1} & e_{m2} & \dots & e_{mn} \\
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: e_{m1} & e_{m2} & \dots & e_{mn} \\
 - en: \end{bmatrix}
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{bmatrix}
 - en: $$
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'Scale each of the alignment scores by $\tfrac{1}{\sqrt{d_k}}$:'
+  id: totrans-78
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将每个对齐分数缩放为$\tfrac{1}{\sqrt{d_k}}$：
 - en: $$
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \frac{\mathbf{QK}^T}{\sqrt{d_k}} =
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\mathbf{QK}^T}{\sqrt{d_k}} =
 - en: \begin{bmatrix}
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{bmatrix}
 - en: \tfrac{e_{11}}{\sqrt{d_k}} & \tfrac{e_{12}}{\sqrt{d_k}} & \dots & \tfrac{e_{1n}}{\sqrt{d_k}}
     \\
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: \tfrac{e_{11}}{\sqrt{d_k}} & \tfrac{e_{12}}{\sqrt{d_k}} & \dots & \tfrac{e_{1n}}{\sqrt{d_k}}
+    \\
 - en: \tfrac{e_{21}}{\sqrt{d_k}} & \tfrac{e_{22}}{\sqrt{d_k}} & \dots & \tfrac{e_{2n}}{\sqrt{d_k}}
     \\
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: \tfrac{e_{21}}{\sqrt{d_k}} & \tfrac{e_{22}}{\sqrt{d_k}} & \dots & \tfrac{e_{2n}}{\sqrt{d_k}}
+    \\
 - en: \vdots & \vdots & \ddots & \vdots \\
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: \vdots & \vdots & \ddots & \vdots \\
 - en: \tfrac{e_{m1}}{\sqrt{d_k}} & \tfrac{e_{m2}}{\sqrt{d_k}} & \dots & \tfrac{e_{mn}}{\sqrt{d_k}}
     \\
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: \tfrac{e_{m1}}{\sqrt{d_k}} & \tfrac{e_{m2}}{\sqrt{d_k}} & \dots & \tfrac{e_{mn}}{\sqrt{d_k}}
+    \\
 - en: \end{bmatrix}
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{bmatrix}
 - en: $$
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'And follow the scaling process by applying a softmax operation in order to
     obtain a set of weights:'
+  id: totrans-88
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 然后通过应用 softmax 操作来进行缩放过程，以获得一组权重：
 - en: $$
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \text{softmax} \left( \frac{\mathbf{QK}^T}{\sqrt{d_k}} \right) =
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: \text{softmax} \left( \frac{\mathbf{QK}^T}{\sqrt{d_k}} \right) =
 - en: \begin{bmatrix}
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{bmatrix}
 - en: \text{softmax} ( \tfrac{e_{11}}{\sqrt{d_k}} & \tfrac{e_{12}}{\sqrt{d_k}} & \dots
     & \tfrac{e_{1n}}{\sqrt{d_k}} ) \\
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: \text{softmax} ( \tfrac{e_{11}}{\sqrt{d_k}} & \tfrac{e_{12}}{\sqrt{d_k}} & \dots
+    & \tfrac{e_{1n}}{\sqrt{d_k}} ) \\
 - en: \text{softmax} ( \tfrac{e_{21}}{\sqrt{d_k}} & \tfrac{e_{22}}{\sqrt{d_k}} & \dots
     & \tfrac{e_{2n}}{\sqrt{d_k}} ) \\
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: \text{softmax} ( \tfrac{e_{21}}{\sqrt{d_k}} & \tfrac{e_{22}}{\sqrt{d_k}} & \dots
+    & \tfrac{e_{2n}}{\sqrt{d_k}} ) \\
 - en: \vdots & \vdots & \ddots & \vdots \\
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: \vdots & \vdots & \ddots & \vdots \\
 - en: \text{softmax} ( \tfrac{e_{m1}}{\sqrt{d_k}} & \tfrac{e_{m2}}{\sqrt{d_k}} & \dots
     & \tfrac{e_{mn}}{\sqrt{d_k}} ) \\
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: \text{softmax} ( \tfrac{e_{m1}}{\sqrt{d_k}} & \tfrac{e_{m2}}{\sqrt{d_k}} & \dots
+    & \tfrac{e_{mn}}{\sqrt{d_k}} ) \\
 - en: \end{bmatrix}
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{bmatrix}
 - en: $$
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'Finally, apply the resulting weights to the values in the matrix, $\mathbf{V}$,
     of the size, $n \times d_v$:'
+  id: totrans-98
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 最后，将生成的权重应用于矩阵 $\mathbf{V}$ 中的值，大小为 $n \times d_v$：
 - en: $$
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: '& \text{softmax} \left( \frac{\mathbf{QK}^T}{\sqrt{d_k}} \right) \cdot \mathbf{V}
     \\'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: '& \text{softmax} \left( \frac{\mathbf{QK}^T}{\sqrt{d_k}} \right) \cdot \mathbf{V}
+    \\'
 - en: =&
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: =&
 - en: \begin{bmatrix}
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{bmatrix}
 - en: \text{softmax} ( \tfrac{e_{11}}{\sqrt{d_k}} & \tfrac{e_{12}}{\sqrt{d_k}} & \dots
     & \tfrac{e_{1n}}{\sqrt{d_k}} ) \\
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: \text{softmax} ( \tfrac{e_{11}}{\sqrt{d_k}} & \tfrac{e_{12}}{\sqrt{d_k}} & \dots
+    & \tfrac{e_{1n}}{\sqrt{d_k}} ) \\
 - en: \text{softmax} ( \tfrac{e_{21}}{\sqrt{d_k}} & \tfrac{e_{22}}{\sqrt{d_k}} & \dots
     & \tfrac{e_{2n}}{\sqrt{d_k}} ) \\
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: \text{softmax} ( \tfrac{e_{21}}{\sqrt{d_k}} & \tfrac{e_{22}}{\sqrt{d_k}} & \dots
+    & \tfrac{e_{2n}}{\sqrt{d_k}} ) \\
 - en: \vdots & \vdots & \ddots & \vdots \\
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: \vdots & \vdots & \ddots & \vdots \\
 - en: \text{softmax} ( \tfrac{e_{m1}}{\sqrt{d_k}} & \tfrac{e_{m2}}{\sqrt{d_k}} & \dots
     & \tfrac{e_{mn}}{\sqrt{d_k}} ) \\
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: \text{softmax} ( \tfrac{e_{m1}}{\sqrt{d_k}} & \tfrac{e_{m2}}{\sqrt{d_k}} & \dots
+    & \tfrac{e_{mn}}{\sqrt{d_k}} ) \\
 - en: \end{bmatrix}
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{bmatrix}
 - en: \cdot
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: \cdot
 - en: \begin{bmatrix}
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{bmatrix}
 - en: v_{11} & v_{12} & \dots & v_{1d_v} \\
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: v_{11} & v_{12} & \dots & v_{1d_v} \\
 - en: v_{21} & v_{22} & \dots & v_{2d_v} \\
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: v_{21} & v_{22} & \dots & v_{2d_v} \\
 - en: \vdots & \vdots & \ddots & \vdots \\
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: \vdots & \vdots & \ddots & \vdots \\
 - en: v_{n1} & v_{n2} & \dots & v_{nd_v} \\
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: v_{n1} & v_{n2} & \dots & v_{nd_v} \\
 - en: \end{bmatrix}
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{bmatrix}
 - en: \end{aligned}
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: '**Multi-Head Attention**'
+  id: totrans-118
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**多头注意力**'
 - en: Building on their single attention function that takes matrices, $\mathbf{Q}$,
     $\mathbf{K}$, and $\mathbf{V}$, as input, as you have just reviewed, Vaswani et
     al. also propose a multi-head attention mechanism.
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 在其单个注意力函数基础上，接下来构建了一个多头注意力机制，该函数以矩阵 $\mathbf{Q}$、$\mathbf{K}$ 和 $\mathbf{V}$
+    作为输入，正如您刚刚审查的那样，Vaswani 等人还提出了一个多头注意力机制。
 - en: Their multi-head attention mechanism linearly projects the queries, keys, and
     values $h$ times, using a different learned projection each time. The single attention
     mechanism is then applied to each of these $h$ projections in parallel to produce
     $h$ outputs, which, in turn, are concatenated and projected again to produce a
     final result.
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 多头注意力机制通过$h$次线性投影来处理查询、键和值，每次使用不同的学习投影。然后，单个注意力机制并行应用于这$h$个投影中的每一个，以产生$h$个输出，然后这些输出被串联并再次投影以产生最终结果。
 - en: '[![](../Images/49d312ed799331ac86c88962132369f2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/tour_4.png)'
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/49d312ed799331ac86c88962132369f2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/tour_4.png)'
 - en: Multi-head attention
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 多头注意力
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 取自“[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
 - en: The idea behind multi-head attention is to allow the attention function to extract
     information from different representation subspaces, which would otherwise be
     impossible with a single attention head.
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 多头注意力的理念是允许注意力函数从不同的表示子空间中提取信息，这在单个注意力头中是不可能的。
 - en: 'The multi-head attention function can be represented as follows:'
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 多头注意力功能可以表示如下：
 - en: $$\text{multihead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{concat}(\text{head}_1,
     \dots, \text{head}_h) \mathbf{W}^O$$
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\text{multihead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{concat}(\text{head}_1,
+    \dots, \text{head}_h) \mathbf{W}^O$$
 - en: 'Here, each $\text{head}_i$, $i = 1, \dots, h$, implements a single attention
     function characterized by its own learned projection matrices:'
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，每个 $\text{head}_i$，$i = 1, \dots, h$，实现了一个由自己的学习投影矩阵特征化的单一注意力函数：
 - en: $$\text{head}_i = \text{attention}(\mathbf{QW}^Q_i, \mathbf{KW}^K_i, \mathbf{VW}^V_i)$$
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\text{head}_i = \text{attention}(\mathbf{QW}^Q_i, \mathbf{KW}^K_i, \mathbf{VW}^V_i)$$
 - en: 'The step-by-step procedure for computing multi-head attention is, therefore,
     the following:'
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算多头注意力的逐步过程如下：
 - en: Compute the linearly projected versions of the queries, keys, and values through
     multiplication with the respective weight matrices, $\mathbf{W}^Q_i$, $\mathbf{W}^K_i$,
     and $\mathbf{W}^V_i$, one for each $\text{head}_i$.
+  id: totrans-130
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 通过与各自的权重矩阵$\mathbf{W}^Q_i$、$\mathbf{W}^K_i$和$\mathbf{W}^V_i$相乘，计算查询、键和值的线性投影版本，每个$\text{head}_i$一个。
 - en: Apply the single attention function for each head by (1) multiplying the queries
     and keys matrices, (2) applying the scaling and softmax operations, and (3) weighting
     the values matrix to generate an output for each head.
+  id: totrans-131
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对每个头应用单一的注意力函数，步骤包括（1）乘以查询和键矩阵，（2）应用缩放和softmax操作，以及（3）加权值矩阵以生成每个头的输出。
 - en: Concatenate the outputs of the heads, $\text{head}_i$, $i = 1, \dots, h$.
+  id: totrans-132
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 连接头的输出，$\text{head}_i$，$i = 1, \dots, h$。
 - en: Apply a linear projection to the concatenated output through multiplication
     with the weight matrix, $\mathbf{W}^O$, to generate the final result.
+  id: totrans-133
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 通过与权重矩阵$\mathbf{W}^O$相乘，将连接的输出进行线性投影，以生成最终结果。
 - en: '**Further Reading**'
+  id: totrans-134
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，供您深入了解。
 - en: '**Books**'
+  id: totrans-136
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019.'
+  id: totrans-137
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[《深入学习Python》](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)，2019年。'
 - en: '**Papers**'
+  id: totrans-138
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  id: totrans-139
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[《Attention Is All You Need》](https://arxiv.org/abs/1706.03762)，2017年。'
 - en: '[Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
     2014.'
+  id: totrans-140
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[《通过联合学习对齐和翻译的神经机器翻译》](https://arxiv.org/abs/1409.0473)，2014年。'
 - en: '[Effective Approaches to Attention-based Neural Machine Translation](https://arxiv.org/abs/1508.04025),
     2015.'
+  id: totrans-141
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[《基于注意力的神经机器翻译的有效方法》](https://arxiv.org/abs/1508.04025)，2015年。'
 - en: '**Summary**'
+  id: totrans-142
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered the Transformer attention mechanism for neural
     machine translation.
+  id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了用于神经机器翻译的Transformer注意力机制。
 - en: 'Specifically, you learned:'
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How the Transformer attention differed from its predecessors.
+  id: totrans-145
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer注意力与其前身的区别。
 - en: How the Transformer computes a scaled-dot product attention.
+  id: totrans-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer如何计算缩放点积注意力。
 - en: How the Transformer computes multi-head attention.
+  id: totrans-147
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer如何计算多头注意力。
 - en: Do you have any questions?
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论中提出你的问题，我会尽力回答。

@@ -1,442 +1,653 @@
 - en: The Luong Attention Mechanism
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Luong 注意力机制
 - en: 原文：[https://machinelearningmastery.com/the-luong-attention-mechanism/](https://machinelearningmastery.com/the-luong-attention-mechanism/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/the-luong-attention-mechanism/](https://machinelearningmastery.com/the-luong-attention-mechanism/)
 - en: 'The Luong attention sought to introduce several improvements over the Bahdanau
     model for neural machine translation, notably by introducing two new classes of
     attentional mechanisms: a *global* approach that attends to all source words and
     a *local* approach that only attends to a selected subset of words in predicting
     the target sentence.'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: Luong 注意力旨在对 Bahdanau 模型进行若干改进，特别是通过引入两种新的注意力机制：一种是 *全局* 方法，关注所有源单词，另一种是 *局部*
+    方法，只关注在预测目标句子时选择的单词子集。
 - en: In this tutorial, you will discover the Luong attention mechanism for neural
     machine translation.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现 Luong 注意力机制在神经机器翻译中的应用。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: The operations performed by the Luong attention algorithm
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Luong 注意力算法执行的操作
 - en: How the global and local attentional models work.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 全局和局部注意力模型如何工作。
 - en: How the Luong attention compares to the Bahdanau attention
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Luong 注意力与 Bahdanau 注意力的比较
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书** [《构建带有注意力的 Transformer 模型》](https://machinelearningmastery.com/transformer-models-with-attention/)
+    **来启动你的项目**。它提供了 **自学教程** 和 **可运行的代码**，帮助你构建一个完全运行的 Transformer 模型。'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将句子从一种语言翻译成另一种语言*...'
 - en: Let’s get started.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 开始吧。
 - en: '[![](../Images/043f91d8989b436c4d6a25f333bfdd4d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/luong_cover-scaled.jpg)'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/043f91d8989b436c4d6a25f333bfdd4d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/luong_cover-scaled.jpg)'
 - en: The Luong attention mechanism
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: Luong 注意力机制
 - en: Photo by [Mike Nahlii](https://unsplash.com/photos/BskqKfpR4pw), some rights
     reserved.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源 [Mike Nahlii](https://unsplash.com/photos/BskqKfpR4pw)，版权所有。
 - en: '**Tutorial Overview**'
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into five parts; they are:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为五部分；它们是：
 - en: Introduction to the Luong Attention
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Luong 注意力简介
 - en: The Luong Attention Algorithm
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Luong 注意力算法
 - en: The Global Attentional Model
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 全局注意力模型
 - en: The Local Attentional Model
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 局部注意力模型
 - en: Comparison to the Bahdanau Attention
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 与 Bahdanau 注意力的比较
 - en: '**Prerequisites**'
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**先决条件**'
 - en: 'For this tutorial, we assume that you are already familiar with:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们假设你已经熟悉：
 - en: '[The concept of attention](https://machinelearningmastery.com/what-is-attention/)'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[注意力机制的概念](https://machinelearningmastery.com/what-is-attention/)'
 - en: '[The attention mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[注意力机制](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
 - en: '[The Bahdanau attention mechanism](https://machinelearningmastery.com/?p=12940&preview=true)'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Bahdanau 注意力机制](https://machinelearningmastery.com/?p=12940&preview=true)'
 - en: '**Introduction to the Luong Attention**'
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Luong 注意力简介**'
 - en: '[Luong et al. (2015)](https://arxiv.org/abs/1508.04025) inspire themselves
     from previous attention models to propose two attention mechanisms:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Luong 等人 (2015)](https://arxiv.org/abs/1508.04025) 从先前的注意力模型中汲取灵感，提出了两种注意力机制：'
 - en: '*In this work, we design, with simplicity and effectiveness in mind, two novel
     types of attention-based models: a global approach which always attends to all
     source words and a local one that only looks at a subset of source words at a
     time.*'
+  id: totrans-28
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*在这项工作中，我们以简洁和有效性为目标，设计了两种新型的基于注意力的模型：一种是全局方法，它总是关注所有源单词，另一种是局部方法，它仅关注一次性选择的源单词子集。*'
 - en: ''
+  id: totrans-29
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Effective Approaches to Attention-based Neural Machine Translation](https://arxiv.org/abs/1508.04025),
     2015.'
+  id: totrans-30
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [基于注意力的神经机器翻译的有效方法](https://arxiv.org/abs/1508.04025)，2015年。'
 - en: The *global* attentional model resembles the [Bahdanau et al. (2014)](https://arxiv.org/abs/1409.0473)
     model in attending to *all* source words but aims to simplify it architecturally.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '*全局* 注意力模型类似于 [Bahdanau 等人 (2014)](https://arxiv.org/abs/1409.0473) 模型，关注 *所有*
+    源单词，但旨在在结构上简化它。'
 - en: The *local* attentional model is inspired by the hard and soft attention models
     of [Xu et al. (2016)](https://arxiv.org/abs/1502.03044) and attends to *only a
     few* of the source positions.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '*局部* 注意力模型受到 [Xu 等人 (2016)](https://arxiv.org/abs/1502.03044) 的硬注意力和软注意力模型的启发，只关注
+    *少量* 源位置。'
 - en: The two attentional models share many of the steps in their prediction of the
     current word but differ mainly in their computation of the context vector.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 两种注意力模型在预测当前词的许多步骤中是相似的，但主要在于它们计算上下文向量的方式不同。
 - en: Let’s first take a look at the overarching Luong attention algorithm and then
     delve into the differences between the global and local attentional models afterward.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先看看整体的 Luong 注意力算法，然后再深入探讨全局和局部注意力模型之间的差异。
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始构建具有注意力机制的 Transformer 模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费 12 天电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费 PDF 电子书版本。
 - en: '**The Luong Attention Algorithm**'
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Luong 注意力算法**'
 - en: 'The attention algorithm of Luong et al. performs the following operations:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: Luong 等人的注意力算法执行以下操作：
 - en: The encoder generates a set of annotations, $H = \mathbf{h}_i, i = 1, \dots,
     T$, from the input sentence.
+  id: totrans-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 编码器从输入句子中生成一组注释，$H = \mathbf{h}_i, i = 1, \dots, T$。
 - en: 'The current decoder hidden state is computed as: $\mathbf{s}_t = \text{RNN}_\text{decoder}(\mathbf{s}_{t-1},
     y_{t-1})$. Here, $\mathbf{s}_{t-1}$ denotes the previous hidden decoder state
     and $y_{t-1}$ the previous decoder output.'
+  id: totrans-41
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 当前的解码器隐藏状态计算公式为：$\mathbf{s}_t = \text{RNN}_\text{decoder}(\mathbf{s}_{t-1},
+    y_{t-1})$。这里，$\mathbf{s}_{t-1}$ 表示先前的隐藏解码器状态，而 $y_{t-1}$ 是前一个解码器输出。
 - en: 'An alignment model, $a(.)$, uses the annotations and the current decoder hidden
     state to compute the alignment scores: $e_{t,i} = a(\mathbf{s}_t, \mathbf{h}_i)$.'
+  id: totrans-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对齐模型 $a(.)$ 使用注释和当前解码器隐藏状态来计算对齐分数：$e_{t,i} = a(\mathbf{s}_t, \mathbf{h}_i)$。
 - en: 'A softmax function is applied to the alignment scores, effectively normalizing
     them into weight values in a range between 0 and 1: $\alpha_{t,i} = \text{softmax}(e_{t,i})$.'
+  id: totrans-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将 softmax 函数应用于对齐分数，有效地将其归一化为介于 0 和 1 之间的权重值：$\alpha_{t,i} = \text{softmax}(e_{t,i})$。
 - en: 'Together with the previously computed annotations, these weights are used to
     generate a context vector through a weighted sum of the annotations: $\mathbf{c}_t
     = \sum^T_{i=1} \alpha_{t,i} \mathbf{h}_i$.'
+  id: totrans-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 与之前计算的注释一起，这些权重被用于通过加权求和生成上下文向量：$\mathbf{c}_t = \sum^T_{i=1} \alpha_{t,i} \mathbf{h}_i$。
 - en: 'An attentional hidden state is computed based on a weighted concatenation of
     the context vector and the current decoder hidden state: $\widetilde{\mathbf{s}}_t
     = \tanh(\mathbf{W_c} [\mathbf{c}_t \; ; \; \mathbf{s}_t])$.'
+  id: totrans-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 基于上下文向量和当前解码器隐藏状态的加权连接计算注意力隐藏状态：$\widetilde{\mathbf{s}}_t = \tanh(\mathbf{W_c}
+    [\mathbf{c}_t \; ; \; \mathbf{s}_t])$。
 - en: 'The decoder produces a final output by feeding it a weighted attentional hidden
     state: $y_t = \text{softmax}(\mathbf{W}_y \widetilde{\mathbf{s}}_t)$.'
+  id: totrans-46
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 解码器通过输入加权注意力隐藏状态来生成最终输出：$y_t = \text{softmax}(\mathbf{W}_y \widetilde{\mathbf{s}}_t)$。
 - en: Steps 2-7 are repeated until the end of the sequence.
+  id: totrans-47
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 步骤 2-7 重复直到序列结束。
 - en: '**The Global Attentional Model**'
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**全局注意力模型**'
 - en: The global attentional model considers all the source words in the input sentence
     when generating the alignment scores and, eventually, when computing the context
     vector.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 全局注意力模型在生成对齐分数时考虑了输入句子中的所有源词，最终在计算上下文向量时也会考虑这些源词。
 - en: '*The idea of a global attentional model is to consider all the hidden states
     of the encoder when deriving the context vector, $\mathbf{c}_t$.*'
+  id: totrans-50
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*全局注意力模型的思想是，在推导上下文向量 $\mathbf{c}_t$ 时考虑编码器的所有隐藏状态。*'
 - en: ''
+  id: totrans-51
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Effective Approaches to Attention-based Neural Machine Translation](https://arxiv.org/abs/1508.04025),
     2015.'
+  id: totrans-52
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [基于注意力的神经机器翻译的有效方法](https://arxiv.org/abs/1508.04025)，2015 年。'
 - en: 'In order to do so, Luong et al. propose three alternative approaches for computing
     the alignment scores. The first approach is similar to Bahdanau’s. It is based
     upon the concatenation of $\mathbf{s}_t$ and $\mathbf{h}_i$, while the second
     and third approaches implement *multiplicative* attention (in contrast to Bahdanau’s
     *additive* attention):'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了实现这一点，Luong 等人提出了三种计算对齐分数的替代方法。第一种方法类似于 Bahdanau 的方法。它基于 $\mathbf{s}_t$ 和
+    $\mathbf{h}_i$ 的连接，而第二种和第三种方法则实现了 *乘法* 注意力（与 Bahdanau 的 *加法* 注意力相对）：
 - en: $$a(\mathbf{s}_t, \mathbf{h}_i) = \mathbf{v}_a^T \tanh(\mathbf{W}_a [\mathbf{s}_t
     \; ; \; \mathbf{h}_i)]$$
+  id: totrans-54
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $$a(\mathbf{s}_t, \mathbf{h}_i) = \mathbf{v}_a^T \tanh(\mathbf{W}_a [\mathbf{s}_t
+    \; ; \; \mathbf{h}_i])$$
 - en: $$a(\mathbf{s}_t, \mathbf{h}_i) = \mathbf{s}^T_t \mathbf{h}_i$$
+  id: totrans-55
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $$a(\mathbf{s}_t, \mathbf{h}_i) = \mathbf{s}^T_t \mathbf{h}_i$$
 - en: $$a(\mathbf{s}_t, \mathbf{h}_i) = \mathbf{s}^T_t \mathbf{W}_a \mathbf{h}_i$$
+  id: totrans-56
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: $$a(\mathbf{s}_t, \mathbf{h}_i) = \mathbf{s}^T_t \mathbf{W}_a \mathbf{h}_i$$
 - en: Here, $\mathbf{W}_a$ is a trainable weight matrix, and similarly, $\mathbf{v}_a$
     is a weight vector.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，$\mathbf{W}_a$是一个可训练的权重矩阵，类似地，$\mathbf{v}_a$是一个权重向量。
 - en: Intuitively, the use of the dot product in *multiplicative* attention can be
     interpreted as providing a similarity measure between the vectors, $\mathbf{s}_t$
     and $\mathbf{h}_i$, under consideration.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 从直观上讲，*乘法*注意力中使用点积可以解释为提供了向量$\mathbf{s}_t$和$\mathbf{h}_i$之间的相似性度量。
 - en: '*… if the vectors are similar (that is, aligned), the result of the multiplication
     will be a large value and the attention will be focused on the current t,i relationship.*'
+  id: totrans-59
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*……如果向量相似（即对齐），则乘法结果将是一个大值，注意力将集中在当前的t,i关系上。*'
 - en: ''
+  id: totrans-60
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – [Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019.
+  id: totrans-61
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – [用Python进行高级深度学习](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)，2019。
 - en: The resulting alignment vector, $\mathbf{e}_t$, is of a variable length according
     to the number of source words.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果对齐向量$\mathbf{e}_t$的长度根据源词的数量而变化。
 - en: '**The Local Attentional Model**'
+  id: totrans-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**局部注意力模型**'
 - en: In attending to all source words, the global attentional model is computationally
     expensive and could potentially become impractical for translating longer sentences.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 在关注所有源词时，全局注意力模型计算开销大，可能会使其在翻译较长句子时变得不切实际。
 - en: 'The local attentional model seeks to address these limitations by focusing
     on a smaller subset of the source words to generate each target word. In order
     to do so, it takes inspiration from the *hard* and *soft* attention models of
     the image caption generation work of [Xu et al. (2016)](https://arxiv.org/abs/1502.03044):'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 局部注意力模型试图通过专注于较小的源词子集来生成每个目标词，从而解决这些局限性。为此，它从[Xu等人（2016）](https://arxiv.org/abs/1502.03044)的图像描述生成工作中的*硬*和*软*注意力模型中获得灵感：
 - en: S*oft* attention is equivalent to the global attention approach, where weights
     are softly placed over all the source image patches. Hence, soft attention considers
     the source image in its entirety.
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*软*注意力等同于全局注意力方法，其中权重软性地分布在所有源图像区域上。因此，软注意力将整个源图像考虑在内。'
 - en: '*Hard* attention attends to a single image patch at a time.'
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*硬*注意力一次关注一个图像区域。'
 - en: 'The local attentional model of Luong et al. generates a context vector by computing
     a weighted average over the set of annotations, $\mathbf{h}_i$, within a window
     centered over an aligned position, $p_t$:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: Luong等人的局部注意力模型通过计算在对齐位置$p_t$中心窗口内注释集$\mathbf{h}_i$上的加权平均来生成上下文向量：
 - en: $$[p_t – D, p_t + D]$$
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: $$[p_t – D, p_t + D]$$
 - en: 'While a value for $D$ is selected empirically, Luong et al. consider two approaches
     in computing a value for $p_t$:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然$D$的值是通过经验选择的，但Luong等人考虑了计算$p_t$值的两种方法：
 - en: '*Monotonic* alignment: where the source and target sentences are assumed to
     be monotonically aligned and, hence, $p_t = t$.'
+  id: totrans-71
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '*单调*对齐：源句子和目标句子假定是单调对齐的，因此$p_t = t$。'
 - en: '*Predictive* alignment: where a prediction of the aligned position is based
     upon trainable model parameters, $\mathbf{W}_p$ and $\mathbf{v}_p$, and the source
     sentence length, $S$:'
+  id: totrans-72
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '*预测*对齐：基于可训练的模型参数$\mathbf{W}_p$和$\mathbf{v}_p$以及源句子长度$S$对对齐位置进行预测：'
 - en: $$p_t = S \cdot \text{sigmoid}(\mathbf{v}^T_p \tanh(\mathbf{W}_p, \mathbf{s}_t))$$
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: $$p_t = S \cdot \text{sigmoid}(\mathbf{v}^T_p \tanh(\mathbf{W}_p, \mathbf{s}_t))$$
 - en: A Gaussian distribution is centered around $p_t$ when computing the alignment
     weights to favor source words nearer to the window center.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 高斯分布在计算对齐权重时围绕$p_t$中心，以偏好窗口中心附近的源词。
 - en: This time round, the resulting alignment vector, $\mathbf{e}_t$, has a fixed
     length of $2D + 1$.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一次，结果对齐向量$\mathbf{e}_t$具有固定长度$2D + 1$。
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参见我的书[使用注意力构建Transformer模型](https://machinelearningmastery.com/transformer-models-with-attention/)。它提供了**自学教程**和**有效代码**，引导你构建一个完整的Transformer模型。'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将句子从一种语言翻译成另一种语言*……'
 - en: '**Comparison to the Bahdanau Attention**'
+  id: totrans-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**与Bahdanau注意力的比较**'
 - en: 'The Bahdanau model and the global attention approach of Luong et al. are mostly
     similar, but there are key differences between the two:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: Bahdanau模型和Luong等人的全局注意力方法大致相似，但两者之间存在关键差异：
 - en: '*While our global attention approach is similar in spirit to the model proposed
     by Bahdanau et al. (2015), there are several key differences which reflect how
     we have both simplified and generalized from the original model.*'
+  id: totrans-80
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*尽管我们的全球注意力方法在精神上类似于 Bahdanau 等人（2015年）提出的模型，但存在若干关键区别，这些区别反映了我们如何从原始模型中进行简化和概括。*'
 - en: ''
+  id: totrans-81
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Effective Approaches to Attention-based Neural Machine Translation](https://arxiv.org/abs/1508.04025),
     2015.'
+  id: totrans-82
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [基于注意力的神经机器翻译的有效方法](https://arxiv.org/abs/1508.04025)，2015年。'
 - en: Most notably, the computation of the alignment scores, $e_t$, in the Luong global
     attentional model depends on the current decoder hidden state, $\mathbf{s}_t$,
     rather than on the previous hidden state, $\mathbf{s}_{t-1}$, as in the Bahdanau
     attention.
+  id: totrans-83
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 最显著的是，Luong 全球注意力模型中对齐得分 $e_t$ 的计算依赖于当前解码器隐藏状态 $\mathbf{s}_t$，而非 Bahdanau 注意力中的前一个隐藏状态
+    $\mathbf{s}_{t-1}$。
 - en: '[![](../Images/3a026168f6ec3b0c5a379b45e365e2c2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/luong_1.png)'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/3a026168f6ec3b0c5a379b45e365e2c2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/luong_1.png)'
 - en: The Bahdanau architecture (left) vs. the Luong architecture (right)
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: Bahdanau 架构（左）与 Luong 架构（右）
 - en: Taken from “[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)“
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 摘自 “[深入学习 Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)”
 - en: Luong et al. drop the bidirectional encoder used by the Bahdanau model and instead
     utilize the hidden states at the top LSTM layers for both the encoder and decoder.
+  id: totrans-87
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: Luong 等人舍弃了 Bahdanau 模型中使用的双向编码器，而是利用编码器和解码器顶部 LSTM 层的隐藏状态。
 - en: The global attentional model of Luong et al. investigates the use of multiplicative
     attention as an alternative to the Bahdanau additive attention.
+  id: totrans-88
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: Luong 等人的全球注意力模型研究了使用乘法注意力作为 Bahdanau 加性注意力的替代方案。
 - en: '**Further Reading**'
+  id: totrans-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多相关资源，供你深入了解。
 - en: '**Books**'
+  id: totrans-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019.'
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深入学习 Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)，2019年。'
 - en: '**Papers**'
+  id: totrans-93
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[Effective Approaches to Attention-based Neural Machine Translation](https://arxiv.org/abs/1508.04025),
     2015.'
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[基于注意力的神经机器翻译的有效方法](https://arxiv.org/abs/1508.04025)，2015年。'
 - en: '**Summary**'
+  id: totrans-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered the Luong attention mechanism for neural machine
     translation.
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了 Luong 注意力机制在神经机器翻译中的应用。
 - en: 'Specifically, you learned:'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The operations performed by the Luong attention algorithm
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Luong 注意力算法执行的操作
 - en: How the global and local attentional models work
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 全球和局部注意力模型如何工作
 - en: How the Luong attention compares to the Bahdanau attention
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Luong 注意力与 Bahdanau 注意力的比较
 - en: Do you have any questions?
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论中提出你的问题，我会尽力回答。

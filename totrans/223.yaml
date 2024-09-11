@@ -1,399 +1,605 @@
 - en: The Chain Rule of Calculus – Even More Functions
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 微积分中的链式法则——更多函数
 - en: 原文：[https://machinelearningmastery.com/the-chain-rule-of-calculus-even-more-functions/](https://machinelearningmastery.com/the-chain-rule-of-calculus-even-more-functions/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/the-chain-rule-of-calculus-even-more-functions/](https://machinelearningmastery.com/the-chain-rule-of-calculus-even-more-functions/)
 - en: The chain rule is an important derivative rule that allows us to work with composite
     functions. It is essential in understanding the workings of the backpropagation
     algorithm, which applies the chain rule extensively in order to calculate the
     error gradient of the loss function with respect to each weight of a neural network.
     We will be building on our earlier introduction to the chain rule, by tackling
     more challenging functions.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 链式法则是一个重要的导数规则，使我们能够处理复合函数。它在理解反向传播算法的工作原理中至关重要，反向传播算法广泛应用链式法则来计算损失函数相对于神经网络每个权重的误差梯度。我们将在之前对链式法则的介绍基础上，处理更具挑战性的函数。
 - en: In this tutorial, you will discover how to apply the chain rule of calculus
     to challenging functions.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现如何将微积分的链式法则应用于挑战性函数。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: The process of applying the chain rule to univariate functions can be extended
     to multivariate ones.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将链式法则应用于单变量函数的过程可以扩展到多变量函数。
 - en: 'The application of the chain rule follows a similar process, no matter how
     complex the function is: take the derivative of the outer function first, and
     then move inwards. Along the way, the application of other derivative rules might
     be required.'
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 链式法则的应用遵循类似的过程，无论函数多么复杂：首先求外部函数的导数，然后向内移动。在此过程中，可能需要应用其他导数规则。
 - en: Applying the chain rule to multivariate functions requires the use of partial
     derivatives.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将链式法则应用于多变量函数需要使用偏导数。
 - en: Let’s get started.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/3a04bc967ac4d822892461c2bc78b7a5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_cover-scaled.jpg)'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/3a04bc967ac4d822892461c2bc78b7a5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_cover-scaled.jpg)'
 - en: The Chain Rule of Calculus – Even More Functions
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 微积分中的链式法则——更多函数
 - en: Photo by [Nan Ingraham](https://unsplash.com/photos/mNuLRRjLwjA), some rights
     reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Nan Ingraham](https://unsplash.com/photos/mNuLRRjLwjA) 拍摄，保留了一些权利。
 - en: '**Tutorial Overview**'
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两个部分；它们是：
 - en: The Chain Rule on Univariate Functions
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 单变量函数的链式法则
 - en: The Chain Rule on Multivariate Functions
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多变量函数的链式法则
 - en: '**Prerequisites**'
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**先决条件**'
 - en: 'For this tutorial, we assume that you already know what are:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设你已经知道以下内容：
 - en: '[Multivariate functions](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/)'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[多变量函数](https://machinelearningmastery.com/a-gentle-introduction-to-multivariate-calculus/)'
 - en: '[The power and product rules](https://machinelearningmastery.com/the-power-product-and-quotient-rules/)'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[幂法则和积法则](https://machinelearningmastery.com/the-power-product-and-quotient-rules/)'
 - en: '[Partial derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[偏导数](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
 - en: '[The chain rule](https://machinelearningmastery.com/?p=12720&preview=true)'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[链式法则](https://machinelearningmastery.com/?p=12720&preview=true)'
 - en: You can review these concepts by clicking on the links given above.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过点击上面给出的链接来复习这些概念。
 - en: '**The Chain Rule on Univariate Functions**'
+  id: totrans-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**单变量函数的链式法则**'
 - en: We have already discovered the chain rule for univariate and multivariate functions,
     but we have only seen a few simple examples so far. Let’s see a few more challenging
     ones here. We will be starting with univariate functions first, and then apply
     what we learn to multivariate functions.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经发现了单变量和多变量函数的链式法则，但到目前为止我们只看到了一些简单的例子。这里我们将查看一些更具挑战性的例子。我们将首先从单变量函数开始，然后将所学应用于多变量函数。
 - en: '**EXAMPLE 1**: Let’s raise the bar a little by considering the following composite
     function:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '**示例 1**：让我们通过考虑以下复合函数来提高难度：'
 - en: '[![](../Images/888dc49a8963a98efffdf3e9daabbd92.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_1.png)'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/888dc49a8963a98efffdf3e9daabbd92.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_1.png)'
 - en: We can separate the composite function into the inner function, *f*(*x*) = *x*²
     – 10, and the outer function, *g*(*x*) = √*x* = (*x*)^(1/2). The output of the
     inner function is denoted by the intermediate variable, *u*, and its value will
     be fed into the input of the outer function.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将复合函数分解为内部函数，*f*(*x*) = *x*² – 10，以及外部函数，*g*(*x*) = √*x* = (*x*)^(1/2)。内部函数的输出由中间变量*u*表示，并且其值将输入到外部函数中。
 - en: 'The first step is to find the derivative of the outer part of the composite
     function, while ignoring whatever is inside. For this purpose, we can apply the
     power rule:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一步是找到复合函数外部部分的导数，同时忽略内部的内容。为此，我们可以应用幂规则：
 - en: '*dh / du* = (1/2) (*x*² – 10)^(-1/2)'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '*dh / du* = (1/2) (*x*² – 10)^(-1/2)'
 - en: 'The next step is to find the derivative of the inner part of the composite
     function, this time ignoring whatever is outside. We can apply the power rule
     here too:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一步是找到复合函数内部部分的导数，这次忽略外部的内容。我们可以在这里也应用幂规则：
 - en: '*du / dx* = 2*x*'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '*du / dx* = 2*x*'
 - en: 'Putting the two parts together and simplifying, we have:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 将两部分结合并简化，我们得到复合函数的导数：
 - en: '[![](../Images/5bc9274d18f937415b51e5e04a666729.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_2.png)'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/5bc9274d18f937415b51e5e04a666729.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_2.png)'
 - en: '**EXAMPLE 2**: Let’s repeat the procedure, this time with a different composite
     function:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '**例子 2**：让我们重复这个过程，这次使用另一个复合函数：'
 - en: '[![](../Images/010e6913ec9792f771e8169d6f8a3fa5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_3.png)'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/010e6913ec9792f771e8169d6f8a3fa5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_3.png)'
 - en: We will again use, *u*, the output of the inner function, as our intermediate
     variable.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们再次使用内部函数的输出*u*作为我们的中间变量。
 - en: 'The outer function in this case is, cos *x*. Finding its derivative, again
     ignoring the inside, gives us:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，外部函数是cos *x*。找到它的导数，再次忽略内部的部分，给我们：
 - en: '*dh* / *du* = (cos(*x*³ – 1))’ = -sin(*x*³ – 1)'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '*dh* / *du* = (cos(*x*³ – 1))’ = -sin(*x*³ – 1)'
 - en: 'The inner function is, *x*³ – 1\. Hence, its derivative becomes:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 内部函数是，*x*³ – 1。因此，它的导数变为：
 - en: '*du* / *dx* = (*x*³ – 1)’ = 3*x*²'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '*du* / *dx* = (*x*³ – 1)’ = 3*x*²'
 - en: 'Putting the two parts together, we obtain the derivative of the composite function:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 将两部分结合，我们得到复合函数的导数：
 - en: '[![](../Images/372aea582fcc9200253d14c64445805b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_4.png)'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/372aea582fcc9200253d14c64445805b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_4.png)'
 - en: '**EXAMPLE 3**: Let’s now raise the bar a little further by considering a more
     challenging composite function:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '**例子 3**：现在让我们进一步提高难度，考虑一个更具挑战性的复合函数：'
 - en: '[![](../Images/9790d874f4378cc1959b686e38f29053.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_5.png)'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/9790d874f4378cc1959b686e38f29053.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_5.png)'
 - en: If we observe this closely, we realize that not only do we have nested functions
     for which we will need to apply the chain rule multiple times, but we also have
     a product to which we will need to apply the product rule.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们仔细观察，我们会发现不仅我们有嵌套函数需要多次应用链式法则，而且我们还有一个乘积需要应用乘积法则。
 - en: 'We find that the outermost function is a cosine. In finding its derivative
     by the chain rule, we shall be using the intermediate variable, *u*:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们发现最外层的函数是余弦。通过链式法则找到它的导数时，我们将使用中间变量*u*：
 - en: '*dh* / *du* = (cos(*x* √(*x*² – 10) ))’ = -sin(*x* √(*x*² – 10) )'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '*dh* / *du* = (cos(*x* √(*x*² – 10) ))’ = -sin(*x* √(*x*² – 10) )'
 - en: 'Inside the cosine, we have the product, *x* √(x² – 10), to which we will be
     applying the product rule to find its derivative (notice that we are always moving
     from the outside to the inside, in order to discover the operation that needs
     to be tackled next):'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 在余弦内部，我们有乘积，*x* √(x² – 10)，我们将应用乘积法则来找到其导数（注意，我们总是从外部向内部移动，以便发现需要处理的操作）：
 - en: '*du* / *dx* = (*x* √(x² – 10) )’ = √(x² – 10) + *x* ( √(x² – 10) )’'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '*du* / *dx* = (*x* √(x² – 10) )’ = √(x² – 10) + *x* ( √(x² – 10) )’'
 - en: 'One of the components in the resulting term is, ( √(x² – 10) )’, to which we
     shall be applying the chain rule again. Indeed, we have already done so above,
     and hence we can simply re-utilise the result:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果中的一个组成部分是，( √(x² – 10) )’，我们将再次应用链式法则。事实上，我们在上面已经这样做过了，因此我们可以简单地重新使用结果：
 - en: ( √(x² – 10) )’ = *x* (*x*² – 10)^(-1/2)
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: (√(x² – 10) )’ = *x* (*x*² – 10)^(-1/2)
 - en: 'Putting all the parts together, we obtain the derivative of the composite function:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有部分结合起来，我们得到复合函数的导数：
 - en: '[![](../Images/1b40e41be080b2e5fb2995c34593b7c2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_6.png)'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/1b40e41be080b2e5fb2995c34593b7c2.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_6.png)'
 - en: 'This can be simplified further into:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可以进一步简化为：
 - en: '[![](../Images/82698389386127bd1576c5aa0ea0f93e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_7.png)'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/82698389386127bd1576c5aa0ea0f93e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_7.png)'
 - en: Want to Get Started With Calculus for Machine Learning?
+  id: totrans-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始机器学习的微积分？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即免费参加我的7天电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费PDF电子书版本。
 - en: '**The Chain Rule on Multivariate Functions**'
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**多变量函数的链式法则**'
 - en: '**EXAMPLE 4**: Suppose that we are now presented by a multivariate function
     of two independent variables, *s* and *t*, with each of these variables being
     dependent on another two independent variables, *x* and *y*:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '**示例 4**：假设我们现在面对一个关于两个独立变量 *s* 和 *t* 的多变量函数，其中每个变量依赖于另外两个独立变量 *x* 和 *y*：'
 - en: '*h* = *g*(*s*, *t*) = *s*² + *t*³'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '*h* = *g*(*s*, *t*) = *s*² + *t*³'
 - en: Where the functions, *s* = *xy*, and *t* = 2*x* – *y*.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中函数为 *s* = *xy*，*t* = 2*x* – *y*。
 - en: 'Implementing the chain rule here requires the computation of partial derivatives,
     since we are working with multiple independent variables. Furthermore, *s* and
     *t* will also act as our intermediate variables. The formulae that we will be
     working with, defined with respect to each input, are the following:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里实施链式法则需要计算偏导数，因为我们处理多个独立变量。此外，*s* 和 *t* 也将作为我们的中间变量。我们将使用以下关于每个输入定义的公式：
 - en: '[![](../Images/2606c50ef132b201038a111cab86cfff.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_8.png)'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/2606c50ef132b201038a111cab86cfff.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_8.png)'
 - en: 'From these formulae, we can see that we will need to find six different partial
     derivatives:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 从这些公式中，我们可以看到我们需要找到六个不同的偏导数：
 - en: '[![](../Images/d88c3c4d5520fe9892b878b6e56973df.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_9.png)'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/d88c3c4d5520fe9892b878b6e56973df.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_9.png)'
 - en: 'We can now proceed to substitute these terms in the formulae for ∂*h* / ∂*x*
     and∂*h* / ∂*y*:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以继续用这些术语替换∂*h* / ∂*x*和∂*h* / ∂*y*的公式：
 - en: '[![](../Images/47a08637936e4980affa7f636df03818.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_10.png)'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/47a08637936e4980affa7f636df03818.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_10.png)'
 - en: 'And subsequently substitute for *s* and *t* to find the derivatives:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，用 *s* 和 *t* 替代以找到导数：
 - en: '[![](../Images/db166792a3f963ede4171a4478b40964.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_11.png)'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/db166792a3f963ede4171a4478b40964.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_11.png)'
 - en: '**EXAMPLE 5**: Let’s repeat this again, this time with a multivariate function
     of three independent variables, $r$, $s$ and $t$, with each of these variables
     being dependent on another two independent variables, $x$ and $y$:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: '**示例 5**：让我们再次重复，这次是一个关于三个独立变量 $r$, $s$ 和 $t$ 的多变量函数，其中每个变量依赖于另外两个独立变量 $x$
+    和 $y$：'
 - en: $$h=g(r,s,t)=r^2-rs+t^3$$
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: $$h=g(r,s,t)=r^2-rs+t^3$$
 - en: Where the functions, $r = x \cos y$, $s=xe^y$, and $t=x+y$.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中函数为 $r = x \cos y$，$s=xe^y$，$t=x+y$。
 - en: 'This time round, $r$, $s$ and $t$ will act as our intermediate variables. The
     formulae that we will be working with, defined with respect to each input, are
     the following:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一次，$r$, $s$ 和 $t$ 将作为我们的中间变量。我们将使用以下关于每个输入定义的公式：
 - en: '[![](../Images/00845680e230e2baba31deb78d04414f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_12.png)'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/00845680e230e2baba31deb78d04414f.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_12.png)'
 - en: 'From these formulae, we can see that we will now need to find nine different
     partial derivatives:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 从这些公式中，我们现在需要找到九个不同的偏导数：
 - en: '[![](../Images/bf7c5f20f2988e8a58ba522680d3ca14.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_13.png)'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/bf7c5f20f2988e8a58ba522680d3ca14.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_13.png)'
 - en: 'Again, we proceed to substitute these terms in the formulae for ∂*h* / ∂*x*
     and∂*h* / ∂*y*:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们继续用这些术语替换∂*h* / ∂*x*和∂*h* / ∂*y*的公式：
 - en: '[![](../Images/38450f54cb49aea82d59107ed8fdb2e8.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_14.png)'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/38450f54cb49aea82d59107ed8fdb2e8.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_14.png)'
 - en: 'And subsequently substitute for $r$, $s$ and $t$ to find the derivatives:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 随后对 $r$、$s$ 和 $t$ 进行代入，以找到导数：
 - en: '[![](../Images/8f982a867545bc8e8e9c29e3f87a421a.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_15.png)'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/8f982a867545bc8e8e9c29e3f87a421a.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_15.png)'
 - en: 'Which may be simplified a little further (hint: apply the trigonometric identity
     $2\sin y\cos y=\sin 2y$ to $\partial h/\partial y$):'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以进一步简化（提示：对 $\partial h/\partial y$ 应用三角恒等式 $2\sin y\cos y=\sin 2y$）：
 - en: '[![](../Images/6b892e514e40766ef391a6a57f3cefbe.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_16.png)'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/6b892e514e40766ef391a6a57f3cefbe.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/more_chain_rule_16.png)'
 - en: 'No matter how complex the expression is, the procedure to follow remains similar:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论表达式多么复杂，遵循的程序仍然相似：
 - en: '*Your last computation tells you the first thing to do.*'
+  id: totrans-85
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*你最后的计算告诉你要做的第一件事。*'
 - en: ''
+  id: totrans-86
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – Page 143, [Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
     2016.
+  id: totrans-87
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – 第143页，[傻瓜微积分](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US)，2016年。
 - en: Hence, start by tackling the outer function first, then move inwards to the
     next one. You may need to apply other rules along the way, as we have seen for
     Example 3\. Do not forget to take the partial derivatives if you are working with
     multivariate functions.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，从处理外层函数开始，然后逐步向内处理下一个函数。你可能需要应用其他规则，就像我们在示例3中看到的那样。如果你在处理多变量函数时，不要忘记计算偏导数。
 - en: '**Further Reading**'
+  id: totrans-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多相关资源，如果你想深入了解这个话题。
 - en: '**Books**'
+  id: totrans-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Calculus for Dummies](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US),
     2016.'
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[傻瓜微积分](https://www.amazon.com/Calculus-Dummies-Math-Science/dp/1119293499/ref=as_li_ss_tl?dchild=1&keywords=calculus&qid=1606170839&sr=8-2&linkCode=sl1&tag=inspiredalgor-20&linkId=539ed0b89e326b6eb27b1a9a028e9cee&language=en_US)，2016年。'
 - en: '[Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
     2020.'
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[单变量与多变量微积分](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf)，2020年。'
 - en: '[Mathematics for Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
     2020.'
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[机器学习数学](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US)，2020年。'
 - en: '**Summary**'
+  id: totrans-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered how to apply the chain rule of calculus to
     challenging functions.
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了如何将微积分链式法则应用于复杂函数。
 - en: 'Specifically, you learned:'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学习了：
 - en: The process of applying the chain rule to univariate functions can be extended
     to multivariate ones.
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将链式法则应用于一变量函数的过程可以扩展到多变量函数。
 - en: 'The application of the chain rule follows a similar process, no matter how
     complex the function is: take the derivative of the outer function first, and
     then move inwards. Along the way, the application of other derivative rules might
     be required.'
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 无论函数多么复杂，链式法则的应用过程都是类似的：首先取外层函数的导数，然后向内处理。在过程中，可能需要应用其他导数规则。
 - en: Applying the chain rule to multivariate functions requires the use of partial
     derivatives.
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将链式法则应用于多变量函数需要使用偏导数。
 - en: Do you have any questions?
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below and I will do my best to answer.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提问，我会尽力回答。

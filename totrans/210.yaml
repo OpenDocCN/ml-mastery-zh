@@ -1,212 +1,307 @@
 - en: The Attention Mechanism from Scratch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 从头开始了解注意力机制
 - en: 原文：[https://machinelearningmastery.com/the-attention-mechanism-from-scratch/](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/the-attention-mechanism-from-scratch/](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)
 - en: The attention mechanism was introduced to improve the performance of the encoder-decoder
     model for machine translation. The idea behind the attention mechanism was to
     permit the decoder to utilize the most relevant parts of the input sequence in
     a flexible manner, by a weighted combination of all the encoded input vectors,
     with the most relevant vectors being attributed the highest weights.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 引入注意力机制是为了提高编码器-解码器模型在机器翻译中的性能。注意力机制的想法是允许解码器以灵活的方式利用输入序列中最相关的部分，通过对所有编码的输入向量进行加权组合，其中最相关的向量被赋予最高的权重。
 - en: In this tutorial, you will discover the attention mechanism and its implementation.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现注意力机制及其实现。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: How the attention mechanism uses a weighted sum of all the encoder hidden states
     to flexibly focus the attention of the decoder on the most relevant parts of the
     input sequence
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 注意力机制如何使用所有编码器隐藏状态的加权和来灵活地将解码器的注意力集中在输入序列中最相关的部分
 - en: How the attention mechanism can be generalized for tasks where the information
     may not necessarily be related in a sequential fashion
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将注意力机制推广到信息可能不一定按顺序相关的任务中
 - en: How to implement the general attention mechanism in Python with NumPy and SciPy
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 Python 中使用 NumPy 和 SciPy 实现通用注意力机制
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，可以参考我的书籍 [使用注意力构建 Transformer 模型](https://machinelearningmastery.com/transformer-models-with-attention/)。书中提供了**自学教程**和**可运行的代码**，指导你构建一个功能完整的
+    Transformer 模型'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将句子从一种语言翻译成另一种语言*...'
 - en: Let’s get started.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/e1a7f93adea13197ba00d0dc7219b38e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/attention_mechanism_cover-scaled.jpg)'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/e1a7f93adea13197ba00d0dc7219b38e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/attention_mechanism_cover-scaled.jpg)'
 - en: The attention mechanism from scratch
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 从头开始了解注意力机制
 - en: Photo by [Nitish Meena](https://unsplash.com/photos/RbbdzZBKRDY), some rights
     reserved.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Nitish Meena](https://unsplash.com/photos/RbbdzZBKRDY) 提供，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概览**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是：
 - en: The Attention Mechanism
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 注意力机制
 - en: The General Attention Mechanism
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通用注意力机制
 - en: The General Attention Mechanism with NumPy and SciPy
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 NumPy 和 SciPy 的通用注意力机制
 - en: '**The Attention Mechanism**'
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**注意力机制**'
 - en: The attention mechanism was introduced by [Bahdanau et al. (2014)](https://arxiv.org/abs/1409.0473) to
     address the bottleneck problem that arises with the use of a fixed-length encoding
     vector, where the decoder would have limited access to the information provided
     by the input. This is thought to become especially problematic for long and/or
     complex sequences, where the dimensionality of their representation would be forced
     to be the same as for shorter or simpler sequences.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意力机制由 [Bahdanau 等人 (2014)](https://arxiv.org/abs/1409.0473) 引入，以解决使用固定长度编码向量时出现的瓶颈问题，其中解码器对输入提供的信息的访问有限。这在处理长和/或复杂序列时尤为成问题，因为它们的表示维度被强制与较短或较简单序列的维度相同。
 - en: '[Note](https://machinelearningmastery.com/how-does-attention-work-in-encoder-decoder-recurrent-neural-networks/) that
     Bahdanau et al.’s *attention mechanism* is divided into the step-by-step computations
     of the *alignment scores*, the *weights,* and the *context vector*:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '[注意事项](https://machinelearningmastery.com/how-does-attention-work-in-encoder-decoder-recurrent-neural-networks/)
+    请注意，Bahdanau 等人的*注意力机制*被分为*对齐分数*、*权重*和*上下文向量*的逐步计算：'
 - en: '**Alignment scores**: The alignment model takes the encoded hidden states,
     $\mathbf{h}_i$, and the previous decoder output, $\mathbf{s}_{t-1}$, to compute
     a score, $e_{t,i}$, that indicates how well the elements of the input sequence
     align with the current output at the position, $t$. The alignment model is represented
     by a function, $a(.)$, which can be implemented by a feedforward neural network:'
+  id: totrans-22
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**对齐分数**：对齐模型使用编码的隐藏状态$\mathbf{h}_i$和先前的解码器输出$\mathbf{s}_{t-1}$来计算一个分数$e_{t,i}$，该分数表示输入序列的元素与当前位置$t$的当前输出对齐的程度。对齐模型由一个函数$a(.)$表示，该函数可以通过前馈神经网络实现：'
 - en: $$e_{t,i} = a(\mathbf{s}_{t-1}, \mathbf{h}_i)$$
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: $$e_{t,i} = a(\mathbf{s}_{t-1}, \mathbf{h}_i)$$
 - en: '**Weights**: The weights, $\alpha_{t,i}$, are computed by applying a softmax
     operation to the previously computed alignment scores:'
+  id: totrans-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**权重**：权重，$\alpha_{t,i}$，通过对先前计算的对齐分数应用softmax操作来计算：'
 - en: $$\alpha_{t,i} = \text{softmax}(e_{t,i})$$
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\alpha_{t,i} = \text{softmax}(e_{t,i})$$
 - en: '**Context vector**: A unique context vector, $\mathbf{c}_t$, is fed into the
     decoder at each time step. It is computed by a weighted sum of all, $T$, encoder
     hidden states:'
+  id: totrans-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**上下文向量**：在每个时间步骤中，唯一的上下文向量$\mathbf{c}_t$被输入到解码器中。它通过对所有$T$个编码器隐藏状态的加权和来计算：'
 - en: $$\mathbf{c}_t = \sum_{i=1}^T \alpha_{t,i} \mathbf{h}_i$$
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\mathbf{c}_t = \sum_{i=1}^T \alpha_{t,i} \mathbf{h}_i$$
 - en: Bahdanau et al. implemented an RNN for both the encoder and decoder.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: Bahdanau等人实现了一个用于编码器和解码器的RNN。
 - en: However, the attention mechanism can be re-formulated into a general form that
     can be applied to any sequence-to-sequence (abbreviated to seq2seq) task, where
     the information may not necessarily be related in a sequential fashion.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，注意力机制可以重新公式化为可以应用于任何序列到序列（简称seq2seq）任务的一般形式，其中信息可能不一定以顺序方式相关。
 - en: '*In other words, the database doesn’t have to consist of the hidden RNN states
     at different steps, but could contain any kind of information instead.*'
+  id: totrans-30
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*换句话说，数据库不必由不同步骤的隐藏RNN状态组成，而可以包含任何类型的信息。*'
 - en: ''
+  id: totrans-31
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – [Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019.
+  id: totrans-32
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – [高级深度学习与Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)，2019年。
 - en: '**The General Attention Mechanism**'
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**一般注意力机制**'
 - en: The general attention mechanism makes use of three main components, namely the
     *queries*, $\mathbf{Q}$, the *keys*, $\mathbf{K}$, and the *values*, $\mathbf{V}$.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 一般注意力机制使用三个主要组件，即*查询*，$\mathbf{Q}$，*键*，$\mathbf{K}$，和*值*，$\mathbf{V}$。
 - en: If you had to compare these three components to the attention mechanism as proposed
     by Bahdanau et al., then the query would be analogous to the previous decoder
     output, $\mathbf{s}_{t-1}$, while the values would be analogous to the encoded
     inputs, $\mathbf{h}_i$. In the Bahdanau attention mechanism, the keys and values
     are the same vector.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你要将这三个组件与Bahdanau等人提出的注意力机制进行比较，那么查询将类似于先前的解码器输出，$\mathbf{s}_{t-1}$，而值将类似于编码的输入，$\mathbf{h}_i$。在Bahdanau注意力机制中，键和值是相同的向量。
 - en: '*In this case, we can think of the vector $\mathbf{s}_{t-1}$ as a query executed
     against a database of key-value pairs, where the keys are vectors and the hidden
     states $\mathbf{h}_i$ are the values.*'
+  id: totrans-36
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*在这种情况下，我们可以将向量$\mathbf{s}_{t-1}$视为对键值对数据库执行的查询，其中键是向量，而隐藏状态$\mathbf{h}_i$是值。*'
 - en: ''
+  id: totrans-37
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – [Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019.
+  id: totrans-38
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – [高级深度学习与Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)，2019年。
 - en: 'The general attention mechanism then performs the following computations:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 一般注意力机制执行以下计算：
 - en: 'Each query vector, $\mathbf{q} = \mathbf{s}_{t-1}$, is matched against a database
     of keys to compute a score value. This matching operation is computed as the dot
     product of the specific query under consideration with each key vector, $\mathbf{k}_i$:'
+  id: totrans-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 每个查询向量$\mathbf{q} = \mathbf{s}_{t-1}$与键的数据库进行匹配，以计算分数值。此匹配操作计算为特定查询与每个键向量$\mathbf{k}_i$的点积：
 - en: $$e_{\mathbf{q},\mathbf{k}_i} = \mathbf{q} \cdot \mathbf{k}_i$$
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: $$e_{\mathbf{q},\mathbf{k}_i} = \mathbf{q} \cdot \mathbf{k}_i$$
 - en: 'The scores are passed through a softmax operation to generate the weights:'
+  id: totrans-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 分数通过softmax操作生成权重：
 - en: $$\alpha_{\mathbf{q},\mathbf{k}_i} = \text{softmax}(e_{\mathbf{q},\mathbf{k}_i})$$
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\alpha_{\mathbf{q},\mathbf{k}_i} = \text{softmax}(e_{\mathbf{q},\mathbf{k}_i})$$
 - en: 'The generalized attention is then computed by a weighted sum of the value vectors,
     $\mathbf{v}_{\mathbf{k}_i}$, where each value vector is paired with a corresponding
     key:'
+  id: totrans-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 然后，通过对值向量$\mathbf{v}_{\mathbf{k}_i}$进行加权求和来计算广义注意力，其中每个值向量都与相应的键配对：
 - en: $$\text{attention}(\mathbf{q}, \mathbf{K}, \mathbf{V}) = \sum_i \alpha_{\mathbf{q},\mathbf{k}_i}
     \mathbf{v}_{\mathbf{k}_i}$$
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\text{attention}(\mathbf{q}, \mathbf{K}, \mathbf{V}) = \sum_i \alpha_{\mathbf{q},\mathbf{k}_i}
+    \mathbf{v}_{\mathbf{k}_i}$$
 - en: Within the context of machine translation, each word in an input sentence would
     be attributed its own query, key, and value vectors. These vectors are generated
     by multiplying the encoder’s representation of the specific word under consideration
     with three different weight matrices that would have been generated during training.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 在机器翻译的背景下，输入句子中的每个词都会被分配自己的查询、键和值向量。这些向量是通过将编码器对特定词的表示与训练过程中生成的三种不同权重矩阵相乘而得到的。
 - en: In essence, when the generalized attention mechanism is presented with a sequence
     of words, it takes the query vector attributed to some specific word in the sequence
     and scores it against each key in the database. In doing so, it captures how the
@@ -214,155 +309,233 @@
     the values according to the attention weights (computed from the scores) to retain
     focus on those words relevant to the query. In doing so, it produces an attention
     output for the word under consideration.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 实质上，当广义注意力机制接收到一系列词时，它会将序列中某个特定词的查询向量与数据库中的每个键进行评分。通过这样做，它捕捉到所考虑的词与序列中其他词的关系。然后，它根据注意力权重（从评分中计算得出）对值进行缩放，以保持对与查询相关的词的关注。这样，它会为所考虑的词生成注意力输出。
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始构建带有注意力机制的 Transformer 模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就报名参加我的12天免费邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击报名并获取课程的免费 PDF 电子书版本。
 - en: '**The General Attention Mechanism with NumPy and SciPy**'
+  id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**使用 NumPy 和 SciPy 的通用注意力机制**'
 - en: This section will explore how to implement the general attention mechanism using
     the NumPy and SciPy libraries in Python.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节将探讨如何使用 Python 中的 NumPy 和 SciPy 库实现通用注意力机制。
 - en: For simplicity, you will initially calculate the attention for the first word
     in a sequence of four. You will then generalize the code to calculate an attention
     output for all four words in matrix form.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了简单起见，你将首先计算四个词序列中第一个词的注意力。然后，你将对代码进行泛化，以矩阵形式计算所有四个词的注意力输出。
 - en: Hence, let’s start by first defining the word embeddings of the four different
     words to calculate the attention. In actual practice, these word embeddings would
     have been generated by an encoder; however, for this particular example, you will
     define them manually.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，让我们首先定义四个不同词的词嵌入，以计算注意力。在实际操作中，这些词嵌入将由编码器生成；然而，在这个例子中，你将手动定义它们。
 - en: '[PRE0]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The next step generates the weight matrices, which you will eventually multiply
     to the word embeddings to generate the queries, keys, and values. Here, you shall
     generate these weight matrices randomly; however, in actual practice, these would
     have been learned during training.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一步生成权重矩阵，你最终会将这些矩阵乘以词嵌入，以生成查询、键和值。在这里，你将随机生成这些权重矩阵；然而，在实际操作中，这些权重矩阵将通过训练学习得到。
 - en: '[PRE1]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Notice how the number of rows of each of these matrices is equal to the dimensionality
     of the word embeddings (which in this case is three) to allow us to perform the
     matrix multiplication.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，这些矩阵的行数等于词嵌入的维度（在本例中为三），以便进行矩阵乘法。
 - en: Subsequently, the query, key, and value vectors for each word are generated
     by multiplying each word embedding by each of the weight matrices.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 随后，通过将每个词嵌入与每个权重矩阵相乘来生成每个词的查询、键和值向量。
 - en: '[PRE2]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Considering only the first word for the time being, the next step scores its
     query vector against all the key vectors using a dot product operation.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 只考虑第一个词的情况下，下一步是使用点积操作对其查询向量与所有键向量进行评分。
 - en: '[PRE3]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The score values are subsequently passed through a softmax operation to generate
     the weights. Before doing so, it is common practice to divide the score values
     by the square root of the dimensionality of the key vectors (in this case, three)
     to keep the gradients stable.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 评分值随后通过softmax操作生成权重。在此之前，通常将评分值除以关键向量维度的平方根（在此案例中为三），以保持梯度稳定。
 - en: '[PRE4]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Finally, the attention output is calculated by a weighted sum of all four value
     vectors.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，通过所有四个值向量的加权总和计算注意力输出。
 - en: '[PRE5]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '[PRE6]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'For faster processing, the same calculations can be implemented in matrix form
     to generate an attention output for all four words in one go:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了加快处理速度，相同的计算可以以矩阵形式实现，一次生成所有四个词的注意力输出：
 - en: '[PRE7]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '[PRE8]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '**Further Reading**'
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你希望深入了解。
 - en: '**Books**'
+  id: totrans-73
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019.'
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[使用Python的高级深度学习](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)，2019年。'
 - en: '[Deep Learning Essentials](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365),
     2018.'
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习要点](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365)，2018年。'
 - en: '**Papers**'
+  id: totrans-76
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
     2014.'
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[通过联合学习对齐和翻译的神经机器翻译](https://arxiv.org/abs/1409.0473)，2014年。'
 - en: '**Summary**'
+  id: totrans-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered the attention mechanism and its implementation.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了注意机制及其实现。
 - en: 'Specifically, you learned:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How the attention mechanism uses a weighted sum of all the encoder hidden states
     to flexibly focus the attention of the decoder to the most relevant parts of the
     input sequence
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 注意机制如何使用所有编码器隐藏状态的加权总和来灵活地将解码器的注意力集中在输入序列中最相关的部分
 - en: How the attention mechanism can be generalized for tasks where the information
     may not necessarily be related in a sequential fashion
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 注意机制如何推广到信息不一定按顺序相关的任务
 - en: How to implement the general attention mechanism with NumPy and SciPy
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用NumPy和SciPy实现通用注意机制
 - en: Do you have any questions?
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有什么问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提出你的问题，我会尽力回答。

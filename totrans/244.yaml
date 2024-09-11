@@ -1,363 +1,550 @@
 - en: A Gentle Introduction to Evaluating Limits
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 温和地介绍如何评估极限
 - en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits/](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits/](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits/)
 - en: The concept of the limit of a function dates back to Greek scholars such as
     Eudoxus and Archimedes. While they never formally defined limits, many of their
     calculations were based upon this concept. Isaac Newton formally defined the notion
     of a limit and Cauchy refined this idea. Limits form the basis of calculus, which
     in turn defines the foundation of many machine learning algorithms. Hence, it
     is important to understand how limits of different types of functions are evaluated.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数极限的概念可以追溯到古希腊学者如厄休德斯和阿基米德。虽然他们没有正式定义极限，但他们的许多计算都基于这一概念。艾萨克·牛顿正式定义了极限的概念，柯西对这一概念进行了细化。极限构成了微积分的基础，而微积分又定义了许多机器学习算法的基础。因此，理解如何评估不同类型函数的极限非常重要。
 - en: In this tutorial, you will discover how to evaluate the limits of different
     types of functions.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现如何评估不同类型函数的极限。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: The different rules for evaluating limits
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 评估极限的不同规则
 - en: How to evaluate the limit of polynomials and rational functions
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何评估多项式和有理函数的极限
 - en: How to evaluate the limit of a function with discontinuities
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何评估带有间断的函数的极限
 - en: The Sandwich Theorem
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 三明治定理
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/a0157db3bb9e3d144abd43b848ac7a15.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/IMG_1951-scaled.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/a0157db3bb9e3d144abd43b848ac7a15.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/IMG_1951-scaled.jpg)'
 - en: A Gentle Introduction to Limits and Continuity Photo by Mehreen Saeed, some
     rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 温和地介绍极限和连续性 由Mehreen Saeed拍摄，保留部分权利。
 - en: Tutorial Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into 3 parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为3部分；它们是：
 - en: Rules for limits
+  id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 极限规则
 - en: Examples of evaluating limits using the rules for limits
+  id: totrans-15
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用极限规则评估极限的示例
 - en: Limits for polynomials
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 多项式的极限
 - en: Limits for rational expressions
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 有理表达式的极限
 - en: Limits for functions with a discontinuity
+  id: totrans-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 带有间断的函数的极限
 - en: The Sandwich Theorem
+  id: totrans-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 三明治定理
 - en: Rules for Limits
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 极限的规则
 - en: 'Limits are easy to evaluate if we know a few simple principles, which are listed
     below. All these rules are based on the known limits of two functions f(x) and
     g(x), when x approaches a point k:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们知道一些简单的原则，极限是容易评估的，以下列出了这些原则。所有这些规则都基于两个函数f(x)和g(x)的已知极限，当x接近点k时：
 - en: '[![Simple Rules for Evaluating Limits](../Images/454c9d79b9a38231ebdac14190deda6d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/eval1.png)'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![评估极限的简单规则](../Images/454c9d79b9a38231ebdac14190deda6d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/eval1.png)'
 - en: Rules for Evaluating Limits
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 评估极限的规则
 - en: Examples of Using Rules to Evaluate Limits
+  id: totrans-24
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用规则评估极限的示例
 - en: '[![Examples of Evaluating Limits Using Simple Rules](../Images/32c804fad958235cc0c0af8e49cbfc5c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/evalex.png)'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![使用简单规则评估极限的示例](../Images/32c804fad958235cc0c0af8e49cbfc5c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/evalex.png)'
 - en: Examples of Evaluating Limits Using Simple Rules
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用简单规则评估极限的示例
 - en: Here are a few examples that use the basic rules to evaluate a limit. Note that
     these rules apply to functions which are defined at a point as x approaches that
     point.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有几个使用基本规则评估极限的示例。注意，这些规则适用于在x接近某一点时定义的函数。
 - en: Limits for Polynomials
+  id: totrans-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 多项式的极限
 - en: Examples 1 and 2 are that of polynomials. From the rules for limits, we can
     see that for any polynomial, the limit of the polynomial when x approaches a point
     k is equal to the value of the polynomial at k. It can be written as:[![](../Images/401e4b84f1ba0db33552954c781549e5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/poly.png)
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 示例1和2是多项式的情况。根据极限规则，我们可以看到对于任何多项式，当x接近点k时，多项式的极限等于多项式在k处的值。可以写成：[![](../Images/401e4b84f1ba0db33552954c781549e5.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/poly.png)
 - en: Hence, we can evaluate the limit of a polynomial via direct substitution, e.g.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们可以通过直接替代来评估多项式的极限，例如。
 - en: lim(x→1) x^4+3x^3+2 = 1^4+3(1)^3+2 = 6
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(x→1) x^4+3x^3+2 = 1^4+3(1)^3+2 = 6
 - en: Limits for Rational Functions
+  id: totrans-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 有理函数的极限
 - en: For rational functions that involve fractions, there are two cases. One case
     is evaluating the limit when x approaches a point and the function is defined
     at that point. The other case involves computing the limit when x approaches a
     point and the function is undefined at that point.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于涉及分数的有理函数，有两种情况。一种情况是在x接近某一点且函数在该点定义的情况下评估极限。另一种情况涉及在x接近某一点且函数在该点处未定义时计算极限。
 - en: 'Case 1: Function is Defined'
+  id: totrans-34
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 情况 1：函数已定义
 - en: 'Similar to the case of polynomials, whenever we have a function, which is a
     rational expression of the form f(x)/g(x) and the denominator is non-zero at a
     point then:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于多项式的情况，每当我们有一个函数，即形式为f(x)/g(x)的有理表达式且分母在某一点不为零时，则：
 - en: lim(x→k) f(x)/g(x) = f(k)/g(k) if g(k)≠0
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(x→k) f(x)/g(x) = f(k)/g(k) if g(k)≠0
 - en: 'We can therefore evaluate this limit via direct substitution. For example:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们可以通过直接代入来评估这个极限。例如：
 - en: lim(x→0)(x^2+1)/(x-1) = -1
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(x→0)(x^2+1)/(x-1) = -1
 - en: Here, we can apply the quotient rule or easier still, substitute x=0 to evaluate
     the limit. However, this function has no limit when x approaches 1\. See the first
     graph in the figure below.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们可以应用商规则，或者更简单地，替换x=0来评估极限。然而，当x接近1时，这个函数没有极限。请看下图中的第一个图表。
 - en: 'Case 2: Function is Undefined'
+  id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 情况2：函数未定义
 - en: 'Let’s look at another example:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看另一个例子：
 - en: lim(x→2)(x^2-4)/(x-2)
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(x→2)(x^2-4)/(x-2)
 - en: 'At x=2 we are faced with a problem. The denominator is zero, and hence the
     function is undefined at x=2\. We can see from the figure that the graph of this
     function and (x+2) is the same, except at the point x=2, where there is a hole.
     In this case, we can cancel out the common factors and still evaluate the limit
     for (x→2) as:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 在x=2时，我们面临一个问题。分母为零，因此在x=2处函数未定义。我们可以从图表中看出，这个函数和(x+2)是相同的，除了在点x=2处有一个孔。在这种情况下，我们可以取消公共因子，仍然评估(x→2)的极限如下：
 - en: lim(x→2)(x^2-4)/(x-2) = lim(x→2)(x-2)(x+2)/(x-2) = lim(x→2)(x+2) = 4
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(x→2)(x^2-4)/(x-2) = lim(x→2)(x-2)(x+2)/(x-2) = lim(x→2)(x+2) = 4
 - en: 'Following image shows the above two examples as well as a third similar example
     of g_3(x):'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下图像展示了上述两个例子以及另一个类似的g_3(x)的第三个例子：
 - en: '[![Limits for rational functions ](../Images/a70c3094228d80a7397b38d675571999.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/evalrat.png)'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![有理函数的极限](../Images/a70c3094228d80a7397b38d675571999.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/evalrat.png)'
 - en: Examples of Computing Limits for Rational Functions
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 有理函数计算极限的例子
 - en: Case for Functions with a Discontinuity
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 函数有不连续点的情况
 - en: 'Suppose we have a function h(x), which is defined for all real numbers:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们有一个函数h(x)，它在所有实数上都有定义：
 - en: h(x) = (x^2+x)/x,  if x≠0
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: h(x) = (x^2+x)/x，如果x≠0
 - en: h(x) = 0, if x=0
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: h(x) = 0，如果x=0
 - en: The function g(x),  has a discontinuity at x=0, as shown in the figure below.
     When evaluating lim(x→0)h(x), we have to see what happens to h(x) when x is close
     to 0 (and not when x=0). As we approach x=0 from either side, h(x) approaches
     1, and hence lim(x→0)h(x)=1.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数g(x)在x=0处有不连续点，如下图所示。当评估lim(x→0)h(x)时，我们必须看到当x接近0时h(x)的变化（而不是x=0时）。当我们从两侧接近x=0时，h(x)接近1，因此lim(x→0)h(x)=1。
 - en: The function m(x) shown in the figure below is another interesting case. This
     function is also defined for all real numbers but the limit does not exist when
     x→0.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下图中显示的函数m(x)是另一个有趣的案例。该函数在所有实数上都有定义，但当x→0时，极限不存在。
 - en: '[![](../Images/cbf7cc80131d8619c72028dc60d1e4c0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/evalundef.png)'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/cbf7cc80131d8619c72028dc60d1e4c0.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/evalundef.png)'
 - en: Evaluating Limits when there is a Discontinuity
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在存在不连续性时评估极限
 - en: The Sandwich Theorem
+  id: totrans-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 夹逼定理
 - en: 'This theorem is also called the Squeeze theorem or the Pinching theorem. It
     states that when the following are true:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个定理也称为夹逼定理或者夹紧定理。它陈述了以下情况为真时：
 - en: x is close to k
+  id: totrans-58
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: x接近k
 - en: f(x) <= g(x) <= h(x)
+  id: totrans-59
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: f(x) <= g(x) <= h(x)
 - en: lim(x→k)f(x) = lim(x→k)h(x) = L
+  id: totrans-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: lim(x→k)f(x) = lim(x→k)h(x) = L
 - en: 'then the limit of g(x) as x approaches k is given by:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，在x→k时，函数g(x)的极限如下：
 - en: lim(x→k)g(x) = L
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(x→k)g(x) = L
 - en: '[![An illustration of the sandwich theorem](../Images/a5fae7278a3cbcbb4bdbbaa7979778dc.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/sand.png)'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![夹逼定理的示意图](../Images/a5fae7278a3cbcbb4bdbbaa7979778dc.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/sand.png)'
 - en: The Sandwich Theorem
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 夹逼定理
 - en: 'This theorem is illustrated in the figure below:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个定理在下图中有所说明：
 - en: 'Using this theorem we can evaluate the limits of many complex functions. A
     well known example involves the sine function:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 利用这个定理，我们可以评估许多复杂函数的极限。一个众所周知的例子涉及正弦函数：
 - en: lim(x→0)x^2sin(1/x)
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: lim(x→0)x^2sin(1/x)
 - en: '[![Sandwich theorem to compute limits](../Images/ede0d7d4e8e11b96041184db51af6b67.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/sandEx.png)'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![计算极限的夹逼定理](../Images/ede0d7d4e8e11b96041184db51af6b67.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/sandEx.png)'
 - en: Computing Limits Using Sandwich Theorem
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用夹逼定理计算极限
 - en: 'We know that the sin(x) always alternates between -1 and +1\. Using this fact,
     we can solve this limit as shown below:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们知道sin(x)总是交替在-1和+1之间。利用这一事实，我们可以如下解决这个极限：
 - en: Extensions
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 扩展内容
 - en: This section lists some ideas for extending the tutorial that you may wish to
     explore.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节列出了一些你可能希望探讨的扩展教程的想法。
 - en: L’Hospital’s Rule and Indeterminate Forms (requires function derivatives)
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 洛必达法则与不确定型（需要函数导数）
 - en: Function derivative defined in terms of the limit of a function
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 函数导数在函数极限中的定义
 - en: Function integrals
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 函数积分
 - en: If you explore any of these extensions, I’d love to know. Post your findings
     in the comments below.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你探讨了这些扩展内容，我很乐意知道。请在下面的评论中发布你的发现。
 - en: Further Reading
+  id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: The best way to learn and understand mathematics is via practice, and solving
     more problems. This section provides more resources on the topic if you are looking
     to go deeper.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 学习和理解数学的最佳方式是通过练习和解决更多的问题。本节提供了更多资源，如果你希望深入学习这个主题。
 - en: Tutorials
+  id: totrans-79
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 教程
 - en: Tutorial on [limits and continuity](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity)
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于[极限与连续性](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity)的教程
 - en: Additional resources on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning/)
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于[机器学习的微积分书籍](https://machinelearningmastery.com/calculus-books-for-machine-learning/)的额外资源
 - en: Books
+  id: totrans-82
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Thomas’ Calculus](https://amzn.to/35Yeolv), 14th edition, 2017\. (based on
     the original works of George B. Thomas, revised by Joel Hass, Christopher Heil,
     Maurice Weir)'
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[托马斯微积分](https://amzn.to/35Yeolv)，第14版，2017年。（基于George B. Thomas的原著，由Joel Hass,
+    Christopher Heil, Maurice Weir修订）'
 - en: '[Calculus](https://amzn.to/3fqNSEB), 3rd Edition, 2017\. (Gilbert Strang)'
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://amzn.to/3fqNSEB)，第3版，2017年。（Gilbert Strang）'
 - en: '[Calculus](https://amzn.to/3kS9I52), 8th edition, 2015\. (James Stewart)'
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://amzn.to/3kS9I52)，第8版，2015年。（James Stewart）'
 - en: Summary
+  id: totrans-86
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you discovered how limits for different types of functions
     can be evaluated.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解到如何评估不同类型函数的极限。
 - en: 'Specifically, you learned:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: Rules for evaluating limits for different functions.
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不同函数极限的评估规则。
 - en: Evaluating limits of polynomials and rational functions
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多项式和有理函数的极限评估
 - en: Evaluating limits when discontinuities are present in a function
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 函数中存在不连续性时的极限评估
 - en: Do you have any questions? Ask your questions in the comments below and I will
     do my best to answer. Enjoy calculus!
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？请在下面的评论中提问，我会尽力回答。享受微积分吧！

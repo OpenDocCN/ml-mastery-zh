@@ -1,79 +1,119 @@
 - en: Application of differentiations in neural networks
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 神经网络中的微分应用
 - en: 原文：[https://machinelearningmastery.com/application-of-differentiations-in-neural-networks/](https://machinelearningmastery.com/application-of-differentiations-in-neural-networks/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/application-of-differentiations-in-neural-networks/](https://machinelearningmastery.com/application-of-differentiations-in-neural-networks/)
 - en: Differential calculus is an important tool in machine learning algorithms. Neural
     networks in particular, the gradient descent algorithm depends on the gradient,
     which is a quantity computed by differentiation.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 微分学是机器学习算法中的一个重要工具。特别是在神经网络中，梯度下降算法依赖于梯度，这是通过微分计算得到的量。
 - en: In this tutorial, we will see how the back-propagation technique is used in
     finding the gradients in neural networks.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将探讨反向传播技术如何用于计算神经网络中的梯度。
 - en: After completing this tutorial, you will know
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解
 - en: What is a total differential and total derivative
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是全微分和总导数
 - en: How to compute the total derivatives in neural networks
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何计算神经网络中的总导数
 - en: How back-propagation helped in computing the total derivatives
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 反向传播如何帮助计算总导数
 - en: Let’s get started
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧
 - en: '![Application of differentiations in neural networks](../Images/a020e001bca1f90861490b3977c94858.png)'
+  id: totrans-9
   prefs: []
   type: TYPE_IMG
+  zh: '![神经网络中的微分应用](../Images/a020e001bca1f90861490b3977c94858.png)'
 - en: Application of differentiations in neural networks
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络中的微分应用
 - en: Photo by [Freeman Zhou](https://unsplash.com/photos/plX7xeNb3Yo), some rights
     reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Freeman Zhou](https://unsplash.com/photos/plX7xeNb3Yo)提供，部分权利保留。
 - en: Tutorial overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概览
 - en: 'This tutorial is divided into 5 parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为5部分，它们是：
 - en: Total differential and total derivatives
+  id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 总微分和总导数
 - en: Algebraic representation of a multilayer perceptron model
+  id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 多层感知器模型的代数表示
 - en: Finding the gradient by back-propagation
+  id: totrans-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 通过反向传播找出梯度
 - en: Matrix form of gradient equations
+  id: totrans-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 梯度方程的矩阵形式
 - en: Implementing back-propagation
+  id: totrans-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 实现反向传播
 - en: Total differential and total derivatives
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总微分和总导数
 - en: For a function such as $f(x)$, we call denote its derivative as $f'(x)$ or $\frac{df}{dx}$.
     But for a multivariate function, such as $f(u,v)$, we have a partial derivative
     of $f$ with respect to $u$ denoted as $\frac{\partial f}{\partial u}$, or sometimes
@@ -81,268 +121,428 @@
     respect to $u$ while assuming the other variable $v$ is a constant. Therefore,
     we use $\partial$ instead of $d$ as the symbol for differentiation to signify
     the difference.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于函数如$f(x)$，我们将其导数表示为$f'(x)$或$\frac{df}{dx}$。但对于多变量函数，如$f(u,v)$，我们有相对于$u$的偏导数$\frac{\partial
+    f}{\partial u}$，有时写作$f_u$。偏导数是通过对$f$进行相对于$u$的微分得到的，同时假设另一个变量$v$为常数。因此，我们用$\partial$代替$d$作为微分符号，以表示不同。
 - en: However, what if the $u$ and $v$ in $f(u,v)$ are both function of $x$? In other
     words, we can write $u(x)$ and $v(x)$ and $f(u(x), v(x))$. So $x$ determines the
     value of $u$ and $v$ and in turn, determines $f(u,v)$. In this case, it is perfectly
     fine to ask what is $\frac{df}{dx}$, as $f$ is eventually determined by $x$.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 不过，如果$f(u,v)$中的$u$和$v$都依赖于$x$呢？换句话说，我们可以写成$u(x)$和$v(x)$以及$f(u(x), v(x))$。所以$x$决定了$u$和$v$的值，从而决定了$f(u,v)$。在这种情况下，问$\frac{df}{dx}$是完全合理的，因为$f$最终由$x$决定。
 - en: This is the concept of total derivatives. In fact, for a multivariate function
     $f(t,u,v)=f(t(x),u(x),v(x))$, we always have
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是总导数的概念。事实上，对于多变量函数$f(t,u,v)=f(t(x),u(x),v(x))$，我们总是有
 - en: $$
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \frac{df}{dx} = \frac{\partial f}{\partial t}\frac{dt}{dx} + \frac{\partial
     f}{\partial u}\frac{du}{dx} + \frac{\partial f}{\partial v}\frac{dv}{dx}
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{df}{dx} = \frac{\partial f}{\partial t}\frac{dt}{dx} + \frac{\partial
+    f}{\partial u}\frac{du}{dx} + \frac{\partial f}{\partial v}\frac{dv}{dx}
 - en: $$
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: The above notation is called the total derivative because it is sum of the partial
     derivatives. In essence, it is applying chain rule to find the differentiation.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述符号被称为总导数，因为它是偏导数的和。本质上，它是应用链式法则来求导。
 - en: If we take away the $dx$ part in the above equation, what we get is an approximate
     change in $f$ with respect to $x$, i.e.,
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们去掉上述方程中的$dx$部分，得到的是$f$相对于$x$的近似变化，即，
 - en: $$
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: df = \frac{\partial f}{\partial t}dt + \frac{\partial f}{\partial u}du + \frac{\partial
     f}{\partial v}dv
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: df = \frac{\partial f}{\partial t}dt + \frac{\partial f}{\partial u}du + \frac{\partial
+    f}{\partial v}dv
 - en: $$
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: We call this notation the total differential.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们称这种符号为总微分。
 - en: Algebraic representation of a multilayer perceptron model
+  id: totrans-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 多层感知器模型的代数表示
 - en: 'Consider the network:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑网络：
 - en: '![](../Images/d244025167c7691aa0e2d6bad081afa3.png)'
+  id: totrans-34
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/d244025167c7691aa0e2d6bad081afa3.png)'
 - en: 'An example of neural network. Source: [https://commons.wikimedia.org/wiki/File:Multilayer_Neural_Network.png](https://commons.wikimedia.org/wiki/File:Multilayer_Neural_Network.png")'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '神经网络示例。来源: [https://commons.wikimedia.org/wiki/File:Multilayer_Neural_Network.png](https://commons.wikimedia.org/wiki/File:Multilayer_Neural_Network.png)'
 - en: This is a simple, fully-connected, 4-layer neural network. Let’s call the input
     layer as layer 0, the two hidden layers the layer 1 and 2, and the output layer
     as layer 3\. In this picture, we see that we have $n_0=3$ input units, and $n_1=4$
     units in the first hidden layer and $n_2=2$ units in the second input layer. There
     are $n_3=2$ output units.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个简单的全连接4层神经网络。我们将输入层称为第0层，两个隐藏层称为第1层和第2层，输出层称为第3层。在这个图中，我们可以看到有$n_0=3$个输入单元，第一个隐藏层有$n_1=4$个单元，第二个隐藏层有$n_2=2$个单元。输出层有$n_3=2$个单元。
 - en: If we denote the input to the network as $x_i$ where $i=1,\cdots,n_0$ and the
     network’s output as $\hat{y}_i$ where $i=1,\cdots,n_3$. Then we can write
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们将网络的输入记作 $x_i$，其中$i=1,\cdots,n_0$，网络的输出记作 $\hat{y}_i$，其中$i=1,\cdots,n_3$。那么我们可以写成
 - en: $$
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: h_{1i} &= f_1(\sum_{j=1}^{n_0} w^{(1)}_{ij} x_j + b^{(1)}_i) & \text{for } i
     &= 1,\cdots,n_1\\
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: h_{1i} &= f_1(\sum_{j=1}^{n_0} w^{(1)}_{ij} x_j + b^{(1)}_i) & \text{for } i
+    &= 1,\cdots,n_1\\
 - en: h_{2i} &= f_2(\sum_{j=1}^{n_1} w^{(2)}_{ij} h_{1j} + b^{(2)}_i) & i &= 1,\cdots,n_2\\
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: h_{2i} &= f_2(\sum_{j=1}^{n_1} w^{(2)}_{ij} h_{1j} + b^{(2)}_i) & i &= 1,\cdots,n_2\\
 - en: \hat{y}_i &= f_3(\sum_{j=1}^{n_2} w^{(3)}_{ij} h_{2j} + b^{(3)}_i) & i &= 1,\cdots,n_3
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: \hat{y}_i &= f_3(\sum_{j=1}^{n_2} w^{(3)}_{ij} h_{2j} + b^{(3)}_i) & i &= 1,\cdots,n_3
 - en: \end{aligned}
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: Here the activation function at layer $i$ is denoted as $f_i$. The outputs of
     first hidden layer are denoted as $h_{1i}$ for the $i$-th unit. Similarly, the
     outputs of second hidden layer are denoted as $h_{2i}$. The weights and bias of
     unit $i$ in layer $k$ are denoted as $w^{(k)}_{ij}$ and $b^{(k)}_i$ respectively.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里，第$i$层的激活函数记作 $f_i$。第一隐含层的输出记作 $h_{1i}$，第二隐含层的输出记作 $h_{2i}$。第$i$单元在第$k$层的权重和偏置分别记作
+    $w^{(k)}_{ij}$ 和 $b^{(k)}_i$。
 - en: In the above, we can see that the output of layer $k-1$ will feed into layer
     $k$. Therefore, while $\hat{y}_i$ is expressed as a function of $h_{2j}$, but
     $h_{2i}$ is also a function of $h_{1j}$ and in turn, a function of $x_j$.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上图中，我们可以看到第$k-1$层的输出将输入到第$k$层。因此，虽然 $\hat{y}_i$ 被表示为 $h_{2j}$ 的函数，但 $h_{2i}$
+    也依赖于 $h_{1j}$，而 $h_{1j}$ 又依赖于 $x_j$。
 - en: The above describes the construction of a neural network in terms of algebraic
     equations. Training a neural network would need to specify a *loss function* as
     well so we can minimize it in the training loop. Depends on the application, we
     commonly use cross entropy for categorization problems or mean squared error for
     regression problems. With the target variables as $y_i$, the mean square error
     loss function is specified as
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述内容描述了神经网络在代数方程中的构建。训练神经网络时，需要指定一个*损失函数*，以便我们可以在训练过程中最小化它。根据应用的不同，我们通常使用交叉熵处理分类问题，或均方误差处理回归问题。目标变量为$y_i$，均方误差损失函数被指定为
 - en: $$
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: L = \sum_{i=1}^{n_3} (y_i-\hat{y}_i)^2
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: L = \sum_{i=1}^{n_3} (y_i-\hat{y}_i)^2
 - en: $$
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: Want to Get Started With Calculus for Machine Learning?
+  id: totrans-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习机器学习的微积分吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费7天电子邮件速成课程吧（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得免费的课程PDF电子书版本。
 - en: Finding the gradient by back-propagation
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 通过反向传播寻找梯度
 - en: 'In the above construct, $x_i$ and $y_i$ are from the dataset. The parameters
     to the neural network are $w$ and $b$. While the activation functions $f_i$ are
     by design the outputs at each layer $h_{1i}$, $h_{2i}$, and $\hat{y}_i$ are dependent
     variables. In training the neural network, our goal is to update $w$ and $b$ in
     each iteration, namely, by the gradient descent update rule:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述构造中，$x_i$ 和 $y_i$ 来自数据集。神经网络的参数是$w$ 和 $b$。而激活函数 $f_i$ 是通过设计得出的输出，每一层的 $h_{1i}$、$h_{2i}$
+    和 $\hat{y}_i$ 是依赖变量。在训练神经网络时，我们的目标是通过梯度下降更新 $w$ 和 $b$，即通过梯度下降更新规则：
 - en: $$
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: w^{(k)}_{ij} &= w^{(k)}_{ij} – \eta \frac{\partial L}{\partial w^{(k)}_{ij}}
     \\
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: w^{(k)}_{ij} &= w^{(k)}_{ij} – \eta \frac{\partial L}{\partial w^{(k)}_{ij}}
+    \\
 - en: b^{(k)}_{i} &= b^{(k)}_{i} – \eta \frac{\partial L}{\partial b^{(k)}_{i}}
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: b^{(k)}_{i} &= b^{(k)}_{i} – \eta \frac{\partial L}{\partial b^{(k)}_{i}}
 - en: \end{aligned}
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: where $\eta$ is the learning rate parameter to gradient descent.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中 $\eta$ 是梯度下降的学习率参数。
 - en: From the equation of $L$ we know that $L$ is not dependent on $w^{(k)}_{ij}$
     or $b^{(k)}_i$ but on $\hat{y}_i$. However, $\hat{y}_i$ can be written as function
     of $w^{(k)}_{ij}$ or $b^{(k)}_i$ eventually. Let’s see one by one how the weights
     and bias at layer $k$ can be connected to $\hat{y}_i$ at the output layer.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 从$L$的方程我们知道$L$不依赖于$w^{(k)}_{ij}$或$b^{(k)}_i$，而是依赖于$\hat{y}_i$。然而，$\hat{y}_i$最终可以表示为$w^{(k)}_{ij}$或$b^{(k)}_i$的函数。让我们逐一看看第$k$层的权重和偏置是如何与输出层的$\hat{y}_i$相关联的。
 - en: We begin with the loss metric. If we consider the loss of a single data point,
     we have
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们从损失指标开始。如果考虑单个数据点的损失，我们有
 - en: $$
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: L &= \sum_{i=1}^{n_3} (y_i-\hat{y}_i)^2\\
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: L &= \sum_{i=1}^{n_3} (y_i-\hat{y}_i)^2\\
 - en: \frac{\partial L}{\partial \hat{y}_i} &= 2(y_i – \hat{y}_i) & \text{for } i
     &= 1,\cdots,n_3
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial \hat{y}_i} &= 2(y_i – \hat{y}_i) & \text{for } i
+    &= 1,\cdots,n_3
 - en: \end{aligned}
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: Here we see that the loss function depends on all outputs $\hat{y}_i$ and therefore
     we can find a partial derivative $\frac{\partial L}{\partial \hat{y}_i}$.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里我们看到损失函数依赖于所有输出$\hat{y}_i$，因此我们可以找到偏导数$\frac{\partial L}{\partial \hat{y}_i}$。
 - en: 'Now let’s look at the output layer:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们来看输出层：
 - en: $$
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: \hat{y}_i &= f_3(\sum_{j=1}^{n_2} w^{(3)}_{ij} h_{2j} + b^{(3)}_i) & \text{for
     }i &= 1,\cdots,n_3 \\
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: \hat{y}_i &= f_3(\sum_{j=1}^{n_2} w^{(3)}_{ij} h_{2j} + b^{(3)}_i) & \text{for
+    }i &= 1,\cdots,n_3 \\
 - en: \frac{\partial L}{\partial w^{(3)}_{ij}} &= \frac{\partial L}{\partial \hat{y}_i}\frac{\partial
     \hat{y}_i}{\partial w^{(3)}_{ij}} & i &= 1,\cdots,n_3;\ j=1,\cdots,n_2 \\
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial w^{(3)}_{ij}} &= \frac{\partial L}{\partial \hat{y}_i}\frac{\partial
+    \hat{y}_i}{\partial w^{(3)}_{ij}} & i &= 1,\cdots,n_3;\ j=1,\cdots,n_2 \\
 - en: '&= \frac{\partial L}{\partial \hat{y}_i} f’_3(\sum_{j=1}^{n_2} w^{(3)}_{ij}
     h_{2j} + b^{(3)}_i)h_{2j} \\'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: '&= \frac{\partial L}{\partial \hat{y}_i} f’_3(\sum_{j=1}^{n_2} w^{(3)}_{ij}
+    h_{2j} + b^{(3)}_i)h_{2j} \\'
 - en: \frac{\partial L}{\partial b^{(3)}_i} &= \frac{\partial L}{\partial \hat{y}_i}\frac{\partial
     \hat{y}_i}{\partial b^{(3)}_i} & i &= 1,\cdots,n_3 \\
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial b^{(3)}_i} &= \frac{\partial L}{\partial \hat{y}_i}\frac{\partial
+    \hat{y}_i}{\partial b^{(3)}_i} & i &= 1,\cdots,n_3 \\
 - en: '&= \frac{\partial L}{\partial \hat{y}_i}f’_3(\sum_{j=1}^{n_2} w^{(3)}_{ij}
     h_{2j} + b^{(3)}_i)'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '&= \frac{\partial L}{\partial \hat{y}_i}f’_3(\sum_{j=1}^{n_2} w^{(3)}_{ij}
+    h_{2j} + b^{(3)}_i)'
 - en: \end{aligned}
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: Because the weight $w^{(3)}_{ij}$ at layer 3 applies to input $h_{2j}$ and affects
     output $\hat{y}_i$ only. Hence we can write the derivative $\frac{\partial L}{\partial
     w^{(3)}_{ij}}$ as the product of two derivatives $\frac{\partial L}{\partial \hat{y}_i}\frac{\partial
     \hat{y}_i}{\partial w^{(3)}_{ij}}$. Similar case for the bias $b^{(3)}_i$ as well.
     In the above, we make use of $\frac{\partial L}{\partial \hat{y}_i}$, which we
     already derived previously.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为第3层的权重$w^{(3)}_{ij}$作用于输入$h_{2j}$并仅影响输出$\hat{y}_i$。因此，我们可以将偏导数$\frac{\partial
+    L}{\partial w^{(3)}_{ij}}$写作两个偏导数的乘积$\frac{\partial L}{\partial \hat{y}_i}\frac{\partial
+    \hat{y}_i}{\partial w^{(3)}_{ij}}$。偏置$b^{(3)}_i$也是类似的情况。在上述过程中，我们使用了之前已经推导出的$\frac{\partial
+    L}{\partial \hat{y}_i}$。
 - en: 'But in fact, we can also write the partial derivative of $L$ with respect to
     output of second layer $h_{2j}$. It is not used for the update of weights and
     bias on layer 3 but we will see its importance later:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 但实际上，我们也可以写出$L$对第二层输出$h_{2j}$的偏导数。它不会用于第3层权重和偏置的更新，但我们稍后会看到它的重要性：
 - en: $$
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: \frac{\partial L}{\partial h_{2j}} &= \sum_{i=1}^{n_3}\frac{\partial L}{\partial
     \hat{y}_i}\frac{\partial \hat{y}_i}{\partial h_{2j}} & \text{for }j &= 1,\cdots,n_2
     \\
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial h_{2j}} &= \sum_{i=1}^{n_3}\frac{\partial L}{\partial
+    \hat{y}_i}\frac{\partial \hat{y}_i}{\partial h_{2j}} & \text{for }j &= 1,\cdots,n_2
+    \\
 - en: '&= \sum_{i=1}^{n_3}\frac{\partial L}{\partial \hat{y}_i}f’_3(\sum_{j=1}^{n_2}
     w^{(3)}_{ij} h_{2j} + b^{(3)}_i)w^{(3)}_{ij}'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: '&= \sum_{i=1}^{n_3}\frac{\partial L}{\partial \hat{y}_i}f’_3(\sum_{j=1}^{n_2}
+    w^{(3)}_{ij} h_{2j} + b^{(3)}_i)w^{(3)}_{ij}'
 - en: \end{aligned}
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: This one is the interesting one and different from the previous partial derivatives.
     Note that $h_{2j}$ is an output of layer 2\. Each and every output in layer 2
     will affect the output $\hat{y}_i$ in layer 3\. Therefore, to find $\frac{\partial
@@ -351,197 +551,319 @@
     as the total derivative, in which we applied the chain rule $\frac{\partial L}{\partial
     \hat{y}_i}\frac{\partial \hat{y}_i}{\partial h_{2j}}$ for every output $i$ and
     then sum them up.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个导数是有趣的，并且与之前的部分导数不同。注意到 $h_{2j}$ 是第2层的输出。第2层的每一个输出都会影响第3层的输出 $\hat{y}_i$。因此，为了找到
+    $\frac{\partial L}{\partial h_{2j}}$，我们需要将第3层的每个输出加起来。因此，上述方程中使用了求和符号。我们可以将 $\frac{\partial
+    L}{\partial h_{2j}}$ 视为总导数，其中我们对每个输出 $i$ 应用了链式法则 $\frac{\partial L}{\partial \hat{y}_i}\frac{\partial
+    \hat{y}_i}{\partial h_{2j}}$，然后将它们加起来。
 - en: 'If we move back to layer 2, we can derive the derivatives similarly:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们回到第2层，我们可以类似地推导导数：
 - en: $$
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: h_{2i} &= f_2(\sum_{j=1}^{n_1} w^{(2)}_{ij} h_{1j} + b^{(2)}_i) & \text{for
     }i &= 1,\cdots,n_2\\
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: h_{2i} &= f_2(\sum_{j=1}^{n_1} w^{(2)}_{ij} h_{1j} + b^{(2)}_i) & \text{对于 }i
+    &= 1,\cdots,n_2\\
 - en: \frac{\partial L}{\partial w^{(2)}_{ij}} &= \frac{\partial L}{\partial h_{2i}}\frac{\partial
     h_{2i}}{\partial w^{(2)}_{ij}} & i&=1,\cdots,n_2;\ j=1,\cdots,n_1 \\
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial w^{(2)}_{ij}} &= \frac{\partial L}{\partial h_{2i}}\frac{\partial
+    h_{2i}}{\partial w^{(2)}_{ij}} & i&=1,\cdots,n_2;\ j=1,\cdots,n_1 \\
 - en: '&= \frac{\partial L}{\partial h_{2i}}f’_2(\sum_{j=1}^{n_1} w^{(2)}_{ij} h_{1j}
     + b^{(2)}_i)h_{1j} \\'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: '&= \frac{\partial L}{\partial h_{2i}}f’_2(\sum_{j=1}^{n_1} w^{(2)}_{ij} h_{1j}
+    + b^{(2)}_i)h_{1j} \\'
 - en: \frac{\partial L}{\partial b^{(2)}_i} &= \frac{\partial L}{\partial h_{2i}}\frac{\partial
     h_{2i}}{\partial b^{(2)}_i} & i &= 1,\cdots,n_2 \\
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial b^{(2)}_i} &= \frac{\partial L}{\partial h_{2i}}\frac{\partial
+    h_{2i}}{\partial b^{(2)}_i} & i &= 1,\cdots,n_2 \\
 - en: '&= \frac{\partial L}{\partial h_{2i}}f’_2(\sum_{j=1}^{n_1} w^{(2)}_{ij} h_{1j}
     + b^{(2)}_i) \\'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: '&= \frac{\partial L}{\partial h_{2i}}f’_2(\sum_{j=1}^{n_1} w^{(2)}_{ij} h_{1j}
+    + b^{(2)}_i) \\'
 - en: \frac{\partial L}{\partial h_{1j}} &= \sum_{i=1}^{n_2}\frac{\partial L}{\partial
     h_{2i}}\frac{\partial h_{2i}}{\partial h_{1j}} & j&= 1,\cdots,n_1 \\
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial h_{1j}} &= \sum_{i=1}^{n_2}\frac{\partial L}{\partial
+    h_{2i}}\frac{\partial h_{2i}}{\partial h_{1j}} & j&= 1,\cdots,n_1 \\
 - en: '&= \sum_{i=1}^{n_2}\frac{\partial L}{\partial h_{2i}}f’_2(\sum_{j=1}^{n_1}
     w^{(2)}_{ij} h_{1j} + b^{(2)}_i) w^{(2)}_{ij}'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: '&= \sum_{i=1}^{n_2}\frac{\partial L}{\partial h_{2i}}f’_2(\sum_{j=1}^{n_1}
+    w^{(2)}_{ij} h_{1j} + b^{(2)}_i) w^{(2)}_{ij}'
 - en: \end{aligned}
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: In the equations above, we are reusing $\frac{\partial L}{\partial h_{2i}}$
     that we derived earlier. Again, this derivative is computed as a sum of several
     products from the chain rule. Also similar to the previous, we derived $\frac{\partial
     L}{\partial h_{1j}}$ as well. It is not used to train $w^{(2)}_{ij}$ nor $b^{(2)}_i$
     but will be used for the layer prior. So for layer 1, we have
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述方程中，我们重新使用了之前推导的 $\frac{\partial L}{\partial h_{2i}}$。同样，这个导数是作为链式法则中几个乘积的总和来计算的。与之前类似，我们也推导了
+    $\frac{\partial L}{\partial h_{1j}}$。它不会用于训练 $w^{(2)}_{ij}$ 或 $b^{(2)}_i$，但会用于前一层。因此，对于第1层，我们有
 - en: $$
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: h_{1i} &= f_1(\sum_{j=1}^{n_0} w^{(1)}_{ij} x_j + b^{(1)}_i) & \text{for } i
     &= 1,\cdots,n_1\\
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: h_{1i} &= f_1(\sum_{j=1}^{n_0} w^{(1)}_{ij} x_j + b^{(1)}_i) & \text{对于 } i
+    &= 1,\cdots,n_1\\
 - en: \frac{\partial L}{\partial w^{(1)}_{ij}} &= \frac{\partial L}{\partial h_{1i}}\frac{\partial
     h_{1i}}{\partial w^{(1)}_{ij}} & i&=1,\cdots,n_1;\ j=1,\cdots,n_0 \\
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial w^{(1)}_{ij}} &= \frac{\partial L}{\partial h_{1i}}\frac{\partial
+    h_{1i}}{\partial w^{(1)}_{ij}} & i&=1,\cdots,n_1;\ j=1,\cdots,n_0 \\
 - en: '&= \frac{\partial L}{\partial h_{1i}}f’_1(\sum_{j=1}^{n_0} w^{(1)}_{ij} x_j
     + b^{(1)}_i)x_j \\'
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: '&= \frac{\partial L}{\partial h_{1i}}f’_1(\sum_{j=1}^{n_0} w^{(1)}_{ij} x_j
+    + b^{(1)}_i)x_j \\'
 - en: \frac{\partial L}{\partial b^{(1)}_i} &= \frac{\partial L}{\partial h_{1i}}\frac{\partial
     h_{1i}}{\partial b^{(1)}_i} & i&=1,\cdots,n_1 \\
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial b^{(1)}_i} &= \frac{\partial L}{\partial h_{1i}}\frac{\partial
+    h_{1i}}{\partial b^{(1)}_i} & i&=1,\cdots,n_1 \\
 - en: '&= \frac{\partial L}{\partial h_{1i}}f’_1(\sum_{j=1}^{n_0} w^{(1)}_{ij} x_j
     + b^{(1)}_i)'
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: '&= \frac{\partial L}{\partial h_{1i}}f’_1(\sum_{j=1}^{n_0} w^{(1)}_{ij} x_j
+    + b^{(1)}_i)'
 - en: \end{aligned}
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: and this completes all the derivatives needed for training of the neural network
     using gradient descent algorithm.
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 这完成了使用梯度下降算法进行神经网络训练所需的所有导数。
 - en: 'Recall how we derived the above: We first start from the loss function $L$
     and find the derivatives one by one in the reverse order of the layers. We write
     down the derivatives on layer $k$ and reuse it for the derivatives on layer $k-1$.
     While computing the output $\hat{y}_i$ from input $x_i$ starts from layer 0 forward,
     computing gradients are in the reversed order. Hence the name “back-propagation”.'
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 回顾我们如何推导上述内容：我们首先从损失函数 $L$ 开始，按照层的反向顺序逐一求导。我们写下第 $k$ 层的导数，并将其用于第 $k-1$ 层的导数。计算从输入
+    $x_i$ 到输出 $\hat{y}_i$ 是从第 0 层向前进行的，而计算梯度则是按反向顺序进行的。因此称之为“反向传播”。
 - en: Matrix form of gradient equations
+  id: totrans-115
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 梯度方程的矩阵形式
 - en: 'While we did not use it above, it is cleaner to write the equations in vectors
     and matrices. We can rewrite the layers and the outputs as:'
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然我们在上面没有使用它，但以向量和矩阵的形式书写方程会更简洁。我们可以将层和输出重写为：
 - en: $$
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \mathbf{a}_k = f_k(\mathbf{z}_k) = f_k(\mathbf{W}_k\mathbf{a}_{k-1}+\mathbf{b}_k)
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: \mathbf{a}_k = f_k(\mathbf{z}_k) = f_k(\mathbf{W}_k\mathbf{a}_{k-1}+\mathbf{b}_k)
 - en: $$
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: where $\mathbf{a}_k$ is a vector of outputs of layer $k$, and assume $\mathbf{a}_0=\mathbf{x}$
     is the input vector and $\mathbf{a}_3=\hat{\mathbf{y}}$ is the output vector.
     Also denote $\mathbf{z}_k = \mathbf{W}_k\mathbf{a}_{k-1}+\mathbf{b}_k$ for convenience
     of notation.
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中 $\mathbf{a}_k$ 是第 $k$ 层的输出向量，假设 $\mathbf{a}_0=\mathbf{x}$ 是输入向量，$\mathbf{a}_3=\hat{\mathbf{y}}$
+    是输出向量。为了便于记号表示，也表示 $\mathbf{z}_k = \mathbf{W}_k\mathbf{a}_{k-1}+\mathbf{b}_k$。
 - en: Under such notation, we can represent $\frac{\partial L}{\partial\mathbf{a}_k}$
     as a vector (so as that of $\mathbf{z}_k$ and $\mathbf{b}_k$) and $\frac{\partial
     L}{\partial\mathbf{W}_k}$ as a matrix. And then if $\frac{\partial L}{\partial\mathbf{a}_k}$
     is known, we have
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这样的记号下，我们可以将 $\frac{\partial L}{\partial\mathbf{a}_k}$ 表示为一个向量（同样适用于 $\mathbf{z}_k$
+    和 $\mathbf{b}_k$），而将 $\frac{\partial L}{\partial\mathbf{W}_k}$ 表示为一个矩阵。然后，如果已知
+    $\frac{\partial L}{\partial\mathbf{a}_k}$，我们有
 - en: $$
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned
 - en: \frac{\partial L}{\partial\mathbf{z}_k} &= \frac{\partial L}{\partial\mathbf{a}_k}\odot
     f_k'(\mathbf{z}_k) \\
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial\mathbf{z}_k} &= \frac{\partial L}{\partial\mathbf{a}_k}\odot
+    f_k'(\mathbf{z}_k) \\
 - en: \frac{\partial L}{\partial\mathbf{W}_k} &= \left(\frac{\partial L}{\partial\mathbf{z}_k}\right)^\top
     \cdot \mathbf{a}_k \\
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial\mathbf{W}_k} &= \left(\frac{\partial L}{\partial\mathbf{z}_k}\right)^\top
+    \cdot \mathbf{a}_k \\
 - en: \frac{\partial L}{\partial\mathbf{b}_k} &= \frac{\partial L}{\partial\mathbf{z}_k}
     \\
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial\mathbf{b}_k} &= \frac{\partial L}{\partial\mathbf{z}_k}
+    \\
 - en: \frac{\partial L}{\partial\mathbf{a}_{k-1}} &= \left(\frac{\partial\mathbf{z}_k}{\partial\mathbf{a}_{k-1}}\right)^\top\cdot\frac{\partial
     L}{\partial\mathbf{z}_k} = \mathbf{W}_k^\top\cdot\frac{\partial L}{\partial\mathbf{z}_k}
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{\partial\mathbf{a}_{k-1}} &= \left(\frac{\partial\mathbf{z}_k}{\partial\mathbf{a}_{k-1}}\right)^\top\cdot\frac{\partial
+    L}{\partial\mathbf{z}_k} = \mathbf{W}_k^\top\cdot\frac{\partial L}{\partial\mathbf{z}_k}
 - en: \end{aligned}
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: where $\frac{\partial\mathbf{z}_k}{\partial\mathbf{a}_{k-1}}$ is a Jacobian
     matrix as both $\mathbf{z}_k$ and $\mathbf{a}_{k-1}$ are vectors, and this Jacobian
     matrix happens to be $\mathbf{W}_k$.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中 $\frac{\partial\mathbf{z}_k}{\partial\mathbf{a}_{k-1}}$ 是雅可比矩阵，因为 $\mathbf{z}_k$
+    和 $\mathbf{a}_{k-1}$ 都是向量，这个雅可比矩阵恰好是 $\mathbf{W}_k$。
 - en: Implementing back-propagation
+  id: totrans-131
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 实现反向传播
 - en: We need the matrix form of equations because it will make our code simpler and
     avoided a lot of loops. Let’s see how we can convert these equations into code
     and make a multilayer perceptron model for classification from scratch using numpy.
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要矩阵形式的方程，因为这将使我们的代码更简洁，避免了很多循环。让我们看看如何将这些方程转换为代码，并从零开始使用 numpy 构建一个用于分类的多层感知机模型。
 - en: 'The first thing we need to implement the activation function and the loss function.
     Both need to be differentiable functions or otherwise our gradient descent procedure
     would not work. Nowadays, it is common to use ReLU activation in the hidden layers
     and sigmoid activation in the output layer. We define them as a function (which
     assumes the input as numpy array) as well as their differentiation:'
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们需要实现激活函数和损失函数。两者都需要是可微分的函数，否则我们的梯度下降过程将无法进行。现在，隐藏层中常用 ReLU 激活函数，输出层中常用
+    sigmoid 激活函数。我们将它们定义为一个函数（假设输入为 numpy 数组）以及它们的导数：
 - en: '[PRE0]'
+  id: totrans-134
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'We deliberately clip the input of the sigmoid function to between -500 to +500
     to avoid overflow. Otherwise, these functions are trivial. Then for classification,
     we care about accuracy but the accuracy function is not differentiable. Therefore,
     we use the cross entropy function as loss for training:'
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们故意将 sigmoid 函数的输入限制在 -500 到 +500 之间以避免溢出。否则，这些函数都是微不足道的。然后，对于分类问题，我们关注准确性，但准确性函数是不可微分的。因此，我们使用交叉熵函数作为训练的损失函数：
 - en: '[PRE1]'
+  id: totrans-136
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: In the above, we assume the output and the target variables are row matrices
     in numpy. Hence we use the dot product operator `@` to compute the sum and divide
     by the number of elements in the output. Note that this design is to compute the
     **average cross entropy** over a **batch** of samples.
+  id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述内容中，我们假设输出和目标变量是numpy中的行矩阵。因此，我们使用点积运算符`@`来计算总和，并除以输出中的元素个数。请注意，这种设计是为了计算**一个批次**样本的**平均交叉熵**。
 - en: 'Then we can implement our multilayer perceptron model. To make it easier to
     read, we want to create the model by providing the number of neurons at each layer
     as well as the activation function at the layers. But at the same time, we would
@@ -549,26 +871,38 @@
     of the loss function for the training. The loss function itself, however, is not
     required but useful for us to track the progress. We create a class to ensapsulate
     the entire model, and define each layer $k$ according to the formula:'
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们可以实现我们的多层感知器模型。为了使其更易读，我们希望通过提供每一层的神经元数量以及层中的激活函数来创建模型。同时，我们还需要激活函数的导数以及训练所需的损失函数的导数。然而，损失函数本身不是必需的，但对于我们跟踪进度非常有用。我们创建了一个类来封装整个模型，并根据公式定义每一层$k$：
 - en: $$
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \mathbf{a}_k = f_k(\mathbf{z}_k) = f_k(\mathbf{a}_{k-1}\mathbf{W}_k+\mathbf{b}_k)
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: \mathbf{a}_k = f_k(\mathbf{z}_k) = f_k(\mathbf{a}_{k-1}\mathbf{W}_k+\mathbf{b}_k)
 - en: $
+  id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: $
 - en: '[PRE2]'
+  id: totrans-142
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The variables in this class `z`, `W`, `b`, and `a` are for the forward pass
     and the variables `dz`, `dW`, `db`, and `da` are their respective gradients that
     to be computed in the back-propagation. All these variables are presented as numpy
     arrays.
+  id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个类中的变量`z`、`W`、`b`和`a`用于前向传递，而变量`dz`、`dW`、`db`和`da`是它们各自的梯度，这些梯度将在反向传播中计算。所有这些变量都以numpy数组的形式呈现。
 - en: As we will see later, we are going to test our model using data generated by
     scikit-learn. Hence we will see our data in numpy array of shape “(number of samples,
     number of features)”. Therefore, each sample is presented as a row on a matrix,
@@ -577,126 +911,190 @@
     be different, the process is the same. Thus we transform the neural network’s
     input `x` to its output by a loop in the `forward()` function. The network’s output
     is simply the output of the last layer.
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们稍后将看到的，我们将使用scikit-learn生成的数据来测试我们的模型。因此，我们会看到数据是形状为“（样本数量，特征数量）”的numpy数组。因此，每个样本作为矩阵的一行呈现，在函数`forward()`中，权重矩阵会右乘到每个输入`a`上。虽然每层的激活函数和维度可能不同，但过程是一样的。因此，我们通过`forward()`函数中的循环将神经网络的输入`x`转换为其输出。网络的输出只是最后一层的输出。
 - en: 'To train the network, we need to run the back-propagation after each forward
     pass. The back-propagation is to compute the gradient of the weight and bias of
     each layer, starting from the output layer to the input layer. With the equations
     we derived above, the back-propagation function is implemented as:'
+  id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了训练网络，我们需要在每次前向传递后运行反向传播。反向传播是计算每一层的权重和偏置的梯度，从输出层开始到输入层。根据我们上面推导的方程，反向传播函数实现如下：
 - en: '[PRE3]'
+  id: totrans-146
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The only difference here is that we compute `db` not for one training sample,
     but for the entire batch. Since the loss function is the cross entropy averaged
     across the batch, we compute `db` also by averaging across the samples.
+  id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 唯一的区别在于，我们计算`db`时不是针对一个训练样本，而是针对整个批次。由于损失函数是跨批次的平均交叉熵，因此我们也通过跨样本平均来计算`db`。
 - en: Up to here, we completed our model. The `update()` function simply applies the
     gradients found by the back-propagation to the parameters `W` and `b` using the
     gradient descent update rule.
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 到这里，我们完成了我们的模型。`update()`函数简单地将反向传播找到的梯度应用到参数`W`和`b`上，使用梯度下降更新规则。
 - en: 'To test out our model, we make use of scikit-learn to generate a classification
     dataset:'
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了测试我们的模型，我们利用scikit-learn生成一个分类数据集：
 - en: '[PRE4]'
+  id: totrans-150
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'and then we build our model: Input is two-dimensional and output is one dimensional
     (logistic regression). We make two hidden layers of 4 and 3 neurons respectively:'
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们构建了我们的模型：输入是二维的，输出是一维的（逻辑回归）。我们设立了两个隐藏层，分别有4个和3个神经元：
 - en: '![](../Images/82e14f28209c46f403b93af1fa2e6469.png)'
+  id: totrans-152
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/82e14f28209c46f403b93af1fa2e6469.png)'
 - en: '[PRE5]'
+  id: totrans-153
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'We see that, under random weight, the accuracy is 50%:'
+  id: totrans-154
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们看到，在随机权重下，准确率是50%。
 - en: '[PRE6]'
+  id: totrans-155
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Now we train our network. To make things simple, we perform full-batch gradient
     descent with fixed learning rate:'
+  id: totrans-156
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们训练我们的网络。为了简化，我们执行全批次梯度下降，并使用固定的学习率：
 - en: '[PRE7]'
+  id: totrans-157
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'and the output is:'
+  id: totrans-158
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出为：
 - en: '[PRE8]'
+  id: totrans-159
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Although not perfect, we see the improvement by training. At least in the example
     above, we can see the accuracy was up to more than 80% at iteration 145, but then
     we saw the model diverged. That can be improved by reducing the learning rate,
     which we didn’t implement above. Nonetheless, this shows how we computed the gradients
     by back-propagations and chain rules.
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管不完美，我们通过训练看到了改进。至少在上述示例中，我们可以看到在第145次迭代时准确率超过了80%，但随后我们发现模型发散。这可以通过减少学习率来改善，而我们在上述实现中并未做此调整。不过，这展示了我们如何通过反向传播和链式法则计算梯度。
 - en: 'The complete code is as follows:'
+  id: totrans-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整代码如下：
 - en: '[PRE9]'
+  id: totrans-162
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Further readings
+  id: totrans-163
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: 'The back-propagation algorithm is the center of all neural network training,
     regardless of what variation of gradient descent algorithms you used. Textbook
     such as this one covered it:'
+  id: totrans-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 反向传播算法是所有神经网络训练的核心，无论你使用了什么变种的梯度下降算法。这本教科书涵盖了这一点：
 - en: '*Deep Learning*, by Ian Goodfellow, Yoshua Bengio, and Aaron Courville, 2016.'
+  id: totrans-165
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**《深度学习》**，作者：Ian Goodfellow, Yoshua Bengio 和 Aaron Courville，2016年。'
 - en: ([https://www.amazon.com/dp/0262035618](https://www.amazon.com/dp/0262035618))
+  id: totrans-166
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: ([https://www.amazon.com/dp/0262035618](https://www.amazon.com/dp/0262035618))
 - en: 'Previously also implemented the neural network from scratch without discussing
     the math, it explained the steps in greater detail:'
+  id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 之前也实现了神经网络的基础版本，但没有讨论数学部分，它详细解释了这些步骤：
 - en: '[How to Code a Neural Network with Backpropagation In Python (from scratch)](https://machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/)'
+  id: totrans-168
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[如何用 Python 从头实现反向传播神经网络](https://machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/)'
 - en: Summary
+  id: totrans-169
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you learned how differentiation is applied to training a neural
     network.
+  id: totrans-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何将微分应用于神经网络的训练。
 - en: 'Specifically, you learned:'
+  id: totrans-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学习了：
 - en: What is a total differential and how it is expressed as a sum of partial differentials
+  id: totrans-172
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是全微分以及它如何表示为偏微分的总和
 - en: How to express a neural network as equations and derive the gradients by differentiation
+  id: totrans-173
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将神经网络表示为方程式，并通过微分推导梯度
 - en: How back-propagation helped us to express the gradients of each layer in the
     neural network
+  id: totrans-174
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 反向传播如何帮助我们表达神经网络中每一层的梯度
 - en: How to convert the gradients into code to make a neural network model
+  id: totrans-175
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将梯度转换为代码以构建神经网络模型

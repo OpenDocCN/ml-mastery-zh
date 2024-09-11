@@ -1,278 +1,408 @@
 - en: A Gentle Introduction to the Jacobian
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 雅可比的温和介绍
 - en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-the-jacobian/](https://machinelearningmastery.com/a-gentle-introduction-to-the-jacobian/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-the-jacobian/](https://machinelearningmastery.com/a-gentle-introduction-to-the-jacobian/)
 - en: In the literature, the term *Jacobian* is often interchangeably used to refer
     to both the Jacobian matrix or its determinant.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在文献中，*Jacobian*一词通常交替用于指代雅可比矩阵或其行列式。
 - en: 'Both the matrix and the determinant have useful and important applications:
     in machine learning, the Jacobian matrix aggregates the partial derivatives that
     are necessary for backpropagation; the determinant is useful in the process of
     changing between variables.'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 矩阵和行列式都有有用且重要的应用：在机器学习中，雅可比矩阵汇集了反向传播所需的偏导数；行列式在变量转换过程中很有用。
 - en: In this tutorial, you will review a gentle introduction to the Jacobian.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将回顾雅可比的温和介绍。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: The Jacobian matrix collects all first-order partial derivatives of a multivariate
     function that can be used for backpropagation.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 雅可比矩阵收集了多变量函数的所有一阶偏导数，可用于反向传播。
 - en: The Jacobian determinant is useful in changing between variables, where it acts
     as a scaling factor between one coordinate space and another.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 雅可比行列式在变量转换中很有用，它作为一个坐标空间与另一个坐标空间之间的缩放因子。
 - en: Let’s get started.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/15bbbead1331269a034556273b96fc79.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_cover-scaled.jpg)'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/15bbbead1331269a034556273b96fc79.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_cover-scaled.jpg)'
 - en: A Gentle Introduction to the Jacobian
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 雅可比的温和介绍
 - en: Photo by [Simon Berger](https://unsplash.com/@8moments), some rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Simon Berger](https://unsplash.com/@8moments)拍摄，版权所有。
 - en: '**Tutorial Overview**'
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是：
 - en: Partial Derivatives in Machine Learning
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 机器学习中的偏导数
 - en: The Jacobian Matrix
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 雅可比矩阵
 - en: Other Uses of the Jacobian
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 雅可比的其他用途
 - en: '**Partial Derivatives in Machine Learning**'
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**机器学习中的偏导数**'
 - en: We have thus far mentioned [gradients and partial derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)
     as being important for an optimization algorithm to update, say, the model weights
     of a neural network to reach an optimal set of weights. The use of partial derivatives
     permits each weight to be updated independently of the others, by calculating
     the gradient of the error curve with respect to each weight in turn.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 迄今为止，我们提到了[梯度和偏导数](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)对优化算法的重要性，例如，更新神经网络的模型权重以达到最优权重集。使用偏导数可以让每个权重独立更新，通过计算误差曲线相对于每个权重的梯度。
 - en: 'Many of the functions that we usually work with in machine learning are [multivariate](https://machinelearningmastery.com/?p=12606&preview=true),
     [vector-valued functions](https://machinelearningmastery.com/a-gentle-introduction-to-vector-valued-functions),
     which means that they map multiple real inputs, *n*, to multiple real outputs,
     *m*:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在机器学习中通常使用的许多函数是[多变量](https://machinelearningmastery.com/?p=12606&preview=true)的，[向量值函数](https://machinelearningmastery.com/a-gentle-introduction-to-vector-valued-functions)，这意味着它们将多个实数输入*n*映射到多个实数输出*m*：
 - en: '[![](../Images/d68489b6972b22bef03f8a36c7d6e748.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_11.png)'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/d68489b6972b22bef03f8a36c7d6e748.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_11.png)'
 - en: For example, consider a neural network that classifies grayscale images into
     several classes. The function being implemented by such a classifier would map
     the *n* pixel values of each single-channel input image, to *m* output probabilities
     of belonging to each of the different classes.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，考虑一个将灰度图像分类到多个类别的神经网络。这样的分类器所实现的函数会将每个单通道输入图像的*n*像素值映射到*m*输出概率，这些概率表示图像属于不同类别的可能性。
 - en: In training a neural network, the backpropagation algorithm is responsible for
     sharing back the error calculated at the output layer, among the neurons comprising
     the different hidden layers of the neural network, until it reaches the input.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在训练神经网络时，反向传播算法负责将输出层计算出的误差回传到神经网络中各个隐藏层的神经元，直到达到输入层。
 - en: '*The fundamental principle of the backpropagation algorithm in adjusting the
     weights in a network is that each weight in a network should be updated in proportion
     to the sensitivity of the overall error of the network to changes in that weight. *'
+  id: totrans-23
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*反向传播算法调整网络中权重的基本原则是，网络中的每个权重应根据网络整体误差对该权重变化的敏感性进行更新。*'
 - en: ''
+  id: totrans-24
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – Page 222, [Deep Learning](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_4?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-4),
     2019.
+  id: totrans-25
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – 第222页，[《深度学习》](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_4?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-4)，2019年。
 - en: This sensitivity of the overall error of the network to changes in any one particular
     weight is measured in terms of the rate of change, which, in turn, is calculated
     by taking the partial derivative of the error with respect to the same weight.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 网络整体误差对某个特定权重变化的敏感性以变化率来衡量，这个变化率是通过对误差相对于相同权重的偏导数计算得到的。
 - en: 'For simplicity, suppose that one of the hidden layers of some particular network
     consists of just a single neuron, *k*. We can represent this in terms of a simple
     computational graph:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了简单起见，假设某个特定网络的一个隐藏层仅由一个神经元*k*组成。我们可以用一个简单的计算图来表示这个情况：
 - en: '[![](../Images/05a06a855a6a020b0a719405812afb08.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_1.png)'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/05a06a855a6a020b0a719405812afb08.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_1.png)'
 - en: A Neuron with a Single Input and a Single Output
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个具有单一输入和单一输出的神经元
 - en: 'Again, for simplicity, let’s suppose that a weight, *w**[k]*, is applied to
     an input of this neuron to produce an output, *z**[k]*, according to the function
     that this neuron implements (including the nonlinearity). Then, the weight of
     this neuron can be connected to the error at the output of the network as follows
     (the following formula is formally known as the *chain rule of calculus*, but
     more on this later in a separate tutorial):'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了简单起见，假设一个权重，*w**[k]*，被施加到这个神经元的一个输入上，以根据该神经元实现的函数（包括非线性）生成一个输出，*z**[k]*。然后，这个神经元的权重可以通过以下方式与网络输出的误差相连接（以下公式在形式上被称为*微积分的链式法则*，但更多内容将在后续的单独教程中讲解）：
 - en: '[![](../Images/57514729ec537354f4b98b9267ddfb56.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_2.png)'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/57514729ec537354f4b98b9267ddfb56.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_2.png)'
 - en: Here, the derivative, *dz**[k]* / *dw**[k]*, first connects the weight, *w**[k]*,
     to the output, *z**[k]*, while the derivative, *d*error / *dz**[k]*, subsequently
     connects the output, *z**[k]*, to the network error.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，导数，*dz**[k]* / *dw**[k]*，首先将权重，*w**[k]*，与输出，*z**[k]*，连接起来，而导数，*d*error /
+    *dz**[k]*，随后将输出，*z**[k]*，与网络误差连接起来。
 - en: 'It is more often the case that we’d have many connected neurons populating
     the network, each attributed a different weight. Since we are more interested
     in such a scenario, then we can generalise beyond the scalar case to consider
     multiple inputs and multiple outputs:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常情况下，我们会有许多相互连接的神经元组成网络，每个神经元都被赋予不同的权重。由于我们对这种情况更感兴趣，因此我们可以将讨论从标量情况推广到多个输入和多个输出：
 - en: '[![](../Images/3716368d80976118ff8dc4a048f168de.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_3.png)'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/3716368d80976118ff8dc4a048f168de.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_3.png)'
 - en: 'This sum of terms can be represented more compactly as follows:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些项的和可以更紧凑地表示如下：
 - en: '[![](../Images/ce023319eed564c2e1435b2c33387ae6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_4-1.png)'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/ce023319eed564c2e1435b2c33387ae6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_4-1.png)'
 - en: 'Or, equivalently, in [vector notation](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)
     using the del operator, ∇, to represent the gradient of the error with respect
     to either the weights, **w***[k]*, or the outputs, **z***[k]*:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者，用[向量表示法](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)等效地使用增量算子∇来表示误差对权重，**w***[k]*，或输出，**z***[k]*的梯度：
 - en: '[![](../Images/53996174fd4fdc0f85c77c04b7be6d09.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_5.png)'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/53996174fd4fdc0f85c77c04b7be6d09.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_5.png)'
 - en: '*The back-propagation algorithm consists of performing such a Jacobian-gradient
     product for each operation in the graph.*'
+  id: totrans-39
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*反向传播算法包括对图中的每个操作执行这种雅可比-梯度乘积。*'
 - en: ''
+  id: totrans-40
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – Page 207, [Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
     2017.
+  id: totrans-41
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – 第207页， [深度学习](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1)，2017。
 - en: This means that the backpropagation algorithm can relate the sensitivity of
     the network error to changes in the weights, through a multiplication by the *Jacobian
     matrix*, (∂**z***[k]* / ∂**w***[k]*)^T.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着反向传播算法可以通过与*雅可比矩阵*的乘法，将网络误差的敏感度与权重的变化联系起来，公式为 (∂**z***[k]* / ∂**w***[k]*)^T。
 - en: Hence, what does this Jacobian matrix contain?
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，这个雅可比矩阵包含了什么？
 - en: '**The Jacobian Matrix**'
+  id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**雅可比矩阵**'
 - en: The Jacobian matrix collects all first-order partial derivatives of a multivariate
     function.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 雅可比矩阵收集了多变量函数的所有一阶偏导数。
 - en: 'Specifically, consider first a function that maps *u* real inputs, to a single
     real output:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，首先考虑一个将 *u* 个实数输入映射到一个实数输出的函数：
 - en: '[![](../Images/e37bc437334f32f627142fdbc4fdb46e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_6.png)'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/e37bc437334f32f627142fdbc4fdb46e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_6.png)'
 - en: 'Then, for an input vector, **x**, of length, *u*, the Jacobian vector of size,
     1 × *u*, can be defined as follows:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于长度为 *u* 的输入向量 **x**，大小为 1 × *u* 的雅可比向量可以定义如下：
 - en: '[![](../Images/2aafa58edb30e90df33840d856dcf78a.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_7.png)'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/2aafa58edb30e90df33840d856dcf78a.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_7.png)'
 - en: 'Now, consider another function that maps *u* real inputs, to *v* real outputs:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，考虑另一个将 *u* 个实数输入映射到 *v* 个实数输出的函数：
 - en: '[![](../Images/5b5bbbac33c2ad8b6905fdd06592fc61.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_8.png)'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/5b5bbbac33c2ad8b6905fdd06592fc61.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_8.png)'
 - en: 'Then, for the same input vector, **x**, of length, *u*, the Jacobian is now
     a *v* × *u* matrix, **J** ∈ ℝ*^(v×)**^u*, that is defined as follows:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于同一个输入向量，**x**，长度为 *u*，雅可比矩阵现在是一个 *v* × *u* 的矩阵，**J** ∈ ℝ*^(v×)**^u*，定义如下：
 - en: '[![](../Images/c5e6111fb3bad9cd95525461879454bd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_9.png)'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/c5e6111fb3bad9cd95525461879454bd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/jacobian_9.png)'
 - en: 'Reframing the Jacobian matrix into the machine learning problem considered
     earlier, while retaining the same number of *u* real inputs and *v* real outputs,
     we find that this matrix would contain the following partial derivatives:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 将雅可比矩阵重新框架到之前考虑的机器学习问题中，同时保持 *u* 个实数输入和 *v* 个实数输出，我们发现这个矩阵包含以下偏导数：
 - en: '[![](../Images/2a9675ac70b68b38ffd10c3d0bb83064.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/jacobian_10.png)'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/2a9675ac70b68b38ffd10c3d0bb83064.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/jacobian_10.png)'
 - en: Want to Get Started With Calculus for Machine Learning?
+  id: totrans-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习机器学习中的微积分？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即领取我的7天免费电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并获取课程的免费 PDF 电子书版本。
 - en: '**Other Uses of the Jacobian**'
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**雅可比矩阵的其他用途**'
 - en: An important technique when working with [integrals](https://machinelearningmastery.com/?p=12637&preview=true)
     involves the *change of variables* (also referred to as, *integration by substitution*
     or *u-substitution*), where an integral is simplified into another integral that
     is easier to compute.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 在处理[积分](https://machinelearningmastery.com/?p=12637&preview=true)时，一个重要的技巧是
+    *变量变换*（也称为 *积分替换* 或 *u-替换*），即将一个积分简化为另一个更易计算的积分。
 - en: In the single variable case, substituting some variable, *x*, with another variable,
     *u*, can transform the original function into a simpler one for which it is easier
     to find an antiderivative. In the two variable case, an additional reason might
     be that we would also wish to transform the region of terms over which we are
     integrating, into a different shape.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 在单变量情况下，将某个变量 *x* 替换为另一个变量 *u*，可以将原始函数转化为一个更简单的函数，从而更容易找到其不定积分。在双变量情况下，另一个原因可能是我们希望将积分区域的形状转换为不同的形状。
 - en: '*In the single variable case, there’s typically just one reason to want to
     change the variable: to make the function “nicer” so that we can find an antiderivative.
     In the two variable case, there is a second potential reason: the two-dimensional
     region over which we need to integrate is somehow unpleasant, and we want the
     region in terms of u and v to be nicer—to be a rectangle, for example. *'
+  id: totrans-62
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*在单变量情况下，通常只有一个改变变量的原因：使函数“更好”，以便我们可以找到其不定积分。在双变量情况下，还有第二个潜在原因：我们需要积分的二维区域在某种程度上不太方便，我们希望用
+    *u* 和 *v* 表示的区域更好——例如，成为一个矩形。*'
 - en: ''
+  id: totrans-63
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – Page 412, [Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
     2020.
+  id: totrans-64
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – 第412页，[单变量与多变量微积分](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf)，2020年。
 - en: When performing a substitution between two (or possibly more) variables, the
     process starts with a definition of the variables between which the substitution
     is to occur. For example, *x* = *f*(*u*, *v*) and *y* = *g*(*u*, *v*). This is
@@ -280,74 +410,111 @@
     *f* and *g*, will transform the *u*–*v* plane into the *x*–*y* plane. Finally,
     the absolute value of the *Jacobian determinant* is computed and included, to
     act as a scaling factor between one coordinate space and another.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 当在两个（或可能更多）变量之间进行替换时，过程开始于定义要进行替换的变量。例如，*x* = *f*(*u*, *v*) 和 *y* = *g*(*u*,
+    *v*)。接着，根据函数 *f* 和 *g* 如何将 *u*–*v* 平面转换为 *x*–*y* 平面，转换积分限。最后，计算并包含 *雅可比行列式* 的绝对值，以作为一个坐标空间与另一个坐标空间之间的缩放因子。
 - en: '**Further Reading**'
+  id: totrans-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多相关资源，如果你想深入了解的话。
 - en: '**Books**'
+  id: totrans-68
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1),
     2017.'
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=sr_1_1?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-1)，2017年。'
 - en: '[Mathematics for Machine Learning](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US),
     2020.'
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[机器学习的数学](https://www.amazon.com/Mathematics-Machine-Learning-Peter-Deisenroth/dp/110845514X/ref=as_li_ss_tl?dchild=1&keywords=calculus+machine+learning&qid=1606171788&s=books&sr=1-3&linkCode=sl1&tag=inspiredalgor-20&linkId=209ba69202a6cc0a9f2b07439b4376ca&language=en_US)，2020年。'
 - en: '[Single and Multivariable Calculus](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf),
     2020.'
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[单变量与多变量微积分](https://www.whitman.edu/mathematics/multivariable/multivariable.pdf)，2020年。'
 - en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_4?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-4),
     2019.'
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习](https://www.amazon.com/Deep-Learning-Press-Essential-Knowledge/dp/0262537559/ref=sr_1_4?dchild=1&keywords=deep+learning&qid=1622968138&sr=8-4)，2019年。'
 - en: '**Articles**'
+  id: totrans-73
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**文章**'
 - en: '[Jacobian matrix and determinant, Wikipedia](https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant).'
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[雅可比矩阵与行列式，维基百科](https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant)。'
 - en: '[Integration by substitution, Wikipedia](https://en.wikipedia.org/wiki/Integration_by_substitution).'
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[通过替换积分，维基百科](https://en.wikipedia.org/wiki/Integration_by_substitution)。'
 - en: '**Summary**'
+  id: totrans-76
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered a gentle introduction to the Jacobian.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了关于雅可比矩阵的温和介绍。
 - en: 'Specifically, you learned:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The Jacobian matrix collects all first-order partial derivatives of a multivariate
     function that can be used for backpropagation.
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 雅可比矩阵收集了多变量函数的所有一阶偏导数，可用于反向传播。
 - en: The Jacobian determinant is useful in changing between variables, where it acts
     as a scaling factor between one coordinate space and another.
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 雅可比行列式在变量变换中很有用，它作为一个缩放因子在一个坐标空间与另一个坐标空间之间起作用。
 - en: Do you have any questions?
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below and I will do my best to answer.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提出你的问题，我会尽力回答。

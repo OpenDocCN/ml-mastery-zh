@@ -1,172 +1,256 @@
 - en: Adding a Custom Attention Layer to a Recurrent Neural Network in Keras
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 向Keras中的循环神经网络添加自定义注意力层
 - en: 原文：[https://machinelearningmastery.com/adding-a-custom-attention-layer-to-recurrent-neural-network-in-keras/](https://machinelearningmastery.com/adding-a-custom-attention-layer-to-recurrent-neural-network-in-keras/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/adding-a-custom-attention-layer-to-recurrent-neural-network-in-keras/](https://machinelearningmastery.com/adding-a-custom-attention-layer-to-recurrent-neural-network-in-keras/)
 - en: Deep learning networks have gained immense popularity in the past few years.
     The “attention mechanism” is integrated with deep learning networks to improve
     their performance. Adding an attention component to the network has shown significant
     improvement in tasks such as machine translation, image recognition, text summarization,
     and similar applications.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 过去几年来，深度学习网络已经获得了巨大的流行。"注意力机制"被整合到深度学习网络中以提高其性能。在网络中添加注意力组件已经显示出在机器翻译、图像识别、文本摘要等任务中显著的改进。
 - en: This tutorial shows how to add a custom attention layer to a network built using
     a recurrent neural network. We’ll illustrate an end-to-end application of time
     series forecasting using a very simple dataset. The tutorial is designed for anyone
     looking for a basic understanding of how to add user-defined layers to a deep
     learning network and use this simple example to build more complex applications.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程展示了如何向使用循环神经网络构建的网络添加自定义注意力层。我们将演示如何使用一个非常简单的数据集进行时间序列预测的端到端应用。本教程旨在帮助任何希望了解如何向深度学习网络添加用户定义层，并利用这个简单示例构建更复杂应用程序的人士。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将了解：
 - en: Which methods are required to create a custom attention layer in Keras
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在Keras中创建自定义注意力层需要哪些方法
 - en: How to incorporate the new layer in a network built with SimpleRNN
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在使用SimpleRNN构建的网络中加入新层
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**使用我的书《使用注意力构建Transformer模型》启动您的项目**。它提供了**自学教程**和**完整的工作代码**，指导您构建一个完全工作的Transformer模型，可以'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将句子从一种语言翻译成另一种语言*...'
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![Adding A Custom Attention Layer To Recurrent Neural Network In Keras <br>
     Photo by ](../Images/06b5dee1135e454d349a3ee2458af08d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/yahya-ehsan-L895sqROaGw-unsplash-scaled.jpg)'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![向循环神经网络添加自定义注意力层 <br> 照片由 ](../Images/06b5dee1135e454d349a3ee2458af08d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/yahya-ehsan-L895sqROaGw-unsplash-scaled.jpg)'
 - en: Adding a custom attention layer to a recurrent neural network in Keras
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Keras中向循环神经网络添加自定义注意力层
 - en: Photo by Yahya Ehsan, some rights reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由Yahya Ehsan拍摄，部分权利保留。
 - en: Tutorial Overview
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三部分；它们是：
 - en: Preparing a simple dataset for time series forecasting
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为时间序列预测准备一个简单的数据集
 - en: How to use a network built via SimpleRNN for time series forecasting
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用SimpleRNN构建的网络进行时间序列预测
 - en: Adding a custom attention layer to the SimpleRNN network
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 向SimpleRNN网络添加自定义注意力层
 - en: Prerequisites
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 先决条件
 - en: It is assumed that you are familiar with the following topics. You can click
     the links below for an overview.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设您熟悉以下主题。您可以点击下面的链接进行概览。
 - en: '[What is Attention?](https://machinelearningmastery.com/what-is-attention/)'
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[什么是注意力？](https://machinelearningmastery.com/what-is-attention/)'
 - en: '[The attention mechanism from scratch](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[从零开始理解注意力机制](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
 - en: '[An introduction to RNN and the math that powers them](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/)'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[RNN简介及其数学基础](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/)'
 - en: '[Understanding simple recurrent neural networks in Keras](https://machinelearningmastery.com/understanding-simple-recurrent-neural-networks-in-keras/)'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[理解Keras中的简单循环神经网络](https://machinelearningmastery.com/understanding-simple-recurrent-neural-networks-in-keras/)'
 - en: The Dataset
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数据集
 - en: 'The focus of this article is to gain a basic understanding of how to build
     a custom attention layer to a deep learning network. For this purpose, let’s use
     a very simple example of a Fibonacci sequence, where one number is constructed
     from the previous two numbers. The first 10 numbers of the sequence are shown
     below:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文的重点是了解如何向深度学习网络添加自定义注意力层。为此，让我们以斐波那契数列为例，简单说明一下。斐波那契数列的前10个数如下所示：
 - en: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, …
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, …
 - en: When given the previous ‘t’ numbers, can you get a machine to accurately reconstruct
     the next number? This would mean discarding all the previous inputs except the
     last two and performing the correct operation on the last two numbers.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 给定前‘t’个数，能否让机器准确地重构下一个数？这意味着除了最后两个数外，所有之前的输入都将被丢弃，并对最后两个数执行正确的操作。
 - en: 'For this tutorial, you’ll construct the training examples from `t` time steps
     and use the value at `t+1` as the target. For example, if `t=3`, then the training
     examples and the corresponding target values would look as follows:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您将使用`t`个时间步来构建训练示例，并将`t+1`时刻的值作为目标。例如，如果`t=3`，则训练示例和相应的目标值如下所示：
 - en: '[![](../Images/da6f5bfe1757b58101a99aa09faceed4.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/fib.png)'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/da6f5bfe1757b58101a99aa09faceed4.png)](https://machinelearningmastery.com/wp-content/uploads/2021/10/fib.png)'
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-30
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用注意力构建Transformer模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费12天电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击此处注册，并免费获得课程的PDF电子书版本。
 - en: The SimpleRNN Network
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: SimpleRNN网络
 - en: In this section, you’ll write the basic code to generate the dataset and use
     a SimpleRNN network to predict the next number of the Fibonacci sequence.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一部分，您将编写生成数据集的基本代码，并使用SimpleRNN网络来预测斐波那契数列的下一个数字。
 - en: The Import Section
+  id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 导入部分
 - en: 'Let’s first write the import section:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们编写导入部分：
 - en: '[PRE0]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Preparing the Dataset
+  id: totrans-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 准备数据集
 - en: The following function generates a sequence of n Fibonacci numbers (not counting
     the starting two values). If `scale_data` is set to True, then it would also use
     the `MinMaxScaler` from scikit-learn to scale the values between 0 and 1\. Let’s
     see its output for `n=10`.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面的函数生成n个斐波那契数列的序列（不包括起始两个值）。如果将`scale_data`设置为True，则还会使用scikit-learn中的MinMaxScaler将值缩放到0到1之间。让我们看看`n=10`时的输出。
 - en: '[PRE1]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '[PRE2]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Next, we need a function `get_fib_XY()` that reformats the sequence into training
     examples and target values to be used by the Keras input layer. When given `time_steps`
     as a parameter, `get_fib_XY()` constructs each row of the dataset with `time_steps`
@@ -175,87 +259,127 @@
     them to the required TensorFlow format, i.e., `total_samples x time_steps x features`.
     Also, the function returns the `scaler` object that scales the values if `scale_data`
     is set to `True`.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们需要一个函数`get_fib_XY()`，将序列重新格式化为Keras输入层使用的训练示例和目标值。当给定参数`time_steps`时，`get_fib_XY()`将每行数据集构建为具有`time_steps`列的数据。此函数不仅从斐波那契序列构建训练集和测试集，还使用`scale_data`参数将训练示例进行洗牌并重新调整到所需的TensorFlow格式，即`total_samples
+    x time_steps x features`。同时，如果`scale_data`设置为`True`，函数还返回一个`scaler`对象，用于将值缩放到0到1之间。
 - en: Let’s generate a small training set to see what it looks like. We have set `time_steps=3`
     and `total_fib_numbers=12`, with approximately 70% of the examples going toward
     the test points. Note the training and test examples have been shuffled by the
     `permutation()` function.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们生成一个小的训练集，看看它的样子。我们设置了`time_steps=3`和`total_fib_numbers=12`，大约70%的示例用于测试。请注意，训练和测试示例已通过`permutation()`函数进行了洗牌。
 - en: '[PRE3]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '[PRE4]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Setting Up the Network
+  id: totrans-46
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 设置网络
 - en: Now let’s set up a small network with two layers. The first one is the `SimpleRNN`
     layer, and the second one is the `Dense` layer. Below is a summary of the model.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们设置一个包含两个层的小型网络。第一层是`SimpleRNN`层，第二层是`Dense`层。以下是模型的摘要。
 - en: '[PRE5]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '[PRE6]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Train the Network and Evaluate
+  id: totrans-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 训练网络并评估
 - en: The next step is to add code that generates a dataset, trains the network, and
     evaluates it. This time around, we’ll scale the data between 0 and 1\. We don’t
     need to pass the `scale_data` parameter as its default value is `True`.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来的步骤是添加代码以生成数据集、训练网络并评估它。这一次，我们将数据缩放到0到1之间。由于`scale_data`参数的默认值为`True`，我们不需要传递该参数。
 - en: '[PRE7]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'As output, you’ll see the progress of the training and the following values
     for the mean square error:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为输出，你将看到训练进度以及均方误差的以下值：
 - en: '[PRE8]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Adding a Custom Attention Layer to the Network
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在网络中添加自定义注意力层
 - en: 'In Keras, it is easy to create a custom layer that implements attention by
     subclassing the `Layer` class. The Keras guide lists clear steps for [creating
     a new layer via subclassing](https://keras.io/guides/making_new_layers_and_models_via_subclassing/).
     You’ll use those guidelines here. All the weights and biases corresponding to
     a single layer are encapsulated by this class. You need to write the `__init__`
     method as well as override the following methods:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Keras 中，通过子类化`Layer`类很容易创建一个实现注意力的自定义层。Keras 指南列出了通过子类化创建新层的明确步骤。你将在这里使用这些指南。单个层对应的所有权重和偏置由此类封装。你需要编写`__init__`方法，并覆盖以下方法：
 - en: '`build()`: The Keras guide recommends adding weights in this method once the
     size of the inputs is known. This method “lazily” creates weights. The built-in
     function `add_weight()` can be used to add the weights and biases of the attention
     layer.'
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`build()`: Keras 指南建议在知道输入大小后通过此方法添加权重。此方法“惰性”创建权重。内置函数`add_weight()`可用于添加注意力层的权重和偏置。'
 - en: '`call()`: The `call()` method implements the mapping of inputs to outputs.
     It should implement the forward pass during training.'
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`call()`: `call()` 方法实现了输入到输出的映射。在训练期间，它应该实现前向传播。'
 - en: The Call Method for the Attention Layer
+  id: totrans-59
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 注意力层的调用方法
 - en: The call method of the attention layer has to compute the alignment scores,
     weights, and context. You can go through the details of these parameters in Stefania’s
     excellent article on [The Attention Mechanism from Scratch](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/).
     You’ll implement the Bahdanau attention in your `call()` method.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意力层的`call()`方法必须计算对齐分数、权重和上下文。你可以通过斯特凡尼亚在 [从零开始理解注意力机制](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)
+    文章中详细了解这些参数。你将在`call()`方法中实现巴赫达瑙注意力机制。
 - en: The good thing about inheriting a layer from the Keras `Layer` class and adding
     the weights via the `add_weights()` method is that weights are automatically tuned.
     Keras does an equivalent of “reverse engineering” of the operations/computations
@@ -263,163 +387,247 @@
     to specify `trainable=True` when adding the weights. You can also add a `train_step()`
     method to your custom layer and specify your own method for weight training if
     needed.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 从 Keras 的 `Layer` 类继承一个层并通过 `add_weights()` 方法添加权重的好处在于权重会自动调整。Keras 对 `call()`
+    方法的操作/计算进行“逆向工程”，并在训练期间计算梯度。在添加权重时，指定`trainable=True`非常重要。如果需要，你还可以为自定义层添加一个`train_step()`方法并指定自己的权重训练方法。
 - en: The code below implements the custom attention layer.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面的代码实现了自定义注意力层。
 - en: '[PRE9]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: RNN Network with Attention Layer
+  id: totrans-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 带有注意力层的RNN网络
 - en: Let’s now add an attention layer to the RNN network you created earlier. The
     function `create_RNN_with_attention()` now specifies an RNN layer, an attention
     layer, and a Dense layer in the network. Make sure to set `return_sequences=True`
     when specifying the SimpleRNN. This will return the output of the hidden units
     for all the previous time steps.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们将一个注意力层添加到之前创建的 RNN 网络中。`create_RNN_with_attention()`函数现在在网络中指定了一个 RNN
+    层、一个注意力层和一个稠密层。确保在指定SimpleRNN时设置`return_sequences=True`，这将返回所有先前时间步的隐藏单元输出。
 - en: Let’s look at a summary of the model with attention.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们来看一下带有注意力的模型摘要。
 - en: '[PRE10]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '[PRE11]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Train and Evaluate the Deep Learning Network with Attention
+  id: totrans-69
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用注意力的深度学习网络进行训练和评估
 - en: It’s time to train and test your model and see how it performs in predicting
     the next Fibonacci number of a sequence.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在是时候训练和测试你的模型，并查看它在预测序列下一个斐波那契数上的表现如何。
 - en: '[PRE12]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'You’ll see the training progress as output and the following:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将看到训练进度作为输出，以及以下内容：
 - en: '[PRE13]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: You can see that even for this simple example, the mean square error on the
     test set is lower with the attention layer. You can achieve better results with
     hyper-parameter tuning and model selection. Try this out on more complex problems
     and by adding more layers to the network. You can also use the `scaler` object
     to scale the numbers back to their original values.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使对于这个简单的例子，测试集上的均方误差在使用注意力层后更低。通过调优超参数和模型选择，你可以获得更好的结果。尝试在更复杂的问题上以及通过增加网络层来验证这一点。你还可以使用`scaler`对象将数字缩放回原始值。
 - en: You can take this example one step further by using LSTM instead of SimpleRNN,
     or you can build a network via convolution and pooling layers. You can also change
     this to an encoder-decoder network if you like.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以进一步通过使用LSTM代替SimpleRNN，或者通过卷积和池化层构建网络。如果你愿意，还可以将其改为编码-解码网络。
 - en: Consolidated Code
+  id: totrans-76
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 统一的代码
 - en: The entire code for this tutorial is pasted below if you would like to try it.
     Note that your outputs would be different from the ones given in this tutorial
     because of the stochastic nature of this algorithm.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想尝试，本教程的整个代码如下粘贴。请注意，由于此算法的随机性质，你的输出可能与本教程中给出的不同。
 - en: '[PRE14]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Further Reading
+  id: totrans-79
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想深入了解，本节提供了更多相关资源。
 - en: Books
+  id: totrans-81
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Deep Learning Essentials](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365)
     by Wei Di, Anurag Bhardwaj, and Jianing Wei.'
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习基础](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365)
+    作者：韦迪，安拉格·巴德瓦吉，和简宁·韦。'
 - en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=as_li_ss_tl?dchild=1&keywords=deep+learning&qid=1606171954&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=0a0c58945768a65548b639df6d1a98ed&language=en_US)
     by Ian Goodfellow, Joshua Bengio, and Aaron Courville.'
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=as_li_ss_tl?dchild=1&keywords=deep+learning&qid=1606171954&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=0a0c58945768a65548b639df6d1a98ed&language=en_US)
+    作者：伊恩·古德费洛、约书亚·本吉奥、和亚伦·库尔维尔。'
 - en: Papers
+  id: totrans-84
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 论文
 - en: '[Neural Machine Translation by Jointly Learning to Align and Translate](https://arxiv.org/abs/1409.0473),
     2014.'
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[通过联合学习对齐和翻译进行神经机器翻译](https://arxiv.org/abs/1409.0473)，2014年。'
 - en: Articles
+  id: totrans-86
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[A Tour of Recurrent Neural Network Algorithms for Deep Learning.](https://machinelearningmastery.com/recurrent-neural-network-algorithms-for-deep-learning/)'
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习循环神经网络算法导览。](https://machinelearningmastery.com/recurrent-neural-network-algorithms-for-deep-learning/)'
 - en: '[What is Attention?](https://machinelearningmastery.com/what-is-attention/)'
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[什么是注意力机制？](https://machinelearningmastery.com/what-is-attention/)'
 - en: '[The attention mechanism from scratch.](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[从零开始的注意力机制。](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)'
 - en: '[An introduction to RNN and the math that powers them.](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/)'
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[介绍RNN及其数学原理。](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/)'
 - en: '[Understanding simple recurrent neural networks in Keras.](https://machinelearningmastery.com/understanding-simple-recurrent-neural-networks-in-keras/)'
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[理解Keras中简单循环神经网络。](https://machinelearningmastery.com/understanding-simple-recurrent-neural-networks-in-keras/)'
 - en: '[How to Develop an Encoder-Decoder Model with Attention in Keras](https://machinelearningmastery.com/encoder-decoder-attention-sequence-to-sequence-prediction-keras/)'
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[如何在Keras中开发带有注意力的编码-解码模型](https://machinelearningmastery.com/encoder-decoder-attention-sequence-to-sequence-prediction-keras/)'
 - en: Summary
+  id: totrans-93
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: In this tutorial, you discovered how to add a custom attention layer to a deep
     learning network using Keras.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学会了如何向使用Keras构建的深度学习网络添加自定义注意力层。
 - en: 'Specifically, you learned:'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to override the Keras `Layer` class.
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何重写Keras的`Layer`类。
 - en: The method `build()` is required to add weights to the attention layer.
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 方法`build()`用于向注意力层添加权重。
 - en: The `call()` method is required for specifying the mapping of inputs to outputs
     of the attention layer.
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 方法`call()`用于指定注意力层输入到输出的映射。
 - en: How to add a custom attention layer to the deep learning network built using
     SimpleRNN.
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何向使用SimpleRNN构建的深度学习网络添加自定义注意力层。
 - en: Do you have any questions about RNNs discussed in this post? Ask your questions
     in the comments below, and I will do my best to answer.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 你在本文讨论的循环神经网络有任何问题吗？请在下方评论中提问，我会尽力回答。

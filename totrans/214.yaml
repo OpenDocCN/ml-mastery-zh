@@ -1,834 +1,1286 @@
 - en: Calculus for Machine Learning (7-day mini-course)
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 机器学习微积分（7天迷你课程）
 - en: 原文：[https://machinelearningmastery.com/calculus-for-machine-learning-7-day-mini-course/](https://machinelearningmastery.com/calculus-for-machine-learning-7-day-mini-course/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/calculus-for-machine-learning-7-day-mini-course/](https://machinelearningmastery.com/calculus-for-machine-learning-7-day-mini-course/)
 - en: Calculus for Machine Learning Crash Course.
+  id: totrans-2
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 机器学习微积分速成课程。
 - en: Get familiar with the calculus techniques in machine learning in 7 days.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在7天内熟悉机器学习中的微积分技术。
 - en: Calculus is an important mathematics technique behind many machine learning
     algorithms. You don’t always need to know it to use the algorithms. When you go
     deeper, you will see it is ubiquitous in every discussion on the theory behind
     a machine learning model.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 微积分是许多机器学习算法背后的重要数学技巧。你不一定需要知道它才能使用这些算法。当你深入了解时，你会发现它在每一个有关机器学习模型理论的讨论中都是无处不在的。
 - en: As a practitioner, we are most likely not going to encounter very hard calculus
     problems. If we need to do one, there are tools such as computer algebra systems
     to help, or at least, verify our solution. However, what is more important is
     understanding the idea behind calculus and relating the calculus terms to its
     use in our machine learning algorithms.
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为从业者，我们很可能不会遇到非常复杂的微积分问题。如果需要解决，我们可以使用计算机代数系统等工具来帮助，或至少验证我们的解决方案。然而，更重要的是理解微积分背后的思想，并将微积分术语与我们机器学习算法中的应用联系起来。
 - en: In this crash course, you will discover some common calculus ideas used in machine
     learning. You will learn with exercises in Python in seven days.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此速成课程中，你将发现机器学习中使用的一些常见微积分思想。你将通过 Python 中的练习在七天内进行学习。
 - en: This is a big and important post. You might want to bookmark it.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个重要且重大的帖子。你可能想要收藏它。
 - en: Let’s get started.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![Calculus for Machine Learning (7-Day Mini-Course)](../Images/033026b5bed2437a268f6833a6b6dbef.png)'
+  id: totrans-9
   prefs: []
   type: TYPE_IMG
+  zh: '![机器学习微积分（7天迷你课程）](../Images/033026b5bed2437a268f6833a6b6dbef.png)'
 - en: Calculus for Machine Learning (7-Day Mini-Course)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 机器学习微积分（7天迷你课程）
 - en: Photo by [ArnoldReinhold](https://commons.wikimedia.org/wiki/File:Mechanical_integrator_CHM.agr.jpg),
     some rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[ArnoldReinhold](https://commons.wikimedia.org/wiki/File:Mechanical_integrator_CHM.agr.jpg)提供，保留部分权利。
 - en: Who Is This Crash-Course For?
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 这个速成课程适合谁？
 - en: Before we get started, let’s make sure you are in the right place.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们开始之前，让我们确保你处于正确的地方。
 - en: This course is for developers who may know some applied machine learning. Maybe
     you know how to work through a predictive modeling problem end to end, or at least
     most of the main steps, with popular tools.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本课程适合那些可能了解一些应用机器学习的开发者。也许你知道如何完整解决一个预测建模问题，或者至少了解大部分主要步骤，并使用流行工具。
 - en: 'The lessons in this course do assume a few things about you, such as:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 本课程中的课程假设你具备以下几项条件：
 - en: You know your way around basic Python for programming.
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你对基本 Python 编程有一定了解。
 - en: You may know some basic linear algebra.
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你可能了解一些基本的线性代数。
 - en: You may know some basic machine learning models.
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你可能了解一些基本的机器学习模型。
 - en: 'You do NOT need to be:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 你不需要是：
 - en: A math wiz!
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数学天才！
 - en: A machine learning expert!
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 机器学习专家！
 - en: This crash course will take you from a developer who knows a little machine
     learning to a developer who can effectively talk about the calculus concepts in
     machine learning algorithms.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 此速成课程将把你从一个了解一点机器学习的开发者，提升为一个能够有效讨论机器学习算法中微积分概念的开发者。
 - en: 'Note: This crash course assumes you have a working Python 3.7 environment with
     some libraries such as SciPy and SymPy installed. If you need help with your environment,
     you can follow the step-by-step tutorial here:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意：此速成课程假设你已经拥有一个正常运行的 Python 3.7 环境，并安装了一些库，如 SciPy 和 SymPy。如果你需要帮助设置环境，你可以按照此处的逐步教程：
 - en: '[How to Set Up Your Python Environment for Machine Learning With Anaconda](https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/)'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[如何使用 Anaconda 设置你的 Python 环境以进行机器学习](https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/)'
 - en: Crash-Course Overview
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 速成课程概述
 - en: This crash course is broken down into seven lessons.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 此速成课程分为七节课。
 - en: You could complete one lesson per day (recommended) or complete all of the lessons
     in one day (hardcore). It really depends on the time you have available and your
     level of enthusiasm.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以每天完成一节课（推荐）或一天内完成所有课程（硬核）。这真的取决于你有多少时间和你的热情程度。
 - en: 'Below is a list of the seven lessons that will get you started and productive
     with data preparation in Python:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是七节课程的列表，这些课程将帮助你入门并高效进行 Python 数据准备：
 - en: '**Lesson 01**: Differential calculus'
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**课程 01**: 微分学'
 - en: '**Lesson 02**: Integration'
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**课程 02**: 积分'
 - en: '**Lesson 03**: Gradient of a vector function'
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**课程 03**: 向量函数的梯度'
 - en: '**Lesson 04**: Jacobian'
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**课程 04**: 雅可比矩阵'
 - en: '**Lesson 05**: Backpropagation'
+  id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**课程 05**: 反向传播'
 - en: '**Lesson 06**: Optimization'
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**课程 06**: 优化'
 - en: '**Lesson 07**: Support vector machine'
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**课程 07**: 支持向量机'
 - en: Each lesson could take you 5 minutes or up to 1 hour. Take your time and complete
     the lessons at your own pace. Ask questions, and even post results in the comments
     below.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 每节课可能花费你 5 分钟到 1 小时。慢慢来，根据自己的节奏完成课程。提出问题，甚至在下面的评论中发布结果。
 - en: 'The lessons might expect you to go off and find out how to do things. I will
     give you hints, but part of the point of each lesson is to force you to learn
     where to go to look for help with and about the algorithms and the best-of-breed
     tools in Python. (**Hint**: *I have all of the answers on this blog; use the search
     box*.)'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '这些课程可能会期望你去查找如何做的相关信息。我会给你提示，但每节课的部分目的就是迫使你学习如何寻找有关算法和 Python 中最佳工具的帮助。（**提示**:
+    *我在这个博客上有所有的答案；使用搜索框*。）'
 - en: '**Post your results in the comments**; I’ll cheer you on!'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '**在评论中发布你的结果**；我会为你加油！'
 - en: Hang in there; don’t give up.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 坚持住；不要放弃。
 - en: 'Lesson 01: Differential Calculus'
+  id: totrans-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '课程 01: 微分学'
 - en: In this lesson, you will discover what is differential calculus or differentiation.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这节课中，你将发现什么是微分学或微分。
 - en: Differentiation is the operation of transforming one mathematical function to
     another, called the derivative. The derivative tells the slope, or the rate of
     change, of the original function.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 微分是将一个数学函数转化为另一个称为导数的函数的操作。导数表示原始函数的斜率或变化率。
 - en: 'For example, if we have a function $f(x)=x^2$, its derivative is a function
     that tells us the rate of change of this function at $x$. The rate of change is
     defined as: $$f''(x) = \frac{f(x+\delta x)-f(x)}{\delta x}$$ for a small quantity
     $\delta x$.'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，如果我们有一个函数 $f(x)=x^2$，它的导数是一个告诉我们在 $x$ 处该函数变化率的函数。变化率定义为： $$f'(x) = \frac{f(x+\delta
+    x)-f(x)}{\delta x}$$ 对于一个小量 $\delta x$。
 - en: Usually we will define the above in the form of a limit, i.e.,
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常我们将以上定义为极限形式，即，
 - en: $$f'(x) = \lim_{\delta x\to 0} \frac{f(x+\delta x)-f(x)}{\delta x}$$
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: $$f'(x) = \lim_{\delta x\to 0} \frac{f(x+\delta x)-f(x)}{\delta x}$$
 - en: to mean $\delta x$ should be as close to zero as possible.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 意味着 $\delta x$ 应尽可能接近零。
 - en: There are several rules of differentiation to help us find the derivative easier.
     One rule that fits the above example is $\frac{d}{dx} x^n = nx^{n-1}$. Hence for
     $f(x)=x^2$, we have the derivative $f'(x)=2x$.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 有几种微分规则可以帮助我们更容易地找到导数。适用于上述例子的规则是 $\frac{d}{dx} x^n = nx^{n-1}$。因此对于 $f(x)=x^2$，我们有导数
+    $f'(x)=2x$。
 - en: 'We can confirm this is the case by plotting the function $f''(x)$ computed
     according to the rate of change together with that computed according to the rule
     of differentiation. The following uses NumPy and matplotlib in Python:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过绘制根据变化率计算的函数 $f'(x)$ 与根据微分规则计算的函数来确认这一点。以下使用 Python 的 NumPy 和 matplotlib：
 - en: '[PRE0]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '![](../Images/d16e6be8aa378d74ff2d69384f8795cd.png)'
+  id: totrans-50
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/d16e6be8aa378d74ff2d69384f8795cd.png)'
 - en: In the plot above, we can see the derivative function found using the rate of
     change and then using the rule of differentiation coincide perfectly.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的图中，我们可以看到使用变化率找到的导数函数和使用微分规则找到的导数函数完全一致。
 - en: Your Task
+  id: totrans-52
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 你的任务
 - en: 'We can similarly do a differentiation of other functions. For example, $f(x)=x^3
     – 2x^2 + 1$. Find the derivative of this function using the rules of differentiation
     and compare your result with the result found using the rate of limits. Verify
     your result with the plot above. If you’re doing it correctly, you should see
     the following graph:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们也可以对其他函数进行类似的微分。例如，$f(x)=x^3 – 2x^2 + 1$。使用微分规则找到这个函数的导数，并将你的结果与使用极限率找到的结果进行比较。用上面的图验证你的结果。如果你做得正确，你应该看到以下图形：
 - en: '![](../Images/37779721566f5c62b0c3c86a74e2f1c2.png)'
+  id: totrans-54
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/37779721566f5c62b0c3c86a74e2f1c2.png)'
 - en: In the next lesson, you will discover that integration is the reverse of differentiation.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一节课中，你将发现积分是微分的逆操作。
 - en: 'Lesson 02: Integration'
+  id: totrans-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '课程 02: 积分'
 - en: In this lesson, you will discover integration is the reverse of differentiation.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这节课中，你将发现积分是微分的逆操作。
 - en: 'If we consider a function $f(x)=2x$ and at intervals of $\delta x$ each step
     (e.g., $\delta x = 0.1$), we can compute, say, from $x=-10$ to $x=10$ as:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们考虑一个函数 $f(x)=2x$ 并且在 $\delta x$ 的间隔内每一步（例如，$\delta x = 0.1$），我们可以计算，从 $x=-10$
+    到 $x=10$ 如下：
 - en: $$
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: f(-10), f(-9.9), f(-9.8), \cdots, f(9.8), f(9.9), f(10)
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: f(-10), f(-9.9), f(-9.8), \cdots, f(9.8), f(9.9), f(10)
 - en: $$
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: Obviously, if we have a smaller step $\delta x$, there are more terms in the
     above.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 显然，如果我们有一个更小的步长$\delta x$，上面会有更多的项。
 - en: If we multiply each of the above with the step size and then add them up, i.e.,
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们将上述每一个乘以步长，然后将它们加起来，即，
 - en: $$
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: f(-10)\times 0.1 + f(-9.9)\times 0.1 + \cdots + f(9.8)\times 0.1 + f(9.9)\times
     0.1
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: f(-10)\times 0.1 + f(-9.9)\times 0.1 + \cdots + f(9.8)\times 0.1 + f(9.9)\times
+    0.1
 - en: $$
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: this sum is called the integral of $f(x)$. In essence, this sum is the **area
     under the curve** of $f(x)$, from $x=-10$ to $x=10$. A theorem in calculus says
     if we put the area under the curve as a function, its derivative is $f(x)$. Hence
     we can see the integration as a reverse operation of differentiation.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个总和被称为$f(x)$的积分。实质上，这个总和是$f(x)$的**曲线下的面积**，从$x=-10$到$x=10$。微积分中的一个定理表明，如果我们将曲线下的面积作为一个函数，它的导数是$f(x)$。因此，我们可以将积分视为微分的反操作。
 - en: 'As we saw in Lesson 01, the differentiation of $f(x)=x^2$ is $f''(x)=2x$. This
     means for $f(x)=2x$, we can write $\int f(x) dx = x^2$ or we can say the antiderivative
     of $f(x)=x$ is $x^2$. We can confirm this in Python by calculating the area directly:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们在课程01中看到的，$f(x)=x^2$的微分是$f'(x)=2x$。这意味着对于$f(x)=2x$，我们可以写作$\int f(x) dx =
+    x^2$，或者我们可以说$f(x)=x$的反导数是$x^2$。我们可以通过直接计算面积在Python中确认这一点。
 - en: '[PRE1]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '![](../Images/c7f4fe67c151e108c8c9316ae5d14eb5.png)'
+  id: totrans-70
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/c7f4fe67c151e108c8c9316ae5d14eb5.png)'
 - en: This plot has the same shape as $f(x)$ in Lesson 01\. Indeed, all functions
     differ by a constant (e.g., $f(x)$ and $f(x)+5$) that have the same derivative.
     Hence the plot of the antiderivative computed will be the original shifted vertically.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个图与课程01中的$f(x)$具有相同的形状。事实上，所有通过常数（例如$f(x)$和$f(x)+5$）不同的函数具有相同的导数。因此，计算得到的反导数的图形将是原始函数在垂直方向上移动。
 - en: Your Task
+  id: totrans-72
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 你的任务
 - en: 'Consider $f(x)=3x^2-4x$, find the antiderivative of this function and plot
     it. Also, try to replace the Python code above with this function. If you plot
     both together, you should see the following:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑$f(x)=3x^2-4x$，找出该函数的反导数并绘制它。此外，尝试将上述Python代码替换为此函数。如果你将两者一起绘制，你应该会看到以下内容：
 - en: '![](../Images/87b8e495049342186b5993e435f07e7d.png)'
+  id: totrans-74
   prefs:
   - PREF_H3
   type: TYPE_IMG
+  zh: '![](../Images/87b8e495049342186b5993e435f07e7d.png)'
 - en: Post your answer in the comments below. I would love to see what you come up
     with.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中发布你的答案。我很想看看你会得到什么结果。
 - en: These two lessons are about functions with one variable. In the next lesson,
     you will discover how to apply differentiation to functions with multiple variables.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两节课讲的是具有一个变量的函数。在下一节课中，你将发现如何将微分应用于多个变量的函数。
 - en: 'Lesson 03: Gradient of a vector function'
+  id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 课程03：向量函数的梯度
 - en: In this lesson, you will learn the concept of gradient of a multivariate function.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本课程中，你将学习多变量函数的梯度概念。
 - en: 'If we have a function of not one variable but two or more, the differentiation
     is extended naturally to be the differentiation of the function with respect to
     each variable. For example, if we have the function $f(x,y) = x^2 + y^3$, we can
     write the differentiation in each variable as:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们有一个不仅仅是一个变量而是两个或更多变量的函数，微分自然地扩展为对每个变量的微分。例如，如果我们有函数$f(x,y) = x^2 + y^3$，我们可以将每个变量的微分写作：
 - en: $$
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: \frac{\partial f}{\partial x} &= 2x \\
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial f}{\partial x} &= 2x \\
 - en: \frac{\partial f}{\partial y} &= 3y^2
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial f}{\partial y} &= 3y^2
 - en: \end{aligned}
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: Here we introduced the notation of a partial derivative, meaning to differentiate
     a function on one variable while assuming the other variables are constants. Hence
     in the above, when we compute $\frac{\partial f}{\partial x}$, we ignored the
     $y^3$ part in the function $f(x,y)$.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们引入了偏导数的符号，表示在假设其他变量为常数的情况下，对一个变量的函数进行微分。因此，在上述计算$\frac{\partial f}{\partial
+    x}$时，我们忽略了函数$f(x,y)$中的$y^3$部分。
 - en: 'A function with two variables can be visualized as a surface on a plane. The
     above function $f(x,y)$ can be visualized using matplotlib:'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个具有两个变量的函数可以被视为平面上的一个表面。上述函数$f(x,y)$可以使用matplotlib进行可视化：
 - en: '[PRE2]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '![](../Images/596a5ce293f275e44ae03fe55562346f.png)'
+  id: totrans-89
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/596a5ce293f275e44ae03fe55562346f.png)'
 - en: 'The gradient of this function is denoted as:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个函数的梯度表示为：
 - en: $$\nabla f(x,y) = \Big(\frac{\partial f}{\partial x},\; \frac{\partial f}{\partial
     y}\Big) = (2x,\;3y^2)$$
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\nabla f(x,y) = \Big(\frac{\partial f}{\partial x},\; \frac{\partial f}{\partial
+    y}\Big) = (2x,\;3y^2)$$
 - en: 'Therefore, at each coordinate $(x,y)$, the gradient $\nabla f(x,y)$ is a vector.
     This vector tells us two things:'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，在每个坐标$(x,y)$处，梯度$\nabla f(x,y)$是一个向量。这个向量告诉我们两件事：
 - en: The direction of the vector points to where the function $f(x,y)$ is increasing
     the fastest
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 向量的方向指向函数 $f(x,y)$ 增长最快的地方
 - en: The size of the vector is the rate of change of the function $f(x,y)$ in this
     direction
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 向量的大小是函数 $f(x,y)$ 在这个方向上的变化率
 - en: 'One way to visualize the gradient is to consider it as a **vector field**:'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 可视化梯度的一种方式是将其视为**矢量场**：
 - en: '[PRE3]'
+  id: totrans-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '![](../Images/7e7f4e1d780d3b95472d1fa598291b7b.png)'
+  id: totrans-97
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/7e7f4e1d780d3b95472d1fa598291b7b.png)'
 - en: The viridis color map in matplotlib will show a larger value in yellow and a
     lower value in purple. Hence we see the gradient is “steeper” at the edges than
     in the center in the above plot.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: matplotlib中的viridis色图将用黄色显示较大的值，用紫色显示较小的值。因此，我们在上图中看到梯度在边缘“更陡”而不是中心。
 - en: 'If we consider the coordinate (2,3), we can check which direction $f(x,y)$
     will increase the fastest using the following:'
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们考虑坐标(2,3)，可以使用以下方式检查 $f(x,y)$ 将在哪个方向上最快增加：
 - en: '[PRE4]'
+  id: totrans-100
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Its output is:'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 它的输出是：
 - en: '[PRE5]'
+  id: totrans-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The gradient vector according to the formula is (4,27), which the numerical
     result above is close enough.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据公式，梯度向量为(4,27)，数值结果足够接近。
 - en: Your Task
+  id: totrans-104
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 你的任务
 - en: Consider the function $f(x,y)=x^2+y^2$, what is the gradient vector at (1,1)?
     If you get the answer from partial differentiation, can you modify the above Python
     code to confirm it by checking the rate of change at different directions?
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑函数 $f(x,y)=x^2+y^2$，在(1,1)点的梯度向量是什么？如果你通过偏导数得到答案，能否修改上述Python代码，通过检查不同方向上的变化率来确认？
 - en: Post your answer in the comments below. I would love to see what you come up
     with.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中发布你的答案。我很想看看你得到的结果。
 - en: In the next lesson, you will discover the differentiation of a function that
     takes vector input and produces vector output.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一课中，你将发现一个以向量输入并产生向量输出的函数的微分。
 - en: 'Lesson 04: Jacobian'
+  id: totrans-108
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 课程04：雅可比矩阵
 - en: In this lesson, you will learn about Jacobian matrix.
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本课中，你将学习雅可比矩阵。
 - en: 'The function $f(x,y)=(p(x,y), q(x,y))=(2xy, x^2y)$ is one with two input and
     two outputs. Sometimes we call this function taking vector arguments and returning
     a vector value. The differentiation of this function is a matrix called the Jacobian.
     The Jacobian of the above function is:'
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数 $f(x,y)=(p(x,y), q(x,y))=(2xy, x^2y)$ 是一个有两个输入和两个输出的函数。有时我们称这个函数为接收向量参数并返回向量值的函数。这个函数的微分是一个叫做雅可比矩阵的矩阵。上述函数的雅可比矩阵是：
 - en: $$
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \mathbf{J} =
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: \mathbf{J} =
 - en: \begin{bmatrix}
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{bmatrix}
 - en: \frac{\partial p}{\partial x} & \frac{\partial p}{\partial y} \\
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial p}{\partial x} & \frac{\partial p}{\partial y} \\
 - en: \frac{\partial q}{\partial x} & \frac{\partial q}{\partial y}
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial q}{\partial x} & \frac{\partial q}{\partial y}
 - en: \end{bmatrix}
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{bmatrix}
 - en: '='
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: '='
 - en: \begin{bmatrix}
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{bmatrix}
 - en: 2y & 2x \\
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 2y & 2x \\
 - en: 2xy & x^2
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 2xy & x^2
 - en: \end{bmatrix}
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{bmatrix}
 - en: $$
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: In the Jacobian matrix, each row has the partial differentiation of each element
     of the output vector, and each column has the partial differentiation with respect
     to each element of the input vector.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 在雅可比矩阵中，每一行包含输出向量中每个元素的偏导数，而每一列包含对输入向量中每个元素的偏导数。
 - en: 'We will see the use of Jacobian later. Since finding a Jacobian matrix involves
     a lot of partial differentiations, it would be great if we could let a computer
     check our math. In Python, we can verify the above result using SymPy:'
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们稍后将看到雅可比矩阵的应用。由于计算雅可比矩阵涉及大量的偏导数，如果我们能让计算机检查我们的数学计算将会很好。在Python中，我们可以使用SymPy验证上述结果：
 - en: '[PRE6]'
+  id: totrans-125
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Its output is:'
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 它的输出是：
 - en: '[PRE7]'
+  id: totrans-127
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: We asked SymPy to define the symbols `x` and `y` and then defined the vector
     function `f`. Afterward, the Jacobian can be found by calling the `jacobian()`
     function.
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们要求SymPy定义符号`x`和`y`，然后定义了向量函数`f`。之后，可以通过调用`jacobian()`函数来找到雅可比矩阵。
 - en: Your Task
+  id: totrans-129
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 你的任务
 - en: Consider the function
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑函数
 - en: $$
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: f(x,y) = \begin{bmatrix}
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: f(x,y) = \begin{bmatrix}
 - en: \frac{1}{1+e^{-(px+qy)}} & \frac{1}{1+e^{-(rx+sy)}} & \frac{1}{1+e^{-(tx+uy)}}
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{1}{1+e^{-(px+qy)}} & \frac{1}{1+e^{-(rx+sy)}} & \frac{1}{1+e^{-(tx+uy)}}
 - en: \end{bmatrix}
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{bmatrix}
 - en: $$
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: where $p,q,r,s,t,u$ are constants. What is the Jacobian matrix of $f(x,y)$?
     Can you verify it with SymPy?
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中 $p,q,r,s,t,u$ 是常数。$f(x,y)$ 的雅可比矩阵是什么？你能用SymPy验证吗？
 - en: In the next lesson, you will discover the application of the Jacobian matrix
     in a neural network’s backpropagation algorithm.
+  id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一课中，你将发现雅可比矩阵在神经网络反向传播算法中的应用。
 - en: 'Lesson 05: Backpropagation'
+  id: totrans-138
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 课程05：反向传播
 - en: In this lesson, you will see how the backpropagation algorithm uses the Jacobian
     matrix.
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本课中，你将了解反向传播算法如何使用雅可比矩阵。
 - en: 'If we consider a neural network with one hidden layer, we can represent it
     as a function:'
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们考虑一个具有一个隐藏层的神经网络，我们可以将其表示为一个函数：
 - en: $$
+  id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: y = g\Big(\sum_{k=1}^M u_k f_k\big(\sum_{i=1}^N w_{ik}x_i\big)\Big)
+  id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: y = g\Big(\sum_{k=1}^M u_k f_k\big(\sum_{i=1}^N w_{ik}x_i\big)\Big)
 - en: $$
+  id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: The input to the neural network is a vector $\mathbf{x}=(x_1, x_2, \cdots, x_N)$
     and each $x_i$ will be multiplied with weight $w_{ik}$ and fed into the hidden
     layer. The output of neuron $k$ in the hidden layer will be multiplied with weight
     $u_k$ and fed into the output layer. The activation function of the hidden layer
     and output layer are $f$ and $g$, respectively.
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络的输入是一个向量 $\mathbf{x}=(x_1, x_2, \cdots, x_N)$，每个 $x_i$ 会与权重 $w_{ik}$ 相乘并输入到隐藏层中。隐藏层中神经元
+    $k$ 的输出将与权重 $u_k$ 相乘并输入到输出层中。隐藏层和输出层的激活函数分别是 $f$ 和 $g$。
 - en: If we consider
+  id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们考虑
 - en: $$z_k = f_k\big(\sum_{i=1}^N w_{ik}x_i\big)$$
+  id: totrans-146
   prefs: []
   type: TYPE_NORMAL
+  zh: $$z_k = f_k\big(\sum_{i=1}^N w_{ik}x_i\big)$$
 - en: then
+  id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后
 - en: $$
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \frac{\partial y}{\partial x_i} = \sum_{k=1}^M \frac{\partial y}{\partial z_k}\frac{\partial
     z_k}{\partial x_i}
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial y}{\partial x_i} = \sum_{k=1}^M \frac{\partial y}{\partial z_k}\frac{\partial
+    z_k}{\partial x_i}
 - en: $$
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: If we consider the entire layer at once, we have $\mathbf{z}=(z_1, z_2, \cdots,
     z_M)$ and then
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们一次考虑整个层，我们有 $\mathbf{z}=(z_1, z_2, \cdots, z_M)$ 然后
 - en: $$
+  id: totrans-152
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \frac{\partial y}{\partial \mathbf{x}} = \mathbf{W}^\top\frac{\partial y}{\partial
     \mathbf{z}}
+  id: totrans-153
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial y}{\partial \mathbf{x}} = \mathbf{W}^\top\frac{\partial y}{\partial
+    \mathbf{z}}
 - en: $$
+  id: totrans-154
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: where $\mathbf{W}$ is the $M\times N$ Jacobian matrix, where the element on
     row $k$ and column $i$ is $\frac{\partial z_k}{\partial x_i}$.
+  id: totrans-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中 $\mathbf{W}$ 是 $M\times N$ 的雅可比矩阵，其中第 $k$ 行第 $i$ 列的元素是 $\frac{\partial z_k}{\partial
+    x_i}$。
 - en: This is how the backpropagation algorithm works in training a neural network!
     For a network with multiple hidden layers, we need to compute the Jacobian matrix
     for each layer.
+  id: totrans-156
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是反向传播算法在训练神经网络中的工作原理！对于具有多个隐藏层的网络，我们需要计算每一层的雅可比矩阵。
 - en: Your Task
+  id: totrans-157
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 你的任务
 - en: The code below implements a neural network model that you can try yourself.
     It has two hidden layers and a classification network to separate points in 2-dimension
     into two classes. Try to look at the function `backward()` and identify which
     is the Jacobian matrix.
+  id: totrans-158
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面的代码实现了一个神经网络模型，你可以自己尝试。它有两个隐藏层和一个分类网络，用于将二维点分为两类。尝试查看函数 `backward()` 并识别哪个是雅可比矩阵。
 - en: If you play with this code, the class `mlp` should not be modified, but you
     can change the parameters on how a model is created.
+  id: totrans-159
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你玩这个代码，`mlp` 类不应该被修改，但你可以改变模型创建时的参数。
 - en: '[PRE8]'
+  id: totrans-160
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: In the next lesson, you will discover the use of differentiation to find the
     optimal value of a function.
+  id: totrans-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一节课中，你将发现利用微分找到函数的最优值。
 - en: 'Lesson 06: Optimization'
+  id: totrans-162
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第 06 课：优化
 - en: In this lesson, you will learn an important use of differentiation.
+  id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本节课中，你将学习微分的重要应用。
 - en: Because the differentiation of a function is the rate of change, we can make
     use of differentiation to find the optimal point of a function.
+  id: totrans-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于函数的微分是变化率，我们可以利用微分来找到函数的最优点。
 - en: If a function attained its maximum, we would expect it to move from a lower
     point to the maximum, and if we move further, it falls to another lower point.
     Hence at the point of maximum, the rate of change of a function is zero. And vice
     versa for the minimum.
+  id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果一个函数达到了最大值，我们会期望它从一个较低的点移动到最大值，并且如果我们进一步移动，它会下降到另一个较低的点。因此，在最大点上，函数的变化率为零。最小值的情况则相反。
 - en: As an example, consider $f(x)=x^3-2x^2+1$. The derivative is $f'(x) = 3x^2-4x$
     and $f'(x)=0$ at $x=0$ and $x=4/3$. Hence these positions of $x$ are where $f(x)$
     is at its maximum or minimum. We can visually confirm it by plotting $f(x)$ (see
     the plot in Lesson 01).
+  id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 举个例子，考虑 $f(x)=x^3-2x^2+1$。导数为 $f'(x) = 3x^2-4x$，在 $x=0$ 和 $x=4/3$ 时 $f'(x)=0$。因此这些
+    $x$ 的位置是 $f(x)$ 达到最大值或最小值的位置。我们可以通过绘制 $f(x)$ 来直观地确认（参见第 01 节的图）。
 - en: Your task
+  id: totrans-167
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 你的任务
 - en: Consider the function $f(x)=\log x$ and find its derivative. What will be the
     value of $x$ when $f'(x)=0$? What does it tell you about the maximum or minimum
     of the log function? Try to plot the function of $\log x$ to visually confirm
     your answer.
+  id: totrans-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑函数 $f(x)=\log x$ 并求其导数。当 $f'(x)=0$ 时 $x$ 的值是多少？这告诉你关于对数函数的最大值或最小值的什么信息？尝试绘制
+    $\log x$ 的函数图像以直观确认你的答案。
 - en: In the next lesson, you will discover the application of this technique in finding
     the support vector.
+  id: totrans-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一节课中，你将发现这一技术在寻找支持向量中的应用。
 - en: 'Lesson 07: Support vector machine'
+  id: totrans-170
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第 07 课：支持向量机
 - en: In this lesson, you will learn how we can convert support vector machine into
     an optimization problem.
+  id: totrans-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本节课中，你将学习如何将支持向量机转换为优化问题。
 - en: 'In a two-dimensional plane, any straight line can be represented by the equation:'
+  id: totrans-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 在二维平面中，任何直线都可以通过以下方程表示：
 - en: $$ax+by+c=0$$
+  id: totrans-173
   prefs: []
   type: TYPE_NORMAL
+  zh: $$ax+by+c=0$$
 - en: 'in the $xy$-coordinate system. A result from the study of coordinate geometry
     says that for any point $(x_0,y_0)$, its **distance** to the line $ax+by+c=0$
     is:'
+  id: totrans-174
   prefs: []
   type: TYPE_NORMAL
+  zh: 在$xy$坐标系中。从坐标几何学的研究结果表明，对于任意点$(x_0,y_0)$，它到直线$ax+by+c=0$的**距离**是：
 - en: $$
+  id: totrans-175
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \frac{\vert ax_0+by_0+c \vert}{\sqrt{a^2+b^2}}
+  id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\vert ax_0+by_0+c \vert}{\sqrt{a^2+b^2}}
 - en: $$
+  id: totrans-177
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: Consider the points (0,0), (1,2), and (2,1) in the $xy$-plane, in which the
     first point and the latter two points are in different classes. What is the line
     that best separates these two classes? This is the basis of a support vector machine
     classifier. The support vector is the line of maximum separation in this case.
+  id: totrans-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 在$xy$平面中考虑点(0,0)，(1,2)和(2,1)，其中第一个点和后两个点属于不同的类。什么是最好分离这两类的线？这是支持向量机分类器的基础。支持向量是这种情况下最大分离的线。
 - en: 'To find such a line, we are looking for:'
+  id: totrans-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 要找到这样一条线，我们正在寻找：
 - en: $$
+  id: totrans-180
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-181
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: \text{minimize} && a^2 + b^2 \\
+  id: totrans-182
   prefs: []
   type: TYPE_NORMAL
+  zh: \text{minimize} && a^2 + b^2 \\
 - en: \text{subject to} && -1(0a+0b+c) &\ge 1 \\
+  id: totrans-183
   prefs: []
   type: TYPE_NORMAL
+  zh: \text{subject to} && -1(0a+0b+c) &\ge 1 \\
 - en: '&& +1(1a+2b+c) &\ge 1 \\'
+  id: totrans-184
   prefs: []
   type: TYPE_NORMAL
+  zh: '&& +1(1a+2b+c) &\ge 1 \\'
 - en: '&& +1(2a+1b+c) &\ge 1'
+  id: totrans-185
   prefs: []
   type: TYPE_NORMAL
+  zh: '&& +1(2a+1b+c) &\ge 1'
 - en: \end{aligned}
+  id: totrans-186
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-187
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: The objective $a^2+b^2$ is to be minimized so that the distances from each data
     point to the line are maximized. The condition $-1(0a+0b+c)\ge 1$ means the point
     (0,0) is of class $-1$; similarly for the other two points, they are of class
     $+1$. The straight line should put these two classes in different sides of the
     plane.
+  id: totrans-188
   prefs: []
   type: TYPE_NORMAL
+  zh: 目标$a^2+b^2$是为了最小化，以使每个数据点到直线的距离最大化。条件$-1(0a+0b+c)\ge 1$意味着点(0,0)属于类$-1$；对于其他两点也是如此，它们属于类$+1$。直线应该将这两类放在平面的不同侧。
 - en: 'This is a **constrained optimization** problem, and the way to solve it is
     to use the Lagrange multiplier approach. The first step in using the Lagrange
     multiplier approach is to find the partial differentials of the following Lagrange
     function:'
+  id: totrans-189
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个**受约束的优化**问题，解决它的方法是使用拉格朗日乘数法。使用拉格朗日乘数法的第一步是找到以下拉格朗日函数的偏导数：
 - en: $$
+  id: totrans-190
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: L = a^2+b^2 + \lambda_1(-c-1) + \lambda_2 (a+2b+c-1) + \lambda_3 (2a+b+c-1)
+  id: totrans-191
   prefs: []
   type: TYPE_NORMAL
+  zh: L = a^2+b^2 + \lambda_1(-c-1) + \lambda_2 (a+2b+c-1) + \lambda_3 (2a+b+c-1)
 - en: $$
+  id: totrans-192
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'and set the partial differentials to zero, then solve for $a$, $b$, and $c$.
     It would be too lengthy to demonstrate here, but we can use SciPy to find the
     solution to the above numerically:'
+  id: totrans-193
   prefs: []
   type: TYPE_NORMAL
+  zh: 并设置偏微分为零，然后解出$a$，$b$和$c$。在这里展示将会太冗长，但我们可以使用SciPy在数值上找到解决方案：
 - en: '[PRE9]'
+  id: totrans-194
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'It will print:'
+  id: totrans-195
   prefs: []
   type: TYPE_NORMAL
+  zh: 它将打印：
 - en: '[PRE10]'
+  id: totrans-196
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The above means the line to separate these three points is $0.67x + 0.67y –
     1 = 0$. Note that if you provided $N$ data points, there would be $N$ constraints
     to be defined.
+  id: totrans-197
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述意味着分离这三点的线是$0.67x + 0.67y – 1 = 0$。请注意，如果你提供了$N$个数据点，就会有$N$个定义的约束条件。
 - en: Your Task
+  id: totrans-198
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 你的任务
 - en: Let’s consider the points (-1,-1) and (-3,-1) to be the first class together
     with (0,0) and point (3,3) to be the second class together with points (1,2) and
     (2,1). In this problem of six points, can you modify the above program and find
     the line that separates the two classes? Don’t be surprised to see the solution
     remain the same as above. There is a reason for it. Can you tell?
+  id: totrans-199
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们考虑点（-1，-1）和（-3，-1）作为第一类，以及点（0，0）和点（3，3）作为第二类，还有点（1，2）和（2，1）。在这个有六个点的问题中，你能修改上述程序并找到分离这两类的直线吗？看到解决方案保持不变可能会感到惊讶。这是有原因的。你能说出来吗？
 - en: Post your answer in the comments below. I would love to see what you come up
     with.
+  id: totrans-200
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中发表你的答案。我很想看看你们的成果。
 - en: This was the final lesson.
+  id: totrans-201
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是最后的课程。
 - en: The End!
+  id: totrans-202
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结束！
 - en: (*Look How Far You Have Come*)
+  id: totrans-203
   prefs: []
   type: TYPE_NORMAL
+  zh: （*看看你已经走了多远*）
 - en: You made it. Well done!
+  id: totrans-204
   prefs: []
   type: TYPE_NORMAL
+  zh: 你成功了。干得漂亮！
 - en: Take a moment and look back at how far you have come.
+  id: totrans-205
   prefs: []
   type: TYPE_NORMAL
+  zh: 请花一点时间回顾你已经走了多远。
 - en: 'You discovered:'
+  id: totrans-206
   prefs: []
   type: TYPE_NORMAL
+  zh: 你发现：
 - en: What is differentiation, and what it means to a function
+  id: totrans-207
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是微分，以及它对一个函数意味着什么
 - en: What is integration
+  id: totrans-208
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是积分
 - en: How to extend differentiation to a function of vector argument
+  id: totrans-209
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将微分扩展到向量参数函数
 - en: How to do differentiation on a vector-valued function
+  id: totrans-210
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何对向量值函数进行微分
 - en: The role of Jacobian in the backpropagation algorithm in neural networks
+  id: totrans-211
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在神经网络的反向传播算法中雅可比矩阵的作用
 - en: How to use differentiation to find the optimum points of a function
+  id: totrans-212
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用微分找到函数的最优点
 - en: Support vector machine is a constrained optimization problem, which would need
     differentiation to solve
+  id: totrans-213
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 支持向量机是一个受约束的优化问题，需要微分来解决
 - en: Summary
+  id: totrans-214
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: '**How did you do with the mini-course?**'
+  id: totrans-215
   prefs: []
   type: TYPE_NORMAL
+  zh: '**你对迷你课程的进展如何？**'
 - en: Did you enjoy this crash course?
+  id: totrans-216
   prefs: []
   type: TYPE_NORMAL
+  zh: 你喜欢这个速成课程吗？
 - en: '**Do you have any questions? Were there any sticking points?**'
+  id: totrans-217
   prefs: []
   type: TYPE_NORMAL
+  zh: '**你有任何问题吗？有什么困难吗？**'
 - en: Let me know. Leave a comment below.
+  id: totrans-218
   prefs: []
   type: TYPE_NORMAL
+  zh: 请告诉我。请在下方留言。

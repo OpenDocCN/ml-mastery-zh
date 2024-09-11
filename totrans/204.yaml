@@ -1,11 +1,15 @@
 - en: Understanding Simple Recurrent Neural Networks in Keras
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 Keras 中理解简单的递归神经网络
 - en: 原文：[https://machinelearningmastery.com/understanding-simple-recurrent-neural-networks-in-keras/](https://machinelearningmastery.com/understanding-simple-recurrent-neural-networks-in-keras/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/understanding-simple-recurrent-neural-networks-in-keras/](https://machinelearningmastery.com/understanding-simple-recurrent-neural-networks-in-keras/)
 - en: This tutorial is designed for anyone looking for an understanding of how recurrent
     neural networks (RNN) work and how to use them via the Keras deep learning library.
     While the Keras library provides all the methods required for solving problems
@@ -13,422 +17,652 @@
     works. In this article, the computations taking place in the RNN model are shown
     step by step. Next, a complete end-to-end system for time series prediction is
     developed.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程适用于希望了解递归神经网络（RNN）工作原理及如何通过 Keras 深度学习库使用它们的任何人。虽然 Keras 库提供了解决问题和构建应用所需的所有方法，但了解一切如何工作也很重要。本文展示了
+    RNN 模型中的计算步骤。接下来，将开发用于时间序列预测的完整端到端系统。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将了解：
 - en: The structure of an RNN
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: RNN 的结构
 - en: How an RNN computes the output when given an input
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当给定输入时，RNN 如何计算输出
 - en: How to prepare data for a SimpleRNN in Keras
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为 Keras 中的 SimpleRNN 准备数据
 - en: How to train a SimpleRNN model
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何训练一个 SimpleRNN 模型
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**使用我的书[使用注意力构建Transformer模型](https://machinelearningmastery.com/transformer-models-with-attention/)快速启动项目**。它提供了**自学教程**和**可运行代码**，帮助您构建一个完全可工作的Transformer模型，可以'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将句子从一种语言翻译成另一种语言*...'
 - en: Let’s get started.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![Umstead state park](../Images/1ca5e37fc2847144b1ccbedc332ad33a.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/IMG_9433-scaled.jpg)'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![Umstead state park](../Images/1ca5e37fc2847144b1ccbedc332ad33a.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/IMG_9433-scaled.jpg)'
 - en: Understanding simple recurrent neural networks in Keras. Photo by Mehreen Saeed,
     some rights reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Keras 中理解简单的递归神经网络。照片由Mehreen Saeed提供，部分权利保留。
 - en: Tutorial Overview
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两部分；它们是：
 - en: The structure of the RNN
+  id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: RNN 的结构
 - en: Different weights and biases associated with different layers of the RNN
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 不同层的不同权重和偏置与 RNN 的关联
 - en: How computations are performed to compute the output when given an input
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在给定输入时计算输出的计算方式
 - en: A complete application for time series prediction
+  id: totrans-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 用于时间序列预测的完整应用程序
 - en: Prerequisites
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 先决条件
 - en: It is assumed that you have a basic understanding of RNNs before you start implementing
     them. [An Introduction to Recurrent Neural Networks and the Math That Powers Them](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them)
     gives you a quick overview of RNNs.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设您在开始实施之前对 RNN 有基本的了解。[递归神经网络及其动力学的简介](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them)为您快速概述了
+    RNN。
 - en: Let’s now get right down to the implementation part.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们直接进入实施部分。
 - en: Import Section
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 导入部分
 - en: To start the implementation of RNNs, let’s add the import section.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 要开始实现 RNN，请添加导入部分。
 - en: Python
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始构建带注意力的Transformer模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在立即参加我的免费12天电子邮件速成课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并获得课程的免费 PDF 电子书版本。
 - en: Keras SimpleRNN
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Keras SimpleRNN
 - en: The function below returns a model that includes a `SimpleRNN` layer and a `Dense`
     layer for learning sequential data. The `input_shape` specifies the parameter
     `(time_steps x features)`. We’ll simplify everything and use univariate data,
     i.e., one feature only; the time steps are discussed below.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面的函数返回一个包含 `SimpleRNN` 层和 `Dense` 层的模型，用于学习序列数据。`input_shape` 参数指定了 `(time_steps
+    x features)`。我们将简化一切，并使用单变量数据，即只有一个特征；时间步骤将在下面讨论。
 - en: Python
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The object `demo_model` is returned with two hidden units created via the `SimpleRNN`
     layer and one dense unit created via the `Dense` layer. The `input_shape` is set
     at 3×1, and a `linear` activation function is used in both layers for simplicity.
     Just to recall, the linear activation function $f(x) = x$ makes no change in the
     input. The network looks as follows:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 对象 `demo_model` 通过 `SimpleRNN` 层创建了两个隐藏单元，并通过 `Dense` 层创建了一个密集单元。`input_shape`
+    设置为 3×1，并且在两个层中都使用了 `linear` 激活函数以保持简单性。需要注意的是，线性激活函数 $f(x) = x$ 对输入不做任何更改。网络结构如下：
 - en: 'If we have $m$ hidden units ($m=2$ in the above case), then:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们有 $m$ 个隐藏单元（在上面的案例中 $m=2$），那么：
 - en: 'Input: $x \in R$'
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 输入：$x \in R$
 - en: 'Hidden unit: $h \in R^m$'
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 隐藏单元：$h \in R^m$
 - en: 'Weights for the input units: $w_x \in R^m$'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 输入单元的权重：$w_x \in R^m$
 - en: 'Weights for the hidden units: $w_h \in R^{mxm}$'
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 隐藏单元的权重：$w_h \in R^{mxm}$
 - en: 'Bias for the hidden units: $b_h \in R^m$'
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 隐藏单元的偏置：$b_h \in R^m$
 - en: 'Weight for the dense layer: $w_y \in R^m$'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 密集层的权重：$w_y \in R^m$
 - en: 'Bias for the dense layer: $b_y \in R$'
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 密集层的偏置：$b_y \in R$
 - en: 'Let’s look at the above weights. Note: As the weights are randomly initialized,
     the results posted here will be different from yours. The important thing is to
     learn what the structure of each object being used looks like and how it interacts
     with others to produce the final output.'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 查看上述权重。注意：由于权重是随机初始化的，所以这里展示的结果可能与您的结果不同。重要的是要了解每个使用的对象的结构及其如何与其他对象交互以产生最终输出。
 - en: Python
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Output
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出
 - en: '[PRE3]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Now let’s do a simple experiment to see how the layers from a SimpleRNN and
     Dense layer produce an output. Keep this figure in view.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们进行一个简单的实验，看看 SimpleRNN 和 Dense 层如何生成输出。保持这个图形在视野中。
 - en: '[![Layers Of A Recurrent Neural Network](../Images/e8bb3c270b82776a3235fbeb8b5636e3.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnnCode1.png)'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![循环神经网络的层次结构](../Images/e8bb3c270b82776a3235fbeb8b5636e3.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnnCode1.png)'
 - en: Layers of a recurrent neural network
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 循环神经网络的层次结构
 - en: We’ll input `x` for three time steps and let the network generate an output.
     The values of the hidden units at time steps 1, 2, and 3 will be computed. $h_0$
     is initialized to the zero vector. The output $o_3$ is computed from $h_3$ and
     $w_y$. An activation function is not required as we are using linear units.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将输入 `x` 三个时间步，并让网络生成一个输出。计算时间步 1、2 和 3 的隐藏单元的值。$h_0$ 初始化为零向量。输出 $o_3$ 是从 $h_3$
+    和 $w_y$ 计算的。由于我们使用线性单元，不需要激活函数。
 - en: Python
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Output
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出
 - en: '[PRE5]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Running the RNN on Sunspots Dataset
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在 Sunspots 数据集上运行 RNN
 - en: 'Now that we understand how the SimpleRNN and Dense layers are put together.
     Let’s run a complete RNN on a simple time series dataset. We’ll need to follow
     these steps:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们理解了 SimpleRNN 和 Dense 层是如何组合在一起的。让我们在一个简单的时间序列数据集上运行一个完整的 RNN。我们需要按照以下步骤进行：
 - en: Read the dataset from a given URL
+  id: totrans-57
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从给定的 URL 读取数据集
 - en: Split the data into training and test sets
+  id: totrans-58
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将数据分割为训练集和测试集
 - en: Prepare the input to the required Keras format
+  id: totrans-59
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 为 Keras 格式准备输入数据
 - en: Create an RNN model and train it
+  id: totrans-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 创建一个 RNN 模型并对其进行训练。
 - en: Make the predictions on training and test sets and print the root mean square
     error on both sets
+  id: totrans-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对训练集和测试集进行预测，并打印两个集合上的均方根误差。
 - en: View the result
+  id: totrans-62
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 查看结果
 - en: 'Step 1, 2: Reading Data and Splitting Into Train and Test'
+  id: totrans-63
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 步骤 1、2：读取数据并分割为训练集和测试集
 - en: The following function reads the train and test data from a given URL and splits
     it into a given percentage of train and test data. It returns single-dimensional
     arrays for train and test data after scaling the data between 0 and 1 using `MinMaxScaler`
     from scikit-learn.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面的函数从给定的 URL 读取训练和测试数据，并将其分割成给定百分比的训练和测试数据。它使用 scikit-learn 中的 `MinMaxScaler`
+    将数据缩放到 0 到 1 之间，并返回训练和测试数据的单维数组。
 - en: Python
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Step 3: Reshaping Data for Keras'
+  id: totrans-67
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 步骤 3：为 Keras 调整数据形状
 - en: 'The next step is to prepare the data for Keras model training. The input array
     should be shaped as: `total_samples x time_steps x features`.'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一步是为 Keras 模型训练准备数据。输入数组应该被整形为：`total_samples x time_steps x features`。
 - en: There are many ways of preparing time series data for training. We’ll create
     input rows with non-overlapping time steps. An example for time steps = 2 is shown
     in the figure below. Here, time steps denotes the number of previous time steps
     to use for predicting the next value of the time series data.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 有许多种方法可以准备时间序列数据进行训练。我们将创建具有非重叠时间步长的输入行。下图显示了时间步长 = 2 的示例。这里，时间步长表示用于预测时间序列数据下一个值的先前时间步数。
 - en: '[![How Data Is Prepared For Sunspots Example](../Images/a2cf22ce957a7712a9bc2065c1a8b3f6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnnCode2.png)'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![如何为太阳黑子示例准备数据](../Images/a2cf22ce957a7712a9bc2065c1a8b3f6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnnCode2.png)'
 - en: How data is prepared for sunspots example
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 太阳黑子示例的数据准备方法
 - en: The following function `get_XY()` takes a one-dimensional array as input and
     converts it to the required input `X` and target `Y` arrays. We’ll use 12 `time_steps`
     for the sunspots dataset as the sunspots generally have a cycle of 12 months.
     You can experiment with other values of `time_steps`.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下函数 `get_XY()` 以一维数组为输入，将其转换为所需的输入 `X` 和目标 `Y` 数组。我们将使用12个 `time_steps` 作为太阳黑子数据集的时间步长，因为太阳黑子的周期通常为12个月。你可以尝试其他
+    `time_steps` 的值。
 - en: Python
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Step 4: Create RNN Model and Train'
+  id: totrans-75
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 第4步：创建RNN模型并训练
 - en: For this step, you can reuse your `create_RNN()` function that was defined above.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于此步骤，你可以重用之前定义的 `create_RNN()` 函数。
 - en: Python
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Step 5: Compute and Print the Root Mean Square Error'
+  id: totrans-79
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 第5步：计算并打印均方根误差
 - en: The function `print_error()` computes the mean square error between the actual
     and predicted values.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数 `print_error()` 计算实际值与预测值之间的均方误差。
 - en: Python
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Output
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出
 - en: '[PRE10]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'Step 6: View the Result'
+  id: totrans-85
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 第6步：查看结果
 - en: The following function plots the actual target values and the predicted values.
     The red line separates the training and test data points.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下函数绘制了实际目标值和预测值。红色的线条将训练数据和测试数据点分开。
 - en: Python
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'The following plot is generated:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成了以下图表：
 - en: '[![](../Images/26031cdffaf0e3342ade6a587323178d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnnCode3.png)'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/26031cdffaf0e3342ade6a587323178d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/09/rnnCode3.png)'
 - en: Consolidated Code
+  id: totrans-91
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 综合代码
 - en: Given below is the entire code for this tutorial. Try this out at your end and
     experiment with different hidden units and time steps. You can add a second `SimpleRNN`
     to the network and see how it behaves. You can also use the `scaler` object to
     rescale the data back to its normal range.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是本教程的全部代码。尝试在你的环境中运行这些代码，并实验不同的隐藏单元和时间步长。你可以在网络中添加第二个 `SimpleRNN` 观察其表现。你也可以使用
+    `scaler` 对象将数据重新缩放到正常范围。
 - en: Python
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE12]'
+  id: totrans-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Further Reading
+  id: totrans-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多相关资源，如果你想深入了解。
 - en: Books
+  id: totrans-97
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Deep Learning Essentials](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365)
     by Wei Di, Anurag Bhardwaj, and Jianing Wei.'
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习基础](https://www.amazon.com/Deep-Learning-Essentials-hands-fundamentals/dp/1785880365)
+    由 Wei Di、Anurag Bhardwaj 和 Jianing Wei 编著。'
 - en: '[Deep Learning](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=as_li_ss_tl?dchild=1&keywords=deep+learning&qid=1606171954&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=0a0c58945768a65548b639df6d1a98ed&language=en_US)
     by Ian Goodfellow, Joshua Bengio, and Aaron Courville.'
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习](https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/ref=as_li_ss_tl?dchild=1&keywords=deep+learning&qid=1606171954&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=0a0c58945768a65548b639df6d1a98ed&language=en_US)
+    由 Ian Goodfellow、Joshua Bengio 和 Aaron Courville 编著。'
 - en: Articles
+  id: totrans-100
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[Wikipedia article on BPTT](https://en.wikipedia.org/wiki/Backpropagation_through_time)'
+  id: totrans-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[关于BPTT的维基百科文章](https://en.wikipedia.org/wiki/Backpropagation_through_time)'
 - en: '[A Tour of Recurrent Neural Network Algorithms for Deep Learning](https://machinelearningmastery.com/recurrent-neural-network-algorithms-for-deep-learning/)'
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[递归神经网络算法深度学习巡礼](https://machinelearningmastery.com/recurrent-neural-network-algorithms-for-deep-learning/)'
 - en: '[A Gentle Introduction to Backpropagation Through Time](https://machinelearningmastery.com/gentle-introduction-backpropagation-time/)'
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[时间反向传播的温和介绍](https://machinelearningmastery.com/gentle-introduction-backpropagation-time/)'
 - en: '[How to Prepare Univariate Time Series Data for Long Short-Term Memory Networks](https://machinelearningmastery.com/prepare-univariate-time-series-data-long-short-term-memory-networks/)'
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[如何为长短期记忆网络准备单变量时间序列数据](https://machinelearningmastery.com/prepare-univariate-time-series-data-long-short-term-memory-networks/)'
 - en: Summary
+  id: totrans-105
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you discovered recurrent neural networks and their various
     architectures.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了递归神经网络及其各种架构。
 - en: 'Specifically, you learned:'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The structure of RNNs
+  id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: RNN的结构
 - en: How the RNN computes an output from previous inputs
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: RNN如何从先前的输入中计算输出
 - en: How to implement an end-to-end system for time series forecasting using an RNN
+  id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用RNN实现时间序列预测的端到端系统
 - en: Do you have any questions about RNNs discussed in this post? Ask your questions
     in the comments below, and I will do my best to answer.
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本文中讨论的 RNNs，你有任何问题吗？请在下方评论中提出你的问题，我会尽力回答。

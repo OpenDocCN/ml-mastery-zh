@@ -1,446 +1,668 @@
 - en: A Gentle Introduction to Continuous Functions
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 轻松介绍连续函数
 - en: 原文：[https://machinelearningmastery.com/continuous-functions/](https://machinelearningmastery.com/continuous-functions/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/continuous-functions/](https://machinelearningmastery.com/continuous-functions/)
 - en: Many areas of calculus require an understanding of continuous functions. The
     characteristics of continuous functions, and the study of points of discontinuity
     are of great interest to the mathematical community. Because of their important
     properties, continuous functions have practical applications in machine learning
     algorithms and optimization methods.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 微积分的许多领域需要了解连续函数。连续函数的特性以及对不连续点的研究对数学界非常感兴趣。由于其重要的属性，连续函数在机器学习算法和优化方法中有实际应用。
 - en: In this tutorial, you will discover what continuous functions are, their properties,
     and two important theorems in the study of optimization algorithms, i.e., intermediate
     value theorem and extreme value theorem.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现什么是连续函数，它们的性质，以及在优化算法研究中两个重要的定理，即中间值定理和极值定理。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解到：
 - en: Definition of continuous functions
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 连续函数的定义
 - en: Intermediate value theorem
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 中间值定理
 - en: Extreme value theorem
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 极值定理
 - en: Let’s get started.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![Picture of red roses](../Images/70dae59a4df1dc292696ec05f1bf1f5d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/jeeni.jpg)'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![红玫瑰图片](../Images/70dae59a4df1dc292696ec05f1bf1f5d.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/jeeni.jpg)'
 - en: A Gentle Introduction to continuous functions Photo by Jeeni Khala, some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 轻松介绍连续函数 由Jeeni Khala拍摄，版权所有。
 - en: Tutorial Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into 2 parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为 2 部分，它们是：
 - en: Definition of continuous functions
+  id: totrans-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 连续函数的定义
 - en: Informal definition
+  id: totrans-14
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 非正式定义
 - en: Formal definition
+  id: totrans-15
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 正式定义
 - en: Theorems
+  id: totrans-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 定理
 - en: Intermediate value theorem
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 中间值定理
 - en: Extreme value theorem
+  id: totrans-18
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 极值定理
 - en: Prerequisites
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 先决条件
 - en: This tutorial requires an understanding of the concept of limits. To refresh
     your memory, you can take a look at [limits and continuity](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity),
     where continuous functions are also briefly defined. In this tutorial we’ll go
     into more details.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程需要了解极限的概念。为了刷新你的记忆，你可以查看 [极限与连续性](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity)，其中也简要定义了连续函数。在本教程中，我们将深入探讨。
 - en: We’ll also make use of intervals. So square brackets mean closed intervals (include
     the boundary points) and parenthesis mean open intervals (do not include boundary
     points), for example,
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还将使用区间。因此，方括号表示闭区间（包括边界点），而圆括号表示开区间（不包括边界点），例如，
 - en: '[a,b] means a<=x<=b'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[a,b] 意味着 a<=x<=b'
 - en: (a,b) means a<x<b
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: (a,b) 意味着 a<x<b
 - en: '[a,b) means a<=x<b'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[a,b) 意味着 a<=x<b'
 - en: From the above, you can note that an interval can be open on one side and closed
     on the other.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 从上面你可以注意到，一个区间可以在一侧是开区间，在另一侧是闭区间。
 - en: As a last point, we’ll only be discussing real functions defined over real numbers.
     We won’t be discussing complex numbers or functions defined on the complex plane.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们将仅讨论定义在实数上的实函数。我们不会讨论复数或定义在复平面上的函数。
 - en: An Informal Definition of Continuous Functions
+  id: totrans-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 连续函数的非正式定义
 - en: 'Suppose we have a function f(x). We can easily check if it is continuous between
     two points a and b, if we can plot the graph of f(x) without lifting our hand.
     As an example, consider a straight line defined as:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们有一个函数 f(x)。如果我们可以在不抬起手的情况下绘制 f(x) 的图形，那么我们可以很容易地检查它在两个点 a 和 b 之间是否是连续的。例如，考虑一个定义为：
 - en: f(x)=2x+1
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: f(x)=2x+1
 - en: 'We can draw the straight line between [0,1] without lifting our hand. In fact,
     we can draw this line between any two values of x and we won’t have to lift our
     hand (see figure below). Hence, this function is continuous over the entire domain
     of real numbers. Now let’s see what happens when we plot the ceil function:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以在 [0,1] 之间绘制这条直线而不抬起手。事实上，我们可以在任何两个 x 值之间绘制这条直线而不需要抬起手（见下图）。因此，这个函数在整个实数域上是连续的。现在让我们看看当我们绘制
+    ceiling 函数时会发生什么：
 - en: '[![Continuous function (left) and Not a continuous function (right)](../Images/bc42755172471bcc2be9b04be1c568f7.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/cont1-1.png)'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![连续函数（左）和非连续函数（右）](../Images/bc42755172471bcc2be9b04be1c568f7.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/cont1-1.png)'
 - en: Continuous function (left), and not a continuous function (right)
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 连续函数（左），以及非连续函数（右）
 - en: The ceil function has a value of 1 on the interval (0,1], for example, ceil(0.5)=
     1, ceil(0.7) = 1, and so on. As a result, the function is continuous over the
     domain (0,1]. If we adjust the interval to (0,2], ceil(x) jumps to 2 as soon as
     x>1\. To plot ceil(x) for the domain (0,2], we must now lift our hand and start
     plotting again at x=2\. As a result, the ceil function isn’t a continuous function.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，ceil 函数在区间 (0,1] 上的值为 1，比如 ceil(0.5)=1，ceil(0.7)=1，等等。因此，该函数在区间 (0,1] 上是连续的。如果我们将区间调整为
+    (0,2]，那么当 x>1 时，ceil(x) 跳跃到 2。为了在区间 (0,2] 上绘制 ceil(x)，我们现在必须抬起手，并从 x=2 开始重新绘制。因此，ceil
+    函数不是一个连续函数。
 - en: If the function is continuous over the entire domain of real numbers, then it
     is a continuous function as a whole, otherwise, it is not continuous as whole.
     For the later type of functions, we can check over which interval they are continuous.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果函数在整个实数域上是连续的，那么它就是一个整体连续函数；否则，它不是整体连续的。对于后者类型的函数，我们可以检查它们在什么区间上是连续的。
 - en: A Formal Definition
+  id: totrans-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个正式的定义
 - en: 'A function f(x) is continuous at a point a, if the function’s value approaches
     f(a) when x approaches a. Hence to test the continuity of a function at a point
     x=a, check the following:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数 f(x) 在点 a 处是连续的，如果当 x 接近 a 时，函数的值接近 f(a)。因此，为了测试函数在点 x=a 处的连续性，请检查以下内容：
 - en: f(a) should exist
+  id: totrans-37
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: f(a) 应该存在
 - en: f(x) has a limit as x approaches a
+  id: totrans-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: f(x) 在 x 接近 a 时有一个极限
 - en: The limit of f(x) as x->a is equal to f(a)
+  id: totrans-39
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: f(x) 在 x->a 时的极限等于 f(a)
 - en: If all of the above hold true, then the function is continuous at the point
     a.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果上述所有条件都成立，那么该函数在点a处是连续的。
 - en: Examples
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 示例
 - en: 'Some examples are listed below and also shown in the figure:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些示例列在下面，并在图中显示：
 - en: f(x) = 1/x is not continuous as it is not defined at x=0\. However, the function
     is continuous for the domain x>0.
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: f(x) = 1/x 在 x=0 处未定义，因此不连续。然而，函数在 x>0 的区间内是连续的。
 - en: All polynomial functions are continuous functions.
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 所有多项式函数都是连续函数。
 - en: The trigonometric functions sin(x) and cos(x) are continuous and oscillate between
     the values -1 and 1.
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 三角函数 sin(x) 和 cos(x) 是连续的，并在 -1 和 1 之间振荡。
 - en: The trigonometric function tan(x) is not continuous as it is undefined at x=????/2,
     x=-????/2, etc.
+  id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 三角函数 tan(x) 不是连续的，因为它在 x=????/2, x=-????/2 等处未定义。
 - en: sqrt(x) is not continuous as it is not defined for x<0.
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: sqrt(x) 在 x<0 时未定义，因此不连续。
 - en: '|x| is continuous everywhere.'
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '|x| 在任何地方都是连续的。'
 - en: '[![Examples of continuous functions and functions with discontinuities](../Images/2a39658fe602e07a171f05f694ce64f6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/cont1.png)'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![连续函数和具有不连续性的函数的示例](../Images/2a39658fe602e07a171f05f694ce64f6.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/cont1.png)'
 - en: Examples of continuous functions and functions with discontinuities
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 连续函数和具有不连续性的函数的示例
 - en: Connection of Continuity with Function Derivatives
+  id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 连续性与函数导数的关系
 - en: 'From the definition of continuity in terms of limits, we have an alternative
     definition. f(x) is continuous at x, if:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 从极限的连续性定义出发，我们有一个替代定义。f(x) 在 x 处是连续的，如果：
 - en: f(x+h)-f(x)→ 0 when (h→0)
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 当 (h→0) 时，f(x+h)-f(x)→ 0
 - en: 'Let’s look at the definition of a derivative:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看一下导数的定义：
 - en: f'(x) = lim(h→0) (f(x+h)-f(x))/h
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: f'(x) = lim(h→0) (f(x+h)-f(x))/h
 - en: Hence, if f'(x) exists at a point a, then the function is continuous at a. The
     converse is not always true. A function may be continuous at a point a, but f'(a)
     may not exist. For example, in the above graph |x| is continuous everywhere. We
     can draw it without lifting our hand, however, at x=0 its derivative does not
     exist because of the sharp turn in the curve.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，如果 f'(x) 在点 a 处存在，则函数在 a 处是连续的。反之则不总是成立。一个函数可能在点 a 处是连续的，但 f'(a) 可能不存在。例如，在上面的图中
+    |x| 在任何地方都是连续的。我们可以在不抬起手的情况下绘制它，但在 x=0 处，由于曲线的急剧转折，其导数并不存在。
 - en: Intermediate Value Theorem
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 中间值定理
 - en: 'The intermediate value theorem states that:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 中间值定理表明：
 - en: 'If:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果：
 - en: function f(x) is continuous on [a,b]
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 函数 f(x) 在 [a,b] 上是连续的
 - en: and f(a) <= K <= f(b)
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 并且 f(a) <= K <= f(b)
 - en: 'then:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么：
 - en: There is a point c between a and b, i.e., a<=c<=b such that f(c) = K
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 a 和 b 之间存在一个点 c，即 a<=c<=b，使得 f(c) = K
 - en: In very easy words, this theorem says that if a function is continuous over
     [a,b], then all values of the function between f(a) and f(b) will exist within
     this interval as shown in the figure below.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 用非常简单的话来说，这个定理表明，如果一个函数在 [a,b] 上是连续的，那么该函数在 f(a) 和 f(b) 之间的所有值都会存在于这个区间内，如下图所示。
 - en: '[![Illustration of intermediate value theorem (left) and extreme value theorem
     (right)](../Images/e0a00d6199732231e7f4471a5f67acb7.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/cont3.png)'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![中间值定理的插图（左）和极值定理（右）](../Images/e0a00d6199732231e7f4471a5f67acb7.png)](https://machinelearningmastery.com/wp-content/uploads/2021/06/cont3.png)'
 - en: Illustration of intermediate value theorem (left) and extreme value theorem
     (right)
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 中间值定理的插图（左）和极值定理（右）
 - en: Extreme Value Theorem
+  id: totrans-67
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 极值定理
 - en: 'This theorem states that:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 该定理表明：
 - en: 'If:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果：
 - en: function f(x) is continuous on [a,b]
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 函数f(x)在[a,b]上是连续的
 - en: 'then:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么：
 - en: There are points x_min and x_max inside the interval [a,b], i.e.,
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在区间[a,b]内有点x_min和x_max，即：
 - en: a<=x_min<=b
+  id: totrans-73
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: a<=x_min<=b
 - en: a<=x_max<=b
+  id: totrans-74
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: a<=x_max<=b
 - en: and the function f(x) has a minimum value f(x_min), and a maximum value f(x_max),
     i.e.,
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 并且函数f(x)具有最小值f(x_min)和最大值f(x_max)，即：
 - en: f(x_min)<=f(x)<=f(x_max) when a<=x<=b
+  id: totrans-76
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当a<=x<=b时，f(x_min)<=f(x)<=f(x_max)
 - en: In simple words a continuous function always has a minimum and maximum value
     within an interval as shown in the above figure.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 简单来说，连续函数在一个区间内总是有最小值和最大值，如上图所示。
 - en: Continuous Functions and Optimization
+  id: totrans-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 连续函数与优化
 - en: Continuous functions are very important in the study of optimization problems.
     We can see that the extreme value theorem guarantees that within an interval,
     there will always be a point where the function has a maximum value. The same
     can be said for a minimum value. Many optimization algorithms are derived from
     this fundamental property and can perform amazing tasks.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 连续函数在优化问题的研究中非常重要。我们可以看到，极值定理保证了在一个区间内，总会有一个点使得函数具有最大值。最小值也是如此。许多优化算法源自这一基本属性，并能执行惊人的任务。
 - en: Extensions
+  id: totrans-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 扩展
 - en: This section lists some ideas for extending the tutorial that you may wish to
     explore.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节列出了一些你可能希望探索的扩展教程的想法。
 - en: Converging and diverging sequences
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 收敛和发散序列
 - en: Weierstrass and Jordan definitions of continuous functions based on infinitesimally
     small constants
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 基于无穷小常数的Weierstrass和Jordan连续函数定义
 - en: If you explore any of these extensions, I’d love to know. Post your findings
     in the comments below.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你探索了这些扩展内容，我很想知道。请在下面的评论中分享你的发现。
 - en: Further Reading
+  id: totrans-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: Tutorials
+  id: totrans-87
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[Limits and Continuity](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity)'
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[极限与连续性](https://machinelearningmastery.com/a-gentle-introduction-to-limits-and-continuity)'
 - en: '[Evaluating limits](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits)'
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[评估极限](https://machinelearningmastery.com/a-gentle-introduction-to-evaluating-limits)'
 - en: '[Derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[导数](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
 - en: Resources
+  id: totrans-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 资源
 - en: Additional resources on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning/)
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于[机器学习的微积分书籍](https://machinelearningmastery.com/calculus-books-for-machine-learning/)的额外资源
 - en: Books
+  id: totrans-93
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Thomas’ Calculus](https://amzn.to/35Yeolv), 14th edition, 2017\. (based on
     the original works of George B. Thomas, revised by Joel Hass, Christopher Heil,
     Maurice Weir)'
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[托马斯微积分](https://amzn.to/35Yeolv)，第14版，2017年（基于George B. Thomas的原著，由Joel Hass、Christopher
+    Heil、Maurice Weir修订）'
 - en: '[Calculus](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US),
     3rd Edition, 2017\. (Gilbert Strang)'
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US)，第3版，2017年（Gilbert
+    Strang）'
 - en: '[Calculus](https://amzn.to/3kS9I52), 8th edition, 2015\. (James Stewart)'
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://amzn.to/3kS9I52)，第8版，2015年（James Stewart）'
 - en: Summary
+  id: totrans-97
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you discovered the concept of continuous functions.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了连续函数的概念。
 - en: 'Specifically, you learned:'
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: What are continuous functions
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是连续函数
 - en: The formal and informal definitions of continuous functions
+  id: totrans-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 连续函数的正式和非正式定义
 - en: Points of discontinuity
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不连续点
 - en: Intermediate value theorem
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 中间值定理
 - en: Extreme value theorem
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 极值定理
 - en: Why continuous functions are important
+  id: totrans-105
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么连续函数很重要
 - en: Do you have any questions?
+  id: totrans-106
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below and I will do my best to answer.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提出你的问题，我会尽力回答。

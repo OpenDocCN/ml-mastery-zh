@@ -1,350 +1,533 @@
 - en: A Gentle Introduction To Hessian Matrices
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 温和介绍Hessian矩阵
 - en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-hessian-matrices/](https://machinelearningmastery.com/a-gentle-introduction-to-hessian-matrices/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-hessian-matrices/](https://machinelearningmastery.com/a-gentle-introduction-to-hessian-matrices/)
 - en: Hessian matrices belong to a class of mathematical structures that involve second
     order derivatives. They are often used in machine learning and data science algorithms
     for optimizing a function of interest.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: Hessian矩阵属于包含二阶导数的数学结构类别。它们通常用于机器学习和数据科学算法中，以优化感兴趣的函数。
 - en: In this tutorial, you will discover Hessian matrices, their corresponding discriminants,
     and their significance. All concepts are illustrated via an example.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现Hessian矩阵及其对应的判别式，并了解其重要性。所有概念通过示例进行说明。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将知道：
 - en: Hessian matrices
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Hessian矩阵
 - en: Discriminants computed via Hessian matrices
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过Hessian矩阵计算的判别式
 - en: What information is contained in the discriminant
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 判别式中包含的信息
 - en: Let’s get started.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![Picture of a waterfall close to Murree. Photo by Beenish Fatima, some rights
     reserved.](../Images/e25a4d6a81b18bd557b9b885630d6fe1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/beenish-2.jpg)'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![靠近穆里瀑布的照片。照片由Beenish Fatima提供，版权所有](../Images/e25a4d6a81b18bd557b9b885630d6fe1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/beenish-2.jpg)'
 - en: A Gentle Introduction to Hessian Matrices. Photo by Beenish Fatima, some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 温和介绍Hessian矩阵。照片由Beenish Fatima提供，版权所有。
 - en: Tutorial Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三部分；它们是：
 - en: Definition of a function’s Hessian matrix and the corresponding discriminant
+  id: totrans-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 函数的Hessian矩阵及其对应的判别式的定义
 - en: Example of computing the Hessian matrix, and the discriminant
+  id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 计算Hessian矩阵和判别式的示例
 - en: What the Hessian and discriminant tell us about the function of interest
+  id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: Hessian和判别式告诉我们关于感兴趣的函数的信息
 - en: '**Prerequisites**'
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**前提条件**'
 - en: 'For this tutorial, we assume that you already know:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们假设你已经知道：
 - en: '[Derivative of functions](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives/)'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[函数的导数](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives/)'
 - en: '[Function of several variables, partial derivatives and gradient vectors](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[多个变量的函数、偏导数和梯度向量](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
 - en: '[Higher order derivatives](https://machinelearningmastery.com/higher-order-derivatives/)'
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[高阶导数](https://machinelearningmastery.com/higher-order-derivatives/)'
 - en: You can review these concepts by clicking on the links given above.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过点击上面给出的链接来回顾这些概念。
 - en: '**What Is A Hessian Matrix?**'
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**什么是Hessian矩阵？**'
 - en: The Hessian matrix is a matrix of second order partial derivatives. Suppose
     we have a function f of n variables, i.e.,
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: Hessian矩阵是一个二阶偏导数的矩阵。假设我们有一个n变量的函数f，即，
 - en: '$$f: R^n \rightarrow R$$'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '$$f: R^n \rightarrow R$$'
 - en: The Hessian of f is given by the following matrix on the left. The Hessian for
     a function of two variables is also shown below on the right.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: f的Hessian由左侧的矩阵给出。一个二变量函数的Hessian也显示在右侧。
 - en: '[![Hessian a function of n variables (left). Hessian of f(x,y) (right)](../Images/e0e62b0e1ad1dd5688f1c7d29652a548.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/hessian1-1.png)'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![Hessian n变量的函数（左）。f(x,y)的Hessian（右）](../Images/e0e62b0e1ad1dd5688f1c7d29652a548.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/hessian1-1.png)'
 - en: Hessian a function of n variables (left). Hessian of f(x,y) (right)
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: Hessian n变量的函数（左）。f(x,y)的Hessian（右）
 - en: We already know from our tutorial on gradient vectors that the gradient is a
     vector of first order partial derivatives. The Hessian is similarly, a matrix
     of second order partial derivatives formed from all pairs of variables in the
     domain of f.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 从我们关于梯度向量的教程中，我们已经知道梯度是一个一阶偏导数的向量。类似地，Hessian 矩阵是一个二阶偏导数的矩阵，由函数 f 定义域内所有变量对组成。
 - en: Want to Get Started With Calculus for Machine Learning?
+  id: totrans-29
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习机器学习中的微积分吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费7天电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得免费的PDF电子书版本。
 - en: '**What Is The Discriminant?**'
+  id: totrans-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**什么是判别式？**'
 - en: 'The **determinant** of the Hessian is also called the discriminant of f. For
     a two variable function f(x, y), it is given by:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: Hessian 的 **行列式** 也称为 f 的判别式。对于一个二维函数 f(x, y)，它由以下公式给出：
 - en: '[![](../Images/702495e11689b3d6411687e0eed9fef9.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/hessian2.png)'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/702495e11689b3d6411687e0eed9fef9.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/hessian2.png)'
 - en: Discriminant of f(x, y)
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: f(x, y) 的判别式
 - en: '**Examples of Hessian Matrices And Discriminants**'
+  id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Hessian 矩阵和判别式的示例**'
 - en: 'Suppose we have the following function:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们有以下函数：
 - en: g(x, y) = x^3 + 2y^2 + 3xy^2
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: g(x, y) = x^3 + 2y^2 + 3xy^2
 - en: 'Then the Hessian H_g and the discriminant D_g are given by:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后 Hessian H_g 和判别式 D_g 为：
 - en: '[![Hessian and discriminant of g(x, y) = x^3 + 2y^2 + 3xy^2](../Images/05f313f13e85a1f22b5dc1a58b0bc800.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/hessian3.png)'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![Hessian 和 g(x, y) = x^3 + 2y^2 + 3xy^2 的判别式](../Images/05f313f13e85a1f22b5dc1a58b0bc800.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/hessian3.png)'
 - en: Hessian and discriminant of g(x, y) = x^3 + 2y^2 + 3xy^2
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: Hessian 和 g(x, y) = x^3 + 2y^2 + 3xy^2 的判别式
 - en: 'Let’s evaluate the discriminant at different points:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们在不同的点上评估判别式：
 - en: D_g(0, 0) = 0
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: D_g(0, 0) = 0
 - en: D_g(1, 0) = 36 + 24 = 60
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: D_g(1, 0) = 36 + 24 = 60
 - en: D_g(0, 1) = -36
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: D_g(0, 1) = -36
 - en: D_g(-1, 0) = 12
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: D_g(-1, 0) = 12
 - en: '**What Do The Hessian And Discriminant Signify?**'
+  id: totrans-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Hessian 和判别式有什么意义？**'
 - en: 'The Hessian and the corresponding discriminant are used to determine the local
     extreme points of a function. Evaluating them helps in the understanding of a
     function of several variables. Here are some important rules for a point (a,b)
     where the discriminant is D(a, b):'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: Hessian 和相应的判别式用于确定函数的局部极值点。评估它们有助于理解多个变量的函数。以下是一些重要规则，适用于判别式为 D(a, b) 的点 (a,b)：
 - en: The function f has a **local minimum** if f_xx(a, b) > 0 and the discriminant
     D(a,b) > 0
+  id: totrans-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果 f_xx(a, b) > 0 且判别式 D(a,b) > 0，则函数 f 有一个 **局部最小值**
 - en: The function f has a **local maximum** if f_xx(a, b) < 0 and the discriminant
     D(a,b) > 0
+  id: totrans-50
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果 f_xx(a, b) < 0 且判别式 D(a,b) > 0，则函数 f 有一个 **局部最大值**
 - en: The function f has a saddle point if D(a, b) < 0
+  id: totrans-51
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果 D(a, b) < 0，函数 f 有一个鞍点
 - en: We cannot draw any conclusions if D(a, b) = 0 and need more tests
+  id: totrans-52
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果 D(a, b) = 0，我们不能得出任何结论，需要更多的测试。
 - en: 'Example: g(x, y)'
+  id: totrans-53
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 示例：g(x, y)
 - en: 'For the function g(x,y):'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于函数 g(x,y)：
 - en: We cannot draw any conclusions for the point (0, 0)
+  id: totrans-55
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对于点 (0, 0) 我们不能得出任何结论
 - en: f_xx(1, 0) = 6 > 0 and D_g(1, 0) = 60 > 0, hence (1, 0) is a local minimum
+  id: totrans-56
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: f_xx(1, 0) = 6 > 0 和 D_g(1, 0) = 60 > 0，因此 (1, 0) 是局部最小值
 - en: The point (0,1) is a saddle point as D_g(0, 1) < 0
+  id: totrans-57
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 点 (0,1) 是一个鞍点，因为 D_g(0, 1) < 0
 - en: f_xx(-1,0) = -6 < 0 and D_g(-1, 0) = 12 > 0, hence (-1, 0) is a local maximum
+  id: totrans-58
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: f_xx(-1,0) = -6 < 0 和 D_g(-1, 0) = 12 > 0，因此 (-1, 0) 是局部最大值
 - en: The figure below shows a graph of the function g(x, y) and its corresponding
     contours.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 下图展示了函数 g(x, y) 的图形及其相应的等高线。
 - en: '[![](../Images/aaaba8cc81a1c5470349595c66ae4901.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/hessian4.png)'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/aaaba8cc81a1c5470349595c66ae4901.png)](https://machinelearningmastery.com/wp-content/uploads/2021/07/hessian4.png)'
 - en: Graph of g(x,y) and contours of g(x,y)
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: g(x,y) 的图形和 g(x,y) 的等高线
 - en: '**Why Is The Hessian Matrix Important In Machine Learning?**'
+  id: totrans-62
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**为什么 Hessian 矩阵在机器学习中很重要？**'
 - en: The Hessian matrix plays an important role in many machine learning algorithms,
     which involve optimizing a given function. While it may be expensive to compute,
     it holds some key information about the function being optimized. It can help
     determine the saddle points, and the local extremum of a function. It is used
     extensively in training neural networks and deep learning architectures.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: Hessian 矩阵在许多机器学习算法中扮演着重要角色，这些算法涉及优化给定函数。尽管计算可能很昂贵，但它包含了一些关于被优化函数的关键信息。它可以帮助确定鞍点和函数的局部极值。在训练神经网络和深度学习架构中被广泛使用。
 - en: '**Extensions**'
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**扩展**'
 - en: This section lists some ideas for extending the tutorial that you may wish to
     explore.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节列出了一些扩展教程的想法，你可能会希望探索。
 - en: Optimization
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 优化
 - en: Eigen values of the Hessian matrix
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Hessian 矩阵的特征值
 - en: Inverse of Hessian matrix and neural network training
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Hessian 矩阵的逆矩阵和神经网络训练
 - en: If you explore any of these extensions, I’d love to know. Post your findings
     in the comments below.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你探索了这些扩展内容，我很想知道。请在下面的评论中发布你的发现。
 - en: '**Further Reading**'
+  id: totrans-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你希望深入了解。
 - en: '**Tutorials**'
+  id: totrans-72
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**教程**'
 - en: '[Derivatives](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[导数](https://machinelearningmastery.com/a-gentle-introduction-to-function-derivatives)'
 - en: '[Gradient descent for machine learning](https://machinelearningmastery.com/gradient-descent-for-machine-learning/)'
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[机器学习中的梯度下降](https://machinelearningmastery.com/gradient-descent-for-machine-learning/)'
 - en: '[What is gradient in machine learning](https://machinelearningmastery.com/gradient-in-machine-learning/)'
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[机器学习中的梯度是什么](https://machinelearningmastery.com/gradient-in-machine-learning/)'
 - en: '[Partial derivatives and gradient vectors](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[偏导数和梯度向量](https://machinelearningmastery.com/a-gentle-introduction-to-partial-derivatives-and-gradient-vectors)'
 - en: '[Higher order derivatives](https://machinelearningmastery.com/higher-order-derivatives/)'
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[高阶导数](https://machinelearningmastery.com/higher-order-derivatives/)'
 - en: '[How to choose an optimization algorithm](https://machinelearningmastery.com/tour-of-optimization-algorithms/)'
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[如何选择优化算法](https://machinelearningmastery.com/tour-of-optimization-algorithms/)'
 - en: '**Resources**'
+  id: totrans-79
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**资源**'
 - en: Additional resources on [Calculus Books for Machine Learning](https://machinelearningmastery.com/calculus-books-for-machine-learning/)
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 额外资源：[机器学习的微积分书籍](https://machinelearningmastery.com/calculus-books-for-machine-learning/)
 - en: '**Books**'
+  id: totrans-81
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Thomas’ Calculus](https://amzn.to/35Yeolv), 14th edition, 2017\. (based on
     the original works of George B. Thomas, revised by Joel Hass, Christopher Heil,
     Maurice Weir)'
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[托马斯微积分](https://amzn.to/35Yeolv)，第 14 版，2017 年（基于乔治·B·托马斯的原著，由乔尔·哈斯、克里斯托弗·海尔、莫里斯·韦尔修订）'
 - en: '[Calculus](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US),
     3rd Edition, 2017\. (Gilbert Strang)'
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://www.amazon.com/Calculus-3rd-Gilbert-Strang/dp/0980232759/ref=as_li_ss_tl?dchild=1&keywords=Gilbert+Strang+calculus&qid=1606171602&s=books&sr=1-1&linkCode=sl1&tag=inspiredalgor-20&linkId=423b93db012f7cc6bb92cb7494a3095f&language=en_US)，第
+    3 版，2017 年（吉尔伯特·斯特朗）'
 - en: '[Calculus](https://amzn.to/3kS9I52), 8th edition, 2015\. (James Stewart)'
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[微积分](https://amzn.to/3kS9I52)，第 8 版，2015 年（詹姆斯·斯图尔特）'
 - en: '**Summary**'
+  id: totrans-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: 'In this tutorial, you discovered what are Hessian matrices. Specifically, you
     learned:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解到什么是 Hessian 矩阵。具体来说，你学习了：
 - en: Hessian matrix
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Hessian 矩阵
 - en: Discriminant of a function
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 函数的判别式
 - en: '**Do you have any questions?**'
+  id: totrans-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**你有任何问题吗？**'
 - en: Ask your questions in the comments below and I will do my best to answer.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论中提问，我会尽力回答。

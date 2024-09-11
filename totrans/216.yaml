@@ -1,588 +1,906 @@
 - en: 'Method of Lagrange Multipliers: The Theory Behind Support Vector Machines (Part
     2: The Non-Separable Case)'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 拉格朗日乘子法：支持向量机理论（第2部分：不可分离情况）
 - en: 原文：[https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-2-the-non-separable-case/](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-2-the-non-separable-case/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '[https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-2-the-non-separable-case/](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-2-the-non-separable-case/)'
 - en: 'This tutorial is an extension of [Method Of Lagrange Multipliers: The Theory
     Behind Support Vector Machines (Part 1: The Separable Case)](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case))
     and explains the non-separable case. In real life problems positive and negative
     training examples may not be completely separable by a linear decision boundary.
     This tutorial explains how a soft margin can be built that tolerates a certain
     amount of errors.'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程是[拉格朗日乘子法：支持向量机理论（第1部分：可分离情况）](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case))的扩展，讲解了不可分离情况。在实际问题中，正负训练样本可能无法完全通过线性决策边界分开。本教程解释了如何构建容忍一定错误的软间隔。
 - en: In this tutorial, we’ll cover the basics of a linear SVM. We won’t go into details
     of non-linear SVMs derived using the kernel trick. The content is enough to understand
     the basic mathematical model behind an SVM classifier.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将介绍线性 SVM 的基础知识。我们不会深入探讨使用核技巧推导出的非线性 SVM。内容足以理解 SVM 分类器背后的基本数学模型。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将知道：
 - en: Concept of a soft margin
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 软间隔的概念
 - en: How to maximize the margin while allowing mistakes in classification
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在允许分类错误的情况下最大化间隔
 - en: How to formulate the optimization problem and compute the Lagrange dual
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何制定优化问题并计算拉格朗日对偶
 - en: Let’s get started.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/842900385f29e014608246c563c2401e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/shakeel-ahmad-Z_MWEx6MgHI-unsplash-scaled.jpg)'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/842900385f29e014608246c563c2401e.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/shakeel-ahmad-Z_MWEx6MgHI-unsplash-scaled.jpg)'
 - en: 'Method Of Lagrange Multipliers: The Theory Behind Support Vector Machines (Part
     2: The Non-Separable Case).'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 拉格朗日乘子法：支持向量机理论（第2部分：不可分离情况）。
 - en: Photo by Shakeel Ahmad, some rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 摄影师：Shakeel Ahmad，保留所有权利。
 - en: Tutorial Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into 2 parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两部分；它们是：
 - en: The solution of the SVM problem for the case where positive and negative examples
     are not linearly separable
+  id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: SVM 问题在正负样本不可线性分离的情况下的解决方案
 - en: The separating hyperplane and the corresponding relaxed constraints
+  id: totrans-15
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 分离超平面及其对应的放松约束
 - en: The quadratic optimization problem for finding the soft margin
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 寻找软间隔的二次优化问题
 - en: A worked example
+  id: totrans-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一个实例
 - en: Pre-requisites
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 先决条件
 - en: For this tutorial, it is assumed that you are already familiar with the following
     topics. You can click on the individual links to get more information.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程假设你已经熟悉以下主题。你可以点击各个链接以获取更多信息。
 - en: '[A Gentle Introduction to Optimization / Mathematical Programming](https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming/)'
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[优化/数学编程简明介绍](https://machinelearningmastery.com/a-gentle-introduction-to-optimization-mathematical-programming/)'
 - en: '[A Gentle Introduction To Method Of Lagrange Multipliers](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[拉格朗日乘子法简明介绍](https://machinelearningmastery.com/a-gentle-introduction-to-method-of-lagrange-multipliers/)'
 - en: '[Lagrange Multiplier Approach with Inequality Constraints](https://machinelearningmastery.com/lagrange-multiplier-approach-with-inequality-constraints/)'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[拉格朗日乘子法与不等式约束](https://machinelearningmastery.com/lagrange-multiplier-approach-with-inequality-constraints/)'
 - en: '[Method Of Lagrange Multipliers: The Theory Behind Support Vector Machines
     (Part 1: The Separable Case)](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case))'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[拉格朗日乘子法：支持向量机理论（第1部分：可分离情况）](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case))'
 - en: Notations Used In This Tutorial
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 本教程中使用的符号
 - en: This is a continuation of Part 1, so the same notations will be used.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是第1部分的续集，因此将使用相同的符号。
 - en: '$m$: Total training points'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$m$: 总训练点数'
 - en: '$x$: Data point, which is an $n$-dimensional vector. Each dimension is indexed
     by j.'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$x$: 数据点，是一个$n$维向量。每个维度由$j$索引。'
 - en: '$x^+$: Positive example'
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$x^+$: 正例'
 - en: '$x^-$: Negative example'
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$x^-$: 负例'
 - en: '$i$: Subscript used to index the training points. $0 \leq i < m$'
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$i$: 用于索引训练点的下标。$0 \leq i < m$'
 - en: '$j$: Subscript to index a dimension of the data point. $1 \leq j \leq n$'
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$j$: 用于索引数据点维度的下标。$1 \leq j \leq n$'
 - en: '$t$: Label of data points. It is an m-dimensional vector'
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$t$: 数据点的标签。它是$m$维向量'
 - en: '$T$: Transpose operator'
+  id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$T$: 转置操作符'
 - en: '$w$: Weight vector denoting the coefficients of the hyperplane. It is an $n$-dimensional
     vector'
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$w$: 权重向量，表示超平面的系数。它是$n$维向量'
 - en: '$\alpha$: Vector of Lagrange multipliers, an $m$-dimensional vector'
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$\alpha$: 拉格朗日乘子向量，是$m$维向量'
 - en: '$\mu$: Vector of Lagrange multipliers, again an $m$-dimensional vector'
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$\mu$: 拉格朗日乘子向量，同样是$m$维向量'
 - en: '$\xi$: Error in classification. An $m$-dimensional vector'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$\xi$: 分类中的错误。一个$m$维向量'
 - en: Want to Get Started With Calculus for Machine Learning?
+  id: totrans-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习机器学习中的微积分吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在获取我的7天免费邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费PDF电子书版本。
 - en: The Separating Hyperplane and Relaxing the Constraints
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 分隔超平面与放宽约束
 - en: 'Let’s find a separating hyperplane between the positive and negative examples.
     Just to recall, the separating hyperplane is given by the following expression,
     with \(w_j\) being the coefficients and \(w_0\) being the arbitrary constant that
     determines the distance of the hyperplane from the origin:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们找出正例和负例之间的分隔超平面。回顾一下，分隔超平面由以下表达式给出，其中$w_j$为系数，$w_0$为任意常数，决定了超平面距离原点的距离：
 - en: $$
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: w^T x_i + w_0 = 0
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: w^T x_i + w_0 = 0
 - en: $$
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'As we allow positive and negative examples to lie on the wrong side of the
     hyperplane, we have a set of relaxed constraints. Defining $\xi_i \geq 0, \forall
     i$, for positive examples we require:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们允许正例和负例位于超平面的错误侧面，我们有了一组放宽的约束。对于正例，我们定义$\xi_i \geq 0, \forall i$。
 - en: $$
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: w^T x_i^+ + w_0 \geq 1 – \xi_i
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: w^T x_i^+ + w_0 \geq 1 – \xi_i
 - en: $$
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'Also for negative examples we require:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于负例，我们也要求：
 - en: $$
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: w^T x_i^- + w_0 \leq -1 + \xi_i
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: w^T x_i^- + w_0 \leq -1 + \xi_i
 - en: $$
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'Combining the above two constraints by using the class label $t_i \in \{-1,+1\}$
     we have the following constraint for all points:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过使用类标签$t_i \in \{-1,+1\}$结合上述两个约束，我们得到所有点的以下约束：
 - en: $$
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: t_i(w^T x_i + w_0) \geq 1 – \xi_i
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: $t_i(w^T x_i + w_0) \geq 1 – \xi_i
 - en: $$
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'The variable $\xi$ allows more flexibility in our model. It has the following
     interpretations:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 变量$\xi$为我们的模型提供了更多的灵活性。它有以下解释：
 - en: '$\xi_i =0$: This means that $x_i$ is correctly classified and this data point
     is on the correct side of the hyperplane and away from the margin.'
+  id: totrans-59
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '$\xi_i =0$: 这意味着$x_i$被正确分类，这个数据点在超平面的正确侧面并远离边距。'
 - en: '$0 < \xi_i < 1$: When this condition is met, $x_i$ lies on the correct side
     of the hyperplane but inside the margin.'
+  id: totrans-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '$0 < \xi_i < 1$: 当满足此条件时，$x_i$ 位于超平面的正确侧面但在边距内。'
 - en: '$\xi_i > 0$: Satisfying this condition implies that $x_i$ is misclassified.'
+  id: totrans-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '$\xi_i > 0$: 满足此条件意味着$x_i$被错误分类。'
 - en: 'Hence, $\xi$ quantifies the errors in the classification of training points.
     We can define the soft error as:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，$\xi$量化了训练点分类中的错误。我们可以定义软错误为：
 - en: $$
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: E_{soft} = \sum_i \xi_i
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: E_{soft} = \sum_i \xi_i
 - en: $$
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: The Quadratic Programming Problem
+  id: totrans-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 二次规划问题
 - en: We are now in a position to formulate the objective function along with the
     constraints on it. We still want to maximize the margin, i.e., we want to minimize
     the norm of the weight vector. Along with this, we also want to keep the soft
     error as small as possible. Hence, now our new objective function is given by
     the following expression, with $C$ being a user defined constant and represents
     the penalty factor or the regularization constant.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们现在可以制定目标函数以及其约束。我们仍然想要最大化边距，即我们希望最小化权重向量的范数。同时，我们还希望将软错误保持在尽可能小的范围内。因此，我们的新目标函数由以下表达式给出，其中$C$是用户定义的常数，代表惩罚因子或正则化常数。
 - en: $$
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \frac{1}{2}||w||^2 + C \sum_i \xi_i
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{1}{2}||w||^2 + C \sum_i \xi_i
 - en: $$
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'The overall quadratic programming problem is, therefore, given by the following
     expression:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，总的二次规划问题由以下表达式给出：
 - en: $$
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \min_w \frac{1}{2}||w||^2 + C \sum_i \xi_i \;\text{ subject to } t_i(w^Tx_i+w_0)
     \geq +1 – \xi_i, \forall i \; \text{ and } \xi_i \geq 0, \forall i
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: \min_w \frac{1}{2}||w||^2 + C \sum_i \xi_i \;\text{ 使得 } t_i(w^Tx_i+w_0) \geq
+    +1 – \xi_i, \forall i \; \text{ 以及 } \xi_i \geq 0, \forall i
 - en: $$
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: The Role of C, the Regularization Constant
+  id: totrans-75
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: C 的角色，正则化常数
 - en: To understand the penalty factor $C$, consider the product term $C \sum_i \xi_i$,
     which has to be minimized. If C is kept large, then the soft margin $\sum_i \xi_i$
     would automatically be small. If $C$ is close to zero, then we are allowing the
     soft margin to be large making the overall product small.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 要理解惩罚因子 $C$，考虑要最小化的乘积项 $C \sum_i \xi_i$。如果 $C$ 较大，那么软间隔 $\sum_i \xi_i$ 就会自动较小。如果
+    $C$ 接近零，则允许软间隔变大，从而使整体乘积变小。
 - en: In short, a large value of $C$ means we have a high penalty on errors and hence
     our model is not allowed to make too many mistakes in classification. A small
     value of $C$ allows the errors to grow.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，$C$ 值较大意味着我们对错误有很高的惩罚，因此我们的模型不能犯太多错误。$C$ 值较小则允许错误增加。
 - en: Solution Via The Method Of Lagrange Multipliers
+  id: totrans-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 拉格朗日乘数法解法
 - en: 'Let’s use the method of Lagrange multipliers to solve the quadratic programming
     problem that we formulated earlier. The Lagrange function is given by:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们使用拉格朗日乘数法来解决我们之前制定的二次规划问题。拉格朗日函数如下所示：
 - en: $$
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: L(w, w_0, \alpha, \mu) = \frac{1}{2}||w||^2 + \sum_i \alpha_i\big(t_i(w^Tx_i+w_0)
     – 1 + \xi_i\big) – \sum_i \mu_i \xi_i
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: L(w, w_0, \alpha, \mu) = \frac{1}{2}||w||^2 + \sum_i \alpha_i\big(t_i(w^Tx_i+w_0)
+    – 1 + \xi_i\big) – \sum_i \mu_i \xi_i
 - en: $$
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'To solve the above, we set the following:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 要解决上述问题，我们设定以下内容：
 - en: \begin{equation}
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{equation}
 - en: \frac{\partial L}{ \partial w} = 0, \\
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{ \partial w} = 0, \\
 - en: \frac{\partial L}{ \partial \alpha} = 0, \\
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{ \partial \alpha} = 0, \\
 - en: \frac{\partial L}{ \partial w_0} = 0, \\
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{ \partial w_0} = 0, \\
 - en: \frac{\partial L}{ \partial \mu} = 0 \\
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: \frac{\partial L}{ \partial \mu} = 0 \\
 - en: \end{equation}
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{equation}
 - en: 'Solving the above gives us:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 解上述方程给出：
 - en: $$
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: w = \sum_i \alpha_i t_i x_i
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: w = \sum_i \alpha_i t_i x_i
 - en: $$
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: and
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 和
 - en: $$
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 0= C – \alpha_i – \mu_i
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 0= C – \alpha_i – \mu_i
 - en: $$
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'Substitute the above in the Lagrange function gives us the following optimization
     problem, also called the dual:'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 将以上内容代入拉格朗日函数给出以下优化问题，也称为对偶问题：
 - en: $$
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: L_d = -\frac{1}{2} \sum_i \sum_k \alpha_i \alpha_k t_i t_k (x_i)^T (x_k) + \sum_i
     \alpha_i
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: L_d = -\frac{1}{2} \sum_i \sum_k \alpha_i \alpha_k t_i t_k (x_i)^T (x_k) + \sum_i
+    \alpha_i
 - en: $$
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'We have to maximize the above subject to the following constraints:'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要在以下约束条件下进行最大化：
 - en: \begin{equation}
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{equation}
 - en: \sum_i \alpha_i t_i = 0 \\ \text{ and }
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: \sum_i \alpha_i t_i = 0 \\ \text{ 并且 }
 - en: 0 \leq \alpha_i \leq C, \forall i
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 0 \leq \alpha_i \leq C, \forall i
 - en: \end{equation}
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{equation}
 - en: Similar to [the separable case](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case),
     we have an expression for $w$ in terms of Lagrange multipliers. The objective
     function involves no $w$ term. There is a Lagrange multiplier $\alpha$ and $\mu$
     associated with each data point.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于[可分离情况](https://machinelearningmastery.com/method-of-lagrange-multipliers-the-theory-behind-support-vector-machines-part-1-the-separable-case)，我们可以用拉格朗日乘数表示
+    $w$。目标函数中没有 $w$ 项。每个数据点都有一个与之相关的拉格朗日乘数 $\alpha$ 和 $\mu$。
 - en: Interpretation of the Mathematical Model and Computation of $w_0$
+  id: totrans-108
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数学模型的解释和 $w_0$ 的计算
 - en: 'Following cases are true for each training data point $x_i$:'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个训练数据点 $x_i$ 都满足以下情况：
 - en: '$\alpha_i = 0$: The ith training point lies on the correct side of the hyperplane
     away from the margin. This point plays no role in the classification of a test
     point.'
+  id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$\alpha_i = 0$: 第i个训练点位于超平面的正确一侧，远离边界。该点在测试点的分类中不起作用。'
 - en: '$0 < \alpha_i < C$: The ith training point is a support vector and lies on
     the margin. For this point $\xi_i = 0$ and $t_i(w^T x_i + w_0) = 1$ and hence
     it can be used to compute $w_0$. In practice $w_0$ is computed from all support
     vectors and an average is taken.'
+  id: totrans-111
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$0 < \alpha_i < C$: 第i个训练点是支持向量，位于边界上。对于此点 $\xi_i = 0$，且 $t_i(w^T x_i + w_0)
+    = 1$，因此可以用于计算 $w_0$。实际上，$w_0$ 是从所有支持向量计算出来并取平均值。'
 - en: '$\alpha_i = C$: The ith training point is either inside the margin on the correct
     side of the hyperplane or this point is on the wrong side of the hyperplane.'
+  id: totrans-112
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$\alpha_i = C$: 第i个训练点要么位于超平面内边界的正确一侧，要么位于超平面错误的一侧。'
 - en: 'The picture below will help you understand the above concepts:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 下图将帮助您理解以上概念：
 - en: '[![](../Images/849c3e78f28a1b115c9065c0cd68fd57.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/soft1.png)'
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/849c3e78f28a1b115c9065c0cd68fd57.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/soft1.png)'
 - en: Deciding The Classification of a Test Point
+  id: totrans-115
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 决定测试点的分类
 - en: 'The classification of any test point $x$ can be determined using this expression:'
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 任何测试点$x$的分类可以使用以下表达式来确定：
 - en: $$
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: y(x) = \sum_i \alpha_i t_i x^T x_i + w_0
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: y(x) = \sum_i \alpha_i t_i x^T x_i + w_0
 - en: $$
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: A positive value of $y(x)$ implies $x\in+1$ and a negative value means $x\in-1$.
     Hence, the predicted class of a test point is the sign of $y(x)$.
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: $y(x)$的正值表示$x\in+1$，负值表示$x\in-1$。因此，测试点的预测类别是$y(x)$的符号。
 - en: Karush-Kuhn-Tucker Conditions
+  id: totrans-121
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Karush-Kuhn-Tucker 条件
 - en: 'Karush-Kuhn-Tucker (KKT) conditions are satisfied by the above constrained
     optimization problem as given by:'
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述受限优化问题满足Karush-Kuhn-Tucker（KKT）条件，如下所示：
 - en: \begin{eqnarray}
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{eqnarray}
 - en: \alpha_i &\geq& 0 \\
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: \alpha_i &\geq& 0 \\
 - en: t_i y(x_i) -1 + \xi_i &\geq& 0 \\
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: t_i y(x_i) -1 + \xi_i &\geq& 0 \\
 - en: \alpha_i(t_i y(x_i) -1 + \xi_i) &=& 0 \\
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: \alpha_i(t_i y(x_i) -1 + \xi_i) &=& 0 \\
 - en: \mu_i \geq 0 \\
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: \mu_i \geq 0 \\
 - en: \xi_i \geq 0 \\
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: \xi_i \geq 0 \\
 - en: \mu_i\xi_i = 0
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: \mu_i\xi_i = 0
 - en: \end{eqnarray}
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{eqnarray}
 - en: A Solved Example
+  id: totrans-131
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个已解决的例子
 - en: '[![](../Images/bbbedc379b026ff27bac7776f381096c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/soft2.png)'
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/bbbedc379b026ff27bac7776f381096c.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/soft2.png)'
 - en: 'Shown above is a solved example for 2D training points to illustrate all the
     concepts. A few things to note about this solution are:'
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 上图展示了一个为二维训练点解决的例子，以阐明所有概念。需要注意该解决方案的一些事项如下：
 - en: The training data points and their corresponding labels act as input
+  id: totrans-134
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练数据点及其对应的标签作为输入。
 - en: The user defined constant $C$ is set to 10
+  id: totrans-135
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 用户定义的常量$C$被设置为10。
 - en: The solution satisfies all the constraints, however, it is not the optimal solution
+  id: totrans-136
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 该解决方案满足所有约束条件，然而，它不是**最优解决方案**。
 - en: We have to make sure that all the $\alpha$ lie between 0 and C
+  id: totrans-137
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们必须确保所有的$\alpha$介于0和C之间。
 - en: The sum of alphas of all negative examples should equal the sum of alphas of
     all positive examples
+  id: totrans-138
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 所有负例的alpha之和应等于所有正例的alpha之和。
 - en: The points (1,2), (2,1) and (-2,-2) lie on the soft margin on the correct side
     of the hyperplane. Their values have been arbitrarily set to 3, 3 and 6 respectively
     to balance the problem and satisfy the constraints.
+  id: totrans-139
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 点（1,2）、（2,1）和（-2,-2）位于软间隔的超平面正确侧。它们的值被任意设置为3、3和6，以平衡问题并满足约束条件。
 - en: The points with $\alpha=C=10$ lie either inside the margin or on the wrong side
     of the hyperplane
+  id: totrans-140
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $\alpha=C=10$的点位于间隔内或在超平面的错误侧。
 - en: Further Reading
+  id: totrans-141
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你希望深入了解此主题，本节提供了更多资源。
 - en: Books
+  id: totrans-143
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 图书
 - en: '[Pattern Recognition and Machine Learning](https://www.amazon.com/Pattern-Recognition-Learning-Information-Statistics/dp/0387310738)
     by Christopher M. Bishop'
+  id: totrans-144
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[模式识别与机器学习](https://www.amazon.com/Pattern-Recognition-Learning-Information-Statistics/dp/0387310738)
+    由Christopher M. Bishop编写。'
 - en: Articles
+  id: totrans-145
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[Support Vector Machines for Machine Learning](https://machinelearningmastery.com/support-vector-machines-for-machine-learning/)'
+  id: totrans-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[机器学习中的支持向量机](https://machinelearningmastery.com/support-vector-machines-for-machine-learning/)'
 - en: '[A Tutorial on Support Vector Machines for Pattern Recognition](https://www.di.ens.fr/~mallat/papiers/svmtutorial.pdf)
     by Christopher J.C. Burges'
+  id: totrans-147
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[关于模式识别的支持向量机教程](https://www.di.ens.fr/~mallat/papiers/svmtutorial.pdf) 由Christopher
+    J.C. Burges编写。'
 - en: Summary
+  id: totrans-148
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you discovered the method of Lagrange multipliers for finding
     the soft margin in an SVM classifier.
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了使用拉格朗日乘子法找到SVM分类器中软间隔的方法。
 - en: 'Specifically, you learned:'
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to formulate the optimization problem for the non-separable case
+  id: totrans-151
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为不可分情况制定优化问题。
 - en: How to find the hyperplane and the soft margin using the method of Lagrange
     multipliers
+  id: totrans-152
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用拉格朗日乘子法找到超平面和软间隔。
 - en: How to find the equation of the separating hyperplane for very simple problems
+  id: totrans-153
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何找到非常简单问题的分隔超平面方程。
 - en: Do you have any questions about SVMs discussed in this post? Ask your questions
     in the comments below and I will do my best to answer.
+  id: totrans-154
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这篇文章中讨论的SVM，你有任何问题吗？请在下方评论中提出你的问题，我会尽力回答。
