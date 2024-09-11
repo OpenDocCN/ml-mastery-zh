@@ -3,11 +3,13 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Stable Diffusion 的提示技巧
 - en: 原文：[https://machinelearningmastery.com/prompting-techniques-stable-diffusion/](https://machinelearningmastery.com/prompting-techniques-stable-diffusion/)
   id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/prompting-techniques-stable-diffusion/](https://machinelearningmastery.com/prompting-techniques-stable-diffusion/)
 - en: In all cases, generating pictures using Stable Diffusion would involve submitting
     a prompt to the pipeline. This is only one of the parameters, but the most important
     one. An incomplete or poorly constructed prompt would make the resulting image
@@ -16,64 +18,79 @@
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在所有情况下，使用 Stable Diffusion 生成图片都涉及向管道提交一个提示。这只是众多参数中的一个，但却是最重要的一个。一个不完整或构造不良的提示可能会使生成的图像与预期不符。在这篇文章中，你将学习一些构造提示的关键技巧，并看到一个好的提示能够创造出好的图像。
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书** [《掌握 Stable Diffusion 的数字艺术》](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/)
+    **来启动你的项目**。它提供了 **自学教程** 和 **可运行的代码**。'
 - en: Let’s get started.
   id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/4c258325c6731c83eea3d0eb983807d1.png)'
   id: totrans-5
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4c258325c6731c83eea3d0eb983807d1.png)'
 - en: Prompting Techniques for Stable Diffusion
   id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: Stable Diffusion 的提示技巧
 - en: Photo by [Sangga Rima Roman Selia](https://unsplash.com/photos/zone-and-u-turn-road-signs-Y4EQtlfOLm4).
     Some rights reserved.
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Sangga Rima Roman Selia](https://unsplash.com/photos/zone-and-u-turn-road-signs-Y4EQtlfOLm4)
+    拍摄。保留部分权利。
 - en: Overview
   id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is in three parts; they are:'
   id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分，它们是：
 - en: Parameters Affecting the Output
   id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 影响输出的参数
 - en: Characteristics of an Effective Prompt
   id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有效提示的特点
 - en: Emphasizing Keywords
   id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 强调关键词
 - en: Parameters Affecting the Output
   id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 影响输出的参数
 - en: Several parameters affect the output in Stable Diffusion. The model has a vast
     impact on the style of the drawing. The sampler and step count matters for the
     quality of the generation. But the prompt guides the content in the output.
   id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 有几个参数会影响 Stable Diffusion 的输出。模型对绘画风格有很大的影响。采样器和步骤数量对生成质量有影响。但提示则指导了输出的内容。
 - en: 'The base Stable Diffusion models are generic for multiple uses. But some models
     are specifically trained for a particular style. For example, the “Anything” model
     will easily produce pictures in the style of Japanese anime, while “Realistic
@@ -82,18 +99,23 @@
   id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 基础的 Stable Diffusion 模型适用于多种用途。但有些模型是专门训练用于特定风格的。例如，“Anything”模型可以轻松生成日本动漫风格的图片，而“Realistic
+    Vision”模型则生成逼真的照片效果。你可以从 Hugging Face Hub 或 Civitai（推荐）下载这些模型：
 - en: 'Anything: [https://civitai.com/models/9409](https://civitai.com/models/9409),
     [https://huggingface.co/stablediffusionapi/anything-v5](https://huggingface.co/stablediffusionapi/anything-v5)'
   id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '任何东西: [https://civitai.com/models/9409](https://civitai.com/models/9409), [https://huggingface.co/stablediffusionapi/anything-v5](https://huggingface.co/stablediffusionapi/anything-v5)'
 - en: 'Realistic Vision: [https://civitai.com/models/4201](https://civitai.com/models/4201),
     [https://huggingface.co/SG161222/Realistic_Vision_V6.0_B1_noVAE](https://huggingface.co/SG161222/Realistic_Vision_V6.0_B1_noVAE)'
   id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'Realistic Vision: [https://civitai.com/models/4201](https://civitai.com/models/4201),
+    [https://huggingface.co/SG161222/Realistic_Vision_V6.0_B1_noVAE](https://huggingface.co/SG161222/Realistic_Vision_V6.0_B1_noVAE)'
 - en: The models downloaded should be saved to the `models/Stable-diffusion` folder
     in your WebUI installation. When you download a model, besides the version of
     the model itself, note also the base model versions. The most common are SD 1.5
@@ -102,6 +124,8 @@
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 下载的模型应保存在 WebUI 安装目录中的 `models/Stable-diffusion` 文件夹内。当你下载一个模型时，除了注意模型本身的版本外，还要注意基础模型的版本。最常见的是
+    SD 1.5 和 SDXL 1.0。使用不同的基础模型可能会导致与管道其他部分的兼容性问题，包括提示的理解。
 - en: In theory, the diffusion model requires hundreds of steps to generate an image.
     But the diffusion model is, in fact, a mathematical model that can be written
     as a differential equation; there are ways to solve the equation approximately.

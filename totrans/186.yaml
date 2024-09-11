@@ -1,17 +1,24 @@
 - en: A Technical Introduction to Stable Diffusion
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 稳定扩散的技术介绍
 - en: 原文：[https://machinelearningmastery.com/a-technical-introduction-to-stable-diffusion/](https://machinelearningmastery.com/a-technical-introduction-to-stable-diffusion/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-technical-introduction-to-stable-diffusion/](https://machinelearningmastery.com/a-technical-introduction-to-stable-diffusion/)
 - en: The introduction of GPT-3, particularly its chatbot form, i.e. the ChatGPT,
     has proven to be a monumental moment in the AI landscape, marking the onset of
     the generative AI (GenAI) revolution. Although prior models existed in the image
     generation space, it’s the GenAI wave that caught everyone’s attention.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: GPT-3 的出现，特别是其聊天机器人形式，即 ChatGPT，已被证明是 AI 领域的一个重要时刻，标志着生成性 AI（GenAI）革命的开始。尽管在图像生成领域之前已经存在模型，但正是
+    GenAI 浪潮引起了所有人的关注。
 - en: Stable Diffusion is a member of the GenAI family for image generation. It is
     known for its possibility to customization, freely available to run on your own
     hardware, and actively improving. It is not the only one. For example, OpenAI
@@ -20,157 +27,236 @@
     as well as from other existing images. The recent integration of video generation
     capabilities into diffusion models provides a compelling case for studying this
     cutting-edge technology.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散是用于图像生成的 GenAI 家族的一员。它因其定制可能性、自由可在自己的硬件上运行和积极改进而闻名。它并不是唯一的。例如，OpenAI 发布了
+    DALLE-3，作为其 ChatGPTPlus 订阅的一部分，用于图像生成。但是，稳定扩散在从文本以及其他现有图像生成图像方面表现出了显著的成功。最近将视频生成能力集成到扩散模型中的发展，为研究这一前沿技术提供了令人信服的案例。
 - en: In this post, you will learn some technical details of Stable Diffusion and
     how to set it up on your own hardware.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你将学习一些关于稳定扩散的技术细节以及如何在自己的硬件上进行设置。
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参考我的书籍[《掌握稳定扩散的数字艺术》](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/)。它提供了**自学教程**和**有效代码**。'
 - en: Let’s get started.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/db887f122226d5a1da57de529dde96f0.png)'
+  id: totrans-7
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/db887f122226d5a1da57de529dde96f0.png)'
 - en: A Technical Introduction to Stable Diffusion
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散的技术介绍
 - en: Photo by [Denis Oliveira](https://unsplash.com/photos/lighted-incense-_12PwFpWZZ0).
     Some rights reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Denis Oliveira](https://unsplash.com/photos/lighted-incense-_12PwFpWZZ0)提供。版权所有。
 - en: Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is in four parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为四部分；它们是：
 - en: How Do Diffusion Models Work
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 扩散模型如何工作
 - en: Mathematics of Diffusion Models
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 扩散模型的数学
 - en: Why Is Stable Diffusion Special
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么稳定扩散特别
 - en: How to Install Stable Diffusion WebUI
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何安装稳定扩散 WebUI
 - en: How Do Diffusion Models Work
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 扩散模型如何工作
 - en: To understand diffusion models, let us first revisit how image generation using
     machines was performed before the introduction of Stable Diffusion or its counterparts
     today. It all started with GANs (Generative Adversarial Networks), wherein two
     neural networks engage in a competitive and cooperative learning process.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了理解扩散模型，我们首先回顾一下在稳定扩散或其今天的同类出现之前，图像生成是如何通过机器进行的。一切始于GANs（生成对抗网络），其中两个神经网络通过竞争和合作的学习过程进行交互。
 - en: The first one is the generator network, which fabricates synthetic data, in
     this case, images, that are indistinguishable from real ones. It produces random
     noise and progressively refines it through several layers to generate increasingly
     realistic images.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个是生成器网络，它制造合成数据，在这种情况下，是无法与真实数据区分的图像。它生成随机噪声，并通过多个层逐步精炼，从而生成越来越逼真的图像。
 - en: The second network, i.e., the discriminator network, acts as the adversary,
     scrutinizing the generated images to differentiate between real and synthetic
     ones. Its goal is to accurately classify images as either real or fake.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个网络，即判别器网络，作为对手，审查生成的图像，以区分真实和合成图像。其目标是准确地将图像分类为真实或虚假。
 - en: '![](../Images/2bf98b23ffdedb3b492a6ecacd80d0bd.png)'
+  id: totrans-20
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/2bf98b23ffdedb3b492a6ecacd80d0bd.png)'
 - en: Architecture of U-Net GAN. From Schonfeld et al. (2020)
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: U-Net GAN 架构。来自 Schonfeld 等（2020）
 - en: The diffusion models assume that a noisy image or pure noise is an outcome of
     repeated overlay of noise (or Gaussian Noise) on the original image. This process
     of noise overlay is called the Forward Diffusion. Now, exactly opposite to this
     is the Reverse Diffusion, which involves going from a noisy image to a less noisy
     image, one step at a time.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 扩散模型假设噪声图像或纯噪声是将噪声（或高斯噪声）重复叠加在原始图像上的结果。这一噪声叠加过程称为正向扩散。与此完全相反的是反向扩散，它涉及从噪声图像一步步转变为较少噪声的图像。
 - en: Below is an illustration of the Forward Diffusion process from right to left,
     i.e., clear to noisy image.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是从右到左的正向扩散过程的示意图，即从清晰到噪声图像。
 - en: '![](../Images/1d6b03550c84cf221ea222148ea9c012.png)'
+  id: totrans-24
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/1d6b03550c84cf221ea222148ea9c012.png)'
 - en: Diffusion process. Image from Ho et al. (2020)
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 扩散过程。图源自Ho等人（2020年）
 - en: Mathematics of Diffusion Models
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 扩散模型的数学
 - en: Both the Forward and Reverse Diffusion processes follow a Markov Chain, which
     means that at any time step t, the pixel value or noise in an image depends only
     on the previous image.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 正向和反向扩散过程都遵循马尔可夫链，这意味着在任何时间步$t$，图像中的像素值或噪声仅依赖于前一个图像。
 - en: Forward Diffusion
+  id: totrans-28
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 正向扩散
 - en: 'Mathematically, each step in the forward diffusion process can be represented
     using the below equation:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 从数学上讲，正向扩散过程中的每一步可以使用以下方程表示：
 - en: $$q(\mathbf{x}_t\mid \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t;\mu_t = \sqrt{1-\beta_t}\mathbf{x}_{t-1},
     \Sigma_t = \beta_t \mathbb{I})$$
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: $$q(\mathbf{x}_t\mid \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t;\mu_t = \sqrt{1-\beta_t}\mathbf{x}_{t-1},
+    \Sigma_t = \beta_t \mathbb{I})$$
 - en: where $q(x_t\mid x_{t-1})$ is a normal distribution with mean $\mu_t = \sqrt{1-\beta_t}x_{t-1}$
     and variance $\Sigma_t = \beta_t \mathbb{I}$, and $\mathbf{I}$ is the identity
     matrix, images (as a latent variable) in each step $\mathbf{x}_t$ is a vector,
     and the mean and variance are parameterized by the scalar value $\beta_t$.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中$q(x_t\mid x_{t-1})$是均值为$\mu_t = \sqrt{1-\beta_t}x_{t-1}$、方差为$\Sigma_t = \beta_t
+    \mathbb{I}$的正态分布，$\mathbf{I}$是单位矩阵，每一步的图像（作为潜在变量）$\mathbf{x}_t$是一个向量，均值和方差由标量值$\beta_t$参数化。
 - en: '![](../Images/22e279186296f5fb5e2121014a67a000.png)'
+  id: totrans-32
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/22e279186296f5fb5e2121014a67a000.png)'
 - en: Forward diffusion $q(\mathbf{x}_t\mid\mathbf{x}_{t-1})$ and reverse diffusion
     $p_\theta(\mathbf{x}_{t-1}\mid\mathbf{x}_t)$. Figure from Ho et al. (2020)
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 正向扩散$q(\mathbf{x}_t\mid\mathbf{x}_{t-1})$和反向扩散$p_\theta(\mathbf{x}_{t-1}\mid\mathbf{x}_t)$。图源自Ho等人（2020年）
 - en: 'The posterior probability of all the steps in the forward diffusion process
     is thus defined below:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，正向扩散过程中的所有步骤的后验概率定义如下：
 - en: $$q(\mathbf{x}_{1:T}\mid \mathbf{x}_0) = \prod_{t=1}^T q(\mathbf{x}_t\mid\mathbf{x}_{t-1})$$
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: $$q(\mathbf{x}_{1:T}\mid \mathbf{x}_0) = \prod_{t=1}^T q(\mathbf{x}_t\mid\mathbf{x}_{t-1})$$
 - en: Here, we apply from timestep 1 to $T$.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们从时间步1应用到$T$。
 - en: Reverse Diffusion
+  id: totrans-37
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 反向扩散
 - en: Reverse diffusion, which is the opposite of the forward diffusion process, works
     similarly. While the forward process maps the posterior probability given the
     prior probability, the reverse process does the opposite, i.e., maps the prior
     probability given the posterior one.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 反向扩散，即正向扩散过程的相反过程，工作原理类似。正向过程根据先验概率映射后验概率，而反向过程则相反，即根据后验概率映射先验概率。
 - en: $$p_\theta(\mathbf{x}_{t-1}\mid\mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1};\mu_\theta(\mathbf{x}_t,t),\Sigma_\theta(\mathbf{x}_t,t))$$
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: $$p_\theta(\mathbf{x}_{t-1}\mid\mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1};\mu_\theta(\mathbf{x}_t,t),\Sigma_\theta(\mathbf{x}_t,t))$$
 - en: where $p_\theta$ applies reverse diffusion, also called the trajectory.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中$p_\theta$应用反向扩散，也称为轨迹。
 - en: As the time step $t$ approaches infinity, the latent variable $\mathbf{x}_T$
     tends to an almost isotropic Gaussian distribution (i.e., purely noise with no
     image content). The aim is to learn $q(\mathbf{x}_{t-1}\mid \mathbf{x}_t)$, where
@@ -179,12 +265,17 @@
     $q(\mathbf{x}_0)$, i.e., the generated data from the actual data distribution.
     In layman’s term, the reverse diffusion is to create an image out of random noise
     in many small steps.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 当时间步$t$趋近于无穷大时，潜在变量$\mathbf{x}_T$趋向于几乎各向同性的高斯分布（即纯噪声没有图像内容）。目标是学习$q(\mathbf{x}_{t-1}\mid
+    \mathbf{x}_t)$，其中过程从称为$\mathbf{x}_T$的$\mathcal{N}(0,\mathbf{I})$样本开始。我们逐步执行完整的反向过程，逐步达到从$q(\mathbf{x}_0)$中提取样本，即从实际数据分布中生成的数据。通俗地说，反向扩散就是通过许多小步骤从随机噪声中创建图像。
 - en: Why Is Stable Diffusion Special?
+  id: totrans-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为什么稳定扩散特别？
 - en: Instead of directly applying the diffusion process to a high-dimensional input,
     Stable diffusion projects the input into a reduced latent space using an encoder
     network (that is where the diffusion process occurs). The rationale behind this
@@ -192,89 +283,125 @@
     by handling the input within a lower-dimensional space. Subsequently, a conventional
     diffusion model (such as a U-Net) is used to generate new data, which are then
     upsampled using a decoder network.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散不直接将扩散过程应用于高维输入，而是使用编码器网络将输入投影到降维的潜在空间中（这是扩散过程发生的地方）。采用这种方法的理由是通过在较低维空间内处理输入来减少训练扩散模型所涉及的计算负载。随后，使用传统的扩散模型（如
+    U-Net）生成新数据，并使用解码器网络进行上采样。
 - en: How to Install Stable Diffusion WebUI?
+  id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何安装稳定扩散 WebUI？
 - en: 'You can use stable diffusion as a service by subscription, or you can download
     and run on your computer. There are two major ways to use it on your computer:
     The WebUI and the CompfyUI. Here you will be shown to install WebUI.'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以通过订阅将稳定扩散作为服务使用，也可以将其下载并在您的计算机上运行。在计算机上使用它有两种主要方式：WebUI 和 CompfyUI。这里将向您展示如何安装
+    WebUI。
 - en: '**Note:** Stable Diffusion is compute heavy. You may need a decent hardware
     with supported GPU to run at a reasonable performance.'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意：** 稳定扩散需要大量计算资源。为了获得合理的性能，您可能需要一台配备支持的 GPU 的良好硬件。'
 - en: 'The Stable Diffusion WebUI package for Python programming language is free
     to download and use from its GitHub [page](https://github.com/AUTOMATIC1111/stable-diffusion-webui).
     Below are the steps to install the library on an Apple Silicon chip, where other
     platform are mostly the same as well:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 编程语言的稳定扩散 WebUI 软件包可从其 GitHub [页面](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
+    免费下载和使用。以下是在 Apple Silicon 芯片上安装该库的步骤，其他平台大部分也是相同的：
 - en: '**Prerequisites.** One of the prerequisites to the process is having a setup
     to run the WebUI. It is a Python-based web server with the UI built using Gradio.
     The setup is mostly automatic, but you should make sure some basic components
     are available, such as `git` and `wget`. When you run the WebUI, a Python virtual
     environment will be created.'
+  id: totrans-48
   prefs:
   - PREF_OL
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**先决条件。** 完成此过程的先决条件之一是设置能够运行 WebUI 的环境。这是一个基于 Python 的 Web 服务器，其 UI 使用 Gradio
+    构建。设置大多是自动完成的，但您应确保某些基本组件可用，如 `git` 和 `wget`。运行 WebUI 时，将创建一个 Python 虚拟环境。'
 - en: 'In macOS, you may want to install a Python system using Homebrew because some
     dependencies may need a newer version of Python than what the macOS shipped by
     default. See the [Homebrew’s setup guide](https://brew.sh/). Then you can install
     Python with Homebrew using:'
+  id: totrans-49
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 在 macOS 中，您可能希望使用 Homebrew 安装 Python 系统，因为某些依赖项可能需要比 macOS 默认提供的版本更新的 Python
+    版本。参见 [Homebrew 安装指南](https://brew.sh/)。然后，您可以使用以下命令在 Homebrew 中安装 Python：
 - en: '[PRE0]'
+  id: totrans-50
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '**Download.** The WebUI is a repository on GitHub. To get a copy of the WebUI
     to your computer, you can run the following command:'
+  id: totrans-51
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**下载。** WebUI 是 GitHub 上的一个存储库。要将 WebUI 的副本复制到您的计算机上，可以运行以下命令：'
 - en: '[PRE1]'
+  id: totrans-52
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: This will create a folder named `stable-diffusion-webui` and you should work
     in this folder for the following steps.
+  id: totrans-53
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 这将创建一个名为 `stable-diffusion-webui` 的文件夹，接下来的步骤应在此文件夹中进行。
 - en: '**Checkpoints.** The WebUI is to run the pipeline but the Stable Diffusion
     model is not included. You need to download the model (also known as checkpoints),
     and there are several versions you can choose from. These can be downloaded from
     various sources, most commonly from [HuggingFace](https://huggingface.co/). The
     following section will cover this step in more detail. All Stable Diffusion models/checkpoints
     should be placed in the directory `stable-diffusion-webui/models/Stable-diffusion`.'
+  id: totrans-54
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**检查点。** WebUI 用于运行流程，但稳定的扩散模型未包含在内。您需要下载模型（也称为检查点），并且有多个版本可供选择。这些可以从各种来源下载，最常见的是从
+    [HuggingFace](https://huggingface.co/)。接下来的部分将详细介绍这一步骤。所有稳定的扩散模型/检查点应放置在目录 `stable-diffusion-webui/models/Stable-diffusion`
+    中。'
 - en: '**First run.** Navigate into the `stable-diffusion-webui` directory using the
     command line and run `./webui.sh` to launch the web UI. This action will create
     and activate a Python virtual environment using `venv`, automatically fetching
     and installing any remaining required dependencies.![](../Images/daf647e75a5b24f9f527f2d4248ac813.png)'
+  id: totrans-55
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**首次运行。** 使用命令行导航到 `stable-diffusion-webui` 目录，并运行 `./webui.sh` 来启动 Web UI。此操作将使用
+    `venv` 创建并激活 Python 虚拟环境，自动获取和安装任何剩余的必需依赖项。![](../Images/daf647e75a5b24f9f527f2d4248ac813.png)'
 - en: Python modules installed during the first run of WebUI
+  id: totrans-56
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 首次运行 WebUI 时安装的 Python 模块
 - en: '**Subsequent run.** For future access to the web UI, re-run `./webui.sh` at
     the WebUI directory. Note that the WebUI doesn’t update itself automatically;
     to update it, you have to execute `git pull` before running the command to ensure
@@ -283,126 +410,190 @@
     All the interaction should be done over the browser, and you can shutdown the
     WebUI by shutting down the web server (e.g., pressing Control-C on the terminal
     running `webui.sh`).'
+  id: totrans-57
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**后续运行。** 要访问 Web UI，请在 WebUI 目录中重新运行 `./webui.sh`。请注意，WebUI 不会自动更新；要更新它，您必须在运行命令之前执行
+    `git pull` 以确保使用最新版本。`webui.sh` 脚本的作用是启动一个 web 服务器，您可以通过浏览器访问稳定扩散。所有交互都应通过浏览器进行，您可以通过关闭
+    web 服务器（例如，按下运行 `webui.sh` 的终端上的 Control-C）来关闭 WebUI。'
 - en: For other operating systems, the [official readme file](https://github.com/AUTOMATIC1111/stable-diffusion-webui/blob/master/README.md)
     offers the best guidance.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于其他操作系统，[官方自述文件](https://github.com/AUTOMATIC1111/stable-diffusion-webui/blob/master/README.md)提供了最佳指导。
 - en: How to Download the Models?
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何下载模型？
 - en: You can download Stable Diffusion models via [Hugging Face](https://huggingface.co/models?pipeline_tag=text-to-image&sort=downloads)
     by selecting a model of interest and proceeding to the “Files and versions” section.
     Look for files labeled with the “`.ckpt`” or “`.safetensors`” extensions and click
     the right-facing arrow next to the file size to initiate the download. SafeTensor
     is an alternative format to Python’s pickle serialization library; their difference
     is handled by the WebUI automatically, so you can consider them equivalent.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以通过 [Hugging Face](https://huggingface.co/models?pipeline_tag=text-to-image&sort=downloads)
+    下载稳定扩散模型，选择感兴趣的模型并进入“Files and versions”部分。查找以“`.ckpt`”或“`.safetensors`”扩展名标记的文件，并点击文件大小旁边的右箭头以开始下载。SafeTensor
+    是 Python 的 pickle 序列化库的替代格式；它们的区别由 WebUI 自动处理，因此您可以将它们视为等效。
 - en: '![](../Images/dbd0bdcde3cc554155e99aac6c45c0d5.png)'
+  id: totrans-61
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/dbd0bdcde3cc554155e99aac6c45c0d5.png)'
 - en: There are several models from Hugging Face if you search by the model name “stable-diffusion”.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您通过模型名称“stable-diffusion”在 Hugging Face 上搜索，会有几个模型。
 - en: 'Several official Stable Diffusion models that we may use in the upcoming chapters
     include:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可能会在接下来的章节中使用几个官方的稳定扩散模型，包括：
 - en: Stable Diffusion 1.4 (`sd-v1-4.ckpt`)
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 稳定扩散 1.4 (`sd-v1-4.ckpt`)
 - en: Stable Diffusion 1.5 (`v1-5-pruned-emaonly.ckpt`)
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 稳定扩散 1.5 (`v1-5-pruned-emaonly.ckpt`)
 - en: Stable Diffusion 1.5 Inpainting (`sd-v1-5-inpainting.ckpt`)
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 稳定扩散 1.5 修复 (`sd-v1-5-inpainting.ckpt`)
 - en: 'A model and configuration file are essential for Stable Diffusion versions
     2.0 and 2.1\. Additionally, when generating images, ensure the image width and
     height are set to 768 or higher:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于稳定扩散版本 2.0 和 2.1，模型和配置文件是必需的。此外，在生成图像时，请确保图像的宽度和高度设置为 768 或更高：
 - en: Stable Diffusion 2.0 (`768-v-ema.ckpt`)
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 稳定扩散 2.0 (`768-v-ema.ckpt`)
 - en: Stable Diffusion 2.1 (`v2-1_768-ema-pruned.ckpt`)
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 稳定扩散 2.1 (`v2-1_768-ema-pruned.ckpt`)
 - en: 'The configuration file can be found on GitHub at the following location:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 配置文件可以在 GitHub 的以下位置找到：
 - en: '[https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-inference-v.yaml](https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-inference-v.yaml)'
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-inference-v.yaml](https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-inference-v.yaml)'
 - en: After you downloaded `v2-inference-v.yaml` from above, you should place it in
     the same folder as the model matching the model’s filename (e.g., if you downloaded
     the `768-v-ema.ckpt` model, you should rename this configuration file to `768-v-ema.yaml`
     and store it in `stable-diffusion-webui/models/Stable-diffusion` along with the
     model).
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 下载了上述的 `v2-inference-v.yaml` 后，您应将其放置在与模型文件名匹配的同一文件夹中（例如，如果您下载了 `768-v-ema.ckpt`
+    模型，则应将此配置文件重命名为 `768-v-ema.yaml` 并与模型一起存储在 `stable-diffusion-webui/models/Stable-diffusion`
+    文件夹中）。
 - en: 'A Stable Diffusion 2.0 depth model (`512-depth-ema.ckpt`) also exists. In that
     case, you should download the `v2-midas-inference.yaml` configuration file from:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 也有一个稳定扩散 2.0 深度模型 (`512-depth-ema.ckpt`)。在这种情况下，您应从以下地址下载 `v2-midas-inference.yaml`
+    配置文件：
 - en: '[https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-midas-inference.yaml](https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-midas-inference.yaml)'
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-midas-inference.yaml](https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-midas-inference.yaml)'
 - en: and save it to the model’s folder as `stable-diffusion-webui/models/Stable-diffusion/512-depth-ema.yaml`.
     This model functions optimally at image dimensions of 512 width/height or higher.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 并将其保存到模型文件夹中，命名为`stable-diffusion-webui/models/Stable-diffusion/512-depth-ema.yaml`。该模型在512像素宽/高或更高的图像尺寸下能够实现最佳功能。
 - en: Another location that you can find model checkpoints for Stable Diffusion is
     [https://civitai.com/](https://civitai.com/), which you can see the samples as
     well.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个可以找到Stable Diffusion模型检查点的位置是[https://civitai.com/](https://civitai.com/)，您也可以在这里查看样本。
 - en: Further Readings
+  id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: 'Below are several papers that are referenced above:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是上述引用的几篇论文：
 - en: “[A U-Net Based Discriminator for Generative Adversarial Networks](https://openaccess.thecvf.com/content_CVPR_2020/html/Schonfeld_A_U-Net_Based_Discriminator_for_Generative_Adversarial_Networks_CVPR_2020_paper.html)”
     by Schonfeld, Schiele, and Khoreva. In Proc CVPR 2020, pp.8207-8216
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: “[基于U-Net的生成对抗网络鉴别器](https://openaccess.thecvf.com/content_CVPR_2020/html/Schonfeld_A_U-Net_Based_Discriminator_for_Generative_Adversarial_Networks_CVPR_2020_paper.html)”，作者为Schonfeld，Schiele和Khoreva。在CVPR
+    2020年会议论文中，第8207-8216页。
 - en: “Denoising Diffusion Probabilistic Models” by Ho, Jain, and Abbeel (2020). [arXiv
     2006.11239](https://arxiv.org/abs/2006.11239)
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: “去噪扩散概率模型”，作者为Ho，Jain和Abbeel（2020年）。[arXiv 2006.11239](https://arxiv.org/abs/2006.11239)
 - en: Summary
+  id: totrans-81
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概要
 - en: In this post, we learned the fundamentals of diffusion models and their broad
     application across diverse fields. In addition to expanding on the recent successes
     of their image and video generation successes, we discussed the Forward and Reverse
     Diffusion processes and modeling posterior probability.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我们学习了扩散模型的基础知识及其在各个领域的广泛应用。除了详细阐述它们在图像和视频生成上的最新成功案例之外，我们还讨论了前向和反向扩散过程以及建模后验概率。
 - en: Stable Diffusion’s unique approach involves projecting high-dimensional input
     into a reduced latent space, reducing computational demands via encoder and decoder
     networks.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: Stable Diffusion的独特方法涉及将高维输入投影到降维的潜在空间中，通过编码器和解码器网络减少计算需求。
 - en: Moving forward, we’ll learn the practical aspects of generating images using
     Stable Diffusion WebUI. Our exploration will cover model downloads and leveraging
     the web interface for image generation.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将学习使用Stable Diffusion WebUI生成图像的实际方面。我们的探索将涵盖模型下载和利用Web界面进行图像生成。

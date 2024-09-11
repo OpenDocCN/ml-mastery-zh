@@ -1,11 +1,15 @@
 - en: How to Create Images Using Stable Diffusion Web UI
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何使用稳定扩散 Web UI 创建图像
 - en: 原文：[https://machinelearningmastery.com/how-to-create-images-using-stable-diffusion-web-ui/](https://machinelearningmastery.com/how-to-create-images-using-stable-diffusion-web-ui/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/how-to-create-images-using-stable-diffusion-web-ui/](https://machinelearningmastery.com/how-to-create-images-using-stable-diffusion-web-ui/)
 - en: Launching the Stable Diffusion Web UI can be done in one command. After that,
     you can control the image generation pipeline from a browser. The pipeline has
     a lot of moving parts and all are important in one way or another. To effectively
@@ -13,181 +17,258 @@
     from your browser and know what they can do. In this post, you will learn the
     many components in the Stable Diffusion Web UI and how they affect the image you
     create.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 启动稳定扩散 Web UI 可以通过一个命令完成。之后，你可以通过浏览器控制图像生成管道。管道有很多活动部分，它们都以不同的方式重要。要有效指挥稳定扩散生成图像，你需要识别浏览器中的部件并了解它们的功能。在这篇文章中，你将学习稳定扩散
+    Web UI 中的许多组件及其如何影响你创建的图像。
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [《掌握稳定扩散的数字艺术》](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/)
+    **快速启动你的项目**。它提供了**自学教程**和**有效的代码**。'
 - en: Let’s get started.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/96ead67ff34eb97ce9e3b16b6f5e5a19.png)'
+  id: totrans-5
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/96ead67ff34eb97ce9e3b16b6f5e5a19.png)'
 - en: How to Create Images Using Stable Diffusion Web UI
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何使用稳定扩散 Web UI 创建图像
 - en: Photo by [Kelly Sikkema](https://unsplash.com/photos/yellow-click-pen-on-white-printer-paper-gcHFXsdcmJE).
     Some rights reserved.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：[Kelly Sikkema](https://unsplash.com/photos/yellow-click-pen-on-white-printer-paper-gcHFXsdcmJE)。保留所有权利。
 - en: Overview
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is in four parts; they are:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为四部分，它们是：
 - en: Launching the Web UI
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 启动 Web UI
 - en: The txt2img Tab
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: txt2img 标签
 - en: The img2img Tab
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: img2img 标签
 - en: Other Functions
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 其他功能
 - en: Launching the Web UI
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 启动 Web UI
 - en: 'After you prepared your Python environment, downloaded the web UI code, and
     stored the model checkpoints in the appropriate directory, you can launch the
     web UI using the following command:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在你准备好 Python 环境、下载了 Web UI 代码并将模型检查点存储在适当的目录中之后，你可以使用以下命令启动 Web UI：
 - en: '[PRE0]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The web UI can be customized by editing the variables in `webui-user.sh`. One
     example is to allow the web UI server to run from one computer while you launch
     your browser from another, which you need to add the following line to `webui-user.sh`
     to allow the server to be accessed over the network:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: Web UI 可以通过编辑 `webui-user.sh` 中的变量进行自定义。一个例子是允许 Web UI 服务器在一台计算机上运行，而你可以在另一台计算机上启动浏览器，这时你需要在
+    `webui-user.sh` 中添加以下行，以允许通过网络访问服务器：
 - en: '[PRE1]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '![](../Images/fb82e6aae8df34c3acaff318ea8eed89.png)'
+  id: totrans-19
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/fb82e6aae8df34c3acaff318ea8eed89.png)'
 - en: Running `./webui.sh` will launch a server for Stable Diffusion
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行 `./webui.sh` 将启动一个稳定扩散的服务器
 - en: 'By default, the command `./webui.sh` will launch a server at port 7860, and
     you can access it from your browser. If you run it from your desktop, you can
     use the URL `http://127.0.0.1:7860`; but if it is from another computer, you need
     to use that computer’s IP address instead of `127.0.0.1`. Your browser should
     show an UI like the following:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，命令 `./webui.sh` 会在端口 7860 启动一个服务器，你可以通过浏览器访问它。如果你在桌面上运行它，可以使用 URL `http://127.0.0.1:7860`；但如果是在另一台计算机上，你需要使用该计算机的
+    IP 地址代替 `127.0.0.1`。你的浏览器应该显示如下的 UI：
 - en: '![](../Images/a09538f9c34820eb0451ba5e93dc6796.png)'
+  id: totrans-22
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/a09538f9c34820eb0451ba5e93dc6796.png)'
 - en: The Stable Diffusion web UI
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散 Web UI
 - en: At the top left corner, you can see a dropdown box to select the checkpoint.
     The checkpoint provide different style of drawing, such as more realistic like
     a photograph or more like a cartoon. You can store multiple checkpoints in the
     model directory but only one is used in the pipeline. Below the dropdown, you
     have multiple “tabs” that you can generate image differently. Each tab has different
     set of widgets. Most of them are to provide parameters to a generation pipeline.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 在左上角，你可以看到一个下拉框用于选择检查点。检查点提供不同风格的绘图，例如更像照片的真实风格或更像卡通的风格。你可以在模型目录中存储多个检查点，但在管道中只能使用一个。下拉框下方有多个“标签”，你可以通过不同方式生成图像。每个标签都有不同的部件。大多数部件用于为生成管道提供参数。
 - en: Let’s understand what knobs and parameters are available to generate a desired
     image. These parameters, together, help nudge the algorithm in the right direction.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们了解一下有哪些旋钮和参数可用于生成所需的图像。这些参数共同作用，帮助将算法引导到正确的方向。
 - en: The txt2img Tab
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: txt2img 标签页
 - en: The launch page of the UI shows the txt2img tab—a fundamental feature of Stable
     Diffusion for transforming text prompts into images. As the name suggests, this
     allows us to describe the image we want or don’t want as **text** to the algorithm,
     which then converts it into an embedding vector to generate the image. Refer to
     the screenshot above, you have the widgets as explained as the following.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: UI的启动页面显示了txt2img标签页——这是将文本提示转换为图像的Stable Diffusion的基本功能。顾名思义，这允许我们将希望或不希望的图像描述为**文本**提供给算法，然后算法将其转换为嵌入向量以生成图像。请参阅上面的截图，您可以看到解释的部件。
 - en: '**Checkpoint** as labeled by ①. This dropdown menu lets us select models. Ensure
     that model files are placed in the correct folder, as detailed in the model installation
     guidelines (covered in the last chapter). A buffet of checkpoints and safe-tensors
     is available at [https://civitai.com/](https://civitai.com/).'
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**检查点**由①标记。这个下拉菜单让我们选择模型。确保模型文件放在正确的文件夹中，如模型安装指南（在上一章中介绍）中详细说明。可以在[https://civitai.com/](https://civitai.com/)找到各种检查点和安全张量。'
 - en: '**Refresh Button** as labeled by ②. Found next to the checkpoint dropdown,
     this button updates the list of available models. It is used to refresh the list
     if you added a new model to the checkpoint folder but do not want to restart the
     web UI server.'
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**刷新按钮**由②标记。位于检查点下拉菜单旁边，这个按钮更新可用模型的列表。如果您在检查点文件夹中添加了新模型但不想重新启动web UI服务器，可以使用它来刷新列表。'
 - en: '**Prompt Text Box** as labeled by ③. This is the place where the description
     of the expected image goes. Providing detailed and specific prompts (which will
     be covered in detail in the next post), along with keywords, enhances the generation
     process.'
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**提示文本框**由③标记。这是描述预期图像的地方。提供详细且具体的提示（将在下篇文章中详细介绍），以及关键词，有助于提高生成过程。'
 - en: '**Negative Prompt Text Box** as labeled by ④. Optional but important when employing
     v2 models, the negative prompt helps specify what should not be a part of the
     images. In general, what we don’t want is less specific and can be saved for many
     use cases.'
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**负面提示文本框**由④标记。在使用v2模型时是可选但重要的，负面提示有助于指定图像中不应该包含的内容。通常，我们不想要的内容较不具体，可以用于许多使用场景。'
 - en: '**Sampling Method** and **Steps** as labeled by ⑤ and ⑥. The first diffusion
     algorithm requires more than a hundred steps to create an image but we found ways
     to speed up. These parameters determine the denoising process algorithm and the
     number of sampling steps. The choice of sampling method influences the balance
     between speed and quality.'
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**采样方法**和**步骤**由⑤和⑥标记。第一个扩散算法需要超过一百步来创建图像，但我们找到了加速的方法。这些参数决定了去噪过程算法和采样步骤的数量。采样方法的选择影响速度与质量的平衡。'
 - en: To balance speed, quality, and having good convergence, DPM++ 2M Karras with
     20 – 30 steps or UniPC with 20-30 steps are some good options. On the other hand,
     DPM++ SDE Karras with 10-15 steps or DDIM with 10-15 steps offer one of the best
     quality images but with slower convergence.
+  id: totrans-33
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 为了平衡速度、质量和良好的收敛性，DPM++ 2M Karras 使用20-30步或UniPC使用20-30步是一些不错的选择。另一方面，DPM++ SDE
+    Karras 使用10-15步或DDIM使用10-15步提供了最佳的图像质量，但收敛较慢。
 - en: '**Width** and **Height** as labeled by ⑦ and ⑧. They specify the output image
     size, ensuring compatibility with the chosen model. Adjustments are recommended
     based on whether v1 or v2 models are used. Usually you keep the default of 512×512
     pixels and you change it only if you want a different aspect ratio.'
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**宽度**和**高度**由⑦和⑧标记。它们指定输出图像的大小，确保与所选择的模型兼容。根据使用的是v1还是v2模型，建议进行调整。通常，您保持默认的512×512像素，只有在需要不同的宽高比时才进行更改。'
 - en: '**Batch Count** and **Size** as labeled by ⑨ and ⑩. These settings control
     the times the image generation pipeline runs and the number of images generated
     per run. The batch size is how many images are generated in one single generation.
     The batch count is the number of generations.'
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**批次数量**和**大小**由⑨和⑩标记。这些设置控制图像生成管道运行的次数和每次运行生成的图像数量。批次大小是指一次生成中生成的图像数量。批次数量是生成的次数。'
 - en: A batch size of one with a higher batch count is recommended to generate multiple
     higher-resolution images with the least consumption of peak resources. It’s slower,
     but the quality of the images is much higher than just running batches of 512×512
     images.
+  id: totrans-36
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 推荐使用较高批次数量的单一批次，以最小化峰值资源的消耗来生成多个高分辨率图像。这种方法较慢，但图像质量远高于仅运行512×512图像的批次。
 - en: Since the image generation is a random process, generating multiple images in
     batches allows you to select the best outcome from several.
+  id: totrans-37
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 由于图像生成是一个随机过程，将多个图像批量生成可以让你从多个结果中选择最佳的。
 - en: '**Classifier Free Guidance Scale** as labeled by ⑪. The Classifier Free Guidance
     (CFG) scale parameter allows us to control how much the model should adhere to
     the prompt, ranging from mostly ignoring it (value of 1) to strictly following
@@ -196,154 +277,221 @@
     This might not serve the purpose of using txt2img. On the other hand, a high value
     of CFG forces the system to stick to the prompt but might distort the image itself.
     This is analogous to overfitting the prompt.'
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**无分类器指导尺度**如⑪标记所示。无分类器指导（CFG）尺度参数允许我们控制模型应多大程度上遵循提示，范围从主要忽略（值为1）到严格遵循（值为30）。谈到极端情况，CFG评分非常低的值意味着提示大多被忽略，生成的图像是随机的。这可能无法实现使用txt2img的目的。另一方面，高CFG值迫使系统严格遵循提示，但可能会扭曲图像本身。这类似于对提示的过度拟合。'
 - en: '**Random seed** as labeled by ⑫. The seed value influences the initial random
     tensor in the latent space, controlling the image’s content. Fixing the seed is
     useful for maintaining reproducibility while tweaking prompts.'
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**随机种子**如⑫标记所示。种子值影响潜在空间中的初始随机张量，控制图像的内容。固定种子对于在调整提示时保持可重复性很有用。'
 - en: You can try it out by describing what you want to generate in the prompt box
     (in plain English unless you replaced the default embedding model). Once you set
     up these and click the “Generate” button at top right, you can see the Stable
     Diffusion model create images for you gradually. Below an an example for the prompt
     “Extraterrestrial exploring a jungle”, with all other parameters as default.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过在提示框中描述你想生成的内容来尝试它（使用普通英语，除非你替换了默认的嵌入模型）。一旦设置好这些，点击右上角的“生成”按钮，你可以看到Stable
+    Diffusion模型逐渐为你创建图像。下面是提示“外星人在丛林中探险”的一个示例，其他参数保持默认。
 - en: '![](../Images/56d816e35c16afe74782c3cca7faa75e.png)'
+  id: totrans-41
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/56d816e35c16afe74782c3cca7faa75e.png)'
 - en: 'As mentioned above, the image generated is in the size as specified by the
     width and height parameters. If you need an image bigger than that, you can check
     the “Hires. fix” (high-resolution fix) box, and click one the triangle to expand
     the box for more options:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 如上所述，生成的图像是按照宽度和高度参数指定的大小生成的。如果你需要比这更大的图像，你可以勾选“高分辨率修复”框，并点击三角形以展开更多选项：
 - en: '![](../Images/97a2e9b37ae0200b5f3b3e9f5fc1f3b1.png)'
+  id: totrans-43
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/97a2e9b37ae0200b5f3b3e9f5fc1f3b1.png)'
 - en: Parameters under “Hires. fix”
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: “高分辨率修复”下的参数
 - en: This applies a **super-resolution** deep learning model to the output of Stable
     Diffusion. It addresses the native resolution limitation of Stable Diffusion,
     providing an upscaling feature for images generated at a smaller size. We can
     choose from various upscaling and adjustment parameters such as “upscale by” (the
     multiple for width and height of the image) to achieve the desired results.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应用了**超分辨率**深度学习模型来处理Stable Diffusion的输出。它解决了Stable Diffusion的原始分辨率限制，为以较小尺寸生成的图像提供了放大功能。我们可以从各种放大和调整参数中进行选择，例如“放大倍数”（图像的宽度和高度的倍数），以实现所需的结果。
 - en: Choosing the best images from the batch and then resizing from the img2img tab
     to upscale the resolution is generally recommended, rather than asking the Stable
     Diffusion model to generate a giant output directly.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常建议从批量中选择最佳图像，然后从img2img标签页进行调整以放大分辨率，而不是直接要求Stable Diffusion模型生成巨大的输出。
 - en: The img2img Tab
+  id: totrans-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: img2img 标签页
 - en: Next to the txt2img tab, the img2img tab is where users leverage image-to-image
     functions. Common use cases include **inpainting**, **sketching**, and transforming
     one image into another.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 在txt2img标签页旁边，img2img标签页是用户利用图像到图像功能的地方。常见的用例包括**修复**、**素描**和将一张图像转换成另一张图像。
 - en: 'While you still see the prompt and negative prompt text box, the img2img tab
     allows users to perform image-to-image transformations. A typical process involves:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然你仍然可以看到提示和负提示文本框，但img2img标签页允许用户执行图像到图像的转换。一个典型的过程包括：
 - en: Dragging and dropping a base image onto the img2img subtab under “Generation”
     section
+  id: totrans-50
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将基础图像拖放到“生成”部分下的img2img子标签页中
 - en: Adjusting width or height to maintain the aspect ratio of the new image.
+  id: totrans-51
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 调整宽度或高度以保持新图像的纵横比。
 - en: Setting sampling method, sampling steps, and batch size.
+  id: totrans-52
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 设置采样方法、采样步骤和批量大小。
 - en: Writing a prompt for the new image.
+  id: totrans-53
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 为新图像编写提示。
 - en: Pressing the Generate button to create images, with denoising strength adjustments.
+  id: totrans-54
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 按下生成按钮以创建图像，并调整去噪强度。
 - en: Other parameters in the img2img tab include resizing mode and denoising strength,
     controlling how much the image changes during the transformation.
+  id: totrans-55
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: img2img选项卡中的其他参数包括调整模式和去噪强度，控制图像在转换过程中变化的程度。
 - en: '![](../Images/1b7fc1b4ab0be1a6680117b69c6c2810.png)'
+  id: totrans-56
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/1b7fc1b4ab0be1a6680117b69c6c2810.png)'
 - en: A typical workflow with img2img
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: img2img的典型工作流程
 - en: One of the most important settings is the **denoising strength**. It signifies
     the amount of artistic freedom the model has over the input image. A low value
     of this parameter means that the style of the image must be retained while a higher
     value means the least restriction in terms of styling, colors, etc.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 最重要的设置之一是**去噪强度**。它表示模型对输入图像的艺术自由度。该参数的低值意味着图像的风格必须保留，而较高的值意味着在风格、颜色等方面的限制最少。
 - en: 'Let us understand this better using two examples with the same input prompt
     “woman wearing sunglasses” below:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们通过以下两个相同输入提示“戴太阳镜的女人”的示例更好地理解这一点：
 - en: '![](../Images/25239ef5d208f4782b9f3817c2c5b215.png)'
+  id: totrans-60
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/25239ef5d208f4782b9f3817c2c5b215.png)'
 - en: Using img2img to make a headshot to wear sunglasses.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用img2img制作带有太阳镜的头像。
 - en: 'In the first example, an image is uploaded to the img2img subtab, the denoising
     strength is set to 0.4, entered the prompt, then clicked “Generate”. The image
     generated will show at the right. The generated image retained almost everything
     except the face, including the input image’s color and style. It accurately reflects
     the instruction on the prompt: wearing sunglasses.'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第一个示例中，将图像上传到img2img子选项卡，将去噪强度设置为0.4，输入提示，然后点击“生成”。生成的图像将显示在右侧。生成的图像保留了几乎所有内容，除了面部，包括输入图像的颜色和风格。它准确反映了提示上的指示：戴太阳镜。
 - en: 'The second example has a higher value of denoising strength of 0.7, thus allowing
     the algorithm to generate more random images. Let’s also set the batch count to
     4 so to create more outputs. The color, pose, and style are all different in the
     four candidate images on the right, as follows:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个例子的去噪强度值为0.7，因此允许算法生成更多随机图像。我们还将批量计数设置为4，以生成更多的输出。右侧的四个候选图像在颜色、姿势和风格上都不同，如下所示：
 - en: '![](../Images/384057cfbae1b5a6622041a9534feb71.png)'
+  id: totrans-64
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/384057cfbae1b5a6622041a9534feb71.png)'
 - en: Increasing the denoising strength will generate images more deviated from the
     input.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 增加去噪强度将生成与输入图像偏离更多的图像。
 - en: Sketch and Inpainting
+  id: totrans-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 草图和修复
 - en: In addition to uploading an image, users can sketch the initial picture using
     the color sketch tool, enabling creative modifications or entirely new compositions.
     The sketch function allows users to input a background image, sketch in color,
     and generate images based on the sketch and accompanying prompt.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了上传图片外，用户还可以使用颜色草图工具绘制初始图片，进行创意修改或完全新的构图。草图功能允许用户输入背景图片，用颜色进行草图绘制，并根据草图和附带的提示生成图像。
 - en: 'A widely used function in the img2img tab is **inpaint**, which addresses minor
     defects in generated images. Besides uploading an image, you can also send an
     image generated from the txt2img tab to the img2img tab for inpainting. Afterward,
     you can draw on the image to create a mask. Adjustments to denoising strength,
     mask content, and batch size influence the inpainting process, too. An example
     is as follows:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 在img2img选项卡中，一个广泛使用的功能是**修复**，它解决生成图像中的小缺陷。除了上传图像外，你还可以将从txt2img选项卡生成的图像发送到img2img选项卡进行修复。之后，你可以在图像上绘制以创建一个掩码。调整去噪强度、掩码内容和批量大小也会影响修复过程。以下是一个示例：
 - en: '![](../Images/b170a3551c2ecddf2c314dca4c40e5eb.png)'
+  id: totrans-69
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/b170a3551c2ecddf2c314dca4c40e5eb.png)'
 - en: Add a reading glass to a portrait by inpainting
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过修复来给肖像添加一个阅读眼镜
 - en: You draw a mask on the input image for where the reading glass should be. When
     you draw, you can zoom and pan using keyboard shortcuts, enhancing precision when
     working on smaller areas. Keyboard shortcuts include Alt+Wheel (Option+Wheel in
@@ -351,107 +499,152 @@
     “S” for entering/exiting the full screen, and holding “F” while moving the cursor
     to pan. Once you finished creating the mask, you say “reading glasses” in the
     prompt text box and click “Generate”.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 你在输入图像上绘制遮罩以标出眼镜的位置。当你绘制时，可以使用键盘快捷键进行缩放和移动，以提高在较小区域工作时的精确度。键盘快捷键包括用于缩放的 Alt+Wheel（在
+    macOS 中为 Option+Wheel），用于调整画笔大小的 Ctrl+Wheel，重置缩放的“R”，进入/退出全屏的“S”，以及在移动光标时按住“F”来平移。完成遮罩绘制后，你在提示文本框中输入“眼镜”，然后点击“生成”。
 - en: If you think drawing a mask on the browser is too difficult, you can use other
     drawing tools such as Photoshop to create a mask image. Then on the “Inpaint upload”
     tab to upload the image and the mask separately.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你觉得在浏览器上绘制遮罩太困难，可以使用其他绘图工具，如 Photoshop，来创建遮罩图像。然后在“修复上传”选项卡中分别上传图像和遮罩。
 - en: You can also set the batch size to create multiple images at once, all based
     on the same prompt and input. This allows you to select the best output from a
     bulk of variations.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 你还可以设置批处理大小，一次创建多个图像，所有图像都基于相同的提示和输入。这允许你从大量变体中选择最佳输出。
 - en: The above example retains the original image but adds reading glasses using
     the inpainting feature by drawing roughly a structure of the glasses over the
     masked area of the image. Some of the notable settings for inpainting include
     the mask blur (how far the pixels outside the mask can be changed), inpaint area
     (whether the mask means to keep or to change), and denoising strength signifying
     the surrounding area for producing the change.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述示例保留了原始图像，但通过在图像的遮罩区域粗略绘制眼镜的结构，使用修复功能添加了眼镜。修复的一些显著设置包括遮罩模糊（遮罩外部的像素可以被改变的范围）、修复区域（遮罩是否意味着保持或更改）和去噪强度，表示产生变化的周围区域。
 - en: '![](../Images/5fecd8353aedd40bf1fd6e720a91bfad.png)'
+  id: totrans-75
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/5fecd8353aedd40bf1fd6e720a91bfad.png)'
 - en: Some useful parameters for inpainting
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些有用的修复参数
 - en: 'A more advanced version of inpainting is **inpaint sketch**. While inpainting,
     you create a mask and only the masked part of the image is regenerated based on
     the prompt. In inpaint sketch, you draw on the image with color pencils such that
     what you drew together with the prompt controls the output. As an example, the
     same reading glasses prompt generates a pair of glasses in red frame because the
     sketch was in red:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 更高级的修复版本是**修复素描**。在修复过程中，你创建一个遮罩，只有被遮罩的部分会根据提示重新生成。在修复素描中，你用彩色铅笔在图像上绘制，这样你绘制的内容与提示一起控制输出。例如，相同的眼镜提示生成了一副红色框架的眼镜，因为素描是红色的：
 - en: '![](../Images/49eae2184954f3361352ed80d9770c95.png)'
+  id: totrans-78
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/49eae2184954f3361352ed80d9770c95.png)'
 - en: Reading glasses with red frame is creating using inpaint sketch
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 红色框架眼镜是通过修复素描创建的
 - en: Other Functions
+  id: totrans-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 其他功能
 - en: 'As you already noticed, the web UI has more than txt2img and img2img. In fact,
     you can add more features to the web UI by installing **extensions**. In the following,
     some of the top-level tabs are:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你已经注意到的，网页 UI 不仅有 txt2img 和 img2img。实际上，你可以通过安装**扩展**来为网页 UI 添加更多功能。以下是一些顶级选项卡：
 - en: '**Extras Tab**: It allow you to provide an image for resizing. Technically,
     you are invoking only the superresolution step of the pipeline.'
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**附加选项卡**：它允许你提供一张图像进行重新调整大小。从技术上讲，你只是调用了管道的超分辨率步骤。'
 - en: '**PNG Info**: If you generated an image and saved it as PNG file on your disk,
     the details of how this image was generated are stored in the EXIF data of the
     image. This tool helps to retrieve parameter values such as prompts and settings
     from the generated images that you upload.'
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**PNG 信息**：如果你生成了一张图像并将其保存为 PNG 文件，图像生成的详细信息会存储在图像的 EXIF 数据中。这个工具帮助从你上传的生成图像中检索参数值，如提示和设置。'
 - en: '**Settings Tab**: A lot of settings can be adjusted in this tab, including
     the directory to models and outputs. One of the most useful setting is “Face restoration”.
     This feature applies an additional model designed to restore defects on faces.
     Users can select a face restoration model in the Settings tab and apply it to
     every generated image in the txt2img tab. Adjustments to the CodeFormer weight
     parameter can fine-tune the restoration effect.'
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**设置选项卡**：在这个选项卡中可以调整许多设置，包括模型和输出的目录。其中最有用的设置之一是“面部恢复”。这个功能应用了一个额外的模型，专门用于修复面部的缺陷。用户可以在设置选项卡中选择一个面部恢复模型，并将其应用于txt2img选项卡中的每个生成图像。通过调整CodeFormer权重参数可以微调修复效果。'
 - en: '![](../Images/302dc9b43a2531202df38d2252ef5f52.png)'
+  id: totrans-85
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/302dc9b43a2531202df38d2252ef5f52.png)'
 - en: Face restoration settings using CodeFormer model.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用CodeFormer模型进行面部恢复设置。
 - en: Further Readings
+  id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: 'The best resources for learning about the web UI is the wiki page of the tool
     on GitHub:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于Web UI最好的学习资源是GitHub工具的wiki页面。
 - en: '[Stable Diffusion WebUI wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki)'
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[稳定扩散WebUI维基](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki)'
 - en: Summary
+  id: totrans-90
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this post, you learned how to invoke the Stable Diffusion Web UI from your
     browser.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，您学习了如何从浏览器中调用稳定扩散Web UI。
 - en: While Stable Diffusion is such a powerful tool, it still lacks precise control
     over certain attributes of the output. It faces issues surrounding degraded image
     quality and inaccurate colors in certain scenarios. You should bear in mind of
     its limitation when you use it. The world of AI-generated imagery is getting better
     each day and faster than ever. In the next post, let us understand some powerful
     prompting techniques to stretch the limits of the generated images.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然稳定扩散是一种强大的工具，但它仍然在输出的某些属性上缺乏精确控制。在某些情况下，它面临着图像质量下降和颜色不准确的问题。当你使用它时，应该牢记它的局限性。人工智能生成图像的世界每天都在变得更好，速度比以往任何时候都快。在下一篇文章中，让我们了解一些强大的提示技术，以拓展生成图像的极限。
