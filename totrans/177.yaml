@@ -3,11 +3,13 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 更深入的 Stable Diffusion 管道与 Diffusers
 - en: 原文：[https://machinelearningmastery.com/further-stable-diffusion-pipeline-with-diffusers/](https://machinelearningmastery.com/further-stable-diffusion-pipeline-with-diffusers/)
   id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/further-stable-diffusion-pipeline-with-diffusers/](https://machinelearningmastery.com/further-stable-diffusion-pipeline-with-diffusers/)
 - en: There are many ways you can access Stable Diffusion models and generate high-quality
     images. One popular method is using the Diffusers Python library. It provides
     a simple interface to Stable Diffusion, making it easy to leverage these powerful
@@ -18,79 +20,100 @@
   id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 有许多方法可以访问 Stable Diffusion 模型并生成高质量图像。一种流行的方法是使用 Diffusers Python 库。它提供了一个简单的接口来使用
+    Stable Diffusion，使得利用这些强大的 AI 图像生成模型变得更加容易。`diffusers` 降低了使用前沿生成 AI 的门槛，使得快速实验和开发成为可能。这个库非常强大。不仅可以用来根据文本提示生成图片，还可以利用
+    LoRA 和 ControlNet 创建更好的图像。
 - en: 'In this post, you will learn about Hugging Face’s Diffusers, how to generate
     images, and how to apply various image generation techniques similar to Stable
     Diffusion WebUI. Specifically, you will learn how to:'
   id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你将学习关于 Hugging Face 的 Diffusers、如何生成图像以及如何应用类似于 Stable Diffusion WebUI
+    的各种图像生成技术。具体来说，你将学习如何：
 - en: Build a Diffusers Pipeline and generate a simple image with a prompt.
   id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建一个 Diffusers 管道，并通过提示生成一个简单的图像。
 - en: Loading LoRA weights of fine-tuned models and generating IKEA-style images.
   id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 加载微调模型的 LoRA 权重并生成 IKEA 风格的图像。
 - en: Build ControlNet OpenPose pipeline to generate an image using a reference image.
   id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建 ControlNet OpenPose 管道，使用参考图像生成图像。
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
   id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书** [《掌握稳定扩散的数字艺术》](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/)
+    **来启动你的项目**。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started.
   id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/34c4912f68b0bec21520237b0a1fc7ef.png)'
   id: totrans-9
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/34c4912f68b0bec21520237b0a1fc7ef.png)'
 - en: Further Stable Diffusion Pipeline with Diffusers
   id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 更深入的 Stable Diffusion 管道与 Diffusers
 - en: Photo by [Felicia Buitenwerf](https://unsplash.com/photos/white-and-black-light-bulb-8xFgmFnOnAg).
     Some rights reserved.
   id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Felicia Buitenwerf](https://unsplash.com/photos/white-and-black-light-bulb-8xFgmFnOnAg)
+    提供。保留所有权利。
 - en: Overview
   id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概览
 - en: 'This post is in three parts; they are:'
   id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分；它们是：
 - en: Using Diffusers on Google Colab
   id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 Google Colab 上使用 Diffusers
 - en: Loading LoRA Weights
   id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 加载 LoRA 权重
 - en: ControlNet OpenPose
   id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ControlNet OpenPose
 - en: Using Diffusers on Google Colab
   id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在 Google Colab 上使用 Diffusers
 - en: Hugging Face’s diffusers is a Python library that allows you to access pre-trained
     diffusion models for generating realistic images, audio, and 3D molecular structures.
     You can use it for simple inference or train your own diffusion model. What’s
@@ -100,6 +123,8 @@
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: Hugging Face 的 diffusers 是一个 Python 库，允许你访问用于生成真实图像、音频和 3D 分子结构的预训练扩散模型。你可以用它进行简单推断或训练自己的扩散模型。这个库的特别之处在于，只需几行代码，你就可以从
+    Hugging Face Hub 下载模型并用其生成图像，类似于 Stable Diffusion WebUI。
 - en: Instead of setting up locally, you will use Google Colab’s free GPU-based Notebook.
     To do so, go to [https://colab.research.google.com/](https://colab.research.google.com/)
     and create a new notebook. To access the GPU, you must head to “Runtime” → “Change
@@ -107,20 +132,25 @@
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 不需要在本地设置，你可以使用 Google Colab 的免费 GPU 基础笔记本。为此，请访问 [https://colab.research.google.com/](https://colab.research.google.com/)
+    并创建一个新的笔记本。要访问 GPU，你必须前往“运行时” → “更改运行时类型”并选择“T4 GPU”选项。
 - en: '![](../Images/d453ae11b11152c6017994290692e9a0.png)'
   id: totrans-20
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/d453ae11b11152c6017994290692e9a0.png)'
 - en: Selecting a GPU on Google Colab
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Google Colab 上选择 GPU
 - en: Using Colab saves you from the burden of owning a GPU device to run Stable Diffusion
     efficiently. By the nature of a Jupyter notebook, you just need to keep all the
     following code in their own cell to run. It would be convenient for you to experiment.
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Colab 可以让你避免拥有 GPU 设备以高效运行 Stable Diffusion 的负担。由于 Jupyter 笔记本的特性，你只需要将所有以下代码保存在各自的单元格中运行。这将方便你进行实验。
 - en: 'After that, install all necessary Python libraries to run `diffusers` pipeline.
     You need to create a notebook cell with the following line:'
   id: totrans-23

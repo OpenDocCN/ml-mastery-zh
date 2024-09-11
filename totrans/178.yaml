@@ -1,79 +1,120 @@
 - en: Running Stable Diffusion with Python
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 Python 运行 Stable Diffusion
 - en: 原文：[https://machinelearningmastery.com/running-stable-diffusion-with-python/](https://machinelearningmastery.com/running-stable-diffusion-with-python/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/running-stable-diffusion-with-python/](https://machinelearningmastery.com/running-stable-diffusion-with-python/)
 - en: Stable Diffusion is a deep learning model that can generate pictures. In essence,
     it is a program in which you can provide input (such as a text prompt) and get
     back a tensor that represents an array of pixels, which, in turn, you can save
     as an image file. There’s no requirement that you must use a particular user interface.
     Before any user interface is available, you are supposed to run Stable Diffusion
     in code.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: Stable Diffusion 是一个能够生成图片的深度学习模型。实际上，它是一个程序，你可以提供输入（例如文本提示），并获得一个表示像素数组的张量，这个张量可以保存为图像文件。没有规定必须使用特定的用户界面。在任何用户界面可用之前，你需要通过代码运行
+    Stable Diffusion。
 - en: In this tutorial, we will see how you can use the `diffusers` library from Hugging
     Face to run Stable Diffusion.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将学习如何使用来自 Hugging Face 的 `diffusers` 库来运行 Stable Diffusion。
 - en: After finishing this tutorial, you will learn
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将学到
 - en: How to install the `diffusers` library and its dependencies
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何安装 `diffusers` 库及其依赖项
 - en: How to create a pipeline in `diffusers`
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 `diffusers` 中创建一个 pipeline
 - en: How to fine tune your image generation process
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何微调你的图像生成过程
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [《掌握数字艺术与稳定扩散》](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/)
+    **来启动你的项目**。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/b30ccb65f63b9a59926a30d8a657f565.png)'
+  id: totrans-10
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/b30ccb65f63b9a59926a30d8a657f565.png)'
 - en: Running Stable Diffusion in Python
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Python 中运行 Stable Diffusion
 - en: Photo by [Himanshu Choudhary](https://unsplash.com/photos/orange-tabby-cat-lying-on-ground-RLo7QtKLyAY).
     Some rights reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Himanshu Choudhary](https://unsplash.com/photos/orange-tabby-cat-lying-on-ground-RLo7QtKLyAY)
+    提供。保留所有权利。
 - en: Overview
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in three parts; they are
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是
 - en: Introduction to the Diffusers Library
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Diffusers 库简介
 - en: Customizing the Stable Diffusion Pipeline
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 自定义 Stable Diffusion 管道
 - en: Other Modules in the Diffusers Library
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Diffusers 库中的其他模块
 - en: Introduction to the Diffusers Library
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Diffusers 库简介
 - en: Stable Diffusion has taken the text-to-image generation world by storm. Its
     ability to produce high-quality, detailed images from textual descriptions makes
     it a powerful tool for artists, designers, and anyone with a creative spark. With
@@ -81,40 +122,62 @@
     PyTorch, but you will need to write a lot of code to use it because there are
     many steps involved. The Hugging Face Diffusers library can harness Stable Diffusion’s
     potential and let you craft your own dreamlike creations.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: Stable Diffusion 在文本到图像生成领域引起了轰动。它能够从文本描述中生成高质量、详细的图像，使其成为艺术家、设计师以及任何具有创造力的人士的强大工具。借助
+    Stable Diffusion 模型文件，你可以使用 PyTorch 重建深度学习模型，但因为涉及很多步骤，你需要编写大量代码。Hugging Face
+    的 Diffusers 库可以利用 Stable Diffusion 的潜力，让你创作出梦幻般的作品。
 - en: 'Before you use it, you should install the diffusers library in your Python
     environment:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在使用之前，你应该在你的 Python 环境中安装 diffusers 库：
 - en: Shell
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE0]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: These Python packages have a lot of dependencies, including PyTorch.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些 Python 包有很多依赖项，包括 PyTorch。
 - en: 'In this post, you will use the pipeline function in the diffuers library. It
     is called a pipeline because not a single deep learning model allows you to generate
     pictures from your input, but many smaller models work in tandem to achieve that.
     Let’s look at an example:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你将使用 diffusers 库中的 pipeline 函数。之所以称为 pipeline，是因为不是单个深度学习模型能够从输入生成图片，而是许多较小的模型协同工作来实现这一点。我们来看一个例子：
 - en: '[PRE1]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'These are the few lines of code to generate a picture, and save it in PNG format
     to `cat.png`. This is an example of the generated picture:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是生成一张图片并将其保存为 PNG 格式到 `cat.png` 的几行代码。这是生成的图片示例：
 - en: '![](../Images/331984db9fff0d71aeed19f863bbd244.png)'
+  id: totrans-27
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/331984db9fff0d71aeed19f863bbd244.png)'
 - en: A picture generated with Stable Diffusion pipeline.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Stable Diffusion 管道生成的图片。
 - en: However, a lot of work is being done on the backend. You passed on a text prompt.
     This prompt has been converted into a numerical tensor using a pretrained embedding
     model. The tensor is then passed on to the Stable Diffusion model, downloaded
@@ -124,9 +187,11 @@
     tensor, which has to be converted into pixel values before you can save it. All
     these are accomplished by chaining the components with a pipeline into the object
     `pipe`.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
 - en: Customizing the Stable Diffusion Pipeline
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -137,46 +202,57 @@
     above is `fp16`, which is to use 16-bit floating point. It is not always available
     and not always named as such. You should check the corresponding repository to
     learn more details.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
 - en: Because the variant used is for 16-bit floating point, you specified the `torch_dtype`
     to use `torch.float16` as well. Note that most CPUs cannot work with 16-bit floating
     points (also known as half-precision floats), but it works for GPUs. Hence, you
     saw that the pipeline created was passed on to the GPU using the statement `pipe.to("cuda")`.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'You can try the following modification, which you should be able to observe
     a much slower generation because it is run on CPU:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: However, suppose you have been using the Stable Diffusion Web UI and downloaded
     the third-party model for Stable Diffusion. In that case, you should be familiar
     with model files saved in SafeTensors format. This is in a different format than
     the above Hugging Face repository. Most notably, the repository would include
     a `config.json` file to describe how to use the model, but such information should
     be inferred from a SafeTensor model file instead.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'You can still use the model files you downloaded. For example, with the following
     code:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This code uses `StableDiffusionPipeline.from_single_file()` instead of `StableDiffusionPipeline.from_pretrained()`.
     The argument to this function is presumed to be the path to the model file. It
     will figure out that the file is in SafeTensors format. It is the neatness of
     the `diffusers` library that nothing else needs to be changed after you swapped
     how to create the pipeline.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
 - en: Note that each Pipeline assumes a certain architecture. For example, there is
     `StableDiffusionXLPipeline` from `diffusers` library solely for Stable Diffusion
     XL. You cannot use the model file with the wrong pipeline builder.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
 - en: You can see that the most important parameters of the Stable Diffusion image
@@ -185,81 +261,120 @@
     The scheduler indeed has another set of configuration parameters. You can choose
     among the many schedulers supported by the `diffuers` library, which you can find
     in the details in the diffusers API manual.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 当触发过程时，您可以在`pipe()`函数调用中看到稳定扩散图像生成过程的最重要参数。例如，您可以指定调度器、步长和CFG比例。调度器确实有另一组配置参数。您可以从`diffusers`库支持的众多调度器中进行选择，详情可以在diffusers
+    API手册中找到。
 - en: 'For example, the following is to use a faster alternative, the Euler Scheduler,
     and keep everything else the same:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，以下是使用更快的替代方案，即欧拉调度器，并保持其它一切不变：
 - en: '[PRE4]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Other Modules in the Diffusers Library
+  id: totrans-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Diffusers库中的其他模块
 - en: 'The `StableDiffusionPipeline` is not the only pipeline in the `diffusers` library.
     As mentioned above, you have `StableDiffusionXLPipeline` for the XL models, but
     there are much more. For example, if you are not just providing a text prompt
     but invoking the Stable Diffusion model with img2img, you have to use `StableDiffusionImg2ImgPipeline`.
     You can provide an image of the PIL object as an argument to the pipeline. You
     can check out the available pipelines from the `diffusers` documentation:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '`StableDiffusionPipeline`不是`diffusers`库中唯一的管道。如上所述，您有`StableDiffusionXLPipeline`适用于XL模型，但还有更多。例如，如果您不仅仅提供文本提示而是使用img2img调用稳定扩散模型，您必须使用`StableDiffusionImg2ImgPipeline`。您可以将PIL对象的图像作为管道的参数。您可以从`diffusers`文档中查看可用的管道：'
 - en: '[https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/overview](https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/overview)'
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/overview](https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/overview)'
 - en: Even with the many different pipeline, you should find all of them work similarly.
     The workflow is highly similar to the example code above. You should find it easy
     to use without any need to understand the detailed mechanism behind the scene.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使有许多不同的管道，您应该发现它们都工作类似。工作流程与上面的示例代码非常相似。您会发现它易于使用，无需了解幕后的详细机制。
 - en: Further Reading
+  id: totrans-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您想更深入地了解这个主题，本节提供了更多资源。
 - en: '[diffusers API manual](https://huggingface.co/docs/diffusers/main/en/index)'
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[diffusers API手册](https://huggingface.co/docs/diffusers/main/en/index)'
 - en: '[Overview of Stable Diffusion Pipelines](https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/overview)'
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[稳定扩散管道概述](https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/overview)'
 - en: '[The StableDiffusionPipeline API](https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/text2img)'
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[稳定扩散管道API](https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/text2img)'
 - en: '[Euler Scheduler API](https://huggingface.co/docs/diffusers/main/en/api/schedulers/euler)'
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[欧拉调度器API](https://huggingface.co/docs/diffusers/main/en/api/schedulers/euler)'
 - en: '[DDPM Scheduler API](https://huggingface.co/docs/diffusers/main/en/api/schedulers/ddpm)'
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[DDPM调度器API](https://huggingface.co/docs/diffusers/main/en/api/schedulers/ddpm)'
 - en: Summary
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this post, you discovered how to use the `diffusers` library from Hugging
     Face. In particular, you learned:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，您发现了如何从Hugging Face的`diffusers`库中使用。特别是，您了解到：
 - en: How to create a pipeline to create an image from a prompt
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何创建一个从提示创建图像的管道
 - en: How you can reuse your local model file instead of dynamically download from
     repository online
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何重复使用本地模型文件而不是动态从在线仓库下载？
 - en: What other pipeline models are available from the diffusers library
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从扩散器库中可用的其他管道模型有哪些？
