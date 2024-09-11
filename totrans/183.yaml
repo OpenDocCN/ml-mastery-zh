@@ -1,11 +1,15 @@
 - en: Using LoRA in Stable Diffusion
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在稳定扩散中使用LoRA
 - en: 原文：[https://machinelearningmastery.com/using-lora-in-stable-diffusion/](https://machinelearningmastery.com/using-lora-in-stable-diffusion/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/using-lora-in-stable-diffusion/](https://machinelearningmastery.com/using-lora-in-stable-diffusion/)
 - en: The deep learning model of Stable Diffusion is huge. The weight file is multiple
     GB large. Retraining the model means to update a lot of weights and that is a
     lot of work. Sometimes we must modify the Stable Diffusion model, for example,
@@ -14,49 +18,73 @@
     to existing model without modifying the existing model weights. In this post,
     you will learn about the low-rank adaptation, which is the most common technique
     for modifying the behavior of Stable Diffusion.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散的深度学习模型非常庞大。权重文件的大小达到数GB。重新训练模型意味着需要更新大量权重，这是一项繁重的工作。有时我们必须修改稳定扩散模型，例如，定义新的提示解释或让模型默认生成不同风格的画作。事实上，有方法可以在不修改现有模型权重的情况下对现有模型进行扩展。在这篇文章中，你将了解低秩适配，它是修改稳定扩散行为的最常见技术。
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书《掌握稳定扩散数字艺术》**来**启动你的项目**，[Mastering Digital Art with Stable Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/)。它提供了**自学教程**和**可运行代码**。'
 - en: Let’s get started.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/94f1ab5412b0f6cfd160a3e785cb00e7.png)'
+  id: totrans-5
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/94f1ab5412b0f6cfd160a3e785cb00e7.png)'
 - en: Using LoRA in Stable Diffusion
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在稳定扩散中使用LoRA
 - en: Photo by [Agent J](https://unsplash.com/photos/green-and-brown-concrete-wall-dO1i_fWbbcw).
     Some rights reserved.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：[Agent J](https://unsplash.com/photos/green-and-brown-concrete-wall-dO1i_fWbbcw)。保留部分权利。
 - en: Overview
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is in three parts; they are:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三部分；它们是：
 - en: What Is Low-Rank Adaptation
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 低秩适配是什么
 - en: Checkpoint or LoRA?
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 检查点还是LoRA？
 - en: Examples of LoRA Models
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: LoRA模型示例
 - en: What Is Low-Rank Adaptation
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 低秩适配是什么
 - en: LoRA, or Low-Rank Adaptation, is a lightweight training technique used for fine-tuning
     Large Language and Stable Diffusion Models without needing full model training.
     Full fine-tuning of larger models (consisting of billions of parameters) is inherently
@@ -66,13 +94,17 @@
     for faster training times and more manageable file sizes (typically around a few
     hundred megabytes). This makes LoRA models easier to store, share, and use on
     consumer GPUs.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: LoRA（低秩适配）是一种轻量级训练技术，用于对大型语言模型和稳定扩散模型进行微调，而无需进行完整的模型训练。对较大模型（由数十亿个参数组成）进行全面微调本质上是昂贵且耗时的。LoRA通过向模型添加较少的新权重进行训练，而不是重新训练整个参数空间，从而显著减少了可训练参数的数量，这样可以缩短训练时间并减小文件大小（通常在几百兆字节左右）。这使得LoRA模型更容易存储、共享，并在消费者级GPU上使用。
 - en: In simpler terms, LoRA is like adding a small team of specialized workers to
     an existing factory, rather than building an entirely new factory from scratch.
     This allows for more efficient and targeted adjustments to the model.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，LoRA就像是在现有工厂中添加一小队专业工人，而不是从头开始建立一个全新的工厂。这允许对模型进行更高效、更有针对性的调整。
 - en: LoRA is a state-of-the-art fine-tuning method proposed by [Microsoft researchers](https://arxiv.org/pdf/2106.09685.pdf)
     to adapt larger models to particular concepts. A typical complete fine-tuning
     involves updating the weights of the entire model in each dense layer of the neural
@@ -80,52 +112,68 @@
     that pre-trained over-parametrized models actually reside on a low intrinsic dimension.
     LoRA approach is based on this finding, by by restricting weight updates to the
     residual of the model.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: LoRA是一种由[微软研究人员](https://arxiv.org/pdf/2106.09685.pdf)提出的最先进的微调方法，用于将较大模型适配到特定概念。一个典型的全面微调涉及在神经网络的每一层中更新整个模型的权重。[Aghajanyan
+    et al.(2020)](https://arxiv.org/abs/2012.13255) 解释了预训练的过参数化模型实际上存在于低内在维度上。LoRA方法基于这一发现，通过将权重更新限制在模型的残差上。
 - en: Suppose that $W_0\in \mathbb{R}^{d\times k}$ represents a pretrained weight
     matrix of size $\mathbb{R}^{d\times k}$ (i.e., a matrix of $d$ rows and $k$ columns
     in real numbers), and it changes by $\Delta W$ (the **update matrix**) such that
     the fine-tuned model’s weight are
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
 - en: $$ W’ = W_0 + \Delta W$$
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'LoRA use the technique lowers the rank of this update matrix $\Delta W$ by
     rank decomposition such that:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: $$
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
 - en: \Delta W = B \times A
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: $$
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: where $B\in\mathbb{R}^{d\times r}$ and $A\in\mathbb{R}^{r\times k}$, such that
     $r\ll \min(k,d)$$.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
 - en: '![](../Images/4f78c9876b1fb0e86862a50cbb762221.png)'
+  id: totrans-24
   prefs: []
   type: TYPE_IMG
 - en: Breaking a matrix into two lower rank matrices
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'By freezing $W_0$ (to save memory), we can fine-tune $A$ and $B$, which contain
     the trainable parameters for adaptation. This results in the fine-tuned model’s
     forward pass looking like this:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
 - en: $$
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
 - en: h = W’x = W_0 x + BA x
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
 - en: $$
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
 - en: For Stable diffusion fine-tuning, it’s sufficient to apply rank decomposition
@@ -134,16 +182,20 @@
     $W_K$, and $W_V$ in these layers are decomposed to lower the rank of the weight
     updates. By freezing other MLP modules and fine-tuning only the decomposed matrices
     $A$ and $B$, LoRA models can lead to smaller file sizes while being much faster.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
 - en: '![](../Images/4b5e0eec24a9e8aca0e6b3943b472e8a.png)'
+  id: totrans-31
   prefs: []
   type: TYPE_IMG
 - en: Workflow of Stable Diffusion. The crossattention modules can be modified by
     LoRA.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
 - en: Checkpoint or LoRA?
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -152,6 +204,7 @@
     be used for inference or fine-tuning. However, fine-tuning a checkpoint model
     requires updating all the weights in the model, which can be computationally expensive
     and result in large file sizes (typically in several GBs for Stable Diffusion).
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
 - en: On the other hand, LoRA (Low-Rank Adaptation) models are much smaller and more
@@ -159,6 +212,7 @@
     (foundation or base model). LoRA models update only a subset of a checkpoint model’s
     parameters (enhancing a checkpoint model). This enables these models to be small-sized
     (usually 2MB to 500MB) and be frequently fine-tuned for specific concepts or styles.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'For example, fine-tuning a Stable Diffusion model may be done with DreamBooth.
@@ -169,6 +223,7 @@
     2 to 7 GBs) and require a lot of GPU resources for training. In contrast, A LoRA
     model significantly requires less GPU requirements yet the inferences are still
     comparable to those of a Dreamboothed checkpoint.'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'While it is the most common, LoRA is not the only way to modify Stable Diffusion.
@@ -181,123 +236,183 @@
     for generating the images, remains unchanged. This means that Textual Inversions
     can only generate images that are similar to the ones it was trained on and cannot
     produce anything beyond what it already knows.'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然 LoRA 是最常见的，但它并不是唯一修改 Stable Diffusion 的方式。参见上面的工作流程，crossattention 模块接收了输入
+    $\tau_\theta$，通常是将提示文本转换为文本嵌入的结果。修改嵌入就是 **Text Inversions** 所做的，以改变 Stable Diffusion
+    的行为。Textual Inversions 甚至比 LoRA 更小、更快。然而，Textual Inversions 有一个限制：它们 **仅微调特定概念或风格的文本嵌入**。负责生成图像的
+    U-Net 保持不变。这意味着 Textual Inversions 只能生成与其训练图像相似的图像，无法生成超出其已知范围的内容。
 - en: Examples of LoRA models
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: LoRA 模型的示例
 - en: 'There are many different LoRA models within the context of Stable Diffusion.
     One way to categorize them is to base on what the LoRA model does:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Stable Diffusion 的背景下，有许多不同的 LoRA 模型。对它们进行分类的一种方式是基于 LoRA 模型的功能：
 - en: 'Character LoRA: These models are fine-tuned to capture the appearance, body
     proportions, and expressions of specific characters, often found in cartoons,
     video games, or other forms of media. They are useful for creating fan artwork,
     game development, and animation/illustration purposes.'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 人物 LoRA：这些模型经过微调，以捕捉特定角色的外观、身体比例和表情，通常出现在卡通、视频游戏或其他媒体形式中。它们对创建粉丝艺术作品、游戏开发和动画/插图目的非常有用。
 - en: 'Style LoRA: These models are fine-tuned on artwork from specific artists or
     styles to generate images in that style. They are often used to stylize a reference
     image in a particular aesthetic.'
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 风格 LoRA：这些模型在特定艺术家或风格的艺术作品上进行了微调，以生成该风格的图像。它们通常用于将参考图像风格化为特定的美学。
 - en: 'Clothing LoRA: These models are fine-tuned on artwork from specific artists
     or styles to generate images in that style. They are often used to stylize a reference
     image in a particular aesthetic.'
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 服装 LoRA：这些模型在特定艺术家或风格的艺术作品上进行了微调，以生成该风格的图像。它们通常用于将参考图像风格化为特定的美学。
 - en: 'Some examples are as follows:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些示例如下：
 - en: '![](../Images/6f453bd1a4476ed2920da8801ccc2956.png)'
+  id: totrans-44
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/6f453bd1a4476ed2920da8801ccc2956.png)'
 - en: Image created with character LoRA “[goku black [dragon ball super]](https://civitai.com/models/62283/goku-black-dragon-ball-super?modelVersionId=66827)”
     on Civitai, authored by [TheGooder](https://civitai.com/images/742370)
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用人物 LoRA “[goku black [dragon ball super]](https://civitai.com/models/62283/goku-black-dragon-ball-super?modelVersionId=66827)”
+    在 Civitai 上创建的图像，由 [TheGooder](https://civitai.com/images/742370) 贡献。
 - en: '![](../Images/9826d470fe504a171eb0bd1fb306d59d.png)'
+  id: totrans-46
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/9826d470fe504a171eb0bd1fb306d59d.png)'
 - en: Image created with style LoRA “[Anime Lineart / Manga-like (线稿/線画/マンガ風/漫画风)
     Style](https://civitai.com/models/16014/anime-lineart-manga-like-style?modelVersionId=28907)”
     on Civitai, authored by [CyberAIchemist](https://civitai.com/images/326150).
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用风格 LoRA “[动漫线稿/漫画风格 (线稿/線画/マンガ風/漫画风) Style](https://civitai.com/models/16014/anime-lineart-manga-like-style?modelVersionId=28907)”
+    在 Civitai 上创建的图像，由 [CyberAIchemist](https://civitai.com/images/326150) 贡献。
 - en: '![](../Images/1e883042f99da1d997248ea54f26b934.png)'
+  id: totrans-48
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/1e883042f99da1d997248ea54f26b934.png)'
 - en: Image created with clothing LoRA “[Anime Lineart / Manga-like (线稿/線画/マンガ風/漫画风)
     Style](https://civitai.com/models/23337/urban-samurai-or-v014-or-clothing-lora?modelVersionId=27871)”
     on Civitai, authored by [YeHeAI](https://civitai.com/images/685315).
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用服装 LoRA “[动漫线稿/漫画风格 (线稿/線画/マンガ風/漫画风) Style](https://civitai.com/models/23337/urban-samurai-or-v014-or-clothing-lora?modelVersionId=27871)”
+    在 Civitai 上创建的图像，由 [YeHeAI](https://civitai.com/images/685315) 贡献。
 - en: The most popular place to find LoRA model files is on [Civitai](https://civitai.com/).
     If you are using the Stable Diffusion Web UI, all you need to do is to download
     the model file and put it into the folder `stable-diffusion-webui/models/Lora`.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 找到 LoRA 模型文件最受欢迎的地方是 [Civitai](https://civitai.com/)。如果你正在使用 Stable Diffusion
+    Web UI，你只需下载模型文件并将其放入 `stable-diffusion-webui/models/Lora` 文件夹中。
 - en: 'To use the LoRA from the Web UI, you just need to add the name of the LoRA
     in angle brackets as part of your prompt. For example, one of the image above
     is generated with the prompt:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 要在 Web UI 中使用 LoRA，你只需将 LoRA 的名称用尖括号括起来，作为提示的一部分。例如，上述图像之一是通过以下提示生成的：
 - en: best masterpiece,1girl,solo,incredibly absurdres,hoodie,headphones, street,outdoors,rain,neon
     lights, light smile, hood up, hands in pockets, looking away, from side, lineart,
     monochrome, <lora:animeoutlineV4_16:1>
+  id: totrans-52
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 最佳杰作，1girl，独自，极其荒谬的分辨率，卫衣，耳机，街头，户外，下雨，霓虹灯，微笑，帽子戴上，手插在口袋里，侧面看，线条画，单色，<lora:animeoutlineV4_16:1>
 - en: The part “<lora:animeoutlineV4_16:1>” means to use the LoRA which the model
     file is named as `animeoutlineV4_16.safetensors`, and apply it with weight 1\.
     Note that in the prompt, nothing mentioned about the line art style except the
     reference to a LoRA model. Hence you can see that the LoRA model produced an enormous
     effect to the output. If you are curious, you can often find the prompt and other
     parameters used to generate the picture from those posted on Civitai.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 部分“<lora:animeoutlineV4_16:1>”表示使用名为`animeoutlineV4_16.safetensors`的LoRA模型文件，并以权重1应用它。注意，在提示中，除了对LoRA模型的引用外，并未提及线条画风格。因此，你可以看到LoRA模型对输出产生了巨大的影响。如果你感兴趣，你可以从Civitai上发布的内容中经常找到生成图片所使用的提示和其他参数。
 - en: '![](../Images/72d89a00f5d716f941e1df97dc7b84ba.png)'
+  id: totrans-54
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/72d89a00f5d716f941e1df97dc7b84ba.png)'
 - en: Checking out an image posted on Civitai can see the prompt and other parameters
     used to generate it on the right half of the screen.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 查看在Civitai上发布的图片，可以在屏幕右半部分看到生成它所使用的提示和其他参数。
 - en: As a final remark, LoRA depends on the model you used. For example, Stable Diffusion
     v1.5 and SD XL are incompatible in architecture so you need a LoRA that match
     the version of your base model.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后提醒，LoRA依赖于你使用的模型。例如，Stable Diffusion v1.5和SD XL在架构上不兼容，因此你需要一个与基础模型版本匹配的LoRA。
 - en: Further Readings
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: 'Below are there papers introduced the LoRA fine-tuning techniques:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是介绍LoRA微调技术的论文：
 - en: '[“LoRA: Low-Rank Adaptation of Large Language Models”](https://arxiv.org/abs/2106.09685),
     by Hu et al (2021)'
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[“LoRA: 大型语言模型的低秩适应”](https://arxiv.org/abs/2106.09685)，由Hu等人（2021年）'
 - en: '[“Intrinsic Dimensionality Explains the Effectiveness of Language Model Fine-Tuning”](https://arxiv.org/abs/2012.13255),
     by Aghajanyan et al (2020)'
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[“内在维度解释语言模型微调的有效性”](https://arxiv.org/abs/2012.13255)，由Aghajanyan等人（2020年）'
 - en: Summary
+  id: totrans-61
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this post, you learned what is LoRA in Stable Diffusion and why it is a lightweight
     enhancement. You also learned that using LoRA in Stable Diffusion Web UI is as
     easy as adding an extra keyword to the prompt There are many LoRA models developed
     by Stable Diffusion users and put up on the Internet for you to download. You
     can find one to easily change the generated result without much worrying on how
     to describe the style you want it to change.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你了解了什么是Stable Diffusion中的LoRA以及它为何是轻量级的增强。你还了解到，使用Stable Diffusion Web
+    UI中的LoRA就像在提示中添加一个额外的关键词一样简单。许多Stable Diffusion用户开发了LoRA模型，并在互联网上提供下载。你可以找到一个来轻松改变生成的结果，而无需过多担心如何描述你想要的风格。
