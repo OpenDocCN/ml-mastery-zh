@@ -1,176 +1,258 @@
 - en: More Prompting Techniques for Stable Diffusion
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 更多稳定扩散提示技巧
 - en: 原文：[https://machinelearningmastery.com/more-prompting-techniques-for-stable-diffusion/](https://machinelearningmastery.com/more-prompting-techniques-for-stable-diffusion/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/more-prompting-techniques-for-stable-diffusion/](https://machinelearningmastery.com/more-prompting-techniques-for-stable-diffusion/)
 - en: 'The image diffusion model, in its simplest form, generates an image from the
     prompt. The prompt can be a text prompt or an image as long as a suitable encoder
     is available to convert it into a tensor that the model can use as a condition
     to guide the generation process. Text prompts are probably the easiest way to
     provide conditioning. It is easy to provide, but you may not find it easy enough
     to generate a picture that matches your expectations. In this post, you will learn:'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 图像扩散模型在其最简单的形式中，从提示生成图像。提示可以是文本提示或图像，只要有适当的编码器将其转换为模型可以用作生成过程条件的张量。文本提示可能是提供条件的最简单方法。它容易提供，但你可能发现很难生成符合预期的图像。在本文中，你将学习：
 - en: How to construct your prompt
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何构建你的提示
 - en: Elements of an effective prompt
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有效提示的要素
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书** [《掌握数字艺术与稳定扩散》](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/)
+    **来启动你的项目**。它提供了**自学教程**和**实用代码**。'
 - en: Let’s get started.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/3ed14307f358de0b4535d3184792854f.png)'
+  id: totrans-7
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/3ed14307f358de0b4535d3184792854f.png)'
 - en: More Prompting Techniques for Stable Diffusion
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 更多稳定扩散提示技巧
 - en: Photo by [Simon English](https://unsplash.com/photos/man-standing-on-top-of-mountain-beside-cairn-stones-48nerZQCHgo).
     Some rights reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：[Simon English](https://unsplash.com/photos/man-standing-on-top-of-mountain-beside-cairn-stones-48nerZQCHgo)。版权所有。
 - en: Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is in three parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三部分；它们是：
 - en: Using an Interrogator
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用询问器
 - en: Creating an Effective Prompt
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建有效的提示
 - en: Experimenting with Prompts
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 实验提示
 - en: Using an Interrogator
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用询问器
 - en: If you start from scratch, it may not be easy to describe the picture in your
     mind. It is not easy because not everyone can effectively convey their idea in
     words. Moreover, the Stable Diffusion model may also not understand your prompt
     as you expected.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你从头开始，可能很难描述你脑海中的图像。这并不容易，因为不是每个人都能有效地用语言表达自己的想法。此外，稳定扩散模型可能也无法理解你的提示。
 - en: Undeniably, starting with something and modifying it would be easier. You can
     copy the prompt from other people’s success stories online. You can also provide
     a sample picture and let the Stable Diffusion Web UI build a prompt. This feature
     is called the “interrogator”.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 毋庸置疑，从某些东西开始并加以修改会更容易。你可以复制其他人成功故事中的提示。你也可以提供一张样本图像，让稳定扩散 Web UI 构建提示。这个功能叫做“询问器”。
 - en: Let’s download [an image](https://unsplash.com/photos/man-standing-on-top-of-mountain-beside-cairn-stones-48nerZQCHgo)
     to the hard disk. Go to the “img2img” tab on Web UI, upload that image, and click
     the “Interrogate CLIP” button with a paperclip icon.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们下载 [一张图片](https://unsplash.com/photos/man-standing-on-top-of-mountain-beside-cairn-stones-48nerZQCHgo)
+    到硬盘上。前往 Web UI 的“img2img”标签，上传该图像，然后点击带有回形针图标的“询问 CLIP”按钮。
 - en: '![](../Images/587b1d8ce5743b92ba27764c33f65c77.png)'
+  id: totrans-19
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/587b1d8ce5743b92ba27764c33f65c77.png)'
 - en: The interrogate buttons at the img2img tab in the Web UI
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: Web UI 中 img2img 标签下的询问按钮
 - en: 'You should see a prompt is generated as:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该看到提示生成如下：
 - en: a man standing on a mountain top looking at the mountains below him and a backpack
     on his back, with a backpack on his shoulder, Constant Permeke, a stock photo,
     sense of awe, postminimalism
+  id: totrans-22
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一名男子站在山顶上，俯视山下的山脉，背着一个背包，肩上有一个背包，Constant Permeke，一张库存照片，敬畏感，后极简主义
 - en: This helps a lot to let you kickstart your prompt engineering. You can see that
     the first part of the prompt describes the picture. Then “Constant Permeke” was
     a painter. “Postminimalism” is an art movement. Together with “a stock photo”,
     their roles are to control the style. The term “sense of awe” controls the feeling,
     which hints the man is back to the camera and facing the wonder of nature.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这对于启动你的提示工程很有帮助。你可以看到，提示的第一部分描述了图像。然后“Constant Permeke”是一位画家。“后极简主义”是一种艺术运动。与“库存照片”一起，它们的作用是控制风格。术语“敬畏感”控制感觉，暗示这个人背对着镜头，面对自然的奇观。
 - en: 'Indeed, next to “Interrogate CLIP,” there’s another interrogate button on Web
     UI. The one with a cardboard box icon is “Interrogate Deepbooru”, based on a different
     image captioning model. For the same picture, you would see the prompt generated
     as:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，在“审问CLIP”旁边，Web界面上还有另一个审问按钮。带有纸板盒图标的是“审问Deepbooru”，基于不同的图像字幕模型。对于同一张图片，您会看到生成的提示如下：
 - en: 1boy, backpack, bag, blue_sky, boots, building, city, cityscape, cliff, cloud,
     cloudy_sky, day, facing_away, field, from_behind, grass, hill, horizon, house,
     island, lake, landscape, male_focus, mountain, mountainous_horizon, ocean, outdoors,
     river, rock, scenery, sky, snow, solo, standing, tree, water, waterfall, waves
+  id: totrans-25
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 1男孩，背包，袋子，蓝天，靴子，建筑物，城市，城市景观，悬崖，云，多云天空，白天，背对，田野，从背后看，草地，山丘，地平线，房子，岛屿，湖泊，风景，男性焦点，山，山脉地平线，海洋，户外，河流，岩石，风景，天空，雪，单独，站立，树木，水，瀑布，波浪
 - en: You have a sequence of keywords rather than a sentence. You can edit the prompts
     for your use, or use the generated prompt as your inspiration.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 您有一系列关键词而不是句子。您可以编辑用于您的用途的提示，或者将生成的提示作为您的灵感。
 - en: 'How good are the interrogate models? You should not expect to get back the
     original image from the prompt, but close. Repeating the prompt at the txt2img
     tab would give you this:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 询问模型的表现如何？您不应该期望从提示中获得原始图像，但可以接近。在txt2img选项卡上重复提示会给您这个：
 - en: '![](../Images/f223a88b8284800e9721e8b9adee625a.png)'
+  id: totrans-28
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/f223a88b8284800e9721e8b9adee625a.png)'
 - en: Picture generated using the prompt suggested by CLIP interrogator
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用CLIP模型建议的图片生成的图片
 - en: 'Not too bad. But if you use the prompt created by Deepbooru, you probably see
     it less accurate:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 不错。但是，如果您使用Deepbooru创建的提示，可能会看到它不那么准确：
 - en: '![](../Images/1e10488215d7fe93426d131846e1e672.png)'
+  id: totrans-31
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/1e10488215d7fe93426d131846e1e672.png)'
 - en: Picture generated using the prompt suggested by Deepbooru interrogator
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用Deepbooru询问者建议的提示生成的图片
 - en: Creating an Effective Prompt
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创造有效的提示
 - en: The CLIP model works well for photographs, while the Deepbooru model is for
     illustration, anime, and comics. However, using the prompt with an appropriate
     model is important. For example, if you are intended to produce anime-style pictures,
     using an anime checkpoint such as [Counterfeit](https://civitai.com/models/4468/counterfeit-v30)
     is helpful.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: CLIP模型适用于照片，而Deepbooru模型适用于插图，动漫和漫画。然而，使用适当的模型与提示非常重要。例如，如果您打算生成动漫风格的图片，则使用像[Counterfeit](https://civitai.com/models/4468/counterfeit-v30)这样的动漫检查点会很有帮助。
 - en: Let’s revisit the prompt generated by the CLIP model. Why is the original picture
     not generated?
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们重新审视由CLIP模型生成的提示。为什么没有生成原始图片？
 - en: 'A good prompt should mention three S:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个好的提示应该提到三个S：
 - en: '**Subject**: What is in the foreground, and its setting'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**主题**：前景中的内容及其设置'
 - en: '**Scene**: What is in the background, including the composition and the use
     of color'
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**场景**：背景内容，包括构图和色彩运用'
 - en: '**Style**: The abstract description of the picture, including the medium'
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**风格**：图片的抽象描述，包括媒介'
 - en: 'Indeed, there’s the fourth S: be **specific**. You should mention in detail
     what you see but not what you know. You should not say what is not shown in the
     picture. For example, do not mention what is in the backpack because you cannot
@@ -178,86 +260,126 @@
     the invisible and intangible (such as the man’s emotion) is usually unhelpful.
     If you need a thesaurus to help you, you can try an online prompt builder or even
     ChatGPT.'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 确实，这里有第四个S：要**具体**。您应该详细描述您所看到的，但不应该说您所知道的。例如，不要提到背包里面有什么，因为您不能从照片中看到。您不应只提到一个男人，还应该描述他的服装。通常描述看不见和无形的东西（如男人的情绪）是没有帮助的。如果您需要使用同义词词典来帮助您，可以尝试在线提示生成器甚至ChatGPT。
 - en: '![](../Images/95cbf18919278ca06a901c4a7d2d749f.png)'
+  id: totrans-41
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/95cbf18919278ca06a901c4a7d2d749f.png)'
 - en: Using ChatGPT to help brainstorm about a text prompt for image generation
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用ChatGPT帮助构思用于图像生成的文本提示
 - en: 'Let’s try to enrich the prompt:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们试着丰富提示：
 - en: 'Subject: a man standing on a mountain top, looking at the mountains below him,
     with a backpack, red jacket, shorts, back to viewer'
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 主题：一个站在山顶上的男人，看着他下面的山脉，背着背包，穿着红色夹克，短裤，背对观众
 - en: 'Scene: bright blue sky, white cloud, next to a stack of rocks, sense of awe'
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 场景：明亮的蓝天，白云，旁边是一堆岩石，令人敬畏的感觉
 - en: 'Style: photorealistic, high details, wide angle, postminimalism, Constant Permeke'
+  id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 风格：照片逼真，高细节，广角，后极简主义，Constant Permeke
 - en: 'Combining all these, you may find the output to be like:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有这些结合起来，您可能会发现输出如下所示：
 - en: '![](../Images/7fc2f8f881173687f12765dad3914b60.png)'
+  id: totrans-48
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/7fc2f8f881173687f12765dad3914b60.png)'
 - en: A picture generated by Stable Diffusion but not accurately following the prompt
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 由 Stable Diffusion 生成的图片，但未准确遵循提示
 - en: Not perfect. The prompt provided many details, but the model doesn’t match everything.
     Of course, increasing the parameter “CFG Scale” can help since this asks the model
     to follow your prompt more closely. The other way to improve is to see what your
     model produces and emphasize the keywords that your model missed. You can use
     the syntax (keyword:weight)  to adjust the weight; the default weight is 1.0.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 还不完美。提示提供了许多细节，但模型并不完全匹配。当然，增加“CFG Scale”参数可以帮助，因为这要求模型更紧密地遵循您的提示。另一种改进方法是查看您的模型生成了什么，并强调模型错过的关键词。您可以使用语法（关键词:权重）调整权重；默认权重为1.0。
 - en: Several issues are missing in the picture above. The picture is a close-up of
     the man, so it is not a wide-angle shot. The man did not wear black shorts. Let’s
     emphasize both of these. Usually, increasing the weight from 1.0 to 1.1 helps.
     You would try a heavier weight only when you confirm you need that.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述图片中缺少几个问题。这张图片是一个男人的特写，所以不是广角镜头。这个男人没有穿黑色短裤。让我们强调这两点。通常，将权重从1.0增加到1.1会有所帮助。只有在确认需要时，您才会尝试更重的权重。
 - en: '![](../Images/dceea6cc3bcfdb82a2aa1dde184d0672.png)'
+  id: totrans-52
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/dceea6cc3bcfdb82a2aa1dde184d0672.png)'
 - en: A better picture after adjusting the weights of keywords in the prompt
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 在调整提示中关键词权重后更好的图片
 - en: The picture above shows that the prompt (black_shorts:1.1)  is used. The underscore
     is intentional since it would be interpreted as space, but to enforce that the
     two words are interpreted together. Hence, it is more likely that “black” is known
     as an adjective for the noun “shorts”.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的图片显示了提示（black_shorts:1.1）的使用。下划线是故意的，因为它将被解释为空格，但是为了强调这两个词被一起解释。因此，“black”更可能被视为“shorts”的形容词。
 - en: Sometimes, you try very hard, but the model does not follow your prompt accurately.
     You can work on the negative prompt to enforce what you do not want. For example,
     you see the man is not fully back to you. You can say “face” as a negative prompt,
     meaning you do not want to see his face.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时，您尝试得很努力，但模型并不准确地遵循您的提示。您可以在负面提示上努力，强制表达您不想要的内容。例如，您看到这个人没有完全背对您。您可以将“face”作为负面提示，意思是您不想看到他的脸。
 - en: '![](../Images/d4ca40c0365efc76ace03331e6646815.png)'
+  id: totrans-56
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/d4ca40c0365efc76ace03331e6646815.png)'
 - en: Using negative prompts helps generate a better picture
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用负面提示有助于生成更好的图片
 - en: Experimenting with Prompts
+  id: totrans-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 尝试提示
 - en: Creating pictures with stable diffusion may require patience and a lot of experimentation.
     This is because different models may work differently to the same prompt, and
     there is randomness in the image diffusion process. You may want to try different
     models, try different prompts, or even repeat the generation multiple times.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用稳定扩散创建图片可能需要耐心和大量实验。这是因为不同的模型可能会对相同的提示产生不同的反应，并且图像扩散过程中存在随机性。您可能希望尝试不同的模型，尝试不同的提示，甚至多次重复生成。
 - en: Some tools may save you time in this experimenting process. The easiest is to
     generate multiple pictures at once, each with a different random seed. If you
     set the batch size to greater than 1 and leave the seed to $-1$ (which means to
@@ -265,101 +387,150 @@
     Note that this will consume more memory on the GPU. If you have run out of memory,
     you can increase the batch count instead, which is to run multiple iterations
     of image generation. Slower, but use less memory.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个试验过程中，一些工具可能会节省您的时间。最简单的方法是一次生成多张图片，每张图片使用不同的随机种子。如果将批次大小设置为大于1，并且将种子保留为$-1$（表示每次生成一个新种子），您可以一键生成多张图片。请注意，这将消耗GPU上更多的内存。如果内存不足，您可以增加批次计数，即运行多次图像生成。速度较慢，但内存消耗较少。
 - en: '![](../Images/9a2faab7c1dd35d839721e5418a669c1.png)'
+  id: totrans-61
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/9a2faab7c1dd35d839721e5418a669c1.png)'
 - en: Setting batch size and batch count, while keeping the seed to -1, generates
     multiple images at once
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 设置批次大小和批次计数，同时将种子保持为-1，可以一次生成多张图片
 - en: Once you find a good candidate out of the many generated, you can click on the
     picture to find the seed used. Then, to polish the picture further, you should
     fix the seed while modifying the prompt. Alter the prompt slightly each time so
     that you can slowly steer the generation to create the image you want.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦从生成的众多候选中找到一个好的候选者，您可以点击图片找到使用的种子。接着，为了进一步完善图片，您应该在修改提示的同时修正种子。每次略微修改提示，以便逐步引导生成，创造您想要的图片。
 - en: '![](../Images/a6427602647a1f526623a702014b8523.png)'
+  id: totrans-64
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/a6427602647a1f526623a702014b8523.png)'
 - en: The Web UI will report the parameters used to generate a picture, from which
     you can find the seed.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: Web UI 将报告用于生成图片的参数，您可以从中找到种子。
 - en: But how should you modify the prompt? One way is to try different combinations
     of the keywords. In the Web UI, you can use the “prompt matrix” script to help
     speed up this experimentation. You set the prompt into different parts separated
     by the pipe character ( | ), i.e.,
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，您应该如何修改提示？一种方法是尝试关键词的不同组合。在 Web UI 中，您可以使用“提示矩阵”脚本来帮助加速这种实验。您可以将提示设置为由管道字符（|）分隔的不同部分，
 - en: a man standing on a mountain top, looking at the mountains below him, with a
     backpack, red jacket, (black_shorts:1.1), (back to viewer:1.1), bright blue sky,
     white cloud, next to a stack of rocks, sense of awe, (wide angle:1.1) | photorealistic,
     high details | postminimalism, Constant Permeke
+  id: totrans-67
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一个站在山顶上的男人，看着他下面的山，背着背包，穿着红色夹克，（黑色短裤：1.1），（背对视者：1.1），明亮的蓝天，白云，旁边是一堆岩石，敬畏感，（广角：1.1）|
+    逼真，高细节 | 后极简主义，康斯坦·佩尔米克
 - en: 'Then, at the bottom of the txt2img tab, select “Prompt matrix” in the Script
     section. Because the above prompt is set as the positive prompt, pick “positive”
     in the “Select prompt” section. Click “Generate,” and you will see multiple pictures
     generated:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，在 txt2img 选项卡的底部，在脚本部分选择“提示矩阵”。因为上述提示被设置为积极提示，请在“选择提示”部分选择“积极”。点击“生成”，您将看到生成的多张图片：
 - en: '![](../Images/1c268d0ef47b7064be900c6493cf77fb.png)'
+  id: totrans-69
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/1c268d0ef47b7064be900c6493cf77fb.png)'
 - en: Experimentation of different prompts using the prompt matrix script
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用提示矩阵脚本进行不同提示的实验
 - en: The “prompt matrix” enumerates all combinations from your prompt, with each
     part as a unit. Note that the seed and all other parameters were fixed; only the
     prompt varies. This is essential to have a fair comparison of the effect of prompts.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: “提示矩阵”枚举了来自您的提示的所有组合，每个部分作为一个单位。请注意，种子和所有其他参数都是固定的；只有提示会变化。这对于公平比较提示效果至关重要。
 - en: Further Readings
+  id: totrans-72
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您想更深入地了解这个主题，本节提供了更多资源。
 - en: 'Counterfeit model for anime style picture: [https://civitai.com/models/4468/counterfeit-v30](https://civitai.com/models/4468/counterfeit-v30)'
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为动漫风格图片的伪造模型：[https://civitai.com/models/4468/counterfeit-v30](https://civitai.com/models/4468/counterfeit-v30)
 - en: 'Realistic Vision model for photorealistic picture: [https://civitai.com/models/4201/realistic-vision-v60-b1](https://civitai.com/models/4201/realistic-vision-v60-b1)'
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 逼真视觉模型用于逼真图片：[https://civitai.com/models/4201/realistic-vision-v60-b1](https://civitai.com/models/4201/realistic-vision-v60-b1)
 - en: '[Prompt builder](https://promptomania.com/stable-diffusion-prompt-builder/)
     by Promptomania, which you can learn about the different keywords useful for the
     prompt'
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[提示生成器](https://promptomania.com/stable-diffusion-prompt-builder/) 由 Promptomania
+    提供，您可以了解到对提示有用的不同关键词'
 - en: '[“Attention and Emphasis”](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features#attentionemphasis)
     section of the Features page at the Stable Diffusion Web UI wiki'
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[“注意力和强调”](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features#attentionemphasis)
+    特性页面上的功能部分，位于 Stable Diffusion Web UI 维基百科'
 - en: Summary
+  id: totrans-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概要
 - en: 'In this post, you learned about some techniques that helps you create a better
     picture in Stable Diffusion. Specifically, you learned:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '在这篇文章中，您学习了一些有助于在 Stable Diffusion 中创建更好图片的技术。具体来说，您学到了：  '
 - en: How to use an interrogator to generate a prompt from an existing image
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用询问者从现有图像生成提示
 - en: 'The three S for an effective prompt: subject, scene, and style'
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有效提示的三个 S：主题、场景和风格
 - en: How to experiment with prompts effectively
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何有效地尝试使用提示

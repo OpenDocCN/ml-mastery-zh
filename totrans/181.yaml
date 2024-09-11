@@ -1,107 +1,161 @@
 - en: Inpainting and Outpainting with Stable Diffusion
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 Stable Diffusion 进行 Inpainting 和 Outpainting
 - en: 原文：[https://machinelearningmastery.com/inpainting-and-outpainting-with-stable-diffusion/](https://machinelearningmastery.com/inpainting-and-outpainting-with-stable-diffusion/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/inpainting-and-outpainting-with-stable-diffusion/](https://machinelearningmastery.com/inpainting-and-outpainting-with-stable-diffusion/)
 - en: Inpainting and outpainting have long been popular and well-studied image processing
     domains. Traditional approaches to these problems often relied on complex algorithms
     and deep learning techniques yet still gave inconsistent outputs. However, recent
     advancements in the form of Stable diffusion have reshaped these domains. Stable
     diffusion now offers enhanced efficacy in inpainting and outpainting while maintaining
     a remarkably lightweight nature.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: Inpainting 和 outpainting 长期以来一直是流行且研究广泛的图像处理领域。传统的方法往往依赖复杂的算法和深度学习技术，但仍然给出了不一致的输出。然而，最近的
+    Stable diffusion 进展重塑了这些领域。Stable diffusion 现在在进行 inpainting 和 outpainting 时提供了增强的效果，同时保持了极其轻量化的特性。
 - en: In this post, you will explore the concepts of inpainting and outpainting and
     see how you can do these with Stable Diffusion Web UI.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，你将探索 inpainting 和 outpainting 的概念，并了解如何使用 Stable Diffusion Web UI 进行这些操作。
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用我的书 [掌握数字艺术与 Stable Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/)
+    **启动你的项目**。它提供了 **自学教程** 和 **可用代码**。
 - en: Let’s get started.
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/cb8565e4e5daa1a8335d42d36a12aed3.png)'
+  id: totrans-6
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/cb8565e4e5daa1a8335d42d36a12aed3.png)'
 - en: Inpainting and Outpainting with Stable Diffusion
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Stable Diffusion 进行 Inpainting 和 Outpainting
 - en: Photo by [Kelly Sikkema](https://unsplash.com/photos/boy-and-girl-standing-near-window-looking-outside-4l2Ml8-MLUg).
     Some rights reserved.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Kelly Sikkema](https://unsplash.com/photos/boy-and-girl-standing-near-window-looking-outside-4l2Ml8-MLUg)
+    提供。保留所有权利。
 - en: Overview
+  id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is in five parts; they are:'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为五个部分，它们是：
 - en: Principles of Inpainting
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Inpainting 原则
 - en: Inpainting in Stable Diffusion Web UI
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 Stable Diffusion Web UI 中进行 Inpainting
 - en: Using Inpaint Anything Extension
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Inpaint Anything 扩展
 - en: Principles of Outpainting
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Outpainting 原则
 - en: Outpainting with Stable Diffusion Web UI
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Stable Diffusion Web UI 进行 Outpainting
 - en: Principles of Inpainting
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Inpainting 原则
 - en: Stable diffusion is a state-of-the-art Text2Image generation model.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: Stable diffusion 是一种最先进的 Text2Image 生成模型。
 - en: It is a class of Latent Diffusion Models (LDM) proposed by Robin Robmach, et
     al. Trained initially on a subset of 512×512 images from the LAION-5B Database,
     this LDM demonstrates competitive results for various image generation tasks,
     including conditional image synthesis, inpainting, outpainting, image-image translation,
     super-resolution, and much more!
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一类由 Robin Robmach 等人提出的潜在扩散模型（LDM）。最初在 LAION-5B 数据库的 512×512 图像子集上训练，这个 LDM
+    在各种图像生成任务中展现了竞争力，包括条件图像合成、inpainting、outpainting、图像-图像转换、超分辨率等等！
 - en: Unlike previous diffusion models, which operated in pixel space (original image),
     stable diffusion is applied in latent space (compressed image), requiring fewer
     computational resources while preserving details; this means you can run it on
     your local system quite easily!
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 与之前的扩散模型不同，后者在像素空间（原始图像）中操作，而 Stable diffusion 应用于潜在空间（压缩图像），这需要更少的计算资源，同时保持细节；这意味着你可以在本地系统上轻松运行它！
 - en: 'Stable diffusion is primarily based on three components:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: Stable diffusion 主要基于三个组件：
 - en: 1\. Text Encoder
+  id: totrans-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 1\. 文本编码器
 - en: The text encoder transforms the text prompt into an embedding space, which is
     further fed to guide the denoising process (we’ll get there shortly). Stable diffusion
     initially used a frozen, pre-trained CLIP ViT-L/14 to create embeddings; however,
     improved variants switched to OpenCLIP, which includes text models with parameter
     size 354M+ as compared to 63M parameters in the former CLIP. This allows the text
     prompt to describe the image more accurately.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 文本编码器将文本提示转换为嵌入空间，然后进一步用于指导去噪过程（稍后我们会详细讲解）。Stable diffusion 最初使用了一个冻结的、预训练的
+    CLIP ViT-L/14 来创建嵌入；然而，改进后的变体转向了 OpenCLIP，它包括参数大小为 354M+ 的文本模型，而前者 CLIP 只有 63M
+    参数。这使得文本提示可以更准确地描述图像。
 - en: 2\. U-Net
+  id: totrans-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 2\. U-Net
 - en: 'U-Net repeatedly transforms a flawed image into a cleaner form. It receives
     two types of inputs: noisy latents (which represent incomplete or distorted image
     data) and textual embeddings (derived from the input text). These text embeddings
@@ -110,12 +164,17 @@
     present in the input and subtract it to generate denoised latents. Unlike typical
     U-Net architectures, attention layers are also included that focus on specific
     parts of the image based on textual information, enhancing the denoising process.'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: U-Net 反复将有缺陷的图像转换为更干净的形式。它接收两种类型的输入：嘈杂的潜在表示（表示不完整或扭曲的图像数据）和文本嵌入（从输入文本中派生）。这些文本嵌入包含指导
+    U-Net 理解最终图像理想外观的文本信息。U-Net 的主要任务是预测输入中存在的噪声并减去它以生成去噪的潜在表示。与典型的 U-Net 架构不同，还包括关注层，这些层根据文本信息专注于图像的特定部分，增强去噪过程。
 - en: 3\. Variational Auto Encoder (VAE)
+  id: totrans-25
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3\. 变分自动编码器（VAE）
 - en: The autoencoder’s decoder converts the U-Net prediction (denoised latent representation)
     back into the original pixel space for creating the final image. However, only
     during training, does the autoencoder’s encoder compress the higher-dimensional
@@ -123,241 +182,356 @@
     U-Net after the noising process. This compression creates a more condensed form
     and ignores perceptually irrelevant details, enabling computationally efficient
     training.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 自动编码器的解码器将 U-Net 预测（去噪的潜在表示）转换回原始像素空间，以创建最终图像。然而，在训练期间，自动编码器的编码器将高维图像（原始图像）压缩为低维潜在表示，作为输入到
+    U-Net 的一部分。这种压缩创建了一个更加紧凑的形式，并忽略感知上不相关的细节，从而实现了高效的计算训练。
 - en: '![](../Images/9b9796e37261c516aac57b132a133c43.png)'
+  id: totrans-27
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/9b9796e37261c516aac57b132a133c43.png)'
 - en: Stable diffusion architecture
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定的扩散架构
 - en: 'Inpainting is a popular image processing technique used to restore missing
     pixels in an image or even reconstruct a region of the image while following the
     surrounding context (the healthy pixels help fix the corrupted pixels). This is
     an amazing feature of diffusion models. A typical inpainting process involves:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 修补是一种流行的图像处理技术，用于恢复图像中丢失的像素，甚至重建图像的某个区域，同时遵循周围的背景（健康的像素帮助修复损坏的像素）。这是扩散模型的一个惊人特性。典型的修补过程包括：
 - en: Identifying regions to be reconstructed/fixed. The regions can be masked (by
     a binary image) for the algorithm to recognize them.
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 确定需要重建/修复的区域。可以通过二进制图像对这些区域进行掩膜处理，以便算法识别它们。
 - en: The algorithm then analyzes patterns and textures from surrounding pixels to
     inpaint semantically plausible and consistent regions.
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 然后，算法从周围像素中分析模式和纹理，以填充语义上合理和一致的区域。
 - en: 'Let’s discuss some important inpainting techniques:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们讨论一些重要的修补技术：
 - en: 1\. Texture synthesis
+  id: totrans-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 1\. 纹理合成
 - en: This method dissects the image into small patches, analyzes their structure
     and texture, and identifies similar patches within the image to fill the missing
     region. However, it demands substantial computational resources and is suitable
     for images with uniform and consistent textures.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种方法将图像分解为小补丁，分析它们的结构和纹理，并在图像内识别类似的补丁来填补缺失的区域。然而，这需要大量计算资源，并且适用于纹理均匀、一致的图像。
 - en: 2\. Exemplar-based
+  id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 2\. 基于样本的
 - en: This method involved assessing priorities for each patch, selecting the best-matching
     patches, and subsequently utilizing these patches to fill missing areas based
     on predefined priorities. It performs better for missing regions with simple texture
     and structure.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种方法涉及为每个补丁评估优先级，选择最匹配的补丁，然后根据预定义的优先级利用这些补丁填补缺失区域。它在结构简单、纹理简单的缺失区域表现更好。
 - en: 3\. Diffusion-based
+  id: totrans-37
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 3\. 基于扩散的
 - en: It uses a Partial Differential Equation (PDE) to diffuse the image data from
     surrounding pixels into the missing region. It’s a fast and effective approach
     but as information diffuses from the surrounding areas, it may lead to a loss
     of sharpness or fine details, resulting in a blurred appearance in the reconstructed
     regions, especially for larger missing regions.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 它使用偏微分方程（PDE）将图像数据从周围像素扩散到缺失区域。这是一种快速有效的方法，但随着信息从周围区域扩散，可能会导致锐度或细节的丢失，在重建区域中产生模糊的外观，特别是对于较大的缺失区域。
 - en: Inpainting with Stable Diffusion Web UI
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用稳定扩散 Web UI 进行修补
 - en: By default in the Stable Diffusion web UI, you have not only the txt2img but
     also the img2img feature. Recall that Stable Diffusion is to generate pictures
     using a stochastic process, which gradually transform noise into a recognizable
     picture. In the process, you can impose an condition based on a prompt. The prompt
     is the text in txt2img, while in img2img, it can be the combination of an image
     **and** the text prompt.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，在 Stable Diffusion Web UI 中，你不仅拥有 txt2img 功能，还有 img2img 功能。回忆一下，Stable
+    Diffusion 是通过一种随机过程生成图片，该过程将噪声逐渐转化为可识别的图片。在这个过程中，你可以基于提示施加条件。提示是 txt2img 中的文本，而在
+    img2img 中，它可以是图像**和**文本提示的组合。
 - en: 'One way to do inpainting is to use the img2img tab in the Web UI. Before you
     start, you need to prepare an **inpainting model**, which is different from the
     ordinary Stable Diffusion model. You can, for example, download the Stable Diffusion
     2 inpainting model from Hugging Face:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 一种进行修补的方法是使用 Web UI 中的 img2img 选项卡。在开始之前，你需要准备一个**修补模型**，它不同于普通的 Stable Diffusion
+    模型。例如，你可以从 Hugging Face 下载 Stable Diffusion 2 修补模型：
 - en: '[https://huggingface.co/stabilityai/stable-diffusion-2-inpainting/tree/main](https://huggingface.co/stabilityai/stable-diffusion-2-inpainting/tree/main)'
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://huggingface.co/stabilityai/stable-diffusion-2-inpainting/tree/main](https://huggingface.co/stabilityai/stable-diffusion-2-inpainting/tree/main)'
 - en: 'You can simply download the safetensors file (note, that’s 5.2GB in size) and
     put it to the models/Stable-diffusion directory. Another model that you may also
     find it useful (and smaller, of 2GB only) is the epiCRealism Inpainting model:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以简单地下载 safetensors 文件（注意，它的大小为 5.2GB）并将其放到 models/Stable-diffusion 目录中。另一个你可能觉得有用的模型（且更小，仅
+    2GB）是 epiCRealism Inpainting 模型：
 - en: '[https://civitai.com/models/90018/epicrealism-pureevolution-inpainting](https://civitai.com/models/90018/epicrealism-pureevolution-inpainting)'
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://civitai.com/models/90018/epicrealism-pureevolution-inpainting](https://civitai.com/models/90018/epicrealism-pureevolution-inpainting)'
 - en: As you have learned the principles of how to perform inpainting. You need a
     way to mask regions of the image to be reconstructed and a capable model to fill
     the region with missing pixels. In img2img tab, you can find the “inpaint” subtab
     which you can upload an image.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你学习了如何进行图像修补的原理后，你需要一种方法来遮罩要重建的图像区域，并使用一个能够填充缺失像素的模型。在 img2img 选项卡中，你可以找到“inpaint”子选项卡，你可以在这里上传一张图片。
 - en: '![](../Images/4d84cdc9c1f2aab22a2344036287b986.png)'
+  id: totrans-46
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4d84cdc9c1f2aab22a2344036287b986.png)'
 - en: In Stable Diffusion Web UI, you can upload an image to the “inpaint” subtab
     under the “img2img” tab
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Stable Diffusion Web UI 中，你可以在“img2img”选项卡下的“inpaint”子选项卡中上传一张图片
 - en: 'Let’s try with the following image of a dog:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们尝试一下以下这张狗的图片：
 - en: '![](../Images/311f9e2fd19c5b89bb266e9daf8e98ca.png)'
+  id: totrans-49
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/311f9e2fd19c5b89bb266e9daf8e98ca.png)'
 - en: A dog image for inpainting
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于修补的狗的图片
 - en: 'After you uploaded this image, you can use your mouse to “paint” the dog out
     of the image to create a mask. You can use the icon at the top right corner to
     set a larger brush. Don’t worry if you can’t mark the fine boundary of the dog
     in the image, a larger mask is not a problem. For example, this is what you might
     create:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 上传此图片后，你可以使用鼠标“绘制”以将狗从图片中移除以创建掩码。你可以使用右上角的图标设置更大的画笔。如果你不能标记图像中狗的精细边界也不要担心，较大的掩码不是问题。例如，这就是你可能创建的：
 - en: '![](../Images/e107bf364d437dd986c9c5587b81fb1c.png)'
+  id: totrans-52
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/e107bf364d437dd986c9c5587b81fb1c.png)'
 - en: A mask created for inpainting
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 为修补创建的掩码
 - en: 'If you click generate immediately, you give the inpainting model a free hand
     to create a picture to fill in the masked area. But let’s put the following as
     a text prompt:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你立即点击生成，你就让修补模型自由地创建一个图片来填充被遮罩的区域。但让我们将以下内容作为文本提示：
 - en: a grey cat sitting, high resolution
+  id: totrans-55
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一只坐着的灰色猫，高分辨率
 - en: 'Not the most sophisticated prompt, but enough to tell the model what you want.
     Then, you should select an inpainting model from the “Stable Diffusion checkpoint”
     dropdown at the top left corner. Afterward, clicking on the “Generate” button
     will give you exactly what you described:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这不是最复杂的提示，但足以告诉模型你想要什么。然后，你应该从左上角的“Stable Diffusion checkpoint”下拉菜单中选择一个修补模型。之后，点击“Generate”按钮将给你正是你描述的结果：
 - en: '![](../Images/eb00c46717386b6a9213d22f1fb1d494.png)'
+  id: totrans-57
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/eb00c46717386b6a9213d22f1fb1d494.png)'
 - en: A photo of a dog inpainted to become a photo of a cat
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 一张狗的照片被修补成猫的照片
 - en: You may see a different result because the image generation process is stochastic.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会看到不同的结果，因为图像生成过程是随机的。
 - en: 'The parameters for image generation also applies here, including the sampling
     method (e.g., Euler) and sampling steps. But there are several additional parameters
     you want to pay attention to:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 图像生成的参数也适用于此，包括采样方法（例如，Euler）和采样步骤。但还有几个额外的参数需要注意：
 - en: The input image and the generated image may be in different aspect ratio. This
     affects the quality of the output if resizing is needed. You can select the resize
     method (e.g., “Just resize”, or “Crop and resize”). Selecting “Just resize” may
     distort the aspect ratio.
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 输入图像和生成的图像可能具有不同的宽高比。如果需要调整大小，这会影响输出质量。你可以选择调整方法（例如，“Just resize”或“Crop and
+    resize”）。选择“Just resize”可能会扭曲宽高比。
 - en: A masked image is the starting point of the Stable Diffusion model. You can
     choose to fill the masked area with noise (“latent noise”), keep the original
     pixel content (“original”), or simply fill the masked area with the same color
     (“fill”). This is controlled by the “Masked content” option.
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 被遮罩的图像是稳定扩散模型的起点。你可以选择用噪声（“latent noise”）、保持原始像素内容（“original”），或简单地用相同颜色填充遮罩区域（“fill”）。这由“Masked
+    content”选项控制。
 - en: How much you want your output image resemble the input is controlled by “Denoising
     strength”. A value of 0 will keep the input and a value of 1 gives the most freedom
     to the inpainting model. The effect of this option is most pronounced if you pick
     “original” for “Masked content” option
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 输出图像与输入图像的相似度由“Denoising strength”控制。值为0将保持输入图像，值为1则给了修复模型最大自由度。如果你选择“original”作为“Masked
+    content”选项，此选项的效果最为显著。
 - en: Using Inpaint Anything Extension
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 Inpaint Anything 扩展
 - en: Creating a mask on the image for inpainting can be tedious, depends on how complex
     the mask is. You may notice there is a “Inpaint upload” subtab under “img2img”
     which you can upload the image and the mask as two image files. This is helpful
     if you used other application such as Photoshop to create a mask.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在图像上创建修复遮罩可能很繁琐，取决于遮罩的复杂程度。你可能会注意到在“img2img”下有一个“Inpaint upload”子选项卡，你可以将图像和遮罩作为两个图像文件上传。如果你使用了其他应用程序，如
+    Photoshop 来创建遮罩，这会很有帮助。
 - en: However, there’s a more advanced way to create a mask, using the “Inpaint Anything”
     extension. This is to utilize Meta AI’s SAM (Segment Anything Model), a very strong
     image segmentation model, to generate masks for input images.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，还有一种更高级的创建遮罩方法，使用“Inpaint Anything”扩展。这是利用 Meta AI 的 SAM（Segment Anything
+    Model），一个非常强大的图像分割模型，为输入图像生成遮罩。
 - en: To start, you go to the “Extensions” tab of the Web UI. Then at the “Available”
     subtab, click the “Load from” button and at the search bar above the table, type
     “inpaint anything”. There should be only one extension match this name and you
     can install it by clicking the “Install” button. You need to restart the Web UI
     after you installed it.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 要开始使用，请转到 Web UI 的“Extensions”选项卡。然后在“Available”子选项卡中，点击“Load from”按钮，在表格上方的搜索框中输入“inpaint
+    anything”。应该只有一个扩展匹配此名称，你可以通过点击“Install”按钮来安装它。安装后，你需要重新启动 Web UI。
 - en: '![](../Images/a749da8c7bbf6041d0ea8e6d129c0ceb.png)'
+  id: totrans-68
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/a749da8c7bbf6041d0ea8e6d129c0ceb.png)'
 - en: Installing the “Inpaint Anything” extension
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 安装“Inpaint Anything”扩展
 - en: Inpaint Anything extension will create a new top-level tab of the same name.
     Firstly, you need to pick a SAM model, for example sam_hq_vit_l.pth is used in
     this example. You need to download the model before the first run.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: Inpaint Anything 扩展将创建一个新的同名顶级选项卡。首先，你需要选择一个SAM模型，例如此示例中使用的是 sam_hq_vit_l.pth。你需要在第一次运行之前下载该模型。
 - en: 'To start creating an inpainting, you can upload your image similar to how you
     work in the img2img tab. Then, you should click “Run Segment Anything” button,
     which will create a segment map at the right, as follows:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 要开始创建修复，你可以上传你的图像，类似于在 img2img 选项卡中操作。然后，你应该点击“Run Segment Anything”按钮，这将在右侧创建一个分段图，如下所示：
 - en: '![](../Images/92ced4a8b5a6a8be9e1722510492c8be.png)'
+  id: totrans-72
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/92ced4a8b5a6a8be9e1722510492c8be.png)'
 - en: Using Inpaint Anything to create a mask
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Inpaint Anything 创建遮罩
 - en: What you need to do next is to use your mouse to draw a small scratch on the
     segments that correspond to the dog (the short black lines at the chest and the
     tail of the dog as you saw in the screenshot above). Then click the “create mask”
     button will generate the mask beneath it. It is easier to create a mask this way
     then carefully outline the region of the dog in the image.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来你需要做的是使用鼠标在与狗相对应的分段上绘制一个小划痕（正如你在上面的截图中看到的狗的胸部和尾部的短黑线）。然后点击“create mask”按钮将生成遮罩。以这种方式创建遮罩比仔细勾画图像中的狗区域要简单。
 - en: To run inpainting, you can go back to the left half of the screen, enter the
     prompt, and click “Run inpainting”.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 要运行修补，请返回屏幕左半部分，输入提示并点击“Run inpainting”。
 - en: '![](../Images/3daf1b20db9da3f70d274375430a1b51.png)'
+  id: totrans-76
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/3daf1b20db9da3f70d274375430a1b51.png)'
 - en: Inpainting result from “Inpaint Anything”
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: “Inpaint Anything” 的修补结果
 - en: However, you should notice that in this case, there are only several models
     you can select from the dropdown “Inpainting Model ID”. The model stable-diffusion-2-inpainting
     is used in the example above. These models are not depend on the model files you
@@ -365,19 +539,27 @@
     Face Hub the first time you use it. This is a limitation of using Inpaint Anything
     extension. If you insist to use the inpainting model you prepared, you can retrieve
     the mask from the “Mask only” subtab and reuse it in the “img2img” tab.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，请注意，在这种情况下，您只能从下拉菜单“修补模型 ID”中选择几个模型。例如，上述示例中使用了 stable-diffusion-2-inpainting
+    模型。这些模型不依赖于您放置在 models/Stable-diffusion 目录中的模型文件，而是在第一次使用时从 Hugging Face Hub 下载。这是使用
+    Inpaint Anything 扩展的一个限制。如果您坚持使用您准备的修补模型，您可以从“仅掩模”子选项卡中检索掩模，并在“img2img”标签中重复使用它。
 - en: Principles of Outpainting
+  id: totrans-79
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Outpainting 原则
 - en: While inpainting fixes or reconstructs the internal pixels of the image, outpainting,
     an extrapolation technique is just the opposite of it as it expands the visual
     narrative of the image by generating new (external) pixels for an image that is
     contextually consistent with the original image. So now you can extend an image
     beyond its borders!
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 在修补图像内部像素的同时，外部绘制（outpainting）是一种推测技术，与之相反，它通过生成与原始图像在视觉上一致的新（外部）像素来扩展图像的视觉叙事。因此，现在你可以将图像延伸到其边界之外！
 - en: Image outpainting has been given less attention than inpainting, yet some CNN
     and GAN-based approaches are still around the corner. A Stanford researchers’
     approach is quite interesting. They employed a [DCGAN](https://arxiv.org/abs/1511.06434),
@@ -388,170 +570,255 @@
     of local discriminators each operating on a specific region in an image and a
     concatenation layer combines all local outputs to produce a final output. For
     more understanding, go through this resource [receptive fields](https://theaisummer.com/receptive-field/).
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然 inpainting 得到了比 outpainting 更少的关注，但是一些基于 CNN 和 GAN 的方法仍然存在。斯坦福研究人员的方法非常有趣。他们使用了
+    [DCGAN](https://arxiv.org/abs/1511.06434) 作为生成器网络。他们保持了编码器-解码器结构，并通过增加扩张卷积来增强现实感，通过增加扩张因子来增强神经元的局部感受野（神经元的可访问信息），因为增加扩张因子可以增加感受野，而判别器网络由局部鉴别器组成，每个鉴别器在图像中的特定区域操作，并且通过串联层组合所有局部输出以产生最终输出。要更好地理解，请参阅此资源
+    [感受野](https://theaisummer.com/receptive-field/)。
 - en: '![](../Images/95da0bed1959f0c2f6f3ccecbe1ecfdc.png)'
+  id: totrans-82
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/95da0bed1959f0c2f6f3ccecbe1ecfdc.png)'
 - en: Training pipeline from Radford et al (2016)
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: Radford 等人（2016）的训练管道
 - en: Outpainting with Stable Diffusion
+  id: totrans-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用稳定扩散进行 Outpainting
 - en: Outpainting means you provide an input image and produce an output in which
     the input is a subimage of the output. You can, for example, produce a half-body
     picture from a head shot.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: Outpainting 意味着您提供一个输入图像，并生成一个输出图像，在输出图像中，输入图像是一个子图像。例如，您可以从头像生成一个半身照片。
 - en: 'Let’s try this out using Stable Diffusion Web UI. You can start your project
     with img2img tab as in the previous workflow. But you can also generate an image
     from txt2img, and transfer to img2img. Let’s try with the prompt to produce a
     head shot:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们尝试在稳定扩散 Web UI 中使用这项功能。您可以像以前的工作流程一样从 img2img 标签开始您的项目。但是，您也可以从 txt2img 生成图像，并转移到
+    img2img。我们尝试用提示生成一张头像：
 - en: a detailed portrait of a woman standing in a park, intricate details
+  id: totrans-87
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 公园中站立的女人详细的肖像
 - en: 'with appropriate Stable Diffusion model and other parameters, you will have
     your output at the txt2img tab. Beneath the generated picture, you can find a
     button that looks like a picture frame to mean “send image and generation parameters
     to img2img tab”. Click on that you will bring the generated picture to the img2img
     tab, like the following:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用适当的稳定扩散模型和其他参数，在 txt2img 标签下会生成您的输出。在生成的图片下方，您可以找到一个看起来像图片框的按钮，意思是“发送图像和生成参数到
+    img2img 标签”。点击这个按钮将生成的图片带到 img2img 标签，如下所示：
 - en: '![](../Images/ca688c58c43ace0008422481b9d714fe.png)'
+  id: totrans-89
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/ca688c58c43ace0008422481b9d714fe.png)'
 - en: Loading the txt2img result into the img2img tab
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 将txt2img结果加载到img2img选项卡中
 - en: At this point, it is same as you if uploaded your image at the img2img tab.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一点上，如果您将图像上传到img2img选项卡，则情况与您相同。
 - en: You can describe the expected output of outpainting via a prompt and even provide
     a negative prompt if needed, in the two text fields at top. You need to set the
     output size in the img2img tab. For example, if the input image is 512×512 pixels,
     you can set the output to 512×768 pixels.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以通过提示描述外部绘制的预期输出，甚至在顶部的两个文本字段中提供负面提示。您需要在img2img选项卡中设置输出大小。例如，如果输入图像为512×512像素，则可以将输出设置为512×768像素。
 - en: Then, the most important step is to scroll down to the bottom of the page, at
     the “script” section, choose Poor Man’s Outpainting or any outpainting script.
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，最重要的步骤是滚动到页面底部，在“脚本”部分选择“穷人的外部绘制”或任何外部绘制脚本。
 - en: '![](../Images/07877eb3e8b197814002294232c2cb1d.png)'
+  id: totrans-94
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/07877eb3e8b197814002294232c2cb1d.png)'
 - en: Select “Poor man’s outpainting” at “Script” dropdown
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 在“脚本”下拉菜单中选择“穷人的外部绘制”
 - en: You need to set the number of pixels to draw outside of the boundary of the
     input image. You also need to set the outpainting direction that you want to expand
     your image towards. In the screenshot above, it is set to outpaint only on the
     downward direction for 256 pixels. Note that, since the input is 512×512 pixels
     and the outpainting will add 256 pixels at the bottom, the output will be 512×768
     pixels, and that is why we set the output size to be such.
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 您需要设置要在输入图像边界之外绘制的像素数。您还需要设置希望扩展图像的外部方向。在上面的截图中，它设置为仅在向下方向上进行256像素的外部绘制。请注意，由于输入为512×512像素，并且外部绘制将在底部添加256像素，因此输出将为512×768像素，这就是我们设置输出大小的原因。
 - en: 'Once you finish with all the parameters, you can click “Generate” to get your
     output. Since randomness is involved in the generation process, you may need to
     generate the output multiple times until you’re happy with the results. This is
     what you may get:'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您完成所有参数设置后，可以单击“生成”以获取您的输出。由于生成过程中涉及随机性，您可能需要多次生成输出，直到您对结果满意。这就是您可能会得到的内容：
 - en: '![](../Images/f8c32558e7e6152fc7a5887a75f47978.png)'
+  id: totrans-98
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/f8c32558e7e6152fc7a5887a75f47978.png)'
 - en: Result of outpainting
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 外部绘制的结果
 - en: Your output may not blend naturally with the original image. You should play
     with denoising strength and find out what works best for you.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 您的输出可能与原始图像自然地融合不一致。您应该调整去噪强度，并找出适合您的最佳选项。
 - en: This is your final output. But nothing stop you from running this again. (Notice
     the “Send to img2img” button below your output?) You can repeat this process to
     create a full-body, but remember you need to make the output “longer” to fit the
     output.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是您的最终输出。但是没有什么能阻止您再次运行此过程。（注意下面输出的“发送到img2img”按钮？）您可以重复此过程以创建全身像，但请记住，您需要使输出“更长”以适应输出。
 - en: Alternatives to Outpainting
+  id: totrans-102
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 外部绘制的替代方案
 - en: Stable Diffusion demonstrates impressive outpainting results, but in the current
     generative AI wave, it’s worth to mention the other two competitors before we
     finish this post. However, only Stable Diffusion is free!
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散展示了令人印象深刻的外部绘制结果，但在当前生成AI浪潮中，值得一提的还有其他两个竞争对手。但是，只有稳定扩散是免费的！
 - en: Dall-E
+  id: totrans-104
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Dall-E
 - en: Dall-E is developed by [OpenAI](https://openai.com/), they’re also text2img
     models generating images based on input prompts, currently there are three variants
     Dall-E 1, Dall-E 2, and Dall-E 3\. [Dall-E’s outpainting](https://openai.com/blog/dall-e-introducing-outpainting)
     maintains the context of an image by taking into account the shadow, reflections,
     and textures of an image.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: Dall-E由[OpenAI](https://openai.com/)开发，它们也是基于输入提示生成图像的text2img模型，目前有三个变种：Dall-E
+    1、Dall-E 2和Dall-E 3。[Dall-E的外部绘制](https://openai.com/blog/dall-e-introducing-outpainting)通过考虑图像的阴影、反射和纹理来保持图像的上下文。
 - en: '![](../Images/353e1bd094e9330f44eb01334d0a042e.png)'
+  id: totrans-106
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/353e1bd094e9330f44eb01334d0a042e.png)'
 - en: Images by [Alphr](https://www.alphr.com/outpaint-dalle/)
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 图像来自[Alphr](https://www.alphr.com/outpaint-dalle/)
 - en: Midjourney
+  id: totrans-108
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Midjourney
 - en: Midjourney bot is another of the leading image generators released by Midjourney,
     an independent research lab, you can access it via their [discord server](https://docs.midjourney.com/docs/quick-start).
     It has introduced outpainting in its V5.2 by the name of the [Zoom-out feature](https://docs.midjourney.com/docs/zoom-out).
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: Midjourney机器人是由Midjourney发布的另一款领先图像生成器，这是一家独立研究实验室，您可以通过他们的[discord服务器](https://docs.midjourney.com/docs/quick-start)访问它。它在其V5.2版本中引入了名为“缩放”功能的[Zoom-out
+    feature](https://docs.midjourney.com/docs/zoom-out)。
 - en: '![](../Images/4dffb94446f1a2ea1eaecf500e349b64.png)'
+  id: totrans-110
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4dffb94446f1a2ea1eaecf500e349b64.png)'
 - en: Image by [Midjourney](https://docs.midjourney.com/docs/zoom-out)
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Midjourney](https://docs.midjourney.com/docs/zoom-out)提供
 - en: Further Readings
+  id: totrans-112
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您希望深入了解该主题，本节提供了更多资源。
 - en: '[High-Resolution Image Synthesis with Latent Diffusion Models](https://arxiv.org/abs/2112.10752),
     by Rombach et al (2022)'
+  id: totrans-114
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[使用潜在扩散模型进行高分辨率图像合成](https://arxiv.org/abs/2112.10752)，由Rombach等人（2022）撰写'
 - en: '[LAION-5B](https://laion.ai/blog/laion-5b/) dataset'
+  id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[LAION-5B](https://laion.ai/blog/laion-5b/) 数据集'
 - en: '[Unsupervised Representation Learning with Deep Convolutional Generative Adversarial
     Networks](https://arxiv.org/abs/1511.06434), by Redford et al (2016)'
+  id: totrans-116
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[无监督表示学习与深度卷积生成对抗网络](https://arxiv.org/abs/1511.06434)，由雷德福德等人（2016）撰写'
 - en: '[Understanding the receptive field of deep convolutional networks](https://theaisummer.com/receptive-field/)'
+  id: totrans-117
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[理解深度卷积网络的接受域](https://theaisummer.com/receptive-field/)'
 - en: Summary
+  id: totrans-118
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: In this post, you have learned the basic architecture of stable diffusion and
     its building blocks, especially how they are applied to the tasks of inpainting
     and outpainting. Stable diffusion has proved to be a powerful tool in the generative
     AI domain. Besides the txt2img generation, it’s also popular for inpainting and
     outpainting. The web UI by automatic1111 is the go-to tool for stable diffusion,
     you can inpaint or outpaint with it using the img2img tab.
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，您已经了解了稳定扩散的基本架构及其组成部分，特别是它们如何应用于修补和外延任务。稳定扩散已被证明是生成AI领域中的强大工具。除了txt2img生成外，它在修补和外延方面也很受欢迎。automatic1111的Web
+    UI是稳定扩散的首选工具，您可以使用img2img标签进行修补或外延。

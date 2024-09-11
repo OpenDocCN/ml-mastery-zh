@@ -1,150 +1,220 @@
 - en: Generate Realistic Faces in Stable Diffusion
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 Stable Diffusion 中生成逼真的人脸
 - en: 原文：[https://machinelearningmastery.com/generate-realistic-faces/](https://machinelearningmastery.com/generate-realistic-faces/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/generate-realistic-faces/](https://machinelearningmastery.com/generate-realistic-faces/)
 - en: Stable Diffusion’s latest models are very good at generating hyper-realistic
     images, but they can struggle with accurately generating human faces. We can experiment
     with prompts, but to get seamless, photorealistic results for faces, we may need
     to try new methodologies and models.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: Stable Diffusion 最新模型在生成超现实图像方面表现优异，但在准确生成人脸时可能会遇到困难。我们可以尝试不同的提示，但要获得无缝、逼真的人脸效果，可能需要尝试新的方法和模型。
 - en: 'In this post, we will explore various techniques and models for generating
     highly realistic human faces with Stable Diffusion. Specifically, we will learn
     how to:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我们将探讨使用 Stable Diffusion 生成高度逼真的人脸的各种技术和模型。具体来说，我们将学习如何：
 - en: Generate realistic images using WebUI and advanced settings.
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 WebUI 和高级设置生成真实图像。
 - en: Use Stable Diffusion XL for photorealistic results.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Stable Diffusion XL 以获得逼真的效果。
 - en: Download and use a fine-tuned model trained on high quality images.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 下载并使用在高质量图像上训练的微调模型。
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**开启你的项目**，阅读我的书 [《精通数字艺术与 Stable Diffusion》](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/)。它提供了**自学教程**和**有效的代码**。'
 - en: Let’s get started.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/745f6e92d71b5e9b88d286762a23c121.png)'
+  id: totrans-9
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/745f6e92d71b5e9b88d286762a23c121.png)'
 - en: Generate Realistic  Faces in Stable Diffusion
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Stable Diffusion 中生成逼真的人脸
 - en: Photo by [Amanda Dalbjörn](https://unsplash.com/photos/close-up-photo-of-persons-eye-fvInY-Gh7sc).
     Some rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Amanda Dalbjörn](https://unsplash.com/photos/close-up-photo-of-persons-eye-fvInY-Gh7sc)
+    提供。部分权利保留。
 - en: Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is in three parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分；它们是：
 - en: Creating a Portrait Using Web UI
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Web UI 创建肖像
 - en: Creating a Portrait with Stable Diffusion XL
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Stable Diffusion XL 创建肖像
 - en: Using CivitAI Models Checkpoint
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 CivitAI 模型检查点
 - en: Creating a Portrait Using Web UI
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 Web UI 创建肖像
 - en: Let’s start with simple prompt engineering on Stable Diffusion 1.5 using Stable
     Diffusion WebUI locally. You need to work on positive prompt, negative prompt,
     and advanced settings to get improved results. For example,
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从简单的提示工程开始，使用本地的 Stable Diffusion WebUI 进行 Stable Diffusion 1.5。你需要在积极提示、负面提示和高级设置上进行工作，以获得更好的结果。例如，
 - en: 'Positive prompt: “photo of young woman, highlight hair, sitting outside restaurant,
     wearing dress, rim lighting, studio lighting, looking at the camera, up close,
     perfect eyes”'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 积极提示：“年轻女性的照片，突出头发，坐在餐厅外，穿着裙子，边缘光照，工作室灯光，注视镜头，近距离，完美的眼睛”
 - en: 'Negative prompt: “disfigured, ugly, bad, immature, cartoon, anime, 3d, painting,
     b&w, double images”'
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 负面提示：“畸形、丑陋、差劲、不成熟、卡通、动漫、3d、绘画、黑白、双重图像”
 - en: 'Sampler: DPM++ 2M Karras'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 采样器：DPM++ 2M Karras
 - en: 'Steps: 30'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 步骤：30
 - en: 'CFG scale: 7'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: CFG 比例：7
 - en: 'Size: 912×512 (wide)'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 尺寸：912×512（宽）
 - en: When creating a negative prompt, you need to focus on describing a “disfigured
     face” and seeing “double images”. This is especially important in Stable Diffusion
     1.5 models. You can include additional keywords if you notice a recurring pattern,
     such as misaligned eyes. In order to address this issue, you can add “perfect
     eyes” to your positive prompt and “disfigured eyes” to your negative prompt.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建负面提示时，你需要专注于描述“畸形面孔”和“看到双重图像”。这在 Stable Diffusion 1.5 模型中尤其重要。如果你注意到反复出现的模式，例如眼睛不对齐，可以添加额外的关键词，例如“完美的眼睛”到你的积极提示中，以及“畸形的眼睛”到你的负面提示中。
 - en: '![](../Images/bbd97b5e14e3898b1ea0f62c4b9439a8.png)'
+  id: totrans-26
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/bbd97b5e14e3898b1ea0f62c4b9439a8.png)'
 - en: A portrait created using Stable Diffusion 1.5 model
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Stable Diffusion 1.5 模型创建的肖像
 - en: As we can see, we got very good results on the first try. If you got a distorted
     or double image, try generating the image again. This model is not perfect and
     may occasionally generate incorrect images. So if that happens, simply generate
     a new image. You may also try to adjust the parameters such as sampling method,
     steps, and random seed. As a final resort, changing the model checkpoint also
     helps.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 如我们所见，第一次尝试时得到了非常好的结果。如果出现扭曲或双重图像，请尝试重新生成图像。这个模型并不完美，偶尔可能会生成不正确的图像。如果发生这种情况，只需生成新的图像。你也可以尝试调整参数，如采样方法、步骤和随机种子。作为最终的解决方案，改变模型检查点也有帮助。
 - en: '![](../Images/f6b8a9f310880e1f56bd2229b1cd3500.png)'
+  id: totrans-29
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/f6b8a9f310880e1f56bd2229b1cd3500.png)'
 - en: Different portraits generated by adjusting the input to Stable Diffusion
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过调整Stable Diffusion的输入生成的不同肖像
 - en: After modifying various keywords to produce diverse variations of realistic
     images, we achieved satisfactory outcomes even with the base model.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 在修改各种关键词以生成多样化的逼真图像后，我们即使使用基础模型也取得了令人满意的结果。
 - en: Creating a Portrait with Stable Diffusion XL
+  id: totrans-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用Stable Diffusion XL创建肖像
 - en: The most common Stable Diffusion model is version 1.5, released in October 2022\.
     Then there is version 2.0, which is a similar architecture but retrained from
     scratch, released in November of the same year. Stable Diffusion XL (SDXL), that
     released in July 2023, is a different architecture and much bigger. All three
     versions have different heritages and behave differently to your prompt. It is
     generally believed that SDXL produce better pictures.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 最常见的Stable Diffusion模型是2022年10月发布的1.5版本。接着是2022年11月发布的2.0版本，它是一种类似的架构，但从头重新训练。2023年7月发布的Stable
+    Diffusion XL (SDXL)是一个不同的架构，规模更大。这三个版本有不同的传承，并对你的提示做出不同的反应。普遍认为SDXL生成的图片更好。
 - en: Let’s use the latest model Stable Diffusion XL (SDXL) to get even better image
     generation results. This can be as simple as downloading the model checkpoint
     file and save it to your `stable-diffusion-webui/models/Stable-diffusion` folder
@@ -152,245 +222,353 @@
     Running the full model locally can require a significant amount of GPU memory.
     If you cannot meet its technical requirement, a good option is to use the free
     online demos available on Hugging Face Spaces.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们使用最新的模型Stable Diffusion XL (SDXL)来获得更好的图像生成结果。这可以简单到下载模型检查点文件并将其保存到你的`stable-diffusion-webui/models/Stable-diffusion`文件夹中，重启Web
+    UI，然后重复上一部分的步骤。运行完整模型在本地可能需要大量的GPU内存。如果你无法满足其技术要求，使用Hugging Face Spaces上提供的免费在线演示是一个不错的选择。
 - en: You can access these applications by visiting [https://hf.co/spaces](https://hf.co/spaces)
     and searching for “SDXL”.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以访问这些应用程序，通过访问 [https://hf.co/spaces](https://hf.co/spaces) 并搜索“SDXL”。
 - en: '![](../Images/4db53f3571a8384251d963b4a5cfdca6.png)'
+  id: totrans-36
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4db53f3571a8384251d963b4a5cfdca6.png)'
 - en: Searching “SDXL” on Hugging Face space
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Hugging Face空间中搜索“SDXL”
 - en: Stable Diffusion XL by Google
+  id: totrans-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 谷歌的Stable Diffusion XL
 - en: 'We will first try the fastest demo running on TPU version 5e to obtain our
     results, located at:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将首先尝试运行在TPU版本5e上的最快演示以获取结果，位于：
 - en: '[https://hf.co/spaces/google/sdxl](https://hf.co/spaces/google/sdxl)'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://hf.co/spaces/google/sdxl](https://hf.co/spaces/google/sdxl)'
 - en: To ensure that our images are generated accurately, it is important to set up
     the negative prompt and image style to “Photographic” by going to the Advanced
     settings.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了确保我们的图像生成准确，重要的是通过进入高级设置，将负面提示和图像风格设置为“摄影”。
 - en: '![](../Images/586af82f0b9bd55186b1f1f34971d3d0.png)'
+  id: totrans-42
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/586af82f0b9bd55186b1f1f34971d3d0.png)'
 - en: Setting “Photographic” in Advanced settings to fix the style of generated image
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 在高级设置中将“摄影”设置为生成图像的风格
 - en: 'We will use the same prompt to generate a realistic image of the young girl
     sitting outside the restaurant:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用相同的提示生成年轻女孩坐在餐馆外面的逼真图像：
 - en: photo of young woman, highlight hair, sitting outside restaurant, wearing dress,
     rim lighting, studio lighting, looking at the camera, up close, perfect eyes
+  id: totrans-45
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 年轻女性的照片，突出头发，坐在餐馆外面，穿着裙子，边缘光，工作室照明，凝视镜头，特写，完美的眼睛
 - en: '![](../Images/00f18271f8b276ffdb5774ffdb31d3cf.png)'
+  id: totrans-46
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/00f18271f8b276ffdb5774ffdb31d3cf.png)'
 - en: Generating pictures with SDXL
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用SDXL生成图片
 - en: The results are impressive. The rendering of the eyes, nose, lips, shadows,
     and colors looks very realistic. By comparing the generated result here against
     the previous section, you can see the obvious difference between SDXL and its
     older version.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果令人印象深刻。眼睛、鼻子、嘴唇、阴影和颜色的渲染看起来非常逼真。通过将这里生成的结果与上一部分进行比较，可以明显看到SDXL与其旧版本之间的区别。
 - en: Fast Stable Diffusion XL by Prodia
+  id: totrans-49
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Prodia的快速Stable Diffusion XL
 - en: 'There are more than one SDXL in Hugging Face Space. If you are used to the
     Stable Diffusion WebUI user interface then “Fast Stable Diffusion XL” Space is
     for you:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: Hugging Face Space中有多个SDXL。如果你习惯了Stable Diffusion WebUI用户界面，那么“快速Stable Diffusion
+    XL”空间适合你：
 - en: '[https://hf.co/spaces/prodia/sdx](https://hf.co/spaces/prodia/sdx)'
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://hf.co/spaces/prodia/sdx](https://hf.co/spaces/prodia/sdx)'
 - en: We will write the same positive and negative prompts to generate the results.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将编写相同的正面和负面提示以生成结果。
 - en: '![](../Images/24a0e666899c6ad26c242d2afe8127cd.png)'
+  id: totrans-53
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/24a0e666899c6ad26c242d2afe8127cd.png)'
 - en: Fast Stable Diffusion XL by Prodia on Hugging Face Space
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: Hugging Face Space上的Prodia快速Stable Diffusion XL
 - en: We got even better shadows and clarity in this. Let’s try to generate more images
     so that we can draw conclusions about our results.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在这方面获得了更好的阴影和清晰度。让我们尝试生成更多图像，以便对我们的结果做出结论。
 - en: Let’s modify the prompt to generate an image of a man and a woman.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们修改提示，生成一张男人和一张女人的图片。
 - en: '![](../Images/228cc259946a7cb2a5237bb0e5294dd6.png)'
+  id: totrans-57
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/228cc259946a7cb2a5237bb0e5294dd6.png)'
 - en: Portrait of a man and a woman generated with SDXL
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用SDXL生成的一对男女的肖像
 - en: The results are exceptional for generating characters of both genders and races.
     To test for model bias, we will generate characters of Indian descent and change
     the setting to a hospital, where both characters will be doctors.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成男女性角色的结果异常出色。为了测试模型的偏见，我们将生成印度血统的角色，并将设置更改为医院，在这里两个角色将作为医生。
 - en: '![](../Images/f21fd704e2ead6dc05a0b87e2299d570.png)'
+  id: totrans-60
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/f21fd704e2ead6dc05a0b87e2299d570.png)'
 - en: Images of a woman and a man dressed as doctors, as generated by SDXL
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 一对身着医生服装的女人和男人的图像，由SDXL生成
 - en: SDXL has generated good results, but the images appear too smooth, as if an
     Instagram filter was applied. Realistic images have acne, marks, roughness, and
     sharpness that SDXL is missing. This can be difficult to achieve in the original
     SDXL model but resolvable if you switch to another checkpoint.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: SDXL生成了不错的结果，但图像看起来过于平滑，就像应用了Instagram滤镜一样。逼真的图像具有SDXL缺少的粉刺、痕迹、粗糙度和锐度。如果您切换到另一个检查点，这可能很难在原始SDXL模型中实现，但可以解决。
 - en: Using CivitAI Models Checkpoint
+  id: totrans-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用CivitAI模型检查点
 - en: In this section, we will step ahead and generate even more realistic faces than
     SDXL using [CivitAI.com](https://civitai.com/). It is a model hosting platform
     that allows users upload and download specialized versions of Stable Diffusion
     models. It is also a gallery for users to post their work of AI-generated pictures.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一节中，我们将向前迈进，使用[CivitAI.com](https://civitai.com/)生成比SDXL更逼真的面孔。它是一个模型托管平台，允许用户上传和下载Stable
+    Diffusion模型的专业版本。它也是一个用户可以发布AI生成图片作品的画廊。
 - en: In our case, we are interested in the best photorealistic model. To download
     that we will search for the keyword “**photorealistic**”. There will be a lot.
     The most popular ones are probably the best. Therefore, ensure you have set the
     filters to get the list sorted by the most downloaded models of all time.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的情况下，我们对最佳逼真模型感兴趣。为了下载，我们将搜索关键词“**photorealistic**”。会有很多结果。最受欢迎的可能是最好的。因此，请确保您已设置过滤器，以按所有时间下载次数排序列出列表。
 - en: '![](../Images/1039361082645ae98b6e56272c719180.png)'
+  id: totrans-66
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/1039361082645ae98b6e56272c719180.png)'
 - en: Searching for a model on CivitAI.com, setting the result to sort by “most downloaded”
     and “all time” would be helpful to find a quality model.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在CivitAI.com上搜索模型，将结果排序为“最多下载”和“所有时间”有助于找到高质量的模型。
 - en: Select the most popular model and download the full version as shown (named
     “Realisic Vision V5.1” in this case, as depicted).
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 选择最流行的模型，并按照显示的方式下载完整版本（在本例中命名为“Realisic Vision V5.1”）。
 - en: '![](../Images/04d176d357ae4a13b2dc2abd90508bdb.png)'
+  id: totrans-69
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/04d176d357ae4a13b2dc2abd90508bdb.png)'
 - en: Downloading model checkpoint “Realistic Vision V5.1” (beware not the inpainting
     version) from Civitai.com
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 从Civitai.com下载模型检查点“Realistic Vision V5.1”（注意不是修复版本）。
 - en: After that, move the downloaded model to the Stable Diffusion WebUI model directory
     `stable-diffusion-webui/models/Stable-diffusion`. To activate the model on Web
     UI click on the refresh button and select the newer model by clicking on the drop
     down panel, or simply restart the Web UI.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，将下载的模型移动到Stable Diffusion WebUI模型目录 `stable-diffusion-webui/models/Stable-diffusion`。要在Web
+    UI上激活模型，请点击刷新按钮，并通过单击下拉面板选择新模型，或者简单地重新启动Web UI。
 - en: '![](../Images/1a25de4233330060a0265f9d51d62629.png)'
+  id: totrans-72
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/1a25de4233330060a0265f9d51d62629.png)'
 - en: Selecting the model checkpoint at the top left corner of Web UI.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Web UI的左上角选择模型检查点。
 - en: All the information regarding the positive prompt, negative prompt, and advanced
     setting is mentioned on the model page. Therefore, we will use that information
     and modify it to generate an image of a young woman.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有关于正向提示、负向提示和高级设置的信息都在模型页面上。因此，我们将使用这些信息，并修改以生成一个年轻女性的图像。
 - en: 'Positive prompt: “RAW photo, face portrait photo of beautiful 24 y.o woman,
     full lips, brown eyes, glasses, hard shadows, 8k uhd, dslr, soft lighting, high
     quality, film grain, Fujifilm XT3”'
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 正向提示：“RAW照片，美丽的24岁女性面部肖像照片，丰满的嘴唇，棕色的眼睛，眼镜，硬阴影，8k超高清，单反相机，柔和的光照，高质量，胶片颗粒，富士胶片XT3”
 - en: 'Negative prompt: “deformed iris, deformed pupils, semi-realistic, cgi, 3d,
     render, sketch, cartoon, drawing, anime, mutated hands and fingers, deformed,
     distorted, disfigured, poorly drawn, bad anatomy, wrong anatomy, extra limb, missing
     limb, floating limbs, disconnected limbs, mutation, mutated, ugly, disgusting,
     amputation”'
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Sampler: DPM++ SDE Karras'
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Steps: 25'
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'CFG scale: 7'
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Size: 912×512'
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '![](../Images/b42e78401976ef5bc370e833b294acf3.png)'
+  id: totrans-81
   prefs: []
   type: TYPE_IMG
 - en: Portrait as generated using the Realisitic Vision checkpoint on Web UI
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
 - en: We got a sharp and accurate image of the face. Let’s experiment with different
     prompts to generate even more realistic faces.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
 - en: We will begin with an image of a man and woman without glasses.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
 - en: '![](../Images/2dc7d32e5e9ee224032270478d655d8a.png)'
+  id: totrans-85
   prefs: []
   type: TYPE_IMG
 - en: Man and woman without glasses. Images generated using the Realistic Vision model
     checkpoint.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
 - en: Then, we will modify the prompt to generate an Indian man and woman.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
 - en: '![](../Images/c468002cda7253d758a63c695a5edee8.png)'
+  id: totrans-88
   prefs: []
   type: TYPE_IMG
 - en: Indian man and woman. Images generated using the Realistic Vision model checkpoint.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
 - en: Don’t you see the difference? We have achieved an excellent result. There is
     good texture on the face, natural-looking skin marks, and clarity in the details
     of the face.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
 - en: Further Readings
+  id: totrans-91
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'You can learn more about this topic using the following resources:'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
 - en: '[Stable Diffusion 1 vs 2 – What you need to know](https://www.assemblyai.com/blog/stable-diffusion-1-vs-2-what-you-need-to-know/)'
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[Best AI Diffusion Models: A Comprehensive Comparison and Guide](https://www.ikomia.ai/blog/best-ai-diffusion-models-comparison-guide)'
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Summary
+  id: totrans-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -398,20 +576,24 @@
     consistent faces using Stable Diffusion. We started with simple techniques and
     progressed to more advanced methods for producing highly realistic images. Specifically,
     we covered:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
 - en: How to generate realistic faces using Stable Difusion 1.5 with negative prompts
     and advanced settings.
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: How to create lifelike photos with Stable Diffusion XL using Hugging Face Spaces’
     free demos.
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Used a specialized model that was fine-tuned on high-quality images to get perfect
     photos with skin texture and facial clarity.
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL

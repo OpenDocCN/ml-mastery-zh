@@ -190,11 +190,14 @@
   id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，后台正在进行大量工作。你传递了一个文本提示。这个提示已经通过预训练的嵌入模型转换成了数值张量。张量然后被传递给从Hugging Face仓库“CompVis/stable-diffusion-v1-4”（官方Stable
+    Diffusion v1.4模型）下载的Stable Diffusion模型。这个模型将运行30步和DDPM调度器。Stable Diffusion模型的输出将是一个浮点张量，必须转换成像素值后才能保存。所有这些都是通过将组件链式连接到`pipe`对象中来完成的。
 - en: Customizing the Stable Diffusion Pipeline
   id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 自定义Stable Diffusion管道
 - en: In the previous code, you download a pretrained model from the Hugging Face
     repository. Even for the same repository, different “variants” of the same model
     are available. Mostly, the default variant uses a 32-bit floating point, which
@@ -205,6 +208,7 @@
   id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 在之前的代码中，你从Hugging Face仓库下载了一个预训练模型。即使是同一仓库，不同的“变体”模型也是可用的。通常，默认变体使用32位浮点数，适合在CPU和GPU上运行。你在上述代码中使用的变体是`fp16`，即使用16位浮点数。它并不总是可用的，也不总是以这种名称存在。你应该查看相应的仓库以了解更多详细信息。
 - en: Because the variant used is for 16-bit floating point, you specified the `torch_dtype`
     to use `torch.float16` as well. Note that most CPUs cannot work with 16-bit floating
     points (also known as half-precision floats), but it works for GPUs. Hence, you
@@ -212,11 +216,13 @@
   id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于使用的变体是16位浮点数，你还指定了`torch_dtype`使用`torch.float16`。注意，大多数CPU不能处理16位浮点数（也称为半精度浮点数），但它在GPU上是可用的。因此，你会看到创建的管道通过语句`pipe.to("cuda")`传递给了GPU。
 - en: 'You can try the following modification, which you should be able to observe
     a much slower generation because it is run on CPU:'
   id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以尝试以下修改，你应该会观察到生成速度大幅变慢，因为它是在CPU上运行的：
 - en: '[PRE2]'
   id: totrans-34
   prefs: []
@@ -231,11 +237,14 @@
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，假设你一直在使用Stable Diffusion Web UI并下载了第三方Stable Diffusion模型，那么你应该对以SafeTensors格式保存的模型文件比较熟悉。这种格式不同于上述Hugging
+    Face仓库的格式。特别是，仓库通常会包含一个`config.json`文件来描述如何使用模型，但这些信息应该从SafeTensor模型文件中推断出来。
 - en: 'You can still use the model files you downloaded. For example, with the following
     code:'
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 你仍然可以使用你下载的模型文件。例如，使用以下代码：
 - en: '[PRE3]'
   id: totrans-37
   prefs: []
@@ -249,12 +258,15 @@
   id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码使用了`StableDiffusionPipeline.from_single_file()`，而不是`StableDiffusionPipeline.from_pretrained()`。这个函数的参数被假定为模型文件的路径。它会识别文件是SafeTensors格式。`diffusers`库的整洁性在于，在你更改了创建管道的方法之后，不需要进行其他任何更改。
 - en: Note that each Pipeline assumes a certain architecture. For example, there is
     `StableDiffusionXLPipeline` from `diffusers` library solely for Stable Diffusion
     XL. You cannot use the model file with the wrong pipeline builder.
   id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，每个Pipeline假设了特定的架构。例如，`diffusers`库中的`StableDiffusionXLPipeline`专用于Stable
+    Diffusion XL。你不能使用不匹配的Pipeline构建器的模型文件。
 - en: You can see that the most important parameters of the Stable Diffusion image
     generation process are described in the `pipe()` function call when you triggered
     the process. For example, you can specify the scheduler, step size, and CFG scale.
