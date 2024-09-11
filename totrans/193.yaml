@@ -1,147 +1,223 @@
 - en: Training the Transformer Model
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 训练 Transformer 模型
 - en: 原文：[https://machinelearningmastery.com/training-the-transformer-model/](https://machinelearningmastery.com/training-the-transformer-model/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/training-the-transformer-model/](https://machinelearningmastery.com/training-the-transformer-model/)
 - en: We have put together the [complete Transformer model](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking),
     and now we are ready to train it for neural machine translation. We shall use
     a training dataset for this purpose, which contains short English and German sentence
     pairs. We will also revisit the role of masking in computing the accuracy and
     loss metrics during the training process.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经整合了 [完整的 Transformer 模型](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking)，现在我们准备为神经机器翻译训练它。为此，我们将使用一个包含短英语和德语句子对的训练数据集。在训练过程中，我们还将重新审视掩码在计算准确度和损失指标中的作用。
 - en: In this tutorial, you will discover how to train the Transformer model for neural
     machine translation.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您将了解如何为神经机器翻译训练 Transformer 模型。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将了解：
 - en: How to prepare the training dataset
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何准备训练数据集
 - en: How to apply a padding mask to the loss and accuracy computations
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将填充蒙版应用于损失和准确度计算
 - en: How to train the Transformer model
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何训练 Transformer 模型
 - en: '**Kick-start your project** with my book [Building Transformer Models with
     Attention](https://machinelearningmastery.com/transformer-models-with-attention/).
     It provides **self-study tutorials** with **working code** to guide you into building
     a fully-working transformer model that can'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书 [使用注意力构建 Transformer 模型](https://machinelearningmastery.com/transformer-models-with-attention/)
+    快速启动您的项目**。它提供了具有 **工作代码** 的 **自学教程**，指导您构建一个完全可用的 Transformer 模型，可以...'
 - en: '*translate sentences from one language to another*...'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将句子从一种语言翻译为另一种语言*...'
 - en: Let’s get started.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '[![](../Images/4ace004bc710a167c5763a7079a32a33.png)](https://machinelearningmastery.com/wp-content/uploads/2022/05/training_cover-scaled.jpg)'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/4ace004bc710a167c5763a7079a32a33.png)](https://machinelearningmastery.com/wp-content/uploads/2022/05/training_cover-scaled.jpg)'
 - en: Training the transformer model
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练 Transformer 模型
 - en: Photo by [v2osk](https://unsplash.com/photos/PGExULGintM), some rights reserved.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [v2osk](https://unsplash.com/photos/PGExULGintM) 拍摄，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概览**'
 - en: 'This tutorial is divided into four parts; they are:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四部分；它们是：
 - en: Recap of the Transformer Architecture
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Transformer 架构回顾
 - en: Preparing the Training Dataset
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备训练数据集
 - en: Applying a Padding Mask to the Loss and Accuracy Computations
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将填充蒙版应用于损失和准确度计算
 - en: Training the Transformer Model
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练 Transformer 模型
 - en: '**Prerequisites**'
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**先决条件**'
 - en: 'For this tutorial, we assume that you are already familiar with:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设您已经熟悉：
 - en: '[The theory behind the Transformer model](https://machinelearningmastery.com/the-transformer-model/)'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 模型背后的理论](https://machinelearningmastery.com/the-transformer-model/)'
 - en: '[An implementation of the Transformer model](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking)'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformer 模型的实现](https://machinelearningmastery.com/joining-the-transformer-encoder-and-decoder-and-masking)'
 - en: '**Recap of the Transformer Architecture**'
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Transformer 架构回顾**'
 - en: '[Recall](https://machinelearningmastery.com/the-transformer-model/) having
     seen that the Transformer architecture follows an encoder-decoder structure. The
     encoder, on the left-hand side, is tasked with mapping an input sequence to a
     sequence of continuous representations; the decoder, on the right-hand side, receives
     the output of the encoder together with the decoder output at the previous time
     step to generate an output sequence.'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '[回忆](https://machinelearningmastery.com/the-transformer-model/) 曾见过 Transformer
+    架构遵循编码器-解码器结构。编码器位于左侧，负责将输入序列映射为连续表示序列；解码器位于右侧，接收编码器的输出以及前一时间步的解码器输出，生成输出序列。'
 - en: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/5cc2fa00063bfd70298252dce57dbdcd.png)](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)'
 - en: The encoder-decoder structure of the Transformer architecture
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: Transformer 架构的编码器-解码器结构
 - en: Taken from “[Attention Is All You Need](https://arxiv.org/abs/1706.03762)“
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 摘自“[Attention Is All You Need](https://arxiv.org/abs/1706.03762)”
 - en: In generating an output sequence, the Transformer does not rely on recurrence
     and convolutions.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在生成输出序列时，Transformer 不依赖于循环和卷积。
 - en: You have seen how to implement the complete Transformer model, so you can now
     proceed to train it for neural machine translation.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 你已经了解了如何实现完整的 Transformer 模型，现在可以开始训练它进行神经机器翻译。
 - en: Let’s start first by preparing the dataset for training.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先准备数据集以进行训练。
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始构建带有注意力机制的 Transformer 模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费 12 天邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费 PDF 电子书版。
 - en: '**Preparing the Training Dataset**'
+  id: totrans-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**准备训练数据集**'
 - en: For this purpose, you can refer to a previous tutorial that covers material
     about [preparing the text data](https://machinelearningmastery.com/develop-neural-machine-translation-system-keras/)
     for training.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，你可以参考之前的教程，了解如何[准备文本数据](https://machinelearningmastery.com/develop-neural-machine-translation-system-keras/)以用于训练。
 - en: You will also use a dataset that contains short English and German sentence
     pairs, which you may download [here](https://github.com/Rishav09/Neural-Machine-Translation-System/blob/master/english-german-both.pkl).
     This particular dataset has already been cleaned by removing non-printable and
@@ -151,228 +227,353 @@
     process. However, if you use a dataset that does not come readily cleaned, you
     can refer to this [this previous tutorial](https://machinelearningmastery.com/develop-neural-machine-translation-system-keras/)
     to learn how to do so.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 你还将使用一个包含短的英语和德语句子对的数据集，你可以在[这里](https://github.com/Rishav09/Neural-Machine-Translation-System/blob/master/english-german-both.pkl)下载。这个数据集已经过清理，移除了不可打印的、非字母的字符和标点符号，进一步将所有
+    Unicode 字符归一化为 ASCII，并将所有大写字母转换为小写字母。因此，你可以跳过清理步骤，这通常是数据准备过程的一部分。然而，如果你使用的数据集没有经过预处理，你可以参考[这个教程](https://machinelearningmastery.com/develop-neural-machine-translation-system-keras/)学习如何处理。
 - en: 'Let’s proceed by creating the `PrepareDataset` class that implements the following
     steps:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们通过创建 `PrepareDataset` 类来实施以下步骤：
 - en: Loads the dataset from a specified filename.
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从指定的文件名加载数据集。
 - en: Python
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Selects the number of sentences to use from the dataset. Since the dataset is
     large, you will reduce its size to limit the training time. However, you may explore
     using the full dataset as an extension to this tutorial.
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从数据集中选择要使用的句子数量。由于数据集很大，你将减少其大小以限制训练时间。然而，你可以考虑使用完整的数据集作为本教程的扩展。
 - en: Python
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Appends start (<START>) and end-of-string (<EOS>) tokens to each sentence. For
     example, the English sentence, `i like to run`, now becomes, `<START> i like to
     run <EOS>`. This also applies to its corresponding translation in German, `ich
     gehe gerne joggen`, which now becomes, `<START> ich gehe gerne joggen <EOS>`.
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在每个句子中附加开始（<START>）和结束（<EOS>）标记。例如，英语句子 `i like to run` 现在变为 `<START> i like
+    to run <EOS>`。这也适用于其对应的德语翻译 `ich gehe gerne joggen`，现在变为 `<START> ich gehe gerne
+    joggen <EOS>`。
 - en: Python
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Shuffles the dataset randomly.
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 随机打乱数据集。
 - en: Python
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Splits the shuffled dataset based on a pre-defined ratio.
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 根据预定义的比例拆分打乱的数据集。
 - en: Python
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Creates and trains a tokenizer on the text sequences that will be fed into the
     encoder and finds the length of the longest sequence as well as the vocabulary
     size.
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建并训练一个分词器，用于处理将输入编码器的文本序列，并找到最长序列的长度及词汇表大小。
 - en: Python
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Tokenizes the sequences of text that will be fed into the encoder by creating
     a vocabulary of words and replacing each word with its corresponding vocabulary
     index. The <START> and <EOS> tokens will also form part of this vocabulary. Each
     sequence is also padded to the maximum phrase length.
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 对将输入编码器的文本序列进行分词，通过创建一个词汇表并用相应的词汇索引替换每个词。<START> 和 <EOS> 标记也将成为词汇表的一部分。每个序列也会填充到最大短语长度。
 - en: Python
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Creates and trains a tokenizer on the text sequences that will be fed into the
     decoder, and finds the length of the longest sequence as well as the vocabulary
     size.
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建并训练一个分词器，用于处理将输入解码器的文本序列，并找到最长序列的长度及词汇表大小。
 - en: Python
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Repeats a similar tokenization and padding procedure for the sequences of text
     that will be fed into the decoder.
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 对将输入解码器的文本序列进行类似的分词和填充处理。
 - en: Python
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The complete code listing is as follows (refer to [this previous tutorial](https://machinelearningmastery.com/develop-neural-machine-translation-system-keras/)
     for further details):'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码清单如下（有关详细信息，请参阅 [这个之前的教程](https://machinelearningmastery.com/develop-neural-machine-translation-system-keras/)）：
 - en: Python
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Before moving on to train the Transformer model, let’s first have a look at
     the output of the `PrepareDataset` class corresponding to the first sentence in
     the training dataset:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 在开始训练 Transformer 模型之前，我们首先来看一下 `PrepareDataset` 类对应于训练数据集中第一句话的输出：
 - en: Python
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Python
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '(Note: Since the dataset has been randomly shuffled, you will likely see a
     different output.)'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: （注意：由于数据集已被随机打乱，你可能会看到不同的输出。）
 - en: 'You can see that, originally, you had a three-word sentence (*did tom tell
     you*) to which you appended the start and end-of-string tokens. Then you proceeded
     to vectorize (you may notice that the <START> and <EOS> tokens are assigned the
     vocabulary indices 1 and 2, respectively). The vectorized text was also padded
     with zeros, such that the length of the end result matches the maximum sequence
     length of the encoder:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到，最初，你有一个三词句子（*did tom tell you*），然后你添加了开始和结束字符串的标记。接着你对其进行了向量化（你可能会注意到
+    <START> 和 <EOS> 标记分别被分配了词汇表索引 1 和 2）。向量化文本还用零进行了填充，使得最终结果的长度与编码器的最大序列长度匹配：
 - en: Python
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE12]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Python
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE13]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'You can similarly check out the corresponding target data that is fed into
     the decoder:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以类似地检查输入到解码器的目标数据：
 - en: Python
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE14]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Python
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE15]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'Here, the length of the end result matches the maximum sequence length of the
     decoder:'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，最终结果的长度与解码器的最大序列长度相匹配：
 - en: Python
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE16]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Python
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE17]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: '**Applying a Padding Mask to the Loss and Accuracy Computations**'
+  id: totrans-90
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**应用填充掩码到损失和准确度计算**'
 - en: '[Recall](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras)
     seeing that the importance of having a padding mask at the encoder and decoder
     is to make sure that the zero values that we have just appended to the vectorized
     inputs are not processed along with the actual input values.'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: '[回顾](https://machinelearningmastery.com/how-to-implement-scaled-dot-product-attention-from-scratch-in-tensorflow-and-keras)
+    看到在编码器和解码器中使用填充掩码的重要性是为了确保我们刚刚添加到向量化输入中的零值不会与实际输入值一起处理。'
 - en: This also holds true for the training process, where a padding mask is required
     so that the zero padding values in the target data are not considered in the computation
     of the loss and accuracy.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 这对于训练过程也是适用的，其中需要填充掩码，以确保在计算损失和准确度时，目标数据中的零填充值不被考虑。
 - en: Let’s have a look at the computation of loss first.
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先来看一下损失的计算。
 - en: 'This will be computed using a sparse categorical cross-entropy loss function
     between the target and predicted values and subsequently multiplied by a padding
     mask so that only the valid non-zero values are considered. The returned loss
     is the mean of the unmasked values:'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将使用目标值和预测值之间的稀疏分类交叉熵损失函数进行计算，然后乘以一个填充掩码，以确保只考虑有效的非零值。返回的损失是未掩码值的均值：
 - en: Python
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE18]'
+  id: totrans-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'For the computation of accuracy, the predicted and target values are first
     compared. The predicted output is a tensor of size (*batch_size*, *dec_seq_length*,
     *dec_vocab_size*) and contains probability values (generated by the softmax function
@@ -381,80 +582,127 @@
     value is considered, with its dictionary index being retrieved through the operation:
     `argmax(prediction, axis=2)`. Following the application of a padding mask, the
     returned accuracy is the mean of the unmasked values:'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算准确度时，首先比较预测值和目标值。预测输出是一个大小为 (*batch_size*, *dec_seq_length*, *dec_vocab_size*)
+    的张量，包含输出中令牌的概率值（由解码器端的 softmax 函数生成）。为了能够与目标值进行比较，只考虑每个具有最高概率值的令牌，并通过操作 `argmax(prediction,
+    axis=2)` 检索其字典索引。在应用填充掩码后，返回的准确度是未掩码值的均值：
 - en: Python
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE19]'
+  id: totrans-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: '**Training the Transformer Model**'
+  id: totrans-100
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**训练 Transformer 模型**'
 - en: 'Let’s first define the model and training parameters as specified by [Vaswani
     et al. (2017)](https://arxiv.org/abs/1706.03762):'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先定义模型和训练参数，按照 [Vaswani 等人（2017）](https://arxiv.org/abs/1706.03762) 的规范：
 - en: Python
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE20]'
+  id: totrans-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: '(Note: Only consider two epochs to limit the training time. However, you may
     explore training the model further as an extension to this tutorial.)'
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: （注意：只考虑两个时代以限制训练时间。然而，您可以将模型训练更多作为本教程的延伸部分。）
 - en: 'You also need to implement a learning rate scheduler that initially increases
     the learning rate linearly for the first *warmup_steps* and then decreases it
     proportionally to the inverse square root of the step number. Vaswani et al. express
     this by the following formula:'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 您还需要实现一个学习率调度器，该调度器最初会线性增加前`warmup_steps`的学习率，然后按步骤数的倒数平方根比例减少它。Vaswani等人通过以下公式表示这一点：
 - en: $$\text{learning_rate} = \text{d_model}^{−0.5} \cdot \text{min}(\text{step}^{−0.5},
     \text{step} \cdot \text{warmup_steps}^{−1.5})$$
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\text{learning_rate} = \text{d_model}^{−0.5} \cdot \text{min}(\text{step}^{−0.5},
+    \text{step} \cdot \text{warmup_steps}^{−1.5})$$
 - en: Python
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE21]'
+  id: totrans-108
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'An instance of the `LRScheduler` class is subsequently passed on as the `learning_rate`
     argument of the Adam optimizer:'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 随后将`LRScheduler`类的一个实例作为Adam优化器的`learning_rate`参数传递：
 - en: Python
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE22]'
+  id: totrans-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'Next,  split the dataset into batches in preparation for training:'
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，将数据集分割成批次，以准备进行训练：
 - en: Python
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE23]'
+  id: totrans-114
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'This is followed by the creation of a model instance:'
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 这之后是创建一个模型实例：
 - en: Python
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE24]'
+  id: totrans-117
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: In training the Transformer model, you will write your own training loop, which
     incorporates the loss and accuracy functions that were implemented earlier.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 在训练Transformer模型时，您将编写自己的训练循环，该循环包含先前实现的损失和精度函数。
 - en: The default runtime in Tensorflow 2.0 is *eager execution*, which means that
     operations execute immediately one after the other. Eager execution is simple
     and intuitive, making debugging easier. Its downside, however, is that it cannot
@@ -465,156 +713,233 @@
     training rather than for small model training, where eager execution may be more
     suited to perform simpler operations. Since the Transformer model is sufficiently
     large, apply the graph execution to train it.
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Tensorflow 2.0中，默认的运行时是急切执行，这意味着操作立即执行。急切执行简单直观，使得调试更容易。然而，它的缺点是不能利用在*图执行*中运行代码的全局性能优化。在图执行中，首先构建一个图形，然后才能执行张量计算，这会导致计算开销。因此，对于大模型训练，通常建议使用图执行，而不是对小模型训练使用急切执行更合适。由于Transformer模型足够大，建议应用图执行来进行训练。
 - en: 'In order to do so, you will use the `@function` decorator as follows:'
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了这样做，您将如下使用`@function`装饰器：
 - en: Python
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE25]'
+  id: totrans-122
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: With the addition of the `@function` decorator, a function that takes tensors
     as input will be compiled into a graph. If the `@function` decorator is commented
     out, the function is, alternatively, run with eager execution.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 添加了`@function`装饰器后，接受张量作为输入的函数将被编译为图形。如果`@function`装饰器被注释掉，则该函数将通过急切执行运行。
 - en: 'The next step is implementing the training loop that will call the `train_step`
     function above. The training loop will iterate over the specified number of epochs
     and the dataset batches. For each batch, the `train_step` function computes the
     training loss and accuracy measures and applies the optimizer to update the trainable
     model parameters. A checkpoint manager is also included to save a checkpoint after
     every five epochs:'
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一步是实现训练循环，该循环将调用上述的`train_step`函数。训练循环将遍历指定数量的时代和数据集批次。对于每个批次，`train_step`函数计算训练损失和准确度度量，并应用优化器来更新可训练的模型参数。还包括一个检查点管理器，以便每五个时代保存一个检查点：
 - en: Python
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE26]'
+  id: totrans-126
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: An important point to keep in mind is that the input to the decoder is offset
     by one position to the right with respect to the encoder input. The idea behind
     this offset, combined with a look-ahead mask in the first multi-head attention
     block of the decoder, is to ensure that the prediction for the current token can
     only depend on the previous tokens.
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要记住的一个重要点是，解码器的输入相对于编码器输入向右偏移一个位置。这种偏移的背后思想，与解码器的第一个多头注意力块中的前瞻遮罩结合使用，是为了确保当前令牌的预测仅依赖于先前的令牌。
 - en: '*This masking, combined with fact that the output embeddings are offset by
     one position, ensures that the predictions for position i can depend only on the
     known outputs at positions less than i.*'
+  id: totrans-128
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*这种掩码，结合输出嵌入偏移一个位置的事实，确保了位置 i 的预测只能依赖于位置小于 i 的已知输出。*'
 - en: ''
+  id: totrans-129
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017.'
+  id: totrans-130
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [Attention Is All You Need](https://arxiv.org/abs/1706.03762)，2017。'
 - en: 'It is for this reason that the encoder and decoder inputs are fed into the
     Transformer model in the following manner:'
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 正因如此，编码器和解码器输入是以以下方式输入到 Transformer 模型中的：
 - en: '`encoder_input = train_batchX[:, 1:]`'
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: '`encoder_input = train_batchX[:, 1:]`'
 - en: '`decoder_input = train_batchY[:, :-1]`'
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: '`decoder_input = train_batchY[:, :-1]`'
 - en: 'Putting together the complete code listing produces the following:'
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 汇总完整的代码列表如下：
 - en: Python
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE27]'
+  id: totrans-136
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: 'Running the code produces a similar output to the following (you will likely
     see different loss and accuracy values because the training is from scratch, whereas
     the training time depends on the computational resources that you have available
     for training):'
+  id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行代码会产生类似于以下的输出（你可能会看到不同的损失和准确率值，因为训练是从头开始的，而训练时间取决于你用于训练的计算资源）：
 - en: Python
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE28]'
+  id: totrans-139
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: It takes 155.13s for the code to run using eager execution alone on the same
     platform that is making use of only a CPU, which shows the benefit of using graph
     execution.
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 在仅使用 CPU 的相同平台上，仅使用即时执行需要 155.13 秒来运行代码，这显示了使用图执行的好处。
 - en: '**Further Reading**'
+  id: totrans-141
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于此主题的资源，如果你希望更深入地了解。
 - en: '**Books**'
+  id: totrans-143
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X),
     2019'
+  id: totrans-144
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Advanced Deep Learning with Python](https://www.amazon.com/Advanced-Deep-Learning-Python-next-generation/dp/178995617X)，2019'
 - en: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798),
     2021'
+  id: totrans-145
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Transformers for Natural Language Processing](https://www.amazon.com/Transformers-Natural-Language-Processing-architectures/dp/1800565798)，2021'
 - en: '**Papers**'
+  id: totrans-146
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762), 2017'
+  id: totrans-147
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Attention Is All You Need](https://arxiv.org/abs/1706.03762)，2017'
 - en: '**Websites**'
+  id: totrans-148
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: 'Writing a training loop from scratch in Keras: [https://keras.io/guides/writing_a_training_loop_from_scratch/](https://keras.io/guides/writing_a_training_loop_from_scratch/)'
+  id: totrans-149
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从头开始在 Keras 中编写训练循环：[https://keras.io/guides/writing_a_training_loop_from_scratch/](https://keras.io/guides/writing_a_training_loop_from_scratch/)
 - en: '**Summary**'
+  id: totrans-150
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered how to train the Transformer model for neural
     machine translation.
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了如何训练 Transformer 模型进行神经机器翻译。
 - en: 'Specifically, you learned:'
+  id: totrans-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to prepare the training dataset
+  id: totrans-153
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何准备训练数据集
 - en: How to apply a padding mask to the loss and accuracy computations
+  id: totrans-154
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将填充掩码应用于损失和准确率计算
 - en: How to train the Transformer model
+  id: totrans-155
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何训练 Transformer 模型
 - en: Do you have any questions?
+  id: totrans-156
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论中提出你的问题，我将尽力回答。
