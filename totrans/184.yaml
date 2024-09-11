@@ -1,8 +1,10 @@
 - en: Prompting Techniques for Stable Diffusion
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 原文：[https://machinelearningmastery.com/prompting-techniques-stable-diffusion/](https://machinelearningmastery.com/prompting-techniques-stable-diffusion/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -11,52 +13,65 @@
     one. An incomplete or poorly constructed prompt would make the resulting image
     not as you would expect. In this post, you will learn some key techniques to construct
     a prompt and see how much a good prompt can create a good image.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s get started.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
 - en: '![](../Images/4c258325c6731c83eea3d0eb983807d1.png)'
+  id: totrans-5
   prefs: []
   type: TYPE_IMG
 - en: Prompting Techniques for Stable Diffusion
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
 - en: Photo by [Sangga Rima Roman Selia](https://unsplash.com/photos/zone-and-u-turn-road-signs-Y4EQtlfOLm4).
     Some rights reserved.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: Overview
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'This post is in three parts; they are:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
 - en: Parameters Affecting the Output
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Characteristics of an Effective Prompt
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Emphasizing Keywords
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Parameters Affecting the Output
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Several parameters affect the output in Stable Diffusion. The model has a vast
     impact on the style of the drawing. The sampler and step count matters for the
     quality of the generation. But the prompt guides the content in the output.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'The base Stable Diffusion models are generic for multiple uses. But some models
@@ -64,15 +79,18 @@
     will easily produce pictures in the style of Japanese anime, while “Realistic
     Vision” model gives photorealistic output. You can download these models from
     Hugging Face Hub or from Civitai (recommended):'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'Anything: [https://civitai.com/models/9409](https://civitai.com/models/9409),
     [https://huggingface.co/stablediffusionapi/anything-v5](https://huggingface.co/stablediffusionapi/anything-v5)'
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Realistic Vision: [https://civitai.com/models/4201](https://civitai.com/models/4201),
     [https://huggingface.co/SG161222/Realistic_Vision_V6.0_B1_noVAE](https://huggingface.co/SG161222/Realistic_Vision_V6.0_B1_noVAE)'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -81,6 +99,7 @@
     the model itself, note also the base model versions. The most common are SD 1.5
     and SDXL 1.0\. Using a different base model may cause compatibility issues with
     other parts of the pipeline, including how the prompts are understood.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: In theory, the diffusion model requires hundreds of steps to generate an image.
@@ -90,303 +109,455 @@
     Generally speaking, the more steps you use, the more accurate the result is. However,
     the effect of step count depends on the sampler chosen. As a ballpark, most samplers
     should use around 20 to 40 steps for the best balance between quality and speed.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 理论上，扩散模型需要数百步才能生成图像。但实际上，扩散模型是可以写成微分方程的数学模型；有方法可以近似解决这个方程。采样器和步数控制了近似解的求解方式。一般来说，步数越多，结果越准确。然而，步数的效果依赖于选择的采样器。作为一个大致的参考，大多数采样器应该使用约20到40步，以获得质量和速度之间的最佳平衡。
 - en: The prompt affects the output for a trivial reason. In every step, the U-net
     in Stable Diffusion will use the prompt to guide the refinement of noise into
     a picture. Different models understood the prompt differently, just as humans
     understand a word with different preconceptions. However, a general rule is that
     you should write the prompt in such a way that limits the room for reinterpretation.
     Let’s look into this with some examples.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 提示会影响输出，原因非常简单。在每一步，Stable Diffusion中的U-net会使用提示来指导噪声的细化。不同的模型对提示有不同的理解，就像人们对一个词有不同的预设。然而，一条普遍的规则是，你应该以这样的方式编写提示，以限制重新解释的空间。让我们通过一些示例来了解这一点。
 - en: Characteristics of an Effective Prompt
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 有效提示的特点
 - en: A prompt should be specific and explicit in what needs to be in the picture.
     Having a list of keywords handy makes prompting a piece of cake. Let’s understand
     the different categories of keywords, and then we will look into examples in each
     category.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 提示应该具体明确地描述需要在图像中呈现的内容。随手准备一份关键词列表可以让提示变得非常简单。我们先了解一下不同类别的关键词，然后再看每个类别的示例。
 - en: Subject or Object
+  id: totrans-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 主体或对象
 - en: The core of a prompt lies in describing the details of the expected image. Therefore,
     it is important to imagine it first. Let’s understand this using a prompt example.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 提示的核心在于描述预期图像的细节。因此，首先要先想象出来。让我们通过一个提示示例来理解这一点。
 - en: A young woman with an FC Barcelona jersey celebrating a goal with football players
     and a crowd in the background.
+  id: totrans-25
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一位穿着FC Barcelona球衣的年轻女子在庆祝进球，背景有足球运动员和观众。
 - en: 'The various settings picked for generating the image are given below:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成图像所选择的各种设置如下：
 - en: 'Model: Realistic Vision V6.0 B1 (VAE)'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 模型：Realistic Vision V6.0 B1（VAE）
 - en: 'Sampling method: DPM++ 2M Keras'
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 采样方法：DPM++ 2M Keras
 - en: 'Sampling steps: 20'
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 采样步骤：20
 - en: 'CFG Scale: 7'
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: CFG比例：7
 - en: 'Width × Height: 512 × 512'
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 宽 × 高：512 × 512
 - en: 'A negative prompt: Will explain in subsequent sections'
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 负面提示：将在后续章节中解释
 - en: 'Batch size and count: 1'
+  id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 批次大小和数量：1
 - en: '![](../Images/654ce2cd0e0c69a8bae30951193ba949.png)'
+  id: totrans-34
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/654ce2cd0e0c69a8bae30951193ba949.png)'
 - en: Generating an image in Stable Diffusion using a prompt
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用提示在Stable Diffusion中生成图像
 - en: Not bad for a first attempt.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于第一次尝试来说，还不错。
 - en: '![](../Images/794e26ec2a06c42d673efea5651b5315.png)'
+  id: totrans-37
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/794e26ec2a06c42d673efea5651b5315.png)'
 - en: Generation using a simple prompt
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用简单提示进行生成
 - en: Let’s enhance this further.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们进一步完善这个。
 - en: '**Note**: Image generation is a random process. Hence you may see a vastly
     different output. In fact, unless you fixed  the random seed, the image you generate
     each time with the same prompt and parameters will be different.'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意**：图像生成是一个随机过程。因此，你可能会看到截然不同的输出。实际上，除非你固定了随机种子，否则每次使用相同的提示和参数生成的图像都会有所不同。'
 - en: Medium
+  id: totrans-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 介质
 - en: How is the image created? Adding the medium of image creation makes the prompt
     even more **specific**. Whether the image is a photograph, a digital painting,
     a 3D rendering, or an oil painting is called the medium.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 图像是如何创建的？添加图像创作介质使提示变得更加**具体**。无论图像是照片、数字画作、3D渲染还是油画，都称为介质。
 - en: 'We can also add adjectives to it such as:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以添加一些形容词，例如：
 - en: Ultra-realistic photograph
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 超现实主义照片
 - en: Portrait digital painting
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 人物数字画作
 - en: Concept art
+  id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 概念艺术
 - en: Underwater oil painting
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 水下油画
 - en: 'Let us add a medium to our prompt:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们在提示中添加一个介质：
 - en: Ultra-realistic photography of a young woman with an FC Barcelona jersey celebrating
     a goal with football players and a crowd in the background.
+  id: totrans-49
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一位穿着FC Barcelona球衣的年轻女子在庆祝进球，背景有足球运动员和观众。
 - en: Below are the results.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是结果。
 - en: '![](../Images/9aa143046c534bbd2823206a540df0fe.png)'
+  id: totrans-51
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/9aa143046c534bbd2823206a540df0fe.png)'
 - en: Prompt with photography medium
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 带摄影介质的提示
 - en: Not much difference because the model used assumes a realistic, photography-like
     output by default. The difference will be more pronounced if a different model
     has been used.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 区别不大，因为使用的模型默认假设为逼真的摄影效果。如果使用不同的模型，区别会更明显。
 - en: Artistic Style
+  id: totrans-54
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 艺术风格
 - en: Keywords such as modernist, impressionist, pop art, surrealist, art nouveau,
     hyperrealistic, and so on add an artistic angle to the image. Let’s understand
     this by modifying our prompt.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 现代主义、印象派、波普艺术、超现实主义、新艺术运动、超现实主义等关键词为图像增添了艺术感。让我们通过修改我们的提示来理解这一点。
 - en: A pop art ultra-realistic portrait of a young woman with an FC Barcelona jersey
     celebrating a goal with football players and a crowd in the background.
+  id: totrans-56
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一幅波普艺术超现实主义风格的年轻女性肖像，穿着FC巴萨球衣，庆祝进球，背景有足球运动员和人群。
 - en: 'Below are the results:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是结果：
 - en: '![](../Images/71560218725385e913684572f6488c33.png)'
+  id: totrans-58
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/71560218725385e913684572f6488c33.png)'
 - en: Image generated with artistic style in the prompt
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 具有艺术风格的生成图像
 - en: Limited by the model to keep it photograph-like, but the pop art style makes
     the output use more primary colors (red, yellow, blue) and the color change in
     the face is more abrupt.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 受模型限制保持照片般的效果，但波普艺术风格使输出使用更多的主色（红色、黄色、蓝色），脸上的颜色变化更为突兀。
 - en: Famous Artist Names
+  id: totrans-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 著名艺术家名字
 - en: Adding artist names picks the style of the artist. Multiple artist names can
     be mentioned to combine their styles. Let’s add the two artists’ names as Stanley
     Artgerm Lau, a superhero comic artist, and Agnes Martin, a Canadian-American abstract
     painter. A good reference for artist names can be found [here](https://stablediffusion.fr/artists).
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 添加艺术家名字可以选择艺术家的风格。可以提到多个艺术家名字以结合他们的风格。让我们添加两位艺术家的名字，斯坦利·阿特杰姆·劳（Stanley Artgerm
+    Lau），一位超级英雄漫画艺术家，以及加拿大裔美国抽象画家阿格尼丝·马丁（Agnes Martin）。关于艺术家名字的好参考可以在[这里](https://stablediffusion.fr/artists)找到。
 - en: A pop art ultra-realistic portrait of a young woman with an FC Barcelona jersey
     celebrating a goal with football players and a crowd in the background, by Stanley
     Artgerm Lau and Agnes Martin.
+  id: totrans-63
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一幅波普艺术超现实主义风格的年轻女性肖像，穿着FC巴萨球衣，庆祝进球，背景有足球运动员和人群，由斯坦利·阿特杰姆·劳和阿格尼丝·马丁创作。
 - en: '![](../Images/01a111d46b1a7ce54016d658965b5393.png)'
+  id: totrans-64
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/01a111d46b1a7ce54016d658965b5393.png)'
 - en: Added artist name to the prompt
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 添加了艺术家名字到提示中
 - en: Since multiple artist names are provided, the output can be creative.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于提供了多个艺术家名字，输出可以更具创意。
 - en: Website
+  id: totrans-67
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 网站
 - en: Websites such as Artstation and Deviant Art have graphics of multiple genres.
     Adding these website names adds a style specific to them.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 网站如Artstation和Deviant Art有多种风格的图形。添加这些网站名称会增加特定的风格。
 - en: Let’s add “artstation” to our prompt.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们在提示中添加“artstation”。
 - en: '![](../Images/a5320226818704a1e0f813cd92e8b605.png)'
+  id: totrans-70
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/a5320226818704a1e0f813cd92e8b605.png)'
 - en: By providing a website name to the prompt, some abstract background may be produced.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过在提示中提供网站名称，可能会产生一些抽象背景。
 - en: Resolution
+  id: totrans-72
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 分辨率
 - en: Adding resolution specifications such as highly detailed, HD, 4K, 8K, vray,
     unreal engine, or sharp focus helps get much more details in the image. Let’s
     try this out.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 添加分辨率规格，如高详细度、HD、4K、8K、vray、虚幻引擎或清晰对焦，有助于获取更多图像细节。让我们尝试一下。
 - en: A pop art ultra-realistic portrait of a young woman with an FC Barcelona jersey
     celebrating a goal with football players and a crowd in the background, by Stanley
     Artgerm Lau and Agnes Martin, artstation, 4K, sharp focus.
+  id: totrans-74
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一幅波普艺术超现实主义风格的年轻女性肖像，穿着FC巴萨球衣，庆祝进球，背景有足球运动员和人群，由斯坦利·阿特杰姆·劳和阿格尼丝·马丁创作，artstation，4K，清晰对焦。
 - en: '![](../Images/7d11cdeedde176458dce53d3bb74e54a.png)'
+  id: totrans-75
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/7d11cdeedde176458dce53d3bb74e54a.png)'
 - en: Specifying 4K and sharp focus will emphasize the texture details
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 指定4K和清晰对焦将强调纹理细节。
 - en: You may have notice that the prompt doesn’t need to be a sentence. You can also
     put in the keywords separated by comma. The embedding engine can understand it
     well.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能注意到，提示不需要是完整的句子。你也可以用逗号分隔的关键词。嵌入引擎可以很好地理解。
 - en: Lighting
+  id: totrans-78
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 灯光
 - en: 'Adding lighting keywords can enhance the look and feel of the scene. Examples
     include rim lighting, cinematic lighting, volumetric lighting, crepuscular rays,
     backlight, or dimly lit. So you can modify the prompt into:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 添加灯光关键词可以增强场景的外观和感觉。例如，边缘光、电影灯光、体积光、暮光射线、逆光或微光等。所以你可以将提示修改为：
 - en: A pop art ultra-realistic portrait of a young woman with an FC Barcelona jersey
     celebrating a goal with football players and a crowd in the background, by Stanley
     Artgerm Lau and Agnes Martin, artstation, 4K, sharp focus, rim lighting.
+  id: totrans-80
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一幅流行艺术风格的超现实主义年轻女性肖像，她穿着 FC 巴萨球衣，在背景中与足球运动员和人群一起庆祝进球，作者为 Stanley Artgerm Lau
+    和 Agnes Martin，artstation，4K，清晰对焦，边缘光。
 - en: '![](../Images/4b131f8e68b113804fb2f7b5069276c2.png)'
+  id: totrans-81
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4b131f8e68b113804fb2f7b5069276c2.png)'
 - en: Prompt with “rim lighting” will enhance the outline
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 带有“边缘光”的提示将增强轮廓
 - en: If you are not familiar with photography, rim lighting is to set up light **behind**
     the subject such that the **rim** of the subject will be outlined by the light.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你不熟悉摄影，边缘光就是在被摄体**后面**设置光线，使被摄体的**边缘**被光线勾勒出来。
 - en: We can also use ControlNets or Regional Prompter to have much greater control.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以使用 ControlNets 或区域提示器来获得更大的控制。
 - en: Color
+  id: totrans-85
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 颜色
 - en: The overall color tone of the image can be controlled using any color keyword.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 图像的整体色调可以使用任何颜色关键词来控制。
 - en: A pop art ultra-realistic portrait of a young woman with an FC Barcelona jersey
     celebrating a goal with football players and a crowd in the background, by Stanley
     Artgerm Lau and Agnes Martin, artstation, 4K, sharp focus, rim lighting, cyan.
+  id: totrans-87
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一幅流行艺术风格的超现实主义年轻女性肖像，她穿着 FC 巴萨球衣，在背景中与足球运动员和人群一起庆祝进球，作者为 Stanley Artgerm Lau
+    和 Agnes Martin，artstation，4K，清晰对焦，边缘光，青色。
 - en: '![](../Images/a1a048647746f657c0102221f825b59f.png)'
+  id: totrans-88
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/a1a048647746f657c0102221f825b59f.png)'
 - en: Adding “cyan” to the prompt will introduce more of such color to the output.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 将“青色”添加到提示中将使输出中更多地出现这种颜色。
 - en: Ok, we can see some cyan in the images now. But since the prompt didn’t say
     “cyan shirt” or “cyan dye hair”, you left the room for reinterpretation so the
     color may appear anywhere.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，我们现在可以看到图像中有一些青色。但由于提示中没有提到“青色衬衫”或“青色染发”，所以你留下了重新解释的空间，因此颜色可能出现在任何地方。
 - en: Using Negative Prompts
+  id: totrans-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用负面提示
 - en: Rather than describing what should be in the image, the negative prompt is a
     way to describe what should not be present in the image. This can include attributes,
     objects, or styles. We can have a generic prompt like the one below for all our
     image-generation tasks. The good thing about negative prompt is that you can keep
     a standard template for negative prompt to reuse for many tasks. But some models
     (such as SD 2.0 or SD XL) are less dependent on the negative prompt.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 与其描述图像中应该包含什么，不如使用负面提示描述图像中不应该出现的内容。这可以包括属性、对象或风格。我们可以为所有图像生成任务使用下面这样的通用提示。负面提示的好处是可以为负面提示保持一个标准模板，以便在多个任务中重用。但一些模型（如
+    SD 2.0 或 SD XL）对负面提示的依赖较小。
 - en: (worst quality, low quality, normal quality, low-res, low details, oversaturated,
     undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography,
     bad art:1.4), (watermark, signature, text font, username, error, logo, words,
@@ -396,183 +567,238 @@
     duplicate, (airbrushed, cartoon, anime, semi-realistic, CGI, render, blender,
     digital art, manga, amateur:1.3), (3D,3D Game, 3D Game Scene, 3D Character:1.1),
     (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3)
+  id: totrans-93
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: （最差质量、低质量、普通质量、低分辨率、细节少、过饱和、欠饱和、过度曝光、欠曝光、灰度、黑白、糟糕照片、糟糕摄影、糟糕艺术:1.4），（水印、签名、文本字体、用户名、错误、徽标、文字、字母、数字、签名、商标、名字:1.2），（模糊、模糊、颗粒状），病态、丑陋、不对称、变异畸形、肢解、光线差、阴影差、草图、裁剪、框架外、切断、审查、JPEG伪影、失焦、故障、重复，（喷涂、卡通、动漫、半现实主义、CGI、渲染、Blender、数字艺术、漫画、业余:1.3），（3D、3D游戏、3D游戏场景、3D角色:1.1），（手部不好、解剖不好、身体不好、脸部不好、牙齿不好、手臂不好、腿部不好、畸形:1.3）
 - en: We have already used this prompt in our generations so far.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经在我们的生成中使用了这个提示。
 - en: Emphasizing Keywords
+  id: totrans-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 强调关键词
 - en: 'We can let stable diffusion know if we want to emphasize some keywords within
     the prompt and to what extent. This can be achieved using the below methods:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以让稳定扩散知道如果我们想强调提示中的某些关键词以及程度。这可以通过以下方法实现：
 - en: Use of Factor
+  id: totrans-97
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用因子
 - en: 'We can modify a keyword’s weightage using the syntax (keyword: factor). The
     factor is the numeric value. Let’s try this in our example.'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用语法 (关键词:因子) 来修改关键词的权重。因子是数字值。让我们在我们的示例中试试这个。
 - en: 'A pop art ultra-realistic portrait of a young woman with an FC Barcelona jersey
     (celebrating: 2) a goal with football players and a crowd in the background, by
     Stanley Artgerm Lau and Agnes Martin, artstation, 4K, sharp focus, rim lighting,
     cyan.'
+  id: totrans-99
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '![](../Images/1d9460620ad234efb1b154432e9e007e.png)'
+  id: totrans-100
   prefs: []
   type: TYPE_IMG
 - en: Emphasizing the keyword “celebrating” in prompt
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
 - en: Not in the same line as the previous generations. Maybe the model has a different
     take on celebration. That’s also an example of why you need to experiment with
     the prompts.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
 - en: Another way to add emphasis is the use of round brackets. It has the same effect
     as using a factor of 1.1\. We can also use double or triple brackets for higher
     emphasis.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
 - en: '(keyword) is equivalent to (keyword: 1.1)'
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '((keyword)) is equivalent to (keyword: 1.21)'
+  id: totrans-105
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '(((keyword))) is equivalent to (keyword: 1.33)'
+  id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Similarly, the effects of using multiple square brackets are:'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
 - en: '[keyword] is equivalent to (keyword: 0.9)'
+  id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[[keyword]] is equivalent to (keyword: 0.81)'
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[[[keyword]]] is equivalent to (keyword: 0.73)'
+  id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Keyword Blending
+  id: totrans-111
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: As the name suggests, keyword blending can help combine the effects of multiple
     subjects at once. Popular ways of keyword blending are below.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
 - en: '[keyword1 : keyword2: factor]'
+  id: totrans-113
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '(keyword1: factor1), (keyword2: factor2)'
+  id: totrans-114
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Let’s use the second format in our prompt.
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
 - en: 'A pop art ultra-realistic portrait of a young woman, (Gal Gadot: 0.9), (Scarlett
     Johansson: 1.1), with an FC Barcelona jersey celebrating a goal with football
     players and a crowd in the background, by Stanley Artgerm Lau and Agnes Martin,
     artstation, 4K, sharp focus, rim lighting, cyan.'
+  id: totrans-116
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '![](../Images/36c47e20a63700a672fef8f881f25aef.png)'
+  id: totrans-117
   prefs: []
   type: TYPE_IMG
 - en: Controlling how the face should look like by prompting
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
 - en: That’s a good hybrid. It’s Marvel vs DC on the football field. However, it looks
     like the model completely forgot about the celebration, crowd, and player in the
     process. That can be improved by trying to create a prompt differently or rephrase
     it.
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
 - en: 'Finally, below is the effect of applying the same prompt, but to use the model
     Anything XL v5.0 instead. This is a model for anime or cartoon style. The difference
     should be very obvious:'
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
 - en: '![](../Images/a3421d3bcb6613c0d9a96c348208a97b.png)'
+  id: totrans-121
   prefs: []
   type: TYPE_IMG
 - en: Cartoon style obtained by using the same prompt but a different model
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
 - en: To summarize, there is a lot to experiment with when it comes to prompting a
     stable diffusion generator and expertise can only come with practice. So keep
     practicing!
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
 - en: Further Readings
+  id: totrans-124
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Below are some resources that might help you in prompting:'
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
 - en: '[Stable Diffusion page](https://wiki.installgentoo.com/wiki/Stable_Diffusion)
     from InstallGentoo wiki'
+  id: totrans-126
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[Data files](https://github.com/pharmapsychotic/clip-interrogator/tree/main/clip_interrogator/data)
     from the CLIP interrogator source code'
+  id: totrans-127
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Summary
+  id: totrans-128
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'In this post, you learned how to create a prompt to make Stable Diffusion generate
     a picture you like. You learned that the key is to give a specific description
     of the picture. You should include in the prompt:'
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
 - en: 'The subject: What the main focus looks like. If a person describes the clothing,
     action, and pose, it would help a lot.'
+  id: totrans-130
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 主题：主要焦点的外观。如果描述人物的服装、动作和姿势，将会有很大帮助。
 - en: 'The medium and style: Tell if it is a photograph, a sketch, or a watercolor
     painting, for example'
+  id: totrans-131
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 媒介和风格：例如，说明它是照片、素描还是水彩画。
 - en: Name of some artists or a website if you want it to be in a particular style
+  id: totrans-132
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一些艺术家或网站的名称，如果你希望作品具有特定风格的话。
 - en: 'Resolution and lighting: You get more details by giving 4K and sharp focus.
     Describing the lighting will show a different effect, too.'
+  id: totrans-133
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 分辨率和光线：通过使用4K分辨率和清晰的对焦，你可以获得更多的细节。描述光线也会呈现出不同的效果。
 - en: 'Other details: You can add more descriptive features to the prompt, including
     the main color or the angle'
+  id: totrans-134
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 其他细节：你可以在提示中添加更多描述性的特征，包括主要颜色或角度。
 - en: The output provided by Stable Diffusion can vary a lot depending on many other
     parameters, including the model. You need to experiment to find the best generation.
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散生成的输出可以因许多其他参数而变化，包括模型。你需要进行实验以找到最佳的生成效果。

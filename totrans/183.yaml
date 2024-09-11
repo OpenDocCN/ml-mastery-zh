@@ -124,58 +124,72 @@
   id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设 $W_0\in \mathbb{R}^{d\times k}$ 表示一个预训练的权重矩阵，大小为 $\mathbb{R}^{d\times k}$（即，一个有
+    $d$ 行和 $k$ 列的实数矩阵），它通过 $\Delta W$（**更新矩阵**）进行变化，以使微调模型的权重为
 - en: $$ W’ = W_0 + \Delta W$$
   id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: $$ W’ = W_0 + \Delta W$$
 - en: 'LoRA use the technique lowers the rank of this update matrix $\Delta W$ by
     rank decomposition such that:'
   id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: LoRA 使用这种技术，通过秩分解来降低更新矩阵 $\Delta W$ 的秩，使得：
 - en: $$
   id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \Delta W = B \times A
   id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: \Delta W = B \times A
 - en: $$
   id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: where $B\in\mathbb{R}^{d\times r}$ and $A\in\mathbb{R}^{r\times k}$, such that
     $r\ll \min(k,d)$$.
   id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中 $B\in\mathbb{R}^{d\times r}$ 和 $A\in\mathbb{R}^{r\times k}$，使得 $r\ll \min(k,d)$$。
 - en: '![](../Images/4f78c9876b1fb0e86862a50cbb762221.png)'
   id: totrans-24
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4f78c9876b1fb0e86862a50cbb762221.png)'
 - en: Breaking a matrix into two lower rank matrices
   id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 将矩阵拆分为两个低秩矩阵
 - en: 'By freezing $W_0$ (to save memory), we can fine-tune $A$ and $B$, which contain
     the trainable parameters for adaptation. This results in the fine-tuned model’s
     forward pass looking like this:'
   id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过冻结 $W_0$（以节省内存），我们可以微调 $A$ 和 $B$，这包含了用于适应的可训练参数。这导致微调后的模型的前向传递如下：
 - en: $$
   id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: h = W’x = W_0 x + BA x
   id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: h = W’x = W_0 x + BA x
 - en: $$
   id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: For Stable diffusion fine-tuning, it’s sufficient to apply rank decomposition
     to cross-attention layers (shaded below) which are responsible for integrating
     the prompt and image information.  Specifically, the weight matrices $W_O$, $W_Q$,
@@ -185,20 +199,25 @@
   id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于稳定扩散微调，应用秩分解到交叉注意力层（下方阴影部分）就足够了，这些层负责整合提示和图像信息。具体来说，这些层中的权重矩阵 $W_O$、$W_Q$、$W_K$
+    和 $W_V$ 被分解以降低权重更新的秩。通过冻结其他 MLP 模块并仅微调分解后的矩阵 $A$ 和 $B$，LoRA 模型可以实现更小的文件大小，同时速度更快。
 - en: '![](../Images/4b5e0eec24a9e8aca0e6b3943b472e8a.png)'
   id: totrans-31
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4b5e0eec24a9e8aca0e6b3943b472e8a.png)'
 - en: Workflow of Stable Diffusion. The crossattention modules can be modified by
     LoRA.
   id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散的工作流程。交叉注意力模块可以被 LoRA 修改。
 - en: Checkpoint or LoRA?
   id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 检查点还是 LoRA？
 - en: A checkpoint model is a complete, pre-trained model saved at a particular state
     during training. It contains all the parameters learned during training and can
     be used for inference or fine-tuning. However, fine-tuning a checkpoint model
@@ -207,6 +226,8 @@
   id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查点模型是一个在训练期间保存于特定状态的完整预训练模型。它包含了训练过程中学习到的所有参数，可以用于推理或微调。然而，微调检查点模型需要更新模型中的所有权重，这可能会计算量大且文件大小较大（对于稳定扩散，通常为几
+    GB）。
 - en: On the other hand, LoRA (Low-Rank Adaptation) models are much smaller and more
     efficient. It behaves as an adapter that builds on the top of a checkpoint model
     (foundation or base model). LoRA models update only a subset of a checkpoint model’s
@@ -215,6 +236,8 @@
   id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，LoRA（低秩适应）模型要小得多且更高效。它作为一种适配器，建立在检查点模型（基础模型）的基础之上。LoRA 模型仅更新检查点模型的部分参数（增强检查点模型）。这使得这些模型体积较小（通常为
+    2MB 到 500MB），并且可以频繁地针对特定概念或风格进行微调。
 - en: 'For example, fine-tuning a Stable Diffusion model may be done with DreamBooth.
     DreamBooth is a fine-tuning method that updates the entire model to adapt to a
     specific concept or style. While it can produce impressive results, it comes with
@@ -226,6 +249,9 @@
   id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，稳定扩散模型的微调可以使用 DreamBooth。DreamBooth 是一种微调方法，它更新整个模型以适应特定的概念或风格。虽然它可以产生令人印象深刻的结果，但也有一个显著的缺点：**微调模型的大小**。由于
+    DreamBooth 更新了整个模型，结果检查点模型可能非常大（约 2 到 7 GB），并且需要大量 GPU 资源进行训练。相比之下，LoRA 模型显著减少了
+    GPU 需求，但推断效果仍然与 DreamBooth 检查点相当。
 - en: 'While it is the most common, LoRA is not the only way to modify Stable Diffusion.
     Refer to the workflow as illustrated above, the crossattention module took input
     $\tau_\theta$, which usually resulted from converting the prompt text into text
