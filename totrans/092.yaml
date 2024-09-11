@@ -1,142 +1,219 @@
 - en: Web Crawling in Python
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Python 中的网页爬取
 - en: 原文：[https://machinelearningmastery.com/web-crawling-in-python/](https://machinelearningmastery.com/web-crawling-in-python/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/web-crawling-in-python/](https://machinelearningmastery.com/web-crawling-in-python/)
 - en: In the old days, it was a tedious job to collect data, and it was sometimes
     very expensive. Machine learning projects cannot live without data. Luckily, we
     have a lot of data on the web at our disposal nowadays. We can copy data from
     the web to create our dataset. We can manually download files and save them to
     the disk. But we can do it more efficiently by automating the data harvesting.
     There are several tools in Python that can help the automation.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 以前，收集数据是一项繁琐的工作，有时非常昂贵。机器学习项目离不开数据。幸运的是，如今我们可以利用大量的网络数据来创建数据集。我们可以从网络上复制数据来构建数据集。我们可以手动下载文件并保存到磁盘。但通过自动化数据采集，我们可以更高效地完成这项工作。Python
+    中有几种工具可以帮助实现自动化。
 - en: 'After finishing this tutorial, you will learn:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将学习到：
 - en: How to use the requests library to read online data using HTTP
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 requests 库通过 HTTP 读取在线数据
 - en: How to read tables on web pages using pandas
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 pandas 读取网页上的表格
 - en: How to use Selenium to emulate browser operations
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 Selenium 模拟浏览器操作
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的新书** [《Python 机器学习》](https://machinelearningmastery.com/python-for-machine-learning/)
+    **来启动您的项目**，其中包括*逐步教程*和所有示例的*Python 源代码*文件。'
 - en: Let’s get started!![](../Images/014f73ed74ab693ef2bb8ea377287b7c.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！！[](../Images/014f73ed74ab693ef2bb8ea377287b7c.png)
 - en: Web Crawling in Python
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 中的网页爬取
 - en: Photo by [Ray Bilcliff](https://www.pexels.com/photo/black-and-red-spider-on-web-in-close-up-photography-4805619/).
     Some rights reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Ray Bilcliff](https://www.pexels.com/photo/black-and-red-spider-on-web-in-close-up-photography-4805619/)
+    提供。保留所有权利。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是：
 - en: Using the requests library
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 requests 库
 - en: Reading tables on the web using pandas
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 pandas 读取网页上的表格
 - en: Reading dynamic content with Selenium
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Selenium 读取动态内容
 - en: Using the Requests Library
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 Requests 库
 - en: 'When we talk about writing a Python program to read from the web, it is inevitable
     that we can’t avoid the `requests` library. You need to install it (as well as
     BeautifulSoup and lxml that we will cover later):'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们谈到编写 Python 程序来从网络读取数据时，不可避免地，我们需要使用`requests`库。您需要安装它（以及我们稍后将介绍的 BeautifulSoup
+    和 lxml）：
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: It provides you with an interface that allows you to interact with the web easily.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 它为您提供了一个界面，使您可以轻松地与网页进行交互。
 - en: 'The very simple use case would be to read a web page from a URL:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个非常简单的用例是从 URL 读取网页：
 - en: '[PRE1]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '[PRE2]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'If you’re familiar with HTTP, you can probably recall that a status code of
     200 means the request is successfully fulfilled. Then we can read the response.
     In the above, we read the textual response and get the HTML of the web page. Should
     it be a CSV or some other textual data, we can get them in the `text` attribute
     of the response object. For example, this is how we can read a CSV from the Federal
     Reserve Economics Data:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您对 HTTP 比较熟悉，您可能会记得状态码 200 表示请求成功完成。然后我们可以读取响应。在上面的例子中，我们读取了文本响应并获取了网页的 HTML。如果是
+    CSV 或其他文本数据，我们可以在响应对象的`text`属性中获取它们。例如，这就是如何从联邦储备经济数据中读取 CSV 文件：
 - en: '[PRE3]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '[PRE4]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'If the data is in the form of JSON, we can read it as text or even let `requests`
     decode it for you. For example, the following is to pull some data from GitHub
     in JSON format and convert it into a Python dictionary:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果数据是 JSON 格式，我们可以将其作为文本读取，或者让`requests`为您解码。例如，以下是从 GitHub 拉取 JSON 格式的数据并将其转换为
+    Python 字典的操作：
 - en: '[PRE5]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '[PRE6]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'But if the URL gives you some binary data, such as a ZIP file or a JPEG image,
     you need to get them in the `content` attribute instead, as this would be the
     binary data. For example, this is how we can download an image (the logo of Wikipedia):'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 但如果 URL 返回的是一些二进制数据，比如 ZIP 文件或 JPEG 图像，您需要从`content`属性中获取它们，因为这是二进制数据。例如，这就是如何下载一张图片（维基百科的标志）：
 - en: '[PRE7]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Given we already obtained the web page, how should we extract the data? This
     is beyond what the `requests` library can provide to us, but we can use a different
     library to help. There are two ways we can do it, depending on how we want to
     specify the data.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 既然我们已经获得了网页，应该如何提取数据？这超出了`requests`库的功能，但我们可以使用其他库来帮助完成。根据我们想要指定数据的方式，有两种方法可以实现。
 - en: 'The first way is to consider the HTML as a kind of XML document and use the
     XPath language to extract the element. In this case, we can make use of the `lxml` library
     to first create a document object model (DOM) and then search by XPath:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一种方法是将 HTML 视为一种 XML 文档，并使用 XPath 语言提取元素。在这种情况下，我们可以利用 `lxml` 库首先创建文档对象模型（DOM），然后通过
+    XPath 进行搜索：
 - en: '[PRE8]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '[PRE9]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: XPath is a string that specifies how to find an element. The lxml object provides
     a function `xpath()` to search the DOM for elements that match the XPath string,
     which can be multiple matches. The XPath above means to find an HTML element anywhere
@@ -144,143 +221,218 @@
     and `class` beginning with “`CurrentConditions`.” We can learn this from the developer
     tools of the browser (e.g., the Chrome screenshot below) by inspecting the HTML
     source.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: XPath 是一个字符串，用于指定如何查找一个元素。lxml 对象提供了一个 `xpath()` 函数，用于搜索匹配 XPath 字符串的 DOM 元素，这可能会有多个匹配项。上述
+    XPath 意味着查找任何具有 `<span>` 标签且属性 `data-testid` 匹配 “`TemperatureValue`” 和 `class`
+    以 “`CurrentConditions`” 开头的 HTML 元素。我们可以通过检查 HTML 源代码在浏览器的开发者工具中（例如，下面的 Chrome
+    截图）了解到这一点。
 - en: '![](../Images/d516cc11a5a97395c96129cf51860901.png)'
+  id: totrans-36
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/d516cc11a5a97395c96129cf51860901.png)'
 - en: This example is to find the temperature of New York City, provided by this particular
     element we get from this web page. We know the first element matched by the XPath
     is what we need, and we can read the text inside the `<span>` tag.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 本示例旨在找到纽约市的温度，由我们从该网页获取的特定元素提供。我们知道 XPath 匹配的第一个元素就是我们需要的，我们可以读取 `<span>` 标签中的文本。
 - en: 'The other way is to use CSS selectors on the HTML document, which we can make
     use of the BeautifulSoup library:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种方法是使用 HTML 文档上的 CSS 选择器，我们可以利用 BeautifulSoup 库：
 - en: '[PRE10]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '[PRE11]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: In the above, we first pass our HTML text to BeautifulSoup. BeautifulSoup supports
     various HTML parsers, each with different capabilities. In the above, we use the
     `lxml` library as the parser as recommended by BeautifulSoup (and it is also often
     the fastest). CSS selector is a different mini-language, with pros and cons compared
     to XPath. The selector above is identical to the XPath we used in the previous
     example. Therefore, we can get the same temperature from the first matched element.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述过程中，我们首先将 HTML 文本传递给 BeautifulSoup。BeautifulSoup 支持各种 HTML 解析器，每种解析器都有不同的能力。在上述过程中，我们使用
+    `lxml` 库作为解析器，正如 BeautifulSoup 推荐的（它也通常是最快的）。CSS 选择器是一种不同的迷你语言，与 XPath 相比有其优缺点。上面的选择器与我们在之前示例中使用的
+    XPath 是相同的。因此，我们可以从第一个匹配的元素中获取相同的温度。
 - en: 'The following is a complete code to print the current temperature of New York
     according to the real-time information on the web:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是一个完整的代码示例，根据网页上的实时信息打印纽约市当前温度：
 - en: '[PRE12]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: As you can imagine, you can collect a time series of the temperature by running
     this script on a regular schedule. Similarly, we can collect data automatically
     from various websites. This is how we can obtain data for our machine learning
     projects.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你可以想象的那样，你可以通过定期运行这个脚本来收集温度的时间序列。同样，我们可以自动从各种网站收集数据。这就是我们如何为机器学习项目获取数据的方法。
 - en: Reading Tables on the Web Using Pandas
+  id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 Pandas 读取网页上的表格
 - en: 'Very often, web pages will use tables to carry data. If the page is simple
     enough, we may even skip inspecting it to find out the XPath or CSS selector and
     use pandas to get all tables on the page in one shot. It is simple enough to be
     done in one line:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 很多时候，网页会使用表格来承载数据。如果页面足够简单，我们甚至可以跳过检查它以找到 XPath 或 CSS 选择器，直接使用 pandas 一次性获取页面上的所有表格。这可以用一行代码简单实现：
 - en: '[PRE13]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '[PRE14]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: The `read_html()` function in pandas reads a URL and finds all the tables on
     the page. Each table is converted into a pandas DataFrame and then returns all
     of them in a list. In this example, we are reading the various interest rates
     from the Federal Reserve, which happens to have only one table on this page. The
     table columns are identified by pandas automatically.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: pandas 中的 `read_html()` 函数读取一个 URL，并查找页面上的所有表格。每个表格都被转换为 pandas DataFrame，然后将所有表格以列表形式返回。在此示例中，我们正在读取来自联邦储备系统的各种利率，该页面上只有一个表格。表格列由
+    pandas 自动识别。
 - en: Chances are that not all tables are what we are interested in. Sometimes, the
     web page will use a table merely as a way to format the page, but pandas may not
     be smart enough to tell. Hence we need to test and cherry-pick the result returned
     by the `read_html()` function.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 可能并非所有表格都是我们感兴趣的。有时，网页仅仅使用表格作为格式化页面的一种方式，但 pandas 可能无法聪明地识别这一点。因此，我们需要测试并挑选
+    `read_html()` 函数返回的结果。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用 Python 进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费 7 天邮件速成课程（附样例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，同时获取课程的免费 PDF 电子书版本。
 - en: Reading Dynamic Content With Selenium
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 Selenium 读取动态内容
 - en: 'A significant portion of modern-day web pages is full of JavaScripts. This
     gives us a fancier experience but becomes a hurdle to use as a program to extract
     data. One example is Yahoo’s home page, which, if we just load the page and find
     all news headlines, there are far fewer than what we can see on the browser:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 现代网页中有很大一部分充满了 JavaScript。这虽然提供了更炫的体验，但却成为了提取数据时的障碍。一个例子是 Yahoo 的主页，如果我们只是加载页面并查找所有新闻标题，那么看到的新闻数量远远少于在浏览器中看到的：
 - en: '[PRE15]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: This is because web pages like this rely on JavaScript to populate the content.
     Famous web frameworks such as AngularJS or React are behind powering this category.
     The Python library, such as `requests`, does not understand JavaScript. Therefore,
     you will see the result differently. If the data you want to fetch from the web
     is one of them, you can study how the JavaScript is invoked and mimic the browser’s
     behavior in your program. But this is probably too tedious to make it work.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是因为像这样的网站依赖 JavaScript 来填充内容。像 AngularJS 或 React 这样的著名 web 框架驱动了这一类别。Python
+    库，如 `requests`，无法理解 JavaScript。因此，你会看到不同的结果。如果你想从网页中获取的数据是其中之一，你可以研究 JavaScript
+    如何被调用，并在你的程序中模拟浏览器的行为。但这可能过于繁琐，难以实现。
 - en: 'The other way is to ask a real browser to read the web page rather than using `requests`.
     This is what Selenium can do. Before we can use it, we need to install the library:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种方法是让真实浏览器读取网页，而不是使用 `requests`。这正是 Selenium 可以做到的。在我们可以使用它之前，我们需要安装这个库：
 - en: '[PRE16]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: But Selenium is only a framework to control browsers. You need to have the browser
     installed on your computer as well as the driver to connect Selenium to the browser.
     If you intend to use Chrome, you need to download and install [ChromeDriver](https://chromedriver.chromium.org/downloads)
     too. You need to put the driver in the executable path so that Selenium can invoke
     it like a normal command. For example, in Linux, you just need to get the `chromedriver`
     executable from the ZIP file downloaded and put it in `/usr/local/bin`.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 但 Selenium 只是一个控制浏览器的框架。你需要在你的计算机上安装浏览器以及将 Selenium 连接到浏览器的驱动程序。如果你打算使用 Chrome，你还需要下载并安装[ChromeDriver](https://chromedriver.chromium.org/downloads)。你需要将驱动程序放在可执行路径中，以便
+    Selenium 可以像正常命令一样调用它。例如，在 Linux 中，你只需从下载的 ZIP 文件中获取 `chromedriver` 可执行文件，并将其放在
+    `/usr/local/bin` 中。
 - en: Similarly, if you’re using Firefox, you need the [GeckoDriver](https://github.com/mozilla/geckodriver/releases/).
     For more details on setting up Selenium, you should refer to [its documentation](https://www.selenium.dev/downloads/).
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似地，如果你使用的是 Firefox，你需要[GeckoDriver](https://github.com/mozilla/geckodriver/releases/)。有关设置
+    Selenium 的更多细节，你应该参考[其文档](https://www.selenium.dev/downloads/)。
 - en: 'Afterward, you can use a Python script to control the browser behavior. For
     example:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，你可以使用 Python 脚本来控制浏览器行为。例如：
 - en: '[PRE17]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'The above code works as follows. We first launch the browser in headless mode,
     meaning we ask Chrome to start but not display on the screen. This is important
     if we want to run our script remotely as there may not be any GUI support. Note
     that every browser is developed differently, and thus the options syntax we used
     is specific to Chrome. If we use Firefox, the code would be this instead:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码的工作方式如下。我们首先以无头模式启动浏览器，这意味着我们要求 Chrome 启动但不在屏幕上显示。如果我们想远程运行脚本，这一点很重要，因为可能没有图形用户界面支持。请注意，每个浏览器的开发方式不同，因此我们使用的选项语法特定于
+    Chrome。如果我们使用 Firefox，代码将会是这样的：
 - en: '[PRE18]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: After we launch the browser, we give it a URL to load. But since it takes time
     for the network to deliver the page, and the browser will take time to render
     it, we should wait until the browser is ready before we proceed to the next operation.
@@ -293,8 +445,13 @@
     wait until the page is ready again. Afterward, we can extract the news headline
     element using XPath (or alternatively using a CSS selector). Because the browser
     is an external program, we are responsible for closing it in our script.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们启动浏览器后，我们给它一个 URL 进行加载。但由于网络传输页面需要时间，浏览器也需要时间来渲染，因此我们应该等到浏览器准备好后再进行下一步操作。我们通过使用
+    JavaScript 来检测浏览器是否完成渲染。我们让 Selenium 执行 JavaScript 代码，并使用`execute_script()`函数告诉我们结果。我们利用
+    Selenium 的`WebDriverWait`工具运行代码直到成功或直到 30 秒超时。随着页面加载，我们滚动到页面底部，以便触发 JavaScript
+    加载更多内容。然后我们无条件等待一秒钟，以确保浏览器触发了 JavaScript，再等到页面再次准备好。之后，我们可以使用 XPath（或使用 CSS 选择器）提取新闻标题元素。由于浏览器是一个外部程序，我们需要在脚本中负责关闭它。
 - en: Using Selenium is different from using the `requests` library in several aspects.
     First, you never have the web content in your Python code directly. Instead, you
     refer to the browser’s content whenever you need it. Hence the web elements returned
@@ -305,128 +462,190 @@
     But in return, you have the full-featured browser with JavaScript support. For
     example, you can use JavaScript to check the size and position of an element on
     the page, which you will know only after the HTML elements are rendered.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Selenium 与使用`requests`库在几个方面有所不同。首先，你的 Python 代码中不会直接包含网页内容。相反，每当你需要时，你都要引用浏览器的内容。因此，`find_elements()`
+    函数返回的网页元素指的是外部浏览器中的对象，因此我们在完成使用之前不能关闭浏览器。其次，所有操作都应基于浏览器交互，而不是网络请求。因此，你需要通过模拟键盘和鼠标操作来控制浏览器。但作为回报，你可以使用完整功能的浏览器并支持
+    JavaScript。例如，你可以使用 JavaScript 检查页面上元素的大小和位置，这只有在 HTML 元素渲染后才能知道。
 - en: There are a lot more functions provided by the Selenium framework that we can
     cover here. It is powerful, but since it is connected to the browser, using it
     is more demanding than the `requests` library and much slower. Usually, this is
     the last resort for harvesting information from the web.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: Selenium 框架提供了很多功能，但我们在这里无法一一覆盖。它功能强大，但由于它与浏览器连接，使用起来比`requests`库更为复杂且速度较慢。通常，这是一种从网络获取信息的最后手段。
 - en: Further Reading
+  id: totrans-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: 'Another famous web crawling library in Python that we didn’t cover above is
     Scrapy. It is like combining the `requests` library with BeautifulSoup into one.
     The web protocol is complex. Sometimes we need to manage web cookies or provide
     extra data to the requests using the POST method. All these can be done with the
     requests library with a different function or extra arguments. The following are
     some resources for you to go deeper:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个在 Python 中非常有名的网页爬取库是 Scrapy，它类似于将`requests`库和 BeautifulSoup 合并成一个库。网页协议复杂。有时我们需要管理网页
+    cookies 或使用 POST 方法提供额外数据。这些都可以通过 requests 库的不同函数或附加参数完成。以下是一些资源供你深入了解：
 - en: Articles
+  id: totrans-71
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[An overview of HTTP from MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)'
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[MDN 上的 HTTP 概述](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)'
 - en: '[XPath from MDN](https://developer.mozilla.org/en-US/docs/Web/XPath)'
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[MDN 上的 XPath](https://developer.mozilla.org/en-US/docs/Web/XPath)'
 - en: '[XPath tutorial from W3Schools](https://www.w3schools.com/xml/xpath_intro.asp)'
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[W3Schools 上的 XPath 教程](https://www.w3schools.com/xml/xpath_intro.asp)'
 - en: '[CSS Selector Reference from W3Schools](https://www.w3schools.com/cssref/css_selectors.asp)'
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[W3Schools 上的 CSS 选择器参考](https://www.w3schools.com/cssref/css_selectors.asp)'
 - en: '[Selenium Python binding](https://www.selenium.dev/selenium/docs/api/py/index.html)'
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Selenium Python 绑定](https://www.selenium.dev/selenium/docs/api/py/index.html)'
 - en: API documentation
+  id: totrans-77
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: API 文档
 - en: '[Requests library](https://docs.python-requests.org/en/latest/)'
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Requests 库](https://docs.python-requests.org/en/latest/)'
 - en: '[BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)'
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)'
 - en: '[lxml.etree](https://lxml.de/api.html)'
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[lxml.etree](https://lxml.de/api.html)'
 - en: '[Selenium Python API](https://selenium-python.readthedocs.io/)'
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Selenium Python API](https://selenium-python.readthedocs.io/)'
 - en: '[Scrapy](https://docs.scrapy.org/en/latest/)'
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Scrapy](https://docs.scrapy.org/en/latest/)'
 - en: Books
+  id: totrans-83
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Python Web Scraping](https://www.amazon.com/dp/1786462583), 2nd Edition, by
     Katharine Jarmul and Richard Lawson'
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 网页抓取](https://www.amazon.com/dp/1786462583)，第二版，作者 Katharine Jarmul
+    和 Richard Lawson'
 - en: '[Web Scraping with Python](https://www.amazon.com/dp/1491985577/), 2nd Edition,
     by Ryan Mitchell'
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[用 Python 进行网页抓取](https://www.amazon.com/dp/1491985577/)，第二版，作者 Ryan Mitchell'
 - en: '[Learning Scrapy](https://www.amazon.com/dp/1784399787/), by Dimitrios Kouzis-Loukas'
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[学习 Scrapy](https://www.amazon.com/dp/1784399787/)，作者 Dimitrios Kouzis-Loukas'
 - en: '[Python Testing with Selenium](https://www.amazon.com/dp/1484262484/), by Sujay
     Raghavendra'
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python Selenium 测试](https://www.amazon.com/dp/1484262484/)，作者 Sujay Raghavendra'
 - en: '[Hands-On Web Scraping with Python](https://www.amazon.com/dp/1789533392),
     by Anish Chapagain'
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[动手实践 Python 网页抓取](https://www.amazon.com/dp/1789533392)，作者 Anish Chapagain'
 - en: '**Summary**'
+  id: totrans-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you saw the tools we can use to fetch content from the web.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个教程中，你了解了我们可以用来从网络获取内容的工具。
 - en: 'Specifically, you learned:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to use the requests library to send the HTTP request and extract data from
     its response
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 requests 库发送 HTTP 请求并从响应中提取数据
 - en: How to build a document object model from HTML so we can find some specific
     information on a web page
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从 HTML 构建文档对象模型，以便在网页上找到一些特定的信息
 - en: How to read tables on a web page quickly and easily using pandas
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 pandas 快速轻松地读取网页上的表格
 - en: How to use Selenium to control a browser to tackle dynamic content on a web
     page
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 Selenium 控制浏览器处理网页上的动态内容

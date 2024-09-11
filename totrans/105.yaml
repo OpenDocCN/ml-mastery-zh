@@ -1,11 +1,15 @@
 - en: Comments, Docstrings, and Type Hints in Python Code
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Python 代码中的注释、文档字符串和类型提示
 - en: 原文：[https://machinelearningmastery.com/comments-docstrings-and-type-hints-in-python-code/](https://machinelearningmastery.com/comments-docstrings-and-type-hints-in-python-code/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/comments-docstrings-and-type-hints-in-python-code/](https://machinelearningmastery.com/comments-docstrings-and-type-hints-in-python-code/)
 - en: 'The source code of a program should be readable to humans. Making it run correctly
     is only half of its purpose. Without a properly commenting code, it would be difficult
     for one, including the future you, to understand the rationale and intent behind
@@ -14,93 +18,138 @@
     make the intent more explicit. In the following, we will see how we should properly
     use comments, docstrings, and type hints to make our code easier to understand.
     After finishing this tutorial, you will know:'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序的源代码应该对人类可读。使其正确运行只是其目的的一半。如果没有适当的注释代码，任何人，包括未来的你，将很难理解代码背后的理由和意图。这样也会使代码无法维护。在
+    Python 中，有多种方式可以向代码添加描述，使其更具可读性或使意图更加明确。在接下来的内容中，我们将看到如何正确使用注释、文档字符串和类型提示，使我们的代码更易于理解。完成本教程后，你将了解：
 - en: What is the proper way of using comments in Python
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是 Python 中注释的正确使用方法
 - en: How string literal or docstring can replace comments in some cases
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 字符串字面量或文档字符串在某些情况下如何替代注释
 - en: What are type hints in Python, and how they can help us understand the code
     better
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python 中的类型提示是什么，它们如何帮助我们更好地理解代码
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**快速启动你的项目**，参考我新书 [《Python 机器学习》](https://machinelearningmastery.com/python-for-machine-learning/)，包括
+    *逐步教程* 和 *所有示例的 Python 源代码* 文件。'
 - en: Let’s get started.![](../Images/376dbd33f3cff1575c682e181db413ae.png)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/376dbd33f3cff1575c682e181db413ae.png)
 - en: Comments, Docstrings, and Type Hints in Python Code. Photo by [Rhythm Goyal](https://unsplash.com/photos/_-Ofoh09q_o).
     Some rights reserved
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 代码中的注释、文档字符串和类型提示。照片由 [Rhythm Goyal](https://unsplash.com/photos/_-Ofoh09q_o)
+    提供。版权所有
 - en: Overview
+  id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is in three parts, they are:'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三部分，它们是：
 - en: Adding comments to Python code
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 向 Python 代码添加注释
 - en: Using docstrings
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用文档字符串
 - en: Using type hints in Python code
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 Python 代码中使用类型提示
 - en: Adding Comments to Python Code
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 向 Python 代码添加注释
 - en: Almost all programming languages have dedicated syntax for comments. Comments
     are to be ignored by compilers or interpreters, and hence they have no effect
     on the programming flow or logic. But with comments, it is easier to read the
     code.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 几乎所有编程语言都有专门的注释语法。注释会被编译器或解释器忽略，因此它们不会影响编程流程或逻辑。但通过注释，可以更容易地阅读代码。
 - en: In languages like C++, we can add “inline comments” with a leading double slash
     (`//`) or add comment blocks enclosed by `/*` and `*/`. However, in Python, we
     only have the “inline” version, and they are introduced by the leading hash character
     (`#`).
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在像 C++ 这样的语言中，我们可以使用前导双斜杠（`//`）添加“行内注释”或使用 `/*` 和 `*/` 包围的注释块。然而，在 Python 中，我们只有“行内”版本，它们由前导井号字符（`#`）引入。
 - en: 'It is quite easy to write comments to explain every line of code, but that
     is usually a waste. When people read the source code, comments often easily catch
     their attention, and hence putting too many comments would distract the reading.
     For example, the following is unnecessary and distracting:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 编写注释以解释每一行代码是很容易的，但这通常是一种浪费。当人们阅读源代码时，注释往往很容易引起他们的注意，因此放太多注释会分散阅读注意力。例如，以下内容是不必要且具有干扰性的：
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Comments like these are merely repeating what the code does. Unless the code
     is obscure, these comments add no value to the code. The example below might be
     a marginal case in which the name “ppf” (percentage point function) is less well-known
     than the term “CDF” (cumulative distribution function):'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样的注释仅仅是重复代码的功能。除非代码非常晦涩，这些注释不会为代码增添价值。下面的例子可能是一个边际情况，其中名称“ppf”（百分比点函数）比术语“CDF”（累积分布函数）更不为人知：
 - en: '[PRE1]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Good comments should tell why we are doing something. Let’s look at the following
     example:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 优秀的注释应该说明我们为什么要做某件事。让我们来看一个例子：
 - en: '[PRE2]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The function above is implementing the AdaDelta algorithm. In the first line,
     when we assign something to the variable `solution`, we do not write comments
     like “a random interpolation between bounds[:,0] and bounds[:,1]” because that
@@ -108,8 +157,10 @@
     initial point.” Similarly, for the other comments in the function, we mark one
     of the for-loops as the gradient descent algorithm rather than just saying iterate
     for certain times.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的函数实现了AdaDelta算法。在第一行中，当我们将某事物分配给变量`solution`时，我们不会写像“在`bounds[:,0]`和`bounds[:,1]`之间的随机插值”这样的评论，因为那只是重复的代码。我们说这行的意图是“生成一个初始点”。类似地，在函数中的其他注释中，我们标记一个for循环作为梯度下降算法，而不仅仅是说迭代若干次。
 - en: One important issue we want to remember when writing the comment or modifying
     code is to make sure the comment accurately describes the code. If they contradict,
     it would be confusing to the readers. So should we not have put the comment on
@@ -117,84 +168,124 @@
     while the code obviously randomizes the initial solution, or vice versa. If this
     is what you intended to do, you should update the comment and the code at the
     same time.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 在编写评论或修改代码时我们要记住的一个重要问题是确保评论准确描述代码。如果它们相矛盾，对读者来说会很困惑。因此，当你打算在上面的例子的第一行放置评论以“将初始解设为下界”时，而代码显然是随机化初始解时，或者反之，你应该同时更新评论和代码。
 - en: An exception would be the “to-do” comments. From time to time, when we have
     an idea on how to improve the code but have not yet changed it, we may put to-do
     comments on the code. We can also use it to mark incomplete implementations. For
     example,
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个例外是“待办事项”评论。不时地，当我们有改进代码的想法但尚未更改时，我们可以在代码上加上待办事项评论。我们也可以用它来标记未完成的实现。例如，
 - en: '[PRE3]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This is a common practice, and many IDE will highlight the comment block differently
     when the keyword `TODO` is found. However, it’s supposed to be temporary, and
     we should not abuse it as an issue-tracking system.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个常见的做法，当关键字`TODO`被发现时，许多IDE会以不同的方式突出显示评论块。然而，它应该是临时的，我们不应滥用它作为问题跟踪系统。
 - en: 'In summary, some common “best practices” on commenting code are listed as follows:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 总之，有关编写注释代码的一些常见“最佳实践”列举如下：
 - en: Comments should not restate the code but explain it
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 评论不应重复代码而应该解释它
 - en: Comments should not cause confusion but eliminate it
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 评论不应造成混淆而应消除它
 - en: Put comments on code that is not trivial to understand; for example, state the
     unidiomatic use of syntax, name the algorithm being used, or explain the intent
     or assumptions
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在不易理解的代码上放置注释；例如，说明语法的非典型使用，命名正在使用的算法，或者解释意图或假设
 - en: Comments should be concise and simple
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 评论应该简洁明了
 - en: Keep a consistent style and use of language in commenting
+  id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 保持一致的风格和语言在评论中使用
 - en: Always prefer to have a better-written code that needs no additional comments
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 总是更喜欢写得更好的代码，而不需要额外的注释
 - en: Using Docstrings
+  id: totrans-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用文档字符串
 - en: 'In C++, we may write a large block of comments such as in the following:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 在C++中，我们可以编写大块的评论，如下所示：
 - en: C++
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: C++
 - en: '[PRE4]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'But in Python, we do not have an equivalent to the delimiters `/*` and `*/`,
     but we can write multi-line comments using the following instead:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 但在Python中，我们没有`/*`和`*/`这样的界定符的等价物，但我们可以用以下方式写多行注释：
 - en: '[PRE5]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: This works because Python supports declaring a string literal spanning across
     multiple lines if it is delimited with triple quotation marks (`"""`). And a string
     literal in the code is merely a string declared with no impact. Therefore it is
     functionally no different than the comments.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是因为Python支持声明跨多行的字符串字面量，如果它用三引号（`"""`）界定。而在代码中，字符串字面量仅仅是一个没有影响的声明。因此，它在功能上与评论没有任何区别。
 - en: One reason we want to use string literals is to comment out a large block of
     code. For example,
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们希望使用字符串字面量的一个原因是注释掉一大块代码。例如，
 - en: '[PRE6]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The above is a sample code that we may develop by experimenting with a machine
     learning problem. While we generated a dataset randomly at the beginning (the
     call to `make_classification()` above), we may want to switch to a different dataset
@@ -202,46 +293,66 @@
     than removing the block of code, we may simply comment on those lines so that
     we can store the code later. It is not in good shape for the finalized code but
     convenient while developing our solution.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 以上是我们可能通过尝试机器学习问题而开发的样本代码。虽然我们在开始时随机生成了一个数据集（上面的`make_classification()`调用），但我们可能希望在以后的某个时间切换到另一个数据集并重复相同的过程（例如上面的pickle部分）。我们可以简单地注释这些行而不是删除代码块，以便稍后存储代码。尽管它不适合最终代码的形式，但在开发解决方案时非常方便。
 - en: The string literal in Python as a comment has a special purpose if it is in
     the first line under a function. The string literal, in that case, is called the
     “docstring” of the function. For example,
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Python中，作为注释的字符串字面量如果位于函数下的第一行，则具有特殊目的。在这种情况下，该字符串字面量被称为函数的“docstring”。例如，
 - en: '[PRE7]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'We can see the first line under the function is a literal string, and it serves
     the same purpose as a comment. It makes the code more readable, but at the same
     time, we can retrieve it from the code:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以看到函数下的第一行是一个字面字符串，它与注释具有相同的作用。它使代码更易读，但同时我们可以从代码中检索到它：
 - en: '[PRE8]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '[PRE9]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Because of the special status of the docstring, there are several conventions
     on how to write a proper one.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于docstring的特殊地位，有几种关于如何编写适当的docstring的约定。
 - en: In C++, we may use Doxygen to generate code documentation from comments, and
     similarly, we have Javadoc for Java code. The closest match in Python would be
     the tool “autodoc” from Sphinx or pdoc. Both will try to parse the docstring to
     generate documentation automatically.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 在C++中，我们可以使用Doxygen从注释中生成代码文档，类似地，Java中有Javadoc。Python中最接近的匹配工具将是来自Sphinx或pdoc的“autodoc”。两者都会尝试解析docstring以自动生成文档。
 - en: 'There is no standard way of making docstrings, but generally, we expect they
     will explain the purpose of a function (or a class or module) as well as the arguments
     and the return values. One common style is like the one above, which is advocated
     by Google. A different style is from NumPy:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有标准的docstring编写方式，但通常我们期望它们将解释函数（或类或模块）的目的以及参数和返回值。一个常见的风格如上所述，由Google推崇。另一种风格来自NumPy：
 - en: '[PRE10]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Tools such as autodoc can parse these docstrings and generate the API documentation.
     But even if it is not the purpose, having a docstring describing the nature of
     the function, the data types of the function arguments and return values can surely
@@ -250,75 +361,109 @@
     are not declared with a particular type. We can make use of docstrings to spell
     out the assumptions of the data type so people can more easily follow or use your
     function.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似autodoc这样的工具可以解析这些docstring并生成API文档。但即使这不是目的，使用一个描述函数性质、函数参数和返回值数据类型的docstring肯定可以使您的代码更易于阅读。这一点特别重要，因为Python不像C++或Java那样是一种**鸭子类型**语言，其中变量和函数参数不声明为特定类型。我们可以利用docstring来说明数据类型的假设，以便人们更容易地跟踪或使用您的函数。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-55
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始Python机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费7天电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取免费的课程PDF电子书版本。
 - en: Using Type Hints in Python Code
+  id: totrans-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在Python代码中使用类型提示
 - en: 'Since Python 3.5, type hint syntax is allowed. As the name implies, its purpose
     is to hint at the type and nothing else. Hence even if it looks to bring Python
     closer to Java, it does not mean to restrict the data to be stored in a variable.
     The example above can be rewritten with a type hint:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 自Python 3.5以来，允许类型提示语法。顾名思义，它的目的是提示类型而不是其他任何内容。因此，即使看起来将Python更接近Java，它也不意味着限制要存储在变量中的数据。上面的示例可以使用类型提示进行重写：
 - en: '[PRE11]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'In a function, the arguments can be followed by a `: type` syntax to spell
     out the *intended* types. The return value of a function is identified by the `->
     type` syntax before the colon. In fact, a type hint can be declared for variables
     too, e.g.,'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '在函数中，参数后面可以跟着`: type`的语法来说明*预期*的类型。函数的返回值通过冒号前的`-> type`语法来标识。事实上，变量也可以声明类型提示，例如，'
 - en: '[PRE12]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'The benefit of a type hint is twofold: We can use it to eliminate some comments
     if we need to describe explicitly the data type being used. We can also help *static
     analyzers* understand our code better so they can help identify potential issues
     in the code.'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 类型提示的好处是双重的：我们可以用它来消除一些注释，如果我们需要明确描述正在使用的数据类型。我们还可以帮助*静态分析器*更好地理解我们的代码，以便它们能够帮助识别代码中的潜在问题。
 - en: 'Sometimes the type can be complex, and therefore Python provided the `typing` module
     in its standard library to help clean up the syntax. For example, we can use `Union[int,float]` to
     mean `int` type or `float` type, `List[str]` to mean a list that every element
     is a string, and use `Any` to mean anything. Like as follows:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时类型可能很复杂，因此Python在其标准库中提供了`typing`模块来帮助简化语法。例如，我们可以使用`Union[int,float]`表示`int`类型或`float`类型，`List[str]`表示每个元素都是字符串的列表，并使用`Any`表示任何类型。如下所示：
 - en: '[PRE13]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'However, it is important to remember that type hints are *hints* only. It does
     not impose any restrictions on the code. Hence the following is confusing to the
     reader but perfectly fine:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，重要的是要记住，类型提示只是*提示*。它不对代码施加任何限制。因此，以下对读者来说可能很困惑，但完全合法：
 - en: '[PRE14]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'Using type hints may improve the readability of the code. However, the most
     important benefit of type hints is to allow a *static analyzer* such as mypy to
     tell us whether our code has any potential bugs. If you process the above lines
     of code with mypy, we will see the following error:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用类型提示可以提高代码的可读性。然而，类型提示最重要的好处是允许像**mypy**这样的*静态分析器*告诉我们我们的代码是否有潜在的bug。如果你用mypy处理以上代码行，我们会看到以下错误：
 - en: '[PRE15]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: The use of static analyzers will be covered in another post.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 静态分析器的使用将在另一篇文章中介绍。
 - en: To illustrate the use of comments, docstrings, and type hints, below is an example
     to define a generator function that samples a pandas DataFrame on fixed-width
     windows. It is useful for training an LSTM network, in which a few consecutive
@@ -326,8 +471,10 @@
     on the DataFrame and clip a few rows following it. As long as we can successfully
     get one full window, we take it as a sample. Once we’ve collected enough samples
     to make a batch, the batch is dispatched.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了说明注释、文档字符串和类型提示的使用，以下是一个例子，定义了一个生成器函数，该函数在固定宽度窗口上对pandas DataFrame进行采样。这对训练LSTM网络非常有用，其中需要提供几个连续的时间步骤。在下面的函数中，我们从DataFrame的随机行开始，并裁剪其后的几行。只要我们能成功获取一个完整的窗口，我们就将其作为样本。一旦我们收集到足够的样本以组成一个批次，批次就会被分发。
 - en: You should see that it is clearer if we can provide type hints on the function
     arguments, so we know, for example, that `data` is supposed to be a pandas DataFrame.
     But we describe further that it is expected to carry a datetime index in the docstring.
@@ -335,82 +482,122 @@
     as well as the intention of the “if” block in the inner while-loop using comments.
     In this way, the code is much easier to understand and much easier to maintain
     or modify for other use.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们能够为函数参数提供类型提示，那么代码会更清晰，例如我们知道`data`应该是一个pandas DataFrame。但是我们进一步描述了预期在文档字符串中携带一个日期时间索引。我们描述了如何从输入数据中提取一行窗口的算法以及内部while循环中“if”块的意图。通过这种方式，代码变得更容易理解和维护，也更容易修改以供其他用途使用。
 - en: '[PRE16]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Further reading
+  id: totrans-74
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您希望深入了解这个主题，本节提供了更多资源。
 - en: Articles
+  id: totrans-76
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 文章
 - en: Best practices for writing code comments, [https://stackoverflow.blog/2021/12/23/best-practices-for-writing-code-comments/](https://stackoverflow.blog/2021/12/23/best-practices-for-writing-code-comments/)
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编写代码注释的最佳实践，[https://stackoverflow.blog/2021/12/23/best-practices-for-writing-code-comments/](https://stackoverflow.blog/2021/12/23/best-practices-for-writing-code-comments/)
 - en: PEP483, the theory of type hints, [https://www.python.org/dev/peps/pep-0483/](https://www.python.org/dev/peps/pep-0483/)
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PEP483，类型提示理论，[https://www.python.org/dev/peps/pep-0483/](https://www.python.org/dev/peps/pep-0483/)
 - en: Google Python Style Guide, [https://google.github.io/styleguide/pyguide.html](https://google.github.io/styleguide/pyguide.html)
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Google Python风格指南，[https://google.github.io/styleguide/pyguide.html](https://google.github.io/styleguide/pyguide.html)
 - en: Software
+  id: totrans-80
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 软件
 - en: Sphinx documentation, [https://www.sphinx-doc.org/en/master/index.html](https://www.sphinx-doc.org/en/master/index.html)
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Sphinx文档，[https://www.sphinx-doc.org/en/master/index.html](https://www.sphinx-doc.org/en/master/index.html)
 - en: Napoleon module of Sphinx, [https://sphinxcontrib-napoleon.readthedocs.io/en/latest/index.html](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/index.html)
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Sphinx 的 Napoleon 模块，[https://sphinxcontrib-napoleon.readthedocs.io/en/latest/index.html](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/index.html)
 - en: 'Google-style docstring example: [https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)'
+  id: totrans-83
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Google 风格的文档字符串示例：[https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)
 - en: 'NumPy-style docstring example: [https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html)'
+  id: totrans-84
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: NumPy 风格的文档字符串示例：[https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html)
 - en: pdoc, [https://pdoc.dev/](https://pdoc.dev/)
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`pdoc`，[https://pdoc.dev/](https://pdoc.dev/)'
 - en: typing module, [https://docs.python.org/3/library/typing.html](https://docs.python.org/3/library/typing.html)
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python 的 `typing` 模块，[https://docs.python.org/3/library/typing.html](https://docs.python.org/3/library/typing.html)
 - en: Summary
+  id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you’ve seen how we should use the comments, docstrings, and
     type hints in Python. Specifically, you now know:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你已经看到我们如何在 Python 中使用注释、文档字符串和类型提示。具体来说，你现在知道：
 - en: How to write a good, useful comment
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何写好有用的注释
 - en: The conventions in explaining a function using docstrings
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 解释函数使用文档字符串的约定
 - en: How to use type hints to address the readability weakness of duck-typing in
     Python
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用类型提示来解决 Python 中鸭子类型的可读性问题

@@ -1,73 +1,107 @@
 - en: Mastering Pair Plots for Visualization and Hypothesis Creation in the Ames Housing
     Market
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 精通对角线图用于Ames Housing市场中的可视化和假设创建
 - en: 原文：[https://machinelearningmastery.com/pair-plots/](https://machinelearningmastery.com/pair-plots/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/pair-plots/](https://machinelearningmastery.com/pair-plots/)
 - en: Understanding real estate data involves exploring different property features
     and their impact on housing market trends. One useful tool for exploring these
     relationships is the pair plot. This data visualization technique allows you to
     discover the direction and magnitude of correlations among different features
     within the dataset.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 理解房地产数据涉及探索不同的属性特征及其对住房市场趋势的影响。一个有用的工具是**对角线图**。这种数据可视化技术允许你发现数据集中不同特征之间的相关方向和大小。
 - en: Let’s get started.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/ad196a8d4d76054e57db318b83be93d2.png)'
+  id: totrans-4
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/ad196a8d4d76054e57db318b83be93d2.png)'
 - en: Mastering Pair Plots for Visualization and Hypothesis Creation in the Ames Housing
     Market
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 精通对角线图用于Ames Housing市场中的可视化和假设创建
 - en: Photo by [Juliana e Mariana Amorim](https://unsplash.com/photos/two-teal-and-yellow-parrots-on-cable-AmLssHPF58k).
     Some rights reserved.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Juliana e Mariana Amorim](https://unsplash.com/photos/two-teal-and-yellow-parrots-on-cable-AmLssHPF58k)提供。版权所有。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分；它们是：
 - en: Exploring Feature Relationships with Pair Plots
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 探索特征关系的对角线图
 - en: 'Unveiling Deeper Insights: Pair Plots with Categorical Enhancement'
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 揭示更深层次的见解：带有类别增强的对角线图
 - en: 'Inspiring Data-Driven Inquiries: Hypothesis Generation Through Pair Plots'
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 激发数据驱动的探究：通过对角线图生成假设
 - en: Exploring Feature Relationships with Pair Plots
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 探索特征关系的对角线图
 - en: A pair plot, also known as a scatterplot matrix, provides a comprehensive view
     of the interplay between multiple variables in a dataset. Unlike correlation heatmaps,
     which represent correlation coefficients in a color-coded grid, pair plots depict
     the actual data points, revealing the nature of relationships beyond just their
     strength and direction.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 对角线图，也称为散点图矩阵，提供了数据集中多个变量之间相互作用的全面视图。与相关性热图不同，后者在颜色编码网格中表示相关系数，对角线图则描绘了实际的数据点，揭示了关系的性质，超越了仅仅是强度和方向。
 - en: To illustrate this, let’s delve into the Ames Housing dataset. We’ll focus on
     the top five features most strongly correlated with ‘SalePrice’.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了说明这一点，让我们**深入**研究Ames Housing数据集。我们将重点关注与“SalePrice”最强相关的前五个特征。
 - en: '[PRE0]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '[![](../Images/9e768cdeff33eb5f8ed5a34dce942b0c.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_1-1.png)'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/9e768cdeff33eb5f8ed5a34dce942b0c.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_1-1.png)'
 - en: As seen in the pair plot above, each subplot provides a scatter plot for a pair
     of features. This visualization method not only allows us to observe the distribution
     of individual variables but also reveals the intricate relationships between them.
@@ -76,8 +110,10 @@
     steady increase or decrease, or **non-linear**, indicating more complex dynamics.
     It also highlights clusters where data points are grouped and outliers that stand
     apart from the general trend.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 如上图所示，每个子图提供了一对特征的散点图。这种可视化方法不仅允许我们观察单个变量的分布，还揭示了它们之间的复杂关系。对角线图特别擅长揭示这些关系的性质。例如，我们可以看到这些关系是**线性**的，表明稳步增加或减少，还是**非线性**的，显示更复杂的动态。它还突出了数据点聚集的簇和与整体趋势不同的离群点。
 - en: Take, for instance, the relationship between “SalePrice” and “GrLivArea.” The
     scatter plot in the pair plot shows a broadly linear relationship, indicating
     that as “GrLivArea” increases, so does “SalePrice.” However, it’s not a perfect
@@ -85,23 +121,32 @@
     factors may also influence the sale price. Moreover, the plot reveals a few outliers,
     properties with exceptionally high “GrLivArea” or “SalePrice,” that could be unique
     cases or potential data entry errors.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，“SalePrice”和“GrLivArea”之间的关系。对角线图中的散点图显示了大致的线性关系，表明“GrLivArea”增加时，“SalePrice”也会上升。然而，这并不是一个完美的线性相关——一些数据点偏离了这个趋势，表明可能还有其他因素影响售价。此外，图中还显示了一些离群点，即“GrLivArea”或“SalePrice”异常高的属性，这些可能是特殊情况或数据输入错误。
 - en: By presenting data in this format, pair plots go beyond mere numerical coefficients,
     offering a nuanced and detailed view of the data. They enable us to identify patterns,
     trends, and exceptions within the dataset, which are vital for making informed
     decisions in the real estate market. Such insights are especially beneficial for
     stakeholders looking to understand the multifaceted nature of property value determinants.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过这种格式呈现数据，配对图超越了单纯的数值系数，提供了对数据的细致入微的视图。它们使我们能够识别数据集中的模式、趋势和异常，这对于在房地产市场做出明智决策至关重要。这些洞察对于希望理解物业价值决定因素多方面性的利益相关者尤其有益。
 - en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书** [《数据科学初学者指南》](https://machinelearning.samcart.com/products/beginners-guide-data-science/)
+    **来启动你的项目**。它提供了**自学教程**和**可运行的代码**。'
 - en: '**Unveiling Deeper Insights: Pair Plots with Categorical **Enhancement'
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**揭示更深层次的洞察：带有分类增强的配对图**'
 - en: In our continued exploration of real estate data visualization, we now focus
     on enriching our pair plots with categorical variables. By incorporating a categorical
     dimension, we can uncover deeper insights and more nuanced relationships within
@@ -109,14 +154,21 @@
     into a binary category (Regular vs. Irregular) and integrate it into our pair
     plot. This enhancement allows us to observe how these lot shapes interact with
     key variables like “SalePrice”, “OverallQual”, and “GrLivArea.”
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们继续探索房地产数据可视化的过程中，我们现在重点关注通过分类变量来丰富配对图。通过引入分类维度，我们可以发现数据中的更深层次的洞察和更细致的关系。在本节中，我们将Ames
+    Housing数据集中的“LotShape”转换为二元类别（规则与不规则），并将其整合到配对图中。这一增强使我们能够观察这些地块形状如何与“SalePrice”、“OverallQual”和“GrLivArea”等关键变量互动。
 - en: '[PRE1]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '[![](../Images/726bd443d24a3418414ebebfad3c37e7.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_2-2.png)'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/726bd443d24a3418414ebebfad3c37e7.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_2-2.png)'
 - en: The resulting pair plot, color-coded for “Regular” and “Irregular” lot shapes,
     reveals intriguing patterns. For instance, we notice that homes with irregular
     lot shapes tend to have a varied range of sale prices and living areas, potentially
@@ -124,19 +176,25 @@
     overall quality (“OverallQual”) appears to be less variable for regular lots,
     suggesting a possible trend in construction standards or design choices in these
     areas.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果配对图根据“规则”和“不规则”地块形状进行着色，揭示了有趣的模式。例如，我们注意到不规则地块的房屋在销售价格和居住面积上有较大的变化，这可能表明物业类型或买家偏好的多样性。此外，规则地块的整体质量（“OverallQual”）似乎变化较小，这可能暗示了这些区域在建筑标准或设计选择上的某种趋势。
 - en: This enhanced visual tool not only deepens our understanding of the housing
     market dynamics but also invites further exploration. Stakeholders can experiment
     with different feature combinations and categorical variables to tailor their
     analysis to specific interests or market segments, making this approach a versatile
     asset in real estate analytics.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种增强的视觉工具不仅加深了我们对房地产市场动态的理解，还邀请进一步的探索。利益相关者可以尝试不同的特征组合和分类变量，将他们的分析定制为特定的兴趣或市场细分，使这种方法在房地产分析中成为多功能的资产。
 - en: '**Inspiring Data-Driven Inquiries: Hypothesis Generation Through Pair Plots**'
+  id: totrans-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**激发数据驱动的询问：通过配对图生成假设**'
 - en: Pair plots serve as a powerful tool not just for visualization but also for
     hypothesis generation in data analysis. By revealing patterns, trends, and anomalies
     in a dataset, these plots can inspire insightful questions and hypotheses. For
@@ -144,101 +202,145 @@
     a hypothesis about a causal connection, or an unexpected cluster of data points
     could prompt inquiries into underlying factors. Essentially, pair plots can act
     as a springboard for deeper, more targeted statistical testing and exploration.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 配对图不仅是可视化的强大工具，也用于数据分析中的假设生成。通过揭示数据集中的模式、趋势和异常，这些图表可以激发洞察性的问题和假设。例如，观察两个变量之间的线性关系可能会引发关于因果关系的假设，或者一个意外的数据点聚类可能促使对潜在因素的探究。从本质上讲，配对图可以作为深入、针对性的统计测试和探索的跳板。
 - en: '**Hypotheses** **From the First Visual (Relationships between “SalePrice” and
     other features):**'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '**从第一个视觉图中生成的假设（“SalePrice”与其他特征的关系）：**'
 - en: 'Hypothesis 1: There is a linear relationship between “GrLivArea” and “SalePrice,”
     suggesting that larger living areas directly contribute to higher property values.'
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 假设 1：“GrLivArea”和“SalePrice”之间存在线性关系，这表明较大的居住面积直接贡献于更高的房产价值。
 - en: 'Hypothesis 2: Outliers observed in the ‘SalePrice’ versus “GrLivArea” plot
     may indicate unique luxury properties or data entry errors, warranting further
     investigation.'
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 假设 2：在“SalePrice”与“GrLivArea”图中观察到的异常值可能表明独特的奢侈房产或数据录入错误，需要进一步调查。
 - en: '**Hypotheses** **From the Second Visual (Incorporating “LotShape” as a binary
     category):**'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '**假设** **来自第二个视觉（将“LotShape”作为二元类别纳入）：**'
 - en: 'Hypothesis 3: Properties with irregular lot shapes have a wider variance in
     sale prices than regular lot shapes, possibly due to a higher diversity in property
     types or unique features.'
+  id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 假设 3：不规则地块形状的房产在销售价格上的差异性比规则地块形状更大，这可能是由于房产类型的多样性或独特特征。
 - en: 'Hypothesis 4: The overall quality of properties on regular-shaped lots tends
     to be more consistent, suggesting standardized construction practices or buyer
     preferences in these areas.'
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 假设 4：规则形状地块上的房产总体质量趋于更一致，这表明这些区域可能存在标准化的建筑实践或买家偏好。
 - en: These hypotheses, derived from the observed patterns in the pair plots, can
     then be tested through more rigorous statistical methods to validate or refute
     the initial observations. This approach underscores the utility of pair plots
     as a foundational step in hypothesis-driven data analysis.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些假设源自于配对图中观察到的模式，然后可以通过更严格的统计方法进行验证或否定初步观察。这种方法强调了配对图作为假设驱动的数据分析基础步骤的实用性。
 - en: Want to Get Started With Beginner's Guide to Data Science?
+  id: totrans-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始数据科学初学者指南吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即获取我的免费电子邮件速成课程（附样本代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费 PDF 电子书版。
 - en: '**Further****Reading**'
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 本部分提供了更多资源，如果你想深入了解这一主题。
 - en: '**Resources**'
+  id: totrans-41
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**资源**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: 'In our exploration of the Ames Housing dataset, we have journeyed through the
     world of pair plots, uncovering the intricate stories told by the data. This journey
     has not only highlighted the importance of visual analysis in real estate analytics
     but also demonstrated the power of pair plots in revealing complex relationships
     and guiding data-driven hypothesis generation. Specifically, you learned:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们探索 Ames 住房数据集的过程中，我们踏上了配对图的世界，揭示了数据讲述的复杂故事。这次旅程不仅突显了视觉分析在房地产分析中的重要性，还展示了配对图在揭示复杂关系和指导数据驱动假设生成方面的强大能力。具体来说，你学习了：
 - en: The effectiveness of pair plots in illustrating the relationships between various
     housing market features, especially with regard to “SalePrice.”
+  id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 配对图在说明各种住房市场特征之间的关系方面的有效性，尤其是关于“SalePrice”。
 - en: How the integration of categorical variables like “LotShape” into pair plots
     can provide deeper insights and reveal subtler trends in the data.
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将诸如“LotShape”这样的分类变量整合到配对图中，以提供更深刻的洞察并揭示数据中的微妙趋势。
 - en: The potential of pair plots as a foundation for generating hypotheses, setting
     the stage for more advanced statistical analyses and informed decision-making.
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 配对图的潜力作为生成假设的基础，为更高级的统计分析和知情决策奠定了基础。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？请在下面的评论中提问，我会尽力回答。

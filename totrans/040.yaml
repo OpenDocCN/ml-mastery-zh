@@ -1,95 +1,140 @@
 - en: 'Harmonizing Data: A Symphony of Segmenting, Concatenating, Pivoting, and Merging'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 数据协调：分段、连接、数据透视和合并的交响曲
 - en: 原文：[https://machinelearningmastery.com/harmonizing-data-a-symphony-of-segmenting-concatenating-pivoting-and-merging/](https://machinelearningmastery.com/harmonizing-data-a-symphony-of-segmenting-concatenating-pivoting-and-merging/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/harmonizing-data-a-symphony-of-segmenting-concatenating-pivoting-and-merging/](https://machinelearningmastery.com/harmonizing-data-a-symphony-of-segmenting-concatenating-pivoting-and-merging/)
 - en: In a data science project, the data you collect is often not in the shape that
     you want it to be. Often you will need to create derived features, aggregate subsets
     of data into a summarized form, or select a portion of the data according to some
     complex logic. This is not a hypothetical situation. In a project big or small,
     the data you obtained at the first step is very likely far from ideal.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在数据科学项目中，你收集的数据通常并不是你想要的形状。你通常需要创建派生特征，将数据子集汇总为总结形式，或根据一些复杂的逻辑选择数据的部分。这不是一种假设情况。在大大小小的项目中，你在第一步获得的数据很可能远非理想。
 - en: As a data scientist, you must be handy to format the data into the right shape
     to make your subsequent steps easier. In the following, you will learn how to
     slice and dice the dataset in pandas as well as reassemble them into a very different
     form to make the useful data more pronounced, so that analysis can be easier.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为数据科学家，你必须熟练地将数据格式化为正确的形状，以使后续步骤更加轻松。在接下来的内容中，你将学习如何在 pandas 中切片和切块数据集，并将其重新组合成不同的形式，以使有用的数据更加突出，从而使分析更加容易。
 - en: Let’s get started.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/b696b299f843eaf29bccadb880187738.png)'
+  id: totrans-5
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/b696b299f843eaf29bccadb880187738.png)'
 - en: 'Harmonizing Data: A Symphony of Segmenting, Concatenating, Pivoting, and Merging'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据协调：分段、连接、数据透视和合并的交响曲
 - en: Photo by [Samuel Sianipar](https://unsplash.com/photos/group-of-person-playing-violin-4TNd3hsW3PM).
     Some rights reserved.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Samuel Sianipar](https://unsplash.com/photos/group-of-person-playing-violin-4TNd3hsW3PM)
+    提供。保留部分权利。
 - en: Overview
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into two parts; they are:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为两个部分；它们是：
 - en: 'Segmenting and Concatenating: Choreographing with Pandas'
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 分段与连接：与 Pandas 的编舞
 - en: 'Pivoting and Merging: Dancing with Pandas'
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据透视与合并：与 Pandas 的舞蹈
 - en: 'Segmenting and Concatenating: Choreographing with Pandas'
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 分段与连接：与 Pandas 的编舞
 - en: 'One intriguing question you might pose is: How does the year a property was
     built influence its price? To investigate this, you can segment the dataset by
     ‘SalePrice’ into four quartiles—Low, Medium, High, and Premium—and analyze the
     construction years within these segments. This methodical division of the dataset
     not only paves the way for a focused analysis but also reveals trends that might
     be concealed within a collective review.'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会提出一个有趣的问题：房产建造年份如何影响其价格？为了研究这个问题，你可以将数据集按照‘SalePrice’分成四个四分位数——低、中、高和优质，并分析这些分段中的建造年份。这种系统化的数据集划分不仅为集中分析铺平了道路，还揭示了可能在整体回顾中被隐藏的趋势。
 - en: '**Segmentation Strategy: Quartiles of ‘SalePrice’**'
+  id: totrans-14
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**分段策略：‘SalePrice’ 的四分位数**'
 - en: 'Let’s begin by creating a new column that neatly classifies the ‘SalePrice’
     of properties into your defined price categories:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，创建一个新的列，将房产的‘SalePrice’整齐地分类到你定义的价格类别中：
 - en: '[PRE0]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'By executing the above code, you have enriched your dataset with a new column
     entitled ‘Price_Category’. Here’s a glimpse of the output you’ve obtained:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过执行上述代码，你已将数据集丰富了一个新的名为‘Price_Category’的列。以下是你获得的输出的一个快照：
 - en: '[PRE1]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '**Visualizing Trends with the Empirical Cumulative Distribution Function (ECDF)**'
+  id: totrans-19
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**使用经验累积分布函数 (ECDF) 可视化趋势**'
 - en: You can now split the original dataset into four DataFrames and proceed to visualize
     the cumulative distribution of construction years within each price category.
     This visual will help your understand at a glance the historical trends in property
     construction as they relate to pricing.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你可以将原始数据集分成四个 DataFrame，并继续可视化每个价格类别中建造年份的累积分布。这一视觉效果将帮助你一目了然地了解与定价相关的房产建造历史趋势。
 - en: '[PRE2]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Below is the ECDF plot, which provides a visual summation of the data you’ve
     categorized. An ECDF, or Empirical Cumulative Distribution Function, is a statistical
     tool used to describe the distribution of data points in a dataset. It represents
@@ -99,19 +144,27 @@
     of the data. ECDF plots are particularly useful because they allow for easy comparison
     between different datasets. Notice how the curves for each price category give
     you a narrative of housing trends over the years.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是ECDF图，它提供了你所分类数据的视觉总结。ECDF，即经验累积分布函数，是一种用于描述数据集数据点分布的统计工具。它表示低于或等于某个值的数据点比例或百分比。从本质上讲，它为你提供了一种可视化不同值的数据点分布的方式，提供有关数据的形状、扩展和集中趋势的见解。ECDF图尤其有用，因为它们便于不同数据集之间的比较。注意每个价格类别的曲线如何呈现出房屋趋势的叙述。
 - en: '[![](../Images/a222055d0fe41c6fb234e8763d858159.png)](https://machinelearningmastery.com/wp-content/uploads/2024/02/Figure_1-2.png)From
     the plot, it is evident that lower and medium-priced homes have a higher frequency
     of being built in earlier years, while high and premium-priced homes tend to be
     of more recent construction. Armed with the understanding that property age varies
     significantly across price segments, you find a compelling reason to use `Pandas.concat()`.'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/a222055d0fe41c6fb234e8763d858159.png)](https://machinelearningmastery.com/wp-content/uploads/2024/02/Figure_1-2.png)
+    从图中可以明显看出，较低和中等价格的房屋在较早的年份建造的频率更高，而高价和奢侈价格的房屋则倾向于较新的建筑。了解到房产年龄在价格段中有显著差异后，你找到了使用
+    `Pandas.concat()` 的充分理由。'
 - en: '**Stacking Datasets with `Pandas.concat()`**'
+  id: totrans-24
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**使用 `Pandas.concat()` 叠加数据集**'
 - en: 'As data scientists, you often need to stack datasets or their segments to glean
     deeper insights. The `Pandas.concat()` function is your Swiss Army knife for such
     tasks, enabling you to combine DataFrames with precision and flexibility. This
@@ -122,31 +175,46 @@
     columns or when you need to align them by common columns, significantly broadening
     your analytical scope. Here’s how you can combine the segmented DataFrames to
     compare the broader market categories of ‘affordable’ and ‘luxury’ homes:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为数据科学家，你们经常需要叠加数据集或其部分，以获取更深入的见解。`Pandas.concat()` 函数是你完成这些任务的瑞士军刀，使你能够精确而灵活地合并
+    DataFrame。这一强大函数类似于SQL的`UNION`操作，但`Pandas.concat()` 提供了更大的灵活性——它允许对 DataFrame
+    进行垂直和水平的拼接。当你处理具有不匹配列的数据集或需要按公共列对齐时，这一特性变得不可或缺，显著拓宽了你的分析范围。以下是如何将分段 DataFrame
+    合并以比较“经济型”和“豪华型”房屋的市场类别：
 - en: '[PRE3]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Through this, you can juxtapose and analyze the characteristics that differentiate
     more accessible homes from their expensive counterparts.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过这些，你可以对比和分析那些使得经济型房屋与昂贵房屋不同的特征。
 - en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过我的书籍 [数据科学初学者指南](https://machinelearning.samcart.com/products/beginners-guide-data-science/)，**快速启动你的项目**。它提供了**自学教程**和**可运行的代码**。
 - en: 'Pivoting and Merging: Dancing with Pandas'
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数据透视与合并：与 Pandas 共舞
 - en: 'Having segmented the dataset into ‘affordable’ and ‘luxury’ homes and explored
     the distribution of their construction years, you now turn your attention to another
     dimension that influences property value: amenities, with a focus on the number
     of fireplaces. Before you delve into merging datasets—a task for which `Pandas.merge()`
     stands as a robust tool comparable to SQL’s `JOIN`—you must first examine your
     data through a finer lens.'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 在将数据集划分为“经济型”和“豪华型”房屋，并探讨其建设年份的分布后，你现在将关注于影响房产价值的另一个维度：设施，特别是壁炉的数量。在你深入了解数据集的合并——一个`Pandas.merge()`作为与SQL的`JOIN`相媲美的强大工具——之前，你必须首先通过更精细的视角检查你的数据。
 - en: Pivot tables are an excellent tool for summarizing and analyzing specific data
     points within the segments. They provide you with the ability to aggregate data
     and reveal patterns that can inform your subsequent merge operations. By creating
@@ -154,96 +222,136 @@
     area and the count of homes, categorized by the number of fireplaces. This preliminary
     analysis will not only enrich your understanding of the two market segments but
     also set a solid foundation for the intricate merging techniques you want to show.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 透视表是总结和分析特定数据点的绝佳工具。它们让你能够汇总数据并揭示模式，从而指导后续的合并操作。通过创建透视表，你可以编制一个清晰且组织良好的概述，显示按壁炉数量分类的平均居住面积和房屋数量。这一初步分析不仅丰富了你对两个市场细分的理解，还为你展示的复杂合并技术奠定了坚实的基础。
 - en: '**Creating Insightful Summaries with Pivot Tables**'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '**使用透视表创建有洞察力的总结**'
 - en: Let’s commence by constructing pivot tables for the ‘affordable’ and ‘luxury’
     home categories. These tables will summarize the average gross living area (GrLivArea)
     and provide a count of homes for each category of fireplaces present. Such analysis
     is crucial as it illustrates a key aspect of home desirability and value—the presence
     and number of fireplaces—and how these features vary across different segments
     of the housing market.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们首先构建‘经济型’和‘豪华型’住宅类别的透视表。这些表将总结每种壁炉类别的平均居住面积（GrLivArea）并提供每个类别的房屋数量。这种分析至关重要，因为它展示了房屋吸引力和价值的一个关键方面——壁炉的存在和数量，以及这些特征在不同的市场细分中如何变化。
 - en: '[PRE4]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: With these pivot tables, you can now easily visualize and compare how features
     like fireplaces correlate with the living area and how frequently they occur within
     each segment. The first pivot table was crafted from the ‘affordable’ homes DataFrame
     and demonstrates that most properties within this grouping do not have any fireplaces.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这些透视表，你现在可以轻松地可视化和比较壁炉等特征如何与居住面积相关，并且这些特征在每个细分中的出现频率。第一个透视表是从‘经济型’住宅数据框中创建的，显示了这个分组中的大多数房产没有壁炉。
 - en: '[PRE5]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The second pivot table which was derived from the ‘luxury’ homes DataFrame illustrates
     that properties within this subset have a range of zero to four fireplaces, with
     one fireplace being the most common.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个透视表来源于‘豪华型’住宅数据框，展示了这个子集中的房产壁炉数量范围从零到四个，其中一个壁炉最为常见。
 - en: '[PRE6]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: With the creation of the pivot tables, you’ve distilled the data into a form
     that’s ripe for the next analytical step—melding these insights using `Pandas.merge()`
     to see how these features interplay across the broader market.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过创建透视表，你将数据提炼成一个适合下一步分析的形式——使用`Pandas.merge()`将这些洞察合并，以查看这些特征在更广泛市场中的相互作用。
 - en: 'The pivot table above is the simplest one. The more advanced version allows
     you to specify not only the index but also the columns in the argument. The idea
     is similar: you pick two columns, one specified as `index` and the other as `columns`
     argument, which the values of these two columns are aggregated and become a matrix.
     The value in the matrix is then the result as specified by the `aggfunc` argument.'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的透视表是最简单的版本。更高级的版本允许你不仅指定索引，还指定列作为参数。思想类似：你选择两列，一列指定为`index`，另一列指定为`columns`参数，这两列的值会被聚合并形成一个矩阵。矩阵中的值就是`aggfunc`参数所指定的结果。
 - en: 'You can consider the following example, which produces a similar result as
     above:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以考虑以下示例，它产生了与上述类似的结果：
 - en: '[PRE7]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'This prints:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印：
 - en: '[PRE8]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: You can see the result is the same by comparing, for example, the count of low
     and medium homes of zero fireplaces to be 520 and 411, respectively, which 931
     = 520+411 as you obtained previously. You see the second-level columns are labeled
     with Low, Medium, High, and Premium because you specified “Price_Category” as
     `columns` argument in `pivot_table()`. The dictionary to the `aggfunc` argument
     gives the top-level columns.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过比较，例如，零壁炉的低档和中档住宅数量分别为520和411，你可以看到结果是相同的，即931 = 520+411，这与之前获得的结果一致。你会发现二级列标记为低、中、高和优质，因为你在`pivot_table()`中指定了“Price_Category”作为`columns`参数。`aggfunc`参数中的字典给出了顶级列。
 - en: '**Towards Deeper Insights: Leveraging `Pandas.merge()` for Comparative Analysis**'
+  id: totrans-46
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**迈向更深的洞察：利用`Pandas.merge()`进行比较分析**'
 - en: Having illuminated the relationship between fireplaces, home count, and living
     area within the segmented datasets, you are well-positioned to take your analysis
     one step further. With `Pandas.merge()`, you can overlay these insights, akin
     to how SQL’s `JOIN` operation combines records from two or more tables based on
     a related column. This technique will allow you to merge the segmented data on
     a common attribute, enabling a comparative analysis that transcends categorization.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 在揭示了壁炉、房屋数量和生活区域在细分数据集中的关系后，你已经做好了进一步分析的准备。使用`Pandas.merge()`，你可以叠加这些见解，就像SQL的`JOIN`操作根据相关列合并两个或多个表中的记录一样。这种技术将允许你在共同属性上合并细分数据，进行超越分类的比较分析。
 - en: Our first operation uses an **outer join** to combine the affordable and luxury
     home datasets, ensuring no data is lost from either category. This method is particularly
     illuminating as it reveals the full spectrum of homes, regardless of whether they
     share a common number of fireplaces.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的第一次操作使用**外连接**来合并经济型和豪华型房屋数据集，确保没有任何类别的数据丢失。这种方法特别具有启发性，因为它揭示了所有房屋的完整范围，无论它们是否共享相同数量的壁炉。
 - en: '[PRE9]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '[PRE10]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: In this case, the outer join functions similarly to a right join, capturing
     every distinct category of fireplaces present across both market segments. It
     is interesting to note that there are no properties within the affordable price
@@ -252,155 +360,225 @@
     `pivot_affordable` and `pivot_luxury`. You see “HmCount_aff” is zero for 3 and
     4 fireplaces because you need them as a placeholder for the outer join to match
     the rows in `pivot_luxury`.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，外连接的功能类似于右连接，捕捉到两个市场细分中存在的每种壁炉类别。值得注意的是，在经济型价格范围内没有具有3个或4个壁炉的房产。你需要为`suffixes`参数指定两个字符串，因为“`HmCount`”和“`AvLivArea`”列在`pivot_affordable`和`pivot_luxury`两个数据框中都存在。你会看到“`HmCount_aff`”在3和4个壁炉的情况下为零，因为你需要它们作为外连接的占位符，以匹配`pivot_luxury`中的行。
 - en: Next, you can use the **inner join**, focusing on the intersection where affordable
     and luxury homes share the same number of fireplaces. This approach highlights
     the core similarities between the two segments.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，你可以使用**内连接**，专注于经济型和豪华型房屋共享相同数量壁炉的交集。这种方法突出了两个细分市场之间的核心相似性。
 - en: '[PRE11]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[PRE12]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Interestingly, in this context, the inner join mirrors the functionality of
     a left join, showcasing categories present in both datasets. You do not see the
     rows corresponding to 3 and 4 fireplaces because it is the result of inner join,
     and there are no such rows in the DataFrame `pivot_affordable`.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 有趣的是，在这种情况下，内连接的功能类似于左连接，展示了两个数据集中的类别。你看不到3和4个壁炉对应的行，因为这是内连接的结果，并且在数据框`pivot_affordable`中没有这样的行。
 - en: Lastly, a **cross join** allows you to examine every possible combination of
     affordable and luxury home attributes, offering a comprehensive view of how different
     features interact across the entire dataset. The result is sometimes called the
     **Cartesian product** of rows from the two DataFrames.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，**交叉连接**允许你检查经济型和豪华型房屋属性的每一种可能组合，提供了一个全面的视图，展示不同特征在整个数据集中的交互。结果有时被称为两个数据框的**笛卡尔积**。
 - en: '[PRE13]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: The result is as follows, which demonstrates the result of cross-join but does
     not provide any special insight in the context of this dataset.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果如下，这展示了交叉连接的结果，但在这个数据集中并没有提供任何特殊的见解。
 - en: '[PRE14]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '**Deriving Insights from Merged Data**'
+  id: totrans-60
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**从合并数据中提取见解**'
 - en: 'With these merge operations complete, you can delve into the insights they
     unearth. Each join type sheds light on different aspects of the housing market:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成这些合并操作后，你可以深入探究它们揭示的见解。每种连接类型都为房屋市场的不同方面提供了洞察：
 - en: The **outer join** reveals the broadest range of properties, emphasizing the
     diversity in amenities like fireplaces across all price points.
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**外连接**揭示了最广泛的属性范围，强调了各个价格点上壁炉等设施的多样性。'
 - en: The **inner join** refines your view, focusing on the direct comparisons where
     affordable and luxury homes overlap in their fireplace counts, providing a clearer
     picture of standard market offerings.
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**内连接**细化了你的视角，专注于在壁炉数量上经济型和豪华型住宅的直接比较，提供了更清晰的标准市场情况。'
 - en: The **cross join** offers an exhaustive combination of features, ideal for hypothetical
     analyses or understanding potential market expansions.
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**交叉连接**提供了一个详尽的特征组合，非常适合假设分析或理解潜在市场扩展。'
 - en: 'After conducting these merges, you observe **amongst affordable homes** that:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在进行这些合并后，你会观察到**在可负担得起的住房中**：
 - en: Homes with no fireplaces have an average gross living area of approximately
     1159 square feet and constitute the largest segment.
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 没有壁炉的房屋平均总生活面积约为1159平方英尺，占最大份额。
 - en: As the number of fireplaces increases to one, the average living area expands
     to around 1296 square feet, underscoring a noticeable uptick in living space.
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当壁炉数量增加到一个时，平均生活面积扩展到约1296平方英尺，突显了生活空间的明显增加。
 - en: Homes with two fireplaces, though fewer in number, boast an even larger average
     living area of approximately 1379 square feet, highlighting a trend where additional
     amenities correlate with more generous living spaces.
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 尽管拥有两个壁炉的房屋数量较少，但其平均生活面积更大，约为1379平方英尺，突显了附加设施与更宽敞生活空间的关联趋势。
 - en: 'In contrast, you observe **amongst luxury homes** that:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 相比之下，你会观察到**在奢华住房中**：
 - en: The luxury segment presents a starting point with homes without fireplaces averaging
     1560 square feet, significantly larger than their affordable counterparts.
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 奢华市场中的房屋起点是没有壁炉的房屋，平均面积为1560平方英尺，比可负担得起的房屋要大得多。
 - en: The leap in the average living area is more pronounced as the number of fireplaces
     increases, with one-fireplace homes averaging about 1805 square feet.
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 随着壁炉数量的增加，平均生活面积的跃升更加明显，单壁炉房屋的平均面积约为1805平方英尺。
 - en: Homes with two fireplaces further amplify this trend, offering an average living
     area of nearly 1998 square feet. The rare presence of three and even four fireplaces
     in homes marks a significant increase in living space, peaking at an expansive
     2646 square feet for a home with four fireplaces.
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 拥有两个壁炉的房屋进一步放大了这一趋势，提供了接近1998平方英尺的平均生活面积。少见的三或四个壁炉的房屋标志着生活空间的显著增加，四个壁炉的房屋的生活空间高达2646平方英尺。
 - en: These observations offer a fascinating glimpse into how amenities such as fireplaces
     not only add to the desirability of homes but also appear to be a marker of larger
     living spaces, particularly as you move from affordable to luxury market segments.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些观察提供了一个迷人的视角，展示了壁炉等设施不仅增加了房屋的吸引力，还似乎是更大生活空间的标志，尤其是从可负担得起的市场细分到奢华市场细分。
 - en: Want to Get Started With Beginner's Guide to Data Science?
+  id: totrans-74
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习《数据科学初学者指南》吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并获得课程的免费 PDF 电子书版本。
 - en: '**Further****Reading**'
+  id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: Tutorials
+  id: totrans-78
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[`Pandas.concat()` Method](https://pandas.pydata.org/docs/reference/api/pandas.concat.html)'
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[`Pandas.concat()` 方法](https://pandas.pydata.org/docs/reference/api/pandas.concat.html)'
 - en: '[Pandas’ `DataFrame.pivot_table()` Method](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pivot_table.html)'
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Pandas 的 `DataFrame.pivot_table()` 方法](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pivot_table.html)'
 - en: '[`Pandas.merge()` Method](https://pandas.pydata.org/docs/reference/api/pandas.merge.html#pandas.merge)'
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[`Pandas.merge()` 方法](https://pandas.pydata.org/docs/reference/api/pandas.merge.html#pandas.merge)'
 - en: '**Resources**'
+  id: totrans-82
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**资源**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this comprehensive exploration of data harmonization techniques using Python
     and Pandas, you’ve delved into the intricacies of segmenting, concatenating, pivoting,
     and merging datasets. From dividing datasets into meaningful segments based on
@@ -414,30 +592,44 @@
     scientists and analysts can navigate the complex landscape of data with confidence,
     uncovering hidden patterns, and extracting valuable insights that drive informed
     decision-making.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这次关于使用 Python 和 Pandas 进行数据协调技术的全面探索中，你已深入了解了数据集的分段、连接、透视和合并的复杂性。从基于价格类别将数据集划分为有意义的部分，到可视化建筑年份的趋势，再到使用`Pandas.concat()`堆叠数据集以分析更广泛的市场类别，以及利用数据透视表在细分中总结和分析数据点，你覆盖了一系列必备的数据操作和分析技巧。此外，通过利用`Pandas.merge()`比较分段数据集，并从不同类型的合并操作（外连接、内连接、交叉连接）中获取洞察，你解锁了数据集成和探索的强大能力。掌握这些技术，数据科学家和分析师可以自信地导航复杂的数据领域，发现隐藏的模式，并提取有价值的洞察，从而推动明智的决策制定。
 - en: 'Specifically, you learned:'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to divide datasets into meaningful segments based on price categories and
     visualize trends in construction years.
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何基于价格类别将数据集划分为有意义的部分，并可视化建筑年份的趋势。
 - en: The use of `Pandas.concat()` to stack datasets and analyze broader market categories.
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用`Pandas.concat()`堆叠数据集并分析更广泛的市场类别。
 - en: The role of pivot tables in summarizing and analyzing data points within segments.
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据透视表在总结和分析数据点中的作用。
 - en: How to leverage `Pandas.merge()` to compare segmented datasets and derive insights
     from different types of merge operations (outer, inner, cross).
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何利用`Pandas.merge()`比较分段数据集，并从不同类型的合并操作（外连接、内连接、交叉连接）中获取洞察。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 有任何问题吗？请在下面的评论中提问，我会尽力回答。

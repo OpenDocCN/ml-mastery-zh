@@ -1,11 +1,15 @@
 - en: 'From Data to Map: Visualizing Ames House Prices with Python'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 从数据到地图：使用 Python 可视化 Ames 房价
 - en: 原文：[https://machinelearningmastery.com/data-to-map-geospatial/](https://machinelearningmastery.com/data-to-map-geospatial/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/data-to-map-geospatial/](https://machinelearningmastery.com/data-to-map-geospatial/)
 - en: Geospatial visualization has become an essential tool for understanding and
     representing data in a geographical context. It plays a pivotal role in various
     real-world applications, from urban planning and environmental studies to real
@@ -16,56 +20,86 @@
     to create compelling visualizations. In this chapter, you’ll dive deep into a
     code snippet that visualizes house sale prices in Ames, Iowa, breaking down each
     step to understand its purpose and functionality.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 地理空间可视化已成为理解和表示地理上下文中数据的必要工具。它在各种实际应用中发挥着重要作用，从城市规划和环境研究到房地产和交通。例如，城市规划者可能会使用地理空间数据来优化公共交通路线，而房地产专业人士则可以利用这些数据分析特定区域的房产价值趋势。使用
+    Python，你可以利用像 geopandas、Matplotlib 和 contextily 这样的库来创建引人注目的可视化。在本章中，你将深入了解一个可视化
+    Iowa Ames 房价的代码片段，逐步拆解每一步以理解其目的和功能。
 - en: Let’s get started.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/12266ea57807a05f0f5ec96cce79477f.png)'
+  id: totrans-4
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/12266ea57807a05f0f5ec96cce79477f.png)'
 - en: 'From Data to Map: Visualizing Ames House Prices with Python'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 从数据到地图：使用 Python 可视化 Ames 房价
 - en: Photo by [Annie Spratt](https://unsplash.com/photos/white-and-green-state-maps-AFB6S2kibuk).
     Some rights reserved.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源于[Annie Spratt](https://unsplash.com/photos/white-and-green-state-maps-AFB6S2kibuk)。保留部分权利。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into six parts; they are:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为六部分；它们是：
 - en: Installing Essential Python Packages
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 安装必需的 Python 包
 - en: Importing Necessary Libraries
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 导入必要的库
 - en: Loading and Preparing the Data
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 加载和准备数据
 - en: Setting the Coordinate Reference System (CRS)
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 设置坐标参考系统（CRS）
 - en: Creating a Convex Hull
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建凸包
 - en: Visualizing the Data
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可视化数据
 - en: Installing Essential Python Packages
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 安装必需的 Python 包
 - en: Before we dive into the world of geospatial visualization with Python, it’s
     crucial to set up your development environment correctly. On Windows, you can
     open either Command Prompt or PowerShell. If you’re using macOS or Linux, the
@@ -73,99 +107,147 @@
     to ensure that you have access to all the necessary Python libraries, it’s essential
     to have access to the Python Package Index (PyPI), the official third-party software
     repository for Python packages.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们深入探索 Python 的地理空间可视化之前，正确设置你的开发环境至关重要。在 Windows 上，你可以打开命令提示符或 PowerShell。如果你使用的是
+    macOS 或 Linux，终端应用程序是你进入命令行世界的入口。此外，为了确保你能够访问所有必需的 Python 库，必须访问 Python 包索引（PyPI），这是
+    Python 包的官方第三方软件库。
 - en: 'To install the essential packages, you can use the following commands on your
     terminal or command-line interface:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 要安装必需的软件包，你可以在终端或命令行界面中使用以下命令：
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Once you’ve successfully installed the required packages, you’re ready to import
     the necessary libraries and begin your geospatial visualization journey.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你成功安装了所需的软件包，你就可以导入必要的库，并开始你的地理空间可视化之旅。
 - en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参考我的书籍 [《数据科学入门指南》](https://machinelearning.samcart.com/products/beginners-guide-data-science/)。它提供了**自学教程**和**可运行的代码**。'
 - en: Importing Necessary Libraries
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 导入必要的库
 - en: Before diving into the visualization, it’s essential to import the necessary
     libraries that will power our visualization.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在深入可视化之前，导入将支持我们可视化的必要库是至关重要的。
 - en: '[PRE1]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'We’ll be using several Python libraries, including:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用几个 Python 库，包括：
 - en: '**pandas:** For data manipulation and analysis.'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**pandas：** 用于数据操作和分析。'
 - en: '**geopandas:** To handle geospatial data.'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**geopandas：** 用于处理地理空间数据。'
 - en: '**matplotlib:** For creating static, animated, and interactive visualizations.'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**matplotlib：** 用于创建静态、动画和交互式可视化。'
 - en: '**contextily:** To add basemaps to our plots.'
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**contextily：** 用于将底图添加到我们的图表中。'
 - en: '**shapely:** For manipulation and analysis of planar geometric objects.'
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**shapely：** 用于处理和分析平面几何对象。'
 - en: Loading and Preparing the Data
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 加载和准备数据
 - en: The [`Ames.csv` dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)
     contains detailed information about house sales in Ames, Iowa. This includes various
     attributes of the houses, such as size, age, and condition, as well as their geographical
     coordinates (latitude and longitude). These geographical coordinates are crucial
     for our geospatial visualization, as they allow us to plot each house on a map,
     providing a spatial context to the sale prices.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '[`Ames.csv` 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)
+    包含有关 Iowa, Ames 房屋销售的详细信息。这包括房屋的各种属性，如大小、年龄和状况，以及其地理坐标（纬度和经度）。这些地理坐标对我们的地理空间可视化至关重要，因为它们使我们能够在地图上绘制每个房屋，为销售价格提供空间背景。'
 - en: '[PRE2]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: By converting the pandas DataFrame into a GeoDataFrame, we can leverage geospatial
     functionalities on our dataset, transforming the raw data into a format suitable
     for geospatial analysis and visualization.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过将 pandas DataFrame 转换为 GeoDataFrame，我们可以在数据集上利用地理空间功能，将原始数据转化为适合地理空间分析和可视化的格式。
 - en: Setting the Coordinate Reference System (CRS)
+  id: totrans-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 设置坐标参考系统（CRS）
 - en: The Coordinate Reference System (CRS) is a fundamental aspect of accurate geospatial
     operations and cartography, determining how our data aligns on the Earth’s surface.
     The distance between two points will differ under a different CRS, and the map
     will look different. In our example, we set the CRS for the GeoDataFrame using
     the notation “EPSG:4326,” which corresponds to the widely-used WGS 84 (or World
     Geodetic System 1984) latitude-longitude coordinate system.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 坐标参考系统（CRS）是准确的地理空间操作和制图的基本方面，决定了我们的数据在地球表面上的对齐方式。不同 CRS 下两点之间的距离会有所不同，地图的显示也会有所不同。在我们的示例中，我们使用“EPSG:4326”这一标注设置了
+    GeoDataFrame 的 CRS，该标注对应于广泛使用的 WGS 84（或世界大地测量系统 1984）纬度-经度坐标系统。
 - en: '[PRE3]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: WGS 84 is a global reference system established in 1984 and is the de facto
     standard for satellite positioning, GPS, and various mapping applications. It
     uses a three-dimensional coordinate system with latitude and longitude defining
     positions on the Earth’s surface and altitude indicating height above or below
     a **reference ellipsoid**.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: WGS 84 是一个于1984年建立的全球参考系统，是卫星定位、GPS 和各种映射应用的事实标准。它使用三维坐标系统，以纬度和经度定义地球表面的位置信息，高度表示相对于**参考椭球体**的高度。
 - en: Beyond WGS 84, numerous coordinate reference systems cater to diverse mapping
     needs. Choices include the Universal Transverse Mercator (UTM), providing planar,
     Cartesian coordinates suitable for regional mapping; the European Petroleum Survey
@@ -174,122 +256,182 @@
     States. Selecting an appropriate CRS depends on factors like scale, accuracy,
     and the geographic scope of your data, ensuring precision in geospatial analysis
     and visualization.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了 WGS 84 之外，还有许多坐标参考系统满足不同的映射需求。选择包括提供适用于区域映射的平面笛卡尔坐标的通用横轴墨卡托（UTM），例如用于基于网页的映射的欧洲石油勘测组（EPSG）选项，如“EPSG:3857”，以及提供美国内州特定系统的州平面坐标系统（SPCS）。选择合适的
+    CRS 取决于规模、精度和数据的地理范围等因素，以确保地理空间分析和可视化的精确性。
 - en: Creating a Convex Hull
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建凸包
 - en: A convex hull provides a boundary that encloses all data points, offering a
     visual representation of the geographical spread of our data.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 凸包提供了一个包围所有数据点的边界，提供了我们数据地理分布的视觉表示。
 - en: '[PRE4]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The transformation from “EPSG:4326” to “EPSG:3857” is crucial for a couple
     of reasons:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 从“EPSG:4326”到“EPSG:3857”的转换至关重要，原因有几个：
 - en: '**Web-based Visualizations:** The “EPSG:3857” is optimized for web-based mapping
     applications like Google Maps and OpenStreetMap. By transforming our data to this
     CRS, we ensure it overlays correctly on web-based basemaps.'
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**基于网页的可视化：** “EPSG:3857”被优化用于像 Google Maps 和 OpenStreetMap 这样的网页映射应用程序。通过将数据转换为该
+    CRS，我们确保它可以正确叠加在基于网页的底图上。'
 - en: '**Buffering in Meters:** The buffer operation adds a margin around the convex
     hull. In “EPSG:4326”, coordinates are in degrees, which makes buffering in meters
     problematic. By transforming to “EPSG:3857”, we can accurately buffer our convex
     hull by 500 meters, providing a clear boundary around Ames.'
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**以米为单位的缓冲：** 缓冲操作在凸包周围添加边距。在“EPSG:4326”中，坐标是以度为单位的，这使得以米为单位的缓冲变得困难。通过转换到“EPSG:3857”，我们可以准确地将凸包缓冲500米，为
+    Ames 提供清晰的边界。'
 - en: By buffering the convex hull, we not only visualize the spread of our data but
     also provide a geographical context to the visualization, emphasizing the region
     of interest.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过缓冲凸包，我们不仅可视化了数据的分布，还为可视化提供了地理背景，突出显示了关注区域。
 - en: Want to Get Started With Beginner's Guide to Data Science?
+  id: totrans-46
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习数据科学的初学者指南吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费 PDF 电子书版本。
 - en: Visualizing the Data
+  id: totrans-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数据可视化
 - en: With our data prepared, it’s time to bring it to life through visualization.
     We’ll plot the sale prices of individual houses on a map, using a color gradient
     to represent different price ranges.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据准备好后，是时候通过可视化来展现它。我们将在地图上绘制单个房屋的销售价格，使用颜色梯度表示不同的价格范围。
 - en: '[PRE5]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'The color gradient used, **‘coolwarm’**, is a diverging colormap. This means
     it has two distinct colors representing the two ends of a spectrum, with a neutral
     color in the middle. In our visualization:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用的颜色梯度，**‘coolwarm’**，是一个发散的颜色映射。这意味着它有两种不同的颜色代表光谱的两个端点，中间有一个中性色。在我们的可视化中：
 - en: '**Cooler colors (blues)** represent houses with lower sale prices.'
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**较冷的颜色（蓝色）** 代表房价较低的房屋。'
 - en: '**Warmer colors (reds)** signify houses with higher sale prices.'
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**较暖的颜色（红色）** 表示房价较高的房屋。'
 - en: This choice of colormap allows readers to quickly identify areas with high and
     low property values, offering insights into the distribution of house sale prices
     in Ames. The buffered boundary further emphasizes the region of interest, providing
     context to the visualization.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种颜色映射选择使读者能够快速识别房产价值高低的区域，提供了对 Ames 房屋销售价格分布的见解。缓冲边界进一步强调了关注区域，为可视化提供了背景。
 - en: '[![](../Images/6a70d752343ae0774204a863874f8ac3.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Ames_Map.png)'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/6a70d752343ae0774204a863874f8ac3.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Ames_Map.png)'
 - en: 'This map is a combination of several components: The basemap, brought in by
     contextily from OpenStreetMap, depicts the terrain at a particular latitude-longitude.
     The colored dots are based on the data from the pandas DataFrame but converted
     to a geographic CRS by geopandas, which should align with the basemap.'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 这张地图是几个组件的组合：由 contextily 从 OpenStreetMap 导入的基图展示了特定经纬度的地形。彩色点基于来自 pandas DataFrame
+    的数据，但通过 geopandas 转换为地理 CRS，应该与基图对齐。
 - en: '**Further Reading**'
+  id: totrans-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多相关资源，如果你想深入了解。
 - en: Tutorials
+  id: totrans-60
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[Introduction to GeoPandas](https://geopandas.org/en/stable/getting_started/introduction.html)'
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[GeoPandas 介绍](https://geopandas.org/en/stable/getting_started/introduction.html)'
 - en: '**Resources**'
+  id: totrans-62
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**资源**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据词典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this post, we delved into the intricacies of geospatial visualization using
     Python, focusing on the visualization of house sale prices in Ames, Iowa. Through
     a meticulous step-by-step breakdown of the code, we unveiled the various stages
@@ -300,25 +442,37 @@
     enabling them to make informed, data-driven decisions rooted in geographical contexts.
     As cities grow and the world becomes increasingly data-centric, overlaying data
     on geographical maps will be indispensable in shaping future strategies and insights.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我们深入探讨了使用 Python 进行地理空间可视化的复杂性，重点关注了爱荷华州 Ames 房屋销售价格的可视化。通过对代码的详细逐步解析，我们揭示了从初始数据加载和准备到最终可视化的各个阶段。理解地理空间可视化技术不仅仅是学术上的练习；它具有深远的现实世界意义。掌握这些技术可以使各领域的专业人士，如城市规划和房地产领域的从业者，能够做出基于地理背景的明智数据驱动决策。随着城市的增长和世界变得越来越数据驱动，将数据叠加到地理地图上将对制定未来策略和洞察力至关重要。
 - en: 'Specifically, from this tutorial, you learned:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，通过本教程，你学到了：
 - en: How to harness essential Python libraries for geospatial visualization.
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何利用关键 Python 库进行地理空间可视化。
 - en: The pivotal role of data preparation and transformation in geospatial operations.
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据准备和转换在地理空间操作中的关键作用。
 - en: Effective techniques for visualizing geospatial data, including the nuances
     of setting up a color gradient and integrating a basemap.
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可视化地理空间数据的有效技巧，包括设置颜色渐变和整合底图的细节。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？请在下面的评论中提问，我会尽力回答。

@@ -1,92 +1,134 @@
 - en: Text Generation with LSTM in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用PyTorch进行LSTM文本生成
 - en: 原文：[https://machinelearningmastery.com/text-generation-with-lstm-in-pytorch/](https://machinelearningmastery.com/text-generation-with-lstm-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/text-generation-with-lstm-in-pytorch/](https://machinelearningmastery.com/text-generation-with-lstm-in-pytorch/)
 - en: Recurrent neural network can be used for time series prediction. In which, a
     regression neural network is created. It can also be used as generative model,
     which usually is a classification neural network model. A generative model is
     to learn certain pattern from data, such that when it is presented with some prompt,
     it can create a complete output that in the same style as the learned pattern.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 循环神经网络可以用于时间序列预测。在其中，创建了一个回归神经网络。它也可以被用作生成模型，通常是一个分类神经网络模型。生成模型的目标是从数据中学习某种模式，这样当它被提供一些提示时，它可以创建一个完整的输出，与学习的模式风格相同。
 - en: 'In this post, you will discover how to build a generative model for text using
     LSTM recurrent neural networks in PyTorch. After finishing this post, you will
     know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，你将发现如何使用PyTorch中的LSTM循环神经网络构建一个文本生成模型。完成本文后，你将了解：
 - en: Where to download a free corpus of text that you can use to train text generative
     models
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从哪里下载可以用来训练文本生成模型的免费语料库
 - en: How to frame the problem of text sequences to a recurrent neural network generative
     model
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将文本序列问题框定为循环神经网络生成模型
 - en: How to develop an LSTM to generate plausible text sequences for a given problem
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何开发一个LSTM来生成给定问题的合理文本序列
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，使用我的书籍[Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供**自学教程**和**可工作的代码**。'
 - en: Let’s get started.![](../Images/9fc2bb253eb3136eefd33aa7128fdfee.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/9fc2bb253eb3136eefd33aa7128fdfee.png)
 - en: Text Generation with LSTM in PyTorch
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用PyTorch进行LSTM文本生成
 - en: Photo by [Egor Lyfar](https://unsplash.com/photos/tfBlExFIVTw). Some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Egor Lyfar](https://unsplash.com/photos/tfBlExFIVTw)提供。部分权利保留。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into six parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为六个部分；它们是：
 - en: What is a Generative Model
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 生成模型是什么
 - en: Getting Text Data
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 获取文本数据
 - en: A Small LSTM Network to Predit the Next Character
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个小的LSTM网络来预测下一个字符
 - en: Generating Text with an LSTM Model
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用LSTM模型生成文本
 - en: Using a Larger LSTM Network
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用更大的LSTM网络
 - en: Faster Training with GPU
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用GPU加速更快的训练
 - en: What is a Generative Model
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 生成模型是什么
 - en: Generative model is indeed, just another machine learning model that happened
     to be able to create new things. Generative Adverserial Network (GAN) is a class
     of its own. Transformer models that uses attention mechanism is also found to
     be useful to generate text passages.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成模型确实只是另一个能够创造新事物的机器学习模型。生成对抗网络（GAN）是其自身的一类。使用注意机制的Transformer模型也被发现对生成文本段落有用。
 - en: It is just a machine learning model because the model has been trained with
     existing data, so that it learned something from it. Depends on how to train it,
     they can work vastly different. In this post, a character-based generative model
@@ -94,43 +136,61 @@
     (alphabets and punctuations) as input and the immediate next character as the
     target. As long as it can predict what is the next character given what are preceding,
     you can run the model in a loop to generate a long piece of text.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这只是一个机器学习模型，因为模型已经通过现有数据进行了训练，所以它从中学到了一些东西。取决于如何训练它，它们可以有很大不同的工作方式。在本文中，创建了一个基于字符的生成模型。这意味着训练一个模型，它将一系列字符（字母和标点符号）作为输入，下一个即时字符作为目标。只要它能够预测接下来的字符是什么，给定前面的内容，你就可以在循环中运行模型以生成一段长文本。
 - en: This model is probably the simplest one. However, human language is complex.
     You shouldn’t expect it can produce very high quality output. Even so, you need
     a lot of data and train the model for a long time before you can see sensible
     results.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个模型可能是最简单的一个。然而，人类语言是复杂的。你不应该期望它能产生非常高质量的输出。即便如此，你需要大量的数据并且长时间训练模型，才能看到合理的结果。
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用PyTorch进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在参加我的免费电子邮件速成课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并免费获取课程的PDF电子书版本。
 - en: Getting Text Data
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 获取文本数据
 - en: Obtaining high quality data is important for a successful generative model.
     Fortunately, many of the classical texts are no longer protected under copyright.
     This means you can download all the text for these books for free and use them
     in experiments, like creating generative models. Perhaps the best place to get
     access to free books that are no longer protected by copyright is Project Gutenberg.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 获取高质量的数据对成功的生成模型至关重要。幸运的是，许多经典文本已经不再受版权保护。这意味着你可以免费下载这些书籍的所有文本，并在实验中使用它们，例如创建生成模型。或许获取不再受版权保护的免费书籍的最佳地方是古腾堡计划。
 - en: 'In this post, you will use a favorite book from childhood as the dataset, Alice’s
     Adventures in Wonderland by Lewis Carroll:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你将使用童年时期喜欢的一本书作为数据集，刘易斯·卡罗尔的《爱丽丝梦游仙境》：
 - en: '[https://www.gutenberg.org/ebooks/11](https://www.gutenberg.org/ebooks/11)'
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://www.gutenberg.org/ebooks/11](https://www.gutenberg.org/ebooks/11)'
 - en: Your model will learn the dependencies between characters and the conditional
     probabilities of characters in sequences so that you can, in turn, generate wholly
     new and original sequences of characters. This post is a lot of fun, and repeating
@@ -138,80 +198,118 @@
     experiments are not limited to text; you can also experiment with other ASCII
     data, such as computer source code, marked-up documents in LATEX, HTML or Markdown,
     and more.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 你的模型将学习字符之间的依赖关系和字符序列中的条件概率，这样你就可以生成全新且原创的字符序列。这个过程非常有趣，推荐用古腾堡计划中的其他书籍重复这些实验。这些实验不限于文本；你还可以尝试其他ASCII数据，如计算机源代码、LATEX、HTML或Markdown中的标记文档等。
 - en: 'You can download the complete text in ASCII format (Plaintext UTF-8) for this
     book for free and place it in your working directory with the filename `wonderland.txt`.
     Now, you need to prepare the dataset ready for modeling. Project Gutenberg adds
     a standard header and footer to each book, which is not part of the original text.
     Open the file in a text editor and delete the header and footer. The header is
     obvious and ends with the text:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以免费下载这本书的完整ASCII格式文本（纯文本UTF-8），并将其放置在你的工作目录中，文件名为`wonderland.txt`。现在，你需要准备数据集以进行建模。古腾堡计划为每本书添加了标准的页眉和页脚，这不是原始文本的一部分。在文本编辑器中打开文件并删除页眉和页脚。页眉是明显的，并以如下文本结束：
 - en: '[PRE0]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The footer is all the text after the line of text that says:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 页脚是指在如下文本行之后的所有文本：
 - en: '[PRE1]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: You should be left with a text file that has about 3,400 lines of text.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该剩下一个大约有3,400行文本的文本文件。
 - en: A Small LSTM Network to Predict the Next Character
+  id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个小型LSTM网络来预测下一个字符
 - en: First, you need to do some preprocessing on the data before you can build a
     model. Neural network models can only work with numbers, not text. Therefore you
     need to transform the characters into numbers. To make the problem simpler, you
     also want to transform all uppercase letters into lowercase.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，你需要对数据进行一些预处理，才能构建模型。神经网络模型只能处理数字，而不能处理文本。因此，你需要将字符转换为数字。为了简化问题，你还需要将所有大写字母转换为小写字母。
 - en: 'In below, you open the text file, transform all letters into lowercase, and
     create a Python dict `char_to_int` to map characters into distinct integers. For
     example, the list of unique sorted lowercase characters in the book is as follows:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面，你打开文本文件，将所有字母转换为小写，并创建一个Python字典`char_to_int`来将字符映射为不同的整数。例如，书中的唯一已排序小写字符列表如下：
 - en: '[PRE2]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Since this problem is character-based, the “vocabulary” are the distinct characters
     ever used in the text.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于这个问题是基于字符的，“词汇表”是文本中曾用到的不同字符。
 - en: '[PRE3]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'This should print:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应该打印出：
 - en: '[PRE4]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: You can see the book has just under 150,000 characters, and when converted to
     lowercase, there are only 50 distinct characters in the vocabulary for the network
     to learn — much more than the 26 in the alphabet.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到这本书大约有150,000个字符，并且当转换为小写时，词汇中只有50个不同的字符供网络学习——比字母表中的26个字符要多得多。
 - en: 'Next, you need to separate the text into inputs and targets. A window of 100
     character is used here. That is, with character 1 to 100 as input, your model
     is going to predict for character 101\. Should a window of 5 be used, the word
     “chapter” will become two data samples:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，你需要将文本分为输入和目标。这里使用了100个字符的窗口。也就是说，使用字符1到100作为输入，你的模型将预测字符101。如果使用5个字符的窗口，那么单词“chapter”将变成两个数据样本：
 - en: '[PRE5]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'In a long text such as this one, a myraid of windows can be created and this
     produced a dataset of a lot of samples:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这样的长文本中，可以创建无数窗口，这会生成一个包含大量样本的数据集：
 - en: '[PRE6]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Running the above, you can see a total of 144,474 samples are created. Each
     sample is now in the form of integers, transformed using the mapping `char_to_int`.
     However, a PyTorch model would prefer to see the data in floating point tensors.
@@ -219,11 +317,15 @@
     used in the model, thus the input tensor should be of dimension (sample, time
     steps, features). To help training, it is also a good idea to normalize the input
     to 0 to 1\. Hence you have the following:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行上述代码，你可以看到总共创建了144,474个样本。每个样本现在都是整数形式，使用`char_to_int`映射进行转换。然而，PyTorch模型更喜欢浮点张量。因此，你应该将这些转换为PyTorch张量。由于模型将使用LSTM层，因此输入张量应为（样本，时间步，特征）的维度。为了帮助训练，规范化输入到0到1也是一个好主意。因此你有如下内容：
 - en: '[PRE7]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: You can now define your LSTM model. Here, you define a single hidden LSTM layer
     with 256 hidden units. The input is single feature (i.e., one integer for one
     character). A dropout layer with probability 0.2 is added after the LSTM layer.
@@ -234,48 +336,70 @@
     is pass on to the output layer. The output layer is a fully-connected layer to
     produce logits for the 50 vocabularies. The logits can be converted into probability-like
     prediction using a softmax function.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 你现在可以定义你的LSTM模型。在这里，你定义了一个具有256个隐藏单元的单层LSTM。输入是单一特征（即，一个字符对应一个整数）。在LSTM层之后添加了一个概率为0.2的dropout层。LSTM层的输出是一个元组，其中第一个元素是每个时间步的LSTM单元的隐藏状态。这是隐藏状态如何随着LSTM单元接受每个时间步输入而演变的历史。假设最后的隐藏状态包含了最多的信息，因此仅将最后的隐藏状态传递到输出层。输出层是一个全连接层，用于为50个词汇产生logits。通过softmax函数，logits可以转换为类似概率的预测。
 - en: '[PRE8]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: This is a model for single character classification of 50 classes. Therefore
     cross entropy loss should be used. It is optimized using Adam optimizer. The training
     loop is as follows. For simplicity, no test set has created, but the model is
     evaluated with the training set once again at the end of each epoch to keep track
     on the progress.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个用于50类单字符分类的模型。因此应使用交叉熵损失函数。该模型使用Adam优化器进行优化。训练循环如下所示。为简化起见，没有创建测试集，但模型在每个epoch结束时会再次使用训练集进行评估，以跟踪进度。
 - en: This program can run for a long time, especially on CPU! In order to preserve
     the fruit of work, the best model ever found is saved for future reuse.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个程序可能会运行很长时间，尤其是在CPU上！为了保留工作的成果，保存了迄今为止找到的最佳模型以备将来使用。
 - en: '[PRE9]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Running the above may produce the following:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行上述代码可能会产生以下结果：
 - en: '[PRE10]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The cross entropy almost always decreasing in each epoch. This means probably
     the model is not fully converged and you can train it for more epochs. Upon the
     training loop completed, you should have the file `single-char.pth` created to
     contain the best model weight ever found, as well as the character-to-integer
     mapping used by this model.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 交叉熵几乎在每个epoch中都在下降。这意味着模型可能没有完全收敛，你可以训练更多的epochs。当训练循环完成后，你应该会创建一个文件`single-char.pth`，其中包含迄今为止找到的最佳模型权重，以及此模型使用的字符到整数映射。
 - en: 'For completeness, below is tying everything above into one script:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了完整性，下面是将上述所有内容结合到一个脚本中的示例：
 - en: '[PRE11]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Generating Text with an LSTM Model
+  id: totrans-61
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用LSTM模型生成文本
 - en: Given the model is well trained, generating text using the trained LSTM network
     is relatively straightforward. Firstly, you need to recreate the network and load
     the trained model weight from the saved checkpoint. Then you need to create some
@@ -286,69 +410,102 @@
     is repeated for as long as you want to predict new characters (e.g., a sequence
     of 1,000 characters in length). You can pick a random input pattern as your seed
     sequence, then print generated characters as you generate them.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于模型已经经过良好的训练，使用训练好的 LSTM 网络生成文本相对简单。首先，你需要重新创建网络并从保存的检查点加载训练好的模型权重。然后你需要为模型创建一些提示以开始生成。提示可以是模型能够理解的任何内容。它是一个种子序列，用于给模型提供一个生成字符的起点。然后，将生成的字符添加到序列的末尾，并修剪掉第一个字符以保持一致的长度。这个过程会重复进行，直到你想要预测新的字符（例如，一段长度为1000个字符的序列）。你可以选择一个随机输入模式作为你的种子序列，然后在生成字符时打印它们。
 - en: 'A simple way to generate prompt is to pick a random sample from the original
     dataset, e.g., with the `raw_text` obtained in the previous section, a prompt
     can be created as:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成提示的一个简单方法是从原始数据集中随机选择一个样本，例如，使用前一节获得的 `raw_text`，可以创建如下的提示：
 - en: '[PRE12]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: But you should be reminded that you need to transform it since this prompt is
     a string while the model expects a vector of integers.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 但你需要提醒自己，你需要对其进行转换，因为这个提示是一个字符串，而模型期望的是一个整数向量。
 - en: 'The entire code is merely as follows:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 整个代码仅如下所示：
 - en: '[PRE13]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'Running this example first outputs the prompt used, then each character as
     it is generated. For example, below are the results from one run of this text
     generator. The prompt was:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行此示例首先输出所使用的提示，然后输出每个生成的字符。例如，下面是此文本生成器的一次运行结果。提示是：
 - en: '[PRE14]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'The generated text was:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成的文本是：
 - en: '[PRE15]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Let’s note some observations about the generated text.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们记录一些关于生成文本的观察。
 - en: It can emit line breaks. The original text limited the line width to 80 characters
     and the generative model attempted to replicate this pattern
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它可以发出换行符。原始文本将行宽限制为80个字符，而生成模型尝试复制这一模式。
 - en: The characters are separated into word-like groups, and some groups are actual
     English words (e.g., “the,” “said,” and “rabbit”), but many are not (e.g., “thite,”
     “soteet,” and “tha”).
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 字符被分成类似单词的组，其中一些组是实际的英语单词（例如，“the”，“said”，和“rabbit”），但许多则不是（例如，“thite”，“soteet”，和“tha”）。
 - en: Some of the words in sequence make sense (e.g., “i don’t know the“), but many
     do not (e.g., “he were thing“).
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有些词序列是有意义的（例如，“i don’t know the”），但许多词序列则没有意义（例如，“he were thing”）。
 - en: The fact that this character-based model of the book produces output like this
     is very impressive. It gives you a sense of the learning capabilities of LSTM
     networks. However, the results are not perfect. In the next section, you will
     look at improving the quality of results by developing a much larger LSTM network.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个基于字符的模型产生这样的输出非常令人印象深刻。它让你感受到 LSTM 网络的学习能力。然而，结果并不完美。在下一节中，你将通过开发一个更大的 LSTM
+    网络来提高结果的质量。
 - en: Using a Larger LSTM Network
+  id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用更大的 LSTM 网络
 - en: Recall that LSTM is a recurrent neural network. It takes a sequence as input,
     which in each step of the sequence, the input is mixed with its internal states
     to produce an output. Hence the output from LSTM is also a sequence. In the above,
@@ -356,181 +513,269 @@
     network but those from earlier steps are discarded. However, it is not necessarily
     the case. You can treat the sequence output from one LSTM layer as input to another
     LSTM layer. Then, you are building a larger network.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 记住，LSTM 是一种递归神经网络。它将一个序列作为输入，在序列的每一步中，输入与其内部状态混合以产生输出。因此，LSTM 的输出也是一个序列。在上述情况中，来自最后一个时间步的输出用于神经网络的进一步处理，而早期步骤的输出则被丢弃。然而，这并不一定是唯一的情况。你可以将一个
+    LSTM 层的序列输出视为另一个 LSTM 层的输入。这样，你就可以构建一个更大的网络。
 - en: Similar to convolutional neural networks, a stacked LSTM network is supposed
     to have the earlier LSTM layers to learn low level features while the later LSTM
     layers to learn the high level features. It may not be always useful but you can
     try it out to see whether the model can produce a better result.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于卷积神经网络，堆叠 LSTM 网络应该让早期的 LSTM 层学习低层次特征，而后期的 LSTM 层学习高层次特征。虽然这种方法可能并不总是有效，但你可以尝试一下，看看模型是否能产生更好的结果。
 - en: 'In PyTorch, making a stacked LSTM layer is easy. Let’s modify the above model
     into the following:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中，制作堆叠 LSTM 层很简单。让我们将上述模型修改为以下形式：
 - en: '[PRE16]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'The only change is on the parameter to `nn.LSTM()`: you set `num_layers=2`
     instead of 1 to add another LSTM layer. But between the two LSTM layers, you also
     added a dropout layer through the parameter `dropout=0.2`. Replacing this model
     with the previous is all the change you need to make. Rerun the training you should
     see the below:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 唯一的变化是在 `nn.LSTM()` 的参数上：你将 `num_layers=2` 设为 2，而不是 1，以添加另一个 LSTM 层。但在这两个 LSTM
+    层之间，你还通过参数 `dropout=0.2` 添加了一个 dropout 层。用这个模型替换之前的模型就是你需要做的所有更改。重新运行训练，你应该会看到以下结果：
 - en: '[PRE17]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'You should see the the cross entropy here is lower than that in the previous
     section. This means this model is performing better. In fact, with this model,
     you can see the generated text looks more sensible:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该会看到此处的交叉熵低于前一节。这意味着这个模型的表现更好。实际上，使用这个模型，你可以看到生成的文本看起来更有意义：
 - en: '[PRE18]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: Not only words are spelled correctly, the text is also more English-like. Since
     the cross-entropy loss is still decreasing as you trained the model, you can assume
     the model is not converged yet. You can expect to make the model better if you
     increased the training epoch.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 不仅单词拼写正确，文本也更符合英语。由于交叉熵损失在你训练模型时仍在下降，你可以认为模型尚未收敛。如果你增加训练轮次，可以期待使模型变得更好。
 - en: For completeness, below is the complete code for using this new model, including
     training and text generation.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了完整性，下面是使用这个新模型的完整代码，包括训练和文本生成。
 - en: '[PRE19]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Faster Training with GPU
+  id: totrans-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 GPU 加速训练
 - en: Running programs from this post can be pathetically slow. Even if you have a
     GPU, you will not see immediate improvement. It is because the design of PyTorch,
     it may not use your GPU automatically. However, if you have a CUDA-capable GPU,
     you can improve the performance a lot by carefully moving the heavy computation
     away from your CPU.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文中的程序运行可能会非常慢。即使你有 GPU，也不会立刻看到改善。这是因为 PyTorch 的设计，它可能不会自动使用你的 GPU。然而，如果你有支持
+    CUDA 的 GPU，通过将重计算任务从 CPU 移开，你可以大大提高性能。
 - en: A PyTorch model is a program of tensor calculation. The tensors can be stored
     in GPU or in CPU. Operation can be carried out as long as all the operators are
     in the same device. In this particular example, the model weight (i.e., those
     of the LSTM layers and the fully connected layer) can be moved to GPU. By doing
     so, the input should also be moved to the GPU before execution and the output
     will also be stored in the GPU unless you move it back.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 模型是一个张量计算程序。张量可以存储在 GPU 或 CPU 中。只要所有操作符在同一个设备上，就可以执行操作。在这个特定的示例中，模型权重（即
+    LSTM 层和全连接层的权重）可以移动到 GPU 上。这样，输入也应该在执行前移动到 GPU 上，输出也将存储在 GPU 中，除非你将其移动回去。
 - en: 'In PyTorch, you can check if you have a CUDA-capable GPU using the following
     function:'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中，你可以使用以下函数检查是否有支持 CUDA 的 GPU：
 - en: '[PRE20]'
+  id: totrans-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'It returns a boolean to indicate if you can use GPU, which in turn, depends
     on the hardware model you have, whether your OS has the appropriate library installed,
     and whether your PyTorch is compiled with corresponding GPU support. If everything
     works in concert, you can create a device and assign your model to it:'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 它返回一个布尔值，指示你是否可以使用 GPU，这取决于你拥有的硬件模型、你的操作系统是否安装了适当的库以及你的 PyTorch 是否编译了相应的 GPU
+    支持。如果一切正常，你可以创建一个设备并将模型分配给它：
 - en: '[PRE21]'
+  id: totrans-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'If your model is running on CUDA device but your input tensor is not, you will
     see PyTorch complain about that and fail to proceed. To move your tensor to the
     CUDA device, you should run like the following:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你的模型在 CUDA 设备上运行，但输入张量不在，你会看到 PyTorch 抱怨并无法继续。要将张量移动到 CUDA 设备，你应该运行如下代码：
 - en: '[PRE22]'
+  id: totrans-97
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'Which the `.to(device)` part will do the magic. But remember that `y_pred`
     produced above will also be on the CUDA device. Hence you should do the same when
     you run the loss function. Modifying the above program to make it capable to run
     on GPU will become the following:'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: '`.to(device)` 部分将会起到魔法作用。但请记住，上述程序产生的`y_pred`也将位于 CUDA 设备上。因此，在运行损失函数时，你也应该做同样的操作。修改上述程序，使其能够在
+    GPU 上运行，将变成以下形式：'
 - en: '[PRE23]'
+  id: totrans-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'Compare to the code in the previous section, you should see they are essentially
     the same. Except the CUDA device is detected with the line:'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 与前一节中的代码进行比较，你应该能看到它们基本相同。除了 CUDA 设备检测行：
 - en: '[PRE24]'
+  id: totrans-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: which will be your GPU or fall back to CPU if no CUDA device is found. Afterward,
     `.to(device)` is added at several strategic location to move the computation to
     the GPU.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将是你的 GPU，如果没有 CUDA 设备，则会回退到 CPU。随后，在几个关键位置添加了`.to(device)`以将计算移动到 GPU。
 - en: Further Readings
+  id: totrans-103
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This character text model is a popular way of generating text using recurrent
     neural networks. Below are some more resources and tutorials on the topic if you
     are interested in going deeper.
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种字符文本模型是使用递归神经网络生成文本的流行方式。如果你有兴趣深入了解，下面还有更多资源和教程。
 - en: Articles
+  id: totrans-105
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 文章
 - en: Andrej Karpathy. [The Unreasonable Effectiveness of Recurrent Neural Networks.](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
     May 2015.
+  id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Andrej Karpathy。[递归神经网络的非合理有效性。](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
+    2015年5月。
 - en: Lars Eidnes. [Auto-Generating Clickbait With Recurrent Neural Networks](https://larseidnes.com/2015/10/13/auto-generating-clickbait-with-recurrent-neural-networks/).
     2015.
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Lars Eidnes。[使用递归神经网络自动生成点击诱饵标题](https://larseidnes.com/2015/10/13/auto-generating-clickbait-with-recurrent-neural-networks/)。2015年。
 - en: PyTorch tutorial. [Sequence Models and Long Short-Term Memory Networks](https://pytorch.org/tutorials/beginner/nlp/sequence_models_tutorial.html)
+  id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PyTorch 教程。[序列模型与长短期记忆网络](https://pytorch.org/tutorials/beginner/nlp/sequence_models_tutorial.html)
 - en: Papers
+  id: totrans-109
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 论文
 - en: 'Ilya Sutskever, James Martens, and Geoffrey Hinton. “[Generating Text with
     Recurrent Neural Networks](https://www.cs.utoronto.ca/~ilya/pubs/2011/LANG-RNN.pdf)”.
     In: Proceedings of the 28th International Conference on Machine Learning. Bellevue,
     WA, USA, 2011.'
+  id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Ilya Sutskever、James Martens 和 Geoffrey Hinton。"[使用递归神经网络生成文本](https://www.cs.utoronto.ca/~ilya/pubs/2011/LANG-RNN.pdf)"。在：第
+    28 届国际机器学习会议论文集。2011年，美国华盛顿州贝尔维尤。
 - en: APIs
+  id: totrans-111
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: API
 - en: '[`nn.LSTM` in PyTorch documentation](https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html)'
+  id: totrans-112
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[`PyTorch 文档中的 nn.LSTM`](https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html)'
 - en: Summary
+  id: totrans-113
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this post, you discovered how you can develop an LSTM recurrent neural network
     for text generation in PyTorch. After completing this post, you know:'
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，您了解了如何在 PyTorch 中开发 LSTM 递归神经网络进行文本生成。完成本文后，您将了解到：
 - en: How to find text for classical books for free as dataset for your machine learning
     model
+  id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何免费获取经典书籍文本作为机器学习模型的数据集
 - en: How to train an LSTM network for text sequences
+  id: totrans-116
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何训练 LSTM 网络处理文本序列
 - en: How to use a LSTM network to generate text sequencesHow to optimize deep learning
     training in PyTorch using CUDA devices
+  id: totrans-117
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 LSTM 网络生成文本序列如何使用 CUDA 设备优化 PyTorch 中的深度学习训练

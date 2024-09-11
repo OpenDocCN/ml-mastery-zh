@@ -1,110 +1,161 @@
 - en: Duck Typing, Scope, and Investigative Functions in Python
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Python中的鸭子类型、作用域和探索性函数
 - en: 原文：[https://machinelearningmastery.com/duck-typing-python/](https://machinelearningmastery.com/duck-typing-python/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/duck-typing-python/](https://machinelearningmastery.com/duck-typing-python/)
 - en: Python is a duck typing language. It means the data types of variables can change
     as long as the syntax is compatible. Python is also a dynamic programming language.
     Meaning we can change the program while it runs, including defining new functions
     and the scope of the name resolution. These give us not only a new paradigm in
     writing Python code but also a new set of tools for debugging. In the following,
     we will see what we can do in Python that cannot be done in many other languages.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: Python是一种鸭子类型的语言。这意味着变量的数据类型可以随着语法的兼容性而改变。Python也是一种动态编程语言。这意味着我们可以在程序运行时更改它，包括定义新函数和名称解析的作用域。这不仅为编写Python代码提供了新的范式，还为调试提供了新的工具集。接下来，我们将看到在Python中可以做到的，而许多其他语言无法做到的事情。
 - en: 'After finishing this tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解到：
 - en: How Python manages the variables you define
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python是如何管理你定义的变量的
 - en: How Python code uses a variable and why we don’t need to define its type like
     in C or Java
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python代码如何使用你定义的变量以及为什么我们不需要像在C或Java中那样定义其类型
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的新书 [Python机器学习](https://machinelearningmastery.com/python-for-machine-learning/)
+    来启动你的项目**，包括*逐步教程*和所有示例的*Python源代码*文件。'
 - en: Let’s get started.![](../Images/d8f668f859e9d752510aecd2adad80f4.png)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！![](../Images/d8f668f859e9d752510aecd2adad80f4.png)
 - en: Duck typing, scope, and investigative functions in Python. Photo by [Julissa
     Helmuth](https://www.pexels.com/photo/flock-of-yellow-baby-ducks-in-grass-4381480/).
     Some rights reserved
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: Python中的鸭子类型、作用域和探索性函数。照片由[朱莉莎·赫尔穆特](https://www.pexels.com/photo/flock-of-yellow-baby-ducks-in-grass-4381480/)拍摄。部分权利保留
 - en: Overview
+  id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in three parts; they are
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个教程分为三部分；它们是
 - en: Duck typing in programming languages
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编程语言中的鸭子类型
 - en: Scopes and name space in Python
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python中的作用域和命名空间
 - en: Investigating the type and scope
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 调查类型和作用域
 - en: Duck Typing in Programming Languages
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 编程语言中的鸭子类型
 - en: Duck typing is a feature of some modern programming languages that allow data
     types to be dynamic.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 鸭子类型是一些现代编程语言的特性，允许数据类型是动态的。
 - en: A programming style which does not look at an object’s type to determine if
     it has the right interface; instead, the method or attribute is simply called
     or used (“If it looks like a duck and quacks like a duck, it must be a duck.”)
     By emphasizing interfaces rather than specific types, well-designed code improves
     its flexibility by allowing polymorphic substitution.
+  id: totrans-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 编程风格不查看对象类型以确定其接口是否正确；而是直接调用或使用方法或属性（“如果它看起来像鸭子并且嘎嘎叫，那它肯定是只鸭子。”）。通过强调接口而不是特定类型，设计良好的代码通过允许多态替换来提高灵活性。
 - en: — [Python Glossary](https://docs.python.org/3/glossary.html)
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: — [Python词汇表](https://docs.python.org/3/glossary.html)
 - en: 'Simply speaking, the program should allow you to swap data structures as long
     as the same syntax still makes sense. In C, for example, you have to define functions
     like the following:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 简单来说，只要相同的语法仍然有意义，程序应该允许你交换数据结构。例如，在C语言中，你必须像以下这样定义函数：
 - en: C
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: C语言
 - en: '[PRE0]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'While the operation `x * x` is identical for integers and floating-point numbers,
     a function taking an integer argument and a function taking a floating-point argument
     are not the same. Because types are static in C, we must define two functions
     although they perform the same logic. In Python, types are dynamic; hence we can
     define the corresponding function as:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然操作 `x * x` 对于整数和浮点数来说是相同的，但接受整数参数和接受浮点数参数的函数并不相同。因为在C语言中类型是静态的，所以尽管它们执行相同的逻辑，我们必须定义两个函数。在Python中，类型是动态的；因此，我们可以定义相应的函数为：
 - en: '[PRE1]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'This feature indeed gives us tremendous power and convenience. For example,
     from scikit-learn, we have a function to do cross validation:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个特性确实给我们带来了巨大的力量和便利。例如，从scikit-learn中，我们有一个做交叉验证的函数：
 - en: '[PRE2]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'But in the above, the `model` is a variable of a scikit-learn-model object.
     It doesn’t matter if it is a perceptron model as in the above, a decision tree,
     or a support vector machine model. What matters is that inside the `cross_val_score()`
@@ -114,100 +165,157 @@
     is not expecting any particular model type as long as it looks like one. If we
     are using Keras to build a neural network model, we can make the Keras model look
     like a scikit-learn model with a wrapper:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是在上述示例中，`model` 是 scikit-learn 模型对象的一个变量。无论它是像上述中的感知器模型，决策树，还是支持向量机模型，都无关紧要。重要的是在
+    `cross_val_score()` 函数内部，数据将通过其 `fit()` 函数传递给模型。因此，模型必须实现 `fit()` 成员函数，并且 `fit()`
+    函数的行为相同。其结果是 `cross_val_score()` 函数不需要特定的模型类型，只要它看起来像一个模型即可。如果我们使用 Keras 构建神经网络模型，我们可以通过包装使
+    Keras 模型看起来像一个 scikit-learn 模型：
 - en: '[PRE3]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'In the above, we used the wrapper from Keras. Other wrappers exist, such as
     scikeras. All it does is to make sure the **interface** of the Keras model looks
     like a scikit-learn classifier so you can make use of the `cross_val_score()` function.
     If we replace the `model` above with:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述中，我们使用了来自 Keras 的包装器。还有其他的包装器，比如 scikeras。它所做的就是确保 Keras 模型的接口看起来像一个 scikit-learn
+    分类器，这样你就可以利用 `cross_val_score()` 函数。如果我们用以下内容替换上述的 `model`：
 - en: '[PRE4]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: then the scikit-learn function will complain as it cannot find the `model.score()` function.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么 scikit-learn 函数会抱怨找不到 `model.score()` 函数。
 - en: 'Similarly, because of duck typing, we can reuse a function that expects a list
     for a NumPy array or pandas series because they all support the same indexing
     and slicing operation. For example, we fit a time series with ARIMA as follows:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样地，由于鸭子类型，我们可以重用一个期望列表的函数来处理 NumPy 数组或 pandas series，因为它们都支持相同的索引和切片操作。例如，我们可以如下拟合时间序列与
+    ARIMA 模型：
 - en: '[PRE5]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The above should produce the same AIC scores for each fitting.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述应该为每次拟合生成相同的 AIC 分数。
 - en: Scopes and Name Space in Python
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Python 中的作用域和命名空间
 - en: 'In most languages, variables are defined in a limited scope. For example, a
     variable defined inside a function is accessible only inside that function:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在大多数语言中，变量是在有限的作用域内定义的。例如，函数内部定义的变量只能在该函数内部访问：
 - en: '[PRE6]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The **local variable** `discrim` is in no way accessible if we are not inside
     the function `quadratic()`. Moreover, this may be surprising for someone:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '**局部变量** `discrim` 如果不在函数 `quadratic()` 内部，是无法访问的。这对某些人来说可能会有所惊讶：'
 - en: '[PRE7]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '[PRE8]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'We defined the variable `a` outside function `f`, but inside `f`, variable `a` is
     assigned to be `2 * x`. However, the `a` inside the function and the one outside
     are unrelated except for the name. Therefore, as we exit from the function, the
     value of `a` is untouched. To make it modifiable inside function `f`, we need
     to declare the name `a` as `global`  to make it clear that this name should be
     from the **global scope**, not the **local scope**:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在函数 `f` 外部定义了变量 `a`，但是在函数 `f` 内部，变量 `a` 被赋值为 `2 * x`。然而，函数内部的 `a` 和外部的 `a`
+    是无关的，除了名称。因此，当我们退出函数时，变量 `a` 的值没有改变。为了在函数 `f` 内部使其可修改，我们需要声明名称 `a` 是 `global`
+    的，以明确指出这个名称应该来自**全局作用域**，而不是**局部作用域**：
 - en: '[PRE9]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '[PRE10]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'However, we may further complicate the issue when introducing the **nested
     scope** in functions. Consider the following example:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，当在函数中引入**嵌套作用域**时，问题可能进一步复杂化。考虑以下示例：
 - en: '[PRE11]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[PRE12]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: The variable `a` inside function `f` is distinct from the global one. However,
     when inside `g`, since there is never anything written to `a` but merely read
     from it, Python will see the same `a` from the nearest scope, i.e., from function `f`.
     The variable `x`, however, is defined as an argument to the function `g`, and
     it takes the value `3` when we called `g(3)` instead of assuming the value of
     `x` from function `f`.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数 `f` 内部的变量 `a` 与全局的变量 `a` 是不同的。然而，在函数 `g` 中，由于没有对 `a` 进行写入操作，而只是读取，Python
+    将从最近的作用域即函数 `f` 中找到相同的 `a`。变量 `x` 则是作为函数 `g` 的参数定义，并在调用 `g(3)` 时取值为 `3`，而不是假定来自函数
+    `f` 中的 `x` 的值。
 - en: '**NOTE:** If a variable has any value assigned to it **anywhere** in the function,
     it is defined in the local scope. And if that variable has its value read from
     it before the assignment, an error is raised rather than using the value from
     the variable of the same name from the outer or global scope.'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意：** 如果变量在函数的**任何地方**有值被赋予，它就被定义在局部作用域中。如果在赋值之前从中读取变量的值，则会引发错误，而不是使用外部或全局作用域中同名变量的值。'
 - en: 'This property has many uses. Many implementations of memoization decorators
     in Python make clever use of the function scopes. Another example is the following:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 此属性有多种用途。Python中许多记忆化装饰器的实现巧妙地利用了函数作用域。另一个例子是以下内容：
 - en: '[PRE13]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'This is a **generator function** that creates batches of samples from the input
     NumPy arrays `X` and `y`. Such a generator is acceptable by Keras models in their
     training. However, for reasons such as cross validation, we do not want to sample
@@ -217,212 +325,325 @@
     sampled from `Xsam` and `ysam` until a batch is created. While the lists `Xbatch` and `ybatch`
     are defined and created inside the function `_gen()`, the arrays `Xsam` and `ysam` are
     not local to `_gen()`. What’s more interesting is when the generator is created:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个创建从输入NumPy数组 `X` 和 `y` 中批量样本的**生成器函数**。这样的生成器在Keras模型的训练中是可接受的。然而，出于诸如交叉验证等原因，我们不希望从整个输入数组
+    `X` 和 `y` 中采样，而是从它们的一个**固定**子集中随机选择行。我们通过在 `datagen()` 函数的开头随机选择一部分行并将它们保留在 `Xsam`、`ysam`
+    中来实现这一点。然后在内部函数 `_gen()` 中，从 `Xsam` 和 `ysam` 中对行进行采样，直到创建一个批次。虽然列表 `Xbatch` 和
+    `ybatch` 在函数 `_gen()` 内部被定义和创建，但数组 `Xsam` 和 `ysam` 不是 `_gen()` 的局部变量。更有趣的是生成器被创建时的情况：
 - en: '[PRE14]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '[PRE15]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: The function `datagen()` is called two times, and therefore two different sets
     of `Xsam`, `yam` are created. But since the inner function `_gen()` depends on
     them, these two sets of `Xsam`, `ysam` are in memory concurrently. Technically,
     we say that when `datagen()` is called, a **closure** is created with the specific `Xsam`, `ysam` defined
     within, and the call to `_gen()` is accessing that closure. In other words, the
     scopes of the two incarnations of `datagen()` calls coexist.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数 `datagen()` 被调用两次，因此创建了两组不同的 `Xsam`、`yam`。但由于内部函数 `_gen()` 依赖于它们，这两组 `Xsam`、`ysam`
+    同时存在于内存中。技术上来说，我们称当调用 `datagen()` 时，会创建一个具有特定 `Xsam`、`ysam` 的**闭包**，并且调用 `_gen()`
+    会访问该闭包。换句话说，两次调用 `datagen()` 的作用域是共存的。
 - en: 'In summary, whenever a line of code references a name (whether it is a variable,
     a function, or a module), the name is resolved in the order of the LEGB rule:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 总结一下，每当一行代码引用一个名称（无论是变量、函数还是模块），名称都按照LEGB规则的顺序解析：
 - en: Local scope first, i.e., those names that were defined in the same function
+  id: totrans-54
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 首先是局部作用域，即在同一函数中定义的名称
 - en: Enclosure or the “nonlocal” scope. That’s the upper-level function if we are
     inside the nested function.
+  id: totrans-55
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 闭包或“非局部”作用域。如果我们在嵌套函数内部，这是上一级函数。
 - en: Global scope, i.e., those that were defined in the top level of the same script
     (but not across different program files)
+  id: totrans-56
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 全局作用域，即在同一脚本顶层定义的名称（但不跨不同程序文件）
 - en: Built-in scope, i.e., those created by Python automatically, such as the variable
     `__name__` or functions `list()`
+  id: totrans-57
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 内置作用域，即由Python自动创建的作用域，例如变量 `__name__` 或函数 `list()`
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用Python进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即注册我的免费7天电子邮件速成课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: Investigating the type and scope
+  id: totrans-61
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 调查类型和作用域
 - en: 'Because the types are not static in Python, sometimes we would like to know
     what we are dealing with, but it is not trivial to tell from the code. One way
     to tell is using the `type()` or `isinstance()` functions. For example:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为Python中类型不是静态的，有时我们想知道我们在处理什么，但从代码中并不容易看出。一种方法是使用 `type()` 或 `isinstance()`
+    函数。例如：
 - en: '[PRE16]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: '[PRE17]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'The `type()` function returns a type object. The `isinstance()` function returns
     a Boolean that allows us to check if something matches a particular type. These
     are useful in case we need to know what type a variable is. This is useful if
     we are debugging a code. For example, if we pass on a pandas dataframe to the
     `datagen()` function that we defined above:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: '`type()` 函数返回一个类型对象。`isinstance()` 函数返回一个布尔值，允许我们检查某个对象是否匹配特定类型。这在我们需要知道变量的类型时非常有用。如果我们将
+    pandas 数据框传递给我们上面定义的 `datagen()` 函数：'
 - en: '[PRE18]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'Running the above code under the Python’s debugger `pdb` will give the following:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Python 的调试器 `pdb` 下运行上述代码将得到如下结果：
 - en: '[PRE19]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'We see from the traceback that something is wrong because we cannot get `ysam[i]`.
     We can use the following to verify that `ysam` is indeed a Pandas DataFrame instead
     of a NumPy array:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 从追踪信息中我们看到出了问题，因为我们无法获取 `ysam[i]`。我们可以使用以下方法来验证 `ysam` 确实是一个 Pandas DataFrame
+    而不是一个 NumPy 数组：
 - en: '[PRE20]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'Therefore we cannot use `ysam[i]` to select row `i` from `ysam`. What can we
     do in the debugger to verify how we should modify our code? There are several
     useful functions you can use to investigate the variables and the scope:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们不能使用 `ysam[i]` 从 `ysam` 中选择行 `i`。我们在调试器中可以做什么来验证我们应该如何修改代码？有几个有用的函数可以用来调查变量和作用域：
 - en: '`dir()` to see the names defined in the scope or the attributes defined in
     an object'
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`dir()` 用于查看作用域中定义的名称或对象中定义的属性'
 - en: '`locals()` and `globals()` to see the names and values defined locally and
     globally, respectively.'
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`locals()` 和 `globals()` 用于查看本地和全局定义的名称和值。'
 - en: 'For example, we can use `dir(ysam)` to see what attributes or functions are
     defined inside `ysam`:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，我们可以使用 `dir(ysam)` 来查看 `ysam` 内部定义了哪些属性或函数：
 - en: '[PRE21]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'Some of these are attributes, such as `shape`, and some of these are functions,
     such as `describe()`. You can read the attribute or invoke the function in `pdb`.
     By carefully reading this output, we recalled that the way to read row `i` from
     a DataFrame is through `iloc`, and hence we can verify the syntax with:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中一些是属性，如 `shape`，还有一些是函数，如 `describe()`。你可以在 `pdb` 中读取属性或调用函数。通过仔细阅读这个输出，我们回忆起从
+    DataFrame 中读取行 `i` 的方法是通过 `iloc`，因此我们可以用以下语法进行验证：
 - en: '[PRE22]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: If we call `dir()` without any argument, it gives you all the names defined
     in the current scope, e.g.,
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们调用 `dir()` 而不带任何参数，它将给出当前作用域中定义的所有名称，例如，
 - en: '[PRE23]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: where the scope changes as you move around the call stack. Similar to `dir()` without
     argument, we can call `locals()` to show all locally defined variables, e.g.,
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于作用域会随着你在调用栈中移动而变化。类似于没有参数的 `dir()`，我们可以调用 `locals()` 来显示所有本地定义的变量，例如，
 - en: '[PRE24]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: Indeed, `locals()` returns you a `dict` that allows you to see all the names
     and values. Therefore, if we need to read the variable `Xbatch`, we can get the
     same with `locals()["Xbatch"]`. Similarly, we can use `globals()` to get a dictionary
     of names defined in the global scope.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 确实，`locals()` 返回一个 `dict`，允许你查看所有的名称和值。因此，如果我们需要读取变量 `Xbatch`，可以通过 `locals()["Xbatch"]`
+    来获取相同的内容。类似地，我们可以使用 `globals()` 来获取全局作用域中定义的名称字典。
 - en: 'This technique is beneficial sometimes. For example, we can check if a Keras
     model is “compiled” or not by using `dir(model)`. In Keras, compiling a model
     is to set up the loss function for training and build the flow for forward and
     backward propagations. Therefore, a compiled model will have an extra attribute `loss` defined:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种技术有时是有益的。例如，我们可以通过使用 `dir(model)` 来检查一个 Keras 模型是否“编译”了。在 Keras 中，编译模型是为训练设置损失函数，并建立前向和反向传播的流程。因此，已编译的模型将具有额外定义的属性
+    `loss`：
 - en: '[PRE25]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: '[PRE26]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: This allows us to put an extra guard on our code before we run into an error.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 这使我们在代码运行之前添加了额外的保护，以防止出现错误。
 - en: Further reading
+  id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: Articles
+  id: totrans-89
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 文章
 - en: Duck typing, [https://en.wikipedia.org/wiki/Duck_typing](https://en.wikipedia.org/wiki/Duck_typing)
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 鸭子类型，[https://en.wikipedia.org/wiki/Duck_typing](https://en.wikipedia.org/wiki/Duck_typing)
 - en: Python Glossary (Duck-typing), [https://docs.python.org/3/glossary.html#term-duck-typing](https://docs.python.org/3/glossary.html#term-duck-typing)
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python 术语表（鸭子类型），[https://docs.python.org/3/glossary.html#term-duck-typing](https://docs.python.org/3/glossary.html#term-duck-typing)
 - en: Python built-in functions, [https://docs.python.org/3/library/functions.html](https://docs.python.org/3/library/functions.html)
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python 内置函数，[https://docs.python.org/3/library/functions.html](https://docs.python.org/3/library/functions.html)
 - en: Books
+  id: totrans-93
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '*Fluent Python*, second edition, by Luciano Ramalho, [https://www.amazon.com/dp/1492056359/](https://www.amazon.com/dp/1492056359/)'
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*流畅的 Python*，第二版，作者 Luciano Ramalho，[https://www.amazon.com/dp/1492056359/](https://www.amazon.com/dp/1492056359/)'
 - en: Summary
+  id: totrans-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'In this tutorial, you’ve seen how Python organizes the naming scopes and how
     variables interact with the code. Specifically, you learned:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您已经看到了 Python 如何组织命名空间以及变量如何与代码交互。具体来说，您学到了：
 - en: Python code uses variables through their interfaces; therefore, a variable’s
     data type is usually unimportant
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python 代码通过它们的接口使用变量；因此，变量的数据类型通常不重要。
 - en: Python variables are defined in their naming scope or closure, where variables
     of the same name can coexist in different scopes, so they are not interfering
     with each other
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python 变量是在它们的命名空间或闭包中定义的，同名变量可以在不同的作用域中共存，因此它们不会互相干扰。
 - en: We have some built-in functions from Python to allow us to examine the names
     defined in the current scope or the data type of a variable
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们有一些来自 Python 的内置函数，允许我们检查当前作用域中定义的名称或变量的数据类型。

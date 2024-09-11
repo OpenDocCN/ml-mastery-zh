@@ -1,444 +1,678 @@
 - en: Setting Breakpoints and Exception Hooks in Python
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 Python 中设置断点和异常钩子
 - en: 原文：[https://machinelearningmastery.com/setting-breakpoints-and-exception-hooks-in-python/](https://machinelearningmastery.com/setting-breakpoints-and-exception-hooks-in-python/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/setting-breakpoints-and-exception-hooks-in-python/](https://machinelearningmastery.com/setting-breakpoints-and-exception-hooks-in-python/)
 - en: There are different ways of debugging code in Python, one of which is to introduce
     breakpoints into the code at points where one would like to invoke a Python debugger.
     The statements used to enter a debugging session at different call sites depend
     on the version of the Python interpreter that one is working with, as we shall
     see in this tutorial.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Python 中调试代码有多种方法，其中之一是在代码中引入断点，以便在希望调用 Python 调试器的地方设置断点。不同调用点使用的语句取决于你所使用的
+    Python 解释器版本，正如我们在本教程中将看到的那样。
 - en: In this tutorial, you will discover various ways of setting breakpoints in different
     versions of Python.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现设置断点的各种方法，适用于不同版本的 Python。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: How to invoke the `pdb` debugger in earlier versions of Python
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在早期版本的 Python 中调用 `pdb` 调试器
 - en: How to use the new, built-in breakpoint() function introduced in Python 3.7
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 Python 3.7 中引入的新内置 `breakpoint()` 函数
 - en: How to write your own breakpoint() function to simplify the debugging process
     in earlier versions of Python
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何编写自己的 `breakpoint()` 函数，以简化早期版本 Python 中的调试过程
 - en: How to use a post-mortem debugger
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用事后调试器
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的新书 [《Python 机器学习》](https://machinelearningmastery.com/python-for-machine-learning/)**
+    启动你的项目，其中包括 *逐步教程* 和 *所有示例的 Python 源代码* 文件。'
 - en: Let’s get started.[![](../Images/6c268bb93ba4caacd3cfda25018bb1a7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/cover_breakpoints-scaled.jpg)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 开始吧。[![](../Images/6c268bb93ba4caacd3cfda25018bb1a7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/01/cover_breakpoints-scaled.jpg)
 - en: Setting Breakpoints in Different Versions of Python
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在不同版本的 Python 中设置断点
 - en: Photo by [Josh Withers](https://unsplash.com/photos/OfBDvcXuA88), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Josh Withers](https://unsplash.com/photos/OfBDvcXuA88) 提供，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分，它们是：
 - en: Setting Breakpoints in Python Code
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 Python 代码中设置断点
 - en: Invoking the pdb Debugger in Earlier Versions of Python
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在早期版本的 Python 中调用 pdb 调试器
 - en: Using the `breakpoint()` Function in Python 3.7
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 Python 3.7 中使用 `breakpoint()` 函数
 - en: Writing One’s Own `breakpoint()` Function for Earlier Versions of Python
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为早期版本的 Python 编写自己的 `breakpoint()` 函数
 - en: Limitations of the `breakpoint()` Function
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`breakpoint()` 函数的限制'
 - en: '**Setting Breakpoints in Python Code**'
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**在 Python 代码中设置断点**'
 - en: '[We have previously seen](https://machinelearningmastery.com/python-debugging-tools/)
     that one way of debugging a Python script is to run it in the command line with
     the Python debugger.'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '[我们之前已经看到](https://machinelearningmastery.com/python-debugging-tools/) 调试 Python
+    脚本的一种方法是使用 Python 调试器在命令行中运行它。'
 - en: In order to do so, we would need to use the -m  pdb command that loads the pdb
     module before executing the Python script. In the same command-line interface,
     we would then follow this by a specific debugger command of choice, such as n
     to move to the next line or s if we intend to step into a function.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，我们需要使用 `-m pdb` 命令，该命令在执行 Python 脚本之前加载 pdb 模块。在相同的命令行界面中，我们可以跟随一个特定的调试器命令，例如
+    `n` 以移动到下一行，或 `s` 如果我们打算进入一个函数。
 - en: This method could become cumbersome quickly as the length of the code increases.
     One way to address this problem and gain better control over where to break your
     code is to insert a breakpoint directly into the code.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 随着代码长度的增加，这种方法可能会变得繁琐。解决这个问题并更好地控制代码断点的一种方法是直接在代码中插入断点。
 - en: '**Invoking the pdb Debugger in Earlier Versions of Python**'
+  id: totrans-24
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**在早期版本的 Python 中调用 pdb 调试器**'
 - en: Invoking the pdb debugger prior to Python 3.7 would require you to import  pdb
     and call pdb.set_trace() at the point in your code where you would like to enter
     an interactive debugging session.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Python 3.7 之前调用 pdb 调试器，需要导入 pdb 并在代码中希望进入交互调试会话的地方调用 `pdb.set_trace()`。
 - en: 'If we reconsider, as an example, the code for [implementing the general attention
     mechanism](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/),
     we can break into the code as follows:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们重新考虑，比如说，代码用于 [实现通用注意力机制](https://machinelearningmastery.com/the-attention-mechanism-from-scratch/)，我们可以按如下方式进入代码：
 - en: Python
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Executing the script now opens up the `pdb` debugger right before we compute
     the variable `scores`, and we can proceed to issue any debugger commands of choice,
     such as n to move to the next line or c to continue execution:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在执行脚本会在计算变量 `scores` 之前打开 `pdb` 调试器，我们可以继续发出任何调试器命令，例如 n 以移动到下一行或 c 以继续执行：
 - en: Python
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Although functional, this is not the most elegant and intuitive approach of
     inserting a breakpoint into your code. Python 3.7 implements a more straightforward
     way of doing so, as we shall see next.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管功能正常，但这不是将断点插入代码的最优雅和直观的方法。Python 3.7 实现了一种更直接的方法，接下来我们将看到。
 - en: '**Using the breakpoint() Function in Python 3.7 **'
+  id: totrans-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**在 Python 3.7 中使用 `breakpoint()` 函数**'
 - en: Python 3.7 comes with a built-in breakpoint() function that enters the Python
     debugger at the call site (or the point in the code at which the breakpoint() statement
     is placed).
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 3.7 附带了一个内置的 `breakpoint()` 函数，该函数在调用站点（即 `breakpoint()` 语句所在的代码点）进入
+    Python 调试器。
 - en: When called, the default implementation of the breakpoint() function will call
     sys.breakpointhook(), which in turn calls the pdb.set_trace() function. This is
     convenient because we will not need to import  pdb and call pdb.set_trace() explicitly
     ourselves.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 当调用时，`breakpoint()` 函数的默认实现会调用 `sys.breakpointhook()`，而 `sys.breakpointhook()`
+    进而调用 `pdb.set_trace()` 函数。这很方便，因为我们不需要自己显式地导入 `pdb` 并调用 `pdb.set_trace()`。
 - en: 'Let’s reconsider the code for implementing the general attention mechanism
     and now introduce a breakpoint via the breakpoint() statement:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们重新考虑实现通用注意力机制的代码，并通过 `breakpoint()` 语句引入一个断点：
 - en: Python
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: One advantage of using the breakpoint() function is that, in calling the default
     implementation of sys.breakpointhook(), the value of a new environment variable,
     PYTHONBREAKPOINT, is consulted. This environment variable can take various values,
     based on which different operations can be performed.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 `breakpoint()` 函数的一个优点是，调用 `sys.breakpointhook()` 的默认实现时，会查阅一个新的环境变量 PYTHONBREAKPOINT
+    的值。这个环境变量可以取不同的值，根据这些值可以执行不同的操作。
 - en: 'For example, setting the value of PYTHONBREAKPOINT to 0 disables all breakpoints.
     Hence, your code could contain as many breakpoints as necessary, but these can
     be easily stopped from halting the execution of the code without having to remove
     them physically. If (for example) the name of the script containing the code is
     *main.py*, we would disable all breakpoints by calling it in the command line
     interface as follows:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，将 PYTHONBREAKPOINT 的值设置为 0 会禁用所有断点。因此，您的代码可以包含尽可能多的断点，但这些断点可以很容易地被停止，而无需实际删除它们。如果（例如）包含代码的脚本名称为
+    *main.py*，我们可以通过在命令行界面中如下调用来禁用所有断点：
 - en: Python
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Otherwise, we can achieve the same outcome by setting the environment variable
     in the code itself:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 否则，我们可以通过在代码中设置环境变量来实现相同的结果：
 - en: Python
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The value of PYTHONBREAKPOINT is consulted every time that sys.breakpointhook()
     is called. This means that the value of this environment variable can be changed
     during the code execution, and the breakpoint() function would respond accordingly.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 每次调用 `sys.breakpointhook()` 时，都会查阅 PYTHONBREAKPOINT 的值。这意味着该环境变量的值在代码执行期间可以更改，而
+    `breakpoint()` 函数会相应地作出反应。
 - en: 'The PYTHONBREAKPOINT environment variable can also be set to other values,
     such as the name of a callable. Say, for instance, that we’d like to use a different
     Python debugger other than pdb, such as ipdb (run pip install ipdb first if the
     debugger has not yet been installed). In this case, we would call the *main.py*
     script in the command line interface and hook the debugger without making any
     changes to the code itself:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: PYTHONBREAKPOINT 环境变量也可以设置为其他值，例如可调用对象的名称。例如，如果我们想使用除了 `pdb` 之外的其他 Python 调试器，如
+    `ipdb`（如果调试器尚未安装，请先运行 `pip install ipdb`）。在这种情况下，我们可以在命令行界面中调用 *main.py* 脚本并挂钩调试器，而无需对代码本身进行任何更改：
 - en: Python
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'In doing so, the breakpoint() function enters the ipdb debugger at the next
     call site:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样，`breakpoint()` 函数会在下一个调用站点进入 `ipdb` 调试器：
 - en: Python
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The function can also take input arguments as breakpoint(*args,  **kws), which
     are then passed on to sys.breakpointhook(). This is because any callable (such
     as a third-party debugger module) might accept optional arguments, which can be
     passed through the breakpoint() function.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 该函数还可以接受输入参数，如 breakpoint(*args, **kws)，这些参数会传递给 sys.breakpointhook()。这是因为任何可调用对象（如第三方调试模块）可能接受可选参数，这些参数可以通过
+    breakpoint() 函数传递。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-54
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 Python 进行机器学习？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在获取我的免费 7 天电子邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并免费获得课程的 PDF 电子书版本。
 - en: '**Writing Your Own breakpoint() Function in Earlier Versions of Python**'
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**在早期版本的 Python 中编写自己的 breakpoint() 函数**'
 - en: Let’s return to the fact that versions of Python earlier than v3.7 do not come
     with the breakpoint() function readily built in. We can write our own.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们回到 Python 3.7 之前的版本不自带 breakpoint() 函数的事实。我们可以编写自己的函数。
 - en: 'Similarly to how the breakpoint() function is implemented from Python 3.7 onwards,
     we can implement a function that checks the value of an environment variable and:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 与从 Python 3.7 开始实现的 breakpoint() 函数类似，我们可以实现一个检查环境变量值的函数，并：
 - en: Skips all breakpoints in the code if the value of the environment variable is
     set to 0.
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果环境变量的值设置为 0，则会跳过代码中的所有断点。
 - en: Enters into the default Python pdb debugger if the environment variable is an
     empty string.
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果环境变量为空字符串，则进入默认的 Python pdb 调试器。
 - en: Enters into another debugger as specified by the value of the environment variable.
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 根据环境变量的值进入另一个调试器。
 - en: Python
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'We can include this function into the code and run it (using a Python 2.7 interpreter,
     in this case). If we set the value of the environment variable to an empty string,
     we find that the pdb debugger stops at the point in the code at which we have
     placed our breakpoint() function. We can then issue debugger commands into the
     command line from there onwards:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将这个函数包含到代码中并运行（在此例中使用 Python 2.7 解释器）。如果我们将环境变量的值设置为空字符串，我们会发现 pdb 调试器会停在我们放置了
+    breakpoint() 函数的代码点。然后，我们可以从那里开始在命令行中输入调试器命令：
 - en: Python
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Python
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Similarly, if we set the environment variable to:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样地，如果我们将环境变量设置为：
 - en: Python
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'The breakpoint() function that we have implemented now enters the ipdb debugger
     and stops at the call site:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们现在实现的 `breakpoint()` 函数会进入 ipdb 调试器并停在调用点：
 - en: Python
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Setting the environment variable to 0 simply skips all breakpoints, and the
     computed attention output is returned in the command line, as expected:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 将环境变量设置为 0 会跳过所有断点，计算得到的注意力输出会按预期返回到命令行：
 - en: Python
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE12]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Python
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE13]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: This facilitates the process of breaking into the code for Python versions earlier
     than v3.7 because it now becomes a matter of setting the value of an environment
     variable rather than having to manually introduce (or remove) the import  pdb;  pdb.set_trace() statement
     at different call sites in the code.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 这简化了 Python 3.7 之前版本的代码调试过程，因为现在只需设置环境变量的值，而不必手动在代码中的不同调用点引入（或移除）import pdb;
+    pdb.set_trace() 语句。
 - en: Limitations of the `breakpoint()` Function
+  id: totrans-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '`breakpoint()` 函数的限制'
 - en: 'The `breakpoint()` function allows you to bring in the debugger at some point
     in the program. You need to find the exact position that you need the debugger
     to put the breakpoint into it. If you consider the following code:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: '`breakpoint()` 函数允许你在程序的某个点引入调试器。你需要找到需要调试器放置断点的确切位置。如果你考虑以下代码：'
 - en: '[PRE14]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: This will bring you the debugger when the function `func()` raised exceptions.
     It can be triggered by the function itself or deep inside some other functions
     that it calls. But the debugger will start at the line `print("exception!")` above,
     which may not be very useful.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 当函数 `func()` 引发异常时，这将带来调试器。它可以由函数自身或它调用的其他函数中的深处触发。但调试器会在上述 `print("exception!")`
+    这一行开始，这可能不是很有用。
 - en: 'The way that we can bring up the debugger at the point of exception is called
     the **post-mortem debugger**. It works by asking Python to register the debugger
     `pdb.pm()` as the exception handler when an uncaught exception is raised. When
     it is called, it will look for the last exception raised and start the debugger
     at that point. To use the post-mortem debugger, we just need to add the following
     code before the program is run:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 当事后调试器启动时，我们可以在异常点调试器处打印回溯和异常。这种方式被称为**事后调试器**。当未捕获异常被引发时，它会请求Python将调试器`pdb.pm()`注册为异常处理程序。当调用它时，它将查找最后引发的异常并从那一点开始启动调试器。要使用事后调试器，我们只需在运行程序之前添加以下代码：
 - en: '[PRE15]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'This is handy because nothing else needs to be changed in the program. For
     example, assume we want to evaluate the average of $1/x$ using the following program.
     It is quite easy to overlook some corner cases, but we can catch the issue when
     an exception is raised:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 这很方便，因为程序中不需要进行任何其他更改。例如，假设我们想要使用以下程序评估$1/x$的平均值。很容易忽视一些边界情况，但是当引发异常时，我们可以捕获问题：
 - en: '[PRE16]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'When we run the above program, the program may terminate, or it may raise a
     division by zero exception, depending on whether the random number generator ever
     produces zero in the loop. In that case, we may see the following:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们运行上述程序时，程序可能会终止，或者在循环中的随机数生成器生成零时可能会引发除零异常。在这种情况下，我们可能会看到以下内容：
 - en: '[PRE17]'
+  id: totrans-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: where we found the exception is raised at which line, and we can check the value
     of the variables as we can usually do in `pdb`.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们找到了异常引发的位置以及我们可以像通常在`pdb`中做的那样检查变量的值。
 - en: 'In fact, it is more convenient to print the traceback and the exception when
     the post-mortem debugger is launched:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，在启动事后调试器时，打印回溯和异常更加方便：
 - en: '[PRE18]'
+  id: totrans-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'And the debugger session will be started as follows:'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 调试器会话将如下启动：
 - en: '[PRE19]'
+  id: totrans-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: '**Further Reading**'
+  id: totrans-97
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你希望深入了解，本节提供了更多关于这个主题的资源。
 - en: '**Websites**'
+  id: totrans-99
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: Python pdb module, [https://docs.python.org/3/library/pdb.html](https://docs.python.org/3/library/pdb.html)
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python pdb模块，[https://docs.python.org/3/library/pdb.html](https://docs.python.org/3/library/pdb.html)
 - en: Python built-in breakpoint(), [https://www.python.org/dev/peps/pep-0553/](https://www.python.org/dev/peps/pep-0553/)
+  id: totrans-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python内置断点函数`breakpoint()`，[https://www.python.org/dev/peps/pep-0553/](https://www.python.org/dev/peps/pep-0553/)
 - en: '**Summary**'
+  id: totrans-102
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered various ways of setting breakpoints in different
     versions of Python.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了在不同版本的Python中设置断点的各种方法。
 - en: 'Specifically, you learned:'
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to invoke the pdb debugger in earlier versions of Python
+  id: totrans-105
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在早期版本的Python中调用pdb调试器。
 - en: How to make use of the new, built-in breakpoint() function introduced in Python
     3.7
+  id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用Python 3.7中引入的新内置断点函数`breakpoint()`。
 - en: How to write your own breakpoint() function to simplify the debugging process
     in earlier versions of Python
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何编写自己的断点函数以简化早期版本Python中的调试过程
 - en: Do you have any questions?
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提出你的问题，我会尽力回答。

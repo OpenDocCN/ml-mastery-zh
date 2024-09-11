@@ -1,11 +1,15 @@
 - en: Building a Convolutional Neural Network in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中构建卷积神经网络
 - en: 原文：[https://machinelearningmastery.com/building-a-convolutional-neural-network-in-pytorch/](https://machinelearningmastery.com/building-a-convolutional-neural-network-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/building-a-convolutional-neural-network-in-pytorch/](https://machinelearningmastery.com/building-a-convolutional-neural-network-in-pytorch/)
 - en: 'Neural networks are built with layers connected to each other. There are many
     different kind of layers. For image related applications, you can always find
     convolutional layers. It is a layer with very few parameters but applied over
@@ -13,77 +17,113 @@
     of the image. Therefore it is used to produce state-of-the-art results on computer
     vision neural networks. In this post, you will learn about the convolutional layer
     and the network it built. After completing this post, you will know:'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络由相互连接的层构成。有许多不同类型的层。对于图像相关的应用，你总是可以找到卷积层。这是一种参数非常少但应用于大尺寸输入的层。它之所以强大，是因为它可以保留图像的空间结构。因此，它被用于在计算机视觉神经网络中产生最先进的结果。在本文中，你将了解卷积层及其构建的网络。完成本文后，你将了解：
 - en: What are convolutional layers and pooling layers
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是卷积层和池化层
 - en: How they fit together in a neural network
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它们在神经网络中的适配方式
 - en: How a neural network using convolutional layers is designed
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何设计使用卷积层的神经网络
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参阅我的书 [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started.![](../Images/e26c3bb8e90bc698643284c6ebc8b725.png)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/e26c3bb8e90bc698643284c6ebc8b725.png)
 - en: Building a Convolutional Neural Network in PyTorch
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中构建卷积神经网络
 - en: Photo by [Donna Elliot](https://unsplash.com/photos/O0yASWUhAgQ). Some rights
     reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Donna Elliot](https://unsplash.com/photos/O0yASWUhAgQ) 提供。部分权利保留。
 - en: Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This post is divided into four parts; they are
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为四部分；它们是
 - en: The Case for Convolutional Neural Networks
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 卷积神经网络的理由
 - en: Building Blocks of Convolutional Neural Networks
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 卷积神经网络的构建模块
 - en: An Example of Convolutional Neural Network
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 卷积神经网络的一个示例
 - en: What Are in Feature Maps?
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 特征图中包含什么？
 - en: The Case for Convolutional Neural Networks
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 卷积神经网络的理由
 - en: Let’s consider to make a neural network to process grayscale image as input,
     which is the simplest use case in deep learning for computer vision.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们考虑构建一个神经网络来处理灰度图像作为输入，这是深度学习在计算机视觉中的最简单用例。
 - en: A grayscale image is an array of pixels. Each pixel is usually a value in a
     range of 0 to 255\. An image with size 32×32 would have 1024 pixels. Taking it
     as input to a neural network would mean the first layer to have at least 1024
     input weights.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 灰度图像是一个像素数组。每个像素的值通常在0到255的范围内。一个32×32的图像将有1024个像素。将其作为神经网络的输入意味着第一层将至少有1024个输入权重。
 - en: Looking at the pixel value has little use to understanding the picture, because
     data is hiding in the spatial structure (e.g., whether there is a horizontal line
     or a vertical line on the picture). Hence the traditional neural network will
     find it difficult to find out information from image input.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 查看像素值对理解图片几乎没有用，因为数据隐藏在空间结构中（例如，图片上是否有水平线或垂直线）。因此，传统神经网络将难以从图像输入中提取信息。
 - en: Convolutional neural network is to use convolutional layers to preserve spatial
     information of pixels. It learns how alike are the neighboring pixels and generating
     **feature representations**. What the convolutional layers see from the picture
@@ -91,124 +131,179 @@
     network could predict the same result even if the input image has shift in color,
     rotated or rescaled. Moreover, convolutional layers has fewer weights, thus easier
     to train.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 卷积神经网络使用卷积层来保留像素的空间信息。它学习相邻像素的相似度，并生成**特征表示**。卷积层从图片中看到的内容在某种程度上对扭曲是不变的。例如，即使输入图像的颜色发生偏移、旋转或缩放，卷积神经网络也能预测相同的结果。此外，卷积层具有较少的权重，因此更容易训练。
 - en: Building Blocks of Convolutional Neural Networks
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 卷积神经网络的构建模块
 - en: 'The simplest use case of a convolutional neural network is for classification.
     You will find it to contain three types of layers:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 卷积神经网络的最简单用例是分类。你会发现它包含三种类型的层：
 - en: Convolutional layers
+  id: totrans-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 卷积层
 - en: Pooling layers
+  id: totrans-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 池化层
 - en: Fully-connected layers
+  id: totrans-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 全连接层
 - en: Neurons on a convolutional layer is called the filter. Usually it is a 2D convolutional
     layer in image application. The filter is a 2D patch (e.g., 3×3 pixels) that is
     applied on the input image pixels. The size of this 2D patch is also called the
     receptive field, meaning how large a portion of the image it can see at a time.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 卷积层上的神经元称为滤波器。在图像应用中通常是一个二维卷积层。滤波器是一个 2D 补丁（例如 3×3 像素），应用在输入图像像素上。这个 2D 补丁的大小也称为感受野，表示它一次可以看到图像的多大部分。
 - en: The filter of a convolutional layer is to multiply with the input pixels, and
     then sum up the result. This result is one pixel value at the output. The filter
     will move around the input image to fill out all pixel values at the output. Usually
     multiple filters are applied to the same input, producing multiple output tensors.
     These output tensors are called the **feature maps** produced by this layer. They
     are stacked together as one tensor and pass on to the next layer as input.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 卷积层的滤波器是与输入像素相乘，然后将结果求和。这个结果是输出的一个像素值。滤波器会在输入图像周围移动，填充所有输出的像素值。通常会对同一个输入应用多个滤波器，产生多个输出张量。这些输出张量称为这一层生成的**特征图**，它们被堆叠在一起作为一个张量，作为下一层的输入传递。
 - en: '![](../Images/8baa5476210e37181192a8952af8022d.png)'
+  id: totrans-28
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/8baa5476210e37181192a8952af8022d.png)'
 - en: Example of a Filter Applied to a Two-Dimensional Input to Create a Feature Map
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 将一个二维输入应用滤波器生成特征图的示例
 - en: The output of a convolutional layer is called feature maps because usually it
     learned about the features of the input image. For example, whether there are
     vertical lines at the position. Learning the features from pixels is to help understanding
     the image at a higher level. Multiple convolutional layers are stacked together
     in order to infer higher level features from lower level details.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 卷积层的输出称为特征图，因为通常它学到了输入图像的特征。例如，在特定位置是否有垂直线条。从像素学习特征有助于在更高层次理解图像。多个卷积层堆叠在一起，以从低级细节推断出更高级别的特征。
 - en: Pooling layer is to **downsample** the previous layer’s feature map. It is usually
     used after a convolutional layer to consolidate features learned. It can compress
     and generalize the feature representations. A pooling layer also has a receptive
     field and usually it is to take the average (average pooling) or the maximum (max
     pooling) over all values on the receptive field.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 池化层用于**降采样**前一层的特征图。通常在卷积层后使用以整合学习到的特征。它可以压缩和泛化特征表示。池化层也有一个感受野，通常是在感受野上取平均值（平均池化）或最大值（最大池化）。
 - en: Fully connected layers are usually the final layers in a network. It is to take
     the features consolidated by previous convolutional and pooling layers as input
     to produce prediction. There might be multiple fully connected layers stacked
     together. In the case of classification, you usually see the output of the final
     fully connected layer applied with a softmax function to produce probability-like
     classification.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 全连接层通常是网络中的最后一层。它将前面卷积和池化层整合的特征作为输入，产生预测结果。可能会有多个全连接层堆叠在一起。在分类的情况下，通常看到最终全连接层的输出应用
+    softmax 函数，产生类似概率的分类结果。
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在开始免费的电子邮件快速入门课程（含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并免费获得课程的 PDF 电子书版本。
 - en: An Example of Convolutional Neural Network
+  id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个卷积神经网络的例子
 - en: The following is a program to do image classification on the CIFAR-10 dataset.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是一个在 CIFAR-10 数据集上进行图像分类的程序。
 - en: '[PRE0]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The CIFAR-10 dataset provides images in 32×32 pixels in RGB color (i.e., 3
     color channels). There are 10 classes, labelled in integers 0 to 9\. Whenever
     you are working on PyTorch neural network models for images, you will find the
     sister library `torchvision` useful. In the above, you used it to download the
     CIFAR-10 dataset from the Internet and transform it into a PyTorch tensor:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: CIFAR-10 数据集提供的图像为 32×32 像素的 RGB 彩色图（即 3 个颜色通道）。有 10 类，用整数 0 到 9 标记。当你在 PyTorch
+    神经网络模型上处理图像时，你会发现姐妹库 `torchvision` 很有用。在上面的例子中，你使用它从互联网下载 CIFAR-10 数据集，并将其转换为
+    PyTorch 张量：
 - en: '[PRE1]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'You also used a `DataLoader` in PyTorch to help creating batches for training.
     Training is to optimize the cross entropy loss of the model, using stochastic
     gradient descent. It is a classification model, hence accuracy of classification
     is more intuitive than cross entropy, which is computed at the end of each epoch,
     by comparing the maximum value in the output logit to the dataset’s labels:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 你还在PyTorch中使用了`DataLoader`来帮助创建训练批次。训练是优化模型的交叉熵损失，使用随机梯度下降。它是一个分类模型，因此分类的准确性比交叉熵更直观，它在每个epoch结束时通过比较输出logit中的最大值与数据集的标签来计算：
 - en: '[PRE2]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: It takes time to run the program above to train the network. This network should
     be able to achieve above 70% accuracy in classification.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行上述程序来训练网络需要一些时间。这个网络应该能够在分类中达到70%以上的准确率。
 - en: It is typical in a network for image classification to be comprised of convolutional
     layers at an early stage, with dropout and pooling layers interleaved. Then, at
     a later stage, the output from convolutional layers is flattened and processed
     by some fully connected layers.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在图像分类网络中，典型的是在早期阶段由卷积层、dropout和池化层交错组成。然后，在后期阶段，卷积层的输出被展平并由一些全连接层处理。
 - en: What Are in Feature Maps?
+  id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 特征图中包含什么？
 - en: There are two convolutional layers in the network defined above. They are both
     defined with kernel size of 3×3, hence it is looking at 9 pixels at a time to
     produce one output pixel. Note that the first convolutional layer is taking the
@@ -216,134 +311,203 @@
     layer is taking a feature map with 32 channels as input. Each “pixel” as it sees
     will have 32 values. Thus the second convolutional layer has more parameters even
     they have the same receptive field.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述定义的网络中有两个卷积层。它们都定义了3×3的核大小，因此每次看9个像素以产生一个输出像素。注意第一个卷积层将RGB图像作为输入。因此，每个像素有三个通道。第二个卷积层将具有32个通道的特征图作为输入。因此，它看到的每个“像素”将有32个值。因此，尽管它们具有相同的感受野，第二个卷积层具有更多的参数。
 - en: 'Let’s see what is in the feature map. Let’s say we pick one input sample from
     the training set:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看特征图中有什么。假设我们从训练集中选择了一个输入样本：
 - en: '[PRE3]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: You should see that this is an image of a horse, in 32×32 pixels with RGB channels:![](../Images/f44ca8cebde0bb87ce531335393a68ed.png)
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该能看到这是一张马的图像，32×32像素，带有RGB通道：![](../Images/f44ca8cebde0bb87ce531335393a68ed.png)
 - en: First, you need to convert this into a PyTorch tensor and make it a batch of
     one image. PyTorch models expect each image as a tensor in the format of (channel,
     height, width) but the data you read is in the format of (height, width, channel).
     If you use `torchvision` to transform the image into PyTorch tensors, this format
     conversion is done automatically. Otherwise, you need to **permute** the dimensions
     before use.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，你需要将其转换为PyTorch张量，并将其转换为一个图像的批次。PyTorch模型期望每个图像以(channel, height, width)的格式作为张量，但你读取的数据是(height,
+    width, channel)的格式。如果你使用`torchvision`来将图像转换为PyTorch张量，则此格式转换会自动完成。否则，在使用之前需要 **重新排列**
+    维度。
 - en: 'Afterward, pass it on through the model’s first convolution layer and capture
     the output. You need to tell PyTorch that no gradient is needed for this calculation
     as you are not going to optimize the model weight:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，将其通过模型的第一个卷积层，并捕获输出。你需要告诉PyTorch在这个计算中不需要梯度，因为你不打算优化模型权重：
 - en: '[PRE4]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The feature maps are in one tensor. You can visualize them using matplotlib:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 特征图存储在一个张量中。你可以使用matplotlib来可视化它们：
 - en: '[PRE5]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: You may see the following:![](../Images/2ccc6c2ed9cbee1c1f6f19960bd9586c.png)
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，你可能会看到以下内容：![](../Images/2ccc6c2ed9cbee1c1f6f19960bd9586c.png)
 - en: You can see that they are called feature maps because they are highlighting
     certain features from the input image. A feature is identified using a small window
     (in this case, over a 3×3 pixels filter). The input image has three color channels.
     Each channel has a different filter applied, and their results are combined for
     an output feature.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 特征图之所以被称为特征图，是因为它们突出显示了输入图像中的某些特征。使用一个小窗口来识别特征（在本例中是一个3×3像素的滤波器）。输入图像有三个色彩通道。每个通道应用了不同的滤波器，它们的结果被合并为一个输出特征。
 - en: 'You can similarly display the feature map from the output of the second convolutional
     layer as follows:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似地，你可以显示第二个卷积层输出的特征图，如下所示：
 - en: '[PRE6]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Which shows:![](../Images/8b83c74f12d624e59d75488949f550ac.png)
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 显示如下：![](../Images/8b83c74f12d624e59d75488949f550ac.png)
 - en: Compared to the output of the first convolutional layer, the feature maps from
     the second convolutional layer looks blurry and more abstract. But these are more
     useful for the model to identify the objects.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 相对于第一个卷积层的输出，第二个卷积层的特征图看起来更模糊、更抽象。但这些对模型来识别对象更有用。
 - en: 'Putting everything together, the code below loads the saved model from the
     previous section and generate the feature maps:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容整合在一起，下面的代码加载了前一节保存的模型并生成了特征图：
 - en: '[PRE7]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Further Readings
+  id: totrans-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想深入了解这个主题，本节提供了更多资源。
 - en: Posts
+  id: totrans-65
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[How Do Convolutional Layers Work in Deep Learning Neural Networks?](https://machinelearningmastery.com/convolutional-layers-for-deep-learning-neural-networks/)'
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[卷积层在深度学习神经网络中的工作原理](https://machinelearningmastery.com/convolutional-layers-for-deep-learning-neural-networks/)'
 - en: '[Training a Classifier](https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html),
     from PyTorch tutorials'
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[分类器训练](https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html)，来自PyTorch教程'
 - en: Books
+  id: totrans-68
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: 'Chapter 9: Convolutional Networks, [Deep Learning](https://amzn.to/2Dl124s),
     2016.'
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第9章：卷积网络，《深度学习》（https://amzn.to/2Dl124s），2016年。
 - en: APIs
+  id: totrans-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: API
 - en: '[nn.Conv2d](https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html)
     layer in PyTorch'
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[nn.Conv2d](https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html)
+    层在PyTorch中的应用'
 - en: Summary
+  id: totrans-72
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this post, you learned how to use convolutional neural network to handle
     image input and how to visualize the feature maps.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，你学会了如何使用卷积神经网络处理图像输入，并如何可视化特征图。
 - en: 'Specifically, you learned:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The structure of a typical convolutional neural networks
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 典型卷积神经网络的结构
 - en: What is the effect of the filter size to a convolutional layer
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 滤波器大小对卷积层的影响是什么
 - en: What is the effect of stacking convolutional layers in a network
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在网络中堆叠卷积层的效果是什么
 - en: How to extract and visualize feature maps from a convolutional neural network
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何提取和可视化卷积神经网络的特征图

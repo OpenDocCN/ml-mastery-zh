@@ -1,100 +1,145 @@
 - en: Random Forest for Image Classification Using OpenCV
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用OpenCV进行图像分类的随机森林
 - en: 原文：[https://machinelearningmastery.com/random-forest-for-image-classification-using-opencv/](https://machinelearningmastery.com/random-forest-for-image-classification-using-opencv/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/random-forest-for-image-classification-using-opencv/](https://machinelearningmastery.com/random-forest-for-image-classification-using-opencv/)
 - en: The Random Forest algorithm forms part of a family of ensemble machine learning
     algorithms and is a popular variation of bagged decision trees. It also comes
     implemented in the OpenCV library.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 随机森林算法是集成机器学习算法家族的一部分，是袋装决策树的一种流行变体。它也在OpenCV库中实现了。
 - en: In this tutorial, you will learn how to apply OpenCV’s Random Forest algorithm
     for image classification, starting with a relatively easier banknote dataset and
     then testing the algorithm on OpenCV’s digits dataset.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您将学习如何应用OpenCV的随机森林算法进行图像分类，从相对简单的纸币数据集开始，然后在OpenCV的数字数据集上测试算法。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将了解：
 - en: Several of the most important characteristics of the Random Forest algorithm.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 随机森林算法的几个最重要的特性。
 - en: How to use the Random Forest algorithm for image classification in OpenCV.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在OpenCV中使用随机森林算法进行图像分类。
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书《OpenCV中的机器学习》**[Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/)
+    **启动您的项目**。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started. [![](../Images/1e44ed6a9962e55ea6d509617cdf71f2.png)](https://machinelearningmastery.com/wp-content/uploads/2023/07/forest_cover-scaled.jpg)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。 [![](../Images/1e44ed6a9962e55ea6d509617cdf71f2.png)](https://machinelearningmastery.com/wp-content/uploads/2023/07/forest_cover-scaled.jpg)
 - en: Random Forest for Image Classification Using OpenCV
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用OpenCV进行图像分类的随机森林
 - en: Photo by [Jeremy Bishop](https://unsplash.com/photos/21vV_QxWr6U), some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Jeremy Bishop](https://unsplash.com/photos/21vV_QxWr6U) 提供，保留部分权利。
 - en: '**Tutorial Overview**'
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两个部分；它们是：
 - en: Reminder of How Random Forests Work
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 随机森林工作原理的提醒
 - en: Applying the Random Forest Algorithm to Image Classification
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将随机森林算法应用于图像分类
 - en: Banknote Case Study
+  id: totrans-15
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 纸币案例研究
 - en: Digits Case Study
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数字案例研究
 - en: '**Reminder of How Random Forests Work**'
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 随机森林工作原理的提醒
 - en: 'The topic surrounding the Random Forest algorithm has already been explained
     well in these tutorials by Jason Brownlee [[1](https://machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/),
     [2](https://machinelearningmastery.com/implement-random-forest-scratch-python/)],
     but let’s first start with brushing up on some of the most important points:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于随机森林算法的主题已经在Jason Brownlee的这些教程中得到很好的解释[[1](https://machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/)，[2](https://machinelearningmastery.com/implement-random-forest-scratch-python/)]，但让我们首先回顾一些最重要的点：
 - en: '**Random Forest is a type of ensemble machine learning algorithm called *bagging*.
     It is a popular variation of *bagged decision trees*. **'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**随机森林是一种集成机器学习算法，称为*袋装*。它是*袋装决策树*的一种流行变体。**'
 - en: '***   **A decision tree is a branched model that consists of a hierarchy of
     decision nodes, where each decision node splits the data based on a decision rule.
     Training a decision tree involves a greedy selection of the best split points
     (i.e., points that divide the input space best) by minimizing a cost function. **'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **决策树是一个分支模型，由一系列决策节点组成，每个决策节点根据决策规则对数据进行划分。训练决策树涉及贪心地选择最佳分裂点（即最佳划分输入空间的点），通过最小化成本函数来完成。** '
 - en: '***   **The greedy approach through which decision trees construct their decision
     boundaries makes them susceptible to high variance. This means that small changes
     in the training dataset can lead to very different tree structures and, in turn,
     model predictions. If the decision tree is not pruned, it will also tend to capture
     noise and outliers in the training data. This sensitivity to the training data
     makes decision trees susceptible to overfitting. **'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **决策树通过贪心方法构建其决策边界，使其容易受到高方差的影响。这意味着训练数据集中的小变化可能导致非常不同的树结构，从而影响模型预测。如果决策树没有被修剪，它还会倾向于捕捉训练数据中的噪声和异常值。这种对训练数据的敏感性使得决策树容易过拟合。**'
 - en: '***   ***Bagged decision trees* address this susceptibility by combining the
     predictions from multiple decision trees, each trained on a bootstrap sample of
     the training dataset created by sampling the dataset with replacement. The limitation
@@ -102,163 +147,249 @@
     tree, and some samples may be picked several times during training, making it
     very possible that the trees share similar (or the same) split points (hence,
     resulting in correlated trees). **'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   ***集成决策树* 通过结合来自多个决策树的预测来解决这种敏感性，每棵树都在通过替换抽样创建的训练数据的自助样本上进行训练。这种方法的局限性在于相同的贪婪方法训练每棵树，并且某些样本在训练期间可能被多次挑选，这使得树很可能共享相似（或相同）的分割点（因此，结果是相关的树）。**'
 - en: '***   **The Random Forest algorithm tries to mitigate this correlation by training
     each tree on a random subset of the training data, created by randomly sampling
     the dataset without replacement. In this manner, the greedy algorithm can only
     consider a fixed subset of the data to create the split points that make up each
     tree, which forces the trees to be different. **'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **随机森林算法通过在训练数据的随机子集上训练每棵树来减轻这种相关性，这些子集是通过无替换地随机抽样数据集创建的。这样，贪婪算法只能考虑固定的子集来创建每棵树的分割点，这迫使树之间有所不同。**'
 - en: '***   **In the case of a classification problem, every tree in the forest produces
     a prediction output, and the final class label is identified as the output that
     the majority of the trees have produced. In the case of regression, the final
     output is the average of the outputs produced by all the trees. **'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **在分类问题中，森林中的每棵树都会产生一个预测输出，最终的类别标签是大多数树产生的输出。在回归问题中，最终的输出是所有树产生的输出的平均值。**'
 - en: '**## **Applying the Random Forest Algorithm to Image Classification**'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '**## **将随机森林算法应用于图像分类**'
 - en: '**Banknote Case Study**'
+  id: totrans-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**纸币案例研究**'
 - en: We’ll first use the banknote dataset used in [this tutorial](https://machinelearningmastery.com/implement-decision-tree-algorithm-scratch-python/).
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将首先使用 [这个教程](https://machinelearningmastery.com/implement-decision-tree-algorithm-scratch-python/)
+    中使用的纸币数据集。
 - en: The banknote dataset is a relatively simple one that involves predicting a given
     banknote’s authenticity. The dataset contains 1,372 rows, with each row representing
     a feature vector comprising four different measures extracted from a banknote
     photograph, plus its corresponding class label (authentic or not).
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 纸币数据集是一个相对简单的数据集，涉及预测给定纸币的真实性。数据集包含1,372行，每行代表一个特征向量，包括从纸币照片中提取的四个不同测量值，以及其对应的类别标签（真实或虚假）。
 - en: 'The values in each feature vector correspond to the following:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个特征向量中的值对应于以下内容：
 - en: Variance of Wavelet Transformed image (continuous)
+  id: totrans-30
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 小波变换图像的方差（连续型）
 - en: Skewness of Wavelet Transformed image (continuous)
+  id: totrans-31
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 小波变换图像的偏度（连续型）
 - en: Kurtosis of Wavelet Transformed image (continuous)
+  id: totrans-32
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 小波变换图像的峰度（连续型）
 - en: Entropy of image (continuous)
+  id: totrans-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 图像的熵（连续型）
 - en: Class label (integer)
+  id: totrans-34
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 类别标签（整数）
 - en: The dataset may be downloaded from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/banknote+authentication).
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据集可以从 [UCI 机器学习库](https://archive.ics.uci.edu/ml/datasets/banknote+authentication)
+    下载。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 OpenCV 进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在参加我的免费电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并同时获取课程的免费 PDF 电子书版本。
 - en: 'As in Jason’s tutorial, we shall load the dataset, convert its string numbers
     to floats, and partition it into training and testing sets:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 如同 Jason 的教程中所示，我们将加载数据集，将其字符串数字转换为浮点数，并将其划分为训练集和测试集：
 - en: Python
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The OpenCV library implements the `RTrees_create` function in the `ml` module,
     which will allow us to create an empty decision tree:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV 库在 `ml` 模块中实现了 `RTrees_create` 函数，这将允许我们创建一个空的决策树：
 - en: Python
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'All the trees in the forest will be trained with the same parameter values,
     albeit on different subsets of the training dataset. The default parameter values
     can be customized, but let’s first work with the default implementation. We will
     return to customizing these parameter values shortly in the next section:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 森林中的所有树木将使用相同的参数值进行训练，尽管是在不同的训练数据子集上。默认参数值可以自定义，但让我们首先使用默认实现。我们将在下一节中回到自定义这些参数值：
 - en: Python
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Python
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: We have already obtained a high accuracy of around 96.73% using the default
     implementation of the Random Forest algorithm on the banknote dataset.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经使用默认实现的随机森林算法在钞票数据集上获得了约**96.73%**的高准确率。
 - en: 'The complete code listing is as follows:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码列表如下：
 - en: '[PRE4]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '**Digits Case Study**'
+  id: totrans-53
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**数字案例研究**'
 - en: Consider applying the Random Forest to images from OpenCV’s digits dataset.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑将随机森林应用于OpenCV的数字数据集中的图像。
 - en: The digits dataset is still relatively simple. However, the feature vectors
     we will extract from its images using the HOG method will have higher dimensionality
     (81 features) than those in the banknote dataset. For this reason, we can consider
     the digits dataset to be relatively more challenging to work with than the banknote
     dataset.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 数字数据集仍然相对简单。然而，我们将使用HOG方法从其图像中提取的特征向量将具有比钞票数据集中的特征向量更高的维度（81个特征）。因此，我们可以认为数字数据集比钞票数据集更具挑战性。
 - en: 'We will first investigate how the default implementation of the Random Forest
     algorithm copes with higher-dimensional data:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将首先调查随机森林算法的默认实现如何应对高维数据。
 - en: Python
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Python
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: We find that the default implementation returns an accuracy of 81%.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们发现默认实现返回的准确度为81%。
 - en: This drop in accuracy from that achieved on the banknote dataset may indicate
     that the capacity of the default implementation of the model may not be enough
     to learn the complexity of the higher-dimensional data that we are now working
     with.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 从钞票数据集上获得的准确度下降可能表明，模型的默认实现可能无法学习我们现在处理的高维数据的复杂性。
 - en: 'Let’s investigate whether we may obtain an improvement in the accuracy by changing:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们调查一下，通过更改以下内容是否可以提高准确度：
 - en: The termination criteria of the training algorithm, which considers the number
     of trees in the forest, and the estimated performance of the model are measured
     by an [Out-Of-Bag (OOB) error](https://machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/).
@@ -266,124 +397,186 @@
     method and set using the `setTermCriteria` method. When using the latter, the
     number of trees may be set through the `TERM_CRITERIA_MAX_ITER` parameter, whereas
     the desired accuracy may be specified using the `TERM_CRITERIA_EPS` parameter.
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练算法的终止标准，它考虑了森林中的树木数量，以及模型的估计性能，通过[袋外误差（OOB）](https://machinelearningmastery.com/bagging-and-random-forest-ensemble-algorithms-for-machine-learning/)来衡量。当前的终止标准可以通过`getTermCriteria`方法找到，并通过`setTermCriteria`方法设置。使用后者时，可以通过`TERM_CRITERIA_MAX_ITER`参数设置树的数量，而期望的准确度可以通过`TERM_CRITERIA_EPS`参数指定。
 - en: The maximum possible depth that each tree in the forest can attain. The current
     depth may be found using the `getMaxDepth` method, and set using the `setMaxDepth`
     method. The specified tree depth may not be reached if the above termination criteria
     are met first.
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 森林中每棵树可以达到的最大深度。当前深度可以通过`getMaxDepth`方法找到，并通过`setMaxDepth`方法设置。如果先满足上述终止条件，可能无法达到指定的树深度。
 - en: When tweaking the above parameters, remember that increasing the number of trees
     can increase the model’s capacity to capture more intricate detail in the training
     data; it will also increase the prediction time linearly and make the model more
     susceptible to overfitting. Hence, tweak the parameters judiciously.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 在调整上述参数时，请记住，增加树的数量可以提高模型捕捉训练数据中更复杂细节的能力；这也会线性增加预测时间，并使模型更容易过拟合。因此，谨慎调整参数。
 - en: 'If we add in the following lines following the creation of an empty decision
     tree, we may find the default values of the tree depth as well as the termination
     criteria:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们在创建空决策树后添加以下几行代码，我们可以找到树深度以及终止标准的默认值：
 - en: Python
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Python
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: In this manner, we can see that, by default, each tree in the forest has a depth
     (or number of levels) equal to 5, while the number of trees and desired accuracy
     are set to 50 and 0.1, respectively. The first value returned by the `getTermCriteria`
     method refers to the `type` of termination criteria under consideration, where
     a value of 3 specifies termination based on both `TERM_CRITERIA_MAX_ITER` and
     `TERM_CRITERIA_EPS`.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 以这种方式，我们可以看到，默认情况下，森林中的每棵树的深度（或层级数）等于5，而树的数量和期望的准确度分别设置为50和0.1。`getTermCriteria`方法返回的第一个值指的是考虑的终止标准的`type`，其中值为3表示基于`TERM_CRITERIA_MAX_ITER`和`TERM_CRITERIA_EPS`的终止。
 - en: 'Let’s now try changing the values mentioned above to investigate their effect
     on the prediction accuracy. The code listing is as follows:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们尝试更改上述值，以研究它们对预测准确率的影响。代码列表如下：
 - en: Python
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Python
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: We may see that the newly set parameter values bump the prediction accuracy
     to 94.1%.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可能会看到，新设置的参数值将预测准确率提高到了94.1%。
 - en: These parameter values are being set arbitrarily here to illustrate this example.
     Still, it is always advised to take a more systematic approach to tweaking the
     parameters of a model and investigating how each affects its performance.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些参数值在这里是随意设置的，以说明这个例子。然而，始终建议采取更系统的方法来调整模型的参数，并调查每个参数对性能的影响。
 - en: '**Further Reading**'
+  id: totrans-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于此主题的资源，如果你想更深入了解的话。
 - en: '**Books**'
+  id: totrans-82
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
     2017.'
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[OpenCV 的机器学习](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1)，2017
+    年。'
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[使用 Python 掌握 OpenCV 4](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019
+    年。'
 - en: '**Websites**'
+  id: totrans-85
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: Random Forests, [https://www.stat.berkeley.edu/users/breiman/RandomForests/reg_home.htm](https://www.stat.berkeley.edu/users/breiman/RandomForests/reg_home.htm)
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 随机森林，[https://www.stat.berkeley.edu/users/breiman/RandomForests/reg_home.htm](https://www.stat.berkeley.edu/users/breiman/RandomForests/reg_home.htm)
 - en: '**Summary**'
+  id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you learned how to apply OpenCV’s Random Forest algorithm
     for image classification, starting with a relatively *easier* banknote dataset
     and then testing the algorithm on OpenCV’s digits dataset.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学会了如何应用 OpenCV 的随机森林算法进行图像分类，从一个相对*简单*的钞票数据集开始，然后在 OpenCV 的数字数据集上测试该算法。
 - en: 'Specifically, you learned:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: Several of the most important characteristics of the Random Forest algorithm.
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 随机森林算法的一些最重要特征。
 - en: How to use the Random Forest algorithm for image classification in OpenCV.
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中使用随机森林算法进行图像分类。
 - en: Do you have any questions?
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.************
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提问，我会尽力回答。************

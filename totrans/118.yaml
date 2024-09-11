@@ -1,261 +1,405 @@
 - en: Building a Logistic Regression Classifier in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中构建逻辑回归分类器
 - en: 原文：[https://machinelearningmastery.com/building-a-logistic-regression-classifier-in-pytorch/](https://machinelearningmastery.com/building-a-logistic-regression-classifier-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/building-a-logistic-regression-classifier-in-pytorch/](https://machinelearningmastery.com/building-a-logistic-regression-classifier-in-pytorch/)
 - en: Logistic regression is a type of regression that predicts the probability of
     an event. It is used for classification problems and has many applications in
     the fields of machine learning, artificial intelligence, and data mining.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 逻辑回归是一种回归类型，用于预测事件的概率。它用于分类问题，并在机器学习、人工智能和数据挖掘领域有许多应用。
 - en: 'The formula of logistic regression is to apply a sigmoid function to the output
     of a linear function. This article discusses how you can build a logistic regression
     classifier. While previously you have been working on a single-varable dataset,
     here we’ll be using a popular MNIST dataset to train and test our model. After
     going through this article, you’ll learn:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 逻辑回归的公式是对线性函数的输出应用 sigmoid 函数。本文讨论了如何构建逻辑回归分类器。虽然之前你在处理单变量数据集，但在这里我们将使用一个流行的
+    MNIST 数据集来训练和测试我们的模型。通过阅读本文，你将学到：
 - en: How to use logistic regression in PyTorch and how it can be applied to real-world
     problems.
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中使用逻辑回归以及它如何应用于实际问题。
 - en: How to load and analyze torchvision datasets.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何加载和分析 torchvision 数据集。
 - en: How to build and train a logistic regression classifier on image datasets.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在图像数据集上构建和训练逻辑回归分类器。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参考我的书籍 [《使用 PyTorch 进行深度学习》](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了**自学教程**和**有效代码**。'
 - en: Let’s get started.![](../Images/28a7557c7e2c6b605f4a0e2e67d166d0.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 开始吧！![](../Images/28a7557c7e2c6b605f4a0e2e67d166d0.png)
 - en: Building a Logistic Regression Classifier in PyTorch.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中构建逻辑回归分类器。
 - en: Picture by [Catgirlmutant](https://unsplash.com/photos/hLIetAds3Lw). Some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来自 [Catgirlmutant](https://unsplash.com/photos/hLIetAds3Lw)。保留一些权利。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in four parts; they are
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四部分；它们是
 - en: The MNIST Dataset
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: MNIST 数据集
 - en: Load Dataset into DataLoader
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将数据集加载到 DataLoader 中
 - en: Build the Model with `nn.Module`
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 `nn.Module` 构建模型
 - en: Training the Classifier
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练分类器
 - en: The MNIST Dataset
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: MNIST 数据集
 - en: You will train and test a logistic regression model with MNIST dataset. This
     dataset contains 6000 images for training and 10000 images for testing the out-of-sample
     performance.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将使用 MNIST 数据集来训练和测试一个逻辑回归模型。该数据集包含 6000 张用于训练的图像和 10000 张用于测试样本性能的图像。
 - en: The MNIST dataset is so popular that it is part of PyTorch. Here is how you
     can load the training and testing samples of the MNIST dataset in PyTorch.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: MNIST 数据集如此流行，以至于它是 PyTorch 的一部分。以下是如何在 PyTorch 中加载 MNIST 数据集的训练和测试样本。
 - en: '[PRE0]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The dataset will be downloaded and extracted to the directory as below.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据集将被下载并提取到如下目录中。
 - en: '[PRE1]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Let’s verify number of training and testing samples in the dataset.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们验证数据集中训练和测试样本的数量。
 - en: '[PRE2]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: It prints
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 它会打印
 - en: '[PRE3]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Each sample in the dataset is a pair of image and label. To inspect the data
     type and size of the first element in the training data, you can use `type()`
     and `size()` methods.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据集中每个样本都是图像和标签的配对。要检查训练数据中第一个元素的数据类型和大小，你可以使用 `type()` 和 `size()` 方法。
 - en: '[PRE4]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: This prints
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印
 - en: '[PRE5]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: You can access samples from a dataset using list indexing. The first sample
     in the dataset is a `FloatTensor` and it is a $28\times 28$-pixel image in grayscale
     (i.e., one channel), hence the size `[1, 28, 28]`.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以使用列表索引从数据集中访问样本。数据集中的第一个样本是 `FloatTensor`，它是一个 $28\times 28$ 像素的灰度图像（即一个通道），因此大小为
+    `[1, 28, 28]`。
 - en: Now, let’s check the labels of the first two samples in the training set.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们检查训练集中的前两个样本的标签。
 - en: '[PRE6]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: This shows
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这显示了
 - en: '[PRE7]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: From the above, you can see that the first two images in the training set represent
     “5” and “0”. Let’s show these two images to confirm.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 从上述内容可以看出，训练集中的前两张图像分别代表“5”和“0”。让我们展示这两张图像以确认。
 - en: '[PRE8]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: You should see these two digits:![](../Images/66bfa85d438950020f784e6cf5259c4b.png)![](../Images/c6011e672c8069f7ea8cd237745f13a1.png)
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该能看到这两个数字：![](../Images/66bfa85d438950020f784e6cf5259c4b.png)![](../Images/c6011e672c8069f7ea8cd237745f13a1.png)
 - en: Load Dataset into DataLoader
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将数据集加载到 DataLoader 中
 - en: Usually, you do not use the dataset directly in training but through a `DataLoader`
     class. This allows you to read data in batches, not samples.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常情况下，你不直接在训练中使用数据集，而是通过一个`DataLoader`类。这使你可以批量读取数据，而不是逐个样本。
 - en: In the following, data is loaded into a `DataLoader` with batch size at 32.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 在接下来，数据以批量大小为32加载到`DataLoader`中。
 - en: '[PRE9]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Want to Get Started With Building Transformer Models with Attention?
+  id: totrans-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始构建带有注意力的Transformer模型吗？
 - en: Take my free 12-day email crash course now (with sample code).
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费12天电子邮件速成课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并免费获取课程的PDF电子书版本。
 - en: Build the Model with `nn.Module`
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用`nn.Module`构建模型
 - en: Let’s build the model class with `nn.Module` for our logistic regression model.
     This class is similar to that in the previous posts but the numbers of input and
     output are configurable.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们使用`nn.Module`为我们的逻辑回归模型构建模型类。这个类与以前的帖子中的类似，但是输入和输出的数量是可配置的。
 - en: '[PRE10]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: This model will take a $28\times 28$-pixel image of handwritten digits as input
     and classify them into one of the 10 output classes of digits 0 to 9\. So, here
     is how you can instantiate the model.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 此模型将以$28\times 28$像素的手写数字图像作为输入，并将它们分类为数字0到9中的一个输出类。因此，下面是如何实例化模型的方法。
 - en: '[PRE11]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Training the Classifier
+  id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 训练分类器
 - en: You will train this model with stochastic gradient descent as the optimizer
     with learning rate 0.001 and cross-entropy as the loss metric.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将使用随机梯度下降作为优化器，学习率为0.001，交叉熵为损失度量来训练此模型。
 - en: Then, the model is trained for 50 epochs. Note that you have use `view()` method
     to flatten the image matrices into rows to fit the same of the logistic regression
     model input.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，模型进行了50个周期的训练。请注意，你使用了`view()`方法将图像矩阵展平为行，以适应逻辑回归模型输入的形状。
 - en: '[PRE12]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'During training, you should see the progress like the following:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在训练过程中，你应该看到如下的进展：
 - en: '[PRE13]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: You have achieved an accuracy of around 86% by training the model for only 50
     epochs. Accuracy can be improved further if the model is trained longer.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过仅训练50个周期，你已经达到了约86%的准确率。如果进一步训练模型，准确率可以进一步提高。
 - en: 'Let’s visualize how the graphs for loss and accuracy look like. The following
     is the loss:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看损失和准确率图表的可视化效果。以下是损失：
 - en: '[PRE14]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '![](../Images/acd89162656245a2a714c05fcd7782ef.png)'
+  id: totrans-60
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/acd89162656245a2a714c05fcd7782ef.png)'
 - en: 'And this is for accuracy:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 而这是关于准确率的情况：
 - en: '[PRE15]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '![](../Images/25e77d43f70ce546f9391207e11c6388.png)'
+  id: totrans-63
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/25e77d43f70ce546f9391207e11c6388.png)'
 - en: 'Putting everything together, the following is the complete code:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容整合起来，以下是完整的代码：
 - en: '[PRE16]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Summary
+  id: totrans-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: In this tutorial, you learned how to build a multi-class logistic regression
     classifier in PyTorch. Particularly, you learned.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学会了如何在PyTorch中构建多类逻辑回归分类器。特别是，你学到了。
 - en: How to use logistic regression in PyTorch and how it can be applied to real-world
     problems.
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中使用逻辑回归以及它如何应用于实际问题。
 - en: How to load and analyze torchvision datasets.
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何加载和分析torchvision数据集。
 - en: How to build and train a logistic regression classifier on image datasets.
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在图像数据集上构建和训练逻辑回归分类器。

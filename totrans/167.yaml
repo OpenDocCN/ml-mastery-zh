@@ -1,18 +1,24 @@
 - en: Interior Design with Stable Diffusion (8-day mini-course)
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 稳定扩散室内设计（8天迷你课程）
 - en: 原文：[https://machinelearningmastery.com/interior-design-with-stable-diffusion-7-day-mini-course/](https://machinelearningmastery.com/interior-design-with-stable-diffusion-7-day-mini-course/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/interior-design-with-stable-diffusion-7-day-mini-course/](https://machinelearningmastery.com/interior-design-with-stable-diffusion-7-day-mini-course/)
 - en: At its core, Stable Diffusion is a deep learning model that can generate pictures.
     Together with some other models and UI, you can consider that as a tool to help
     you create pictures in a new dimension that not only you can provide instructions
     on how the picture looks like, but also the generative model to brainstorm what
     you didn’t specify.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在核心部分，稳定扩散是一个能够生成图片的深度学习模型。结合其他一些模型和用户界面，你可以把它看作是一个工具，帮助你在一个新的维度上创作图片。不仅可以提供图片外观的指令，还可以让生成模型来构思你未明确指定的内容。
 - en: In this 7-part crash course, you will learn from examples how to make use of
     Stable Diffusion to finish a drawing project. This mini-course is focused on the
     use of generative AI models, but not their internal mechanism. Therefore, you
@@ -20,443 +26,644 @@
     results. Yet, since nothing can be done in a single step, you should expect to
     learn how the many extensions and parameters play together to finish an image
     generation project. Let’s get started.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个七部分的速成课程中，你将通过示例学习如何利用稳定扩散完成一个绘画项目。这个迷你课程专注于使用生成AI模型，而不是它们的内部机制。因此，你不必担心它们如何提供如此惊人的结果的复杂理论。然而，因为没有一步能完成所有，你应该期待学习多个扩展和参数如何协同作用来完成一个图像生成项目。让我们开始吧。
 - en: '![](../Images/4b6e59f01a7d37ff105cdda96cc51853.png)'
+  id: totrans-4
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4b6e59f01a7d37ff105cdda96cc51853.png)'
 - en: Interior Design with Stable Diffusion (7-day mini-course)
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散室内设计（7天迷你课程）
 - en: Photo by [Arno Smit](https://unsplash.com/photos/opened-door-of-house-iI72r3gSwWY).
     Some rights reserved.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Arno Smit](https://unsplash.com/photos/opened-door-of-house-iI72r3gSwWY)
+    提供。部分权利保留。
 - en: Who Is This Mini-Course For?
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 这个迷你课程适合谁？
 - en: Before we start, let’s ensure you are in the right place. The list below provides
     some general guidelines as to who this course was designed for. Don’t panic if
     you don’t match these points exactly; you might just need to brush up in one area
     or another to keep up.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们开始之前，让我们确保你来对了地方。以下列表提供了关于这门课程设计对象的一些一般指导方针。如果你的情况不完全符合，不要惊慌；你可能只需要在某些领域稍作补充，就可以跟上了。
 - en: '**You know what is a generative model**. You are not expecting magic. Everything
     you’re going to see is the result of some sophisticated algorithms. Therefore,
     all results can be explained and the steps are reusable once you know what’s under
     the hood.'
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**你知道什么是生成模型**。你不期望有魔法。你所看到的一切都是一些复杂算法的结果。因此，所有的结果都可以解释，并且一旦你了解了内部原理，这些步骤都是可重用的。'
 - en: '**You are not an artist**. You are not painting on a digital canvas. Indeed,
     you create a picture without painting. The generative model does not allow you
     to control too much detail, but you can give some high-level instructions. This
     means you should not expect to be able to control the output precisely. And you
     also do not need to learn the drawing techniques to create a good picture.'
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**你不是艺术家**。你不是在数字画布上作画。事实上，你是在没有画笔的情况下创作画作。生成模型不允许你控制太多细节，但你可以给出一些高级指令。这意味着你不应该期望能够精确控制输出。而且，你也不需要学习绘画技巧来创作一幅好画。'
 - en: '**You have the patience to work on a project**. Similar to creating a picture
     with a paintbrush, you need to be patient, and it takes time to finish a project.
     Unlike painting, the time you spend is to experiment with the different knobs
     in the generation pipeline. Depending on the nature of your project, you need
     to check what are the optimal parameters for the best result.'
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**你有耐心完成一个项目**。就像用画笔创作一幅画一样，你需要耐心，完成一个项目需要时间。不像绘画，你花的时间是在实验生成管道中的不同旋钮。根据项目的性质，你需要检查哪些是最佳参数以获得最佳结果。'
 - en: This mini-course is not a textbook on stable diffusion. But you are going to
     see how the many components work and how they help in the final result of image
     generation. The key is to to know the role of each component and parameter so
     that you can decide how you want to use them in your next project.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个迷你课程不是关于稳定扩散的教科书。但你会看到许多组件如何工作，以及它们如何帮助图像生成的最终结果。关键在于了解每个组件和参数的作用，这样你就可以决定如何在你的下一个项目中使用它们。
 - en: Mini-Course Overview
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 迷你课程概述
 - en: This mini-course is divided into eight parts.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个迷你课程分为八个部分。
 - en: Each lesson was designed to take around 30 minutes. You might finish some much
     sooner, and in others, you may choose to go deeper and spend more time.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 每节课的设计目标是花费大约30分钟。您可能会更快地完成一些课程，而在其他课程中，您可能会选择更深入，花更多时间。
 - en: You can complete each part as quickly or as slowly as you like. A comfortable
     schedule may be to complete one lesson daily over eight days. Highly recommended.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以根据自己的喜好快速或缓慢地完成每个部分。建议的舒适进度可能是在八天内每天完成一课。强烈推荐。
 - en: 'The topics you will cover over the next 8 lessons are as follows:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是你将在接下来的8堂课中学习的主题：
 - en: '**Lesson 01**: Create Your Stable Diffusion Environment'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**第01课**：创建您的稳定扩散环境'
 - en: '**Lesson 02**: Make Room for Yourself'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**第02课**：为自己腾出空间'
 - en: '**Lesson 03**: Trial and Error'
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**第03课**：试验和错误'
 - en: '**Lesson 04**: The Prompt Syntax'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**第04课**：提示语法'
 - en: '**Lesson 05**: More Trial and Error'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**第05课**：更多试验和错误'
 - en: '**Lesson 06**: ControlNet'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**第06课**：ControlNet'
 - en: '**Lesson 07**: LoRA'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**第07课**：LoRA'
 - en: '**Lesson 08**: Better Face'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**第08课**：更好的面孔'
 - en: This is going to be a lot of fun.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将会非常有趣。
 - en: 'You’ll have to do some work: a little reading, research, and experiments. You
     want to learn how to finish a stable diffusion project, right?'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 您需要做一些工作：一些阅读、研究和实验。您想学习如何完成一个稳定扩散项目，对吧？
 - en: '**Post your results in the comments**; I’ll cheer you on!'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '**在评论中发布您的结果**；我会为您加油！'
 - en: Hang in there; don’t give up.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 坚持下去，不要放弃。
 - en: 'Lesson 01: Create Your Stable Diffusion Environment'
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第01课：创建您的稳定扩散环境
 - en: Stable Diffusion is a deep learning model that simulates a diffusion process
     to generate pictures. You need to know about the physics of diffusion to appreciate
     how a seemingly unimaginative computer algorithm can produce artwork. However,
     as a user, you can assume it is a black box that can transform your input, such
     as a textual description, into a picture.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散是一个深度学习模型，模拟扩散过程生成图片。您需要了解扩散物理学，以欣赏一个看似不寻常的计算机算法如何生成艺术品。然而，作为用户，您可以假设它是一个可以将您的输入（如文字描述）转换为图片的黑盒子。
 - en: Stable Diffusion is a base model, and the community produces many retrained
     or fine-tuned derivative models. But after all, it is a deep learning model that
     requires a lot of computation power. To run the model, it is recommended that
     you have a computer with a decent GPU. If your computer doesn’t have one, you
     can use one from cloud providers such as AWS.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散是一个基础模型，社区提供了许多重新训练或微调的衍生模型。但归根结底，它是一个需要大量计算资源的深度学习模型。要运行该模型，建议您使用带有良好GPU的计算机。如果您的计算机没有GPU，可以使用AWS等云提供商的计算资源。
 - en: You may want to have a UI to the model to make your workflow smoother. It helps
     you iterate faster and avoids many errors that you may commit if you need to write
     code. There are several UI for Stable Diffusion. The ComfyUI is very flexible
     and powerful. However, the Web UI created by Automatic1111 on GitHub is the easiest
     to use. This is the UI you will use in these lessons.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可能希望有一个UI来使您的工作流程更加顺畅。它可以帮助您更快地迭代，并避免许多可能在编写代码时犯的错误。稳定扩散有几个UI可供选择。ComfyUI非常灵活和强大。然而，由Automatic1111在GitHub上创建的Web
+    UI是最易于使用的。这是您在这些课程中将使用的UI。
 - en: 'To start, you need a modern Python, such as Python 3.10 or above. Linux machine
     is preferred since the process is much smoother, but Windows or Mac also work.
     First, you download the Web UI from GitHub. In Linux, you run the git command:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，您需要一个现代的Python，如Python 3.10或更高版本。Linux系统最好，因为流程更加顺畅，但Windows或Mac也可以使用。首先，您从GitHub下载Web
+    UI。在Linux中，您运行以下git命令：
 - en: '[PRE0]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Then, you need to download the Stable Diffusion models. Civitai is the most
     famous community that provides user-generated models. For example, you can get
     the “Realistic Vision v6” model from this location:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，您需要下载稳定扩散模型。Civitai是一个知名社区，提供用户生成的模型。例如，您可以从以下位置获取“Realistic Vision v6”模型：
 - en: '[https://civitai.com/models/4201/realistic-vision-v60-b1](https://civitai.com/models/4201/realistic-vision-v60-b1)'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://civitai.com/models/4201/realistic-vision-v60-b1](https://civitai.com/models/4201/realistic-vision-v60-b1)'
 - en: Select “safetensors” format and click the download button. Then move the downloaded
     model file into `stable-diffusion-webui/models/Stable-diffusion`.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 选择“safetensors”格式并点击下载按钮。然后将下载的模型文件移动到`stable-diffusion-webui/models/Stable-diffusion`。
 - en: 'Another place you can find models is Hugging Face. You can search with the
     keyword “stable diffusion” to find them. For example, these are the locations
     you can find the Deliberate model as well as the original Stable Diffusion v1.5
     model:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以在Hugging Face找到模型的另一个地方。您可以使用关键词“stable diffusion”进行搜索。例如，这些是您可以找到Deliberate模型以及原始Stable
+    Diffusion v1.5模型的位置：
 - en: '[https://huggingface.co/XpucT/Deliberate](https://huggingface.co/XpucT/Deliberate)'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://huggingface.co/XpucT/Deliberate](https://huggingface.co/XpucT/Deliberate)'
 - en: '[https://huggingface.co/models?pipeline_tag=text-to-image&sort=downloads](https://huggingface.co/models?pipeline_tag=text-to-image&sort=downloads)'
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://huggingface.co/models?pipeline_tag=text-to-image&sort=downloads](https://huggingface.co/models?pipeline_tag=text-to-image&sort=downloads)'
 - en: Go to the “files” tab on those pages to get the model file. Similarly, move
     them to `stable-diffusion-webui/models/Stable-diffusion` after you download them.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 去这些页面的“文件”选项卡，获取模型文件。类似地，在下载后将其移动到`stable-diffusion-webui/models/Stable-diffusion`。
 - en: 'Once you have the models downloaded, you can go to the Web UI directory and
     start it:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 下载完模型后，您可以进入Web UI目录并启动它：
 - en: '[PRE1]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'This will automatically create a Python virtual environment, install the required
     packages (such as PyTorch), and start the Web UI. If you launched it with your
     own computer, you should see a browser launched to the URL:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将自动创建一个Python虚拟环境，安装所需的包（如PyTorch），并启动Web UI。如果您在自己的计算机上启动它，应该会看到浏览器启动到以下URL：
 - en: http://localhost:7860
+  id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: http://localhost:7860
 - en: 'But if you are running this remotely, such as on a remote computer on the cloud,
     you should make the Web UI to “listen” on public IP:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 但如果您是在远程运行此操作，例如在云上的远程计算机上，您应该让Web UI“监听”公共IP：
 - en: '[PRE2]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'And this is what you should see on the browser:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 并且这是您在浏览器上应该看到的内容：
 - en: '![](../Images/9366c3a18318a50e0e03fadfdf6a9d92.png)'
+  id: totrans-50
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/9366c3a18318a50e0e03fadfdf6a9d92.png)'
 - en: Your task
+  id: totrans-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 您的任务
 - en: Try to follow the steps above and launch your Web UI. Make sure you encountered
     no error and have your checkpoint in the dropdown at the top left corner.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 尝试按照上述步骤启动您的Web UI。确保没有遇到错误，并在左上角的下拉菜单中选择了您的检查点。
 - en: 'Lesson 02: Make Room for Yourself'
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第二课：为自己腾出空间
 - en: Let’s imagine you’re an interior designer, and your project is to design a bedroom.
     You want to show your idea to other people. You can draw it on a paper. But you
     can also ask your computer to draw it for you.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象一下，您是室内设计师，您的项目是设计一间卧室。您想向其他人展示您的想法。您可以在纸上绘制它。但您也可以让计算机为您绘制它。
 - en: 'To make Stable Diffusion to draw a picture, you can provide a text prompt and
     expect a picture in return. That’s the “text2img” feature in the Web UI. You can
     type in the following in the positive prompt box:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使用Stable Diffusion绘制图片，您可以提供文本提示，并期待返回一幅图片。这就是Web UI中的“text2img”功能。您可以在正面提示框中输入以下内容：
 - en: bed room, modern style, one window on one of the wall, realistic photo
+  id: totrans-56
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 卧室、现代风格、一面墙上有一个窗户、真实照片
 - en: Make sure you select a ” checkpoint, ” which is the Stable Diffusion model you’re
     using. Set the width and height to 768 and 512 respectively. Then click “Generate”
     and wait for the picture. That’s your first artwork created by Stable Diffusion.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 确保您选择了“检查点”，即您正在使用的Stable Diffusion模型。将宽度和高度设置为768和512。然后点击“生成”并等待图片生成。这是您由Stable
+    Diffusion创建的第一件艺术品。
 - en: As you can see on the screen, you can adjust a lot more before generating the
     picture. You used the positive prompt, but there were also negative prompts. The
     positive prompt is supposed to describe the output, but the negative prompt tells
     what the picture should avoid. Since you’re asking for a “realistic photo”, you
     can enhance the result by saying any other style in the negative prompt, such
     as
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如您在屏幕上所见，您可以在生成图片之前进行更多调整。您使用了正面提示，但也有负面提示。正面提示应描述输出内容，而负面提示告诉图片应该避免什么。由于您要求“真实的照片”，因此可以通过在负面提示中提到其他风格来增强结果，例如
 - en: sketch, black and white, painting
+  id: totrans-59
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 素描、黑白、绘画
 - en: You can put more, such as “outdoor,” since, obviously, your output should be
     an indoor scene. You can also try to adjust some keywords if you want a room in
     a different style, such as “brick wall” or “inside a cabin”.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以添加更多内容，比如“户外”，因为显然您的输出应该是一个室内场景。您还可以尝试调整一些关键词，如果希望以不同风格的房间，例如“砖墙”或“小屋内部”。
 - en: '![](../Images/19ebef625553078f395595c2cad6595c.png)'
+  id: totrans-61
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/19ebef625553078f395595c2cad6595c.png)'
 - en: Generating an image of a room using just the textual prompts
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用文本提示生成一个房间的图像
 - en: Any prompts (even non-English) can be converted into an embedding vector using
     a standard algorithm. However, different models may understand the prompt differently.
     A keyword not known by the model may be ignored, or interpreted wrongly. That’s
     why you should experiment with different models.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 任何提示词（即使是非英语的）都可以使用标准算法转换为嵌入向量。然而，不同模型可能会以不同方式理解提示词。模型可能会忽略或错误解释模型不认识的关键词。这就是为什么你需要尝试不同的模型。
 - en: Your task
+  id: totrans-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 你的任务
 - en: In the web UI, you can see many other options. Try the above and generate for
     multiple times. You should see a different picture each time. Then, find the box
     for random seed, enter a fixed positive integer, and generate again. Do you see
     the picture always staying the same? How about a fixed random seed but changing
     the sampler?
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在网页界面中，你可以看到许多其他选项。尝试上述方法，并进行多次生成。你应该每次看到不同的图片。然后，找到随机种子的框，输入一个固定的正整数，再次生成。你是否看到图片始终保持不变？固定随机种子但更改采样器会怎样？
 - en: To recreate the same picture, you need the prompt, the model, and the options,
     including the seed, the sampler, and the steps, all fixed.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 要重新创建相同的图片，你需要固定提示词、模型以及选项，包括种子、采样器和步骤。
 - en: 'Lesson 03: Trial and Error'
+  id: totrans-67
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 课程03：试错法
 - en: Unfortunately, the nature of the diffusion process involves a lot of randomness,
     with many knobs, and it is not easy to tell if your settings are right. The easiest
     way to check is to keep your settings (including the prompt, the model, the scheduler,
     and so on) but adjust the random seed. If multiple random seeds produce a consistently
     wrong result, you know you should change something else.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，扩散过程的本质涉及大量随机性，有许多可调节的参数，因此很难判断你的设置是否正确。最简单的检查方法是保持设置（包括提示词、模型、调度器等）不变，但调整随机种子。如果多个随机种子产生了持续错误的结果，你就知道需要更改其他设置。
 - en: In the web UI, you can adjust the batch size and batch count while keeping the
     random seed at $-1$ to generate multiple pictures with one press of the generate
     button.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 在网页界面中，你可以调整批量大小和批量计数，同时将随机种子保持在$-1$，一次按下生成按钮即可生成多张图片。
 - en: As in many deep learning models, data are processed in batch, and the batch
     size tells how many pictures you’re asking the Stable Diffusion model to work
     on concurrently, each with a different random seed. This works only if your GPU
     has enough memory. Otherwise, you can increase the batch count, which means the
     number of batches you want to generate. Each batch will run the generation once
     (hence proportionally slower).
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 与许多深度学习模型一样，数据是批量处理的，批量大小告诉你Stable Diffusion模型需要同时处理多少张图片，每张图片使用不同的随机种子。这仅在你的GPU有足够内存时有效。否则，你可以增加批量计数，即你想生成的批次数。每个批次将运行一次生成（因此相对较慢）。
 - en: '![](../Images/b7fa2d64edbb378d19dea133971ef638.png)'
+  id: totrans-71
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/b7fa2d64edbb378d19dea133971ef638.png)'
 - en: Setting “batch size” to 4 will generate four images in one shot. Setting “batch
     count” will have a similar effect.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 将“批量大小”设置为4将一次生成四张图片。设置“批量计数”也会产生类似的效果。
 - en: With multiple batch sizes or batch counts, you will see all outputs in the web
     UI at once, with a “contact sheet” showing everything. You can click on each individual
     picture to check the parameters (including the random seed used) to generate it.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用多个批量大小或批量计数，你将能在网页界面中一次看到所有输出，显示为“联络表”，展示所有图片。你可以点击每张图片以检查生成它的参数（包括使用的随机种子）。
 - en: '![](../Images/fa176cbd83d826f18998300fa9d71efd.png)'
+  id: totrans-74
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/fa176cbd83d826f18998300fa9d71efd.png)'
 - en: The multiple images are generated in the same batch using the same prompts and
     settings but varying random seeds.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 多张图片是在相同批次中使用相同提示词和设置生成的，但随机种子不同。
 - en: Your task
+  id: totrans-76
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 你的任务
 - en: Try to generate pictures with multiple batch sizes or batch counts. Adjust your
     prompt or other settings and try again. Can you find the button to download the
     picture showing on the screen? Do you know how to find the history of all pictures
     you generated before? There’s a tab for that in the Web UI. Can you also find
     the location on your disk where the previously generated pictures are stored?
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 尝试使用多个批量大小或批量计数生成图片。调整你的提示词或其他设置，再次尝试。你能找到屏幕上显示的图片下载按钮吗？你知道如何查找之前生成的所有图片的历史记录吗？网页界面中有一个标签页可以查看。你还可以找到存储之前生成图片的磁盘位置吗？
 - en: 'Lesson 04: The Prompt Syntax'
+  id: totrans-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 课程04：提示词语法
 - en: You provided a prompt to the Stable Diffusion, and there is a preprocessor to
     convert your textual prompt into a numerical embedding vector. The prompt will
     be broken down into keywords, and you can make each have a different impact on
     the picture generation process.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 您提供了一个提示给 Stable Diffusion，并且有一个预处理器将您的文本提示转换为数值嵌入向量。提示将被分解为关键字，并且您可以使每个关键字对图片生成过程有不同的影响。
 - en: 'Consider a prompt like this:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑一个如下提示：
 - en: bed room, modern style, one window on one of the wall, gray bedsheet, wooden
     nightstand, pendant light, picture on wall, (a cat sleeping on the floor:1.1),
     realistic photo
+  id: totrans-81
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 卧室，现代风格，一面墙上有一个窗户，灰色床单，木制床头柜，吊灯，墙上挂着图片，（一只猫在地板上睡觉:1.1），真实照片
 - en: In this prompt, you see the fragment “(a cat sleeping on the floor:1.1)” is
     in parentheses, and it has the style of “(text:weight)”. This makes the quoted
     text have a different weight to the final embedding vector, which the default
     weight is 1.0\. You can use this prompt syntax in both the positive and negative
     prompt boxes in the Web UI.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此提示中，您可以看到“（一只猫在地板上睡觉:1.1）”的片段被括号括起来，并且具有“（文本:权重）”的样式。这使得引用的文本对最终的嵌入向量有不同的权重，其中默认权重为1.0。您可以在
+    Web UI 的正负提示框中使用此提示语法。
 - en: You should not try a very extreme weight because the model is not designed for
     that. Normally, your weight should be between 0.5 and 1.5\. If you need a very
     extreme weight, that may mean your model is not trained to understand that keyword.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 你不应该尝试非常极端的权重，因为模型不是为此设计的。通常情况下，您的权重应该在0.5到1.5之间。如果您需要非常极端的权重，这可能意味着您的模型没有经过训练来理解该关键字。
 - en: Your task
+  id: totrans-84
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 您的任务
 - en: Check out [https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki)
     and see what prompt syntax is supported. This is handled by the prompt processor
     in the Web UI and is not part of the Stable Diffusion model. There is a syntax
     that allows you to use one prompt for the first half of the generation steps and
     another prompt for the remaining steps. How to write such a prompt?
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 查看 [https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki)
+    并查看支持的提示语法。这由 Web UI 中的提示处理器处理，不属于 Stable Diffusion 模型的一部分。有一种语法可以使您在生成步骤的前半部分使用一个提示，在剩余步骤中使用另一个提示。如何编写这样的提示？
 - en: 'Lesson 05: More Trial and Error'
+  id: totrans-86
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第05课：更多的试验与错误
 - en: With the same set of parameters, you can use batch size to generate multiple
     pictures simultaneously with different random seeds. It usually works and allows
     you to find a good seed for a good picture.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用相同的参数集，您可以使用批量大小同时生成多张具有不同随机种子的图片。通常情况下可以正常工作，并且允许您找到一个适合好图片的良好种子。
 - en: Sometimes, however, you need to experiment with different parameters because
     you are not sure which one can produce the right effect. This can be trying the
     same prompt on different models, or replacing a keyword in your prompt.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时候，您需要尝试不同的参数，因为您不确定哪个参数可以产生正确的效果。这可以尝试在不同模型上使用相同的提示，或者替换提示中的关键字。
 - en: By default, there is a “scripts” section in the Web UI and there is a “X/Y/Z
     plot” in that section. This name means to create “axes” where each point in the
     axes is an option, so that you are trying all combinations with one button click.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，Web UI 中有一个“脚本”部分，在该部分中有一个“X/Y/Z 绘图”。这个名称意味着创建“轴”，其中轴中的每个点都是一个选项，因此您可以通过一个按钮点击尝试所有组合。
 - en: 'Let’s try the following: Set the positive prompt to be:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们尝试以下：将正提示设置为：
 - en: bed room, modern style, one window on one of the wall, realistic photo
+  id: totrans-91
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 卧室，现代风格，一面墙上有一个窗户，真实照片
 - en: 'and the negative prompt to be:'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 以及负提示：
 - en: sketch, black and white, painting
+  id: totrans-93
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 素描，黑白，绘画
 - en: 'Then select “X/Y/Z plot” in the scripts section and pick “Prompt S/R” for the
     “X type”, then type in this for “X values”:'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后在脚本部分选择“X/Y/Z 绘图”，选择“提示 S/R”作为“X 类型”，然后输入以下内容作为“X 值”：
 - en: modern, royal, medieval, japanese
+  id: totrans-95
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 现代，皇家，中世纪，日本风
 - en: '![](../Images/a0bde43e5eb199362bc4db17fd98a0b7.png)'
+  id: totrans-96
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/a0bde43e5eb199362bc4db17fd98a0b7.png)'
 - en: Using the “X/Y/Z plot” script and “Prompt S/R” type to generate multiple images
     with variation in the prompt.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用“X/Y/Z 绘图”脚本和“提示 S/R”类型生成多种具有不同提示的图像。
 - en: All values in X/Y/Z plot sections are comma-delimited. The first value, “modern,”
     is what to search (S), and the rest are to replace (R). That’s how the Prompt
     S/R helps you build the combinations. When you click “generate”, you will see
     a picture like the above. For example, a modern-style bedroom has a minimalist
     style of decoration, while a Japanese bedroom has no bed but a tatami.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: X/Y/Z图示部分的所有值都是以逗号分隔的。第一个值，“现代”，是要搜索的内容（S），其余的是要替换的内容（R）。这就是Prompt S/R帮助你构建组合的方式。当你点击“生成”时，你将看到如上图所示的图片。例如，现代风格的卧室有简约的装饰风格，而日本卧室没有床，而是榻榻米。
 - en: Your task
+  id: totrans-99
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 你的任务
 - en: There is also a “prompt matrix” in the scripts, but “Prompt S/R” is easier to
     use. Try with the “X/Y/Z plot” with other “types” and “values”. You can use at
     most three axes at the same time. Do you find what “type” allows you to try with
@@ -464,52 +671,74 @@
     using a prompt to generate a human in the picture. You should see how different
     models generate human faces differently. The X/Y/Z plot is a powerful feature
     that lets you explore the options to generate a picture you like.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 脚本中还有一个“提示矩阵”，但“Prompt S/R”更容易使用。尝试使用其他“类型”和“值”的“X/Y/Z图示”。你最多可以同时使用三个轴。你发现哪个“类型”允许你尝试多个模型？你认为不同的模型能给你不同的房间吗？尝试使用提示生成图像中的人。你应该能看到不同模型如何不同地生成人的面孔。X/Y/Z图示是一个强大的功能，让你可以探索生成你喜欢的图像的选项。
 - en: 'Lesson 06: ControlNet'
+  id: totrans-101
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第06课：ControlNet
 - en: Behind the scene, the Stable Diffusion model is to start with a matrix of random
     numbers and slowly convert them into a matrix of pixels where you can recognize
     it as a picture that your prompt describes. This process involves multiple iterations
     (the scheduler steps), and the amount of randomness to remove depends on the parameters
     you set in the Web UI.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 在幕后，Stable Diffusion模型从一个随机数字矩阵开始，逐渐将其转换为一个像素矩阵，在这个矩阵中你可以识别出图像符合你提示的描述。这个过程涉及多个迭代（调度步骤），去除的随机性量取决于你在Web
+    UI中设置的参数。
 - en: 'Since there are multiple iterations, you can deliberately adjust the output
     of each iteration before feeding it back to the Stable Diffusion model. This is
     the idea of ControlNet. To use ControlNet, check the “Extensions” tab in the Web
     UI and install the ControlNet plugin. Then you should also download and install
     the ControlNet models from Hugging Face, following the instructions in the wiki
     page of the ControlNet extension:'
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于有多个迭代，你可以故意调整每次迭代的输出，然后再将其反馈给Stable Diffusion模型。这就是ControlNet的理念。要使用ControlNet，请在Web
+    UI中检查“扩展”选项卡并安装ControlNet插件。然后，你还应该从Hugging Face下载并安装ControlNet模型，按照ControlNet扩展的wiki页面中的说明进行操作：
 - en: '[https://github.com/Mikubill/sd-webui-controlnet/wiki/Model-download](https://github.com/Mikubill/sd-webui-controlnet/wiki/Model-download)'
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://github.com/Mikubill/sd-webui-controlnet/wiki/Model-download](https://github.com/Mikubill/sd-webui-controlnet/wiki/Model-download)'
 - en: Once you installed the ControlNet, you may want to restart the Web UI (there’s
     a button in the extensions tab) and refresh your browser to load it.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 安装ControlNet后，你可能需要重新启动Web UI（在扩展选项卡中有一个按钮）并刷新浏览器以加载它。
 - en: 'Let’s try to solve this prompt: If you generate the room multiple times, you
     can see the angle of view is different each time. It will be difficult to write
     a prompt to describe the angle you want, but it will be easy to show it in a picture.
     Let’s download and use this “empty room” picture:'
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们尝试解决这个提示：如果你多次生成房间，你会发现每次视角都不同。很难写出描述你想要的视角的提示，但在图像中展示出来却很容易。让我们下载并使用这张“空房间”图片：
 - en: '[https://machinelearningmastery.com/wp-content/uploads/2024/09/RoomAnime.png](https://machinelearningmastery.com/wp-content/uploads/2024/09/RoomAnime.png)'
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://machinelearningmastery.com/wp-content/uploads/2024/09/RoomAnime.png](https://machinelearningmastery.com/wp-content/uploads/2024/09/RoomAnime.png)'
 - en: '[![](../Images/473493ee6a1c22b2d178023b5c43e438.png)](https://machinelearningmastery.com/wp-content/uploads/2024/09/RoomAnime.png)'
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/473493ee6a1c22b2d178023b5c43e438.png)](https://machinelearningmastery.com/wp-content/uploads/2024/09/RoomAnime.png)'
 - en: Image of an empty room in anime style. Generated by the author using Stable
     Diffusion.
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 动漫风格的空房间图像。由作者使用Stable Diffusion生成。
 - en: You set the prompt and other settings as you did previously. But this time,
     expand and enable the ControlNet section. On the “Single Image” tab, upload this
     picture. Then select “MLSD” as the “Control Type”. Most importantly, set the “Starting
@@ -517,231 +746,345 @@
     use this ControlNet in the first 30% of the steps. For example, if you selected
     the sampling steps as 40, ControlNet will interfere with the image at steps 0
     to 12.
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 您设置提示和其他设置与之前相同。但这次，扩展并启用ControlNet部分。在“单图像”选项卡上，上传这张图片。然后选择“MLSD”作为“控制类型”。最重要的是，将“开始控制步骤”设置为0，并将“结束控制步骤”设置为0.3。这意味着您仅在步骤的前30%中使用此ControlNet。例如，如果您选择了采样步骤为40，ControlNet将在步骤0到12中干扰图像。
 - en: Set a batch size and generate. You will see that the generated image all looks
     at the same angle. This is because “MLSD” is an edge detection ControlNet, which
     converts your uploaded picture into line art and applies the lines to the picture.
     You can try changing the Control Type to “Canny,” which should have a similar
     effect as it is another edge detection algorithm.
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 设置批处理大小并生成。您会发现生成的图像都是以相同角度观看的。这是因为“MLSD”是一个边缘检测ControlNet，它将您上传的图片转换为线条艺术并应用于图片上。您可以尝试将Control
+    Type更改为“Canny”，这应该会产生类似的效果，因为它是另一种边缘检测算法。
 - en: '![](../Images/446680136c0943618bc4bef28489ccce.png)'
+  id: totrans-112
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/446680136c0943618bc4bef28489ccce.png)'
 - en: Using the MLSD ControlNet to generate pictures of a room in the same angle of
     view.
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用MLSD ControlNet生成同一视角房间的图片。
 - en: Your task
+  id: totrans-114
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 您的任务
 - en: After you generate a picture by following the instructions above, do you see
     there’s a way to look at what the edge detection result looks like? Do you see
     there are some parameters to control the sensitivity of the edge detection algorithm?
     There’s another Control Type called “Scribble”. This does not require you to upload
     a picture but allows you to draw one with your mouse. Try this one and see the
     effect.
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 按照上述说明生成图片后，您看到了查看边缘检测结果的方法吗？您看到了一些控制边缘检测算法灵敏度的参数吗？还有另一种名为“涂鸦”的控制类型。这不需要您上传图片，但允许您用鼠标画一张图片。尝试这个并观察效果。
 - en: '![](../Images/d91dcb16c09a1e3e5176b0887c58a030.png)'
+  id: totrans-116
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/d91dcb16c09a1e3e5176b0887c58a030.png)'
 - en: Using the “scribble” ControlNet.
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用“涂鸦”ControlNet。
 - en: 'Lesson 07: LoRA'
+  id: totrans-118
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第07课：LoRA
 - en: 'ControlNet is not the only way to interfere with the diffusion process that
     generates the picture. LoRA is a plugin that can also apply an effect to the output.
     First, let’s download and use a Stable Diffusion XL model (SDXL), like the one
     here:'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: ControlNet不是干扰生成图片的扩散过程的唯一方法。LoRA是一个插件，也可以将效果应用到输出上。首先，让我们下载并使用一个稳定扩散XL模型（SDXL），就像这里的一个：
 - en: '[https://civitai.com/models/312530](https://civitai.com/models/312530) (CyberRealistic
     XL model)'
+  id: totrans-120
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://civitai.com/models/312530](https://civitai.com/models/312530)（CyberRealistic
+    XL model）'
 - en: 'Then you can download the “Better Picture, More Details LoRA” from Civitai:'
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，您可以从Civitai下载“更好的图片、更多细节的LoRA”：
 - en: '[https://civitai.com/models/126343/better-picture-more-details-lora](https://civitai.com/models/126343/better-picture-more-details-lora)'
+  id: totrans-122
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://civitai.com/models/126343/better-picture-more-details-lora](https://civitai.com/models/126343/better-picture-more-details-lora)'
 - en: and save it to the path (`stable-diffusion-webui/models/Lora`). Note that LoRA
     needs a matching Stable Diffusion architecture. This one requires SDXL. Some other
     LoRA may require SD1 or SD2\. You cannot mix them.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 并将其保存到路径（`stable-diffusion-webui/models/Lora`）。请注意，LoRA需要匹配的稳定扩散架构。这个需要SDXL。其他一些LoRA可能需要SD1或SD2。您不能混合使用它们。
 - en: '![](../Images/5405f04b66bbce212b9c0ef75897dcd0.png)'
+  id: totrans-124
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/5405f04b66bbce212b9c0ef75897dcd0.png)'
 - en: LoRA model can be downloaded from Civitai.com. Note that this particular LoRA
     requires the use of an SDXL-based model.
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以从Civitai.com下载LoRA模型。请注意，此LoRA需要使用基于SDXL的模型。
 - en: 'After you download the LoRA, try with the following prompt:'
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 下载LoRA后，请尝试以下提示：
 - en: bed room, modern style, one window on one of the wall, gray bedsheet, wooden
     nightstand, pendant light, picture on wall, (a child girl sitting on the floor
     holding a cat:1.2), realistic photo, <lora:SDXLHighDetail_v5:1.1>
+  id: totrans-127
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 卧室，现代风格，墙上有一个窗户，灰色床单，木制床头柜，吊灯，墙上有图片，（一个女孩坐在地板上抱着一只猫：1.2），逼真的照片，<lora:SDXLHighDetail_v5:1.1>
 - en: The part with an angle bracket is how you use a LoRA in the Web UI. You need
     to specify the filename of the LoRA and the weight you want to use the LoRA. Some
     LoRA may allow you to use negative weight, but you must check. If you omit the
     “:1.1” part, the default weight 1.0 is assumed.
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 带有尖括号的部分是在 Web UI 中使用 LoRA 的方法。您需要指定 LoRA 的文件名和要使用的权重。某些 LoRA 可能允许您使用负权重，但必须检查。如果省略“:1.1”部分，则默认权重为
+    1.0。
 - en: This particular LoRA adds details such as texture to the picture you generate.
     You should see, for example, more realistic fabric and hair.
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个特定的 LoRA 添加了诸如纹理之类的细节到您生成的图片中。例如，您应该看到更逼真的布料和头发。
 - en: '![](../Images/c98b873a99c6ad1c01d1419c77b5b3ab.png)'
+  id: totrans-130
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/c98b873a99c6ad1c01d1419c77b5b3ab.png)'
 - en: Using a LoRA in the generation pipeline
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 在生成管道中使用 LoRA
 - en: Your task
+  id: totrans-132
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 您的任务
 - en: Explore Hugging Face and Civitai for LoRA models. Do you see how you can check
     if the LoRA is for SD1, SD2, or SDXL? Do you see examples on how to use them (especially
     in Civitai)? Can you use a LoRA for SDXL while enabling a ControlNet on SD 1.5?
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 探索 Hugging Face 和 Civitai 的 LoRA 模型。您看到了如何检查 LoRA 是否适用于 SD1、SD2 或 SDXL 吗？您看到了如何在
+    Civitai 中使用它们的示例吗？您可以在 SD 1.5 上启用 ControlNet 使用 SDXL 的 LoRA 吗？
 - en: 'Lesson 08: Better Face'
+  id: totrans-134
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第 08 课：更好的面孔
 - en: In the previous lesson, you saw “a child girl sitting on the floor holding a
     cat” added to the prompt. This makes the picture more complicated, and you should
     find it easier to see the difference between different models. However, you should
     also see that the human face sometimes looks unnatural. This is especially pronounced
     if you are not generating a portrait but where the human only occupies a small
     part of the picture.
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 在前一课中，您看到了“一个女孩坐在地板上抱着一只猫”的提示被添加。这使得图片更加复杂，您应该更容易看到不同模型之间的区别。但是，您也应该看到人类面孔有时看起来不自然。特别是如果您不是生成肖像，而是人类仅占图片的一小部分时。
 - en: There is a way to fix it. First, you go to the “Extensions” tab and install
     the plugin named “ADetailer”. You may need to reload the Stable Diffusion Web
     UI after installation. Then you should set the prompt and other options as before.
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一种方法可以修复它。首先，您需要转到“扩展”选项卡，并安装名为“ADetailer”的插件。安装完成后，您可能需要重新加载 Stable Diffusion
+    Web UI。然后，您应该像以前一样设置提示和其他选项。
 - en: Afterward, you can expand the “ADetailer” section and select “face_yolov8n.pt”
     as the face detector. You can skip the prompt or set a prompt like “sleepy face”.
     What the ADetailer does is detect faces on the generated picture after the diffusion
     process is completed, then regenerate the faces using your prompt. This helps
     to make faces more realistic, or adjust the facial expression more precisely.
+  id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，您可以展开“ADetailer”部分，并选择“face_yolov8n.pt”作为面部检测器。您可以跳过提示或设置一个像“困倦的面孔”这样的提示。ADetailer
+    的作用是在扩散过程完成后检测生成图片上的面部，然后使用您的提示重新生成面部。这有助于使面部更加逼真，或更精确地调整面部表情。
 - en: '![](../Images/b6d820c1657570b2f4dc5ced393ac1c1.png)'
+  id: totrans-138
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/b6d820c1657570b2f4dc5ced393ac1c1.png)'
 - en: Using ADetailer to create realistic faces
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 ADetailer 创建逼真的面孔
 - en: 'Using ADetailer corrects malformed faces to make the picture better but cannot
     make the face look like another person. This is the job of another plugin: The
     ReActor. Similarly, you need to go to the “Extensions” tab to install it. Then,
     expand the “ReActor” section and upload a picture of a face. For example, this
     picture:'
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 ADetailer 可以修正畸形的面部，从而使图片变得更好，但不能使面部看起来像另一个人。这是另一个插件的工作：ReActor。同样，您需要转到“扩展”选项卡来安装它。然后，展开“ReActor”部分并上传一张面部的图片。例如，这张图片：
 - en: '[https://unsplash.com/photos/girl-sitting-and-leaning-on-hedge-YWrXZjb3Ulg](https://unsplash.com/photos/girl-sitting-and-leaning-on-hedge-YWrXZjb3Ulg)'
+  id: totrans-141
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://unsplash.com/photos/girl-sitting-and-leaning-on-hedge-YWrXZjb3Ulg](https://unsplash.com/photos/girl-sitting-and-leaning-on-hedge-YWrXZjb3Ulg)'
 - en: '![](../Images/620416bb4af145aed76dbf4d43438852.png)'
+  id: totrans-142
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/620416bb4af145aed76dbf4d43438852.png)'
 - en: Photo by [Kune Chan](https://unsplash.com/photos/girl-sitting-and-leaning-on-hedge-YWrXZjb3Ulg).
     Some rights reserved.
+  id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Kune Chan](https://unsplash.com/photos/girl-sitting-and-leaning-on-hedge-YWrXZjb3Ulg)提供。部分版权保留。
 - en: For the best result, the picture you choose should be frontal and clean so more
     features of a face can be seen. By just uploading the picture and generate, you
     should see all pictures generated resemble the person in the picture you uploaded.
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了获得最佳结果，您选择的图片应该是正面且清晰，这样面部的更多特征就能被看到。只需上传图片并生成，您应该看到生成的所有图片都与您上传的照片中的人物相似。
 - en: '![](../Images/4af9be6445ed52f0dc035e17fd67147a.png)'
+  id: totrans-145
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4af9be6445ed52f0dc035e17fd67147a.png)'
 - en: Using ReActor extension to generate a picture with reference to another portrait
+  id: totrans-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 ReActor 扩展生成与另一幅肖像有关的图片
 - en: Your task
+  id: totrans-147
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 您的任务
 - en: In ADetailer, you can polish not only faces but also hands. Can you find the
     detector for this? In ReActor, you can provide a picture of multiple people and
     select different faces to use. How can you control this?
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 在ADetailer中，你不仅可以打磨脸部，还可以打磨手部。你能找到用于这一目的的探测器吗？在ReActor中，你可以提供多人照片，并选择不同的面孔来使用。你如何控制这个过程？
 - en: This was the final lesson.
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是最后一课。
 - en: The End! (*Look How Far You Have Come*)
+  id: totrans-150
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结束啦！（*看看你已经走了多远*）
 - en: You made it. Well done!
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 你做到了。干得漂亮！
 - en: You are now an interior designer with a helper called Stable Diffusion. You
     can easily let the computer brainstorm different designs and produce design sketches
     for you. This is how you can leverage the power of generative AI to save you time
     and let you focus more on the idea, not the details.
+  id: totrans-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你是一个拥有名为稳定扩散的助手的室内设计师。你可以轻松让计算机为你生成不同的设计，并为你生成设计草图。这就是你如何利用生成式AI的力量来节省时间，并让你更多地专注于思想，而不是细节。
 - en: Take a moment and look back at how far you have come.
+  id: totrans-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在花点时间回顾一下你已经走过的路程。
 - en: You learned how to set up and run Stable Diffusion quickly.
+  id: totrans-154
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你学会了如何快速设置和运行稳定扩散。
 - en: You learned how to control the image generation using prompts and the various
     syntaxes you can use in the prompt.
+  id: totrans-155
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你学会了如何使用提示和各种语法控制图像生成。
 - en: You learned a few extensions for the Web UI that can help you generate a better
     picture.
+  id: totrans-156
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你学会了一些可以帮助你生成更好图片的Web UI扩展。
 - en: You learned how to experiment with the generation process efficiently.
+  id: totrans-157
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你学会了如何有效地进行生成过程的实验。
 - en: Don’t make light of this; you have come a long way in a short time. This is
     just the beginning of your generative AI journey. Keep practicing and developing
     your skills.
+  id: totrans-158
   prefs: []
   type: TYPE_NORMAL
+  zh: 不要小看这一点；你在短时间内取得了长足的进步。这只是你生成式AI之旅的开始。继续练习和发展你的技能。
 - en: Summary
+  id: totrans-159
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概要
 - en: '**How did you do with the mini-course?**'
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: '**你在迷你课程中表现如何？**'
 - en: Did you enjoy this crash course?
+  id: totrans-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 你喜欢这个速成课程吗？
 - en: '**Do you have any questions? Were there any sticking points?**'
+  id: totrans-162
   prefs: []
   type: TYPE_NORMAL
+  zh: '**你有任何问题吗？有什么难以解决的问题吗？**'
 - en: Let me know. Leave a comment below.
+  id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我知道。请在下面留言。

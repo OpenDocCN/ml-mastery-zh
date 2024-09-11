@@ -1,429 +1,625 @@
 - en: Training a Haar Cascade Object Detector in OpenCV
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在OpenCV中训练Haar级联目标检测器
 - en: 原文：[https://machinelearningmastery.com/training-a-haar-cascade-object-detector-in-opencv/](https://machinelearningmastery.com/training-a-haar-cascade-object-detector-in-opencv/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/training-a-haar-cascade-object-detector-in-opencv/](https://machinelearningmastery.com/training-a-haar-cascade-object-detector-in-opencv/)
 - en: 'Using a Haar cascade classifier in OpenCV is simple. You just need to provide
     the trained model in an XML file to create the classifier. Training one from scratch,
     however, is not so straightforward. In this tutorial, you will see how the training
     should be like. In particular, you will learn:'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在OpenCV中使用Haar级联分类器很简单。你只需要提供一个XML文件中的训练模型即可创建分类器。然而，从零开始训练并不那么直接。在本教程中，你将看到训练应该是怎样的。特别是，你将学习：
 - en: What are the tools to train a Haar cascade in OpenCV
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在OpenCV中训练Haar级联分类器的工具有哪些
 - en: How to prepare data for training
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何准备训练数据
 - en: How to run the training
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何进行训练
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [《OpenCV中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)
+    **快速启动你的项目**。它提供了**自学教程**和**有效的代码**。'
 - en: Let’s get started.![](../Images/dfc96e66aab3732163b1d9403e8efe6f.png)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/dfc96e66aab3732163b1d9403e8efe6f.png)
 - en: Training a Haar Cascade Object Detector in OpenCV
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在OpenCV中训练Haar级联目标检测器
 - en: Photo by [Adrià Crehuet Cano](https://unsplash.com/photos/children-playing-soccer-LIhB1_mAGhY).
     Some rights reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Adrià Crehuet Cano](https://unsplash.com/photos/children-playing-soccer-LIhB1_mAGhY)
+    提供。保留部分权利。
 - en: Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into five parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为五部分，内容包括：
 - en: The Problem of Training Cascade Classifier in OpenCV
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV中训练Cascade分类器的问题
 - en: Setup of Environment
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 环境设置
 - en: Overview of the Training of Cascade Classifier
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Cascade分类器训练概述
 - en: Prepare Training DAta
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备训练数据
 - en: Training Haar Cascade Classifier
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练Haar Cascade分类器
 - en: The Problem of Training Cascade Classifier in OpenCV
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: OpenCV中训练Cascade分类器的问题
 - en: OpenCV has been around for many years and has many versions. OpenCV 5 is in
     development at the time of writing and the recommended version is OpenCV 4, or
     version 4.8.0, to be precise.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV已经存在多年，并有许多版本。在写作时，OpenCV 5正在开发中，推荐的版本是OpenCV 4，准确来说是4.8.0。
 - en: There has been a lot of clean-up between OpenCV 3 and OpenCV 4\. Most notably
     a large amount of code has been rewritten. The change is substantial and quite
     a number of functions are changed. This included the tool to train the Haar cascade
     classifier.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 在OpenCV 3和OpenCV 4之间进行了大量清理。最显著的是大量代码被重写。变化是显著的，并且许多函数也发生了变化。这包括训练Haar级联分类器的工具。
 - en: A cascade classifier is not a simple model like SVM that you can train easily.
     It is an ensemble model that uses AdaBoost. Therefore, the training involves multiple
     steps. OpenCV 3 has a command line tool to help do such training, but the tool
     has been broken in OpenCV 4\. The fix is not available yet.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: Cascade分类器不是一个简单的模型像SVM那样容易训练。它是一个使用AdaBoost的集成模型。因此，训练涉及多个步骤。OpenCV 3有一个命令行工具来帮助进行这种训练，但在OpenCV
+    4中，该工具已被破坏，修复尚未提供。
 - en: Therefore, it is only possible to train a Haar cascade classifier using OpenCV
     3\. Fortunately, you can discard it after the training and revert to OpenCV 4
     once you save the model in an XML file. This is what you are going to do in this
     post.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，只能使用OpenCV 3训练Haar级联分类器。幸运的是，训练后你可以丢弃它，并在将模型保存到XML文件后恢复到OpenCV 4。这就是你将在本文中做的事情。
 - en: You cannot have OpenCV 3 and OpenCV 4 co-exist in Python. Therefore, it is recommended
     to create a separate environment for training. In Python, you can use the `venv`
     module to create a virtual environment, which is simply to create a separate set
     of installed modules. Alternatives would be using Anaconda or Pyenv, which are
     different architectures under the same philosophy. Among all of the above, you
     should see the Anaconda environment as the easiest for this task.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 你不能在Python中同时拥有OpenCV 3和OpenCV 4。因此，建议为训练创建一个单独的环境。在Python中，你可以使用`venv`模块创建虚拟环境，这实际上是创建一个单独的已安装模块集合。另一种选择是使用Anaconda或Pyenv，它们在相同的理念下有不同的架构。在上述所有选择中，Anaconda环境被认为是最简单的。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用OpenCV进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就来参加我的免费电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并获得课程的免费PDF电子书版本。
 - en: Setup of Environment
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 环境设置
 - en: 'It is easier if you’re using Anaconda, you can use the following command to
     create and use a new environment and name it as “cvtrain”:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你使用Anaconda，会更简单，你可以使用以下命令创建并使用一个新环境，并将其命名为“cvtrain”：
 - en: '[PRE0]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'You know you’re ready if you find the command `opencv_traincascade` is available:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你发现命令`opencv_traincascade`可用，那么你就准备好了：
 - en: '[PRE1]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'If you’re using `pyenv` or `venv`, you need more steps. First, create an environment
     and install OpenCV (you should notice the different name of the package than Anaconda
     ecosystem):'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你使用`pyenv`或`venv`，则需要更多步骤。首先，创建一个环境并安装OpenCV（你应该注意到与Anaconda生态系统中包的名称不同）：
 - en: '[PRE2]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'This allows you to run Python programs using OpenCV but you do not have the
     command line tools for training. To get the tools, you need to compile them from
     source code by following these steps:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这允许你使用OpenCV运行Python程序，但你没有用于训练的命令行工具。要获取这些工具，你需要按照以下步骤从源代码编译它们：
 - en: Download OpenCV source code and switch to 3.4 branch
+  id: totrans-34
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 下载OpenCV源代码并切换到3.4分支
 - en: '[PRE3]'
+  id: totrans-35
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Create the build directory separate from the repository directory:'
+  id: totrans-36
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 创建与仓库目录分开的构建目录：
 - en: '[PRE4]'
+  id: totrans-37
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Prepare the build directory with `cmake` tool, and referring to the OpenCV
     repository:'
+  id: totrans-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用`cmake`工具准备构建目录，并参考OpenCV仓库：
 - en: '[PRE5]'
+  id: totrans-39
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Run `make` to compile (you may need to have the developer libraries installed
     in your system first)
+  id: totrans-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 运行`make`进行编译（你可能需要先在系统中安装开发者库）
 - en: '[PRE6]'
+  id: totrans-41
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The tools you need will be in the `bin/` directory, as shown by the last command
     above
+  id: totrans-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 所需的工具将位于`bin/`目录中，如上面的最后一条命令所示
 - en: The command line tools needed are `opencv_traincascade` and `opencv_createsamples`.
     The rest of this post assumes you have these tools available.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 所需的命令行工具是`opencv_traincascade`和`opencv_createsamples`。本文其余部分假设你已经有了这些工具。
 - en: Overview of the Training of Cascade Classifier
+  id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 级联分类器训练概述
 - en: You are going to train a **cascade classifier** using OpenCV tools. The classifier
     is an ensemble model using AdaBoost. Simply, multiple smaller models are created
     where each of them is weak in classification. Combined, it becomes a strong classifier
     with a good rates of precision and recall.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将使用OpenCV工具训练一个**级联分类器**。该分类器是一个使用AdaBoost的集成模型。简单来说，多个较小的模型被创建，其中每个模型在分类上较弱。结合起来，它成为一个强大的分类器，具有良好的精确度和召回率。
 - en: 'Each of the **weak classifiers** is a binary classifier. To train them, you
     need some positive samples and negative samples. The negative samples are easy:
     You provide some random pictures to OpenCV and let OpenCV select a rectangular
     region (better if there are no target objects in these pictures). The positive
     samples, however, are provided as an image and the bounding box in which the object
     lies perfectly in the box.'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个**弱分类器**都是一个二元分类器。要训练它们，你需要一些正样本和负样本。负样本很简单：你提供一些随机图片给OpenCV，让OpenCV选择一个矩形区域（最好这些图片中没有目标物体）。然而，正样本则作为图像和包含物体的边界框提供。
 - en: Once these datasets are provided, OpenCV will extract the Haar features from
     both and use them to train many classifiers. Haar features are from partitioning
     the positive or negative samples into rectangular regions. How the partitioning
     is done involves some randomness. Therefore, it takes time for OpenCV to find
     the best way to derive the Haar features for this classification task.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦提供了这些数据集，OpenCV将从中提取Haar特征，并使用它们来训练多个分类器。Haar特征是通过将正样本或负样本划分为矩形区域得到的。如何进行划分涉及到一些随机性。因此，OpenCV需要时间来找到最好的方式来推导用于分类任务的Haar特征。
 - en: In OpenCV, you just need to provide the training data in image files in a format
     that OpenCV can read (such as JPEG or PNG). For negative samples, all it needs
     is a plain text file of their filenames. For positive samples, an “info file”
     is required, which is a plaintext file with the details of the filename, how many
     objects are in the picture, and the corresponding bounding boxes.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 在OpenCV中，你只需提供以OpenCV可以读取的格式（如JPEG或PNG）的图像文件中的训练数据。对于负样本，它只需要一个包含文件名的纯文本文件。对于正样本，则需要一个“信息文件”，这是一个包含文件名、图像中物体数量以及相应边界框的纯文本文件。
 - en: The positive data samples for training should be in a binary format. OpenCV
     provides a tool `opencv_createsamples` to generate the binary format from the
     “info file”. Then these positive samples, together with the negative samples,
     are provided to another tool `opencv_traincascade` to run the training and produce
     the model output in the format of an XML file. This is the XML file you can load
     into a OpenCV Haar cascade classifier.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练用的正样本应为二进制格式。OpenCV提供了一个工具`opencv_createsamples`，可以从“信息文件”生成二进制格式。然后将这些正样本与负样本一起提供给另一个工具`opencv_traincascade`，以进行训练并生成XML格式的模型输出。这是你可以加载到OpenCV
+    Haar级联分类器中的XML文件。
 - en: Prepare Training Data
+  id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备训练数据
 - en: 'Let’s consider creating a **cat face** detector. To train such a detector,
     you need the dataset first. One possibility is the Oxford-IIIT Pet Dataset, at
     this location:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们考虑创建一个**猫脸**检测器。要训练这样的检测器，你首先需要数据集。一种可能性是位于以下位置的Oxford-IIIT Pet Dataset：
 - en: '[https://www.robots.ox.ac.uk/~vgg/data/pets/](https://www.robots.ox.ac.uk/~vgg/data/pets/)'
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://www.robots.ox.ac.uk/~vgg/data/pets/](https://www.robots.ox.ac.uk/~vgg/data/pets/)'
 - en: 'This is an 800MB dataset, a small one by the standards of computer vision datasets.
     The images are annotated in the Pascal VOC format. In short, each image has a
     corresponding XML file that looks like the following:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个800MB的数据集，在计算机视觉数据集的标准下算是一个小数据集。图像以Pascal VOC格式进行标注。简而言之，每张图像都有一个对应的XML文件，格式如下：
 - en: XHTML
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: XHTML
 - en: '[PRE7]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The XML file tells you which image file it is referring to (`Abyssinian_100.jpg`
     in the example above), and what object it contains, with the bounding box between
     the tags `<bndbox></bndbox>`.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: XML文件告诉你它所指的是哪个图像文件（如上例中的`Abyssinian_100.jpg`），以及它包含什么对象，边界框在`<bndbox></bndbox>`标签之间。
 - en: 'To extract the bounding boxes from the XML file, you can use the following
     function:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 要从XML文件中提取边界框，你可以使用以下函数：
 - en: '[PRE8]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'An example of the dictionary returned by the above function is as follows:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述函数返回的字典示例如下：
 - en: '[PRE9]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'With these, it is easy to create the dataset for the training: In the Oxford-IIT
     Pet dataset, the photos are either cats or dogs. You can let all dog photos as
     negative samples. Then all the cat photos will be positive samples with appropriate
     bounding box set.'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这些，就可以轻松创建用于训练的数据集：在Oxford-IIT Pet数据集中，照片要么是猫，要么是狗。你可以将所有的狗照片作为负样本。然后，所有的猫照片将是带有适当边界框集的正样本。
 - en: 'The “info file” that OpenCV expects for positive samples is a plaintext file
     with each line in the following format:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV期望的正样本“信息文件”是一个文本文件，每行的格式如下：
 - en: '[PRE10]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The number following the filename is the count of bounding boxes on that image.
     Each bounding box is a positive sample. What follows it are the bounding boxes.
     Each box is specified by the pixel coordinate at its top left corner and the width
     and height of the box. For the best result of the Haar cascade classifier, the
     bounding box should be in the same aspect ratio as the model expects.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 文件名后的数字是该图像中边界框的数量。每个边界框都是一个正样本。后面的内容是边界框。每个框由其左上角的像素坐标和框的宽度和高度指定。为了获得Haar级联分类器的最佳结果，边界框应与模型预期的长宽比一致。
 - en: 'Assume the Pet dataset you downloaded is located in the directory `dataset/`,
     which you should see the files are organized like the following:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设你下载的宠物数据集位于`dataset/`目录中，你应该会看到文件按如下方式组织：
 - en: '[PRE11]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'With this, it is easy to create the “info file” for positive samples and the
     list of negative sample files, using the following program:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这些，使用以下程序可以轻松创建正样本的“信息文件”和负样本文件列表：
 - en: '[PRE12]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: This program scans all the XML files from the dataset, then extracts the bounding
     boxes from each if it is a cat photo. The list `negative` will hold the paths
     to dog photos. The list `positive` will hold the paths to cat photos as well as
     the bounding boxes in the format described above, each line as one string. After
     the loop, these two lists are written to the disk as files `negative.dat` and
     `positive.dat`.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 该程序扫描数据集中的所有XML文件，然后提取每张猫照片中的边界框。列表`negative`将保存狗照片的路径。列表`positive`将保存猫照片的路径以及上述格式的边界框，每行作为一个字符串。在循环结束后，这两个列表会被写入磁盘，分别作为`negative.dat`和`positive.dat`文件。
 - en: 'The content of `negative.dat` is trivial. The content of `postiive.dat` is
     like the following:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: '`negative.dat`的内容很简单。`positive.dat`的内容如下：'
 - en: '[PRE13]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'The step before you run the training is to convert `positive.dat` into a binary
     format. This is done using the following command line:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 在运行训练之前的步骤是将`positive.dat`转换为二进制格式。这可以通过以下命令行完成：
 - en: '[PRE14]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: This command should be run in the same directory as `positive.dat` such that
     the dataset images can be found. The output of this command will be `positive.vec`.
     It is also known as the “vec file”. In doing so, you need to specify the width
     and height of the window using `-w` and `-h` arguments. This is to resize the
     image cropped by the bounding box into this pixel size before writing to the vec
     file. This should also match the window size specified when you run the training.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 该命令应在与`positive.dat`相同的目录中运行，以便可以找到数据集图像。此命令的输出将是`positive.vec`，也称为“vec文件”。在执行此操作时，你需要使用`-w`和`-h`参数指定窗口的宽度和高度。这是为了将边界框裁剪的图像调整为此像素大小，然后写入vec文件。这还应与运行训练时指定的窗口大小匹配。
 - en: Training Haar Cascade Classifier
+  id: totrans-75
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 训练Haar级联分类器
 - en: Training a classifier takes time. It is done in multiple stages. Intermediate
     files are to be written in each stage, and once all the stages are completed,
     you will have the trained model saved in an XML file. OpenCV expects all these
     generated files to be stored in a directory.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练分类器需要时间。它分多个阶段完成。每个阶段都要写入中间文件，所有阶段完成后，你将获得保存在XML文件中的训练模型。OpenCV期望将所有这些生成的文件存储在一个目录中。
 - en: 'Run the training process is indeed straightforward. Let’s consider creating
     a new directory `cat_detect` to store the generated files. Once the directory
     is created, you can run the training using the command line tool `opencv_traincascade`:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行训练过程确实很简单。假设创建一个新的目录`cat_detect`来存储生成的文件。目录创建完成后，可以使用命令行工具`opencv_traincascade`运行训练：
 - en: Shell
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE15]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'Note the use of `positive.vec` as positive samples and `negative.dat` as negative
     samples. Also note that, the `-w` and `-h` parameters are same as what you used
     previously in the `opencv_createsamples` command. Other command line arguments
     are explained as follows:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意使用`positive.vec`作为正样本和`negative.dat`作为负样本。还要注意，`-w`和`-h`参数与之前在`opencv_createsamples`命令中使用的相同。其他命令行参数解释如下：
 - en: '`-data <dirname>`: Where the trained classifier is stored. This directory should
     already exist'
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-data <dirname>`：存储训练分类器的目录。该目录应已存在'
 - en: '`-vec <filename>`: The vec file of positive samples'
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-vec <filename>`：正样本的vec文件'
 - en: '`-bg <filename>`: The list of negative samples, also known as “background”
     images'
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-bg <filename>`：负样本列表，也称为“背景”图像'
 - en: '`-numPos <N>`: number of positive samples used in training for every stage'
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-numPos <N>`：每个阶段训练中使用的正样本数量'
 - en: '`-numNeg <N>`: number of negative samples used in training for every stage'
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-numNeg <N>`：每个阶段训练中使用的负样本数量'
 - en: '`-numStages <N>`: number of cascade stages to be trained'
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-numStages <N>`：要训练的级联阶段数量'
 - en: '`-w <width>` and `-h <height>`: The pixel size for an object. This must be
     the same as used during training samples creation with `opencv_createsamples`
     tool'
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-w <width>`和`-h <height>`：对象的像素大小。必须与使用`opencv_createsamples`工具创建训练样本时的大小相同'
 - en: '`-minHitRate <rate>`: The minimum desired true positive rate for each stage.
     Training a stage would not terminate until this is met.'
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-minHitRate <rate>`：每个阶段所需的最小真实正例率。训练一个阶段不会终止，直到达到此要求。'
 - en: '`-maxFalseAlarmRate <rate>`: The maximum desired false positive rate for each
     stage. Training a stage would not terminate until this is met.'
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-maxFalseAlarmRate <rate>`：每个阶段的最大假正例率。训练一个阶段不会终止，直到达到此要求。'
 - en: '`-maxDepth <N>`: maximum depth of a weak tree'
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-maxDepth <N>`：弱分类器的最大深度'
 - en: '`-maxWeakCount <N>`: maximum number of weak trees for every stage'
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-maxWeakCount <N>`：每个阶段的弱分类器最大数量'
 - en: Not all of these arguments are required. But you should try different combinations
     to see if you can train a better detector.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些参数并非全部必需。但你应该尝试不同的组合，看看是否能训练出更好的检测器。
 - en: 'During training, you will see the following screen:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 在训练期间，你会看到以下屏幕：
 - en: '[PRE16]'
+  id: totrans-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'You should notice that the training run for $N$ stages is numbered 0 to $N-1$.
     Some stages may take longer to train. At the beginning, the training parameters
     are displayed to make clear what it is doing. Then in each stage, a table will
     be printed, one row at a time. The table shows three columns: The feature number
     `N`, the hit rate `HR` (true positive rate) and the false alarm rate `FA` (false
     positive rate).'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该注意到训练运行的$N$个阶段编号为0到$N-1$。某些阶段可能需要更长时间进行训练。开始时，会显示训练参数以明确其正在做什么。然后在每个阶段中，会逐行打印一个表格。表格显示三列：特征数量`N`、命中率`HR`（真实正例率）和误报率`FA`（假正例率）。
 - en: Before stage 0, you should see it printed `minHitRate` of 0.995 and `maxFalseAlarmRate`
     of 0.5\. Therefore, each stage will find many Haar features until the classifier
     can keep the hit rate above 0.995 while the false alarm rate is below 0.5\. Ideally
@@ -433,31 +629,48 @@
     and false alarm rate $q$ to have overall hit rate $p^n$ and overall false alarm
     rate $q^n$. In the above setting, $n=10$, $p>0.995$, $q<0.5$. Therefore, the overall
     false alarm rate would be below 0.1% and overall hit rate above 95%.
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 在阶段 0 之前，您应该看到打印的 `minHitRate` 为 0.995 和 `maxFalseAlarmRate` 为 0.5。因此，每个阶段将找到许多
+    Haar 特征，直到分类器能够保持命中率在 0.995 以上，同时虚警率低于 0.5。理想情况下，您希望命中率为 1，虚警率为 0。由于 Haar cascade
+    是一个集成方法，如果大多数结果正确，则会得到正确的预测。大致上，您可以认为具有 $n$ 个阶段、命中率为 $p$ 和虚警率为 $q$ 的分类器，其总体命中率为
+    $p^n$，总体虚警率为 $q^n$。在上述设置中，$n=10$，$p>0.995$，$q<0.5$。因此，总体虚警率将低于 0.1%，总体命中率高于 95%。
 - en: 'This training command takes over 3 hours to finish on a modern computer. The
     output will be named `cascade.xml` under the output directory. You can check the
     result with a sample code like the following:'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个训练命令在现代计算机上完成需要超过 3 小时。输出将命名为 `cascade.xml`，保存在输出目录下。您可以使用以下示例代码检查结果：
 - en: '[PRE17]'
+  id: totrans-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: The result would depends on how well your model trained, and also depends on
     the arguments you passed on into `detectMultiScale()`. See the previous post for
     how to set up these arguments.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果将取决于您的模型训练得有多好，也取决于您传递给 `detectMultiScale()` 的参数。有关如何设置这些参数，请参见上一篇文章。
 - en: 'The above code runs the detector in one image from the dataset. You may see
     a result like the following:'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码在数据集中运行检测器，您可能会看到如下结果：
 - en: '![](../Images/4b31463ae32fac80dacce33d99039295.png)'
+  id: totrans-101
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4b31463ae32fac80dacce33d99039295.png)'
 - en: Example output using the trained Haar cascade object detector
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用训练好的 Haar cascade 对象检测器的示例输出
 - en: You see some false positives, but the cat’s face has been detected. There are
     multiple ways to improve the quality. For example, the training dataset you used
     above does not use a square bounding box, while you used a square shape for training
@@ -465,58 +678,88 @@
     you used on the training command line also affect the result. However, you should
     be aware that Haar cascade detector is very fast but the more stages you use,
     the slower it will be.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 您会看到一些误报，但猫的脸已被检测到。改善质量的方法有多种。例如，您使用的训练数据集没有使用方形边界框，而您在训练和检测中使用了方形形状。调整数据集可能会有所改善。同样，您在训练命令行中使用的其他参数也会影响结果。然而，您应该意识到，Haar
+    cascade 检测器非常快速，但使用的阶段越多，速度会变得越慢。
 - en: Further Reading
+  id: totrans-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多相关资源，供您深入了解该主题。
 - en: Books
+  id: totrans-106
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[掌握 OpenCV 4 与 Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019
+    年。'
 - en: Websites
+  id: totrans-108
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 网站
 - en: OpenCV [tutorial on cascade classifier training](https://docs.opencv.org/4.x/dc/d88/tutorial_traincascade.html)
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV [级联分类器训练教程](https://docs.opencv.org/4.x/dc/d88/tutorial_traincascade.html)
 - en: '[FAQ: OpenCV Haartraining](https://www.computer-vision-software.com/blog/2009/11/faq-opencv-haartraining/)'
+  id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[常见问题解答：OpenCV Haar 训练](https://www.computer-vision-software.com/blog/2009/11/faq-opencv-haartraining/)'
 - en: '[Tutorial: OpenCV Haartraining](https://web.archive.org/web/20220804065334/http://note.sonots.com/SciSoftware/haartraining.html)'
+  id: totrans-111
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[教程：OpenCV Haar 训练](https://web.archive.org/web/20220804065334/http://note.sonots.com/SciSoftware/haartraining.html)'
 - en: Summary
+  id: totrans-112
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this post, you learned how to train a Haar cascade object detector in OpenCV.
     In particular, you learned:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，您学习了如何在 OpenCV 中训练 Haar cascade 对象检测器。具体来说，您学习了：
 - en: How to prepare data for the Haar cascade training
+  id: totrans-114
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为 Haar cascade 训练准备数据
 - en: How to run the training process in the command line
+  id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在命令行中运行训练过程
 - en: How to use OpenCV 3.x to train the detector and use the trained model in OpenCV
     4.x
+  id: totrans-116
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 OpenCV 3.x 训练检测器，并在 OpenCV 4.x 中使用训练好的模型

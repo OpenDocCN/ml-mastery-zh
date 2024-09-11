@@ -1,12 +1,16 @@
 - en: Leveraging ANOVA and Kruskal-Wallis Tests to Analyze the Impact of the Great
     Recession on Housing Prices
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 利用ANOVA和Kruskal-Wallis检验分析大萧条对房价的影响
 - en: 原文：[https://machinelearningmastery.com/leveraging-anova-and-kruskal-wallis-tests-to-analyze-the-impact-of-the-great-recession-on-housing-prices/](https://machinelearningmastery.com/leveraging-anova-and-kruskal-wallis-tests-to-analyze-the-impact-of-the-great-recession-on-housing-prices/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/leveraging-anova-and-kruskal-wallis-tests-to-analyze-the-impact-of-the-great-recession-on-housing-prices/](https://machinelearningmastery.com/leveraging-anova-and-kruskal-wallis-tests-to-analyze-the-impact-of-the-great-recession-on-housing-prices/)
 - en: In the world of real estate, numerous factors influence property prices. The
     economy, market demand, location, and even the year a property is sold can play
     significant roles. The years 2007 to 2009 marked a tumultuous time for the US
@@ -16,192 +20,284 @@
     homeowners finding themselves in homes that were worth less than their mortgages.
     The ripple effect of this downturn was felt across the country, with some areas
     experiencing sharper declines and slower recoveries than others.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在房地产领域，许多因素会影响房产价格。经济状况、市场需求、地理位置甚至房产销售年份都可能发挥重要作用。2007年至2009年是美国房地产市场动荡的时期。这段时间，通常被称为“大萧条”，经历了房价的大幅下跌、止赎案件激增和金融市场的广泛动荡。大萧条对房价的影响深远，许多房主发现自己所拥有的房产价值低于贷款金额。这一下滑的连锁反应在全国范围内产生了影响，一些地区的房价下跌更为严重，恢复也更为缓慢。
 - en: 'Given this backdrop, it’s particularly intriguing to analyze housing data from
     Ames, Iowa, as the dataset spans from 2006 to 2010, encapsulating the height and
     aftermath of the Great Recession. Does the year of sale, amidst such economic
     volatility, influence the sales price in Ames? In this post, you’ll delve deep
     into the Ames Housing dataset to explore this query using Exploratory Data Analysis
     (EDA) and two statistical tests: ANOVA and the Kruskal-Wallis Test.'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 鉴于此背景，分析来自爱荷华州艾姆斯的房屋数据尤为引人注目，因为数据集覆盖了2006年至2010年，这一时期囊括了大萧条的高峰和余波。在如此经济波动的环境下，销售年份是否会影响艾姆斯的销售价格？在本文中，你将深入探讨艾姆斯房屋数据集，使用探索性数据分析（EDA）和两种统计检验：ANOVA和Kruskal-Wallis检验来探索这一问题。
 - en: Let’s get started.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/ecd9c55889ddd98de74ed6aeb02bb03b.png)'
+  id: totrans-5
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/ecd9c55889ddd98de74ed6aeb02bb03b.png)'
 - en: Leveraging ANOVA and Kruskal-Wallis Tests to Analyze the Impact of the Great
     Recession on Housing Prices
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 利用ANOVA和Kruskal-Wallis检验分析大萧条对房价的影响
 - en: Photo by [Sharissa Johnson](https://unsplash.com/photos/brown-rock-formation-on-sea-during-daytime-t0uKpnS2SIg).
     Some rights reserved.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Sharissa Johnson](https://unsplash.com/photos/brown-rock-formation-on-sea-during-daytime-t0uKpnS2SIg)提供。部分权利保留。
 - en: Overview
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分，它们是：
 - en: 'EDA: Visual Insights'
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: EDA：可视化洞察
 - en: Assessing Variability in Sales Prices Across Years Using ANOVA
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用ANOVA评估不同年份的销售价格变异性
 - en: 'Kruskal-Wallis Test: A Non-Parametric Alternative to ANOVA'
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Kruskal-Wallis检验：ANOVA的非参数替代方法
 - en: 'EDA: Visual Insights'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: EDA：可视化洞察
 - en: 'To begin, let’s load the [Ames Housing dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)
     and compare different years of sale against the dependent variable: the sales
     price.'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们加载[Ames Housing数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)并将不同年份的销售数据与依赖变量：销售价格进行比较。
 - en: '[PRE0]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '![](../Images/014eb9c949387baae02790f1a09af710.png)'
+  id: totrans-16
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/014eb9c949387baae02790f1a09af710.png)'
 - en: Comparing the trend of sales prices
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 比较销售价格的趋势
 - en: From the boxplot, you can observe that the sales prices were quite consistent
     across different years because each year looks alike. Let’s take a closer look
     using the `groupby` function in pandas.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 从箱线图中可以观察到，销售价格在不同年份之间相当一致，因为每年的情况都相似。让我们使用pandas中的`groupby`函数来进一步分析。
 - en: '[PRE1]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The output is:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出结果是：
 - en: '[PRE2]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'From the table, you can make the following observations:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 从表格中可以得出以下观察结果：
 - en: The **mean** sales price was the highest in 2009 at approximately \$180,388,
     while it was the lowest in 2010 at around \$173,972.
+  id: totrans-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**均值**销售价格在2009年最高，约为\$180,388，而2010年最低，约为\$173,972。'
 - en: The **median** sales price was the highest in 2008 at \$162,700 and the lowest
     in 2006 at \$157,000.
+  id: totrans-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**中位数**销售价格在2008年最高，为\$162,700，在2006年最低，为\$157,000。'
 - en: Even though the mean and median sales prices are close in value for each year,
     there are slight variations. This suggests that while there might be some outliers
     influencing the mean, they are not extremely skewed.
+  id: totrans-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 即使每年的均值和中位数销售价格接近，也存在轻微的变化。这表明，虽然可能有一些离群值影响了均值，但它们并没有极端偏斜。
 - en: Over the five years, there doesn’t seem to be a consistent upward or downward
     trend in sales prices, which is interesting given the larger economic context
     (the Great Recession) during this period.
+  id: totrans-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在这五年里，销售价格似乎没有保持一致的上升或下降趋势，考虑到这一时期的更大经济背景（大萧条），这一点非常有趣。
 - en: This table, combined with the boxplot, gives a comprehensive view of the distribution
     and central tendency of sales prices across the years. It sets the stage for deeper
     statistical analysis to determine if the observed differences (or lack thereof)
     are statistically significant.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 结合箱线图，这张表提供了销售价格在不同年份间分布和中心倾向的全面视角。这为进一步的统计分析奠定了基础，以确定观察到的差异（或其缺失）是否具有统计学显著性。
 - en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，使用我的书籍[《数据科学初学者指南》](https://machinelearning.samcart.com/products/beginners-guide-data-science/)。它提供了**自学教程**和**工作代码**。'
 - en: Assessing Variability in Sales Prices Across Years Using ANOVA
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用ANOVA评估销售价格在不同年份之间的变异性
 - en: ANOVA (Analysis of Variance) helps us test if there are any statistically significant
     differences **between the means** of three or more independent groups. Its null
     hypothesis is that the means of all groups are equal. This can be considered as
     a version of t-test to support more than two groups. It makes use of the F-test
     statistic to check if the variance ($\sigma^2$) is different within each group
     compared to across all groups.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: ANOVA（方差分析）帮助我们测试三个或更多独立组之间是否存在任何统计显著差异。其零假设是所有组的平均值相等。这可以视为支持多组比较的t检验版本。它利用F检验统计量来检查每组内方差（$\sigma^2$）与所有组间方差的差异。
 - en: 'The hypothesis setup is:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设设置为：
 - en: '$H_0$: The means of sales price for all years are equal.'
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$H_0$: 所有年份的销售价格均值相等。'
 - en: '$H_1$: At least one year has a different mean sales price.'
+  id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$H_1$: 至少有一个年份的平均销售价格不同。'
 - en: 'You can run your test using the `scipy.stats` library as follows:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以使用`scipy.stats`库运行你的测试，如下所示：
 - en: '[PRE3]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The two values are:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两个数值是：
 - en: '[PRE4]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The results of the ANOVA test are:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: ANOVA测试的结果为：
 - en: '**F-value:** 0.4479'
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**F值:** 0.4479'
 - en: '**p-value:** 0.7740'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**p值:** 0.7740'
 - en: Given the high *p-value* (greater than a common significance level of 0.05),
     you cannot reject the null hypothesis ($H_0$). This suggests that there are no
     statistically significant differences between the means of sales price for the
     different years present in the dataset.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 鉴于高的*p值*（大于常见显著水平0.05），你无法拒绝零假设（$H_0$）。这表明，在数据集中，销售价格的平均值之间不存在统计显著差异。
 - en: While your ANOVA results provide insights into the equality of means across
     different years, it’s essential to ensure that the assumptions underlying the
     test have been met. Let’s delve into verifying the 3 assumptions of ANOVA tests
     to validate your findings.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你的ANOVA结果提供了跨不同年份平均值平等的见解时，确保检验假设条件的符合性至关重要。让我们深入验证ANOVA测试的三个假设，以验证你的发现。
 - en: '**Assumption 1: Independence of Observations.** Since each observation (house
     sale) is independent of another, this assumption is met.'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '**假设 1：观察值的独立性。** 由于每个观察（房屋销售）是相互独立的，这一假设得到满足。'
 - en: '**Assumption 2: Normality of the Residuals.** For ANOVA to be valid, the residuals
     from the model should approximately follow a **normal distribution** since this
     is the model behind F-test. You can check this both visually and statistically.'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '**假设 2：残差的正态性。** 对于ANOVA的有效性，模型的残差应当近似服从**正态分布**，因为这是F检验背后的模型。你可以通过视觉和统计方法来检验这一点。'
 - en: 'Visual assessment can be done using a QQ plot:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以使用QQ图进行视觉评估：
 - en: '[PRE5]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '[![](../Images/c8120b314d1b06e14d92597615bb8c24.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_2-3.png)'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/c8120b314d1b06e14d92597615bb8c24.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_2-3.png)'
 - en: 'The QQ Plot presented above serves as a valuable visual tool to assess the
     normality of your dataset’s residuals, offering insights into how well the observed
     data aligns with the theoretical expectations of a normal distribution. In this
@@ -210,65 +306,97 @@
     perfectly followed a normal distribution, all the points on the QQ Plot would
     fall precisely along the red 45-degree reference line. The plot illustrates deviations
     from the 45-degree reference line, suggesting potential deviations from normality.'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述 QQ 图作为评估数据集残差正态性的重要视觉工具，提供了观察数据与正态分布理论期望的匹配程度的见解。在此图中，每个点代表一对分位数：一个来自数据的残差，另一个来自标准正态分布。如果你的数据完全符合正态分布，那么
+    QQ 图上的所有点应恰好落在红色的 45 度参考线上。图示出相对于 45 度参考线的偏离，暗示了可能的正态性偏离。
 - en: 'Statistical assessment can be done using the Shapiro-Wilk Test, which provides
     a formal method to test for normality. The null hypothesis of the test is that
     the data follows a normal distribution. This test also available in SciPy:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 统计评估可以使用 Shapiro-Wilk 检验，它提供了一种正式的正态性检验方法。该检验的原假设是数据服从正态分布。这个检验也可以在 SciPy 中使用：
 - en: '[PRE6]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The output is:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出为：
 - en: '[PRE7]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'A low p-value (typically *p* < 0.05) suggests rejecting the null hypothesis,
     indicating that the residuals do not follow a normal distribution. This indicates
     a violation of the second assumption of ANOVA, which requires that the residuals
     be normally distributed. Both the QQ plot and the Shapiro-Wilk test converge on
     the same conclusion: the residuals do not strictly adhere to a normal distribution.
     Hence, the result of the ANOVA may not be valid.'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 低 p 值（通常是*p* < 0.05）表明拒绝原假设，说明残差不符合正态分布。这表明 ANOVA 的第二个假设违反了，该假设要求残差服从正态分布。QQ
+    图和 Shapiro-Wilk 检验都得出了相同的结论：残差不严格遵循正态分布。因此，ANOVA 的结果可能无效。
 - en: '**Assumption 3: Homogeneity of Variances.** The variances of the groups (years)
     should be approximately equal. This happens to be the null hypothesis of Levene’s
     test. Hence you can use it to verify:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '**假设 3：方差齐性。** 组（年份）的方差应大致相等。这恰好是 Levene 检验的原假设。因此，你可以使用它来验证：'
 - en: '[PRE8]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The output is:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出为：
 - en: '[PRE9]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Given the high p-value of 0.909 from Levene’s test, you cannot reject the null
     hypothesis, indicating that the variances of sales prices across different years
     are statistically homogeneous, satisfying the third key assumption for ANOVA.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于 Levene 检验的 p 值为 0.909，你不能拒绝原假设，表明不同年份的销售价格方差在统计上是齐性的，满足 ANOVA 的第三个关键假设。
 - en: 'Putting all together, the following code runs the ANOVA test and verifies the
     three assumptions:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合来看，以下代码运行 ANOVA 检验并验证三个假设：
 - en: '[PRE10]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'Kruskal-Wallis Test: A Non-Parametric Alternative to ANOVA'
+  id: totrans-61
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Kruskal-Wallis 检验：ANOVA 的非参数替代方法
 - en: The Kruskal-Wallis test is a non-parametric method used to compare the median
     values of three or more independent groups, making it a suitable alternative to
     the one-way ANOVA (especially when assumptions of ANOVA are not met).
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: Kruskal-Wallis 检验是一种非参数方法，用于比较三个或更多独立组的中位值，是单因素 ANOVA 的合适替代方法（特别是当 ANOVA 假设不成立时）。
 - en: Non-parametric statistics are a class of statistical methods that do not make
     explicit assumptions about the underlying distribution of the data. In contrast
     to *parametric* tests, which assume a specific distribution (e.g., normal distribution
@@ -280,95 +408,145 @@
     including the Kruskal-Wallis test, offer a flexible and distribution-free approach
     to statistical analysis, making them suitable for a wide range of data types and
     situations.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 非参数统计是一类不对数据的潜在分布做明确假设的统计方法。与假设特定分布的 *参数* 检验不同（例如上述假设 2 中的正态分布），*非参数* 检验更加灵活，适用于可能不符合参数方法严格假设的数据。非参数检验特别适用于处理有序或名义数据，以及可能表现出偏斜或重尾的数据。这些检验关注值的顺序或等级，而非具体值本身。非参数检验，包括
+    Kruskal-Wallis 检验，提供了一种灵活且不依赖分布的统计分析方法，使其适用于各种数据类型和情况。
 - en: 'The hypothesis setup under Kruskal-Wallis test is:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: Kruskal-Wallis 检验下的假设设置为：
 - en: '$H_0$: The distributions of the sales price for all years are identical.'
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$H_0$: 所有年份的销售价格分布相同。'
 - en: '$H_1$: At least one year has a different distribution of sales price.'
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '$H_1$: 至少有一年销售价格的分布不同。'
 - en: 'You can run Kruskal-Wallis test using SciPy, as follows:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以使用 SciPy 运行 Kruskal-Wallis 检验，步骤如下：
 - en: '[PRE11]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'The output is:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出结果为：
 - en: '[PRE12]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'The results of the Kruskal-Wallis test are:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: Kruskal-Wallis 检验的结果为：
 - en: '**H-Statistic:** 2.133'
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**H统计量：** 2.133'
 - en: '**p-value:** 0.7113'
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**p值：** 0.7113'
 - en: '**Note**: The Kruskal-Wallis test doesn’t specifically test for differences
     in means (like ANOVA does), but rather for differences in distributions. This
     can include differences in medians, shapes, and spreads.'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意**：Kruskal-Wallis 检验并不特别测试均值的差异（如 ANOVA），而是测试分布的差异。这可以包括中位数、形状和范围的差异。'
 - en: Given the high *p-value* (greater than a common significance level of 0.05),
     you cannot reject the null hypothesis. This suggests that there are no statistically
     significant differences in the median sales prices for the different years present
     in the dataset when using the Kruskal-Wallis test. Let’s delve into verifying
     the 3 assumptions of the Kruskal-Wallis test to validate your findings.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 鉴于较高的 *p值*（大于常见的显著性水平 0.05），你不能拒绝原假设。这表明在数据集中不同年份的中位销售价格之间没有统计学上显著的差异。让我们深入验证
+    Kruskal-Wallis 检验的 3 个假设，以验证你的发现。
 - en: '**Assumption 1: Independence of Observations.** This remains the same as for
     ANOVA; each observation is independent of another.'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '**假设 1：观察值的独立性。** 这一点与 ANOVA 相同；每个观察值相互独立。'
 - en: '**Assumption 2: The Response Variable Should be Ordinal, Interval, or Ratio.**
     The sales price is a ratio variable, so this assumption is met.'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: '**假设 2：响应变量应为有序、区间或比例变量。** 销售价格是比例变量，因此满足此假设。'
 - en: '**Assumption 3: The Distributions of the Response Variable Should be the Same
     for All Groups.** This can be validated using both visual and numerical methods.'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: '**假设 3：响应变量的分布应在所有组中相同。** 可以使用视觉和数值方法进行验证。'
 - en: '[PRE13]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '![](../Images/7f43551a4866b31650c7046cf6766098.png)'
+  id: totrans-80
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/7f43551a4866b31650c7046cf6766098.png)'
 - en: Distribution of sales prices of different years
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 不同年份的销售价格分布
 - en: The stacked histograms indicate consistent distributions of sales prices across
     the years, with each year displaying a similar range and peak despite slight variations
     in frequency.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 堆叠直方图表明各年份销售价格分布一致，每一年显示出类似的范围和峰值，尽管频率上有轻微的变化。
 - en: 'Furthermore, you can conduct pairwise Kolmogorov-Smirnov tests, which is a
     non-parametric test to compare the similarity of two probability distributions.
     It is available in SciPy. You can use the version that the null hypothesis is
     the two distributions equal, and the alternative hypothesis is not equal:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，你还可以进行配对 Kolmogorov-Smirnov 检验，这是一种非参数检验，用于比较两个概率分布的相似性。它在 SciPy 中可用。你可以使用原假设为两个分布相等，备择假设为不相等的版本：
 - en: '[PRE14]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'This shows:'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 这表明：
 - en: '[PRE15]'
+  id: totrans-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: While we satisfied only 2 out of the 3 assumptions for ANOVA, we have met all
     the necessary criteria for the Kruskal-Wallis test. The pairwise Kolmogorov-Smirnov
     tests indicate that the distributions of sales prices across different years are
@@ -379,122 +557,179 @@
     of the response variable should be the same for all groups. This underscores the
     stability in the sales price distributions from 2006 to 2010 in Ames, Iowa, despite
     the broader economic context.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管我们仅满足了ANOVA的3个假设中的2个，但我们已经满足了Kruskal-Wallis检验的所有必要条件。成对的Kolmogorov-Smirnov检验表明，不同年份的销售价格分布非常一致。具体而言，高p值（均大于常见的显著性水平0.05）意味着没有足够的证据来拒绝每年销售价格来自同一分布的假设。这些发现满足了Kruskal-Wallis检验的假设，即响应变量的分布在所有组中应相同。这强调了尽管面临更广泛的经济背景，从2006年到2010年埃姆斯的销售价格分布的稳定性。
 - en: Want to Get Started With Beginner's Guide to Data Science?
+  id: totrans-88
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始数据科学的初学者指南吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就来参加我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: '**Further****Reading**'
+  id: totrans-91
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: Online
+  id: totrans-92
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 在线
 - en: '[ANOVA | Statistic Solutions](https://www.statisticssolutions.com/anova-analysis-of-variance/)'
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[ANOVA | 统计解决方案](https://www.statisticssolutions.com/anova-analysis-of-variance/)'
 - en: '[Kruskal-Wallis H Test in Python](https://machinelearningmastery.com/nonparametric-statistical-significance-tests-in-python/)'
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python中的Kruskal-Wallis H检验](https://machinelearningmastery.com/nonparametric-statistical-significance-tests-in-python/)'
 - en: '[Analysis of variance](https://en.wikipedia.org/wiki/Analysis_of_variance)
     on Wikipedia'
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[方差分析](https://en.wikipedia.org/wiki/Analysis_of_variance) 维基百科'
 - en: '[scipy.stats.f_oneway](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.f_oneway.html)
     API'
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scipy.stats.f_oneway](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.f_oneway.html)
+    API'
 - en: '[scipy.stats.shapiro](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html)
     API'
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scipy.stats.shapiro](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html)
+    API'
 - en: '[scipy.stats.levene](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html)
     API'
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scipy.stats.levene](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html)
+    API'
 - en: '[scipy.stats.kruskal](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kruskal.html)
     API'
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scipy.stats.kruskal](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kruskal.html)
+    API'
 - en: '[scipy.stats.ks_2samp](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ks_2samp.html)
     API'
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scipy.stats.ks_2samp](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ks_2samp.html)
+    API'
 - en: '**Resources**'
+  id: totrans-101
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**资源**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[埃姆斯数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[埃姆斯数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: Summary
+  id: totrans-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In the multi-dimensional world of real estate, several factors, including the
     year of sale, can potentially influence property prices. The US housing market
     experienced considerable turbulence during the Great Recession between 2007 and
     2009\. The study focuses on housing data from Ames, Iowa, spanning 2006 to 2010,
     aiming to determine if the year of sale affected the sales price, particularly
     during this tumultuous period.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 在房地产的多维世界中，包括销售年份在内的多个因素可能会影响房产价格。美国住房市场在2007年至2009年大萧条期间经历了相当大的动荡。本研究关注的是2006年至2010年间来自爱荷华州埃姆斯的住房数据，旨在确定销售年份是否会影响销售价格，尤其是在这一动荡时期。
 - en: The analysis employed both the ANOVA and Kruskal-Wallis tests to gauge variations
     in sales prices across different years. While ANOVA’s findings were instructive,
     not all its underlying assumptions were satisfied, notably the normality of residuals.
     Conversely, the Kruskal-Wallis test met all its criteria, suggesting more reliable
     insights. Therefore, relying solely on the ANOVA could have been misleading without
     the corroborative perspective of the Kruskal-Wallis test.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 本分析使用了ANOVA和Kruskal-Wallis检验来评估不同年份销售价格的变异性。虽然ANOVA的结果具有指导性，但并非所有的基本假设都得到了满足，特别是残差的正态性。相反，Kruskal-Wallis检验满足了所有的标准，提供了更可靠的见解。因此，单独依赖ANOVA可能会产生误导，而没有Kruskal-Wallis检验的佐证。
 - en: Both the one-way ANOVA and the Kruskal-Wallis test yielded consistent results,
     indicating no statistically significant differences in sales prices across the
     different years. This outcome is particularly fascinating given the turbulent
     economic backdrop from 2006 to 2010\. The findings demonstrate that property prices
     in Ames were very stable and influenced mainly by local conditions.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 单因素ANOVA和Kruskal-Wallis检验都得出了相一致的结果，表明不同年份之间的销售价格没有统计学上的显著差异。考虑到2006到2010年间经济的动荡，这一结果尤为引人注目。研究结果表明，艾姆斯的房地产价格非常稳定，主要受地方因素影响。
 - en: 'Specifically, you learned:'
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The importance of validating the assumptions of statistical tests, as seen with
     the ANOVA’s residuals normality challenge.
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 验证统计检验假设的重要性，例如ANOVA的残差正态性挑战。
 - en: The significance and application of both parametric (ANOVA) and non-parametric
     (Kruskal-Wallis) tests in comparing data distributions.
+  id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 参数检验（ANOVA）和非参数检验（Kruskal-Wallis）在比较数据分布中的重要性和应用。
 - en: How local factors can insulate property markets, like that of Ames, Iowa, from
     broader economic downturns, emphasizing the nuanced nature of real estate pricing.
+  id: totrans-111
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何利用地方因素来保护房地产市场，如爱荷华州的艾姆斯，免受更广泛经济下滑的影响，强调房地产定价的微妙性质。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？请在下面的评论中提出你的问题，我将尽力回答。

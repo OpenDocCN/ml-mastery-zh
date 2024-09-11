@@ -1,173 +1,259 @@
 - en: K-Means Clustering for Image Classification Using OpenCV
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 OpenCV 进行图像分类的 k-Means 聚类
 - en: 原文：[https://machinelearningmastery.com/k-means-clustering-for-image-classification-using-opencv/](https://machinelearningmastery.com/k-means-clustering-for-image-classification-using-opencv/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/k-means-clustering-for-image-classification-using-opencv/](https://machinelearningmastery.com/k-means-clustering-for-image-classification-using-opencv/)
 - en: In a [previous tutorial](https://machinelearningmastery.com/?p=14752&preview=true),
     we explored using the k-means clustering algorithm as an unsupervised machine
     learning technique that seeks to group similar data into distinct clusters to
     uncover patterns in the data.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 [之前的教程](https://machinelearningmastery.com/?p=14752&preview=true)中，我们探讨了如何使用
+    k-means 聚类算法作为一种无监督机器学习技术，旨在将相似数据分组到不同的簇中，从而揭示数据中的模式。
 - en: So far, we have seen how to apply the k-means clustering algorithm to a simple
     two-dimensional dataset containing distinct clusters and the problem of image
     color quantization.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们已经看到如何将 k-means 聚类算法应用于一个包含不同簇的简单二维数据集，以及图像颜色量化的问题。
 - en: In this tutorial, you will learn how to apply OpenCV’s k-means clustering algorithm
     for image classification.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将学习如何应用 OpenCV 的 k-means 聚类算法进行图像分类。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将会了解：
 - en: Why k-means clustering can be applied to image classification.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么 k-means 聚类可以应用于图像分类。
 - en: Applying the k-means clustering algorithm to the digit dataset in OpenCV for
     image classification.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将 k-means 聚类算法应用于 OpenCV 中的数字数据集，以进行图像分类。
 - en: How to reduce the digit variations due to skew to improve the accuracy of the
     k-means clustering algorithm for image classification.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何减少由于倾斜造成的数字变异，以提高 k-means 聚类算法在图像分类中的准确性。
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参考我的书籍 [《OpenCV中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)。它提供了**自学教程**和**实用代码**。'
 - en: Let’s get started.[![](../Images/a546e63aa5af5b9aed299af495b6d59c.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_class_cover-scaled.jpg)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。[![](../Images/a546e63aa5af5b9aed299af495b6d59c.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_class_cover-scaled.jpg)
 - en: K-Means Clustering for Image Classification Using OpenCV
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 OpenCV 进行图像分类的 k-Means 聚类
 - en: Photo by [Jeremy Thomas](https://unsplash.com/photos/E0AHdsENmDg), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Jeremy Thomas](https://unsplash.com/photos/E0AHdsENmDg) 提供，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两个部分，它们是：
 - en: Recap of k-Means Clustering as an Unsupervised Machine Learning Technique
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: k-Means 聚类作为一种无监督机器学习技术的回顾
 - en: Applying k-Means Clustering to Image Classification
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 应用 k-Means 聚类于图像分类
 - en: '**Recap of k-Means Clustering as an Unsupervised Machine Learning Technique**'
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**k-Means 聚类作为一种无监督机器学习技术的回顾**'
 - en: In a [previous tutorial](https://machinelearningmastery.com/?p=14752&preview=true),
     we have been introduced to k-means clustering as an unsupervised learning technique.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 [之前的教程](https://machinelearningmastery.com/?p=14752&preview=true)中，我们介绍了 k-means
+    聚类作为一种无监督学习技术。
 - en: We have seen that this technique involves automatically grouping data into distinct
     groups (or clusters), where the data within each cluster are similar to one another
     but different from those in the other clusters. It aims to uncover patterns in
     the data that may not be apparent before clustering.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经看到该技术涉及自动将数据分组到不同的组（或簇）中，其中每个簇中的数据彼此相似，但与其他簇中的数据不同。其目标是揭示数据中的模式，这些模式在聚类之前可能并不明显。
 - en: We have applied the k-means clustering algorithm to a simple two-dimensional
     dataset containing five clusters to label the data points belonging to each cluster
     accordingly, and subsequently to the task of color quantization where we have
     used this algorithm to reduce the number of distinct colors representing an image.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经将 k-means 聚类算法应用于一个包含五个簇的简单二维数据集，以标记每个簇中的数据点，并随后应用于颜色量化任务，在该任务中，我们使用此算法来减少表示图像的不同颜色数量。
 - en: In this tutorial, we shall again exploit the strength of k-means clustering
     in uncovering hidden structures in the data by applying it to the image classification
     task.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将再次利用 k-means 聚类在数据中揭示隐藏结构的能力，将其应用于图像分类任务。
 - en: For such a task, we will be employing the OpenCV digits dataset introduced in
     a [previous tutorial](https://machinelearningmastery.com/?p=14607&preview=true),
     where we will aim to try to group images of similar handwritten digits in an unsupervised
     manner (i.e., without using the ground truth label information).
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这样的任务，我们将使用在[之前的教程](https://machinelearningmastery.com/?p=14607&preview=true)中介绍的OpenCV数字数据集，我们将尝试以无监督的方式（即不使用实际标签信息）对类似手写数字的图像进行分组。
 - en: '**Applying k-Means Clustering to Image Classification**'
+  id: totrans-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**将k-Means聚类应用于图像分类**'
 - en: 'We’ll first need to load the OpenCV digits image, divide it into its many sub-images
     that feature handwritten digits from 0 to 9, and create their corresponding ground
     truth labels that will enable us to quantify the performance of the k-means clustering
     algorithm later on:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们首先需要加载OpenCV数字图像，将其分成许多包含从0到9的手写数字的子图像，并创建相应的实际标签，这将使我们能够量化k-means聚类算法的性能：
 - en: Python
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The returned `imgs` array contains 5,000 sub-images, organized row-wise in
     the form of flattened one-dimensional vectors, each comprising 400 pixels:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 返回的`imgs`数组包含5000个子图像，以平铺的一维向量形式组织，每个图像由400个像素组成：
 - en: Python
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Python
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The k-means algorithm can subsequently be provided with input arguments that
     are equivalent to those that we have used for our color quantization example,
     with the only exception being that we’ll need to pass the `imgs` array as the
     input data, and that we shall be setting the value of `K` clusters to 10 (i.e.,
     the number of digits that we have available):'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: k-means算法可以使用与我们在颜色量化示例中使用的输入参数相同的输入参数，唯一的例外是我们需要将`imgs`数组作为输入数据，并将`K`簇的值设置为10（即我们可用的数字数量）：
 - en: Python
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The `kmeans` function returns a `centers` array, which should contain a representative
     image for each cluster. The returned `centers` array is of shape 10$\times$400,
     which means that we’ll first need to reshape it back to 20$\times$20 pixel images
     before proceeding to visual them:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '`kmeans`函数返回一个`centers`数组，该数组应包含每个簇的代表性图像。返回的`centers`数组形状为10$\times$400，这意味着我们需要先将其重塑为20$\times$20像素的图像，然后再进行可视化：'
 - en: Python
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The representative images of the cluster centers are as follows:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 簇中心的代表性图像如下：
 - en: '[![](../Images/55ebdee53f5e3978a455567469627a56.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_class_1.png)'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/55ebdee53f5e3978a455567469627a56.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_class_1.png)'
 - en: Representative Images of the Cluster Centers Found by the k-Means Algorithm
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: k-means算法找到的簇中心的代表性图像
 - en: It is remarkable that the cluster centers generated by the k-means algorithm
     indeed resemble the handwritten digits contained in the OpenCV digits dataset.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: k-means算法生成的簇中心确实类似于OpenCV数字数据集中包含的手写数字，这一点非常值得注意。
 - en: 'You may also notice that the order of the cluster centers does not necessarily
     follow the order of the digits from 0 to 9\. This is because the k-means algorithm
     can cluster similar data together but has no notion of its order. However, it
@@ -176,64 +262,102 @@
     to the digit numbers featured inside the images. However, the cluster labels generated
     by the k-means algorithm do not necessarily follow the same convention. To solve
     this problem, we need to *re-order* the cluster labels:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能还会注意到，簇中心的顺序不一定按照0到9的数字顺序。这是因为k-means算法可以将相似的数据聚类在一起，但没有顺序的概念。然而，这在将预测标签与实际标签进行比较时也会带来问题。这是因为实际标签是根据图像中的数字生成的。然而，k-means算法生成的簇标签不一定遵循相同的约定。为了解决这个问题，我们需要*重新排序*簇标签：
 - en: Python
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Now we’re ready to calculate the accuracy of the algorithm, by finding the
     percentage of predicted labels that correspond to the ground truth:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们准备计算算法的准确性，方法是找到与实际标签对应的预测标签的百分比：
 - en: Python
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Python
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'The complete code listing up to this point is as follows:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止的完整代码列表如下：
 - en: Python
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Now, let’s print out the [confusion matrix](https://machinelearningmastery.com/confusion-matrix-machine-learning/)
     to gain a deeper insight into which digits have been mistaken for one another:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们打印出[混淆矩阵](https://machinelearningmastery.com/confusion-matrix-machine-learning/)，以深入了解哪些数字被误认为了其他数字：
 - en: Python
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Python
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'The confusion matrix needs to be interpreted as follows:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 混淆矩阵需要按如下方式解读：
 - en: '[![](../Images/0e40119b35588748e510569d608bfdd2.png)](https://machinelearningmastery.com/wp-content/uploads/2023/11/kmeans_class_2.png)'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/0e40119b35588748e510569d608bfdd2.png)](https://machinelearningmastery.com/wp-content/uploads/2023/11/kmeans_class_2.png)'
 - en: Interpreting the Confusion Matrix
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 解读混淆矩阵
 - en: The values on the diagonal indicate the number of correctly predicted digits,
     whereas the off-diagonal values indicate the misclassifications per digit. We
     may see that the best performing digit is *0*, with the highest diagonal value
@@ -241,131 +365,200 @@
     has the highest number of misclassifications with many other digits, mostly with
     4\. We may also see that *7* has been mostly mistaken with 4, while *8* has been
     mostly mistaken with *3*.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 对角线上的值表示正确预测的数字数量，而非对角线上的值表示每个数字的误分类情况。我们可以看到表现最好的数字是*0*，其对角线值最高且误分类很少。表现最差的数字是*9*，因为它与许多其他数字（主要是4）有最多的误分类。我们还可以看到，*7*
+    大多数被误认为4，而*8* 则大多数被误认为*3*。
 - en: 'These results do not necessarily come as a surprise because, if we had to look
     at the digits in the dataset, we might see that the curves and skew of several
     different digits cause them to resemble each other. To investigate the effect
     of reducing the digit variations, let’s introduce a function, `deskew_image()`,
     that applies an affine transformation to an image based on a measure of skew calculated
     from the image moments:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些结果并不令人惊讶，因为如果我们查看数据集中的数字，可能会发现几个不同数字的曲线和倾斜使它们彼此相似。为了研究减少数字变化的效果，我们引入一个函数`deskew_image()`，该函数基于从图像矩计算出的倾斜度对图像应用仿射变换：
 - en: Python
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Python
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE12]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'The de-skewing function has the following effect on some of the digits:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 去偏斜函数对某些数字具有如下效果：
 - en: '[![](../Images/c903561e45c7cb2d80269494acc7c792.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_class_3-scaled.jpg)'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/c903561e45c7cb2d80269494acc7c792.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_class_3-scaled.jpg)'
 - en: The First Column Depicts the Original Dataset Images, While the Second Column
     Shows Images Corrected for Skew
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一列展示了原始数据集图像，而第二列展示了修正倾斜后的图像。
 - en: 'Remarkably, the accuracy rises to 70.92% when the skew of the digits is reduced,
     while the cluster centers become more representative of the digits in the dataset:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 值得注意的是，当减少数字的倾斜度时，准确率上升至 70.92%，而簇中心变得更能代表数据集中的数字：
 - en: '[![](../Images/fb3f6277b372dac1ea27653b15b788d3.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_class_4.png)'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/fb3f6277b372dac1ea27653b15b788d3.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_class_4.png)'
 - en: Representative Images of the Cluster Centers Found by the k-Means Algorithm
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: k-均值算法找到的簇中心的代表性图像
 - en: This result shows that skew was a highly contributing factor to the loss of
     accuracy that we experienced without its correction.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个结果显示，倾斜是导致我们在未进行修正时准确率损失的重要因素。
 - en: Can you think of any other pre-processing steps you may introduce to improve
     the accuracy?
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 你能想到其他可能引入的预处理步骤来提高准确率吗？
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-75
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始学习使用 OpenCV 进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以免费获得课程的 PDF 电子书版本。
 - en: '**Further Reading**'
+  id: totrans-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多相关资源，如果你想深入了解的话。
 - en: '**Books**'
+  id: totrans-80
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
     2017.'
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1)，2017年。'
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019年。'
 - en: '**Websites**'
+  id: totrans-83
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: 10 Clustering Algorithms With Python, [https://machinelearningmastery.com/clustering-algorithms-with-python/](https://machinelearningmastery.com/clustering-algorithms-with-python/)
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 10种 Python 聚类算法，[https://machinelearningmastery.com/clustering-algorithms-with-python/](https://machinelearningmastery.com/clustering-algorithms-with-python/)
 - en: K-Means Clustering in OpenCV, [https://docs.opencv.org/3.4/d1/d5c/tutorial_py_kmeans_opencv.html](https://docs.opencv.org/3.4/d1/d5c/tutorial_py_kmeans_opencv.html)
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV中的K-Means聚类，[https://docs.opencv.org/3.4/d1/d5c/tutorial_py_kmeans_opencv.html](https://docs.opencv.org/3.4/d1/d5c/tutorial_py_kmeans_opencv.html)
 - en: k-means clustering, [https://en.wikipedia.org/wiki/K-means_clustering](https://en.wikipedia.org/wiki/K-means_clustering)
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: k-means聚类，[https://en.wikipedia.org/wiki/K-means_clustering](https://en.wikipedia.org/wiki/K-means_clustering)
 - en: '**Summary**'
+  id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you learned how to apply OpenCV’s k-means clustering algorithm
     for image classification.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何应用OpenCV的k-means聚类算法进行图像分类。
 - en: 'Specifically, you learned:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学习了：
 - en: Why k-means clustering can be applied to image classification.
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么k-means聚类可以应用于图像分类。
 - en: Applying the k-means clustering algorithm to the digit dataset in OpenCV for
     image classification.
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将k-means聚类算法应用于OpenCV中的数字数据集进行图像分类。
 - en: How to reduce the digit variations due to skew to improve the accuracy of the
     k-means clustering algorithm for image classification.
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何减少由于倾斜造成的数字变异，以提高k-means聚类算法在图像分类中的准确性。
 - en: Do you have any questions?
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有什么问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提问，我会尽力回答。

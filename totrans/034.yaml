@@ -1,255 +1,379 @@
 - en: The Ultimate Beginner’s Guide to Docker
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '**Docker 初学者终极指南**'
 - en: 原文：[https://machinelearningmastery.com/the-ultimate-beginners-guide-to-docker/](https://machinelearningmastery.com/the-ultimate-beginners-guide-to-docker/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/the-ultimate-beginners-guide-to-docker/](https://machinelearningmastery.com/the-ultimate-beginners-guide-to-docker/)
 - en: '![The Ultimate Beginner''s Guide to Docker](../Images/cef09e3ffe17525f7f0adbcbfac4c1cc.png)'
+  id: totrans-2
   prefs: []
   type: TYPE_IMG
+  zh: '![Docker 初学者终极指南](../Images/cef09e3ffe17525f7f0adbcbfac4c1cc.png)'
 - en: Image created by Editor using Midjourney
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 编辑器使用 Midjourney 创建的图片
 - en: Today’s digital landscape has never been so diverse. Every individual and company
     selects their preferred tools and operating systems, creating a diverse technological
     system. However, this diversity often leads to compatibility issues, making it
     hard to ensure application performance across different environments.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 当今的数字化环境从未如此多样化。每个人和公司选择自己喜欢的工具和操作系统，创造了一个多样化的技术系统。然而，这种多样性往往导致兼容性问题，使得在不同环境中确保应用程序性能变得困难。
 - en: This is where Docker plays a key role as an indispensable tool for application
     development and deployment. Docker enables us to package any application within
     a container, building all its dependencies and isolating them from the host operating
     system. This isolation is precisely its best property – it ensures that the application
     runs consistently, regardless of where it is deployed.
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，Docker 作为应用程序开发和部署中不可或缺的工具发挥了关键作用。Docker 使我们能够将任何应用程序打包在一个容器中，构建所有依赖项，并将它们与主机操作系统隔离开来。这种隔离正是它最好的特性——它确保应用程序的一致性运行，无论部署在哪里。
 - en: This article aims to be a beginner’s guide to the Docker world. So let’s explore
     it together.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章旨在成为 Docker 世界的初学者指南。让我们一起探索它吧。
 - en: Why Use Docker?
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为什么使用 Docker？
 - en: Docker shines in its ability to run applications consistently on any hardware.
     By containerizing your application, you create a portable and reproducible environment
     that can be deployed anywhere, eliminating the classic “it works on my machine”
     problem.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: Docker 的优势在于其能够在任何硬件上一致地运行应用程序。通过将应用程序容器化，你创建了一个可移植且可重复的环境，可以在任何地方部署，从而消除了经典的“在我的机器上有效”问题。
 - en: 'To understand Docker, there are three basic concepts:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 要理解 Docker，有三个基本概念：
 - en: '![Docker process from dockerfile to docker container](../Images/b586b1ef7dc8d1707b407551ef445211.png)'
+  id: totrans-10
   prefs: []
   type: TYPE_IMG
+  zh: '![从 dockerfile 到 docker 容器的 Docker 过程](../Images/b586b1ef7dc8d1707b407551ef445211.png)'
 - en: Image by Author
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 作者提供的图片
 - en: 'Docker file: It is a script containing a set of instructions on how to build
     an image.'
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Docker 文件：这是一个包含一组构建镜像指令的脚本。
 - en: 'Docker image: It is a template for running applications created from the Docker
     file. It serves to launch containers.'
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Docker 镜像：这是一个从 Docker 文件创建的用于运行应用程序的模板。它用于启动容器。
 - en: 'Docker container: A running instance of the Docker image. It is a lightweight,
     stand-alone, and executable software package that includes everything needed to
     run your application.'
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Docker 容器：Docker 镜像的一个运行实例。它是一个轻量级、独立且可执行的软件包，包含运行应用程序所需的一切。
 - en: To put it simply, a Dockerfile defines the steps to create a Docker image, which
     acts as a template for initiating processes known as containers.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 简单来说，Dockerfile 定义了创建 Docker 镜像的步骤，Docker 镜像作为启动被称为容器的进程的模板。
 - en: Easy, right?
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 很简单，对吧？
 - en: Now let’s learn how to perform this process with our own application.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们学习如何在自己的应用程序中执行这个过程。
 - en: Installing Docker
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 安装 Docker
 - en: To begin with Docker, you’ll need to install it on your machine. Docker provides
     installation packages for different operating systems, including Windows, macOS,
     and various Linux distributions.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 要开始使用 Docker，你需要在机器上安装它。Docker 提供了不同操作系统的安装包，包括 Windows、macOS 和各种 Linux 发行版。
 - en: You can follow the installation guides available on [the Docker website to set
     up Docker on your system, it is quite easy to install.](https://www.docker.com/)
     Once it is installed, you will have the docker hub on your local machine.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以按照 [Docker 网站上的安装指南来设置 Docker，安装起来非常简单。](https://www.docker.com/) 安装完成后，你的本地机器上将有
+    Docker Hub。
 - en: Docker Basics
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Docker 基础
 - en: To dockerize an app we always start with a dockerfile in our environment. This
     file describes the environment in which your application runs and the steps to
     build it.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 要将应用程序 Docker 化，我们总是从环境中的 Dockerfile 开始。这个文件描述了你的应用程序运行的环境以及构建它的步骤。
 - en: Let’s imagine we have a simple application that first asks the user for a number
     and then returns its squared number. I know this application is quite simple,
     but it is perfect to understand how Docker works.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们假设我们有一个简单的应用程序，它首先要求用户输入一个数字，然后返回其平方值。我知道这个应用程序很简单，但它非常适合理解 Docker 的工作原理。
 - en: '[PRE0]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: When setting up this application, the first thing we need to know is that it
     runs on Python. So, wherever we deploy it, Python must be our base image.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在设置此应用程序时，我们首先需要知道它运行在 Python 上。因此，无论我们将其部署到哪里，Python 必须是我们的基础镜像。
 - en: 'Moreover, this app also relies on NumPy. As NumPy isn’t a default Python library,
     we need to ensure it’s available whenever the app runs. In summary, there are
     two main dependencies:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，这个应用程序还依赖于 NumPy。由于 NumPy 不是默认的 Python 库，我们需要确保它在应用程序运行时可用。总之，主要有两个依赖项：
 - en: 'Base image: Python'
+  id: totrans-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 基础镜像：Python
 - en: 'Dependency: NumPy'
+  id: totrans-28
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 依赖项：NumPy
 - en: Even though it is not necessary, it is a good practice to always have a requirements.txt
     with all the libraries that our script requires. In this case, we would only add
     the numpy library.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管不是必要的，但始终拥有一个包含脚本所需所有库的 requirements.txt 是一种良好的实践。在这种情况下，我们只需添加 numpy 库。
 - en: 'So now, let’s understand how to containerize this script:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以现在，让我们了解如何将这个脚本容器化：
 - en: Step 1 – Define the dockerfile
+  id: totrans-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 步骤 1 – 定义 dockerfile
 - en: To define a Dockerfile, it’s important to understand the structure of your application.
     Typically, I place the Dockerfile at the same level as my main script and the
     requirements.txt file. However, for more complex applications, you might need
     to organise your files into different directories. In such cases, it’s crucial
     to consider these directory levels when specifying file locations in the Dockerfile.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 定义 Dockerfile 时，了解应用程序的结构很重要。通常，我会将 Dockerfile 放在与我的主脚本和 requirements.txt 文件相同的级别。然而，对于更复杂的应用程序，您可能需要将文件组织到不同的目录中。在这种情况下，指定
+    Dockerfile 中文件位置时，考虑这些目录级别是至关重要的。
 - en: '[PRE1]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'In this Dockerfile:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个 Dockerfile 中：
 - en: '“FROM python:3.9-slim”: This line specifies the base image, in this case, Python
     3.9, which Docker pulls from Docker Hub.'
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: “FROM python:3.9-slim”：这一行指定了基础镜像，此处为 Python 3.9，Docker 从 Docker Hub 拉取它。
 - en: '“ADD requirements.txt and main.py .” : This command adds the main.py file to
     the container.'
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: “ADD requirements.txt and main.py .”：此命令将 main.py 文件添加到容器中。
 - en: '“RUN pip install requests”: This installs the requests library inside the container.'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: “RUN pip install requests”：这会在容器中安装 requests 库。
 - en: '“ENTRYPOINT [“python”, “./main.py”]”: This command runs the application.'
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: “ENTRYPOINT [“python”, “./main.py”]”：此命令运行应用程序。
 - en: Each line in a Dockerfile represents a layer, and to optimise processing, Docker
     caches layers that remain unchanged. This means that to leverage this caching
     mechanism, it’s best to place layers that change infrequently at the beginning
     of the Dockerfile.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: Dockerfile 中的每一行代表一个层，为了优化处理，Docker 缓存那些未更改的层。这意味着为了利用这种缓存机制，最好将不常更改的层放在 Dockerfile
+    的开头。
 - en: This way, Docker can reuse these cached layers, speeding up the build process.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样，Docker 可以重用这些缓存层，加快构建过程。
 - en: Now that we already have the Dockerfile, we need to run our local docker hub
     and proceed to the second step.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经有了 Dockerfile，我们需要运行本地 Docker hub 并进入第二步。
 - en: Step 2 – Building and Running Docker Images
+  id: totrans-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 步骤 2 – 构建和运行 Docker 镜像
 - en: Once you have your Dockerfile ready, you can build and run your Docker image
     by executing the following command on your terminal.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你的 Dockerfile 准备好，你可以通过在终端中执行以下命令来构建和运行你的 Docker 镜像。
 - en: '[PRE2]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'In this command:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此命令中：
 - en: '“-t my-python-app” : Tags the image with the name my-python-app.'
+  id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: “-t my-python-app”：用名称 my-python-app 标记镜像。
 - en: '“.” : Indicates the current directory as the build context.'
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: “.”：表示当前目录作为构建上下文。
 - en: If you check your docker hub, a new image will appear under the name you used
     in the previous command. In my case, I called it sqrt-calculator.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你检查你的 docker hub，一个新镜像将会在你在之前命令中使用的名称下出现。在我的例子中，我称它为 sqrt-calculator。
 - en: '![Screenshot of the docker hub](../Images/82cc1e9b8fe3f84ac52e21b92adeaf42.png)'
+  id: totrans-49
   prefs: []
   type: TYPE_IMG
+  zh: '![Docker hub 截图](../Images/82cc1e9b8fe3f84ac52e21b92adeaf42.png)'
 - en: Screenshot of the Docker Desktop Interface
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: Docker Desktop 界面的截图
 - en: Step 3 – Running the Docker Container
+  id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 步骤 3 – 运行 Docker 容器
 - en: 'To run the Docker image you’ve just created, use the following command in the
     terminal:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 要运行刚刚创建的 Docker 镜像，请在终端中使用以下命令：
 - en: '[PRE3]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This command starts a container from the my-python-app image and runs the application.
     Although the necessary libraries are not installed in your local environment,
     you can still execute the code within the Docker container, as it includes all
     the dependencies needed for the application.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个命令从 my-python-app 镜像启动一个容器并运行应用程序。尽管所需的库没有安装在你的本地环境中，但你仍然可以在 Docker 容器内执行代码，因为它包含了应用程序所需的所有依赖项。
 - en: In Brief
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 简而言之
 - en: 'Docker’s Role and Importance: Docker addresses compatibility issues in a diverse
     technological environment by containerizing applications and ensuring consistent
     performance across different systems.'
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Docker 的作用和重要性：Docker 通过将应用程序容器化并确保在不同系统间的一致性能，解决了多样化技术环境中的兼容性问题。
 - en: 'Core Components: A Dockerfile contains instructions to build a Docker image,
     which serves as a template to run containers. Containers are instances that package
     everything needed to run the application.'
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 核心组件：一个 Dockerfile 包含构建 Docker 镜像的指令，镜像作为运行容器的模板。容器是打包了运行应用程序所需一切的实例。
 - en: 'Building and Running Containers: To use Docker, create a Dockerfile defining
     your application’s environment and dependencies, build the Docker image with docker
     build -t app-name ., and run the container with docker run app-name, allowing
     your application to run consistently regardless of local library installations.'
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建和运行容器：要使用 Docker，请创建一个 Dockerfile 来定义应用程序的环境和依赖项，使用 docker build -t app-name
+    . 构建 Docker 镜像，并使用 docker run app-name 运行容器，从而使你的应用程序能够在不同的本地库安装环境中一致运行。
 - en: If you want to check my code, you can find it [in the following GitHub repo.](https://github.com/rfeers/Articles/tree/main/Docker-beginner-guide)
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想查看我的代码，你可以在[以下 GitHub 仓库中找到它。](https://github.com/rfeers/Articles/tree/main/Docker-beginner-guide)

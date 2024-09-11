@@ -1,116 +1,175 @@
 - en: Building a Simple RAG Application Using LlamaIndex
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 LlamaIndex 构建简单的 RAG 应用程序
 - en: 原文：[https://machinelearningmastery.com/building-a-simple-rag-application-using-llamaindex/](https://machinelearningmastery.com/building-a-simple-rag-application-using-llamaindex/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/building-a-simple-rag-application-using-llamaindex/](https://machinelearningmastery.com/building-a-simple-rag-application-using-llamaindex/)
 - en: '![Building a Simple RAG Application Using LlamaIndex](../Images/58c09579890d02cb250a7e12788c7e4b.png)'
+  id: totrans-2
   prefs: []
   type: TYPE_IMG
+  zh: '![使用 LlamaIndex 构建简单的 RAG 应用程序](../Images/58c09579890d02cb250a7e12788c7e4b.png)'
 - en: Image by Author
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 作者提供的图片
 - en: In this tutorial, we will explore Retrieval-Augmented Generation (RAG) and the
     LlamaIndex AI framework. We will learn how to use LlamaIndex to build a RAG-based
     application for Q&A over the private documents and enhance the application by
     incorporating a memory buffer. This will enable the LLM to generate the response
     using the context from both the document and previous interactions.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将深入探讨检索增强生成（RAG）和 LlamaIndex AI 框架。我们将学习如何使用 LlamaIndex 构建一个基于 RAG 的
+    Q&A 应用程序，该应用程序可以处理私有文档，并通过加入内存缓冲区来增强应用程序。这将使 LLM 能够使用文档和先前交互的上下文生成响应。
 - en: What is RAG in LLMs?
+  id: totrans-5
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在 LLM 中什么是 RAG？
 - en: Retrieval-Augmented Generation (RAG) is an advanced methodology designed to
     enhance the performance of large language models (LLMs) by integrating external
     knowledge sources into the generation process.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 检索增强生成（RAG）是一种先进的方法，旨在通过将外部知识源整合到生成过程中来提高大语言模型（LLM）的性能。
 - en: 'RAG involves two main phases: retrieval and content generation. Initially,
     relevant documents or data are retrieved from external databases, which are then
     used to provide context for the LLM, ensuring that responses are based on the
     most current and domain-specific information available.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: RAG 涉及两个主要阶段：检索和内容生成。最初，从外部数据库中检索相关文档或数据，然后用于提供 LLM 的上下文，确保响应基于最当前和领域特定的信息。
 - en: What is LlamaIndex?
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是 LlamaIndex？
 - en: LlamaIndex is an advanced AI framework that is designed to enhance the capabilities
     of large language models (LLMs) by facilitating seamless integration with diverse
     data sources. It supports the retrieval of data from over 160 different formats,
     including APIs, PDFs, and SQL databases, making it highly versatile for building
     advanced AI applications.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: LlamaIndex 是一个先进的 AI 框架，旨在通过促进与多种数据源的无缝集成来增强大语言模型（LLM）的能力。它支持从超过 160 种不同格式的数据中检索数据，包括
+    API、PDF 和 SQL 数据库，使其在构建先进的 AI 应用程序时具有高度的灵活性。
 - en: We can even build a complete multimodal and multistep AI application and then
     deploy it to a server to provide highly accurate, domain-specific responses. Compared
     to other frameworks like LangChain, LlamaIndex offers a simpler solution with
     built-in functions tailored for various types of LLM applications.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们甚至可以构建一个完整的多模态和多步骤 AI 应用程序，然后将其部署到服务器上，以提供高精度、特定领域的响应。与 LangChain 等其他框架相比，LlamaIndex
+    提供了一个更简单的解决方案，内置了适用于各种 LLM 应用程序的功能。
 - en: Building RAG Applications using LlamaIndex
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 LlamaIndex 构建 RAG 应用程序
 - en: In this section, we will build an AI application that loads Microsoft Word files
     from a folder, converts them into embeddings, indexes them into the vector store,
     and builds a simple query engine. After that, we will build a proper RAG chatbot
     with history using vector store as a retriever, LLM, and the memory buffer.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本节中，我们将构建一个 AI 应用程序，该应用程序从文件夹加载 Microsoft Word 文件，将它们转换为嵌入，将它们索引到向量存储中，并构建一个简单的查询引擎。之后，我们将使用向量存储作为检索器、LLM
+    和内存缓冲区，构建一个带有历史记录的 RAG 聊天机器人。
 - en: Setting up
+  id: totrans-13
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 设置
 - en: Install all the necessary Python packages to load the data and for OpenAI API.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 安装所有必要的 Python 包，以加载数据和使用 OpenAI API。
 - en: '[PRE0]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Initiate LLM and embedding model using OpenAI functions. We will use the latest
     “GPT-4o” and “text-embedding-3-small” models.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 OpenAI 函数初始化 LLM 和嵌入模型。我们将使用最新的“GPT-4o”和“text-embedding-3-small”模型。
 - en: '[PRE1]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Set both LLM and embedding model to global so that when we invoke a function
     that requires LLM or embeddings, it will automatically use these settings.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 将 LLM 和嵌入模型都设置为全局，以便在调用需要 LLM 或嵌入的函数时，它将自动使用这些设置。
 - en: '[PRE2]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Loading and Indexing the Documents
+  id: totrans-20
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 加载和索引文档
 - en: Load the data from the folder, convert it into the embedding, and store it into
     the vector store.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 从文件夹加载数据，将其转换为嵌入，并存储到向量存储中。
 - en: '[PRE3]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Building Query Engine
+  id: totrans-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 构建查询引擎
 - en: Please convert the vector store to a query engine and begin asking questions
     about the documents. The documents consist of the blogs published in June on Machine
     Learning Mastery by the author Abid Ali Awan.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 请将向量存储转换为查询引擎，并开始询问有关文档的问题。文档包括作者 Abid Ali Awan 于 6 月在 Machine Learning Mastery
+    发布的博客。
 - en: '[PRE4]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: And the answer is accurate.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 答案是准确的。
 - en: The common themes of the blogs are centered around enhancing knowledge **and**
     skills **in** machine learning. They focus on providing resources such **as**
     free books, platforms **for** collaboration, **and** datasets to help individuals
@@ -118,31 +177,45 @@
     on projects, **and** gain practical experience through real-world data. These
     resources are aimed at both beginners **and** professionals looking to build a
     strong foundation **and** advance their careers **in** the field of machine learning.
+  id: totrans-27
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 博客的共同主题围绕提升**和**技能**在**机器学习领域展开。它们专注于提供资源，例如**免费的**书籍、协作**的平台**，**和**数据集，以帮助个人深入了解机器学习算法，有效协作项目，并通过实际数据获得实践经验。这些资源旨在帮助初学者**和**专业人士建立坚实的基础**和**推动其在机器学习领域的职业发展。
 - en: Building RAG Application with Memory Buffer
+  id: totrans-28
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用记忆缓冲区构建 RAG 应用程序
 - en: The previous app was simple; let’s create a more advanced chatbot with a history
     feature.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 之前的应用程序很简单；让我们创建一个更先进的聊天机器人，具有历史记录功能。
 - en: We will build the chatbot using a retriever, a chat memory buffer, and a GPT-4o
     model.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用检索器、聊天记忆缓冲区和 GPT-4o 模型来构建聊天机器人。
 - en: Afterward, we will test our chatbot by asking questions about one of the blog
     posts.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们将通过询问关于其中一篇博客文章的问题来测试我们的聊天机器人。
 - en: '[PRE5]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: It is highly accurate and to the point.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 它非常准确且切中要点。
 - en: Based on the provided documents, the “Deep RL Course” by Hugging Face **is**
     highly recommended **for** mastering Reinforcement Learning. This course **is**
     particularly suitable **for** beginners **and** covers both the basics **and**
@@ -153,35 +226,52 @@
     designed to be completed within a month **and** offers practical experimentation
     **with** models, strategies to improve scores, **and** a leaderboard to track
     progress.
+  id: totrans-34
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 根据提供的文档，Hugging Face 的“Deep RL 课程”**是**掌握强化学习的强烈推荐。该课程**特别适合**初学者**和**涵盖了强化学习的基础知识**和**高级技术。它包括诸如
+    Q-learning、深度 Q-learning、策略梯度、ML 代理、演员-评论家方法、多智能体系统**和**高级主题如 RLHF（从人类反馈中学习的强化学习）、决策变换器**和**MineRL。课程设计为一个月内完成，并提供实践实验，包括模型、提升分数的策略**和**一个跟踪进度的排行榜。
 - en: Let’s ask follow-up questions and understand more about the course.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们提出后续问题，进一步了解课程内容。
 - en: '[PRE6]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'If you are having trouble running the above code, please refer to the Deepnote
     Notebook: [Building RAG Application using LlamaIndex](https://deepnote.com/workspace/abid-5efa63e7-7029-4c3e-996f-40e8f1acba6f/project/Building-a-Simple-RAG-Application-using-LlamaIndex-5ef68174-c5cd-435e-882d-c0e112257391/notebook/Notebook%201-2912a70b918b49549f1b333b8778212c).'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你在运行上述代码时遇到问题，请参考 Deepnote 笔记本：[使用 LlamaIndex 构建 RAG 应用程序](https://deepnote.com/workspace/abid-5efa63e7-7029-4c3e-996f-40e8f1acba6f/project/Building-a-Simple-RAG-Application-using-LlamaIndex-5ef68174-c5cd-435e-882d-c0e112257391/notebook/Notebook%201-2912a70b918b49549f1b333b8778212c)。
 - en: Conclusion
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: Building and deploying AI applications has been made easy by LlamaIndex. You
     just have to write a few lines of code and that’s it.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: LlamaIndex 使得构建和部署 AI 应用程序变得简单。你只需写几行代码即可完成。
 - en: The next step in your learning journey will be to build a proper Chatbot application
     using Gradio and deploy it on the server. To simplify your life even more, you
     can also check out Llama Cloud.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 你学习旅程的下一步是使用 Gradio 构建一个合适的聊天机器人应用程序并将其部署到服务器上。为了进一步简化你的生活，你还可以查看 Llama Cloud。
 - en: In this tutorial, we learned about LlamaIndex and how to build an RAG application
     that lets you ask questions from your private documentation. Then, we built a
     proper RAG chatbot that generates responses using private documents and previous
     chat interactions.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们了解了 LlamaIndex 以及如何构建一个 RAG 应用程序，以便从私人文档中提出问题。然后，我们构建了一个适当的 RAG 聊天机器人，该机器人使用私人文档和之前的聊天记录生成响应。

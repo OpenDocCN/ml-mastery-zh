@@ -1,11 +1,15 @@
 - en: Using Activation Functions in Deep Learning Models
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在深度学习模型中使用激活函数
 - en: 原文：[https://machinelearningmastery.com/using-activation-functions-in-deep-learning-models/](https://machinelearningmastery.com/using-activation-functions-in-deep-learning-models/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/using-activation-functions-in-deep-learning-models/](https://machinelearningmastery.com/using-activation-functions-in-deep-learning-models/)
 - en: A deep learning model in its simplest form are layers of perceptrons connected
     in tandem. Without any activation functions, they are just matrix multiplications
     with limited power, regardless how many of them. Activation is the magic why neural
@@ -13,79 +17,120 @@
     there are many activation functions available for use in your deep learning models.
     In this post, you will see how the choice of activation functions can impact the
     model. Specifically,
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 最简单形式的深度学习模型是层叠的感知机。如果没有激活函数，它们只是矩阵乘法，无论有多少层，其功能都很有限。激活函数的神奇之处在于神经网络能够近似各种非线性函数。在
+    PyTorch 中，有许多激活函数可以用于你的深度学习模型。在这篇文章中，你将看到激活函数的选择如何影响模型。具体来说，
 - en: What are the common activation functions
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 常见的激活函数有哪些
 - en: What are the nature of activation functions
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 激活函数的性质是什么
 - en: How the different activation functions impact the learning rate
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不同激活函数对学习率的影响
 - en: How the selection of activation function can solve the vanishing gradient problem
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 激活函数的选择如何解决梯度消失问题
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书** [《深度学习与 PyTorch》](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    **启动你的项目**。它提供了 **自学教程** 和 **有效代码**。'
 - en: Let’s get started.![](../Images/5db87074ce76a05c9126e567ecdf33d9.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！![](../Images/5db87074ce76a05c9126e567ecdf33d9.png)
 - en: Using Activation Functions in Deep Learning Models
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在深度学习模型中使用激活函数
 - en: Photo by [SHUJA OFFICIAL](https://unsplash.com/photos/JVCozvGeKNs). Some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [SHUJA OFFICIAL](https://unsplash.com/photos/JVCozvGeKNs) 提供。保留所有权利。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This post is in three parts; they are
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分；它们是
 - en: A Toy Model of Binary Classification
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 二元分类的玩具模型
 - en: Why Nonlinear Functions?
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么需要非线性函数？
 - en: The Effect of Activation Functions
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 激活函数的作用
 - en: A Toy Model of Binary Classification
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 二元分类的玩具模型
 - en: 'Let’s start with a simple example of binary classification. Here you use the
     `make_circle()` function from scikit-learn to create a synthetic dataset for binary
     classification. This dataset has two features: The x- and y-coordinate of points.
     Each point belongs to one of the two classes. You can generate 1000 data points
     and visualize them as below:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从一个简单的二元分类示例开始。这里你将使用 `make_circle()` 函数从 scikit-learn 创建一个用于二元分类的合成数据集。该数据集有两个特征：点的
+    x 和 y 坐标。每个点属于两个类别之一。你可以生成 1000 个数据点并将其可视化如下：
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The dataset is visualized as follows:![](../Images/541c1a4dd2df4eca7f4b93cebb0838d2.png)
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据集的可视化如下：![](../Images/541c1a4dd2df4eca7f4b93cebb0838d2.png)
 - en: 'This dataset is special because it is simple but not linearly separable: It
     is impossible to find a straight line to separate two classes. How can your neural
     network figure out there’s a circle boundary between the classes is a challenge.'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个数据集很特别，因为它简单但不可线性分离：不可能找到一条直线来分隔两个类别。如何让你的神经网络识别出两个类别之间的圆形边界是一个挑战。
 - en: Let’s create a deep learning model for this problem. To make things simple,
     you do not do cross validation. You may find the neural network overfit the data
     but it doesn’t affect the discussion below. The model has 4 hidden layers and
@@ -93,95 +138,143 @@
     model accepts a parameter at its constructor to specify what is the activation
     to use in the hidden layers. You implement the training loop in a function as
     you will run this for several times.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们为这个问题创建一个深度学习模型。为了简化起见，你不进行交叉验证。你可能会发现神经网络对数据过拟合，但这不会影响下面的讨论。该模型有 4 个隐藏层，输出层为二元分类提供一个
+    sigmoid 值（0 到 1）。模型在构造函数中接受一个参数来指定在隐藏层中使用的激活函数。你将训练循环实现为一个函数，因为你会运行这个函数多次。
 - en: 'The implementation is as follows:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 实现如下：
 - en: '[PRE1]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'At the end of each epoch in the training function, you evaluate the model with
     the entire dataset. The evaluation result is returned when the training finished.
     In the following, you create a model, train it, and plot the training history.
     The activation function you use is **rectified linear unit** or ReLU, which is
     the most common activation function nowadays:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 在每次训练周期结束时，你会使用整个数据集来评估模型。训练完成后会返回评估结果。接下来，你将创建一个模型，训练它，并绘制训练历史。你使用的激活函数是**修正线性单元**或
+    ReLU，这是目前最常见的激活函数：
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Running this give you the following:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行这个会给你以下结果：
 - en: '[PRE3]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: and this plot:![](../Images/c099345f8f114e75edf6ebb67b7e9c5f.png)
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 以及这个图：![](../Images/c099345f8f114e75edf6ebb67b7e9c5f.png)
 - en: 'This model works great. After 300 epochs, it can achieve 90% accuracy. However,
     ReLU is not the only activation function. Historically, sigmoid function and hyperbolic
     tangents were common in neural networks literatures. If you’re curious, below
     are how you can compare these three activation functions, using matplotlib:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个模型表现很好。经过 300 个周期后，它可以达到 90% 的准确率。然而，ReLU 并不是唯一的激活函数。从历史上看，sigmoid 函数和双曲正切函数在神经网络文献中很常见。如果你感兴趣，下面是如何使用
+    matplotlib 比较这三种激活函数：
 - en: '[PRE4]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '![](../Images/4cfca3967a36544399f38d362d46246d.png)'
+  id: totrans-31
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4cfca3967a36544399f38d362d46246d.png)'
 - en: ReLU is called rectified linear unit because it is a linear function $y=x$ at
     positive $x$ but remains zero if $x$ is negative. Mathematically, it is $y=\max(0,
     x)$. Hyperbolic tangent ($y=\tanh(x)=\dfrac{e^x – e^{-x}}{e^x+e^{-x}}$) goes from
     -1 to +1 smoothly while sigmoid function ($y=\sigma(x)=\dfrac{1}{1+e^{-x}}$) goes
     from 0 to +1.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: ReLU 被称为修正线性单元，因为它在正数 $x$ 时是线性函数 $y=x$，而在 $x$ 为负数时保持为零。从数学上讲，它是 $y=\max(0, x)$。双曲正切函数
+    ($y=\tanh(x)=\dfrac{e^x – e^{-x}}{e^x+e^{-x}}$) 平滑地从 -1 过渡到 +1，而 sigmoid 函数 ($y=\sigma(x)=\dfrac{1}{1+e^{-x}}$)
+    从 0 过渡到 +1。
 - en: 'If you try to differentiate these functions, you will find that ReLU is the
     easiest: The gradient is 1 at positive region and 0 otherwise. Hyperbolic tangent
     has a steeper slope therefore its gradient is greater than that of sigmoid function.'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你尝试对这些函数进行微分，你会发现 ReLU 是最简单的：正区域的梯度是 1，其余为 0。双曲正切函数的斜率更陡，因此它的梯度大于 sigmoid
+    函数的梯度。
 - en: All these functions are increasing. Therefore, their gradients are never negative.
     This is one of the criteria for an activation function suitable to use in neural
     networks.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有这些函数都是递增的。因此，它们的梯度永远不会为负数。这是激活函数在神经网络中适用的标准之一。
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用 PyTorch 深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即获取我的免费电子邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费 PDF 电子书版本。
 - en: Why Nonlinear Functions?
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为什么选择非线性函数？
 - en: You might be wondering, why all this hype about nonlinear activation functions?
     Or why can’t we just use an identity function after the weighted linear combination
     of activations from the previous layer? Using multiple linear layers is basically
     the same as using a single linear layer. This can be seen through a simple example.
     Let’s say you have a one hidden layer neural network, each with two hidden neurons.![](../Images/a576e5e59dd9da8e2208cc3163c61344.png)
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会想，为什么对非线性激活函数如此 hype？或者，为什么我们不能在前一层的加权线性组合后直接使用一个恒等函数？使用多个线性层基本上与使用单个线性层是一样的。通过一个简单的例子可以看出。假设你有一个隐藏层神经网络，每层有两个隐藏神经元。![](../Images/a576e5e59dd9da8e2208cc3163c61344.png)
 - en: 'You can then rewrite the output layer as a linear combination of the original
     input variable if you used a linear hidden layer. If you had more neurons and
     weights, the equation would be a lot longer with more nesting and more multiplications
     between successive layer weights. However, the idea remains the same: You can
     represent the entire network as a single linear layer. To make the network represent
     more complex functions, you would need nonlinear activation functions.'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你使用线性隐藏层，你可以将输出层重写为原始输入变量的线性组合。如果有更多的神经元和权重，方程式会更长，包含更多嵌套和层间权重的乘法。然而，基本思想仍然相同：你可以将整个网络表示为一个线性层。为了使网络能够表示更复杂的函数，你需要非线性激活函数。
 - en: The Effect of Activation Functions
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 激活函数的效果
 - en: 'To explain how much impact the activation function can bring to your model,
     let’s modify the training loop function to capture more data: The gradients in
     each training step. You model has four hidden layers and one output layer. In
@@ -190,194 +283,288 @@
     pass. You should observe how the gradient changes as the training progressed.
     Therefore, the training loop function is modified to collect the mean absolute
     value of the gradient in each layer in each step, as follows:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了说明激活函数对模型的影响，让我们修改训练循环函数以捕获更多数据：每个训练步骤中的梯度。你的模型有四个隐藏层和一个输出层。在每一步中，反向传播计算每一层权重的梯度，优化器根据反向传播的结果更新权重。你应该观察训练进展中梯度的变化。因此，训练循环函数被修改为收集每一步每一层的平均绝对值，如下所示：
 - en: '[PRE5]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: At the end of the inner for-loop, the gradients of the layer weights are computed
     by the backward process earlier and you can access to the gradient using `model.layer0.weight.grad`.
     Like the weights, the gradients are tensors. You take the absolute value of each
     element and then compute the mean over all elements. This value depends on the
     batch and can be very noisy. Thus you summarize all such mean absolute value over
     the same epoch at the end.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在内层for循环结束时，通过先前的反向过程计算层权重的梯度，你可以通过`model.layer0.weight.grad`访问梯度。像权重一样，梯度也是张量。你取每个元素的绝对值，然后计算所有元素的均值。这个值依赖于批次，可能会非常嘈杂。因此，你总结所有这样的均值绝对值，并在同一周期结束时进行汇总。
 - en: 'Note that you have five layers in the neural network (hidden and output layers
     combined). So you can see the pattern of each layer’s gradient across the epochs
     if you visualize them. In below, you run the training loop as before and plot
     both the cross entropy and accuracy as well as the mean absolute gradient of each
     layer:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，你的神经网络中有五层（包括隐藏层和输出层）。因此，如果你可视化它们，你可以看到每层梯度在周期中的模式。下面，你运行与之前相同的训练循环，并绘制交叉熵、准确率以及每层的平均绝对梯度：
 - en: '[PRE6]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Running the above produces the following plot:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行上述代码会产生以下图表：
 - en: '![](../Images/37587ebd9602e865d8a674c2328e9664.png)'
+  id: totrans-48
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/37587ebd9602e865d8a674c2328e9664.png)'
 - en: In the plot above, you can see how the accuracy increases and the cross entropy
     loss decreases. At the same time, you can see the gradient of each layer is fluctuating
     in a similar range, especially you should pay attention to the line corresponding
     to the first layer and the last layer. This behavior is ideal.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上图中，你可以看到准确率如何提高以及交叉熵损失如何减少。同时，你可以看到每一层的梯度在类似范围内波动，特别是你应该关注与第一层和最后一层对应的线。这种行为是理想的。
 - en: 'Let’s repeat the same with a sigmoid activation:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们用sigmoid激活函数重复同样的操作：
 - en: '[PRE7]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: which the plot is as follows:![](../Images/f2544e6f3276a2b3f59adf8921a884d3.png)
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 其图表如下：![](../Images/f2544e6f3276a2b3f59adf8921a884d3.png)
 - en: You can see that after 300 epochs, the final result is much worse than ReLU
     activation. Indeed, you may need much more epochs for this model to converge.
     The reason can be easily found on the graph at right, which you can see the gradient
     is significant only for the output layer while all the hidden layers’ gradients
     are virtually zero. This is the **vanishing gradient effect** which is the problem
     of many neural network models with sigmoid activation function.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到，经过300个周期后，最终结果比ReLU激活函数差得多。实际上，你可能需要更多的周期才能使这个模型收敛。原因可以在右侧的图表中很容易找到，你可以看到梯度仅对输出层显著，而所有隐藏层的梯度几乎为零。这就是**梯度消失效应**，这是许多使用sigmoid激活函数的神经网络模型的问题。
 - en: 'The hyperbolic tangent function has a similar shape as sigmoid function but
     its curve is steeper. Let’s see how it behaves:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 双曲正切函数的形状类似于sigmoid函数，但其曲线更陡。让我们看看它的表现：
 - en: '[PRE8]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Which is:![](../Images/f73df1d606790ef6e4d6151fb939c71a.png)
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是：![](../Images/f73df1d606790ef6e4d6151fb939c71a.png)
 - en: The result looks better than sigmoid activation but still worse then ReLU. In
     fact, from the gradient plot, you can notice that the gradients at the hidden
     layers are significant but the gradient at the first hidden layer is obviously
     at an order of magnitude less than that at the output layer. Thus the backward
     process is not very effective at propagating the gradient to the input.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果看起来比sigmoid激活函数要好，但仍然不如ReLU。实际上，从梯度图表中，你可以注意到隐藏层的梯度是显著的，但第一个隐藏层的梯度明显比输出层的梯度低一个数量级。因此，反向传播在将梯度传播到输入层时不是很有效。
 - en: This is the reason you see ReLU activation in every neural network model today.
     Not only because ReLU is simpler and computing the differentiation of it is much
     faster than the other activation function, but also because it can make the model
     converge faster.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是你今天在每个神经网络模型中都看到 ReLU 激活的原因。不仅因为 ReLU 更简单且其导数计算比其他激活函数要快，而且还因为它可以使模型收敛更快。
 - en: 'Indeed, you can do better than ReLU sometimes. In PyTorch, you have a number
     of ReLU variations. Let’s look at two of them. You can compare these three varation
     of ReLU as follows:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，有时你可以做得比 ReLU 更好。在 PyTorch 中，你有多个 ReLU 变体。让我们看两个变体。你可以如下比较这三种 ReLU 变体：
 - en: '[PRE9]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '![](../Images/a4fa00edaea43bb7555fda944a2de8c8.png)First is the ReLU6, which
     is ReLU but cap the function at 6.0 if the input to the function is more than
     6.0:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '![](../Images/a4fa00edaea43bb7555fda944a2de8c8.png) 首先是 ReLU6，它是 ReLU，但如果函数的输入超过
+    6.0，则将函数限制在 6.0：'
 - en: '[PRE10]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '![](../Images/bafd4a9b6e77a3448c8f266c4a04b1d9.png)Next is leaky ReLU, which
     the negative half of ReLU is no longer flat but a gently slanted line. The rationale
     behind is to keep a small positive gradient at that region.'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '![](../Images/bafd4a9b6e77a3448c8f266c4a04b1d9.png) 接下来是 leaky ReLU，其负半轴不再是平坦的，而是一个轻微倾斜的线。这背后的理由是为了在该区域保持一个小的正梯度。'
 - en: '[PRE11]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '![](../Images/b514bb555cb354c013cf3fc37c862d28.png)'
+  id: totrans-65
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/b514bb555cb354c013cf3fc37c862d28.png)'
 - en: 'You can see that all these variations can give you similar accuracy after 300
     epochs but from the history curve, you know some are faster to reach a high accuracy
     than another. This is because of the interaction between the gradient of an activation
     function with the optimizer. There’s no golden rule that a single activation function
     works best but the design helps:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到，所有这些变体在 300 个 epoch 后都能提供类似的准确性，但从历史曲线中，你会发现有些变体比其他变体更快达到高准确性。这是由于激活函数的梯度与优化器之间的相互作用。没有单一激活函数最适合的黄金规则，但设计的帮助是：
 - en: in backpropagation, passing the loss metric from the output layer all the way
     to the input layer
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在反向传播中，从输出层传递损失度量到输入层
 - en: maintaining stable gradient calculation under specific condition, e.g., limiting
     floating point precision
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在特定条件下保持稳定的梯度计算，例如，限制浮点数精度
 - en: providing enough contrast on different input such that the backward pass can
     determine accurate adjustment to the parameter
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 提供足够的对比，以便反向传递可以对参数进行准确的调整
 - en: 'The following is the complete code to generate all the plots above:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是生成上述所有图表的完整代码：
 - en: '[PRE12]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Further Readings
+  id: totrans-72
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多资源，如果你想深入了解这个主题。
 - en: '[nn.Sigmoid](https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html)
     from PyTorch documentation'
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[nn.Sigmoid](https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html)
+    来自 PyTorch 文档'
 - en: '[nn.Tanh](https://pytorch.org/docs/stable/generated/torch.nn.Tanh.html) from
     PyTorch documentation'
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[nn.Tanh](https://pytorch.org/docs/stable/generated/torch.nn.Tanh.html) 来自
+    PyTorch 文档'
 - en: '[nn.ReLU](https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html) from
     PyTorch documentation'
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[nn.ReLU](https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html) 来自
+    PyTorch 文档'
 - en: '[nn.ReLU6](https://pytorch.org/docs/stable/generated/torch.nn.ReLU6.html) from
     PyTorch documentation'
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[nn.ReLU6](https://pytorch.org/docs/stable/generated/torch.nn.ReLU6.html) 来自
+    PyTorch 文档'
 - en: '[nn.LeakyReLU](https://pytorch.org/docs/stable/generated/torch.nn.LeakyReLU.html)
     from PyTorch documentation'
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[nn.LeakyReLU](https://pytorch.org/docs/stable/generated/torch.nn.LeakyReLU.html)
+    来自 PyTorch 文档'
 - en: '[Vanishing gradient problem](https://en.wikipedia.org/wiki/Vanishing_gradient_problem),
     Wikipedia'
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[梯度消失问题](https://en.wikipedia.org/wiki/Vanishing_gradient_problem)，维基百科'
 - en: Summary
+  id: totrans-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: 'In this chapter, you discovered how to select activation functions for your
     PyTorch model. You learned:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一章中，你了解到如何为你的 PyTorch 模型选择激活函数。你学到了：
 - en: What are the common activation functions and how they look like
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 常见的激活函数是什么，它们的表现如何
 - en: How to use activation functions in your PyTorch model
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在你的 PyTorch 模型中使用激活函数
 - en: What is vanishing gradient problem
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是梯度消失问题
 - en: The impact of activation function to the performance of your model
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 激活函数对模型性能的影响

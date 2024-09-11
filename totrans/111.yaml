@@ -1,570 +1,869 @@
 - en: Python Classes and Their Use in Keras
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Python 类及其在 Keras 中的使用
 - en: 原文：[https://machinelearningmastery.com/python-classes-and-their-use-in-keras/](https://machinelearningmastery.com/python-classes-and-their-use-in-keras/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/python-classes-and-their-use-in-keras/](https://machinelearningmastery.com/python-classes-and-their-use-in-keras/)
 - en: Classes are one of the fundamental building blocks of the Python language, which
     may be applied in the development of machine learning applications. As we shall
     see, the Python syntax for developing classes is simple and can be applied to
     implement callbacks in Keras.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 类是 Python 语言的基本构建块之一，可以应用于机器学习应用的开发。正如我们将看到的，Python 的类开发语法很简单，可以用于实现 Keras 中的回调。
 - en: In this tutorial, you will discover the Python classes and their functionality.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现 Python 类及其功能。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将知道：
 - en: Why Python classes are important
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么 Python 类很重要
 - en: How to define and instantiate a class and set its attributes
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何定义和实例化类并设置其属性
 - en: How to create methods and pass arguments
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何创建方法并传递参数
 - en: What is class inheritance
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是类继承
 - en: How to use classes to implement callbacks in Keras
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用类来实现 Keras 中的回调
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的新书[Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/)**，*逐步教程*和*Python
+    源代码*文件，**启动你的项目**。'
 - en: Let’s get started.[![](../Images/26748d693af04db3b853759f183d5d68.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/s-migaj-Yui5vfKHuzs-unsplash-scaled.jpg)
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。[![](../Images/26748d693af04db3b853759f183d5d68.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/s-migaj-Yui5vfKHuzs-unsplash-scaled.jpg)
 - en: Python Classes and Their Use in Keras
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 类及其在 Keras 中的使用
 - en: Photo by [S Migaj](https://unsplash.com/photos/Yui5vfKHuzs), some rights reserved.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [S Migaj](https://unsplash.com/photos/Yui5vfKHuzs) 提供，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into six parts; they are:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为六个部分，它们是：
 - en: Introduction to Classes
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 类的介绍
 - en: Defining a Class
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**定义一个类**'
 - en: Instantiation and Attribute References
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 实例化和属性引用
 - en: Creating Methods and Passing Arguments
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建方法并传递参数
 - en: Class Inheritance
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 类继承
 - en: Using Classes in Keras
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 Keras 中使用类
 - en: '**Introduction to Classes**'
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**类的介绍**'
 - en: In object-oriented languages, such as Python, classes are one of the fundamental
     building blocks.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 在面向对象的语言中，如 Python，类是基本构建块之一。
 - en: '*They can be likened to blueprints for an object, as they define what properties
     and methods/behaviors an object should have.*'
+  id: totrans-24
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*它们可以比作对象的蓝图，因为它们定义了对象应具有的属性和方法/行为。*'
 - en: ''
+  id: totrans-25
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – [Python Fundamentals](https://www.amazon.com/Python-Fundamentals-practical-learning-real-world-ebook/dp/B07K4CVYND/ref=sr_1_1?keywords=python+fundamentals+ebook&qid=1638986660&sr=8-1),
     2018.
+  id: totrans-26
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – [Python Fundamentals](https://www.amazon.com/Python-Fundamentals-practical-learning-real-world-ebook/dp/B07K4CVYND/ref=sr_1_1?keywords=python+fundamentals+ebook&qid=1638986660&sr=8-1),
+    2018.
 - en: Creating a new class creates a new object, where every class instance can be
     characterized by its attributes to maintain its state and methods to modify its
     state.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建一个新类会创建一个新对象，其中每个类实例可以通过其属性来描述，以保持其状态，并通过方法来修改其状态。
 - en: '**Defining a Class**'
+  id: totrans-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**定义一个类**'
 - en: 'The *class* keyword allows for the creation of a new class definition, immediately
     followed by the class name:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '*class* 关键字允许创建新的类定义，紧接着是类名：'
 - en: Python
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: In this manner, a new class object bound to the specified class name (*MyClass*,
     in this case) is created. Each class object can support instantiation and attribute
     references, as we will see shortly.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样，就创建了一个绑定到指定类名（*MyClass*，在此情况下）的新类对象。每个类对象都可以支持实例化和属性引用，我们将很快看到。
 - en: '**Instantiation and Attribute References**'
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**实例化和属性引用**'
 - en: Instantiation is the creation of a new instance of a class.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 实例化是创建类的新实例。
 - en: 'To create a new instance of a class, we can call it using its class name and
     assign it to a variable. This will create a new, empty class object:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 要创建类的新实例，我们可以使用类名调用它，并将其分配给一个变量。这将创建一个新的空类对象：
 - en: Python
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Upon creating a new instance of a class, Python calls its object constructor
     method, *__init()__*, which often takes arguments that are used to set the instantiated
     object’s attributes.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建类的新实例时，Python 调用其对象构造方法， *__init()__*，该方法通常接受用于设置实例化对象属性的参数。
 - en: '*We can define this constructor method in our class just like a function and
     specify attributes that will need to be passed in when instantiating an object.*'
+  id: totrans-39
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*我们可以像定义函数一样在类中定义这个构造函数方法，并指定在实例化对象时需要传递的属性。*'
 - en: ''
+  id: totrans-40
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – [Python Fundamentals](https://www.amazon.com/Python-Fundamentals-practical-learning-real-world-ebook/dp/B07K4CVYND/ref=sr_1_1?keywords=python+fundamentals+ebook&qid=1638986660&sr=8-1),
     2018.
+  id: totrans-41
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – [Python 基础](https://www.amazon.com/Python-Fundamentals-practical-learning-real-world-ebook/dp/B07K4CVYND/ref=sr_1_1?keywords=python+fundamentals+ebook&qid=1638986660&sr=8-1)，2018年。
 - en: 'Let’s say, for instance, that we would like to define a new class named *Dog*:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 比如说，我们希望定义一个名为 *Dog* 的新类：
 - en: Python
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Here, the constructor method takes two arguments, *name* and *breed*, which
     can be passed to it upon instantiating the object:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，构造函数方法接受两个参数，*name* 和 *breed*，这些参数在实例化对象时可以传递给它：
 - en: Python
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: In the example that we are considering, *name* and *breed* are known as *instance
     variables* (or attributes) because they are bound to a specific instance. This
     means that such attributes belong *only* to the object in which they have been
     set but not to any other object instantiated from the same class.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们考虑的例子中，*name* 和 *breed* 被称为 *实例变量*（或属性），因为它们绑定到特定的实例。这意味着这些属性*仅*属于它们被设置的对象，而不属于从同一类实例化的其他对象。
 - en: On the other hand, *family* is a *class variable* (or attribute) because it
     is shared by all instances of the same class.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，*family* 是一个 *类变量*（或属性），因为它由同一类的所有实例共享。
 - en: You may also note that the first argument of the constructor method (or any
     other method) is often called *self*. This argument refers to the object that
     we are in the process of creating. It is good practice to follow the convention
     of setting the first argument to *self* to ensure the readability of your code
     for other programmers.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 您还可以注意到，构造函数方法（或任何其他方法）的第一个参数通常被称为 *self*。这个参数指的是我们正在创建的对象。遵循将第一个参数设置为 *self*
+    的惯例，有助于提高代码的可读性，便于其他程序员理解。
 - en: 'Once we have set our object’s attributes, they can be accessed using the dot
     operator. For example, considering again the *dog1* instance of the *Dog* class,
     its *name* attribute may be accessed as follows:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我们设置了对象的属性，可以使用点操作符来访问它们。例如，再考虑 *Dog* 类的 *dog1* 实例，它的 *name* 属性可以如下访问：
 - en: Python
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Producing the following output:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 产生如下输出：
 - en: Python
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-57
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习用于机器学习的 Python 吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费 7 天电子邮件速成课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，您还可以获得课程的免费 PDF 电子书版本。
 - en: '**Creating Methods and Passing Arguments**'
+  id: totrans-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**创建方法和传递参数**'
 - en: In addition to having a constructor method, a class object can also have several
     other methods for modifying its state.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了拥有构造函数方法，类对象还可以有多个其他方法来修改其状态。
 - en: '*The syntax for defining an instance method is familiar. We pass the argument
     self … It is always the first argument of an instance method.*'
+  id: totrans-62
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*定义实例方法的语法很熟悉。我们传递参数 self … 它总是实例方法的第一个参数。*'
 - en: ''
+  id: totrans-63
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – [Python Fundamentals](https://www.amazon.com/Python-Fundamentals-practical-learning-real-world-ebook/dp/B07K4CVYND/ref=sr_1_1?keywords=python+fundamentals+ebook&qid=1638986660&sr=8-1),
     2018.
+  id: totrans-64
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – [Python 基础](https://www.amazon.com/Python-Fundamentals-practical-learning-real-world-ebook/dp/B07K4CVYND/ref=sr_1_1?keywords=python+fundamentals+ebook&qid=1638986660&sr=8-1)，2018年。
 - en: 'Similar to the constructor method, each instance method can take several arguments,
     with the first one being the argument *self* that lets us set and access the object’s
     attributes:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于构造函数方法，每个实例方法可以接受多个参数，第一个参数是 *self*，它让我们能够设置和访问对象的属性：
 - en: Python
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Different methods of the same object can also use the *self* argument to call
     each other:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 相同对象的不同方法也可以使用 *self* 参数来相互调用：
 - en: Python
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'An output string can then be generated as follows:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后可以生成如下输出字符串：
 - en: Python
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'We find that, in doing so, the *barks on command* input is appended to the
     *tricks* list when the *info()* method calls the *add_tricks()* method. The following
     output is produced:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们发现，在这样做时，*barks on command* 输入会在 *info()* 方法调用 *add_tricks()* 方法时附加到 *tricks*
+    列表中。产生如下输出：
 - en: Python
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '**Class Inheritance**'
+  id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**类继承**'
 - en: Another feature that Python supports is class *inheritance*.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 还支持另一个特性，即类的 *继承*。
 - en: Inheritance is a mechanism that allows a *subclass* (also known as a *derived*
     or *child* class) to access all attributes and methods of a *superclass* (also
     known as a *base* or *parent* class).
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 继承是一种机制，允许*子类*（也称为*派生*或*子*类）访问*超类*（也称为*基*类或*父*类）的所有属性和方法。
 - en: 'The syntax for using a subclass is the following:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用子类的语法如下：
 - en: Python
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'It is also possible that a subclass inherits from multiple base classes, too.
     In this case, the syntax would be as follows:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 子类也可以从多个基类继承。在这种情况下，语法如下：
 - en: Python
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Class attributes and methods are searched for in the base class and also in
     subsequent base classes in the case of multiple inheritances.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 类属性和方法在基类中以及在多重继承的情况下也会在后续的基类中进行搜索。
 - en: Python further allows a method in a subclass to override another method in the
     base class that carries the same name. An overriding method in the subclass may
     be replacing the base class method or simply extending its capabilities. When
     an overriding subclass method is available, it is this method that is executed
     when called, rather than the method with the same name in the base class.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 还允许子类中的方法覆盖基类中具有相同名称的另一个方法。子类中的覆盖方法可能会替代基类方法或只是扩展其功能。当存在覆盖的子类方法时，调用时执行的是这个方法，而不是基类中具有相同名称的方法。
 - en: '**Using Classes in Keras**'
+  id: totrans-88
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**在 Keras 中使用类**'
 - en: A practical use of classes in Keras is to write one’s own callbacks.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Keras 中使用类的一个实际用途是编写自己的回调。
 - en: A callback is a powerful tool in Keras that allows us to look at our model’s
     behavior during the different stages of training, testing, and prediction.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 回调是 Keras 中的一个强大工具，它允许我们在训练、测试和预测的不同阶段观察模型的行为。
 - en: 'Indeed, we may pass a list of callbacks to any of the following:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 确实，我们可以将回调列表传递给以下任意一个：
 - en: keras.Model.fit()
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: keras.Model.fit()
 - en: keras.Model.evaluate()
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: keras.Model.evaluate()
 - en: keras.Model.predict()
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: keras.Model.predict()
 - en: 'The Keras API comes with several built-in callbacks. Nonetheless, we might
     wish to write our own, and for this purpose, we shall look at how to build a *custom*
     callback class. In order to do so, we can inherit several methods from the callback
     base class, which can provide us with information of when:'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: Keras API 提供了几个内置回调。尽管如此，我们可能希望编写自己的回调，为此，我们将看看如何构建一个*custom*回调类。为此，我们可以继承回调基类中的几个方法，这些方法可以为我们提供以下信息：
 - en: Training, testing, and prediction starts and ends
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练、测试和预测开始和结束
 - en: An epoch starts and ends
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个周期开始和结束
 - en: A training, testing, and prediction batch starts and ends
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练、测试和预测批次开始和结束
 - en: 'Let’s first consider a simple example of a custom callback that reports back
     every time that an epoch starts and ends. We will name this custom callback class,
     *EpochCallback*, and override the epoch-level methods, *on_epoch_begin()* and
     *on_epoch_end(),* from the base class, *keras.callbacks.Callback*:'
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先考虑一个简单的自定义回调的示例，该回调每次周期开始和结束时都会报告。我们将这个自定义回调类命名为*EpochCallback*，并覆盖基类*keras.callbacks.Callback*中的周期级方法*on_epoch_begin()*和*on_epoch_end()*：
 - en: Python
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE12]'
+  id: totrans-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'In order to test the custom callback that we have just defined, we need a model
     to train. For this purpose, let’s define a simple Keras model:'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了测试我们刚刚定义的自定义回调，我们需要一个模型进行训练。为此，让我们定义一个简单的 Keras 模型：
 - en: Python
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE13]'
+  id: totrans-104
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'We also need a dataset to train on, for which purpose we will be using the
     MNIST dataset:'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还需要一个数据集来进行训练，为此我们将使用 MNIST 数据集：
 - en: Python
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE14]'
+  id: totrans-107
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'Now, let’s try out the custom callback by adding it to the list of callbacks
     that we pass as input to the *keras.Model.fit()* method:'
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们通过将自定义回调添加到传递给*keras.Model.fit()*方法的回调列表中来尝试一下自定义回调：
 - en: Python
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE15]'
+  id: totrans-110
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'The callback that we have just created produces the following output:'
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们刚刚创建的回调产生了以下输出：
 - en: Python
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE16]'
+  id: totrans-113
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: We can create another custom callback that monitors the loss value at the end
     of each epoch and stores the model weights only if the loss has decreased. To
     this end, we will be reading the loss value from the *log* dict, which stores
     the metrics at the end of each batch and epoch. We will also be accessing the
     model corresponding to the current round of training, testing, or prediction,
     by means of *self.model*.
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以创建另一个自定义回调，在每个周期结束时监控损失值，并仅在损失减少时存储模型权重。为此，我们将从*log*字典中读取损失值，该字典存储每个批次和周期结束时的指标。我们还将通过*self.model*访问与当前训练、测试或预测轮次对应的模型。
 - en: 'Let’s call this custom callback, *CheckpointCallback*:'
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将这个自定义回调称为*CheckpointCallback*：
 - en: Python
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE17]'
+  id: totrans-117
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'We can try this out again, this time including the *CheckpointCallback* into
     the list of callbacks:'
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以再试一次，这次将*CheckpointCallback*包含到回调列表中：
 - en: Python
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE18]'
+  id: totrans-120
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'The following output of the two callbacks together is now produced:'
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在产生了两个回调的以下输出：
 - en: Python
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE19]'
+  id: totrans-123
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Other classes in Keras
+  id: totrans-124
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Keras中的其他类
 - en: Besides callbacks, we can also make derived classes in Keras for custom metrics
     (derived from `keras.metrics.Metrics`), custom layers (derived from `keras.layers.Layer`),
     custom regularizer (derived from `keras.regularizers.Regularizer`), or even custom
     models (derived from `keras.Model`, for such as changing the behavior of invoking
     a model). All you have to do is follow the guideline to change the member functions
     of a class. You must use exactly the same name and parameters in the member functions.
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了回调之外，我们还可以在Keras中为自定义指标（继承自`keras.metrics.Metrics`）、自定义层（继承自`keras.layers.Layer`）、自定义正则化器（继承自`keras.regularizers.Regularizer`）或甚至自定义模型（继承自`keras.Model`，例如更改调用模型的行为）创建派生类。你需要做的就是按照指导原则更改类的成员函数。你必须在成员函数中使用完全相同的名称和参数。
 - en: 'Below is an example from Keras documentation:'
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是Keras文档中的一个示例：
 - en: '[PRE20]'
+  id: totrans-127
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'This reveals why we would need a class for the custom metric: A metric is not
     just a function but a function that computes its value incrementally, once per
     batch of training data during the training cycle. Eventually, the result is reported
     at the `result()` function at the end of an epoch and reset its memory using the
     `reset_state()` function so you can start afresh in the next epoch.'
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 这揭示了为什么我们需要一个自定义指标的类：一个指标不仅仅是一个函数，而是一个在训练周期中每批训练数据时逐步计算其值的函数。最终，结果在一个纪元结束时通过`result()`函数报告，并使用`reset_state()`函数重置其内存，以便在下一个纪元中重新开始。
 - en: For the details on what exactly has to be derived, you should refer to Keras’
     documentation.
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: 有关具体需要派生的内容，请参阅Keras的文档。
 - en: '**Further Reading**'
+  id: totrans-130
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你希望深入了解这个主题，这部分提供了更多的资源。
 - en: '**Books**'
+  id: totrans-132
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Python Fundamentals](https://www.amazon.com/Python-Fundamentals-practical-learning-real-world-ebook/dp/B07K4CVYND/ref=sr_1_1?keywords=python+fundamentals+ebook&qid=1638986660&sr=8-1),
     2018.'
+  id: totrans-133
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python Fundamentals](https://www.amazon.com/Python-Fundamentals-practical-learning-real-world-ebook/dp/B07K4CVYND/ref=sr_1_1?keywords=python+fundamentals+ebook&qid=1638986660&sr=8-1)，2018。'
 - en: '**Websites**'
+  id: totrans-134
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: Python classes, [https://docs.python.org/3/tutorial/classes.html](https://docs.python.org/3/tutorial/classes.html)
+  id: totrans-135
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python类，[https://docs.python.org/3/tutorial/classes.html](https://docs.python.org/3/tutorial/classes.html)
 - en: Creating custom callback in Keras, [https://www.tensorflow.org/guide/keras/custom_callback](https://www.tensorflow.org/guide/keras/custom_callback)
+  id: totrans-136
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在Keras中创建自定义回调，[https://www.tensorflow.org/guide/keras/custom_callback](https://www.tensorflow.org/guide/keras/custom_callback)
 - en: Creating custom metrics in Keras, [https://keras.io/api/metrics/#creating-custom-metrics](https://keras.io/api/metrics/#creating-custom-metrics)
+  id: totrans-137
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在Keras中创建自定义指标，[https://keras.io/api/metrics/#creating-custom-metrics](https://keras.io/api/metrics/#creating-custom-metrics)
 - en: Making new layers and models via subclassing, [https://keras.io/guides/making_new_layers_and_models_via_subclassing/](https://keras.io/guides/making_new_layers_and_models_via_subclassing/)
+  id: totrans-138
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过子类化创建新层和模型，[https://keras.io/guides/making_new_layers_and_models_via_subclassing/](https://keras.io/guides/making_new_layers_and_models_via_subclassing/)
 - en: '**Summary**'
+  id: totrans-139
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered Python classes and their functionality.
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了Python类及其功能。
 - en: 'Specifically, you learned:'
+  id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: Why Python classes are important
+  id: totrans-142
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么Python类很重要
 - en: How to define and instantiate a class and set its attributes
+  id: totrans-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何定义和实例化类并设置其属性
 - en: How to create methods and pass arguments
+  id: totrans-144
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何创建方法和传递参数
 - en: What is class inheritance
+  id: totrans-145
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是类继承
 - en: How to use classes to implement callbacks in Keras
+  id: totrans-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用类来实现Keras中的回调
 - en: Do you have any questions?
+  id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提问，我会尽力回答。

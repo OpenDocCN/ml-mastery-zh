@@ -1,88 +1,134 @@
 - en: Using Dropout Regularization in PyTorch Models
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 模型中使用 Dropout 正则化
 - en: 原文：[https://machinelearningmastery.com/using-dropout-regularization-in-pytorch-models/](https://machinelearningmastery.com/using-dropout-regularization-in-pytorch-models/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/using-dropout-regularization-in-pytorch-models/](https://machinelearningmastery.com/using-dropout-regularization-in-pytorch-models/)
 - en: '[Dropout](https://machinelearningmastery.com/dropout-for-regularizing-deep-neural-networks/)
     is a simple and powerful regularization technique for neural networks and deep
     learning models.'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Dropout](https://machinelearningmastery.com/dropout-for-regularizing-deep-neural-networks/)
+    是一种简单而强大的神经网络和深度学习模型的正则化技术。'
 - en: In this post, you will discover the Dropout regularization technique and how
     to apply it to your models in PyTorch models.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你将发现 Dropout 正则化技术及其如何应用于 PyTorch 模型。
 - en: 'After reading this post, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 阅读完这篇文章后，你将了解：
 - en: How the Dropout regularization technique works
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Dropout 正则化技术的工作原理
 - en: How to use Dropout on your input layers
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在输入层上使用 Dropout
 - en: How to use Dropout on your hidden layers
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在隐藏层上使用 Dropout
 - en: How to tune the dropout level on your problem
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何调整你的问题的 dropout 水平
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    **启动你的项目**。它提供了 **自学教程** 和 **有效代码**。'
 - en: Let’s get started.![](../Images/53f7b7fdd299d10c88720ea518639304.png)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/53f7b7fdd299d10c88720ea518639304.png)
 - en: Using Dropout Regularization in PyTorch Models
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 模型中使用 Dropout 正则化
 - en: Photo by [Priscilla Fraire](https://unsplash.com/photos/65dCe4Zuek4). Some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Priscilla Fraire](https://unsplash.com/photos/65dCe4Zuek4) 拍摄。部分权利保留。
 - en: Overview
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This post is divided into six parts; they are
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为六个部分；它们是
 - en: Dropout Regularization for Neural Networks
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 神经网络的 Dropout 正则化
 - en: Dropout Regularization in PyTorch
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PyTorch 中的 Dropout 正则化
 - en: Using Dropout on the Input Layer
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在输入层上使用 Dropout
 - en: Using Dropout on the Hidden Layers
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在隐藏层上使用 Dropout
 - en: Dropout in Evaluation Mode
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 评估模式中的 Dropout
 - en: Tips for Using Dropout
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Dropout 的提示
 - en: Dropout Regularization for Neural Networks
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 神经网络的 Dropout 正则化
 - en: Dropout is a regularization technique for neural network models proposed around
     2012 to 2014\. It is a layer in the neural network. During training of a neural
     network model, it will take the output from its previous layer, randomly select
@@ -90,45 +136,63 @@
     ignored them. This means that their contribution to the activation of downstream
     neurons is temporally removed on the forward pass, and any weight updates are
     not applied to the neuron on the backward pass.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: Dropout 是一种用于神经网络模型的正则化技术，提出于 2012 年至 2014 年间。它是神经网络中的一层。在神经网络模型的训练过程中，它会从前一层接收输出，随机选择一些神经元并将其归零，然后传递到下一层，从而有效地忽略它们。这意味着它们对下游神经元激活的贡献在前向传递时被暂时移除，并且在反向传递时不会对这些神经元应用任何权重更新。
 - en: When the model is used for inference, dropout layer is just to scale all the
     neurons constantly to compensate the effect of dropping out during training.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 当模型用于推断时，dropout 层只是将所有神经元的权重缩放，以补偿训练过程中丢弃的影响。
 - en: Dropout is destructive but surprisingly can improve the model’s accuracy. As
     a neural network learns, neuron weights settle into their context within the network.
     Weights of neurons are tuned for specific features, providing some specialization.
     Neighboring neurons come to rely on this specialization, which, if taken too far,
     can result in a fragile model too specialized for the training data. This reliance
     on context for a neuron during training is referred to as complex co-adaptations.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: Dropout 是一种破坏性的技术，但惊人的是，它可以提高模型的准确性。当神经网络学习时，神经元权重会在网络中形成其上下文。神经元的权重被调节以适应特定特征，从而提供一些专门化。相邻的神经元会依赖这种专门化，如果过度依赖，可能会导致模型过于专门化，从而对训练数据过于脆弱。这种在训练过程中对神经元上下文的依赖被称为复杂的协同适应。
 - en: You can imagine that if neurons are randomly dropped out of the network during
     training, other neurons will have to step in and handle the representation required
     to make predictions for the missing neurons. This is believed to result in multiple
     independent internal representations being learned by the network.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以想象，如果在训练过程中神经元被随机丢弃，其他神经元将不得不介入并处理缺失神经元所需的表示。这被认为会导致网络学习到多个独立的内部表示。
 - en: The effect is that the network becomes less sensitive to the specific weights
     of neurons. This, in turn, results in a network capable of better generalization
     and less likely to overfit the training data.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 其效果是网络对神经元的特定权重不那么敏感。这反过来使网络能够更好地进行泛化，并且不容易对训练数据进行过拟合。
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取免费的 PDF 电子书版本课程。
 - en: Dropout Regularization in PyTorch
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: PyTorch 中的 Dropout 正则化
 - en: You do not need to randomly select elements from a PyTorch tensor to implement
     dropout manually. The `nn.Dropout()` layer from PyTorch can be introduced into
     your model. It is implemented by randomly selecting nodes to be dropped out with
@@ -138,97 +202,148 @@
     layer operates at inference will be an identify function (i.e., no effect, simply
     copy over the input tensor as output tensor). You should make sure to turn the
     model into inference mode when evaluating the the model.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 你不需要从 PyTorch 张量中随机选择元素来手动实现 dropout。可以将 PyTorch 的 `nn.Dropout()` 层引入到你的模型中。它通过以给定的概率
+    $p$（例如 20%）随机选择要丢弃的节点来实现。在训练循环中，PyTorch 的 dropout 层进一步将结果张量按 $\dfrac{1}{1-p}$
+    的因子缩放，以保持平均张量值。由于这种缩放，dropout 层在推理时会成为一个恒等函数（即无效，仅将输入张量复制为输出张量）。你应确保在评估模型时将模型转换为推理模式。
 - en: Let’s see how to use `nn.Dropout()` in a PyTorch model.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看如何在 PyTorch 模型中使用 `nn.Dropout()`。
 - en: The examples will use the [Sonar dataset](http://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks)).
     This is a binary classification problem that aims to correctly identify rocks
     and mock-mines from sonar chirp returns. It is a good test dataset for neural
     networks because all the input values are numerical and have the same scale.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 示例将使用 [Sonar 数据集](http://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks))。这是一个二分类问题，旨在正确识别从声纳回波返回的岩石和假矿。它是一个适合神经网络的测试数据集，因为所有输入值都是数值型且具有相同的尺度。
 - en: The dataset can be [downloaded from the UCI Machine Learning repository](http://archive.ics.uci.edu/ml/machine-learning-databases/undocumented/connectionist-bench/sonar/sonar.all-data).
     You can place the sonar dataset in your current working directory with the file
     name *sonar.csv*.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据集可以 [从 UCI 机器学习库下载](http://archive.ics.uci.edu/ml/machine-learning-databases/undocumented/connectionist-bench/sonar/sonar.all-data)。你可以将声纳数据集放在当前工作目录中，文件名为
+    *sonar.csv*。
 - en: You will evaluate the developed models using scikit-learn with 10-fold cross
     validation in order to tease out differences in the results better.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将使用 scikit-learn 进行 10 折交叉验证来评估开发的模型，以便更好地揭示结果中的差异。
 - en: There are 60 input values and a single output value. The input values are standardized
     before being used in the network. The baseline neural network model has two hidden
     layers, the first with 60 units and the second with 30\. Stochastic gradient descent
     is used to train the model with a relatively low learning rate and momentum.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据集中有 60 个输入值和一个输出值。输入值在用于网络之前会被标准化。基线神经网络模型有两个隐藏层，第一个层有 60 个单元，第二个层有 30 个。使用随机梯度下降来训练模型，学习率和动量相对较低。
 - en: 'The full baseline model is listed below:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的基线模型如下所示：
 - en: '[PRE0]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Running the example generates an estimated classification accuracy of 82%.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行示例会产生 82% 的估计分类准确率。
 - en: '[PRE1]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Using Dropout on the Input Layer
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在输入层中使用 Dropout
 - en: Dropout can be applied to input neurons called the visible layer.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: Dropout 可以应用于称为可见层的输入神经元。
 - en: In the example below, a new Dropout layer between the input and the first hidden
     layer was added. The dropout rate is set to 20%, meaning one in five inputs will
     be randomly excluded from each update cycle.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的示例中，在输入层和第一个隐藏层之间添加了一个新的 Dropout 层。dropout 率设置为 20%，意味着每次更新周期中将随机排除五分之一的输入。
 - en: 'Continuing from the baseline example above, the code below exercises the same
     network with input dropout:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 从上面的基线示例继续，下面的代码使用输入 dropout 对相同的网络进行测试：
 - en: '[PRE2]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Running the example provides a slight drop in classification accuracy, at least
     on a single test run.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行示例会导致分类准确率略微下降，至少在单次测试运行中。
 - en: '[PRE3]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Using Dropout on Hidden Layers
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在隐藏层中使用 Dropout
 - en: Dropout can be applied to hidden neurons in the body of your network model.
     This is more common.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: Dropout可以应用于网络模型的隐藏神经元。这种做法更为常见。
 - en: 'In the example below, Dropout is applied between the two hidden layers and
     between the last hidden layer and the output layer. Again a dropout rate of 20%
     is used:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的示例中，Dropout被应用在两个隐藏层之间以及最后一个隐藏层和输出层之间。再次使用了20%的Dropout率：
 - en: '[PRE4]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: You can see that in this case, adding dropout layer improved the accuracy a
     bit.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以看到，在这种情况下，添加Dropout层稍微提高了准确性。
 - en: '[PRE5]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Dropout in Evaluation Mode
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 评估模式下的Dropout
 - en: Dropout will randomly reset some of the input to zero. If you wonder what happens
     after you have finished training, the answer is nothing! The PyTorch dropout layer
     should run like an identity function when the model is in evaluation mode. That’s
@@ -236,94 +351,138 @@
     the goal of dropout layer is to make sure the network learn enough clues about
     the input for the prediction, rather than depend on a rare phenomenon in the data.
     But on inference, you should provide as much information as possible to the model.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: Dropout将随机将部分输入重置为零。如果您想知道训练结束后会发生什么，答案是什么也不会发生！当模型处于评估模式时，PyTorch的Dropout层应该像一个恒等函数一样运行。这很重要，因为Dropout层的目标是确保网络对输入学习足够的线索以进行预测，而不是依赖于数据中的罕见现象。但是在推理时，您应尽可能向模型提供尽可能多的信息。
 - en: Tips for Using Dropout
+  id: totrans-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用Dropout的技巧
 - en: The original paper on Dropout provides experimental results on a suite of standard
     machine learning problems. As a result, they provide a number of useful heuristics
     to consider when using Dropout in practice.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: Dropout的原始论文提供了一系列标准机器学习问题的实验结果。因此，他们提供了一些在实践中使用Dropout时需要考虑的有用启发。
 - en: Generally, use a small dropout value of 20%-50% of neurons, with 20% providing
     a good starting point. A probability too low has minimal effect, and a value too
     high results in under-learning by the network.
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通常，使用20%-50%的神经元的小Dropout值，其中20%是一个很好的起点。概率过低几乎没有效果，而值过高会导致网络学习不足。
 - en: Use a larger network. You are likely to get better performance when Dropout
     is used on a larger network, giving the model more of an opportunity to learn
     independent representations.
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用更大的网络。当在更大的网络上使用Dropout时，通常能够获得更好的性能，因为这给模型更多机会学习独立的表示。
 - en: Use Dropout on incoming (visible) as well as hidden units. Application of Dropout
     at each layer of the network has shown good results.
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在可见单元（输入）和隐藏单元上使用Dropout。在网络的每一层应用Dropout已经显示出良好的结果。
 - en: Use a large learning rate with decay and a large momentum. Increase your learning
     rate by a factor of 10 to 100 and use a high momentum value of 0.9 or 0.99.
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用大的学习率和衰减，以及大的动量。将学习率增加10到100倍，并使用0.9或0.99的高动量值。
 - en: Constrain the size of network weights. A large learning rate can result in very
     large network weights. Imposing a constraint on the size of network weights, such
     as max-norm regularization, with a size of 4 or 5 has been shown to improve results.
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 约束网络权重的大小。大学习率可能导致非常大的网络权重。施加网络权重大小的约束，例如最大范数正则化，大小为4或5，已被证明能够改善结果。
 - en: Further Readings
+  id: totrans-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: Below are resources you can use to learn more about Dropout in neural networks
     and deep learning models.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是可以进一步了解神经网络和深度学习模型中Dropout的资源。
 - en: Papers
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 论文
 - en: '[Dropout: A Simple Way to Prevent Neural Networks from Overfitting](http://jmlr.org/papers/v15/srivastava14a.html)'
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Dropout: 一种简单的防止神经网络过拟合的方法](http://jmlr.org/papers/v15/srivastava14a.html)'
 - en: '[Improving neural networks by preventing co-adaptation of feature detectors](http://arxiv.org/abs/1207.0580)'
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[通过防止特征检测器的共适应来改进神经网络](http://arxiv.org/abs/1207.0580)'
 - en: Online materials
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 在线资料
 - en: '[How does the dropout method work in deep learning?](https://www.quora.com/How-does-the-dropout-method-work-in-deep-learning)
     on Quora'
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[深度学习中Dropout方法如何工作？](https://www.quora.com/How-does-the-dropout-method-work-in-deep-learning)
+    在Quora上'
 - en: '[nn.Dropout](https://pytorch.org/docs/stable/generated/torch.nn.Dropout.html)
     from PyTorch documentation'
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[nn.Dropout](https://pytorch.org/docs/stable/generated/torch.nn.Dropout.html)
+    来自PyTorch文档'
 - en: Summary
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this post, you discovered the Dropout regularization technique for deep
     learning models. You learned:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，您将了解到用于深度学习模型的Dropout正则化技术。您将学到：
 - en: What Dropout is and how it works
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Dropout是什么以及它如何工作
 - en: How you can use Dropout on your own deep learning models.
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在自己的深度学习模型中使用Dropout。
 - en: Tips for getting the best results from Dropout on your own models.
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在您自己的模型上获得Dropout最佳结果的技巧。

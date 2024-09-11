@@ -1,157 +1,234 @@
 - en: Python Debugging Tools
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Python 调试工具
 - en: 原文：[https://machinelearningmastery.com/python-debugging-tools/](https://machinelearningmastery.com/python-debugging-tools/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/python-debugging-tools/](https://machinelearningmastery.com/python-debugging-tools/)
 - en: In all programming exercises, it is difficult to go far and deep without a handy
     debugger. The built-in debugger, `pdb`, in Python is a mature and capable one
     that can help us a lot if you know how to use it. In this tutorial, we are going
     to see what the `pdb` can do for you as well as some of its alternatives.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在所有编程练习中，没有一个方便的调试器是很难深入进行的。Python 内置的调试器 `pdb` 是一个成熟且强大的工具，如果你知道如何使用它，它能为我们提供很大帮助。在本教程中，我们将了解
+    `pdb` 能为你做什么以及一些替代工具。
 - en: 'In this tutorial, you will learn:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将学习：
 - en: What a debugger can do
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 调试器能做什么
 - en: How to control a debugger
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何控制调试器
 - en: The limitation of Python’s pdb and its alternatives
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python 的 pdb 及其替代方案的局限性
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请查看我的新书[《机器学习 Python》](https://machinelearningmastery.com/python-for-machine-learning/)，包括*逐步教程*和*所有示例的
+    Python 源代码*文件。'
 - en: Let’s get started.![](../Images/65633c08afe79c993b2b94e190c42481.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/65633c08afe79c993b2b94e190c42481.png)
 - en: Python debugging tools
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 调试工具
 - en: Photo by [Thomas Park](https://unsplash.com/photos/AF2k44m22-I). Some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[托马斯·帕克](https://unsplash.com/photos/AF2k44m22-I)提供。保留所有权利。
 - en: Tutorial Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: This tutorial is in 4 parts; they are
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为 4 部分；它们是
 - en: The concept of running a debugger
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 调试器的运行概念
 - en: Walk-through of using a debugger
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用调试器的演练
 - en: Debugger in Visual Studio Code
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Visual Studio Code 中的调试器
 - en: Using GDB on a running Python program
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在运行中的 Python 程序上使用 GDB
 - en: The concept of running a debugger
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 调试器的运行概念
 - en: The purpose of a debugger is to provide you with a slow-motion button to control
     the flow of a program. It also allows you to freeze the program at a certain time
     and examine the state.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 调试器的目的是为你提供一个慢动作按钮来控制程序的流程。它还允许你在某个时间点冻结程序并检查状态。
 - en: The simplest operation under a debugger is to **step through** the code. That
     is to run one line of code at a time and wait for your acknowledgment before proceeding
     to the next. The reason we want to run the program in a stop-and-go fashion is
     to allow us to check the logic and value or verify the algorithm.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 在调试器下，最简单的操作是**逐步执行**代码。即一次运行一行代码，等待你的确认后再继续下一行。我们希望以这种停停走走的方式运行程序，是为了检查逻辑和数值或验证算法。
 - en: For a larger program, we may not want to step through the code from the beginning
     as it may take a long time before we reach the line that we are interested in.
     Therefore, debuggers also provide a **breakpoint** feature that will kick in when
     a specific line of code is reached. From that point onward, we can step through
     it line by line.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于较大的程序，我们可能不想从头开始逐步执行代码，因为这可能需要很长时间才能到达我们感兴趣的行。因此，调试器还提供了一个**断点**功能，当达到特定代码行时它会触发。从那时起，我们可以逐行执行代码。
 - en: Walk-through of using a debugger
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用调试器的演练
 - en: 'Let’s see how we can make use of a debugger with an example. The following
     is the Python code for showing the [particle swarm optimization](https://machinelearningmastery.com/a-gentle-introduction-to-particle-swarm-optimization/)
     in an animation:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看如何使用调试器，通过一个例子来演示。以下是用于显示[粒子群优化](https://machinelearningmastery.com/a-gentle-introduction-to-particle-swarm-optimization/)动画的
+    Python 代码：
 - en: '[PRE0]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The particle swarm optimization is done by executing the `update()` function
     a number of times. Each time it runs, we are closer to the optimal solution to
     the objective function. We are using matplotlib’s `FuncAnimation()` function instead
     of a loop to run `update()`, so we can capture the position of the particles at
     each iteration.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 粒子群优化通过执行 `update()` 函数若干次来完成。每次运行时，我们距离目标函数的最优解越来越近。我们使用 matplotlib 的 `FuncAnimation()`
+    函数来代替循环执行 `update()`，以便我们可以捕捉每次迭代中粒子的位置。
 - en: 'Assume this program is saved as `pso.py`. To run this program in the command
     line simply requires entering:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设这个程序保存为 `pso.py`。要在命令行中运行这个程序，只需输入：
 - en: '[PRE1]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The solution will be printed to the screen, and the animation will be saved
     as `PSO.gif`. But if we want to run it with the Python debugger, we enter the
     following in the command line:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果将被打印到屏幕上，动画将保存为 `PSO.gif`。但如果我们想使用 Python 调试器运行它，我们需要在命令行中输入以下内容：
 - en: '[PRE2]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The `-m pdb` part will load the `pdb` module and let the module execute the
     file `pso.py` for you. When you run this command, you will be welcomed with the
     `pdb` prompt as follows:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '`-m pdb`部分将加载`pdb`模块并让该模块为你执行文件`pso.py`。当你运行此命令时，你将看到如下的`pdb`提示符：'
 - en: '[PRE3]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'At the prompt, you can type in the debugger commands. To show the list of supported
     commands, we can use `h`. And to show the details of the specific command (such
     as `list`), we can use `h list`:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 在提示符下，你可以输入调试器命令。要显示支持的命令列表，我们可以使用`h`。要显示特定命令的详细信息（例如`list`），我们可以使用`h list`：
 - en: '[PRE4]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'At the beginning of a debugger session, we start with the first line of the
     program. Normally, a Python program would start with a few lines of `import`.
     We can use `n` to move to the next line or `s` to step into a function:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在调试会话开始时，我们从程序的第一行开始。通常，Python 程序会以几行`import`开头。我们可以使用`n`移动到下一行，或使用`s`进入函数：
 - en: '[PRE5]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: In `pdb`, the line of code will be printed before the prompt. Usually, the `n`
     command is what we would prefer as it executes that line of code and moves the
     flow at the **same level** without drilling down deeper. When we are at a line
     that calls a function (such as line 11 of the above program, that runs `z = f(x,
     y)`), we can use `s` to **step into** the function.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`pdb`中，代码行会在提示符之前打印出来。通常，我们更倾向于使用`n`命令，因为它会执行那一行代码并在**相同级别**上移动流程，而不会进一步深入。当我们处于调用函数的行（例如上述程序中的第11行，运行`z
+    = f(x, y)`）时，我们可以使用`s`来**进入**函数。
 - en: In the above example, we first step into the `f()` function, then another step
     to execute the computation, and finally, collect the return value from the function
     to give it back to the line that invoked the function. We see there are multiple
@@ -161,16 +238,23 @@
     function, but the debugger’s `s` command does not go into it. It is because the
     `np.sin()` function is not implemented in Python but in C. The `pdb` does not
     support compiled code.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述示例中，我们首先进入了`f()`函数，然后执行计算，再将返回值从函数中收集出来并返回到调用函数的行。我们发现即使是像一行这样的简单函数，也需要多个`s`命令，因为从语句中找到函数、调用函数和返回函数各需一步。我们还看到，在函数体内，我们像调用函数一样调用了`np.sin()`，但调试器的`s`命令没有进入它。这是因为`np.sin()`函数不是用
+    Python 实现的，而是用 C 实现的。`pdb`不支持编译代码。
 - en: 'If the program is long, it is quite boring to use the `n` command many times
     to move to somewhere we are interested. We can use the `until` command with a
     line number to let the debugger run the program until that line is reached:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果程序很长，多次使用`n`命令移动到我们感兴趣的地方会非常无聊。我们可以使用`until`命令和行号，让调试器运行程序直到到达那一行：
 - en: '[PRE6]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'A command similar to `until` is `return`, which will execute the current function
     until the point that it is about to return. You can consider that as `until` with
     the line number equal to the last line of the current function. The `until` command
@@ -179,48 +263,71 @@
     it. For example, if we are interested in how each iteration of the optimization
     algorithm moves the solution, we can set a breakpoint right after the update is
     applied:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于`until`的命令是`return`，它将执行当前函数直到即将返回的点。你可以将其视为`until`，行号等于当前函数的最后一行。`until`命令是一次性的，意味着它只会将你带到那一行。如果你希望每次程序运行到特定行时**停下来**，我们可以在该行设置**断点**。例如，如果我们对优化算法每次迭代如何移动解感兴趣，可以在应用更新后立即设置一个断点：
 - en: '[PRE7]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: After we set a breakpoint with the `b` command, we can let the debugger run
     our program until the breakpoint is hit. The `c` command means to **continue**
     until a trigger is met. At any point, we can use the `bt` command to show the
     traceback to check how we reached that point. We can also use the `p` command
     to print the variables (or an expression) to check what value they are holding.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们使用`b`命令设置断点后，可以让调试器运行程序直到断点被触发。`c`命令表示**继续**执行，直到遇到触发条件。任何时候，我们都可以使用`bt`命令显示
+    traceback 来检查我们是如何到达当前点的。我们也可以使用`p`命令打印变量（或表达式）来检查它们保存的值。
 - en: 'Indeed, we can place a breakpoint with a condition so that it will stop only
     if the condition is met. The below will impose a condition that the first random
     number (`r1`) is greater than 0.5:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 确实，我们可以设置带条件的断点，以便只有在满足条件时才会停下。下面的条件是第一个随机数（`r1`）大于 0.5：
 - en: '[PRE8]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Indeed, we can also try to manipulate variables while we are debugging.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 确实，我们还可以尝试在调试过程中操作变量。
 - en: '[PRE9]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: In the above, we use the `l` command to list the code around the current statement
     (identified by the arrow `->`). In the listing, we can also see the breakpoint
     (marked with `B`) is set at line 40\. As we can see the current value of `V` and
     `r1`, we can modify `r1` from 0.54 to 0.2 and run the statement on `V` again by
     using `j` (jump) to line 38\. And as we see after we execute the statement with
     the `n` command, the value of `V` is changed.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述内容中，我们使用 `l` 命令列出当前语句周围的代码（由箭头 `->` 标识）。在列表中，我们还可以看到断点（用 `B` 标记）设置在第 40 行。我们可以看到
+    `V` 和 `r1` 的当前值，我们可以将 `r1` 从 0.54 修改为 0.2，然后使用 `j`（跳转）到第 38 行再次运行语句。正如我们所见，使用
+    `n` 命令执行语句后，`V` 的值发生了变化。
 - en: 'If we use a breakpoint and find something unexpected, chances are that it was
     caused by issues in a different level of the call stack. Debuggers allow you to
     navigate to different levels:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们使用断点并发现了一些意外情况，可能是由于调用堆栈中不同级别的问题导致的。调试器允许你导航到不同的级别：
 - en: '[PRE10]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: In the above, the first `bt` command gives the call stack when we are at the
     bottom frame, i.e., the deepest of the call stack. We can see that we are about
     to execute the statement `X = X + V`. Then the `up` command moves our focus to
@@ -228,33 +335,50 @@
     (as we see at the line preceded with `>`). Since our focus is changed, the list
     command `l` will print a different fragment of code, and the `p` command can examine
     a variable in a different scope.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述内容中，第一个 `bt` 命令在我们处于底部帧时给出调用堆栈，即调用堆栈的最深处。我们可以看到我们即将执行语句 `X = X + V`。然后 `up`
+    命令将我们的焦点移动到调用堆栈上一级，即运行 `update()` 函数的行（如我们在前面带有 `>` 的行中看到的）。由于我们的焦点发生了变化，列表命令
+    `l` 将打印出不同的代码片段，而 `p` 命令可以检查不同作用域中的变量。
 - en: The above covers most of the useful commands in the debugger. If we want to
     terminate the debugger (which also terminates the program), we can use the `q`
     command to quit or hit Ctrl-D if your terminal supports it.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述内容涵盖了调试器中大部分有用的命令。如果我们想终止调试器（也会终止程序），可以使用 `q` 命令退出，或者如果终端支持的话按 Ctrl-D。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用 Python 进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费 7 天邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得免费 PDF 电子书版本的课程。
 - en: Debugger in Visual Studio Code
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Visual Studio Code 中的调试器
 - en: If you are not very comfortable running the debugger in command line, you can
     rely on the debugger from your IDE. Almost always, the IDE will provide you with
     some debugging facility. In Visual Studio Code, for example, you can launch the
     debugger in the “Run” menu.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你在命令行中运行调试器不是很舒适，可以依赖 IDE 中的调试器。几乎所有情况下，IDE 都会提供一些调试功能。例如，在 Visual Studio
+    Code 中，你可以在“运行”菜单中启动调试器。
 - en: The screen below shows Visual Studio Code during a debugging session. The buttons
     at the center top correspond to the `pdb` commands `continue`, `next`, `step`,
     `return`, `restart`, and `quit`, respectively. A breakpoint can be created by
@@ -262,138 +386,213 @@
     The bonus of using an IDE is that the variables are shown immediately at each
     debugging step. We can also watch for an express and show the call stack. These
     are on the left side of the screen below.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面的屏幕显示了在调试会话期间的 Visual Studio Code。中心顶部的按钮分别对应 `pdb` 命令 `continue`、`next`、`step`、`return`、`restart`
+    和 `quit`。通过点击行号可以创建一个断点，并且会出现一个红点来标识它。使用 IDE 的好处是可以在每一步调试中立即显示变量。我们还可以查看表达式并显示调用堆栈。这些功能位于下面屏幕的左侧。
 - en: '![](../Images/a5bac4be6701fa2a2b5daf898bdf1f87.png)'
+  id: totrans-57
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/a5bac4be6701fa2a2b5daf898bdf1f87.png)'
 - en: Using GDB on a running Python program
+  id: totrans-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在运行中的 Python 程序中使用 GDB
 - en: The `pdb` from Python is suitable only for programs running from scratch. If
     we have a program already running but is stuck, we cannot use pdb to **hook into**
     it to check what’s going on. The Python extension from GDB, however, can do this.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 的 `pdb` 仅适用于从头开始运行的程序。如果我们有一个已经运行但卡住的程序，则不能使用 pdb 来 **hook into** 它以检查发生了什么。然而，GDB
+    的 Python 扩展可以做到这一点。
 - en: 'To demonstrate, let’s consider a GUI application. It will wait until the user’s
     action before the program can end. Hence it is a perfect example of how we can
     use `gdb` to hook into a running process. The code below is a “hello world” program
     using PyQt5 that just creates an empty window and waits for the user to close
     it:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 举个例子，让我们考虑一个 GUI 应用程序。它会等待用户操作后才会结束。因此，它是一个完美的例子，说明我们如何使用 `gdb` 挂钩到正在运行的进程中。下面的代码是一个使用
+    PyQt5 的“hello world”程序，它只是创建一个空窗口并等待用户关闭它：
 - en: '[PRE11]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Let’s save this program as `simpleqt.py` and run it using the following in
     Linux under  an X window environment:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们将此程序保存为 `simpleqt.py` 并在 Linux 下的 X 窗口环境中使用以下命令运行：
 - en: '[PRE12]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'The final `&` will make it run in the background. Now we can check for its
     process ID using the `ps` command:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 最终的 `&` 将使其在后台运行。现在我们可以使用 `ps` 命令检查其进程 ID：
 - en: '[PRE13]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '[PRE14]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'The `ps` command will tell you the process ID in the first column. If you have
     `gdb` installed with a Python extension, we can run:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: '`ps` 命令将告诉你第一列中的进程 ID。如果你安装了带有 Python 扩展的 `gdb`，我们可以运行：'
 - en: '[PRE15]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'and it will bring you into the GDB’s prompt:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 它将带你进入 GDB 的提示符：
 - en: '[PRE16]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: GDB is supposed to be a debugger for compiled programs (usually from C or C++).
     The Python extension allows you to check the code (written in Python) being run
     by the Python interpreter (written in C). It is less feature-rich than Python’s
     `PDB` in terms of handling Python code but valuable when you need to hook it into
     a running process.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: GDB 应该是一个用于编译程序（通常是 C 或 C++）的调试器。Python 扩展允许你检查由 Python 解释器（用 C 编写）运行的代码（用 Python
+    编写）。在处理 Python 代码方面，它的功能不如 Python 的`PDB`丰富，但当你需要将其挂钩到正在运行的进程中时，它非常有价值。
 - en: The commands supported under GDB are `py-list`, `py-bt`, `py-up`, `py-down`,
     and `py-print`. They are comparable to the same commands in `pdb` without the
     `py-` prefix.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: GDB 支持的命令有 `py-list`、`py-bt`、`py-up`、`py-down` 和 `py-print`。它们与 `pdb` 中相同的命令类似，只是没有
+    `py-` 前缀。
 - en: GDB is useful if your Python code uses a library compiled from C (such as numpy),
     and you want to investigate how it runs. It is also helpful to learn why your
     program is frozen by checking the call stack in run time. However, it may be rare
     that you need to use GDB to debug your machine learning project.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你的 Python 代码使用了从 C 编译的库（如 numpy），并且你想调查它的运行情况，GDB 很有用。它也有助于通过检查运行时的调用栈来了解程序为何被冻结。然而，使用
+    GDB 调试你的机器学习项目可能比较少见。
 - en: Further Readings
+  id: totrans-74
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: The Python `pdb` module’s document is at
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: Python `pdb` 模块的文档在
 - en: '[https://docs.python.org/3/library/pdb.html](https://docs.python.org/3/library/pdb.html)'
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://docs.python.org/3/library/pdb.html](https://docs.python.org/3/library/pdb.html)'
 - en: 'But `pdb` is not the only debugger available. Some third-party tools are listed
     in:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 但 `pdb` 不是唯一的调试器。一些第三方工具列在：
 - en: '[Python Debugging Tools wiki page](https://wiki.python.org/moin/PythonDebuggingTools)'
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 调试工具维基页面](https://wiki.python.org/moin/PythonDebuggingTools)'
 - en: 'For GDB with Python extension, it is best used in a Linux environment. Please
     see the following for more details on its usage:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于带有 Python 扩展的 GDB，最佳使用环境是 Linux。有关其使用的更多细节，请参见以下内容：
 - en: '[Easier Python Debugging](https://fedoraproject.org/wiki/Features/EasierPythonDebugging)'
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[更简单的 Python 调试](https://fedoraproject.org/wiki/Features/EasierPythonDebugging)'
 - en: '[Debugging with GDB](https://wiki.python.org/moin/DebuggingWithGdb)'
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[使用 GDB 调试](https://wiki.python.org/moin/DebuggingWithGdb)'
 - en: 'The command interface of `pdb` is influenced by that of GDB. Hence we can learn
     the technique of debugging a program in general from the latter. A good primer
     on how to use a debugger would be:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: '`pdb` 的命令接口受到 GDB 的影响。因此，我们可以从后者学习调试程序的一般技术。一个很好的调试器使用入门书籍是：'
 - en: '[The Art of Debugging with GDB, DDD, and Eclipse](https://www.amazon.com/dp/B00HQ1L78K),
     by Norman Matloff (2008)'
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[使用 GDB、DDD 和 Eclipse 调试的艺术](https://www.amazon.com/dp/B00HQ1L78K)，作者 Norman
+    Matloff（2008）'
 - en: Summary
+  id: totrans-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you discovered the features of Python’s `pdb`.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了 Python 的 `pdb` 的功能。
 - en: 'Specifically, you learned:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: What can `pdb` do and how to use it
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`pdb` 能做什么以及如何使用它'
 - en: The limitation and alternatives of `pdb`
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`pdb` 的限制和替代方案'
 - en: In the next post, we will see that `pdb` is also a Python function that can
     be called inside a Python program.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一篇文章中，我们将看到 `pdb` 也是一个可以在 Python 程序内部调用的 Python 函数。

@@ -1,123 +1,186 @@
 - en: Using Learning Rate Schedule in PyTorch Training
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 训练中使用学习率调度
 - en: 原文：[https://machinelearningmastery.com/using-learning-rate-schedule-in-pytorch-training/](https://machinelearningmastery.com/using-learning-rate-schedule-in-pytorch-training/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/using-learning-rate-schedule-in-pytorch-training/](https://machinelearningmastery.com/using-learning-rate-schedule-in-pytorch-training/)
 - en: Training a neural network or large deep learning model is a difficult optimization
     task.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练神经网络或大型深度学习模型是一项困难的优化任务。
 - en: The classical algorithm to train neural networks is called [stochastic gradient
     descent](https://machinelearningmastery.com/gradient-descent-for-machine-learning/).
     It has been well established that you can achieve increased performance and faster
     training on some problems by using a [learning rate](https://machinelearningmastery.com/learning-rate-for-deep-learning-neural-networks/)
     that changes during training.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练神经网络的经典算法称为 [随机梯度下降](https://machinelearningmastery.com/gradient-descent-for-machine-learning/)。已经很好地证明，通过在训练过程中使用会变化的
+    [学习率](https://machinelearningmastery.com/learning-rate-for-deep-learning-neural-networks/)，你可以在某些问题上实现性能提升和更快的训练。
 - en: In this post, you will discover what is learning rate schedule and how you can
     use different learning rate schedules for your neural network models in PyTorch.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你将了解什么是学习率调度以及如何在 PyTorch 中为你的神经网络模型使用不同的学习率调度。
 - en: 'After reading this post, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 阅读本文后，你将了解到：
 - en: The role of learning rate schedule in model training
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 学习率调度在模型训练中的作用
 - en: How to use learning rate schedule in PyTorch training loop
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 训练循环中使用学习率调度
 - en: How to set up your own learning rate schedule
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何设置自己的学习率调度
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-9
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用 PyTorch 深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并获取课程的免费 PDF 电子书版本。
 - en: Let’s get started.![](../Images/7a13d9fa39a1b8fc273f193425bc5a11.png)
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/7a13d9fa39a1b8fc273f193425bc5a11.png)
 - en: Using Learning Rate Schedule in PyTorch Training
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 训练中使用学习率调度
 - en: Photo by [Cheung Yin](https://unsplash.com/photos/A_lVW8yIQM0). Some rights
     reserved.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Cheung Yin](https://unsplash.com/photos/A_lVW8yIQM0) 提供。保留部分权利。
 - en: Overview
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This post is divided into three parts; they are
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分；它们是
 - en: Learning Rate Schedule for Training Models
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练模型的学习率调度
 - en: Applying Learning Rate Schedule in PyTorch Training
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 PyTorch 训练中应用学习率调度
 - en: Custom Learning Rate Schedules
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 自定义学习率调度
 - en: Learning Rate Schedule for Training Models
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 训练模型的学习率调度
 - en: 'Gradient descent is an algorithm of numerical optimization. What it does is
     to update parameters using the formula:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 梯度下降是一种数值优化算法。它的作用是使用公式更新参数：
 - en: $$
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: w := w – \alpha \dfrac{dy}{dw}
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: w := w – \alpha \dfrac{dy}{dw}
 - en: $$
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: In this formula, $w$ is the parameter, e.g., the weight in a neural network,
     and $y$ is the objective, e.g., the loss function. What it does is to move $w$
     to the direction that you can minimize $y$. The direction is provided by the differentiation,
     $\dfrac{dy}{dw}$, but how much you should move $w$ is controlled by the **learning
     rate** $\alpha$.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个公式中，$w$ 是参数，例如神经网络中的权重，而 $y$ 是目标，例如损失函数。它的作用是将 $w$ 移动到可以最小化 $y$ 的方向。这个方向由微分提供，即
+    $\dfrac{dy}{dw}$，但你应该移动 $w$ 的多少则由**学习率** $\alpha$ 控制。
 - en: An easy start is to use a constant learning rate in gradient descent algorithm.
     But you can do better with a **learning rate schedule**. A schedule is to make
     learning rate adaptive to the gradient descent optimization procedure, so you
     can increase performance and reduce training time.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个简单的开始是使用在梯度下降算法中的恒定学习率。但使用**学习率调度**你可以做得更好。调度是使学习率适应梯度下降优化过程，从而提高性能并减少训练时间。
 - en: In the neural network training process, data is feed into the network in batches,
     with many batches in one epoch. Each batch triggers one training step, which the
     gradient descent algorithm updates the parameters once. However, usually the learning
     rate schedule is updated once for each [training epoch](https://machinelearningmastery.com/difference-between-a-batch-and-an-epoch/)
     only.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 在神经网络训练过程中，数据以批次的形式输入网络，一个时期内有多个批次。每个批次触发一个训练步骤，其中梯度下降算法更新一次参数。然而，通常学习率调度只在每个
+    [训练时期](https://machinelearningmastery.com/difference-between-a-batch-and-an-epoch/)
+    更新一次。
 - en: You can update the learning rate as frequent as each step but usually it is
     updated once per epoch because you want to know how the network performs in order
     to determine how the learning rate should update. Regularly, a model is evaluated
     with validation dataset once per epoch.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以像每一步那样频繁地更新学习率，但通常它会在每个 epoch 更新一次，因为你需要了解网络的表现，以便决定学习率应该如何更新。通常，模型会在每个 epoch
+    使用验证数据集进行评估。
 - en: There are multiple ways of making learning rate adaptive. At the beginning of
     training, you may prefer a larger learning rate so you improve the network coarsely
     to speed up the progress. In a very complex neural network model, you may also
@@ -126,98 +189,145 @@
     training, however, you always want to have the learning rate smaller. Since at
     that time, you are about to get the best performance from the model and it is
     easy to overshoot if the learning rate is large.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 调整学习率的方式有多种。在训练开始时，你可能会倾向于使用较大的学习率，以便粗略地改进网络，从而加快进度。在非常复杂的神经网络模型中，你也可能会倾向于在开始时逐渐增加学习率，因为你需要网络在不同的预测维度上进行探索。然而，在训练结束时，你总是希望将学习率调整得更小。因为那时你即将获得模型的最佳性能，如果学习率过大会容易超调。
 - en: Therefore, the simplest and perhaps most used adaptation of the learning rate
     during training are techniques that reduce the learning rate over time. These
     have the benefit of making large changes at the beginning of the training procedure
     when larger learning rate values are used and decreasing the learning rate so
     that a smaller rate and, therefore, smaller training updates are made to weights
     later in the training procedure.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，在训练过程中，最简单且可能最常用的学习率适应方式是逐渐减少学习率的技术。这些技术的好处在于，在训练程序开始时使用较大的学习率值时，可以做出较大的更改，并在训练程序后期将学习率降低，从而使更新权重时的学习率较小，训练更新也较小。
 - en: This has the effect of quickly learning good weights early and fine-tuning them
     later.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这会在早期快速学习到好的权重，并在之后进行微调。
 - en: Next, let’s look at how you can set up learning rate schedules in PyTorch.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，让我们看看如何在 PyTorch 中设置学习率调度。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [《深度学习与 PyTorch》](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    **来启动你的项目**。它提供了 **自学教程** 和 **可运行的代码**。'
 - en: Applying Learning Rate Schedules in PyTorch Training
+  id: totrans-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在 PyTorch 训练中应用学习率调度
 - en: In PyTorch, a model is updated by an optimizer and learning rate is a parameter
     of the optimizer. Learning rate schedule is an algorithm to update the learning
     rate in an optimizer.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中，一个模型通过优化器进行更新，学习率是优化器的一个参数。学习率调度是一种算法，用于更新优化器中的学习率。
 - en: 'Below is an example of creating a learning rate schedule:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是创建学习率调度的示例：
 - en: '[PRE0]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: There are many learning rate scheduler provided by PyTorch in `torch.optim.lr_scheduler`
     submodule. All the scheduler needs the optimizer to update as first argument.
     Depends on the scheduler, you may need to provide more arguments to set up one.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 在 `torch.optim.lr_scheduler` 子模块中提供了许多学习率调度器。所有的调度器都需要优化器作为第一个参数。根据调度器的不同，你可能需要提供更多的参数来进行设置。
 - en: Let’s start with an example model. In below, a model is to solve the [ionosphere
     binary classification problem](http://archive.ics.uci.edu/ml/datasets/Ionosphere).
     This is a small dataset that you can [download from the UCI Machine Learning repository](http://archive.ics.uci.edu/ml/machine-learning-databases/ionosphere/ionosphere.data).
     Place the data file in your working directory with the filename `ionosphere.csv`.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们从一个示例模型开始。下面的模型旨在解决 [电离层二分类问题](http://archive.ics.uci.edu/ml/datasets/Ionosphere)。这是一个小型数据集，你可以
+    [从 UCI 机器学习库下载](http://archive.ics.uci.edu/ml/machine-learning-databases/ionosphere/ionosphere.data)。将数据文件放置在你的工作目录中，文件名为
+    `ionosphere.csv`。
 - en: The ionosphere dataset is good for practicing with neural networks because all
     the input values are small numerical values of the same scale.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 电离层数据集适合用于神经网络的练习，因为所有输入值都是相同量级的小数值。
 - en: A small neural network model is constructed with a single hidden layer with
     34 neurons, using the ReLU activation function. The output layer has a single
     neuron and uses the sigmoid activation function in order to output probability-like
     values.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个小型神经网络模型构建了一个具有34个神经元的单隐藏层，使用ReLU激活函数。输出层有一个神经元，并使用sigmoid激活函数来输出类似概率的值。
 - en: Plain stochastic gradient descent algorithm is used, with a fixed learning rate
     0.1\. The model is trained for 50 epochs. The state parameters of an optimizer
     can be found in `optimizer.param_groups`; which the learning rate is a floating
     point value at `optimizer.param_groups[0]["lr"]`. At the end of each epoch, the
     learning rate from the optimizer is printed.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用的是普通随机梯度下降算法，固定学习率为0.1。模型训练了50个周期。优化器的状态参数可以在`optimizer.param_groups`中找到；其中学习率是`optimizer.param_groups[0]["lr"]`的浮点值。在每个周期结束时，打印出优化器的学习率。
 - en: The complete example is listed below.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整示例如下。
 - en: '[PRE1]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Running this model produces:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行此模型产生：
 - en: '[PRE2]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'You can confirm that the learning rate didn’t change over the entire training
     process. Let’s make the training process start with a larger learning rate and
     end with a smaller rate. To introduce a learning rate scheduler, you need to run
     its `step()` function in the training loop. The code above is modified into the
     following:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以确认学习率在整个训练过程中没有变化。让我们让训练过程以较大的学习率开始，以较小的学习率结束。为了引入学习率调度器，你需要在训练循环中运行其`step()`函数。上述代码修改为以下内容：
 - en: '[PRE3]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'It prints:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 它打印出：
 - en: '[PRE4]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: In the above, `LinearLR()` is used. It is a linear rate scheduler and it takes
     three additional parameters, the `start_factor`, `end_factor`, and `total_iters`.
     You set `start_factor` to 1.0, `end_factor` to 0.5, and `total_iters` to 30, therefore
@@ -225,137 +335,207 @@
     After 10 steps, the factor will stay at 0.5\. This factor is then multiplied to
     the original learning rate at the optimizer. Hence you will see the learning rate
     decreased from $0.1\times 1.0 = 0.1$ to $0.1\times 0.5 = 0.05$.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码使用了`LinearLR()`。它是一个线性率调度器，并且需要三个附加参数，`start_factor`、`end_factor`和`total_iters`。你将`start_factor`设置为1.0，`end_factor`设置为0.5，`total_iters`设置为30，因此它将在10个相等步骤中将乘法因子从1.0减少到0.5。经过10步后，因子将保持在0.5。这一因子随后会与优化器中的原始学习率相乘。因此，你将看到学习率从$0.1\times
+    1.0 = 0.1$减少到$0.1\times 0.5 = 0.05$。
 - en: 'Besides `LinearLR()`, you can also use `ExponentialLR()`, its syntax is:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了`LinearLR()`，你还可以使用`ExponentialLR()`，其语法为：
 - en: '[PRE5]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'If you replaced `LinearLR()` with this, you will see the learning rate updated
     as follows:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你将`LinearLR()`替换为此，你将看到学习率更新如下：
 - en: '[PRE6]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: In which the learning rate is updated by multiplying with a constant factor
     `gamma` in each scheduler update.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在每次调度器更新时，学习率通过与常量因子`gamma`相乘来更新。
 - en: Custom Learning Rate Schedules
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 自定义学习率调度
 - en: 'There is no general rule that a particular learning rate schedule works the
     best. Sometimes, you like to have a special learning rate schedule that PyTorch
     didn’t provide. A custom learning rate schedule can be defined using a custom
     function. For example, you want to have a learning rate that:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有普遍适用的规则表明特定的学习率调度是最有效的。有时，你可能希望拥有PyTorch未提供的特殊学习率调度。可以使用自定义函数定义一个自定义学习率调度。例如，你希望有一个学习率为：
 - en: $$
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: lr_n = \dfrac{lr_0}{1 + \alpha n}
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: lr_n = \dfrac{lr_0}{1 + \alpha n}
 - en: $$
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'on epoch $n$, which $lr_0$ is the initial learning rate, at epoch 0, and $\alpha$
     is a constant. You can implement a function that given the epoch $n$ calculate
     learning rate $lr_n$:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第$n$个周期，其中$lr_0$是第0个周期的初始学习率，$\alpha$是常量。你可以实现一个函数，给定周期$n$计算学习率$lr_n$：
 - en: '[PRE7]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Then, you can set up a `LambdaLR()` to update the learning rate according to
     this function:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，你可以设置`LambdaLR()`以根据以下函数更新学习率：
 - en: '[PRE8]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Modifying the previous example to use `LambdaLR()`, you have the following:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 修改之前的示例以使用`LambdaLR()`，你将得到以下内容：
 - en: '[PRE9]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Which produces:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 其结果为：
 - en: '[PRE10]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Note that although the function provided to `LambdaLR()` assumes an argument
     `epoch`, it is not tied to the epoch in the training loop but simply counts how
     many times you invoked `scheduler.step()`.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，虽然提供给`LambdaLR()`的函数假设有一个参数`epoch`，但它并不与训练循环中的周期绑定，而只是计数你调用了多少次`scheduler.step()`。
 - en: Tips for Using Learning Rate Schedules
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用学习率调度的技巧
 - en: This section lists some tips and tricks to consider when using learning rate
     schedules with neural networks.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节列出了一些在使用神经网络的学习率调度时需要考虑的技巧和窍门。
 - en: '**Increase the initial learning rate**. Because the learning rate will very
     likely decrease, start with a larger value to decrease from. A larger learning
     rate will result in a lot larger changes to the weights, at least in the beginning,
     allowing you to benefit from the fine-tuning later.'
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**增加初始学习率**。因为学习率很可能会减小，所以从较大的值开始减小。较大的学习率将导致权重产生更大的变化，至少在开始阶段是这样，这样可以使您后续的微调更加有效。'
 - en: '**Use a large momentum**. Many optimizers can consider momentum. Using a larger
     momentum value will help the optimization algorithm continue to make updates in
     the right direction when your learning rate shrinks to small values.'
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**使用较大的动量**。许多优化器可以考虑动量。使用较大的动量值将有助于优化算法在学习率减小到较小值时继续朝正确方向进行更新。'
 - en: '**Experiment with different schedules**. It will not be clear which learning
     rate schedule to use, so try a few with different configuration options and see
     what works best on your problem. Also, try schedules that change exponentially
     and even schedules that respond to the accuracy of your model on the training
     or test datasets.'
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**尝试不同的调度**。不清楚要使用哪种学习率调度，因此尝试几种不同的配置选项，看看哪种在解决您的问题时效果最好。还可以尝试指数变化的调度，甚至可以根据模型在训练或测试数据集上的准确性响应的调度。'
 - en: Further Readings
+  id: totrans-76
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: 'Below is the documentation for more details on using learning rates in PyTorch:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是有关在 PyTorch 中使用学习率的更多详细文档：
 - en: '[How to adjust learning rate](https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate),
     from PyTorch documentation'
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[如何调整学习率](https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate)，来自
+    PyTorch 文档'
 - en: Summary
+  id: totrans-79
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: In this post, you discovered learning rate schedules for training neural network
     models.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，您发现了用于训练神经网络模型的学习率调度。
 - en: 'After reading this post, you learned:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 阅读本文后，您学到了：
 - en: How learning rate affects your model training
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 学习率如何影响您的模型训练
 - en: How to set up learning rate schedule in PyTorch
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中设置学习率调度
 - en: How to create a custom learning rate schedule
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何创建自定义学习率调度

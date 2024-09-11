@@ -1,269 +1,409 @@
 - en: Using Dataset Classes in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中使用数据集类
 - en: 原文：[https://machinelearningmastery.com/using-dataset-classes-in-pytorch/](https://machinelearningmastery.com/using-dataset-classes-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/using-dataset-classes-in-pytorch/](https://machinelearningmastery.com/using-dataset-classes-in-pytorch/)
 - en: In machine learning and deep learning problems, a lot of effort goes into preparing
     the data. Data is usually messy and needs to be preprocessed before it can be
     used for training a model. If the data is not prepared correctly, the model won’t
     be able to generalize well.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在机器学习和深度学习问题中，大量的工作都在于准备数据。数据通常是混乱的，需要在用于训练模型之前进行预处理。如果数据准备不正确，模型将无法很好地泛化。
 - en: 'Some of the common steps required for data preprocessing include:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据预处理的一些常见步骤包括：
 - en: 'Data normalization: This includes normalizing the data between a range of values
     in a dataset.'
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据归一化：这包括将数据归一化到数据集中的一个值范围内。
 - en: 'Data augmentation: This includes generating new samples from existing ones
     by adding noise or shifts in features to make them more diverse.'
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据增强：这包括通过添加噪声或特征的位移来生成新的样本，使它们更加多样化。
 - en: Data preparation is a crucial step in any machine learning pipeline. PyTorch
     brings along a lot of modules such as torchvision which provides datasets and
     dataset classes to make data preparation easy.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据准备是任何机器学习流程中的关键步骤。PyTorch 带来了许多模块，例如 torchvision，它提供了数据集和数据集类，使数据准备变得容易。
 - en: 'In this tutorial we’ll demonstrate how to work with datasets and transforms
     in PyTorch so that you may create your own custom dataset classes and manipulate
     the datasets the way you want. In particular, you’ll learn:'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将演示如何在 PyTorch 中使用数据集和变换，以便你可以创建自己的自定义数据集类，并以你希望的方式操作数据集。特别是，你将学习：
 - en: How to create a simple dataset class and apply transforms to it.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何创建一个简单的数据集类并对其应用变换。
 - en: How to build callable transforms and apply them to the dataset object.
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何构建可调用的变换并将其应用于数据集对象。
 - en: How to compose various transforms on a dataset object.
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在数据集对象上组合各种变换。
 - en: Note that here you’ll play with simple datasets for general understanding of
     the concepts while in the next part of this tutorial you’ll get a chance to work
     with dataset objects for images.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，在这里你将使用简单的数据集来对概念有一个总体了解，而在本教程的下一部分，你将有机会使用图像的数据集对象。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍[《深度学习与 PyTorch》](https://machinelearningmastery.com/deep-learning-with-pytorch/)**
+    来**启动你的项目**。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started.![](../Images/f1c2c2ed936adbba5fbf14c3624f34b9.png)
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/f1c2c2ed936adbba5fbf14c3624f34b9.png)
 - en: Using Dataset Classes in PyTorch
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中使用数据集类
 - en: Picture by [NASA](https://unsplash.com/photos/1lfI7wkGWZ4). Some rights reserved.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[NASA](https://unsplash.com/photos/1lfI7wkGWZ4)提供。保留所有权利。
 - en: Overview
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is in three parts; they are:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三部分，它们是：
 - en: Creating a Simple Dataset Class
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建一个简单的数据集类
 - en: Creating Callable Transforms
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建可调用的变换
 - en: Composing Multiple Transforms for Datasets
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为数据集组合多个变换
 - en: Creating a Simple Dataset Class
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建一个简单的数据集类
 - en: Before we begin, we’ll have to import a few packages before creating the dataset
     class.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在开始之前，我们需要导入一些包，然后创建数据集类。
 - en: '[PRE0]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'We’ll import the abstract class `Dataset` from `torch.utils.data`. Hence, we
     override the below methods in the dataset class:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将从`torch.utils.data`中导入抽象类`Dataset`。因此，我们在数据集类中重写以下方法：
 - en: '`__len__` so that `len(dataset)` can tell us the size of the dataset.'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`__len__` 使得 `len(dataset)` 可以告诉我们数据集的大小。'
 - en: '`__getitem__` to access the data samples in the dataset by supporting indexing
     operation. For example, `dataset[i]` can be used to retrieve i-th data sample.'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`__getitem__` 用于通过支持索引操作来访问数据集中的数据样本。例如，`dataset[i]` 可用于检索第 i 个数据样本。'
 - en: Likewise, the `torch.manual_seed()` forces the random function to produce the
     same number every time it is recompiled.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样，`torch.manual_seed()` 强制随机函数每次重新编译时生成相同的数字。
 - en: Now, let’s define the dataset class.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们定义数据集类。
 - en: '[PRE1]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: In the object constructor, we have created the values of features and targets,
     namely `x` and `y`, assigning their values to the tensors `self.x` and `self.y`.
     Each tensor carries 20 data samples while the attribute `data_length` stores the
     number of data samples. Let’s discuss about the transforms later in the tutorial.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 在对象构造函数中，我们创建了特征和目标的值，即`x`和`y`，并将其值分配给张量`self.x`和`self.y`。每个张量包含20个数据样本，而属性`data_length`存储数据样本的数量。我们将在教程的后面讨论转换。
 - en: The behavior of the `SimpleDataset` object is like any Python iterable, such
     as a list or a tuple. Now, let’s create the `SimpleDataset` object and look at
     its total length and the value at index 1.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '`SimpleDataset`对象的行为类似于任何Python可迭代对象，如列表或元组。现在，让我们创建`SimpleDataset`对象，查看其总长度和索引1处的值。'
 - en: '[PRE2]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: This prints
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印
 - en: '[PRE3]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'As our dataset is iterable, let’s print out the first four elements using a
     loop:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们的数据集是可迭代的，让我们使用循环打印出前四个元素：
 - en: '[PRE4]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: This prints
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印
 - en: '[PRE5]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Creating Callable Transforms
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建可调用的转换
 - en: In several cases, you’ll need to create callable transforms in order to normalize
     or standardize the data. These transforms can then be applied to the tensors.
     Let’s create a callable transform and apply it to our “simple dataset” object
     we created earlier in this tutorial.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 在某些情况下，你需要创建可调用的转换，以便规范化或标准化数据。这些转换可以应用于张量。让我们创建一个可调用的转换，并将其应用于我们在本教程中早些时候创建的“简单数据集”对象。
 - en: '[PRE6]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: We have created a simple custom transform `MultDivide` that multiplies `x` with
     `2` and divides `y` by `3`. This is not for any practical use but to demonstrate
     how a callable class can work as a transform for our dataset class. Remember,
     we had declared a parameter `transform = None` in the `simple_dataset`. Now, we
     can replace that `None` with the custom transform object that we’ve just created.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们创建了一个简单的自定义转换`MultDivide`，它将`x`乘以`2`并将`y`除以`3`。这没有实际用途，而是为了演示一个可调用的类如何作为我们数据集类的转换。记住，我们在`simple_dataset`中声明了一个参数`transform
+    = None`。现在，我们可以用刚创建的自定义转换对象替换那个`None`。
 - en: So, let’s demonstrate how it’s done and call this transform object on our dataset
     to see how it transforms the first four elements of our dataset.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，让我们展示一下如何操作，并在数据集上调用这个转换对象，以查看它如何转换数据集的前四个元素。
 - en: '[PRE7]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: This prints
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印
 - en: '[PRE8]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: As you can see the transform has been successfully applied to the first four
     elements of the dataset.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 如你所见，转换已成功应用于数据集的前四个元素。
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用PyTorch进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就获取我的免费电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费PDF电子书版本。
 - en: Composing Multiple Transforms for Datasets
+  id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为数据集组合多个转换
 - en: We often would like to perform multiple transforms in series on a dataset. This
     can be done by importing `Compose` class from transforms module in torchvision.
     For instance, let’s say we build another transform `SubtractOne` and apply it
     to our dataset in addition to the `MultDivide` transform that we have created
     earlier.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们经常希望对数据集执行多个串行转换。这可以通过从torchvision中的transforms模块导入`Compose`类来实现。例如，假设我们构建了另一个转换`SubtractOne`，并将其应用于我们的数据集，除了我们之前创建的`MultDivide`转换。
 - en: Once applied, the newly created transform will subtract 1 from each element
     of the dataset.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦应用，新创建的转换将从数据集的每个元素中减去1。
 - en: '[PRE9]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: As specified earlier, now we’ll combine both the transforms with `Compose` method.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 如前所述，现在我们将用`Compose`方法组合这两个转换。
 - en: '[PRE10]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Note that first `MultDivide` transform will be applied onto the dataset and
     then `SubtractOne` transform will be applied on the transformed elements of the
     dataset.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，首先将对数据集应用`MultDivide`转换，然后在转换后的数据集元素上应用`SubtractOne`转换。
 - en: We’ll pass the `Compose` object (that holds the combination of both the transforms
     i.e. `MultDivide()` and `SubtractOne()`) to our `SimpleDataset` object.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将把包含两个转换（即`MultDivide()`和`SubtractOne()`）组合的`Compose`对象传递给我们的`SimpleDataset`对象。
 - en: '[PRE11]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Now that the combination of multiple transforms has been applied to the dataset,
     let’s print out the first four elements of our transformed dataset.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，多个转换的组合已应用于数据集，让我们打印出转换后的数据集的前四个元素。
 - en: '[PRE12]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'Putting everything together, the complete code is as follows:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容放在一起，完整的代码如下：
 - en: '[PRE13]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Summary
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you learned how to create custom datasets and transforms
     in PyTorch. Particularly, you learned:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学会了如何在PyTorch中创建自定义数据集和转换。特别是，你学到了：
 - en: How to create a simple dataset class and apply transforms to it.
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何创建一个简单的数据集类并对其应用转换。
 - en: How to build callable transforms and apply them to the dataset object.
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何构建可调用的转换并将其应用于数据集对象。
 - en: How to compose various transforms on a dataset object.
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在数据集对象上组合各种转换。

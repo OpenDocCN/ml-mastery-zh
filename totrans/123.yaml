@@ -1,80 +1,120 @@
 - en: Handwritten Digit Recognition with LeNet5 Model in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 PyTorch 中的 LeNet5 模型进行手写数字识别
 - en: 原文：[https://machinelearningmastery.com/handwritten-digit-recognition-with-lenet5-model-in-pytorch/](https://machinelearningmastery.com/handwritten-digit-recognition-with-lenet5-model-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/handwritten-digit-recognition-with-lenet5-model-in-pytorch/](https://machinelearningmastery.com/handwritten-digit-recognition-with-lenet5-model-in-pytorch/)
 - en: 'A popular demonstration of the capability of deep learning techniques is object
     recognition in image data. The “hello world” of object recognition for machine
     learning and deep learning is the MNIST dataset for handwritten digit recognition.
     In this post, you will discover how to develop a deep learning model to achieve
     near state-of-the-art performance on the MNIST handwritten digit recognition task
     in PyTorch. After completing this chapter, you will know:'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 深度学习技术的一个流行演示是图像数据中的对象识别。机器学习和深度学习中的“hello world”是用于手写数字识别的 MNIST 数据集。在本帖中，你将发现如何开发一个深度学习模型，以在
+    MNIST 手写数字识别任务中达到接近最先进的性能。完成本章后，你将了解：
 - en: How to load the MNIST dataset using torchvision
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 torchvision 加载 MNIST 数据集
 - en: How to develop and evaluate a baseline neural network model for the MNIST problem
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为 MNIST 问题开发和评估基线神经网络模型
 - en: How to implement and evaluate a simple Convolutional Neural Network for MNIST
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何实现和评估一个简单的卷积神经网络用于 MNIST
 - en: How to implement a state-of-the-art deep learning model for MNIST
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为 MNIST 实现最先进的深度学习模型
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [《PyTorch 深度学习》](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    **启动你的项目**。它提供了**自学教程**和**实用代码**。'
 - en: Let’s get started.![](../Images/72c4d28201df8cb70f7682ca6ed5aeb1.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/72c4d28201df8cb70f7682ca6ed5aeb1.png)
 - en: Handwritten Digit Recognition with LeNet5 Model in PyTorch
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 PyTorch 中的 LeNet5 模型进行手写数字识别
 - en: Photo by [Johnny Wong](https://unsplash.com/photos/la0WP7U3-AM). Some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Johnny Wong](https://unsplash.com/photos/la0WP7U3-AM) 提供。部分权利保留。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into five parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本帖分为五个部分，它们是：
 - en: The MNIST Handwritten Digit Recognition Problem
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: MNIST 手写数字识别问题
 - en: Loading the MNIST Dataset in PyTorch
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中加载 MNIST 数据集
 - en: Baseline Model with Multilayer Perceptrons
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用多层感知机的基线模型
 - en: Simple Convolutional Neural Network for MNIST
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 用于 MNIST 的简单卷积神经网络
 - en: LeNet5 for MNIST
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: LeNet5 用于 MNIST
 - en: The MNIST Handwritten Digit Recognition Problem
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: MNIST 手写数字识别问题
 - en: The MNIST problem is a classic problem that can demonstrate the power of convolutional
     neural networks. The MNIST dataset was developed by Yann LeCun, Corinna Cortes,
     and Christopher Burges for evaluating machine learning models on the handwritten
@@ -82,8 +122,12 @@
     document datasets available from the National Institute of Standards and Technology
     (NIST). This is where the name for the dataset comes from, the Modified NIST or
     MNIST dataset.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: MNIST 问题是一个经典问题，可以展示卷积神经网络的强大。MNIST 数据集由 Yann LeCun、Corinna Cortes 和 Christopher
+    Burges 开发，用于评估机器学习模型在手写数字分类问题上的表现。该数据集由来自国家标准与技术研究院（NIST）的多个扫描文档数据集构成。这也是数据集名称的来源，称为
+    Modified NIST 或 MNIST 数据集。
 - en: Images of digits were taken from a variety of scanned documents, normalized
     in size, and centered. This makes it an excellent dataset for evaluating models,
     allowing the developer to focus on machine learning with minimal data cleaning
@@ -91,237 +135,345 @@
     in grayscale. A standard split of the dataset is used to evaluate and compare
     models, where 60,000 images are used to train a model, and a separate set of 10,000
     images are used to test it.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 数字图像来自各种扫描文档，经过大小标准化和居中处理。这使得该数据集非常适合评估模型，开发人员可以专注于机器学习，数据清理或准备工作最小化。每个图像是一个
+    28×28 像素的灰度方块（总共 784 像素）。数据集的标准拆分用于评估和比较模型，其中 60,000 张图像用于训练模型，另有 10,000 张图像用于测试。
 - en: To goal of this problem is to identify the digits on the image. There are ten
     digits (0 to 9) or ten classes to predict. The state-of-the-art prediction accuracy
     is at 99.8% level, achieved with large convolutional neural networks.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个问题的目标是识别图像上的数字。需要预测十个数字（0 到 9）或十个类别。当前最先进的预测准确率达到 99.8%，这是通过大型卷积神经网络实现的。
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-22
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费PDF电子书版本。
 - en: Loading the MNIST Dataset in PyTorch
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在PyTorch中加载MNIST数据集
 - en: The `torchvision` library is a sister project of PyTorch that provide specialized
     functions for computer vision tasks. There is a function in `torchvision` that
     can download the MNIST dataset for use with PyTorch. The dataset is downloaded
     the first time this function is called and stored locally, so you don’t need to
     download again in the future. Below is a little script to download and visualize
     the first 16 images in the training subset of the MNIST dataset.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '`torchvision`库是PyTorch的一个姊妹项目，提供用于计算机视觉任务的专门功能。`torchvision`中有一个函数可以下载MNIST数据集以供PyTorch使用。第一次调用此函数时，数据集会被下载并存储在本地，因此以后不需要再次下载。下面是一个小脚本，用于下载和可视化MNIST数据集训练子集中的前16张图像。'
 - en: '[PRE0]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '![](../Images/34ab7ddbba87120d8b138ee58f69f538.png)'
+  id: totrans-28
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/34ab7ddbba87120d8b138ee58f69f538.png)'
 - en: Baseline Model with Multilayer Perceptrons
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 多层感知器的基准模型
 - en: 'Do you really need a complex model like a convolutional neural network to get
     the best results with MNIST? You can get good results using a very simple neural
     network model with a single hidden layer. In this section, you will create a simple
     multilayer perceptron model that achieves accuracy of 99.81%. You will use this
     as a baseline for comparison to more complex convolutional neural network models.
     First, let’s check what the data looks like:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 你真的需要像卷积神经网络这样的复杂模型来获得MNIST的最佳结果吗？使用一个非常简单的神经网络模型（具有单隐藏层）也可以获得良好的结果。在本节中，你将创建一个简单的多层感知器模型，其准确率达到99.81%。你将用这个模型作为与更复杂的卷积神经网络模型比较的基准。首先，让我们检查一下数据的样子：
 - en: '[PRE1]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'You should see:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该会看到：
 - en: '[PRE2]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The training dataset is structured as a 3-dimensional array of instance, image
     height, and image width. For a multilayer perceptron model, you must reduce the
     images down into a vector of pixels. In this case, the 28×28-sized images will
     be 784 pixel input vectors. You can do this transform easily using the `reshape()`
     function.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练数据集的结构是实例、高度和宽度的三维数组。对于多层感知器模型，你必须将图像降维为像素向量。在这种情况下，28×28大小的图像将成为784个像素输入向量。你可以使用`reshape()`函数轻松完成此转换。
 - en: The pixel values are grayscale between 0 and 255\. It is almost always a good
     idea to perform some scaling of input values when using neural network models.
     Because the scale is well known and well behaved, you can very quickly normalize
     the pixel values to the range 0 and 1 by dividing each value by the maximum of
     255.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 像素值为0到255之间的灰度值。使用神经网络模型时，几乎总是一个好主意对输入值进行一些缩放。因为尺度是已知且行为良好的，你可以通过将每个值除以255的最大值来非常快速地将像素值归一化到0到1的范围内。
 - en: In the following, you transform the dataset, convert to floating point, and
     normalize them by scaling floating point values and you can normalize them easily
     in the next step.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 在接下来的步骤中，你将转换数据集，将其转换为浮点数，并通过缩放浮点值来归一化它们，你可以在下一步轻松完成归一化。
 - en: '[PRE3]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The output targets `y_train` and `y_test` are labels in the form of integers
     from 0 to 9\. This is a multiclass classification problem. You can convert these
     labels into one-hot encoding or keep them as integer labels like this case. You
     are going to use the cross entropy function to evaluate the model performance
     and the PyTorch implementation of cross entropy function can be applied on one-hot
     encoded targets or integer labeled targets.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出目标`y_train`和`y_test`是形式为0到9的整数标签。这是一个多类别分类问题。你可以将这些标签转换为独热编码（one-hot encoding），或者像本例一样保持为整数标签。你将使用交叉熵函数来评估模型的性能，PyTorch
+    实现的交叉熵函数可以应用于独热编码的目标或整数标签的目标。
 - en: You are now ready to create your simple neural network model. You will define
     your model in a PyTorch `Module` class.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你可以创建你的简单神经网络模型了。你将通过PyTorch的`Module`类来定义你的模型。
 - en: '[PRE4]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The model is a simple neural network with one hidden layer with the same number
     of neurons as there are inputs (784). A rectifier activation function is used
     for the neurons in the hidden layer. The output of this model are **logits**,
     meaning they are real numbers which can be transformed into probability-like values
     using a softmax function. You do not apply the softmax function explicitly because
     the cross entropy function will do that for you.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 该模型是一个简单的神经网络，具有一个隐藏层，隐藏层的神经元数量与输入数量（784）相同。隐藏层的神经元使用了 rectifier 激活函数。该模型的输出是**logits**，意味着它们是实数，可以通过
+    softmax 函数转换为类似概率的值。你不需要显式地应用 softmax 函数，因为交叉熵函数会为你完成这项工作。
 - en: 'You will use the stochastic gradient descent algorithm (with learning rate
     set to 0.01) to optimize this model. The training loop is as follows:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将使用随机梯度下降算法（学习率设置为 0.01）来优化这个模型。训练循环如下：
 - en: '[PRE5]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The MNIST dataset is small. This example should complete in a minute, with the
     output below. This simple network can produce accuracy at 92%.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: MNIST 数据集很小。这个例子应该在一分钟内完成，结果如下。这个简单的网络可以达到 92% 的准确率。
 - en: '[PRE6]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Below is the complete code for the above multilayer perceptron classification
     on MNIST dataset.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是上述 MNIST 数据集多层感知机分类的完整代码。
 - en: '[PRE7]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Simple Convolutional Neural Network for MNIST
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 简单的卷积神经网络用于 MNIST
 - en: Now that you have seen how to use multilayer perceptron model to classify MNIST
     dataset. Let’s move on to try a convolutional neural network model. In this section,
     you will create a simple CNN for MNIST that demonstrates how to use all the aspects
     of a modern CNN implementation, including convolutional layers, pooling layers,
     and dropout layers.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你已经了解了如何使用多层感知机模型对 MNIST 数据集进行分类。接下来，让我们尝试一个卷积神经网络模型。在这一部分，你将创建一个简单的 CNN，用于
+    MNIST，展示如何使用现代 CNN 实现的所有方面，包括卷积层、池化层和 dropout 层。
 - en: In PyTorch, convolutional layers are supposed to work on images. Tensors for
     images should be the pixel values with the dimensions (sample, channel, height,
     width) but when you load images using libraries such as PIL, the pixels are usually
     presented as array of dimensions (height, width, channel). The conversion to a
     proper tensor format can be done using a transform from the `torchvision` library.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中，卷积层应该处理图像。图像的张量应该是像素值，维度为 (sample, channel, height, width)，但当你使用
+    PIL 等库加载图像时，像素通常以 (height, width, channel) 的维度呈现。可以使用 `torchvision` 库中的转换将其转换为适当的张量格式。
 - en: '[PRE8]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: You need to use `DataLoader` because the transform is applied when you read
     the data from the `DataLoader`.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 你需要使用 `DataLoader`，因为在从 `DataLoader` 读取数据时会应用转换。
 - en: Next, define your neural network model. Convolutional neural networks are more
     complex than standard multilayer perceptrons, so you will start by using a simple
     structure that uses all the elements for state-of-the-art results. Below summarizes
     the network architecture.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，定义你的神经网络模型。卷积神经网络比标准的多层感知机更复杂，因此你将从使用简单结构开始，这些结构利用了所有元素以实现最先进的结果。下面总结了网络架构。
 - en: The first hidden layer is a convolutional layer, `nn.Conv2d()`. The layer turns
     a grayscale image into 10 feature maps, with the filter size of 5×5 and a ReLU
     activation function. This is the input layer that expects images with the structure
     outlined above.
+  id: totrans-54
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 第一个隐藏层是一个卷积层，`nn.Conv2d()`。该层将灰度图像转换为 10 个特征图，滤波器大小为 5×5，并使用 ReLU 激活函数。这是一个输入层，期望输入的图像结构如上所述。
 - en: Next is a pooling layer that takes the max, `nn.MaxPool2d()`. It is configured
     with a pool size of 2×2 with stride 1\. What it does is to take the maximum in
     a 2×2 pixel patch per channel and assign the value to the output pixel. The result
     is a 27×27-pixels feature map per channel.
+  id: totrans-55
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 接下来是一个池化层，取最大值，`nn.MaxPool2d()`。它配置为 2×2 的池化大小，步幅为 1。它的作用是在每个通道的 2×2 像素块中取最大值，并将该值分配给输出像素。结果是每个通道的特征图为
+    27×27 像素。
 - en: The next layer is a regularization layer using dropout, `nn.Dropout()`. It is
     configured to randomly exclude 20% of neurons in the layer in order to reduce
     overfitting.
+  id: totrans-56
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 下一个层是使用 dropout 的正则化层，`nn.Dropout()`。它配置为随机排除 20% 的神经元，以减少过拟合。
 - en: Next is a layer that converts the 2D matrix data to a vector, using `nn.Flatten`.
     There are 10 channels from its input and each channel’s feature map has size 27×27\.
     This layer allows the output to be processed by standard, fully connected layers.
+  id: totrans-57
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 接下来是一个将 2D 矩阵数据转换为向量的层，使用 `nn.Flatten`。输入有 10 个通道，每个通道的特征图大小为 27×27。此层允许输出由标准的全连接层处理。
 - en: Next is a fully connected layer with 128 neurons. ReLU activation function is
     used.
+  id: totrans-58
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 接下来是一个具有128个神经元的全连接层。使用ReLU激活函数。
 - en: Finally, the output layer has ten neurons for the ten classes. You can transform
     the output into probability-like predictions by applying a softmax function on
     it.
+  id: totrans-59
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 最后，输出层有十个神经元，用于十个类别。您可以通过在其上应用softmax函数将输出转换为类似概率的预测。
 - en: 'This model is trained using cross entropy loss and the Adam optimiztion algorithm.
     It is implemented as follows:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 此模型使用交叉熵损失和Adam优化算法进行训练。实现如下：
 - en: '[PRE9]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Running the above takes a few minutes and produces the following:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行上述操作需要几分钟，并产生以下结果：
 - en: '[PRE10]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Not the best result but this demonstrates how convolutional layer works.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 不是最佳结果，但这展示了卷积层如何工作。
 - en: Below is the complete code for using the simple convolutional network.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是使用简单卷积网络的完整代码。
 - en: '[PRE11]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: LeNet5 for MNIST
+  id: totrans-67
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: LeNet5用于MNIST
 - en: The previous model has only one convolutional layer. Of course, you can add
     more to make a deeper model. One of the earliest demonstration of the effectiveness
     of convolutional layers in neural networks is the “LeNet5” model. This model is
     developed to solve the MNIST classification problem. It has three convolutional
     layers and two fully connected layer to make up five trainable layers in the model,
     as it is named.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 前一模型仅具有一个卷积层。当然，您可以添加更多层以构建更深的模型。卷积层在神经网络中的有效性最早的演示之一是“LeNet5”模型。该模型旨在解决MNIST分类问题。它有三个卷积层和两个全连接层，共五个可训练层。
 - en: 'At the time it was developed, using hyperbolic tangent function as activation
     is common. Hence it is used here. This model is implemented as follows:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 在其开发时期，使用双曲正切函数作为激活函数很常见。因此在这里使用它。该模型实现如下：
 - en: '[PRE12]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Compare to the previous model, LeNet5 does not have Dropout layer (because Dropout
     layer was invented several years after LeNet5) and use average pooling instead
     of max pooling (i.e., for a patch of 2×2 pixels, it is taking average of the pixel
@@ -329,8 +481,10 @@
     LeNet5 model is that it uses strides and paddings to reduce the image size from
     28×28 pixel down to 1×1 pixel while increasing the number of channels from a one
     (grayscale) into 120.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 与前一模型相比，LeNet5没有Dropout层（因为Dropout层是在LeNet5几年后才被发明的），而是使用平均池化代替最大池化（即对2×2像素的区域取像素值的平均值而不是最大值）。但LeNet5模型最显著的特征是使用步长和填充来将图像尺寸从28×28像素减小到1×1像素，并将通道数从一个（灰度）增加到120。
 - en: Padding means to add pixels of value 0 at the border of the image to make it
     a bit larger. Without padding, the output of a convolutional layer will be smaller
     than its input. The stride parameter controls how much the filter should move
@@ -338,81 +492,121 @@
     size. If it is larger than 1, the output is a **downsampling** of the input. Hence
     you see in the LeNet5 model, stride 2 was used in the pooling layers to make,
     for example, a 28×28-pixel image into 14×14.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 填充意味着在图像边界添加值为0的像素，使其稍微变大。没有填充时，卷积层的输出将比其输入小。步幅参数控制滤波器移动以生成输出中的下一个像素。通常为1以保持相同大小。如果大于1，则输出是输入的**下采样**。因此在LeNet5模型中，池化层中使用步幅2，例如将28×28像素图像变为14×14。
 - en: 'Training this model is same as training the previous convolutional network
     model, as follows:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练该模型与训练之前的卷积网络模型相同，如下所示：
 - en: '[PRE13]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'Running this you may see:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行此代码可能会看到：
 - en: '[PRE14]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Here, we achieved accuracy beyond 98%.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们实现了超过98%的准确率。
 - en: The following is the complete code.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是完整的代码。
 - en: '[PRE15]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Resources on MNIST
+  id: totrans-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: MNIST资源
 - en: The MNIST dataset is very well studied. Below are some additional resources
     you might want to look into.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: MNIST数据集已经非常研究。以下是您可能想要查看的一些额外资源。
 - en: Yann LeCun, Corinna Cortes, and Christopher J. C. Burges. [The MNIST database
     of handwritten digits.](http://yann.lecun.com/exdb/mnist/)
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Yann LeCun，Corinna Cortes和Christopher J.C. Burges。[手写数字MNIST数据库。](http://yann.lecun.com/exdb/mnist/)
 - en: Rodrigo Benenson. [What is the class of this image? Classification datasets
     results](https://rodrigob.github.io/are_we_there_yet/build/classification_datasets_results.htm),
     2016.
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Rodrigo Benenson。[这张图像属于哪个类？分类数据集结果](https://rodrigob.github.io/are_we_there_yet/build/classification_datasets_results.htm)，2016年。
 - en: '[Digit Recognizer](https://www.kaggle.com/c/digit-recognizer): Learn computer
     vision fundamentals with the famous MNIST data. Kaggle.'
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[数字识别器](https://www.kaggle.com/c/digit-recognizer)：使用著名的MNIST数据学习计算机视觉基础知识。Kaggle。'
 - en: Hubert Eichner. [Neural Net for Handwritten Digit Recognition in JavaScript.](http://myselph.de/neuralNet.html)
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Hubert Eichner。[JavaScript中手写数字识别的神经网络。](http://myselph.de/neuralNet.html)
 - en: Summary
+  id: totrans-86
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this post, you discovered the MNIST handwritten digit recognition problem
     and deep learning models developed in Python using the Keras library that are
     capable of achieving excellent results. Working through this chapter, you learned:'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你了解了MNIST手写数字识别问题以及使用Python和Keras库开发的深度学习模型，这些模型能够取得出色的结果。通过这一章节的学习，你学到了：
 - en: How to load the MNIST dataset in PyTorch with torchvision
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中使用torchvision加载MNIST数据集
 - en: How to convert the MNIST dataset into PyTorch tensors for consumption by a convolutional
     neural network
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将MNIST数据集转换为PyTorch张量，以便卷积神经网络消费
 - en: How to use PyTorch to create convolutional neural network models for MNIST
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用PyTorch创建用于MNIST的卷积神经网络模型
 - en: How to implement the LeNet5 model for MNIST classification
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为MNIST分类实现LeNet5模型

@@ -1,363 +1,547 @@
 - en: How to Read and Display Videos Using OpenCV
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何使用 OpenCV 读取和显示视频
 - en: 原文：[https://machinelearningmastery.com/how-to-read-and-display-videos-using-opencv/](https://machinelearningmastery.com/how-to-read-and-display-videos-using-opencv/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/how-to-read-and-display-videos-using-opencv/](https://machinelearningmastery.com/how-to-read-and-display-videos-using-opencv/)
 - en: Digital videos are close relatives of digital images because they are made up
     of many digital images sequentially displayed in rapid succession to create the
     effect of moving visual data.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 数字视频是数字图像的近亲，因为它们由许多数字图像快速连续地显示组成，以创建运动视觉数据的效果。
 - en: The OpenCV library provides several methods to work with videos, such as reading
     video data from different sources and accessing several of their properties.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV 库提供了几种处理视频的方法，如从不同来源读取视频数据和访问其多个属性。
 - en: In this tutorial, you will familiarise yourself with the most basic OpenCV operations
     essential when working with videos.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将熟悉处理视频时最基本的 OpenCV 操作。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解到：
 - en: How a digital video is formulated as a close relative of digital images.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数字视频如何作为数字图像的近亲进行制定。
 - en: How the image frames comprising a video are read from a camera.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从摄像头读取组成视频的图像帧。
 - en: How the image frames comprising a video are read from a saved video file.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从保存的视频文件中读取组成视频的图像帧。
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，使用我的书籍 [《OpenCV中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)。它提供了**自学教程**和**工作代码**。'
 - en: Let’s get started. [![](../Images/792c2009444a72a75be38d2515da4e20.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/video_basics_cover-scaled.jpg)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。[![](../Images/792c2009444a72a75be38d2515da4e20.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/video_basics_cover-scaled.jpg)
 - en: Reading and Displaying Videos Using OpenCV
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 OpenCV 读取和显示视频
 - en: Photo by [Thomas William](https://unsplash.com/photos/4qGbMEZb56c), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Thomas William](https://unsplash.com/photos/4qGbMEZb56c) 拍摄，版权所有。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分，它们是：
 - en: How is a Video Formulated?
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 视频是如何制定的？
 - en: Reading and Displaying Image Frames From a Camera
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从摄像头读取和显示图像帧
 - en: Reading and Displaying Image Frames From a Video File
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从视频文件中读取和显示图像帧
 - en: '**How is a Video Formulated?**'
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**视频是如何制定的？**'
 - en: We have seen that a digital image comprises pixels, with each pixel characterized
     by its *spatial coordinates* inside the image space and its *intensity* or *gray
     level* value.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经看到，数字图像由像素组成，每个像素由其图像空间中的*空间坐标*和其*强度*或*灰度级*值来表征。
 - en: We have also mentioned that a grayscale image comprising a single channel can
     be describedby a 2D function, *I*(*x*, *y*), where *x* and *y* denote the aforementioned
     spatial coordinates, and the value of *I* at any image position (*x*, *y*) denotes
     the pixel intensity.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还提到，包含单一通道的灰度图像可以由 2D 函数 *I*(*x*, *y*) 描述，其中 *x* 和 *y* 表示上述空间坐标，*I* 在任何图像位置
+    (*x*, *y*) 的值表示像素强度。
 - en: An RGB image, in turn, can be described by three of these 2D functions, *I**[R]*(*x*,
     *y*), *I**[G]*(*x*, *y*), and *I**[B]*(*x*, *y*), corresponding to its Red, Green,
     and Blue channels, respectively.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个 RGB 图像可以通过这三种 2D 函数描述，*I**[R]*(*x*, *y*), *I**[G]*(*x*, *y*), 和 *I**[B]*(*x*,
+    *y*)，分别对应其红色、绿色和蓝色通道。
 - en: In describing digital video, we shall add an extra dimension, *t*, which denotes
     *time*. The reason for doing so is that digital video comprises digital images
     sequentially displayed in rapid succession across a period. Within the context
     of video, we shall be referring to these images as *image frames*. The rate at
     which frames are displayed in succession is referred to as *frame rate* and is
     measured in *frames per second*, or FPS in short.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在描述数字视频时，我们将添加一个额外的维度，即*t*，表示*时间*。这样做的原因是数字视频由数字图像在一段时间内快速连续地显示组成。在视频的上下文中，我们将这些图像称为*图像帧*。图像帧连续显示的速率称为*帧率*，以*每秒帧数*（FPS）来测量。
 - en: Hence, if we had to pick an image frame out of a *grayscale* video at a specific
     time instance, *t*, we would describe it by the function, *I*(*x*, *y, t*), which
     now includes a temporal dimension.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，如果我们需要从某个特定时间点 *t* 中的*灰度*视频中挑选一帧图像，我们将通过函数 *I*(*x*, *y, t*) 来描述它，这现在包含了时间维度。
 - en: 'Similarly, if we had to pick an image frame out of an *RGB* video at a specific
     time instance, *t*, we would describe it by three functions: *I**[R]*(*x*, *y,
     t*), *I**[G]*(*x*, *y, t*), and *I**[B]*(*x*, *y, t*), corresponding to its Red,
     Green, and Blue channels, respectively.'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样地，如果我们需要从特定时间实例*t*的*RGB*视频中选择图像帧，我们将通过三个函数来描述它：*I**[R]*(*x*, *y, t*), *I**[G]*(*x*,
+    *y, t*), 和 *I**[B]*(*x*, *y, t*)，分别对应其红、绿和蓝通道。
 - en: Our formulation tells us that the data contained in digital video is *time-dependent*,
     which means that the data changes over time.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的公式告诉我们，数字视频中包含的数据是*时间依赖*的，这意味着数据随时间变化。
 - en: In simpler terms, this means that the intensity value of a pixel with coordinates
     (*x*, *y*) at time instance, *t*, will likely be different from its intensity
     value at another time instance, (*t* + 1). This change in intensity values might
     come from the fact that the physical scene being recorded is changing but also
     from the presence of noise in the video data (originating, for instance, from
     the camera sensor itself).
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 简单来说，这意味着在时间实例*t*处具有坐标(*x*, *y*)的像素的强度值可能与另一个时间实例(*t* + 1)处的强度值不同。这种强度值的变化可能来自于被记录的物理场景的变化，但也可能来自视频数据中的噪声（例如来自相机传感器本身）。
 - en: '**Reading and Displaying Image Frames From a Camera**'
+  id: totrans-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**从相机读取和显示图像帧**'
 - en: To read image frames either from a camera that is connected to your computer
     or a video file that is stored on your hard disk, our first step will be to create
     a `VideoCapture` object to work with. The required argument is either the index
     value of the type `int` corresponding to the camera to read from or the video
     file name.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 要从连接到计算机的相机或存储在硬盘上的视频文件中读取图像帧，我们的第一步是创建一个`VideoCapture`对象来处理。所需的参数是`int`类型的索引值，对应于要读取的相机，或者是视频文件的名称。
 - en: Let’s start first by grabbing image frames from a camera.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先从相机中抓取图像帧开始。
 - en: If you have a webcam that is built into or connected to your computer, then
     you may index it by a value of `0`. If you have additional connected cameras that
     you would otherwise wish to read from, then you may index them with a value of
     `1`, `2`, etc., depending on how many cameras you have available.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您的计算机内置或连接了网络摄像头，则可以通过值`0`来索引它。如果您有其他连接的相机希望读取，则可以使用值`1`、`2`等，具体取决于可用的相机数量。
 - en: Python
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Before attempting to read and display image frames, it would be sensible to
     check that a connection to the camera has been established successfully. The `capture.isOpened()`
     method can be used for this purpose, which returns `False` in case the connection
     could not be established:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在尝试读取和显示图像帧之前，检查是否成功建立了与相机的连接是明智的。可以使用`capture.isOpened()`方法来实现这一目的，如果连接未能建立则返回`False`：
 - en: Python
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'If the camera has, otherwise, been successfully connected, we may proceed to
     read the image frames by making use of the `capture.read()` the method as follows:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果相机成功连接，我们可以通过使用`capture.read()`方法来读取图像帧，如下所示：
 - en: Python
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: This method returns the next image frame in `frame`, together with a boolean
     value `ret` that is `True` if an image frame has been successfully grabbed or,
     conversely, `False` if the method has returned an empty image. The latter can
     happen if, for instance, the camera has been disconnected.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 该方法返回`frame`中的下一个图像帧，以及一个布尔值`ret`，如果成功抓取到图像帧则为`True`，反之为`False`，例如相机已断开连接时可能返回空图像。
 - en: 'Displaying the grabbed image frameworks in the same way as we had done for
     the still images, using the `imshow` method:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 以与静态图像相同的方式显示抓取的图像框架，使用`imshow`方法：
 - en: Python
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Always keep in mind that when working with OpenCV, each image frame is read
     in BGR color format.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 请记住，在使用OpenCV时，每个图像帧都以BGR颜色格式读取。
 - en: 'In the complete code listing, we’re going to place the code above inside a
     `while` loop that will keep on grabbing image frames from the camera until the
     user terminates it. For the purpose of letting the user terminate the `while`
     loop, we will include the following two lines of code:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在完整的代码列表中，我们将把上述代码放入一个`while`循环中，该循环将继续从相机中抓取图像帧，直到用户终止它。为了让用户终止`while`循环，我们将包含以下两行代码：
 - en: Python
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Here, the `waitKey` function stops and waits for a keyboard event for the specified
     amount of milliseconds. It returns the code of the pressed key, or -1 if no keyboard
     event is generated until the specified time has elapsed. In our particular case,
     we have specified a time window of 25ms, and we are checking for an ASCII code
     of `27` that corresponds to pressing the `Esc` key. When the `Esc` key is pressed,
     the `while` loop is terminated by a `break` command.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里，`waitKey`函数停止并等待指定的毫秒数以响应键盘事件。它返回按键的代码，如果在指定时间内没有生成键盘事件，则返回-1。在我们的特定情况下，我们指定了25毫秒的时间窗口，并检查ASCII码`27`，这对应于按下`Esc`键。当按下`Esc`键时，`while`循环通过`break`命令终止。
 - en: 'The very last lines of code that we shall be including serve to stop the video
     capture, deallocate the memory, and close the window being used for image display:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将要包括的最后几行代码用于停止视频捕捉，释放内存，并关闭用于图像显示的窗口：
 - en: Python
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: In some laptop computers, you will see a small LED lit up next to your built-in
     webcam when the video capture is used. You need to stop the video capture to turn
     off that LED. It doesn’t matter if your program is reading from the camera. You
     must also stop the video capture before another program can use your webcam.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 在某些笔记本电脑上，当使用视频捕捉时，你会看到内置摄像头旁边的小LED灯亮起。你需要停止视频捕捉才能关闭该LED灯。即使你的程序正在从摄像头读取，也没有关系。你必须在其他程序可以使用你的摄像头之前也停止视频捕捉。
 - en: 'The complete code listing is as follows:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码列表如下：
 - en: Python
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-55
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用OpenCV进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费PDF电子书版本。
 - en: '**Reading and Displaying Image Frames From a Video File**'
+  id: totrans-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**从视频文件读取和显示图像帧**'
 - en: It is, alternatively, possible to read image frames from a video file stored
     on your hard disk. OpenCV supports many video formats. For this purpose, we will
     modify our code to specify a path to a video file rather than an index to a camera.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种方法是从存储在硬盘上的视频文件中读取图像帧。OpenCV支持许多视频格式。为此，我们将修改我们的代码以指定视频文件的路径，而不是摄像头的索引。
 - en: I downloaded [this video](https://www.videvo.net/video/rising-up-over-a-river/452789/),
     renamed it to *Iceland.mp4,* and saved it to a local folder called *Videos*.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 我下载了[这个视频](https://www.videvo.net/video/rising-up-over-a-river/452789/)，将其重命名为*Iceland.mp4*，并将其保存到名为*Videos*的本地文件夹中。
 - en: I can see from the video properties displayed on my local drive that the video
     comprises image frames of dimensions 1920 x 1080 pixels and that it runs at a
     frame rate of 25 fps.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 我可以从显示在本地驱动器上的视频属性中看到，该视频包括1920 x 1080像素的图像帧，并且以25帧每秒的帧率运行。
 - en: 'To read the image frames of this video, we shall be modifying the following
     line of code as follows:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了读取该视频的图像帧，我们将修改以下代码行如下：
 - en: Python
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'It is also possible to get several properties of the capture object, such as
     the image frames’ width and height, as well as the frame rate:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 还可以获取捕捉对象的多个属性，例如图像帧的宽度和高度以及帧率：
 - en: Python
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The complete code listing is as follows:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码列表如下：
 - en: Python
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: The video has a time dimension. But in OpenCV, you are dealing with one **frame**
     at a time. This can make the video processing consistent with image processing
     so you can reuse the techniques from one to another.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 视频具有时间维度。但在OpenCV中，你一次处理一个**帧**。这可以使视频处理与图像处理保持一致，从而使你可以将一种技术从一个应用到另一个。
 - en: 'We may include other lines of code inside the `while` loop to process every
     image frame after this has been grabbed by the `capture.read()` method. One example
     is to convert each BGR image frame into grayscale, for which we may use the same
     `cvtColor` method that [we used for converting still images](https://machinelearningmastery.com/reading-and-displaying-images-and-converting-between-color-spaces-using-opencv):'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以在`while`循环内部包括其他代码行，以处理每个图像帧，这些图像帧在`capture.read()`方法抓取后获得。一个例子是将每个BGR图像帧转换为灰度图像，为此我们可以使用与[我们用于转换静态图像](https://machinelearningmastery.com/reading-and-displaying-images-and-converting-between-color-spaces-using-opencv)相同的`cvtColor`方法。
 - en: Python
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: What other transformations can you think of to apply to the image frames?
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 你能想到对图像帧应用哪些其他变换吗？
 - en: '**Further Reading**'
+  id: totrans-76
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于此主题的资源，如果你想深入了解。
 - en: '**Books**'
+  id: totrans-78
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[掌握 OpenCV 4 与 Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019
+    年。'
 - en: '**Websites**'
+  id: totrans-80
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV，[https://opencv.org/](https://opencv.org/)
 - en: '**Summary**'
+  id: totrans-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you familiarize yourself with the most basic OpenCV operations
     essential when working with videos.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将熟悉处理视频时必需的最基本的 OpenCV 操作。
 - en: 'Specifically, you learned:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How a digital video is formulated as a close relative of digital images.
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数字视频如何作为数字图像的近亲进行编制。
 - en: How the image frames comprising a video are read from a camera.
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从摄像机中读取构成视频的图像帧。
 - en: How the image frames comprising a video are read from a saved video file.
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从保存的视频文件中读取构成视频的图像帧。
 - en: Do you have any questions?
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提出你的问题，我会尽力回答。

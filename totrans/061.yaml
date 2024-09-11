@@ -1,111 +1,157 @@
 - en: Using Haar Cascade for Object Detection
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用Haar级联进行对象检测
 - en: 原文：[https://machinelearningmastery.com/using-haar-cascade-for-object-detection/](https://machinelearningmastery.com/using-haar-cascade-for-object-detection/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 译文：[https://machinelearningmastery.com/using-haar-cascade-for-object-detection/](https://machinelearningmastery.com/using-haar-cascade-for-object-detection/)
 - en: 'Before the deep learning revolution redefined computer vision, Haar features
     and Haar cascades were the tools you must not ignore for object detection. Even
     today, they are very useful object detectors because they are lightweight. In
     this post, you will learn about the Haar cascade and how it can detect objects.
     After completing this post, you will know:'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在深度学习革命重新定义计算机视觉之前，Haar特征和Haar级联是你必须了解的对象检测工具。即便在今天，它们仍然是非常有用的对象检测器，因为它们轻量化。在这篇文章中，你将了解Haar级联及其如何检测物体。完成本篇文章后，你将会知道：
 - en: What is Haar features
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是Haar特征
 - en: How Haar cascade is using Haar features to detect objects
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Haar级联如何利用Haar特征来检测物体
 - en: Some predefined Haar cascade object detectors in OpenCV
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV中的一些预定义Haar级联对象检测器
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参考我的书籍[《OpenCV中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)。它提供了**自学教程**和**工作代码**。'
 - en: Let’s get started.![](../Images/404249c392c97438aa42b0feed32889f.png)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/404249c392c97438aa42b0feed32889f.png)
 - en: Using Haar Cascade for Object Detection
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用Haar级联进行对象检测
 - en: Photo by [Alexander Hipp](https://unsplash.com/photos/time-lapse-photo-of-waterfalls-5tIuYKRRHj8).
     Some rights reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[亚历山大·希普](https://unsplash.com/photos/time-lapse-photo-of-waterfalls-5tIuYKRRHj8)提供。保留部分权利。
 - en: Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两个部分，它们是：
 - en: What are Haar Features and Haar Cascade?
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是Haar特征和Haar级联？
 - en: Haar Cascade in OpenCV
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV中的Haar级联
 - en: What are Haar Features and Haar Cascade?
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是Haar特征和Haar级联？
 - en: Since the technique developed by Paul Viola and Michael Jones in 2001, Haar
     features and Haar cascades have revolutionized object detection. They have become
     integral components in various applications, ranging from facial recognition to
     real-time object detection.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 自2001年保罗·维奥拉和迈克尔·琼斯开发了这一技术以来，Haar特征和Haar级联已经彻底改变了对象检测。它们已成为各种应用中的重要组成部分，从面部识别到实时对象检测。
 - en: Haar features are extracted from rectangular areas in an image. The feature’s
     value is based on the pixel intensities. Usually, it is calculated using a sliding
     window, and the area within the window is partitioned into two or more rectangular
     areas. Haar feature is the difference in the sum of pixel intensities between
     these areas.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: Haar特征从图像中的矩形区域提取。特征值基于像素强度。通常，它是通过滑动窗口计算的，窗口中的区域被划分为两个或更多矩形区域。Haar特征是这些区域之间像素强度总和的差异。
 - en: It is believed that an object’s presence will distort the variation of pixel
     intensity. For example, the background is usually in a uniform pattern, in which
     a foreground object will not fit. By checking the pixel intensity between neighboring
     rectangular areas, you should be able to notice a difference. Hence it is indicative
     of the object’s presence.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 认为物体的存在会扭曲像素强度的变化。例如，背景通常是均匀的模式，而前景物体将不适合这种背景。通过检查相邻矩形区域之间的像素强度，应该能注意到差异。因此，它表明了物体的存在。
 - en: 'For the efficiency of calculation, the rectangular areas in Haar features are
     usually parallel to the edges of the image rather than tilted. However, we can
     use multiple sizes and shapes of rectangles to capture different features and
     scale variations of an object. Therefore, the key strength of Haar features lies
     in their ability to represent three patterns:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了提高计算效率，Haar特征中的矩形区域通常与图像的边缘平行，而不是倾斜的。然而，我们可以使用多种尺寸和形状的矩形来捕捉物体的不同特征和尺度变化。因此，Haar特征的关键优势在于它们能够表示三种模式：
 - en: '**Edges**: Either vertical or horizontal due to how we oriented the rectangular
     area. They are useful for identifying boundaries between different image regions.'
+  id: totrans-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**边缘**：由于我们如何定向矩形区域而呈现的垂直或水平边缘。它们对于识别不同图像区域之间的边界非常有用。'
 - en: '**Lines**: The diagonal edges in an image. They are useful for identifying
     lines and contours in objects.'
+  id: totrans-20
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**线条**：图像中的对角边缘。它们对于识别物体中的线条和轮廓非常有用。'
 - en: '**Center-surrounded features**: This detects the changes in intensity between
     the center of a rectangular region and its surrounding area. This is useful to
     identify objects with a distinct shape or pattern.'
+  id: totrans-21
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**中心环绕特征**：这检测矩形区域中心与周围区域之间的强度变化。这对于识别具有明显形状或模式的对象很有用。'
 - en: Haar cascade combines multiple Haar features in a hierarchy to build a classifier.
     Instead of analyzing the entire image with each Haar feature, cascades break down
     the detection process into stages, each consisting of a set of features.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: Haar 级联通过层次结构组合多个 Haar 特征来构建分类器。级联将检测过程分解为多个阶段，每个阶段包含一组特征，而不是用每个 Haar 特征分析整个图像。
 - en: The key idea behind Haar cascade is that only a small number of pixels among
     the entire image is related to the object in concern. Therefore, it is essential
     to discard the irrelevant part of the image as quickly as possible. During the
@@ -113,226 +159,337 @@
     to eliminate irrelevant regions. The cascade structure, trained using the AdaBoost
     algorithm, enables an efficient, hierarchical evaluation of features, reducing
     the computational load and accelerating the detection speed.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: Haar 级联的关键思想是，整个图像中只有少量像素与关注的对象相关。因此，尽快丢弃图像中无关的部分至关重要。在检测过程中，Haar 级联以不同的尺度和位置扫描图像，以消除无关区域。使用
+    AdaBoost 算法训练的级联结构实现了高效的分层特征评估，减少了计算负担并加快了检测速度。
 - en: Haar Cascade in OpenCV
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: OpenCV 中的 Haar Cascade
 - en: Haar cascade is an algorithm, but first, you need to train a Haar cascade classifier
     before you can use it as an object detector.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: Haar 级联是一种算法，但首先，你需要训练一个 Haar 级联分类器，然后才能将其用作对象检测器。
 - en: 'In OpenCV, there are pre-trained Haar cascade classifiers for the following
     (you can download the model files from [https://github.com/opencv/opencv/tree/4.x/data/haarcascades](https://github.com/opencv/opencv/tree/4.x/data/haarcascades)):'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 OpenCV 中，以下是预训练的 Haar 级联分类器（你可以从 [https://github.com/opencv/opencv/tree/4.x/data/haarcascades](https://github.com/opencv/opencv/tree/4.x/data/haarcascades)
+    下载模型文件）：
 - en: human face
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 人脸
 - en: eye detection
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 眼睛检测
 - en: full body, upper body, or lower body of a human
+  id: totrans-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 人体的全身、上半身或下半身
 - en: vehicle license plate
+  id: totrans-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 车辆牌照
 - en: 'The pre-trained classifier is stored as an XML file. You can find the filename
     of the built-in classifiers from the [GitHub link](https://github.com/opencv/opencv/tree/4.x/data/haarcascades).
     To create a classifier, you must provide the path to this XML file. If you’re
     using the one that shipped with OpenCV, you can use the following syntax:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 预训练分类器以 XML 文件的形式存储。你可以从 [GitHub 链接](https://github.com/opencv/opencv/tree/4.x/data/haarcascades)
+    找到内置分类器的文件名。要创建分类器，你必须提供此 XML 文件的路径。如果你使用的是 OpenCV 自带的分类器，可以使用以下语法：
 - en: '[PRE0]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Usually a photo has multiple channels for the different colors (such as red,
     green, and blue). Haar cascade depends on pixel intensity only. Hence you should
     provide a single channel image, such as the grayscale version.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，照片有多个颜色通道（如红色、绿色和蓝色）。Haar 级联仅依赖于像素强度。因此，你应该提供单通道图像，如灰度图像。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-34
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 OpenCV 进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件速成课程（含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得免费的 PDF 电子书版本课程。
 - en: 'Using the Haar cascade classifier to detect objects is to use the method `detectMultiScale()`.
     It takes the following arguments:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Haar 级联分类器来检测对象就是使用 `detectMultiScale()` 方法。它接受以下参数：
 - en: '`image`: This is the input image on which you want to perform object detection.
     It should be in grayscale format, or the “V” channel for an image in HSV channel
     format'
+  id: totrans-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`image`：这是你想要进行对象检测的输入图像。它应该是灰度格式，或者对于 HSV 通道格式的图像是“V”通道。'
 - en: '`scaleFactor`: This parameter compensates for the fact that an object at different
     distances from the camera will appear at different sizes. It controls how much
     the image size is reduced at each image scale. It must be strictly greater than
     1\. A lower `scaleFactor` increases the detection time but also increases the
     chance of detection. Typical values range from 1.01 to 1.3.'
+  id: totrans-39
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`scaleFactor`：此参数弥补了不同距离的对象在摄像头中出现不同尺寸的事实。它控制每个图像尺度下图像大小的缩小程度。它必须严格大于 1\. 较低的
+    `scaleFactor` 增加检测时间，但也增加了检测的可能性。典型值范围从 1.01 到 1.3。'
 - en: '`minNeighbors`: This parameter specifies how many neighbors each candidate
     object should have to retain it. Higher values result in fewer detections but
     with higher quality. Lower values may lead to more detections but with possible
     false positives. It’s a trade-off between precision and recall.'
+  id: totrans-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`minNeighbors`：这个参数指定了每个候选对象应拥有多少个邻居以保留它。较高的值会导致检测到的对象较少，但质量较高。较低的值可能会导致更多的检测结果，但可能会有误检。这是精准度与召回率之间的权衡。'
 - en: '`minSize`: This parameter sets the minimum object size. Objects smaller than
     this will be ignored. It’s a tuple of the form `(width, height)`.'
+  id: totrans-41
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`minSize`：这个参数设置了对象的最小尺寸。小于此尺寸的对象将被忽略。它是一个形式为`(width, height)`的元组。'
 - en: 'Let’s try with an example. You can download a street photo at the following
     URL:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们通过一个例子来试试。你可以在以下网址下载一张街景照片：
 - en: '[https://unsplash.com/photos/people-walking-on-sidewalk-during-daytime-GBkAx9qUeus](https://unsplash.com/photos/people-walking-on-sidewalk-during-daytime-GBkAx9qUeus)'
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://unsplash.com/photos/people-walking-on-sidewalk-during-daytime-GBkAx9qUeus](https://unsplash.com/photos/people-walking-on-sidewalk-during-daytime-GBkAx9qUeus)'
 - en: '![](../Images/035ee7893be5ca3e0f608a2841ad74ef.png)'
+  id: totrans-44
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/035ee7893be5ca3e0f608a2841ad74ef.png)'
 - en: A photo for face detection using Haar cascade.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 一张用于面部检测的Haar级联照片。
 - en: Photo by [JACQUELINE BRANDWAYN](https://unsplash.com/photos/people-walking-on-sidewalk-during-daytime-GBkAx9qUeus).
     Some rights reserved.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[JACQUELINE BRANDWAYN](https://unsplash.com/photos/people-walking-on-sidewalk-during-daytime-GBkAx9qUeus)提供。保留部分权利。
 - en: A medium size resolution of 1920×1080 is used in this example. If you have a
     different resolution, you may need to tweak the arguments to `detectMultiScale()`
     below specifically the `minSize`.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 本示例使用了分辨率为1920×1080的中等尺寸。如果你的分辨率不同，你可能需要特别调整`detectMultiScale()`中的参数，尤其是`minSize`。
 - en: 'Let’s create a face detector and find the location of the faces of the pedestrians.
     The classifier is created using the pre-trained model `haarcascade_frontalface_default.xml`
     that shipped with OpenCV. The model file is located in the path pointed by `cv2.data.haarcascades`.
     Then we can use it to detect faces as bounding boxes:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们创建一个面部检测器，并找到行人面部的位置。分类器是使用与OpenCV一起提供的预训练模型`haarcascade_frontalface_default.xml`创建的。模型文件位于`cv2.data.haarcascades`指向的路径中。然后我们可以用它来将面部检测为边界框：
 - en: '[PRE1]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Feel free to adjust the parameters in your case. To illustrate the result, you
     can make use of OpenCV’s function to draw on the **original** image,
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 随意调整你的参数。为了说明结果，你可以使用OpenCV的函数在**原始**图像上绘制。
 - en: '[PRE2]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Note that the `cv2.rectangle()` function asks for the coordinates of the opposite
     corners of a rectangular box, while the output of `detectMultiScale()` provides
     the coordinates of the top left corner and the width and height. The function
     above draws a blue box of two pixels wide on each face detected. Note that in
     OpenCV, images are presented in BGR channel order. Hence the pixel color `(255,
     0, 0)` represents blue.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，`cv2.rectangle()`函数要求提供矩形框对角线的坐标，而`detectMultiScale()`的输出提供的是左上角的坐标以及宽度和高度。上述函数在每个检测到的面部上绘制了两像素宽的蓝色框。请注意，在OpenCV中，图像以BGR通道顺序呈现。因此，像素颜色`(255,
+    0, 0)`代表蓝色。
 - en: 'The result is as follows:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果如下：
 - en: '![](../Images/466e207e8184ecdff233cb2997f292a3.png)'
+  id: totrans-54
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/466e207e8184ecdff233cb2997f292a3.png)'
 - en: Faces as detected by Haar cascade
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: Haar级联检测到的面部
 - en: You can see that there are some false positives but overall, it provided a quite
     good result. You can adjust the parameters above to see how your result changes.
     The quality of the object detector using Haar cascade depends on how well it is
     trained to produce the model you read from the XML file.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到有一些误检，但总体来说，结果还是相当不错的。你可以调整上述参数，查看结果的变化。使用Haar级联的对象检测器的质量取决于它训练得如何，以生成你从XML文件中读取的模型。
 - en: 'The complete code is as follows:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整代码如下：
 - en: '[PRE3]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Further Reading
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多相关资源，供你深入了解。
 - en: Books
+  id: totrans-61
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[精通OpenCV 4与Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019。'
 - en: '[Digital Image Processing](https://www.amazon.com/Digital-Image-Processing-Rafael-Gonzalez/dp/0133356728),
     2017'
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[数字图像处理](https://www.amazon.com/Digital-Image-Processing-Rafael-Gonzalez/dp/0133356728)，2017'
 - en: Papers
+  id: totrans-64
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 论文
 - en: Paul Viola and Michael J. Jones. [Robust real-time face detection](https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/viola-cvpr-01.pdf).
     International Journal of Computer Vision, 57(2):137–154, 2004.
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Paul Viola 和 Michael J. Jones. [稳健的实时人脸检测](https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/viola-cvpr-01.pdf)。《计算机视觉国际期刊》，57(2):137–154，2004年。
 - en: Rainer Lienhart and Jochen Maydt. An extended set of haar-like features for
     rapid object detection. In Proc. Int. Conf. Image Processing. 2002, volume 1,
     pages 1-900\. IEEE, 2002.
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Rainer Lienhart 和 Jochen Maydt. 一组扩展的Haar-like特征用于快速对象检测。见于《国际图像处理会议论文集》，2002年，第1卷，第1-900页。IEEE，2002年。
 - en: Websites
+  id: totrans-67
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 网站
 - en: 'Haar features on Wikipedia: [https://en.wikipedia.org/wiki/Haar-like_feature](https://en.wikipedia.org/wiki/Haar-like_feature)'
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 维基百科上的Haar特征：[https://en.wikipedia.org/wiki/Haar-like_feature](https://en.wikipedia.org/wiki/Haar-like_feature)
 - en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV，[https://opencv.org/](https://opencv.org/)
 - en: OpenCV Cascade Classifier, [https://docs.opencv.org/4.x/db/d28/tutorial_cascade_classifier.html](https://docs.opencv.org/4.x/db/d28/tutorial_cascade_classifier.html)
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV Cascade Classifier，[https://docs.opencv.org/4.x/db/d28/tutorial_cascade_classifier.html](https://docs.opencv.org/4.x/db/d28/tutorial_cascade_classifier.html)
 - en: Summary
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you learned how to use OpenCV’s Haar cascade classifier.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何使用OpenCV的Haar级联分类器。
 - en: 'Specifically, you learned:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: What is Haar features and Haar cascade, and how it sees an object
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是Haar特征和Haar级联，它如何识别对象
 - en: How to use the built-in Haar cascade classifier to detect objects in a photo
     using OpenCV
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用内置的Haar级联分类器通过OpenCV检测照片中的对象

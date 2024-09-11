@@ -1,18 +1,24 @@
 - en: Training and Validation Data in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: PyTorch中的训练和验证数据
 - en: 原文：[https://machinelearningmastery.com/training-and-validation-data-in-pytorch/](https://machinelearningmastery.com/training-and-validation-data-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/training-and-validation-data-in-pytorch/](https://machinelearningmastery.com/training-and-validation-data-in-pytorch/)
 - en: Training data is the set of data that a machine learning algorithm uses to learn.
     It is also called training set. Validation data is one of the sets of data that
     machine learning algorithms use to test their accuracy. To validate an algorithm’s
     performance is to compare its predicted output with the known ground truth in
     validation data.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练数据是机器学习算法用来学习的数据集。它也称为训练集。验证数据是机器学习算法用来测试其准确性的一组数据。验证算法性能就是将预测输出与验证数据中的已知真实值进行比较。
 - en: Training data is usually large and complex, while validation data is usually
     smaller. The more training examples there are, the better the model performance
     will be. For instance, in a spam detection task, if there are 10 spam emails and
@@ -21,232 +27,350 @@
     about what spam looks like. However, if we have 10 million spam emails and 10
     million non-spam emails then it would be much easier for our model to detect new
     spam because it has seen so many examples of what it looks like.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练数据通常很大且复杂，而验证数据通常较小。训练样本越多，模型的表现就会越好。例如，在垃圾邮件检测任务中，如果训练集中有10封垃圾邮件和10封非垃圾邮件，那么机器学习模型可能难以检测到新邮件中的垃圾邮件，因为没有足够的信息来判断垃圾邮件的样子。然而，如果我们有1000万封垃圾邮件和1000万封非垃圾邮件，那么我们的模型检测新垃圾邮件会容易得多，因为它已经见过了许多垃圾邮件的样子。
 - en: 'In this tutorial, you will learn about training and validation data in PyTorch.
     We will also demonstrate the importance of training and validation data for machine
     learning models in general, with a focus on neural networks. Particularly, you’ll
     learn:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将学习PyTorch中训练和验证数据的内容。我们还将演示训练和验证数据对机器学习模型的重要性，特别是神经网络。特别地，你将学习到：
 - en: The concept of training and validation data in PyTorch.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PyTorch中训练和验证数据的概念。
 - en: How data is split into training and validations sets in PyTorch.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据如何在PyTorch中划分为训练集和验证集。
 - en: How you can build a simple linear regression model with built-in functions in
     PyTorch.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用PyTorch内置函数构建一个简单的线性回归模型。
 - en: How you can use various learning rates to train our model in order to get the
     desired accuracy.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用不同的学习率来训练我们的模型以获得期望的准确性。
 - en: How you can tune the hyperparameters in order to obtain the best model for your
     data.
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何调整超参数以获得最佳的数据模型。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '**快速启动你的项目**，请参阅我的书籍[《用PyTorch深度学习》](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了**自学教程**和**工作代码**。'
 - en: Let’s get started.![](../Images/5917059615dafe61e0e6e0ee4f6ceac6.png)
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/5917059615dafe61e0e6e0ee4f6ceac6.png)
 - en: Using Optimizers from PyTorch.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用PyTorch中的优化器。
 - en: Picture by [Markus Krisetya](https://unsplash.com/photos/Vkp9wg-VAsQ). Some
     rights reserved.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Markus Krisetya](https://unsplash.com/photos/Vkp9wg-VAsQ)提供。部分版权保留。
 - en: Overview
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in three parts; they are
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三部分；它们是：
 - en: Build the Data Class for Training and Validation Sets
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为训练和验证集构建数据类
 - en: Build and Train the Model
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建和训练模型
 - en: Visualize the Results
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可视化结果
 - en: Build the Data Class for Training and Validation Sets
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为训练和验证集构建数据类
 - en: Let’s first load up a few libraries we’ll need in this tutorial.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们加载一些本教程中需要的库。
 - en: '[PRE0]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: We’ll start from building a custom dataset class to produce enough amount of
     synthetic data. This will allow us to split our data into training set and validation
     set. Moreover, we’ll add some steps to include the outliers into the data as well.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将从构建一个自定义数据集类开始，以生成足够的合成数据。这将允许我们将数据拆分为训练集和验证集。此外，我们还将添加一些步骤将异常值包含到数据中。
 - en: '[PRE1]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: For training set, we’ll set our `train` parameter to `True` by default. If set
     to `False`, it will produce validation data. We created our train set and validation
     set as separate objects.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于训练集，我们默认将`train`参数设置为`True`。如果设置为`False`，则会生成验证数据。我们将训练集和验证集创建为不同的对象。
 - en: Now, let’s visualize our data. You’ll see the outliers at $x=-2$ and $x=0$.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们可视化我们的数据。你会看到在`$x=-2$`和`$x=0$`的异常值。
 - en: '[PRE2]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '![](../Images/74d19cb54ba44ff680cd75ebd2ea7369.png)'
+  id: totrans-27
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/74d19cb54ba44ff680cd75ebd2ea7369.png)'
 - en: Training and validation datasets
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练和验证数据集
 - en: The complete code to generate the plot above is as follows.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成上述图表的完整代码如下。
 - en: '[PRE3]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Build and Train the Model
+  id: totrans-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建和训练模型
 - en: The `nn` package in PyTorch provides us many useful functions. We’ll import
     linear regression model and loss criterion from the `nn` package. Furthermore,
     we’ll also import `DataLoader` from `torch.utils.data` package.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 中的 `nn` 包为我们提供了许多有用的函数。我们将从 `nn` 包中导入线性回归模型和损失准则。此外，我们还将从 `torch.utils.data`
+    包中导入 `DataLoader`。
 - en: '[PRE4]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: We’ll create a list of various learning rates to train multiple models in one
     go. This is a common practice among deep learning practitioners where they tune
     different hyperparameters to get the best model. We’ll store both training and
     validation losses in tensors and create an empty list `Models` to store our models
     as well. Later on, we’ll plot the graphs to evaluate our models.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将创建一个包含各种学习率的列表，以一次训练多个模型。这是深度学习从业者中的一种常见做法，他们调整不同的超参数以获得最佳模型。我们将训练和验证损失存储在张量中，并创建一个空列表
+    `Models` 来存储我们的模型。之后，我们将绘制图表来评估我们的模型。
 - en: '[PRE5]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: To train the models, we’ll use various learning rates with stochastic gradient
     descent (SGD) optimizer. Results for training and validation data will be saved
     along with the models in the list. We’ll train all models for 20 epochs.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了训练模型，我们将使用各种学习率与随机梯度下降（SGD）优化器。训练和验证数据的结果将与模型一起保存在列表中。我们将训练所有模型 20 个周期。
 - en: '[PRE6]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The code above collects losses from training and validation separately. This
     helps us to understand how well our training can be, for example, whether we are
     overfitting. It overfits if we discovered that the loss in validation set is largely
     different from the loss from training set. In that case, our trained model failed
     to generalize to the data it didn’t see, namely, the validation sets.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码分别收集训练和验证的损失。这帮助我们理解训练效果如何，例如是否过拟合。如果我们发现验证集的损失与训练集的损失差异很大，那么我们的训练模型未能对未见过的数据进行泛化，即验证集。
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-39
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即获取我的免费电子邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费 PDF Ebook 版本。
 - en: Visualize the Results
+  id: totrans-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 可视化结果
 - en: In the above, we use the same model (linear regression) and train with a fixed
     number of epochs. The only variation is the learning rate. Then we can compare
     which learning rate gives us the best model in terms of fastest convergence.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述代码中，我们使用相同的模型（线性回归）并在固定的训练周期下进行训练。唯一的变化是学习率。然后我们可以比较哪一个学习率在收敛速度上表现最佳。
 - en: Let’s visualize the loss plots for both training and validation data for each
     learning rate. By looking at the plot, you can observe that the loss is smallest
     at the learning rate 0.001, meaning our model converge faster at this learning
     rate for this data.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们可视化每个学习率的训练和验证数据的损失图。通过查看图表，你可以观察到在学习率为 0.001 时损失最小，这意味着我们的模型在这个学习率下更快地收敛。
 - en: '[PRE7]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '![](../Images/245eb7e1d10344f52b605a55369db77f.png)'
+  id: totrans-46
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/245eb7e1d10344f52b605a55369db77f.png)'
 - en: Loss vs learning rate
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 损失 vs 学习率
 - en: Let’s also plot the predictions from each of the models on the validation data.
     A perfectly converged model should fit the data perfectly while a model far from
     converged would produce predicts that are far off from the data.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们也绘制每个模型在验证数据上的预测结果。一个完全收敛的模型应能完美拟合数据，而一个尚未收敛的模型则会产生偏离数据的预测结果。
 - en: '[PRE8]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: which we see the prediction visualized as follows:![](../Images/27f946929f6b40cab47a48b13292e3fd.png)
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们看到的预测结果可视化如下：![](../Images/27f946929f6b40cab47a48b13292e3fd.png)
 - en: As you can see, the green line is closer to the validation data points. It’s
     the line with the optimal learning rate (0.001).
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你所见，绿色线更接近验证数据点。这是具有最佳学习率（0.001）的线。
 - en: The following is the complete code from creating the data to visualizing the
     loss from training and validation.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是从创建数据到可视化训练和验证损失的完整代码。
 - en: '[PRE9]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Summary
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you learned the concept of training and validation data in
     PyTorch. Particularly, you learned:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了 PyTorch 中训练数据和验证数据的概念。特别是，你了解了：
 - en: The concept of training and validation data in PyTorch.
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PyTorch 中训练和验证数据的概念。
 - en: How data is split into training and validations sets in PyTorch.
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据如何在 PyTorch 中被拆分为训练集和验证集。
 - en: How you can build a simple linear regression model with built-in functions in
     PyTorch.
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 PyTorch 中的内置函数构建一个简单的线性回归模型。
 - en: How you can use various learning rates to train our model in order to get the
     desired accuracy.
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用不同的学习率来训练我们的模型，以获得期望的准确性。
 - en: How you can tune the hyperparameters in order to obtain the best model for your
     data.
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何调整超参数，以便为你的数据获得最佳模型。

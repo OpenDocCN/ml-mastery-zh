@@ -1,448 +1,651 @@
 - en: Image Vector Representation for Machine Learning Using OpenCV
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用OpenCV进行机器学习的图像向量表示
 - en: 原文：[https://machinelearningmastery.com/image-vector-representation-for-machine-learning-using-opencv/](https://machinelearningmastery.com/image-vector-representation-for-machine-learning-using-opencv/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/image-vector-representation-for-machine-learning-using-opencv/](https://machinelearningmastery.com/image-vector-representation-for-machine-learning-using-opencv/)
 - en: One of the pre-processing steps that are often carried out on images before
     feeding them into a machine learning algorithm is to convert them into a feature
     vector. As we will see in this tutorial, there are several advantages to converting
     an image into a feature vector that makes the latter more efficient.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在将图像输入机器学习算法之前，常见的预处理步骤之一是将其转换为特征向量。正如我们在本教程中将看到的，将图像转换为特征向量有几个优势，使其更加高效。
 - en: Among the different techniques for converting an image into a feature vector,
     two of the most popular techniques used in conjunction with different machine
     learning algorithms are the Histogram of Oriented Gradients and the Bag-of-Words
     techniques.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在将图像转换为特征向量的不同技术中，**方向梯度直方图**和**词袋模型**是与不同机器学习算法结合使用的两种最流行的技术。
 - en: In this tutorial, you will discover the Histogram of Oriented Gradients (HOG)
     and the Bag-of-Words (BoW) techniques for image vector representation.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现方向梯度直方图（HOG）和词袋模型（BoW）技术用于图像向量表示。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: What are the advantages of using the Histogram of Oriented Gradients and the
     Bag-of-Words techniques for image vector representation.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用方向梯度直方图和词袋模型技术进行图像向量表示的优势是什么？
 - en: How to use the Histogram of Oriented Gradients technique in OpenCV.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在OpenCV中使用方向梯度直方图技术。
 - en: How to use the Bag-of-Words technique in OpenCV.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在OpenCV中使用词袋模型技术。
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书** [《OpenCV中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)
+    **启动你的项目**。它提供了**自学教程**和**工作代码**。'
 - en: Let’s get started. [![](../Images/db84ce5bd8dc3f2d7c040fc6997726ab.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/vector_cover-scaled.jpg)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。[![](../Images/db84ce5bd8dc3f2d7c040fc6997726ab.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/vector_cover-scaled.jpg)
 - en: Image Vector Representation for Machine Learning Using OpenCV
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用OpenCV进行机器学习的图像向量表示
 - en: Photo by [John Fowler](https://unsplash.com/photos/RsRTIofe0HE), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 摄影：[John Fowler](https://unsplash.com/photos/RsRTIofe0HE)，版权所有。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into four parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四个部分；它们是：
 - en: What are the Advantages of Using HOG or BoW for Image Vector Representation?
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用HOG或BoW进行图像向量表示的优势是什么？
 - en: The Histogram of Oriented Gradients Technique
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 方向梯度直方图技术
 - en: The Bag-of-Words Technique
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 词袋模型技术
 - en: Putting the Techniques to Test
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将技术付诸实践
 - en: '**What are the Advantages of Using HOG or BoW for Image Vector Representation?**'
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**使用HOG或BoW进行图像向量表示的优势是什么？**'
 - en: When working with machine learning algorithms, the image data typically undergoes
     a data pre-processing step, which is structured so that the machine learning algorithms
     can work with it.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在处理机器学习算法时，图像数据通常会经历一个数据预处理步骤，以使机器学习算法能够处理它。
 - en: In OpenCV, for instance, the ml module requires that the image data is fed into
     the machine learning algorithms in the form of feature vectors of equal length.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在OpenCV中，例如，ml模块要求图像数据以等长特征向量的形式输入到机器学习算法中。
 - en: '*Each training sample is a vector of values (in Computer Vision it’s sometimes
     referred to as feature vector). Usually all the vectors have the same number of
     components (features); OpenCV ml module assumes that.*'
+  id: totrans-22
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*每个训练样本是一个值向量（在计算机视觉中有时称为特征向量）。通常所有向量都有相同数量的组件（特征）；OpenCV的ml模块假设如此。*'
 - en: ''
+  id: totrans-23
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – [OpenCV](https://docs.opencv.org/4.x/dc/dd6/ml_intro.html), 2023.
+  id: totrans-24
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – [OpenCV](https://docs.opencv.org/4.x/dc/dd6/ml_intro.html)，2023。
 - en: One way of structuring the image data is to flatten it out into a one-dimensional
     vector, where the vector’s length would equal the number of pixels in the image.
     For example, a $20\times 20$ pixel image would result in a one-dimensional vector
     of length 400 pixels. This one-dimensional vector serves as the feature set fed
     into the machine learning algorithm, where the intensity value of each pixel represents
     every feature.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 一种组织图像数据的方法是将其展平为一维向量，其中向量的长度等于图像中的像素数。例如，一个$20\times 20$的像素图像会生成一个长度为400像素的一维向量。这个一维向量作为特征集输入到机器学习算法中，其中每个像素的强度值代表每个特征。
 - en: However, while this is the simplest feature set we can create, it is not the
     most effective one, especially when working with larger images that will result
     in too many input features to be processed effectively by a machine learning algorithm.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，虽然这是我们可以创建的最简单特征集，但它不是最有效的，特别是在处理较大的图像时，这会导致生成的输入特征过多，从而无法有效处理。
 - en: '*This can dramatically impact the performance of machine learning algorithms
     fit on data with many input features, generally referred to as the “*[*curse of
     dimensionality*](https://en.wikipedia.org/wiki/Curse_of_dimensionality)*.”*'
+  id: totrans-27
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*这可以显著影响在具有许多输入特征的数据上训练的机器学习算法的性能，通常被称为“*[维度诅咒](https://en.wikipedia.org/wiki/Curse_of_dimensionality)*。”*'
 - en: ''
+  id: totrans-28
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – [Introduction to Dimensionality Reduction for Machine Learning](https://machinelearningmastery.com/dimensionality-reduction-for-machine-learning/),
     2020.
+  id: totrans-29
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '[机器学习中的降维介绍](https://machinelearningmastery.com/dimensionality-reduction-for-machine-learning/)，2020年。'
 - en: Rather, we want to reduce the number of input features that represent each image
     so that, in turn, the machine learning algorithm can generalize better to the
     input data. In more technical words, it is desirable to perform dimensionality
     reduction that transforms the image data from a high-dimensional space to a lower
     one.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们希望减少表示每个图像的输入特征数量，以便机器学习算法能够更好地对输入数据进行泛化。用更技术的话来说，进行降维是理想的，这将图像数据从高维空间转换到低维空间。
 - en: One way of doing so is to apply feature extraction and representation techniques,
     such as the Histogram of Oriented Gradients (HOG) or the Bag-of-Words (BoW), to
     represent an image in a more compact manner and, in turn, reduce the redundancy
     in the feature set and the computational requirements to process it.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 一种方法是应用特征提取和表示技术，例如方向梯度直方图（HOG）或词袋模型（BoW），以更紧凑的方式表示图像，从而减少特征集中的冗余并减少处理它的计算需求。
 - en: Another advantage to converting the image data into a feature vector using the
     aforementioned techniques is that the vector representation of the image becomes
     more robust to variations in illumination, scale, or viewpoint.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 将图像数据转换为特征向量的另一个优点是，图像的向量表示变得对光照、尺度或视角的变化更加鲁棒。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用OpenCV进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件速成课程（附样例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得免费的PDF电子书版本课程。
 - en: In the following sections, we will explore using the HOG and BoW techniques
     for image vector representation.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 在接下来的部分中，我们将探讨使用HOG和BoW技术进行图像向量表示。
 - en: '**The Histogram of Oriented Gradients Technique**'
+  id: totrans-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**方向梯度直方图技术**'
 - en: The HOG is a feature extraction technique that aims to represent the local shape
     and appearance of objects inside the image space by a distribution of their edge
     directions.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: HOG是一种特征提取技术，旨在通过边缘方向的分布来表示图像空间内物体的局部形状和外观。
 - en: 'In a nutshell, the HOG technique performs the following steps when applied
     to an image:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，当HOG技术应用于图像时，会执行以下步骤：
 - en: Computes the image gradients in horizontal and vertical directions using, for
     example, a Prewitt operator. The magnitude and direction of the gradient are then
     computed for every pixel in the image.
+  id: totrans-40
   prefs:
   - PREF_OL
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用例如Prewitt算子的图像梯度计算图像的水平和垂直方向的梯度。然后计算图像中每个像素的梯度的幅度和方向。
 - en: Divide the image into non-overlapping cells of fixed size and compute a histogram
     of gradients for each cell. This histogram representation of every image cell
     is more compact and more robust to noise. The cell size is typically set according
     to the size of the image features we want to capture.
+  id: totrans-41
   prefs:
   - PREF_OL
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将图像划分为固定大小的不重叠单元格，并计算每个单元格的梯度直方图。每个图像单元格的直方图表示更紧凑且对噪声更具鲁棒性。单元格大小通常根据我们要捕捉的图像特征的大小进行设置。
 - en: Concatenates the histograms over blocks of cells into one-dimensional feature
     vectors and normalizes them. This makes the descriptor more robust to lighting
     variations.
+  id: totrans-42
   prefs:
   - PREF_OL
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将直方图在单元格块上拼接成一维特征向量并进行归一化。这使得描述符对光照变化更加鲁棒。
 - en: Finally, it concatenates all normalized feature vectors representing the blocks
     of cells to obtain a final feature vector representation of the entire image.
+  id: totrans-43
   prefs:
   - PREF_OL
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 最后，将所有归一化的特征向量拼接在一起，表示单元格块，从而获得整个图像的最终特征向量表示。
 - en: 'The HOG implementation in OpenCV takes several input arguments that correspond
     to the aforementioned steps, including:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV 中的 HOG 实现接受几个输入参数，这些参数对应于上述步骤，包括：
 - en: The window size (*winSize*) that corresponds to the minimum object size to be
     detected.
+  id: totrans-45
   prefs:
   - PREF_UL
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 窗口大小（*winSize*）对应于要检测的最小对象大小。
 - en: The cell size (*cellSize*) typically captures the size of the image features
     of interest.
+  id: totrans-46
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 单元格大小（*cellSize*）通常捕捉感兴趣的图像特征的大小。
 - en: The block size (*blockSize*) tackles the problem of variation in illumination.
+  id: totrans-47
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 块大小（*blockSize*）解决了光照变化的问题。
 - en: The block stride (*blockStride*) controls how much neighboring blocks overlap.
+  id: totrans-48
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 块步幅（*blockStride*）控制相邻块的重叠程度。
 - en: The number of histogram bins (*nbins*) to capture gradients between 0 and 180
     degrees.
+  id: totrans-49
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 直方图的箱子数量（*nbins*）用于捕捉 0 到 180 度之间的梯度。
 - en: 'Let’s create a function, `hog_descriptors()`that computes feature vectors for
     a set of images using the HOG technique:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们创建一个函数 `hog_descriptors()`，使用 HOG 技术计算一组图像的特征向量：
 - en: Python
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '**Note**: It is important to note that how the images are being reshaped here
     corresponds to the image dataset that will be later used in this tutorial. If
     you use a different dataset, do not forget to tweak this part of the code accordingly.'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意**：重要的是要注意，这里图像的重新形状对应于稍后将在本教程中使用的图像数据集。如果使用不同的数据集，请不要忘记相应调整此部分代码。'
 - en: '**The Bag-of-Words Technique**'
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**词袋模型技术**'
 - en: The BoW technique has been introduced in [this tutorial](https://machinelearningmastery.com/gentle-introduction-bag-words-model/) as
     applied to modeling text with machine learning algorithms.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: BoW 技术已在 [这个教程](https://machinelearningmastery.com/gentle-introduction-bag-words-model/)
+    中介绍，应用于使用机器学习算法建模文本。
 - en: Nonetheless, this technique can also be applied to computer vision, where images
     are treated as visual words from which features can be extracted. For this reason,
     when applied to computer vision, the BoW technique is often called the Bag-of-Visual-Words
     technique.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管如此，这项技术也可以应用于计算机视觉，在这种情况下，图像被视为可以提取特征的视觉词。因此，当应用于计算机视觉时，BoW 技术通常被称为视觉词袋技术。
 - en: 'In a nutshell, the BoW technique performs the following steps when applied
     to an image:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，当将 BoW 技术应用于图像时，执行以下步骤：
 - en: Extracts feature descriptors from an image using algorithms such as the Scale-Invariant
     Feature Transform (SIFT) or Speeded Up Robust Features (SURF). Ideally, the extracted
     features should be invariant to intensity, scale, rotation, and affine variations.
+  id: totrans-58
   prefs:
   - PREF_OL
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用诸如尺度不变特征变换（SIFT）或加速稳健特征（SURF）等算法从图像中提取特征描述符。理想情况下，提取的特征应对强度、尺度、旋转和仿射变换不变。
 - en: Generates codewords from the feature descriptors where each codeword is representative
     of similar image patches. One way of generating these codewords is to use k-means
     clustering to aggregate similar descriptors into clusters, where the centers of
     the clusters would then represent the visual words, while the number of clusters
     represents the vocabulary size.
+  id: totrans-59
   prefs:
   - PREF_OL
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从特征描述符中生成代码字，其中每个代码字代表相似的图像块。生成这些代码字的一种方法是使用 k-means 聚类将相似的描述符聚集成簇，簇的中心代表视觉词，而簇的数量则代表词汇大小。
 - en: Maps the feature descriptors to the nearest cluster in the vocabulary, essentially
     assigning a codeword to each feature descriptor.
+  id: totrans-60
   prefs:
   - PREF_OL
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将特征描述符映射到词汇表中最近的簇，本质上是为每个特征描述符分配一个代码字。
 - en: Bins the codewords into a histogram and uses this histogram as a feature vector
     representation of the image.
+  id: totrans-61
   prefs:
   - PREF_OL
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将代码字分箱到直方图中，并使用此直方图作为图像的特征向量表示。
 - en: 'Let’s create a function, `bow_descriptors()`, that applies the BoW technique
     using SIFT to a set of images:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们创建一个函数 `bow_descriptors()`，该函数使用 SIFT 对一组图像应用 BoW 技术：
 - en: Python
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '**Note**: It is important to note that how the images are being reshaped here
     corresponds to the image dataset that will be later used in this tutorial. If
     you use a different dataset, do not forget to tweak this part of the code accordingly.'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意**：需要注意的是，这里图像的重塑方式对应于本教程后面将使用的图像数据集。如果你使用不同的数据集，请不要忘记相应调整这部分代码。'
 - en: '**Putting the Techniques to Test**'
+  id: totrans-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**测试技术**'
 - en: There isn’t necessarily a single best technique for all cases, and the choice
     of technique for the image data you are working with often requires controlled
     experiments.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 并不一定存在适用于所有情况的最佳技术，选择用于图像数据的技术通常需要进行控制实验。
 - en: In this tutorial, as an example, we will apply the HOG technique to the digits
     dataset that comes with OpenCV, and the BoW technique to images from the CIFAR-10
     dataset. For this tutorial, we will only be considering a subset of images from
     these two datasets to reduce the required processing time. Nonetheless, the same
     code can be easily extended to the full datasets.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，作为一个示例，我们将对 OpenCV 附带的数字数据集应用 HOG 技术，对 CIFAR-10 数据集中的图像应用 BoW 技术。在本教程中，我们将仅考虑这两个数据集中的一个子集，以减少所需的处理时间。然而，相同的代码可以很容易地扩展到完整的数据集。
 - en: 'We will start by loading the datasets we will be working with. Recall that
     we had seen how to extract the images from each dataset in this tutorial. The
     `digits_dataset` and the `cifar_dataset` are Python scripts that I have created
     and which contain the code for loading the digits and the CIFAR-10 datasets, respectively:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将从加载我们将使用的数据集开始。回顾一下，我们在本教程中已经看到如何从每个数据集中提取图像。`digits_dataset` 和 `cifar_dataset`
+    是我创建的 Python 脚本，分别包含加载数字和 CIFAR-10 数据集的代码：
 - en: Python
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'We may then proceed to pass on the datasets to the `hog_descriptors()` and
     the `bow_descriptors()` functions that we have created earlier in this tutorial:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以将数据集传递给我们在本教程中创建的 `hog_descriptors()` 和 `bow_descriptors()` 函数：
 - en: Python
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The complete code listing looks as follows:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码列表如下：
 - en: Python
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The code above returns the following output:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的代码返回以下输出：
 - en: Python
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Based on our choice of parameter values, we may see that the HOG technique returns
     feature vectors of size $1\times 81$ for each image. This means each image is
     now represented by points in an 81-dimensional space. The BoW technique, on the
     other hand, returns vectors of size $1\times 50$ for each image, where the vector
     length has been determined by the number of k-means clusters of choice, which
     is also analogous to the vocabulary size.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据我们选择的参数值，我们可能会看到 HOG 技术为每个图像返回大小为 $1\times 81$ 的特征向量。这意味着每个图像现在由 81 维空间中的点表示。另一方面，BoW
+    技术为每个图像返回大小为 $1\times 50$ 的向量，其中向量长度由选择的 k-means 聚类数量决定，这也类似于词汇表大小。
 - en: Hence, we may see that, instead of simply flattening out each image into a one-dimensional
     vector, we have managed to represent each image more compactly by applying the
     HOG and BoW techniques.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们可以看到，通过应用 HOG 和 BoW 技术，我们不仅仅是将每个图像展平成一维向量，而是以更紧凑的方式表示了每个图像。
 - en: Our next step will be to see how we can exploit this data using different machine
     learning algorithms.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的下一步是看看如何利用这些数据使用不同的机器学习算法。
 - en: '**Further Reading**'
+  id: totrans-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: If you want to go deeper, this section provides more resources on the topic.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想深入了解，本节提供了更多相关资源。
 - en: '**Books**'
+  id: totrans-86
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Learning OpenCV 4 Computer Vision with Python 3](https://www.amazon.com/Learning-OpenCV-Computer-Vision-Python/dp/1789531616),
     2020.'
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[使用 Python 3 学习 OpenCV 4 计算机视觉](https://www.amazon.com/Learning-OpenCV-Computer-Vision-Python/dp/1789531616)，2020
+    年。'
 - en: '**Websites**'
+  id: totrans-88
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV，[https://opencv.org/](https://opencv.org/)
 - en: Histogram of Oriented Gradients explained using OpenCV, [https://learnopencv.com/histogram-of-oriented-gradients/](https://learnopencv.com/histogram-of-oriented-gradients/)
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 OpenCV 解释的方向梯度直方图，[https://learnopencv.com/histogram-of-oriented-gradients/](https://learnopencv.com/histogram-of-oriented-gradients/)
 - en: Bag-of-Words Model in Computer Vision, [https://en.wikipedia.org/wiki/Bag-of-words_model_in_computer_vision](https://en.wikipedia.org/wiki/Bag-of-words_model_in_computer_vision)
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 计算机视觉中的词袋模型，[https://en.wikipedia.org/wiki/Bag-of-words_model_in_computer_vision](https://en.wikipedia.org/wiki/Bag-of-words_model_in_computer_vision)
 - en: '**Summary**'
+  id: totrans-92
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you will discover the Histogram of Oriented Gradients and
     the Bag-of-Words techniques for image vector representation.
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将了解方向梯度直方图和词袋技术在图像向量表示中的应用。
 - en: 'Specifically, you learned:'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: What are the advantages of using the Histogram of Oriented Gradients and the
     Bag-of-Words techniques for image vector representation
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用方向梯度直方图和词袋技术进行图像向量表示的优势是什么？
 - en: How to use the Histogram of Oriented Gradients technique in OpenCV.
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中使用方向梯度直方图技术。
 - en: How to use the Bag-of-Words technique in OpenCV.
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中使用词袋技术。
 - en: Do you have any questions?
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方的评论中提问，我会尽力回答。

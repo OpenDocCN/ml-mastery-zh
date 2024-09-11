@@ -1,74 +1,110 @@
 - en: Managing a PyTorch Training Process with Checkpoints and Early Stopping
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用检查点和早停管理 PyTorch 训练过程
 - en: 原文：[https://machinelearningmastery.com/managing-a-pytorch-training-process-with-checkpoints-and-early-stopping/](https://machinelearningmastery.com/managing-a-pytorch-training-process-with-checkpoints-and-early-stopping/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/managing-a-pytorch-training-process-with-checkpoints-and-early-stopping/](https://machinelearningmastery.com/managing-a-pytorch-training-process-with-checkpoints-and-early-stopping/)
 - en: A large deep learning model can take a long time to train. You lose a lot of
     work if the training process interrupted in the middle. But sometimes, you actually
     want to interrupt the training process in the middle because you know going any
     further would not give you a better model. In this post, you will discover how
     to control the training loop in PyTorch such that you can resume an interrupted
     process, or early stop the training loop.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 大型深度学习模型可能需要很长时间来训练。如果训练过程在中间被中断，你会丢失大量工作。但有时，你实际上会想在中间中断训练过程，因为你知道继续下去不会给你更好的模型。在这篇文章中，你将发现如何控制
+    PyTorch 中的训练循环，以便你可以恢复被中断的过程或提前停止训练循环。
 - en: 'After completing this post, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成这篇文章后，你将知道：
 - en: The importance of checkpointing neural network models when training
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练时检查点的重要性
 - en: How to checkpoint a model during training and retore it later
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在训练过程中创建检查点并在之后恢复
 - en: How to terminate training loop early with checkpointing
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过检查点提前终止训练循环
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书 [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    快速启动你的项目**。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started.![](../Images/05afbb1ba9774944b954833a96310b08.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/05afbb1ba9774944b954833a96310b08.png)
 - en: Managing a PyTorch Training Process with Checkpoints and Early Stopping
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用检查点和早停管理 PyTorch 训练过程
 - en: Photo by [Arron Choi](https://unsplash.com/photos/7VJyD8tODfc). Some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Arron Choi](https://unsplash.com/photos/7VJyD8tODfc) 提供。保留所有权利。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This chapter is in two parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本章分为两部分；它们是：
 - en: Checkpointing Neural Network Models
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 检查点神经网络模型
 - en: Checkpointing with Early Stopping
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 具有早停的检查点
 - en: Checkpointing Neural Network Models
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 检查点神经网络模型
 - en: A lot of systems have states. If you can save all its state from a system and
     restore it later, you can always move back in a particular point in time about
     how a system behaves. If you worked on Microsoft Word and saved multiple versions
     of a document because you don’t know if you want to revert back your edit, it
     is the same idea here.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多系统都有状态。如果你可以保存系统的所有状态并在以后恢复，你可以随时回到系统行为的特定时间点。如果你在 Microsoft Word 上工作并保存了多个版本的文档，因为你不知道是否要恢复编辑，这里也是同样的想法。
 - en: Same applies to long-running processes. Application checkpointing is a fault
     tolerance technique. In this approach, a snapshot of the state of the system is
     taken in case of system failure. If there is a problem, you can resume from the
@@ -76,106 +112,156 @@
     run, picking up where it left off. When training deep learning models, the checkpoint
     captures the weights of the model. These weights can be used to make predictions
     as-is or as the basis for ongoing training.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样适用于长时间运行的过程。应用程序检查点是一种容错技术。在这种方法中，系统状态的快照会被拍摄以防系统故障。如果出现问题，你可以从快照中恢复。检查点可以直接使用，也可以作为新运行的起点，从中断的地方继续。当训练深度学习模型时，检查点捕获模型的权重。这些权重可以直接用于预测或作为持续训练的基础。
 - en: 'PyTorch does not provide any function for checkpointing but it has functions
     for retrieving and restoring weights of a model. So you can implement checkpointing
     logic with them. Let’s make a checkpoint and a resume function, which simply save
     weights from a model and load them back:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 不提供任何检查点功能，但它有检索和恢复模型权重的功能。因此，你可以利用这些功能实现检查点逻辑。让我们创建一个检查点和恢复函数，这些函数简单地保存模型的权重并将其加载回来：
 - en: '[PRE0]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Below is how you would usually do to train a PyTorch model. The dataset used
     is fetched from OpenML platform. It is a binary classification dataset. PyTorch
     DataLoader is used in this example to make the training loop more concise.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是你通常训练 PyTorch 模型的方式。使用的数据集从 OpenML 平台获取。它是一个二分类数据集。这个示例中使用了 PyTorch DataLoader，使训练循环更简洁。
 - en: '[PRE1]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'If you want to add checkpoints to the training loop above, you can do it at
     the end of the outer for-loop, where the model validation with the test set is
     done. Let’s say, the following:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您希望在上述训练循环中添加检查点，您可以在外部for循环结束时执行，这时模型通过测试集进行验证。例如，以下内容：
 - en: '[PRE2]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: You will see a number of files created in your working directory. This code
     is going to checkpoint the model from epoch 7, for example, into file `epoch-7.pth`.
     Each of these file is a ZIP file with the pickled model weight. Nothing forbid
     you to checkpoint inside the inner for-loop but due to the overhead it incurs,
     it is not a good idea to checkpoint too frequent.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 您将在工作目录中看到创建的多个文件。这段代码将从第7轮保存模型的示例文件`epoch-7.pth`。每一个这样的文件都是一个带有序列化模型权重的ZIP文件。不禁止在内部for循环中设置检查点，但由于引入的开销，频繁设置检查点并不是一个好主意。
 - en: 'As a fault tolerance technique, by adding a few lines of code before the training
     loop, you can resume from a particular epoch:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为一种容错技术，在训练循环之前添加几行代码，您可以从特定的轮次恢复：
 - en: '[PRE3]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: That is, if the training loop was interrupted in the middle of epoch 8 so the
     last checkpoint is from epoch 7, setting `start_epoch = 8` above will do.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 也就是说，如果训练循环在第8轮中间被中断，因此最后一个检查点是从第7轮开始的，则在上面设置`start_epoch = 8`。
 - en: Note that if you do so, the `random_split()` function that generate the training
     set and test set may give you different split due to the random nature. If that’s
     a concern for you, you should have a consistent way of creating the datasets (e.g.,
     save the splitted data so you can reuse them).
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，如果这样做，生成训练集和测试集的`random_split()`函数可能由于随机性而导致不同的分割。如果这对你来说是个问题，你应该有一种一致的方法来创建数据集（例如，保存分割的数据以便重用）。
 - en: Sometimes, there are states outside of the model and you may want to checkpoint
     it as well. One particular example is the optimizer, which in cases like Adam,
     there are dynamically adjusted momentum. If you restarted your training loop,
     you may want to restore the momentum at the optimizer as well. It is not difficult
     to do. The idea is to make your `checkpoint()` function more complicated, e.g.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时，模型外部存在状态，您可能希望对其进行检查点。一个特别的例子是优化器，在像Adam这样的情况下，具有动态调整的动量。如果重新启动训练循环，您可能还希望恢复优化器中的动量。这并不难做到。关键是使您的`checkpoint()`函数更复杂，例如：
 - en: '[PRE4]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'and correspondingly, change your `resume()` function:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 并相应地更改您的`resume()`函数：
 - en: '[PRE5]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: This works because in PyTorch, the `torch.save()` and `torch.load()` function
     are backed by `pickle`, so you can use it with a `list` or `dict` container.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这有效是因为在PyTorch中，`torch.save()`和`torch.load()`函数都由`pickle`支持，因此您可以在包含`list`或`dict`容器的情况下使用它。
 - en: 'To put everything together, below is the complete code:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了将所有内容整合在一起，下面是完整的代码：
 - en: '[PRE6]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用PyTorch进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件崩溃课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: Checkpointing with Early Stopping
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用早停技术进行检查点
 - en: 'Checkpointing is not only for fault tolerance. You can also use it to keep
     your best model. How to define what is the best is subjective but considering
     the score from the test set is a sensible method. Let’s say to keep only the best
     model ever found, you can modify the training loop as follows:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查点不仅用于容错。您还可以使用它来保持最佳模型。如何定义最佳模型是主观的，但考虑来自测试集的分数是一个明智的方法。假设只保留找到的最佳模型，您可以修改训练循环如下：
 - en: '[PRE7]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The variable `best_accuracy` is to keep track on the highest accuracy (`acc`)
     obtained so far, which is in a percentage range of 0 to 100\. Whenever a higher
     accuracy is observed, the model is checkpointed to the file `best_model.pth`.
@@ -184,85 +270,124 @@
     on unseen data. Beware that, if you’re using a different metric for checkpointing,
     e.g., the cross entropy loss, the better model should come with a lower cross
     entropy. Thus you should keep track on the lowest cross entropy obtained.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 变量`best_accuracy`用于跟踪迄今为止获得的最高准确率（`acc`），其范围在0到100之间的百分比。每当观察到更高的准确率时，模型将被保存到文件`best_model.pth`。在整个训练循环之后，通过您之前创建的`resume()`函数恢复最佳模型。之后，您可以使用模型对未见数据进行预测。请注意，如果您使用不同的指标进行检查点，例如交叉熵损失，更好的模型应该伴随着更低的交叉熵。因此，您应该跟踪获取的最低交叉熵。
 - en: You can also checkpoint the model per epoch unconditionally together with the
     best model checkpointing, as you are free to create multiple checkpoint files.
     Since the code above is the find the best model and make a copy of it, you may
     usually see a further optimization to the training loop by stopping it early if
     the hope to see model improvement is slim. This is the early stopping technique
     that can save time in training.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 你还可以在每个训练周期无条件地保存模型检查点，并与最佳模型检查点保存一起，因为你可以创建多个检查点文件。由于上面的代码是找到最佳模型并复制它，你通常会看到对训练循环的进一步优化，如果希望看到模型改善的希望很小，可以提前停止训练。这就是可以节省训练时间的早停技术。
 - en: 'The code above validates the model with test set at the end of each epoch and
     keeps the best model found into a checkpoint file. The simplest strategy for early
     stopping is to set up a threshold of $k$ epochs. If you didn’t see the model improved
     over the last $k$ epochs, you terminate the training loop in the middle. This
     can be implemented as follows:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的代码在每个训练周期结束时使用测试集验证模型，并将找到的最佳模型保存在检查点文件中。最简单的早停策略是设置一个 $k$ 训练周期的阈值。如果你没有看到模型在过去
+    $k$ 个训练周期内有所改善，你可以在中间终止训练循环。实现方式如下：
 - en: '[PRE8]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: The threshold `early_stop_thresh` was set to 5 above. There is a variable `best_epoch`
     that remembers the epoch of the best model. If the model has not been improved
     for long enough, the outer for-loop will be terminated.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 阈值 `early_stop_thresh` 上面设置为 5。还有一个变量 `best_epoch` 用于记住最佳模型的周期。如果模型在足够长的时间内没有改善，外部
+    for 循环将被终止。
 - en: 'This design is a relief on one of the design parameter, `n_epochs`. You can
     now make `n_epochs` the **maximum** number of epochs to train the model, hence
     a larger number than needed and assured that usually your training loop will stop
     earlier. This is also a strategy to avoid overfitting: If the model is indeed
     perform worse as you trained it further on the test set, this early stopping logic
     will interrupt the training and restore the best checkpoint.'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个设计减轻了一个设计参数 `n_epochs` 的压力。你现在可以将 `n_epochs` 设置为训练模型的**最大**周期数，因此可以比需要的周期数更大，并且通常可以确保你的训练循环会更早停止。这也是避免过拟合的一种策略：如果模型在测试集上表现更差，早停逻辑将中断训练并恢复最佳检查点。
 - en: 'Tying everything together, the following is the complete code for checkpointing
     with early stopping:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 总结所有内容，以下是带有早停的检查点的完整代码：
 - en: '[PRE9]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'You may see the above code to produce:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会看到上述代码产生：
 - en: '[PRE10]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: It stopped at end of epoch 17 for the best model obtained from epoch 11\. Due
     to the stochastic nature of algorithm, you may see the result slightly different.
     But for sure, even when the maximum number of epochs set to 10000 above, the training
     loop indeed stopped much earlier.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 它在第 17 个训练周期结束时停止，使用了从第 11 个周期获得的最佳模型。由于算法的随机性，你可能会看到结果有所不同。但可以肯定的是，即使将最大训练周期数设置为
+    10000，训练循环确实会更早停止。
 - en: Of course, you can design a more sophisticated early stopping strategy, e.g.,
     run for at least $N$ epochs and then allow to early stop after $k$ epochs. You
     have all the freedom to tweak the code above to make the best training loop to
     fit your need.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，你可以设计更复杂的早停策略，例如，至少运行 $N$ 个周期，然后在 $k$ 个周期后允许提前停止。你可以自由调整上述代码，以使最佳训练循环满足你的需求。
 - en: Summary
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this chapter, you discovered the importance of checkpointing deep learning
     models for long training runs. You learned:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本章中，你发现了在长时间训练过程中保存深度学习模型检查点的重要性。你学习了：
 - en: What is checkpointing and why it is useful
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是检查点，为什么它很有用
 - en: How to checkpoint your model and how to restore the checkpoint
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何保存模型检查点以及如何恢复检查点
 - en: Different strategies to use checkpoints
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用检查点的不同策略
 - en: How to implement early stopping with checkpointing
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何实现带有检查点的早停

@@ -1,89 +1,131 @@
 - en: Building an Image Classifier with a Single-Layer Neural Network in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在PyTorch中使用单层神经网络构建图像分类器
 - en: 原文：[https://machinelearningmastery.com/building-an-image-classifier-with-a-single-layer-neural-network-in-pytorch/](https://machinelearningmastery.com/building-an-image-classifier-with-a-single-layer-neural-network-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '[https://machinelearningmastery.com/building-an-image-classifier-with-a-single-layer-neural-network-in-pytorch/](https://machinelearningmastery.com/building-an-image-classifier-with-a-single-layer-neural-network-in-pytorch/)'
 - en: A single-layer neural network, also known as a single-layer perceptron, is the
     simplest type of neural network. It consists of only one layer of neurons, which
     are connected to the input layer and the output layer. In case of an image classifier,
     the input layer would be an image and the output layer would be a class label.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 单层神经网络，也称为单层感知器，是最简单的神经网络类型。它仅由一层神经元组成，这些神经元连接到输入层和输出层。在图像分类器的情况下，输入层是图像，输出层是类别标签。
 - en: To build an image classifier using a single-layer neural network in PyTorch,
     you’ll first need to prepare your data. This typically involves loading the images
     and labels into a PyTorch dataloader, and then splitting the data into training
     and validation sets. Once your data is prepared, you can define your neural network.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 要在PyTorch中使用单层神经网络构建图像分类器，首先需要准备数据。这通常包括将图像和标签加载到PyTorch数据加载器中，然后将数据拆分为训练集和验证集。一旦数据准备好了，你就可以定义你的神经网络。
 - en: Next, you can use PyTorch’s built-in functions to train the network on your
     training data and evaluate its performance on your validation data. You’ll also
     need to pick an optimizer such as stochastic gradient descent (SGD) and a loss
     function like cross-entropy loss.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，你可以使用PyTorch的内置函数在你的训练数据上训练网络，并在验证数据上评估其性能。你还需要选择一个优化器，如随机梯度下降（SGD），以及一个损失函数，如交叉熵损失。
 - en: Note that a single layer neural network might not be ideal for every task, but
     it can be good as simple classifier and also can be helpful for you to understand
     the inner workings of the neural network and to be able to debug it.
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，单层神经网络可能并不适合所有任务，但作为简单的分类器，它可以很好地发挥作用，并且有助于你理解神经网络的内部工作原理，并能够调试它。
 - en: 'So, let’s build our image classifier. In the process you’ll learn:'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以，让我们构建我们的图像分类器。在这个过程中你将学习到：
 - en: How to use and preprocess built-in datasets in PyTorch.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中使用和预处理内置数据集。
 - en: How to build and train custom neural networks in PyTorch.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中构建和训练自定义神经网络。
 - en: How to build a step-by-step image classifier in PyTorch.
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中一步步构建图像分类器。
 - en: How to make predictions using the trained model in PyTorch.
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用训练好的模型在PyTorch中进行预测。
 - en: Let’s get started.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们开始吧。
 - en: '![](../Images/2600987b2a58294128d9d401684d275c.png)'
+  id: totrans-12
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/2600987b2a58294128d9d401684d275c.png)'
 - en: Building an Image Classifier with a Single-Layer Neural Network in PyTorch.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在PyTorch中使用单层神经网络构建图像分类器。
 - en: Picture by [Alex Fung](https://unsplash.com/photos/sKnJ84lF0gY). Some rights
     reserved.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Alex Fung](https://unsplash.com/photos/sKnJ84lF0gY) 提供。保留所有权利。
 - en: Overview
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in three parts; they are
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是
 - en: Preparing the Dataset
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备数据集
 - en: Build the Model Architecture
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建模型架构
 - en: Train the Model
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练模型
 - en: Preparing the Dataset
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备数据集
 - en: In this tutorial, you will use the CIFAR-10 dataset. It is a dataset for image
     classification, consisting of 60,000 color images of 32×32 pixels in 10 classes,
     with 6,000 images per class. There are 50,000 training images and 10,000 test
@@ -92,168 +134,263 @@
     vision research, as it is relatively small and simple, yet challenging enough
     to require the use of deep learning methods. This dataset can be easily imported
     into PyTorch library.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将使用CIFAR-10数据集。这个数据集用于图像分类，由60,000张32×32像素的彩色图像组成，分为10个类别，每个类别有6,000张图像。数据集包括50,000张训练图像和10,000张测试图像。类别包括飞机、汽车、鸟类、猫、鹿、狗、青蛙、马、船和卡车。CIFAR-10是一个广泛使用的数据集，适用于机器学习和计算机视觉研究，因为它相对较小且简单，但足够具有挑战性，需要使用深度学习方法。这个数据集可以很方便地导入到PyTorch库中。
 - en: Here is how you do that.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是操作方法。
 - en: '[PRE0]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'If you never downloaded the dataset before, you may see this code show you
     where the images are downloaded from:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你以前从未下载过数据集，你可能会看到这段代码显示了图像下载的来源：
 - en: '[PRE1]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: You specified the `root` directory where the dataset should be downloaded, and
     setting `train=True` to import the training set, and `train=False` to import the
     test set. The `download=True` argument will download the dataset if it’s not already
     present in the specified `root` directory.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 你指定了数据集应下载的 `root` 目录，并设置 `train=True` 以导入训练集，设置 `train=False` 以导入测试集。`download=True`
+    参数将在指定的 `root` 目录中如果数据集尚未存在时进行下载。
 - en: Building the Neural Network Model
+  id: totrans-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建神经网络模型
 - en: Let’s define a simple neural network `SimpleNet` that inherits from `torch.nn.Module`.
     The network has two fully connected (fc) layers, `fc1` and `fc2`, defined in the
     `__init__` method. The first fully connected layer `fc1` takes in the image as
     input and has 100 hidden neurons. Similarly, the second fully connected layer
     `fc2` has 100 input neurons and `num_classes` output neurons. The `num_classes`
     parameter defaults to 10 as there are 10 classes.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 定义一个简单的神经网络 `SimpleNet`，它继承自 `torch.nn.Module`。该网络有两个全连接（fc）层，`fc1` 和 `fc2`，在
+    `__init__` 方法中定义。第一个全连接层 `fc1` 以图像作为输入，并具有 100 个隐藏神经元。类似地，第二个全连接层 `fc2` 具有 100
+    个输入神经元和 `num_classes` 个输出神经元。`num_classes` 参数默认为 10，因为有 10 个类别。
 - en: Moreover, the `forward` method defines the forward pass of the network, where
     the input `x` is passed through the layers defined in the `__init__` method. The
     method first reshapes the input tensor `x` to have a desired shape using the `view`
     method. The input then passes through the fully connected layers along with their
     activation functions and, finally, an output tensor is returned.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，`forward` 方法定义了网络的前向传播，其中输入 `x` 通过在 `__init__` 方法中定义的层进行处理。该方法首先使用 `view`
+    方法将输入张量 `x` 重新调整为所需的形状。然后，输入通过全连接层及其激活函数，最后返回一个输出张量。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书 [深度学习与 PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    为你的项目打个好开始**。它提供了 **自学教程** 和 **工作代码**。'
 - en: Here is the code for all explained above.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是上述所有内容的代码。
 - en: '[PRE2]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: And, write a function to visualize this data, which will also be useful when
     you train the model later.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 编写一个函数来可视化这些数据，这在你以后训练模型时也会很有用。
 - en: '[PRE3]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Now, let’s instantiate the model object.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们实例化模型对象。
 - en: '[PRE4]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-37
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即获取我的免费电子邮件速成课程（附样本代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费PDF电子书版本。
 - en: Training the Model
+  id: totrans-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 训练模型
 - en: You will create two instances of PyTorch’s `DataLoader` class, for training
     and testing respectively. In `train_loader`, you set the batch size at 64 and
     shuffle the training data randomly by setting `shuffle=True`.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将创建两个 PyTorch `DataLoader` 类的实例，分别用于训练和测试。在 `train_loader` 中，你将批次大小设置为 64，并通过设置
+    `shuffle=True` 随机打乱训练数据。
 - en: Then, you will define the functions for cross entropy loss and Adam optimizer
     for training the model. You set the learning rate at 0.001 for the optimizer.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，你将定义交叉熵损失函数和 Adam 优化器以训练模型。你将优化器的学习率设置为 0.001。
 - en: It is similar for `test_loader`, except we don’t need to shuffle.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 `test_loader` 来说类似，只不过我们不需要进行洗牌。
 - en: '[PRE5]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Finally, let’s set a training loop to train our model for a few epochs. You
     will define some empty lists to store the values of the loss and accuracy metrices
     for loss and accuracy.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，让我们设置一个训练循环，以训练我们的模型几个周期。你将定义一些空列表来存储损失和准确率指标的值。
 - en: '[PRE6]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Running this loop will print you the following:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行此循环将打印以下内容：
 - en: '[PRE7]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: As you can see, the single-layer classifier is trained for only 20 epochs and
     it achieved a validation accuracy of around 47 percent. Train it for more epochs
     and you may get a decent accuracy. Similarly, our model had only a single layer
     with 100 hidden neurons. If you add some more layers, the accuracy may significantly
     improve.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 如你所见，这个单层分类器只训练了 20 个周期，并达到了大约 47% 的验证准确率。训练更多周期，你可能会获得一个不错的准确率。同样，我们的模型只有一个层，且有
+    100 个隐藏神经元。如果你添加更多层，准确率可能会显著提高。
 - en: Now, let’s plot loss and accuracy matrices to see how they look like.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们绘制损失和准确率矩阵来查看它们的样子。
 - en: '[PRE8]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: The loss plot is like:![](../Images/66f02e96b6e334e81a89a63cdf35257b.png)And
     the accuracy plot is the following:![](../Images/841646d4fce1d2ec0dbf8bcc3ee8e85d.png)
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 损失图如下所示：![](../Images/66f02e96b6e334e81a89a63cdf35257b.png)准确率图如下所示：![](../Images/841646d4fce1d2ec0dbf8bcc3ee8e85d.png)
 - en: Here is how you can see how the model make predictions against the true labels.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是您如何查看模型对真实标签的预测。
 - en: '[PRE9]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'The printed labels are as following:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 打印的标签如下：
 - en: '[PRE10]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'These labels are to correspond to the following images:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些标签对应以下图片：
 - en: '![](../Images/5654d46c7d8d7fdeb06d556ab747cf04.png)'
+  id: totrans-58
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/5654d46c7d8d7fdeb06d556ab747cf04.png)'
 - en: Summary
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概要
 - en: 'In this tutorial, you learned how you can build an image classifier using only
     a single-layer neural network. Particularly, you learned:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您学习了如何仅使用单层神经网络构建图像分类器。具体来说，您学到了：
 - en: How to use and preprocess built-in datasets in PyTorch.
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用和预处理PyTorch中的内置数据集。
 - en: How to build and train custom neural networks in PyTorch.
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中构建和训练自定义神经网络。
 - en: How to build a step-by-step image classifier in PyTorch.
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中逐步构建图像分类器。
 - en: How to make predictions using the trained model in PyTorch.
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用训练好的模型在PyTorch中进行预测。

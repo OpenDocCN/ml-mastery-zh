@@ -1,123 +1,181 @@
 - en: Logistic Regression in OpenCV
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: OpenCV 中的逻辑回归
 - en: 原文：[https://machinelearningmastery.com/logistic-regression-in-opencv/](https://machinelearningmastery.com/logistic-regression-in-opencv/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/logistic-regression-in-opencv/](https://machinelearningmastery.com/logistic-regression-in-opencv/)
 - en: Logistic regression is a simple but popular machine learning algorithm for binary
     classification that uses the logistic, or sigmoid, function at its core. It also
     comes implemented in the OpenCV library.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 逻辑回归是一种简单但受欢迎的机器学习算法，用于二分类问题，其核心使用逻辑函数或 sigmoid 函数。它也已在 OpenCV 库中实现。
 - en: In this tutorial, you will learn how to apply OpenCV’s logistic regression algorithm,
     starting with a custom two-class dataset that we will generate ourselves. We will
     then apply these skills for the specific image classification application in a
     subsequent tutorial.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将学习如何应用 OpenCV 的逻辑回归算法，首先从我们自己生成的自定义二分类数据集开始。然后我们将在随后的教程中将这些技能应用于特定的图像分类应用。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解到：
 - en: Several of the most important characteristics of the logistic regression algorithm.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 逻辑回归算法的一些最重要特征。
 - en: How to use the logistic regression algorithm on a custom dataset in OpenCV.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中对自定义数据集使用逻辑回归算法。
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍 [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/)
+    启动你的项目**。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started. [![](../Images/57bfb0044c00503d6534f6ef446d5ed9.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_cover-scaled.jpg)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。[![](../Images/57bfb0044c00503d6534f6ef446d5ed9.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_cover-scaled.jpg)
 - en: Logistic Regression in OpenCV
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV 中的逻辑回归
 - en: Photo by [Fabio Santaniello Bruun](https://unsplash.com/photos/aerial-phoography-of-road-near-river-and-green-leafed-trees-Ke-ENe3ByiQ).
     Some rights reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Fabio Santaniello Bruun](https://unsplash.com/photos/aerial-phoography-of-road-near-river-and-green-leafed-trees-Ke-ENe3ByiQ)
+    提供。保留所有权利。
 - en: '**Tutorial Overview**'
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两个部分；它们是：
 - en: Reminder of What Logistic Regression Is
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 逻辑回归的提醒
 - en: Discovering Logistic Regression in OpenCV
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 OpenCV 中探索逻辑回归
 - en: '**Reminder of What Logistic Regression Is**'
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**逻辑回归的提醒**'
 - en: 'The topic surrounding logistic regression has already been explained well in
     these tutorials by Jason Brownlee [[1](https://machinelearningmastery.com/logistic-regression-for-machine-learning/),
     [2](https://machinelearningmastery.com/logistic-regression-tutorial-for-machine-learning/),
     [3](https://machinelearningmastery.com/implement-logistic-regression-stochastic-gradient-descent-scratch-python/)],
     but let’s first start with brushing up on some of the most important points:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于逻辑回归的话题已经在 Jason Brownlee 的这些教程中讲解得很好了 [[1](https://machinelearningmastery.com/logistic-regression-for-machine-learning/),
+    [2](https://machinelearningmastery.com/logistic-regression-tutorial-for-machine-learning/),
+    [3](https://machinelearningmastery.com/implement-logistic-regression-stochastic-gradient-descent-scratch-python/)]，但让我们先从回顾一些最重要的点开始：
 - en: '**Logistic regression takes its name from the function used at its core, the
     *logistic function* (also known as the sigmoid function).  **'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**逻辑回归得名于其核心所使用的函数，即*逻辑函数*（也称为 sigmoid 函数）。**'
 - en: '***   **Despite the use of the word *regression* in its name, logistic regression
     is a method for binary classification or, in simpler terms, problems with two-class
     values.**'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '***尽管名称中包含*回归*一词，逻辑回归实际上是一种用于二分类的方法，或者更简单地说，是解决两类值问题的技术。**'
 - en: '***   **Logistic regression can be regarded as an extension of linear regression
     because it maps (or *squashes*) the real-valued output of a linear combination
     of features into a probability value within the range [0, 1] through the use of
     the logistic function. **'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '***逻辑回归可以被视为线性回归的扩展，因为它通过使用逻辑函数将特征的线性组合的实际值输出映射（或*压缩*）为范围在 [0, 1] 内的概率值。**'
 - en: '***   **Within a two-class scenario, the logistic regression method models
     the probability of the default class. As a simple example, let’s say that we are
     trying to distinguish between classes of flowers A and B from their petal count,
     and we are taking the default class to be A. Then, for an unseen input X, the
     logistic regression model would give the probability of X belonging to the default
     class A:**'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **在双类情景中，逻辑回归方法对默认类别的概率进行建模。举个简单的例子，假设我们试图根据花瓣数来区分类别A和B，并且我们将默认类别定为A。那么，对于一个未见过的输入X，逻辑回归模型会给出X属于默认类别A的概率：**'
 - en: '**$$ P(X) = P(A = 1 | X) $$'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '**$$ P(X) = P(A = 1 | X) $$'
 - en: '**The input X is classified as belonging to the default class A if its probability
     P(X) > 0.5\. Otherwise, it is classified as belonging to the non-default class
     B. **'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**如果输入X的概率P(X) > 0.5，则X被分类为默认类别A。否则，它被分类为非默认类别B。**'
 - en: '***   **The logistic regression model is represented by a set of parameters
     known as coefficients (or weights) learned from the training data. These coefficients
     are iteratively adjusted during training to minimize the error between the model
     predictions and the actual class labels. **'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **逻辑回归模型由一组称为系数（或权重）的参数表示，这些参数通过训练数据学习得来。这些系数在训练过程中会被迭代调整，以最小化模型预测与实际类别标签之间的误差。**'
 - en: '***   **The coefficient values may be estimated during training using gradient
     descent or maximum likelihood estimation (MLE) techniques. **'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **系数值可以通过梯度下降法或最大似然估计（MLE）技术在训练过程中进行估计。**'
 - en: '**## **Discovering Logistic Regression in OpenCV**'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '**## **探索OpenCV中的逻辑回归**'
 - en: Let’s start with a simple binary classification task before moving on to more
     complex problems.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 在深入更复杂的问题之前，让我们从一个简单的二分类任务开始。
 - en: 'As we have already done in related tutorials through which we familiarised
     ourselves with other machine learning algorithms in OpenCV (such as the SVM algorithm),
     we shall be generating a dataset that comprises 100 data points (specified by
@@ -125,115 +183,173 @@
     having a standard deviation set to 5 (specified by `cluster_std`). To be able
     to replicate the results, we shall again exploit the `random_state` parameter,
     which we’re going to set to 15:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们在相关教程中通过其他机器学习算法（如SVM算法）所做的那样，我们将生成一个包含100个数据点（由`n_samples`指定）的数据集，这些数据点均分为两个高斯簇（由`centers`指定），标准差设置为5（由`cluster_std`指定）。为了能够复制结果，我们将再次利用`random_state`参数，并将其设置为15：
 - en: Python
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The code above should generate the following plot of data points. You may note
     that we are setting the color values to the ground truth labels to be able to
     distinguish between data points belonging to the two different classes:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的代码应生成以下数据点的图示。你可能会注意到，我们将颜色值设置为真实标签，以便区分属于两个不同类别的数据点：
 - en: '[![](../Images/ea8d6b8fc2f5dc4d1dde8a517513a06d.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_1.png)'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/ea8d6b8fc2f5dc4d1dde8a517513a06d.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_1.png)'
 - en: Data Points Belonging to Two Different Classes
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 属于两种不同类别的数据点
 - en: 'The next step is to split the dataset into training and testing sets, where
     the former will be used to train the logistic regression model and the latter
     to test it:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一步是将数据集分为训练集和测试集，其中前者用于训练逻辑回归模型，后者用于测试：
 - en: Python
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '[![](../Images/12507cdf6dac3107c3c43a733a0944d3.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_2.png)'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/12507cdf6dac3107c3c43a733a0944d3.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_2.png)'
 - en: Splitting the Data Points in Training and Testing Sets
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 将数据点拆分为训练集和测试集
 - en: The image above indicates that the two classes appear clearly distinguishable
     in the training and testing data. For this reason, we expect that this binary
     classification problem should be a straightforward task for the trained linear
     regression model. Let’s create and train a logistic regression model in OpenCV
     to eventually see how it performs on the testing part of the dataset.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的图像表明，两个类别在训练和测试数据中明显可分。因此，我们期望这个二分类问题对于训练过的线性回归模型来说是一个简单的任务。让我们在OpenCV中创建并训练一个逻辑回归模型，以最终查看它在数据集测试部分的表现。
 - en: 'The first step is to create the logistic regression model itself:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一步是创建逻辑回归模型本身：
 - en: Python
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'In the next step, we shall choose the training method by which we want the
     model’s coefficients to be updated during training. The OpenCV implementation
     lets us choose between two different methods: the *Batch Gradient Descent* and
     the *Mini-Batch Gradient Descent* methods.'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一步中，我们将选择训练方法，以便在训练过程中更新模型的系数。OpenCV的实现允许我们在*批量梯度下降*方法和*迷你批量梯度下降*方法之间进行选择。
 - en: If the *Batch Gradient Descent* method is chosen, the model’s coefficients will
     be updated using the entire training dataset at each iteration of the gradient
     descent algorithm. If we are working with very large datasets, then this method
     of updating the model’s coefficients can become very computationally expensive.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果选择了*批量梯度下降*方法，模型的系数将在每次梯度下降算法迭代中使用整个训练数据集进行更新。如果我们处理的是非常大的数据集，那么这种更新模型系数的方法可能会非常耗费计算资源。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-44
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用OpenCV进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: A more practical approach to updating the model’s coefficients, especially when
     working with large datasets, is to opt for a *Mini-Batch Gradient Descent* method,
     which rather divides the training data into smaller batches (called mini-batches,
     hence the name of the method) and updates the model’s coefficients by processing
     one mini-batch at a time.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 更新模型系数的更实际方法，特别是在处理大型数据集时，是选择*迷你批量梯度下降*方法，该方法将训练数据划分为较小的批量（称为迷你批量，因此得名），并通过逐个处理迷你批量来更新模型系数。
 - en: 'We may check what OpenCV implements as its default training method by making
     use of the following line of code:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过使用以下代码行检查OpenCV默认的训练方法：
 - en: Python
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Python
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The returned value of 0 represents the Batch Gradient Descent method in OpenCV.
     If we want to change this to the Mini-Batch Gradient Descent method, we can do
     so by passing `ml.LogisticRegression_MINI_BATCH` to the `setTrainMethod` function,
     and then proceed to set the size of the mini-batch:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 返回值0表示OpenCV中的批量梯度下降方法。如果我们想将其更改为迷你批量梯度下降方法，可以将`ml.LogisticRegression_MINI_BATCH`传递给`setTrainMethod`函数，然后设置迷你批量的大小：
 - en: Python
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Setting the mini-batch size to 5 means that the training data will be divided
     into mini-batches containing 5 data points each, and the model’s coefficients
     will be updated iteratively after each of these mini-batches is processed in turn.
@@ -241,198 +357,305 @@
     the training dataset, this would effectively result in a Batch Gradient Descent
     operation since the entire batch of training data would be processed at once,
     at each iteration.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 将迷你批量大小设置为5意味着训练数据将被分成每个包含5个数据点的迷你批量，模型的系数将在处理完每个迷你批量后迭代更新。如果我们将迷你批量的大小设置为训练数据集中样本的总数，这实际上将导致批量梯度下降操作，因为每次迭代时都会一次性处理整个训练数据批量。
 - en: 'Next, we shall define the number of iterations that we want to run the chosen
     training algorithm for, before it terminates:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将定义在算法终止之前希望运行所选训练算法的迭代次数：
 - en: Python
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'We’re now set to train the logistic regression model on the training data:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们现在可以在训练数据上训练逻辑回归模型：
 - en: Python
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: As mentioned earlier, the training process aims to adjust the logistic regression
     model’s coefficients iteratively to minimize the error between the model predictions
     and the actual class labels.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 如前所述，训练过程旨在迭代地调整逻辑回归模型的系数，以最小化模型预测与实际类别标签之间的误差。
 - en: Each training sample we have fed into the model comprises two feature values,
     denoted by $x_1$ and $x_2$. This means that we should expect the model we have
     generated to be defined by two coefficients (one per input feature) and an additional
     coefficient that defines the bias (or intercept).
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们输入模型的每个训练样本包括两个特征值，分别表示为$x_1$和$x_2$。这意味着我们期望生成的模型由两个系数（每个输入特征一个）和一个定义偏差（或截距）的额外系数定义。
 - en: 'Then the probability value, $\hat{y}$, returned the model can be defined as
     follows:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后可以按照以下方式定义返回模型的概率值$\hat{y}$：
 - en: $$ \hat{y} = \sigma( \beta_0 + \beta_1 \; x_1 + \beta_2 \; x_2 ) $$
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: $$ \hat{y} = \sigma( \beta_0 + \beta_1 \; x_1 + \beta_2 \; x_2 ) $$
 - en: where $\beta_1$ and $\beta_2$ denote the model coefficients, $\beta_0$ the bias,
     and $\sigma$ the logistic (or sigmoid) function that is applied to the real-valued
     output of the linear combination of features.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中 $\beta_1$ 和 $\beta_2$ 表示模型系数，$\beta_0$ 为偏差，$\sigma$ 为应用于特征线性组合真实值的逻辑（或 sigmoid）函数。
 - en: 'Let’s print out the learned coefficient values to see whether we retrieve as
     many as we expect:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们打印出学习到的系数值，看看是否能获取到我们期望的数量：
 - en: Python
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Python
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'We find that we retrieve three values as expected, which means that we can
     define the model that best separates between the two-class samples that we are
     working with by:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们发现我们按预期检索到了三个值，这意味着我们可以通过以下方式定义最佳模型，以区分我们正在处理的两类样本：
 - en: $$ \hat{y} = \sigma( -0.0241 – \; 0.3461 \; x_1 + 0.0848 \; x_2 ) $$
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: $$ \hat{y} = \sigma( -0.0241 – \; 0.3461 \; x_1 + 0.0848 \; x_2 ) $$
 - en: We can assign a new, unseen data point to either of the two classes by plugging
     in its feature values, $x_1$ and $x_2$, into the model above. If the probability
     value returned by the model is > 0.5, we can take it as a prediction for class
     0 (the default class). Otherwise, it is a prediction for class 1.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过将特征值 $x_1$ 和 $x_2$ 插入上述模型，将一个新的、未见过的数据点分配到两个类别之一。如果模型返回的概率值 > 0.5，我们可以将其视为对类别
+    0（默认类别）的预测。否则，它就是对类别 1 的预测。
 - en: 'Let’s go ahead to see how well this model predicts the target class labels
     by trying it out on the testing part of the dataset:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们继续尝试在数据集的测试部分上测试这个模型，以查看它对目标类别标签的预测效果：
 - en: Python
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Python
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'We can plot out the ground truth against the predicted classes for the testing
     data, as well as print out the ground truth and predicted class labels, to investigate
     any misclassifications:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以绘制真实值与预测类别的图表，并打印出真实值和预测类别标签，以调查任何误分类情况：
 - en: Python
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE12]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Python
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE13]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '[![](../Images/921729a1db7a6e7c73a3d6f9ad1d50dc.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_3.png)'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/921729a1db7a6e7c73a3d6f9ad1d50dc.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/logistic_3.png)'
 - en: Test Data Points Belonging to Ground Truth and Predicted Classes, Where a Red
     Circle highlights a Misclassified Data Point
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 测试数据点属于真实类别和预测类别，其中红色圆圈突出显示了一个误分类的数据点
 - en: In this manner, we can see that one sample originally belonged to class 1 in
     the ground truth data but has been misclassified as belonging to class 0 in the
     model’s prediction.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过这种方式，我们可以看到一个样本在真实数据中原本属于类别 1，但在模型预测中被误分类为类别 0。
 - en: 'The entire code listing is as follows:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 整个代码清单如下：
 - en: Python
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE14]'
+  id: totrans-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: In this tutorial, we have considered setting values for two specific training
     parameters of the logistic regression model implemented in OpenCV. The parameters
     defined the training method to use and the number of iterations for which we wanted
     to run the chosen training algorithm during the training process.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们考虑了为在 OpenCV 中实现的逻辑回归模型设置两个特定训练参数的值。这些参数定义了使用的训练方法以及训练过程中我们希望运行所选择训练算法的迭代次数。
 - en: However, these are not the only parameter values that can be set for the logistic
     regression method. Other parameters, such as the learning rate and the type of
     regularization to perform, can also be modified to achieve better training accuracy.
     Hence, we suggest that you explore these parameters and investigate how different
     values can affect the model’s training and prediction accuracy.
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，这些并不是可以为逻辑回归方法设置的唯一参数值。其他参数，如学习率和正则化类型，也可以修改以实现更好的训练准确度。因此，我们建议你探索这些参数，调查不同值如何影响模型的训练和预测准确性。
 - en: '**Further Reading**'
+  id: totrans-94
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解，可以参考这些资源。
 - en: '**Books**'
+  id: totrans-96
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
     2017.'
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[《OpenCV 机器学习》](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1)，2017
+    年。'
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[《用 Python 掌握 OpenCV 4》](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019
+    年。'
 - en: '**Websites**'
+  id: totrans-99
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: Logistic Regression, [https://docs.opencv.org/3.4/dc/dd6/ml_intro.html#ml_intro_lr](https://docs.opencv.org/3.4/dc/dd6/ml_intro.html#ml_intro_lr)
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 逻辑回归，[https://docs.opencv.org/3.4/dc/dd6/ml_intro.html#ml_intro_lr](https://docs.opencv.org/3.4/dc/dd6/ml_intro.html#ml_intro_lr)
 - en: '**Summary**'
+  id: totrans-101
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you learned how to apply OpenCV’s logistic regression algorithm,
     starting with a custom two-class dataset we generated.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何应用 OpenCV 的逻辑回归算法，从我们生成的自定义二分类数据集开始。
 - en: 'Specifically, you learned:'
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: Several of the most important characteristics of the logistic regression algorithm.
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 逻辑回归算法的几个最重要特征。
 - en: How to use the logistic regression algorithm on a custom dataset in OpenCV.
+  id: totrans-105
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中使用逻辑回归算法处理自定义数据集。
 - en: Do you have any questions?
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.**************
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论中提问，我会尽力回答。**************

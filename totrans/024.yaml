@@ -1,11 +1,15 @@
 - en: Interpreting Coefficients in Linear Regression Models
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 解释线性回归模型中的系数
 - en: 原文：[https://machinelearningmastery.com/interpreting-coefficients-in-linear-regression-models/](https://machinelearningmastery.com/interpreting-coefficients-in-linear-regression-models/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/interpreting-coefficients-in-linear-regression-models/](https://machinelearningmastery.com/interpreting-coefficients-in-linear-regression-models/)
 - en: Linear regression models are foundational in machine learning. Merely fitting
     a straight line and reading the coefficient tells a lot. But how do we extract
     and interpret the coefficients from these models to understand their impact on
@@ -15,44 +19,67 @@
     introduced when these features are combined. Through this exploration, we aim
     to equip you with the skills needed to leverage linear regression models effectively,
     enhancing your analytical capabilities across different data-driven domains.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 线性回归模型是机器学习中的基础。仅仅拟合一条直线并读取系数就能提供很多信息。但是，我们如何从这些模型中提取和解释系数，以理解它们对预测结果的影响呢？本文将展示如何通过探索各种场景来解释系数。我们将探讨单一数值特征的分析，检查类别变量的作用，并揭示当这些特征组合时引入的复杂性。通过这一探索，我们旨在为您提供有效利用线性回归模型所需的技能，提高您在不同数据驱动领域的分析能力。
 - en: '![](../Images/20941486b0c8dd9e41aaa905d541f812.png)'
+  id: totrans-3
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/20941486b0c8dd9e41aaa905d541f812.png)'
 - en: Interpreting Coefficients in Linear Regression Models
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 解释线性回归模型中的系数
 - en: Photo by [Zac Durant](https://unsplash.com/photos/silhouette-photo-of-man-on-cliff-during-sunset-_6HzPU9Hyfg).
     Some rights reserved.
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Zac Durant](https://unsplash.com/photos/silhouette-photo-of-man-on-cliff-during-sunset-_6HzPU9Hyfg)
+    提供。保留所有权利。
 - en: Let’s get started.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分；它们是：
 - en: Interpreting Coefficients in Linear Models with a Single Numerical Feature
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用单一数值特征解释线性模型中的系数
 - en: Interpreting Coefficients in Linear Models with a Single Categorical Feature
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用单一类别特征解释线性模型中的系数
 - en: Discussion on Combining Numerical and Categorical Features
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数值特征和类别特征的组合讨论
 - en: Interpreting Coefficients in Linear Models with a Single Numerical Feature
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用单一数值特征解释线性模型中的系数
 - en: In this section, we focus on a single numerical feature from the Ames Housing
     dataset, “GrLivArea” (above-ground living area in square feet), to understand
     its direct impact on “SalePrice”. We employ K-Fold Cross-Validation to validate
@@ -61,37 +88,51 @@
     square foot of living area under the assumption that all other factors remain
     constant. This is a fundamental aspect of linear regression analysis, ensuring
     that the effect of “GrLivArea” is isolated from other variables.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一部分，我们专注于Ames Housing数据集中一个单一的数值特征，“GrLivArea”（以平方英尺计的地面生活面积），以理解其对“SalePrice”的直接影响。我们使用K-Fold交叉验证来验证模型的性能，并提取“GrLivArea”的系数。这个系数估算了在其他所有因素保持不变的情况下，每增加一平方英尺的生活面积，房价预期增加的金额。这是线性回归分析的基本方面，确保“GrLivArea”的影响从其他变量中被隔离出来。
 - en: 'Here is how we set up our regression model to achieve this:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我们设置回归模型以实现这一目标的方法：
 - en: '[PRE0]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The output from this code block provides two key pieces of information: the
     mean R² score across the folds and the mean coefficient for “GrLivArea.” The R²
     score gives us a general idea of how well our model fits the data across different
     subsets, indicating the model’s consistency and reliability. Meanwhile, the mean
     coefficient quantifies the average effect of “GrLivArea” on “SalePrice” across
     all the validation folds.'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 该代码块的输出提供了两个关键的信息：各折的平均R²得分和“GrLivArea”的平均系数。R²得分给我们一个总体了解，表明我们的模型在不同子集中的拟合程度，指示模型的一致性和可靠性。同时，平均系数量化了“GrLivArea”对“SalePrice”在所有验证折中的平均影响。
 - en: '[PRE1]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The coefficient of “GrLivArea” can be directly interpreted as the price change
     per square foot. Specifically, it indicates that for each square foot increase
     in “GrLivArea,” the sale price of the house is expected to rise by approximately
     $110.52 (not to be confused with the price per square foot since the coefficient
     refers to the **marginal price**). Conversely, a decrease in living area by one
     square foot would typically lower the sale price by the same amount.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: “GrLivArea”的系数可以直接解释为每平方英尺的价格变化。具体而言，它表明“GrLivArea”每增加一平方英尺，房屋的销售价格预计会增加约$110.52（与每平方英尺的价格不同，因为系数指的是**边际价格**）。相反，居住面积减少一平方英尺通常会使销售价格降低相同的金额。
 - en: Interpreting Coefficients in Linear Models with a Single Categorical Feature
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 线性模型中单一分类特征的系数解释
 - en: While numerical features like “GrLivArea” can be directly used in our regression
     model, categorical features require a different approach. Proper encoding of these
     categorical variables is crucial for accurate model training and ensuring the
@@ -100,31 +141,43 @@
     into a format that is interpretable within the model’s framework. We will specifically
     focus on how to interpret the coefficients that result from these transformations,
     including the strategic selection of a reference category to simplify these interpretations.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然像“GrLivArea”这样的数值特征可以直接用于我们的回归模型，但分类特征则需要不同的方法。对这些分类变量的正确编码对准确的模型训练至关重要，并确保结果具有可解释性。在这一部分，我们将探讨独热编码——一种将分类变量转换为模型框架内可解释格式的技术，以准备进行线性回归。我们将特别关注如何解释这些转换所产生的系数，包括选择参考类别以简化这些解释的策略。
 - en: 'Choosing an appropriate reference category when applying One Hot Encoding is
     crucial as it sets the baseline against which other categories are compared. This
     baseline category’s mean value often serves as the intercept in our regression
     model. Let’s explore the distribution of sale prices across neighborhoods to select
     a reference category that will make our model both interpretable and meaningful:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在应用独热编码时选择合适的参考类别至关重要，因为它设定了与其他类别比较的基准。这个基准类别的平均值通常作为我们回归模型中的截距。让我们探索不同邻里的销售价格分布，以选择一个既能使我们的模型具有可解释性又有意义的参考类别：
 - en: '[PRE2]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'This output will inform our choice by highlighting the neighborhoods with the
     lowest and highest average prices, as well as indicating the neighborhoods with
     sufficient data points (count) to ensure robust statistical analysis:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一输出将通过突出显示平均价格最低和最高的邻里，以及指示具有足够数据点（计数）以确保稳健统计分析的邻里，来指导我们的选择：
 - en: '[PRE3]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Choosing a neighborhood like “MeadowV” as our reference sets a clear baseline,
     interpreting other neighborhoods’ coefficients straightforward: they show how
     much more expensive houses are than “MeadowV”.'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 选择像“MeadowV”这样的邻里作为我们的参考设置了明确的基准，从而使得其他邻里的系数解释起来很简单：它们显示了房屋比“MeadowV”贵多少。
 - en: Having identified “MeadowV” as our reference neighborhood, we are now ready
     to apply One Hot Encoding to the “Neighborhood” feature, explicitly excluding
     “MeadowV” to establish it as our baseline in the model. This step ensures that
@@ -135,23 +188,33 @@
     Y-intercept. These calculations will help quantify the additional value or deficit
     associated with each neighborhood compared to our baseline, offering actionable
     insights for market evaluation.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过将“MeadowV”确定为我们的参考邻里，我们现在准备对“Neighborhood”特征应用独热编码，明确排除“MeadowV”以将其作为模型中的基准。这一步确保了所有后续的邻里系数都以“MeadowV”为基准进行解释，从而提供了不同区域房价的清晰对比分析。下一段代码将展示这一编码过程，使用K折交叉验证拟合线性回归模型，并计算平均系数和Y截距。这些计算将帮助量化每个邻里相对于我们基准的附加值或缺陷，为市场评估提供可操作的见解。
 - en: '[PRE4]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The mean R² will remain consistent at 0.5408 regardless of what feature we “dropped”
     when we One Hot Encoded.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 不论我们在进行独热编码时“丢弃”了哪个特征，平均R²值将保持在0.5408。
 - en: The Y-intercept provides a specific quantitative benchmark. Representing the
     average sale price in “MeadowV,” this Y-intercept forms the foundational price
     level against which all other neighborhoods’ premiums or discounts are measured.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: Y 截距提供了一个具体的量化基准。作为“MeadowV”中平均销售价格的代表，这个 Y 截距形成了基础价格水平，用于衡量其他邻里的溢价或折扣。
 - en: '[PRE5]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Each neighborhood’s coefficient, calculated relative to “MeadowV,” reveals its
     premium or deficit in house pricing. By setting “MeadowV” as the reference category
     in our One Hot Encoding process, its average sale price effectively becomes the
@@ -162,12 +225,16 @@
     factors are constant. This arrangement allows us to directly assess and compare
     the impact of different neighborhoods on the “SalePrice,” providing a clear and
     quantifiable understanding of each neighborhood’s relative market value.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算相对于“MeadowV”的每个邻里的系数揭示了其在房价上的溢价或折扣。通过在我们的独热编码过程中将“MeadowV”设为参考类别，其平均销售价格有效地成为了我们模型的截距。然后，为其他邻里计算的系数则测量了相对于“MeadowV”的预期销售价格差异。例如，某个邻里的正系数表明，那里房价比“MeadowV”高出系数的数值，假设其他因素保持不变。这种安排使我们能够直接评估和比较不同邻里对“SalePrice”的影响，提供了对每个邻里相对市场价值的清晰且可量化的理解。
 - en: Discussion on Combining Numerical and Categorical Features
+  id: totrans-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 讨论数值特征和类别特征的结合
 - en: So far, we have examined how numerical and categorical features influence our
     predictions separately. However, real-world data often require more sophisticated
     models that can handle multiple types of data simultaneously to capture the complex
@@ -177,24 +244,35 @@
     modeling. Let’s now demonstrate an example where we combine the living area (“GrLivArea”)
     with the neighborhood classification to see how these factors together affect
     our model performance.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们已经分别考察了数值特征和类别特征对预测的影响。然而，现实世界中的数据通常需要更复杂的模型来同时处理多种数据类型，以捕捉市场中的复杂关系。为此，熟悉像
+    `ColumnTransformer` 这样的工具至关重要，它可以同时处理不同的数据类型，确保每个特征都为建模做好最佳准备。接下来，我们将演示一个例子，结合居住面积（“GrLivArea”）和邻里分类，看看这些因素如何共同影响我们的模型性能。
 - en: '[PRE6]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The code above should output:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码应输出：
 - en: '[PRE7]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Combining “GrLivArea” and “Neighborhood” into a single model has significantly
     improved the R² score, rising to 0.7375 from the individual scores of 0.5127 and
     0.5408, respectively. This substantial increase illustrates that integrating multiple
     data types provides a more accurate reflection of the complex factors influencing
     real estate prices.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 将“GrLivArea”和“Neighborhood”结合到一个模型中显著提高了 R² 分数，从单独的0.5127和0.5408分别上升到0.7375。这一显著的提升表明，整合多种数据类型能够更准确地反映影响房地产价格的复杂因素。
 - en: However, this integration introduces new complexities into the model. The interaction
     effects between features like “GrLivArea” and “Neighborhood” can significantly
     alter the coefficients. For instance, the coefficient for “GrLivArea” decreased
@@ -203,8 +281,10 @@
     of different neighborhoods. Incorporating multiple variables requires adjustments
     in the coefficients to account for overlapping variances between predictors, resulting
     in coefficients that often differ from those in single-feature models.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，这种整合给模型引入了新的复杂性。像“GrLivArea”和“Neighborhood”这样的特征之间的交互效应可以显著改变系数。例如，“GrLivArea”在单特征模型中的系数从110.52降至组合模型中的78.93。这一变化表明，居住面积的价值受到不同邻里特征的影响。引入多个变量需要对系数进行调整，以考虑预测变量之间的重叠方差，从而导致系数通常与单特征模型中的不同。
 - en: The mean Y-intercept calculated for our combined model is $11,786\. This value
     represents the predicted sale price for a house in the “MeadowV” neighborhood
     with the base living area (as accounted for by “GrLivArea”) adjusted to zero.
@@ -214,79 +294,113 @@
     us about the additional cost or savings relative to our baseline, “MeadowV,” providing
     clear and actionable insights into the relative value of properties across different
     areas.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们综合模型计算得出的平均 Y 截距为 $11,786。这一数值代表了“MeadowV”邻里中一栋基础生活面积（按“GrLivArea”调整为零）的房屋的预测售价。这个截距作为一个基础价格点，增强了我们对不同邻里相对于“MeadowV”的成本比较的解释，一旦调整了生活面积的大小。因此，每个邻里的系数都能告诉我们相对于基准“MeadowV”的额外成本或节省，为我们提供了关于不同区域房产相对价值的清晰且可操作的见解。
 - en: '**Further****Reading**'
+  id: totrans-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步**阅读'
 - en: APIs
+  id: totrans-41
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: API
 - en: '[sklearn.compose.ColumnTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html)
     API'
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[sklearn.compose.ColumnTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html)
+    API'
 - en: Tutorials
+  id: totrans-43
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[Interpreting Regression Coefficients](https://www.theanalysisfactor.com/interpreting-regression-coefficients/)
     by Karen Grace-Martin'
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[解释回归系数](https://www.theanalysisfactor.com/interpreting-regression-coefficients/)
+    作者：Karen Grace-Martin'
 - en: '**Ames Housing Dataset & Data Dictionary**'
+  id: totrans-45
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**Ames Housing 数据集与数据字典**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: This post has guided you through interpreting coefficients in linear regression
     models with clear, practical examples using the Ames Housing dataset. We explored
     how different types of features—numerical and categorical—affect the predictability
     and clarity of models. Moreover, we addressed the challenges and benefits of combining
     these features, especially in the context of interpretation.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文引导你通过使用 Ames Housing 数据集来解释线性回归模型中的系数，提供了清晰的实际示例。我们探讨了不同类型的特征——数值型和分类型——如何影响模型的预测能力和清晰度。此外，我们还讨论了结合这些特征的挑战和好处，特别是在解释的背景下。
 - en: 'Specifically, you learned:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: '**The Direct Impact of Single Numerical Features:** How the “GrLivArea” coefficient
     directly quantifies the increase in “SalePrice” for each additional square foot,
     providing a clear measure of its predictive value in a straightforward model.'
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**单一数值特征的直接影响：** “GrLivArea”系数如何直接量化每增加一平方英尺的“SalePrice”提升，提供了在简单模型中其预测价值的明确度量。'
 - en: '**Handling Categorical Variables:** The importance of One Hot Encoding in dealing
     with categorical features like “Neighborhood”, illustrating how choosing a baseline
     category impacts the interpretation of coefficients and sets a foundation for
     comparison across different areas.'
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**处理分类变量：** One Hot Encoding 在处理诸如“Neighborhood”（邻里）等分类特征时的重要性，说明了选择基准类别如何影响系数的解释，并为不同区域的比较奠定了基础。'
 - en: '**Combining Features to Enhance Model Performance:** The integration of “GrLivArea”
     and “Neighborhood” not only improved the predictive accuracy (R² score) but also
     introduced a complexity that affects how each feature’s coefficient is interpreted.
     This part emphasized the trade-off between achieving high predictive accuracy
     and maintaining model interpretability, which is crucial for making informed decisions
     in the real estate market.'
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**结合特征以提升模型性能：** “GrLivArea”和“Neighborhood”的整合不仅提高了预测准确性（R² 分数），还引入了影响每个特征系数解释的复杂性。这部分强调了在实现高预测准确性和保持模型可解释性之间的权衡，这对于在房地产市场中做出明智决策至关重要。'
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？请在下方评论中提出你的问题，我会尽力回答。

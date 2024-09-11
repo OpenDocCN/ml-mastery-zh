@@ -1,381 +1,574 @@
 - en: Scientific Functions in NumPy and SciPy
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: NumPy和SciPy中的科学函数
 - en: 原文：[https://machinelearningmastery.com/scientific-functions-in-numpy-and-scipy/](https://machinelearningmastery.com/scientific-functions-in-numpy-and-scipy/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/scientific-functions-in-numpy-and-scipy/](https://machinelearningmastery.com/scientific-functions-in-numpy-and-scipy/)
 - en: Python is a general-purpose computation language, but it is very welcomed in
     scientific computing. It can replace R and Matlab in many cases, thanks to some
     libraries in the Python ecosystem. In machine learning, we use some mathematical
     or statistical functions extensively, and often, we will find NumPy and SciPy
     useful. In the following, we will have a brief overview of what NumPy and SciPy
     provide and some tips for using them.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: Python是一个通用计算语言，但在科学计算中非常受欢迎。由于Python生态系统中的一些库，它在许多情况下可以替代R和Matlab。在机器学习中，我们广泛使用一些数学或统计函数，并且我们经常发现NumPy和SciPy非常有用。接下来，我们将简要概述NumPy和SciPy提供了什么以及一些使用技巧。
 - en: 'After finishing this tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解到：
 - en: What NumPy and SciPy provide for your project
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: NumPy和SciPy为你的项目提供了什么
 - en: How to quickly speed up NumPy code using numba
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用numba快速加速NumPy代码
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的新书[《机器学习的Python》](https://machinelearningmastery.com/python-for-machine-learning/)**，**快速启动你的项目**，包括*一步步的教程*和所有示例的*Python源代码*文件。'
 - en: Let’s get started!![](../Images/8a66d78bdafab3162c4d63b3e4be46ec.png)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！！[](../Images/8a66d78bdafab3162c4d63b3e4be46ec.png)
 - en: Scientific Functions in NumPy and SciPy
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: NumPy和SciPy中的科学函数
 - en: Photo by [Nothing Ahead](https://www.pexels.com/photo/magnifying-glass-on-textbook-4494641/).
     Some rights reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Nothing Ahead](https://www.pexels.com/photo/magnifying-glass-on-textbook-4494641/)提供。保留所有权利。
 - en: Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is divided into three parts:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分：
 - en: NumPy as a tensor library
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: NumPy作为张量库
 - en: Functions from SciPy
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: SciPy的函数
 - en: Speeding up with numba
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用numba加速
 - en: NumPy as a Tensor Library
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: NumPy作为张量库
 - en: While the list and tuple in Python are how we manage arrays natively, NumPy
     provides us the array capabilities closer to C or Java in the sense that we can
     enforce all elements of the same data type and, in the case of high dimensional
     arrays, in a regular shape in each dimension. Moreover, carrying out the same
     operation in the NumPy array is usually faster than in Python natively because
     the code in NumPy is highly optimized.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然Python中的列表和元组是我们本地管理数组的方式，但NumPy提供了更接近C或Java的数组功能，意味着我们可以强制所有元素为相同的数据类型，并且在高维数组的情况下，每个维度中的形状都是规则的。此外，在NumPy数组中执行相同的操作通常比在Python本地中更快，因为NumPy中的代码经过高度优化。
 - en: 'There are a thousand functions provided by NumPy, and you should consult NumPy’s
     documentation for the details. Some common usage can be found in the following
     cheat sheet:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: NumPy提供了上千个函数，你应该查阅NumPy的文档以获取详细信息。以下备忘单中可以找到一些常见用法：
 - en: '[![](../Images/27ea50f02d24d979dc6694655a719481.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/cheatsheet.png)'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/27ea50f02d24d979dc6694655a719481.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/cheatsheet.png)'
 - en: NumPy Cheat Sheet. Copyright 2022 MachineLearningMastery.com
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: NumPy备忘单。版权所有2022 MachineLearningMastery.com
 - en: There are some cool features from NumPy that are worth mentioning as they are
     helpful for machine learning projects.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: NumPy中有一些很酷的功能值得一提，因为它们对机器学习项目很有帮助。
 - en: 'For instance, if we want to plot a 3D curve, we would compute $z=f(x,y)$ for
     a range of $x$ and $y$ and then plot the result in the $xyz$-space. We can generate
     the range with:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，如果我们想绘制一个3D曲线，我们会计算$x$和$y$范围内的$z=f(x,y)$，然后在$xyz$空间中绘制结果。我们可以用以下方法生成范围：
 - en: '[PRE0]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'For $z=f(x,y)=\sqrt{1-x^2-(y/2)^2}$, we may need a nested for-loop to scan
     each value on arrays `x` and `y` and do the computation. But in NumPy, we can
     use `meshgrid` to expand two 1D arrays into two 2D arrays in the sense that by
     matching the indices, we get all the combinations as follows:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于$z=f(x,y)=\sqrt{1-x^2-(y/2)^2}$，我们可能需要一个嵌套的for循环来扫描数组`x`和`y`中的每个值并进行计算。但在NumPy中，我们可以使用`meshgrid`将两个1D数组扩展为两个2D数组，通过匹配索引，我们得到所有组合，如下所示：
 - en: '[PRE1]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '![](../Images/63be7afc5683451c422e60eb0b8d1e70.png)'
+  id: totrans-25
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/63be7afc5683451c422e60eb0b8d1e70.png)'
 - en: In the above, the 2D array `xx` produced by `meshgrid()` has identical values
     on the same column, and `yy` has identical values on the same row. Hence element-wise
     operations on `xx` and `yy` are essentially operations on the $xy$-plane. This
     is why it works and why we can plot the ellipsoid above.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述中，由 `meshgrid()` 生成的 2D 数组 `xx` 在同一列上具有相同的值，`yy` 在同一行上具有相同的值。因此，`xx` 和 `yy`
+    上的逐元素操作实际上是对 $xy$ 平面的操作。这就是为什么它有效，以及我们如何绘制上面的椭球体。
 - en: 'Another nice feature in NumPy is a function to expand the dimension. Convolutional
     layers in the neural network usually expect 3D images, namely, pixels in 2D, and
     the different color channels as the third dimension. It works for color images
     using RGB channels, but we have only one channel in grayscale images. For example,
     the digits dataset in scikit-learn:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: NumPy 另一个很好的功能是扩展维度的函数。神经网络中的卷积层通常期望 3D 图像，即 2D 像素和作为第三维度的不同颜色通道。它适用于使用 RGB
+    通道的彩色图像，但在灰度图像中我们只有一个通道。例如，scikit-learn 中的数字数据集：
 - en: '[PRE2]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '[PRE3]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'This shows that there are 1797 images from this dataset, and each is in 8×8
     pixels. This is a grayscale dataset that shows each pixel is a value of darkness.
     We add the 4th axis to this array (i.e., convert a 3D array into a 4D array) so
     each image is in 8x8x1 pixels:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 这表明这个数据集有 1797 张图像，每张图像为 8×8 像素。这是一个灰度数据集，显示每个像素的黑暗值。我们将第四轴添加到这个数组中（即，将一个 3D
+    数组转换为 4D 数组），以便每张图像为 8x8x1 像素：
 - en: '[PRE4]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '[PRE5]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'A handy feature in working with the NumPy array is Boolean indexing and fancy
     indexing. For example, if we have a 2D array:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在处理 NumPy 数组时，一个方便的特性是布尔索引和花式索引。例如，如果我们有一个 2D 数组：
 - en: '[PRE6]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'we can check if all values in a column are positive:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以检查列中的所有值是否都是正值：
 - en: '[PRE7]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '[PRE8]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'This shows only the first two columns are all positive. Note that it is a length-5
     one-dimensional array, which is the same size as axis 1 of array `X`. If we use
     this Boolean array as an index on axis 1, we select the subarray for only where
     the index is positive:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 这仅显示前两列都是正值。注意这是一个长度为 5 的一维数组，其大小与数组 `X` 的轴 1 相同。如果我们在轴 1 上使用这个布尔数组作为索引，我们只选择索引为正的子数组：
 - en: '[PRE9]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '[PRE10]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'If a list of integers is used in lieu of the Boolean array above, we select
     from `X` according to the index matching the list. NumPy calls this fancy indexing.
     So below, we can select the first two columns twice and form a new array:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果用整数列表代替上述布尔数组，我们根据与列表匹配的索引从 `X` 中选择。NumPy 称之为花式索引。如下所示，我们可以选择前两列两次并形成一个新数组：
 - en: '[PRE11]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[PRE12]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Functions from SciPy
+  id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: SciPy 的函数
 - en: SciPy is a sister project of NumPy. Hence, you will mostly see SciPy functions
     expecting NumPy arrays as arguments or returning one. SciPy provides a lot more
     functions that are less commonly used or more advanced.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: SciPy 是 NumPy 的姊妹项目。因此，你通常会看到 SciPy 函数期望 NumPy 数组作为参数或返回一个。SciPy 提供了许多不常用或更高级的函数。
 - en: 'SciPy functions are organized under submodules. Some common submodules are:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: SciPy 函数被组织在子模块下。一些常见的子模块包括：
 - en: '`scipy.cluster.hierarchy`: Hierarchical clustering'
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`scipy.cluster.hierarchy`: 层次聚类'
 - en: '`scipy.fft`: Fast Fourier transform'
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`scipy.fft`: 快速傅里叶变换'
 - en: '`scipy.integrate`: Numerical integration'
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`scipy.integrate`: 数值积分'
 - en: '`scipy.interpolate`: Interpolation and spline functions'
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`scipy.interpolate`: 插值和样条函数'
 - en: '`scipy.linalg`: Linear algebra'
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`scipy.linalg`: 线性代数'
 - en: '`scipy.optimize`: Numerical optimization'
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`scipy.optimize`: 数值优化'
 - en: '`scipy.signal`: Signal processing'
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`scipy.signal`: 信号处理'
 - en: '`scipy.sparse`: Sparse matrix representation'
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`scipy.sparse`: 稀疏矩阵表示'
 - en: '`scipy.special`: Some exotic mathematical functions'
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`scipy.special`: 一些特殊的数学函数'
 - en: '`scipy.stats`: Statistics, including probability distributions'
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`scipy.stats`: 统计，包括概率分布'
 - en: But never assume SciPy can cover everything. For time series analysis, for example,
     it is better to depend on the `statsmodels` module instead.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 但不要假设 SciPy 可以覆盖所有内容。例如，对于时间序列分析，最好依赖于 `statsmodels` 模块。
 - en: We have covered a lot of examples using `scipy.optimize` in other posts. It
     is a great tool to find the minimum of a function using, for example, Newton’s
     method. Both NumPy and SciPy have the `linalg` submodule for linear algebra, but
     those in SciPy are more advanced, such as the function to do QR decomposition
     or matrix exponentials.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在其他文章中已经讨论了许多使用 `scipy.optimize` 的例子。它是一个很棒的工具，可以使用例如牛顿法来找到函数的最小值。NumPy 和
+    SciPy 都有 `linalg` 子模块用于线性代数，但 SciPy 中的函数更高级，如进行 QR 分解或矩阵指数的函数。
 - en: Maybe the most used feature of SciPy is the `stats` module. In both NumPy and
     SciPy, we can generate multivariate Gaussian random numbers with non-zero correlation.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 也许 SciPy 最常用的功能是 `stats` 模块。在 NumPy 和 SciPy 中，我们可以生成具有非零相关性的多变量高斯随机数。
 - en: '[PRE13]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '![](../Images/28987164ebb562fe0132bb780ba659ca.png)'
+  id: totrans-61
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/28987164ebb562fe0132bb780ba659ca.png)'
 - en: 'But if we want to reference the distribution function itself, it is best to
     depend on SciPy. For example, the famous 68-95-99.7 rule is referring to the standard
     normal distribution, and we can get the exact percentage from SciPy’s cumulative
     distribution functions:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 但如果我们想要引用分布函数本身，最好依赖于 SciPy。例如，著名的68-95-99.7规则是指标准正态分布，我们可以通过 SciPy 的累积分布函数获取确切的百分比：
 - en: '[PRE14]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '[PRE15]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'So we see that we expect a 68.269% probability that values fall within one
     standard deviation from the mean in a normal distribution. Conversely, we have
     the percentage point function as the inverse function of the cumulative distribution
     function:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此我们看到，在正态分布中，我们期望68.269%的概率值会落在均值的一个标准差范围内。相反，我们有百分位点函数作为累积分布函数的逆函数：
 - en: '[PRE16]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: '[PRE17]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: So this means if the values are in a normal distribution, we expect a 99% probability
     (one-tailed probability) that the value will not be more than 2.32 standard deviations
     beyond the mean.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着，如果值服从正态分布，我们期望有99%的概率（单尾概率）值不会超过均值的2.32倍标准差。
 - en: These are examples of how SciPy can give you an extra mile over what NumPy gives
     you.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些都是 SciPy 如何超越 NumPy 的例子。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 Python 进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费7天邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费 PDF 电子书版本。
 - en: Speeding Up with numba
+  id: totrans-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 numba 提速
 - en: NumPy is faster than native Python because many of the operations are implemented
     in C and use optimized algorithms. But there are times when we want to do something,
     but NumPy is still too slow.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: NumPy 比原生 Python 更快，因为许多操作是用 C 实现的并使用了优化的算法。但有时我们希望做一些事情时，NumPy 仍然太慢。
 - en: 'It may help if you ask `numba` to further optimize it by parallelizing or moving
     the operation to GPU if you have one. You need to install the `numba` module first:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你有 GPU，你可以要求 `numba` 进一步优化，通过并行化或将操作移到 GPU 上来加速。你需要先安装 `numba` 模块：
 - en: '[PRE18]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'And it may take a while if you need to compile `numba` into a Python module.
     Afterward, if you have a function that is purely NumPy operations, you can add
     the `numba` decorator to speed it up:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你需要将 `numba` 编译成 Python 模块，可能需要一段时间。之后，如果你有一个纯 NumPy 操作的函数，你可以添加 `numba` 装饰器来加速它：
 - en: '[PRE19]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: What it does is use a just-in-time compiler to vectorize the operation so it
     can run faster. You can see the best performance improvement if your function
     is running many times in your program (e.g., the update function in gradient descent)
     because the overhead of running the compiler can be amortized.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 它的作用是使用即时编译器来向量化操作，以便它可以更快地运行。如果你的函数在程序中运行很多次（例如，梯度下降中的更新函数），你可以看到最佳的性能提升，因为编译器的开销可以得到摊销。
 - en: For example, below is an implementation of the t-SNE algorithm to transform
     784-dimensional data into 2-dimensional. We are not going to explain the t-SNE
     algorithm in detail, but it needs many iterations to converge. The following code
     shows how we can use `numba` to optimize the inner loop functions (and it demonstrates
     some NumPy usage as well). It takes a few minutes to finish. You may try to remove
     the `@numba.jit` decorators afterward. It will take a considerably longer time.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，下面是一个将784维数据转换为2维的 t-SNE 算法实现。我们不会详细解释 t-SNE 算法，但它需要很多次迭代才能收敛。以下代码展示了我们如何使用
+    `numba` 来优化内部循环函数（同时也演示了一些 NumPy 的用法）。完成需要几分钟时间。你可以尝试在之后移除 `@numba.jit` 装饰器。这将需要相当长的时间。
 - en: '[PRE20]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: Further Reading
+  id: totrans-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你希望更深入地了解。
 - en: API documentations
+  id: totrans-84
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: API 文档
 - en: '[NumPy user guide](https://numpy.org/doc/stable/user/index.html#user)'
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[NumPy 用户指南](https://numpy.org/doc/stable/user/index.html#user)'
 - en: '[SciPy user guide](https://docs.scipy.org/doc/scipy/tutorial/index.html#user-guide)'
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[SciPy 用户指南](https://docs.scipy.org/doc/scipy/tutorial/index.html#user-guide)'
 - en: '[Numba documentation](https://numba.pydata.org/numba-doc/dev/index.html)'
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Numba 文档](https://numba.pydata.org/numba-doc/dev/index.html)'
 - en: '**Summary**'
+  id: totrans-88
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you saw a brief overview of the functions provided by NumPy
     and SciPy.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你简要了解了 NumPy 和 SciPy 提供的函数。
 - en: 'Specifically, you learned:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to work with NumPy arrays
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 NumPy 数组
 - en: A few functions provided by SciPy to help
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: SciPy 提供的一些帮助函数
 - en: How to make NumPy code faster by using the JIT compiler from numba
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过使用来自 numba 的 JIT 编译器加快 NumPy 代码的运行速度

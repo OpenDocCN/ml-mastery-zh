@@ -1,302 +1,446 @@
 - en: Building a Regression Model in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中构建回归模型
 - en: 原文：[https://machinelearningmastery.com/building-a-regression-model-in-pytorch/](https://machinelearningmastery.com/building-a-regression-model-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/building-a-regression-model-in-pytorch/](https://machinelearningmastery.com/building-a-regression-model-in-pytorch/)
 - en: PyTorch library is for deep learning. Some applications of deep learning models
     are to solve regression or classification problems.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 库用于深度学习。深度学习模型的一些应用是解决回归或分类问题。
 - en: In this post, you will discover how to use PyTorch to develop and evaluate neural
     network models for regression problems.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你将发现如何使用 PyTorch 开发和评估回归问题的神经网络模型。
 - en: 'After completing this post, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成这篇文章后，你将了解：
 - en: How to load data from scikit-learn and adapt it for PyTorch models
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从 scikit-learn 加载数据并将其调整为 PyTorch 模型
 - en: How to create a neural network for regerssion problem using PyTorch
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 PyTorch 创建一个回归问题的神经网络
 - en: How to improve model performance with data preparation techniques
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过数据准备技术提高模型性能
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，参考我的书[《使用 PyTorch 的深度学习》](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started.![](../Images/918e52e81c4c7df61a4008105b43a255.png)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。![](../Images/918e52e81c4c7df61a4008105b43a255.png)
 - en: Building a Regression Model in PyTorchPhoto by [Sam Deng](https://unsplash.com/photos/2bJGj7sIclQ).
     Some rights reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中构建回归模型，照片由[Sam Deng](https://unsplash.com/photos/2bJGj7sIclQ)提供。保留部分权利。
 - en: Description of the Dataset
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数据集描述
 - en: The dataset you will use in this tutorial is the [California housing dataset](https://scikit-learn.org/stable/datasets/real_world.html#california-housing-dataset).
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程中使用的数据集是[加州住房数据集](https://scikit-learn.org/stable/datasets/real_world.html#california-housing-dataset)。
 - en: This is a dataset that describes the median house value for California districts.
     Each data sample is a census block group. The target variable is the median house
     value in USD 100,000 in 1990 and there are 8 input features, each describing something
     about the house. They are, namely,
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个描述加州地区中位数房价的数据集。每个数据样本是一个普查街区组。目标变量是1990年每100,000美元的中位数房价，共有8个输入特征，每个特征描述房子的某一方面。它们分别是：
 - en: 'MedInc: median income in block group'
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 中位数收入：街区组的中位数收入
 - en: 'HouseAge: median house age in block group'
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 房屋年龄：街区组中位数房龄
 - en: 'AveRooms: average number of rooms per household'
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 平均房间数：每户家庭的平均房间数
 - en: 'AveBedrms: average number of bedrooms per household'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 平均卧室数：每户家庭的平均卧室数
 - en: 'Population: block group population'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 人口：街区组人口
 - en: 'AveOccup: average number of household members'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 平均家庭成员数：每户家庭的平均成员数
 - en: 'Latitude: block group centroid latitude'
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 纬度：街区组中心纬度
 - en: 'Longitude: block group centroid longitude'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 经度：街区组中心经度
 - en: This data is special because the input data is in vastly different scale. For
     example, the number of rooms per house is usually small but the population per
     block group is usually large. Moreover, most features should be positive but the
     longitude must be negative (because that’s about California). Handling such diversity
     of data is a challenge to some machine learning models.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些数据很特殊，因为输入数据的尺度差异很大。例如，每栋房子的房间数通常很少，但每个街区的居民数通常很大。此外，大多数特征应该是正数，但经度必须是负数（因为这是关于加州的）。处理这种数据多样性对某些机器学习模型而言是一个挑战。
 - en: 'You can get the dataset from scikit-learn, which in turn, is downloaded from
     the Internet at realtime:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以从 scikit-learn 获取数据集，scikit-learn 是从互联网实时下载的：
 - en: '[PRE0]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Building a Model and Train
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建模型并训练
 - en: This is a regression problem. Unlike classification problems, the output variable
     is a continuous value. In case of neural networks, you usually use linear activation
     at the output layer (i.e., no activation) such that the output range theoretically
     can be anything from negative infinty to positive infinity.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个回归问题。与分类问题不同，输出变量是连续值。在神经网络中，通常在输出层使用线性激活（即没有激活），使得理论上输出范围可以是从负无穷到正无穷。
 - en: Also for regression problems, you should never expect the model to predict the
     values perfectly. Therefore, you should care about how close the prediction is
     to the actual value. The loss metric that you can use for this is the mean square
     error (MSE) or mean absolute error (MAE). But you may also interested in the root
     mean squared error (RMSE) because that’s a metric in the same unit as your output
     variable.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于回归问题，你不应该期望模型完美预测值。因此，你应该关注预测值与实际值的接近程度。你可以使用均方误差（MSE）或平均绝对误差（MAE）作为损失度量。但你也可能对均方根误差（RMSE）感兴趣，因为它与输出变量具有相同的单位。
 - en: Let’s try the traditional design of a neural network, namely, the pyramid structure.
     A pyramid structure is to have the number of neurons in each layer decreasing
     as the network progresses to the output. The number of input features is fixed,
     but you set a large number of neurons on the first hidden layer and gradually
     reduce the number in the subsequent layers. Because you have only one target in
     this dataset, the final layer should output only one value.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们尝试传统的神经网络设计，即金字塔结构。金字塔结构是使每一层中的神经元数量随着网络到达输出层而减少。输入特征数量是固定的，但你可以在第一隐藏层设置大量的神经元，并逐渐减少后续层中的数量。由于数据集中只有一个目标，最终层应该仅输出一个值。
 - en: 'One design is as follows:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 设计如下：
 - en: '[PRE1]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: To train this network, you need to define a loss function. MSE is a reasonable
     choice. You also need an optimizer, such as Adam.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 要训练这个网络，你需要定义一个损失函数。MSE是一个合理的选择。你还需要一个优化器，例如Adam。
 - en: '[PRE2]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'To train this model, you can use your usual training loop. In order to obtain
     an evaluation score so you are confident that the model works, you need to split
     the data into training and test sets. You may also want to avoid overfitting by
     keeping track on the test set MSE. The following is the training loop with the
     train-test split:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 要训练这个模型，你可以使用你常用的训练循环。为了获得一个评估分数以确保模型有效，你需要将数据分为训练集和测试集。你可能还需要通过跟踪测试集的均方误差（MSE）来避免过拟合。以下是带有训练-测试拆分的训练循环：
 - en: '[PRE3]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: In the training loop, `tqdm` is used to set up a progress bar and in each iteration
     step, MSE is calculated and reported. You can see how the MSE changed by setting
     the `tqdm` parameter `disable` above to `False`.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 在训练循环中，`tqdm`用于设置进度条，在每次迭代步骤中，计算并报告MSE。你可以通过将`tqdm`参数`disable`设置为`False`来查看MSE的变化情况。
 - en: Note that in the training loop, each epoch is to run the forward and backward
     steps with the training set a few times to optimize the model weights, and at
     the end of the epoch, the model is evaluated using the test set. It is the MSE
     from the test set that is remembered in the list `history`. It is also the metric
     to evaluate a model, which the best one is stored in the variable `best_weights`.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，在训练循环中，每个周期是用训练集运行前向和反向步骤几次以优化模型权重，在周期结束时，使用测试集评估模型。测试集的MSE被记在`history`列表中。它也是评估模型的指标，最佳的模型存储在变量`best_weights`中。
 - en: After you run this, you will have the best model restored and the best MSE stored
     in the variable `best_mse`. Note that the mean square error is the average of
     the square of the difference between the predicted value and the actual value.
     The square root of it, RMSE, can be regarded as the average difference and it
     is numerically more useful.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行完这个，你将得到恢复的最佳模型，并将最佳MSE存储在变量`best_mse`中。注意，均方误差是预测值与实际值之间差异平方的平均值。它的平方根，即RMSE，可以视为平均差异，数值上更有用。
 - en: In below, you can show the MSE and RMSE, and plot the history of MSE. It should
     be decreasing with the epochs.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面，你可以展示MSE和RMSE，并绘制MSE的历史记录。它应该随着周期的增加而减少。
 - en: '[PRE4]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'This model produced:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个模型产生了：
 - en: '[PRE5]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The MSE graph would like the following.![](../Images/0c33b9cf0623b8a856785b5c34dad411.png)
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: MSE图形如下所示。![](../Images/0c33b9cf0623b8a856785b5c34dad411.png)
 - en: Putting everything together, the following is the complete code.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容整合在一起，以下是完整的代码。
 - en: '[PRE6]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-45
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用PyTorch进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就来参加我的免费邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以免费获得课程的PDF电子书版本。
 - en: Improving the Model with Preprocessing
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 通过预处理改进模型
 - en: 'In the above, you see the RMSE is 0.68\. Indeed, it is easy to improve the
     RMSE by polishing the data before training. The problem of this dataset is the
     diversity of the features: Some are with a narrow range and some are wide. And
     some are small but positive while some are very negative. This indeed is not very
     nice to most of the machine learning model.'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述中，你看到RMSE是0.68。实际上，通过在训练之前对数据进行打磨，RMSE是容易改善的。这个数据集的问题在于特征的多样性：有些特征范围狭窄，有些特征范围很宽。还有一些特征是小的但正值，有些则是非常负值。这确实对大多数机器学习模型来说并不是很好。
 - en: One way to improve this is to apply a **standard scaler**. It is to convert
     each feature into their standard score. In other words, for each feature $x$,
     you replace it with
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 改进的一种方法是应用**标准缩放器**。这就是将每个特征转换为其标准分数。换句话说，对于每个特征$x$，你将其替换为
 - en: $$
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: z = \frac{x – \bar{x}}{\sigma_x}
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: z = \frac{x – \bar{x}}{\sigma_x}
 - en: $$
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: Where $\bar{x}$ is the mean of $x$ and $\sigma_x$ is the standard deviation.
     This way, every transformed feature is centered around 0 and in a narrow range
     that around 70% of the samples are between -1 to +1\. This can help the machine
     learning model to converge.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中$\bar{x}$是$x$的均值，而$\sigma_x$是标准差。通过这种方式，每个转换后的特征都围绕0进行中心化，并且在一个窄范围内，大约70%的样本在-1到+1之间。这可以帮助机器学习模型收敛。
 - en: 'You can apply the standard scaler from scikit-learn. The following is how you
     should modify the data preparation part of the above code:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以使用scikit-learn中的标准缩放器。以下是你应如何修改上述代码的数据准备部分：
 - en: '[PRE7]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Note that standard scaler is applied after train-test split. The `StandardScaler`
     above is fitted on the training set but applied on both the training and test
     set. You must not apply the standard scaler to all data because nothing from the
     test set should be hinted to the model. Otherwise you are introducing **data leakage**.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，标准缩放器在训练-测试拆分后应用。上面的`StandardScaler`是在训练集上进行拟合，但在训练集和测试集上都进行应用。你必须避免将标准缩放器应用于所有数据，因为测试集中的信息不应泄露给模型。否则，你会引入**数据泄露**。
 - en: 'Other than that, virtually nothing shall be changed: You still have 8 features
     (only they are not the same in value). You still use the same training loop. If
     you train the model with the scaled data, you should see the RMSE improved, e.g.,'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 除此之外，几乎没有任何变化：你仍然有8个特征（只不过它们的值不同）。你仍然使用相同的训练循环。如果你用缩放后的数据训练模型，你应该会看到RMSE有所改善，例如：
 - en: '[PRE8]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: While the MSE history is in a similar falling shape, the y-axis shows it is
     indeed better after scaling:![](../Images/8550b66a243d506ee34fe176c6b78113.png)
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管MSE的历史变化形状类似，但y轴显示出在缩放后效果确实更好：![](../Images/8550b66a243d506ee34fe176c6b78113.png)
 - en: 'However, you need to be careful at the end: When you use the trained model
     and apply to new data, you should apply the scaler to the input data before feed
     into the mode. That is, inference should be done as follows:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，你需要在最后小心：当你使用训练好的模型并应用到新数据时，你应该在将输入数据输入模型之前应用缩放器。也就是说，推理应按如下方式进行：
 - en: '[PRE9]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'The following is the complete code:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是完整的代码：
 - en: '[PRE10]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Of course, there is still room to imporve the model. One way is to present the
     target in log scale or, equivalently, use mean absolute percentage error (MAPE)
     as the loss function. This is because the target variable is the value of houses
     and it is in a wide range. For the same error magnitude, it is more an issue for
     low-valued houses. It is your exercise to modify the above code to produce a better
     prediction.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，模型仍有改进的空间。一个方法是将目标呈现为对数尺度，或者等效地，使用平均绝对百分比误差（MAPE）作为损失函数。这是因为目标变量是房价，它的范围很广。对于相同的误差幅度，低价房更容易出现问题。你可以修改上述代码以生成更好的预测，这也是你的练习。
 - en: Summary
+  id: totrans-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this post, you discovered the use of PyTorch to build a regression model.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你发现了使用PyTorch构建回归模型的方法。
 - en: 'You learned how you can work through a regression problem step-by-step with
     PyTorch, specifically:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 你学会了如何通过PyTorch逐步解决回归问题，具体包括：
 - en: How to load and prepare data for use in PyTorch
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何加载和准备数据以供PyTorch使用
 - en: How to create neural network models and choose a loss function for regression
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何创建神经网络模型并选择回归的损失函数
 - en: How to improve model accuracy by applying standard scaler
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过应用标准缩放器提高模型的准确性

@@ -1,11 +1,15 @@
 - en: How to Train a Object Detection Engine with HOG in OpenCV
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中使用 HOG 训练一个对象检测引擎
 - en: 原文：[https://machinelearningmastery.com/opencv_object_detection/](https://machinelearningmastery.com/opencv_object_detection/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/opencv_object_detection/](https://machinelearningmastery.com/opencv_object_detection/)
 - en: In the [previous post](https://machinelearningmastery.com/opencv_hog/), you
     saw that OpenCV can extract features from an image using a technique called the
     Histogram of Oriented Gradients (HOG). In short, this is to convert a “patch”
@@ -13,177 +17,264 @@
     identify key features within that patch. While you can use HOG to compare images
     for similarity, one practical application is to make it the input to a classifier
     so you can detect objects in an image.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[上一篇文章](https://machinelearningmastery.com/opencv_hog/)中，你看到 OpenCV 可以使用称为方向梯度直方图（HOG）的技术从图像中提取特征。简而言之，这就是将图像的一个“补丁”转换为数值向量。如果设置得当，这个向量可以识别该补丁中的关键特征。虽然你可以使用
+    HOG 比较图像的相似性，但一个实际的应用是将其作为分类器的输入，从而在图像中检测对象。
 - en: 'In this post, you will learn how to create a classifier with HOG. Specifically,
     you will learn:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你将学习如何使用 HOG 创建一个分类器。具体来说，你将学习：
 - en: How to prepare input data for classifier training
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为分类器训练准备输入数据
 - en: How to run the training and save the model for reuse in OpenCV
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何运行训练并保存模型以便在 OpenCV 中重复使用
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 用我的书[《OpenCV 中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)来**启动你的项目**。它提供了**自学教程**和**有效代码**。
 - en: Let’s get started.![](../Images/5e0744e8e7762c03ae4132433fcb9aed.png)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/5e0744e8e7762c03ae4132433fcb9aed.png)
 - en: How to Train a Object Detection Engine with HOG in OpenCV
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中使用 HOG 训练一个对象检测引擎
 - en: Photo by [Neil Thomas](https://unsplash.com/photos/brown-tree-SIU1Glk6v5k).
     Some rights reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Neil Thomas](https://unsplash.com/photos/brown-tree-SIU1Glk6v5k)拍摄。保留某些权利。
 - en: Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分；它们是：
 - en: HOG for Classification
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: HOG 用于分类
 - en: Preparing Data
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备数据
 - en: Training Classifier using HOG Features
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 HOG 特征训练分类器
 - en: HOG for Classification
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: HOG 用于分类
 - en: In the [previous post](https://machinelearningmastery.com/opencv_hog/), you
     learned that HOG is a technique to generate feature vectors from a region of an
     image. Chances are, the object in that region determines much of the feature vector.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[上一篇文章](https://machinelearningmastery.com/opencv_hog/)中，你了解到 HOG 是一种从图像区域生成特征向量的技术。很可能，这个区域中的对象决定了特征向量的大部分。
 - en: Object detection is to find the region in a larger image where a particular
     object is located. Usually, the goal is to find a rectangular **bounding box**
     in the large image such that the object is tightly within that box.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 对象检测是找出较大图像中某个特定对象的位置。通常，目标是找到一个矩形**边界框**，使得对象紧紧地位于该框内。
 - en: 'Using HOG for object detection is not difficult: You simply draw multiple bounding
     boxes randomly from the image. Then, you can find the feature vector of the bounding
     box using HOG and compare the vector to what you expected for the target object.'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 HOG 进行对象检测并不困难：你只需从图像中随机绘制多个边界框。然后，你可以使用 HOG 查找边界框的特征向量，并将其与目标对象预期的特征向量进行比较。
 - en: 'However, there are multiple details you need to take care of: Firstly, HOG
     has multiple parameters, including the size of window, block, and cell. This also
     determined the size and aspect ratio of the bounding box. If your bounding box
     has a different size, you may need to resize it. Secondly, the HOG is sensitive
     to rotation. Hence if the image is tilted, the feature vector obtained from HOG
     may not be useful for object detection.'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，你需要注意多个细节：首先，HOG 有多个参数，包括窗口、块和单元的大小。这也决定了边界框的大小和长宽比。如果你的边界框有不同的大小，可能需要调整大小。其次，HOG
+    对旋转敏感。因此，如果图像倾斜，从 HOG 获得的特征向量可能对对象检测没有用。
 - en: Finally, every bounding box will produce a HOG vector differently, even if they
     all identified the same object. You need a clever way to tell if the object is
     detected, which is usually a machine learning model.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，即使所有边界框都识别了相同的对象，每个边界框生成的 HOG 向量也会有所不同。你需要一种聪明的方法来判断对象是否被检测到，这通常是一个机器学习模型。
 - en: Several models can be used to compare the HOG from a candidate bounding box.
     In this post, you will use a support vector machine (SVM). OpenCV has a built-in
     people detector, which is also implemented as an SVM.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 有几种模型可以用来比较候选边界框的 HOG。在这篇文章中，你将使用支持向量机 (SVM)。OpenCV 有一个内置的人员检测器，它也是作为 SVM 实现的。
 - en: Preparing Data
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备数据
 - en: Let’s consider the task of **cat detection**. For an image with a cat, you want
     to draw a square around the cat’s face. You will build a SVM with OpenCV for this
     task.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们考虑**猫检测**的任务。对于一张有猫的图像，你需要在猫的脸周围绘制一个方框。你将使用 OpenCV 构建一个 SVM 来完成这个任务。
 - en: 'As in all machine learning projects, the first step is to get the dataset.
     You can get the dataset with cat image from the Oxford-IIIT Pet Dataset, at this
     location:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 和所有机器学习项目一样，第一步是获取数据集。你可以从 Oxford-IIIT Pet Dataset 获得包含猫图像的数据集，地址为：
 - en: '[https://www.robots.ox.ac.uk/~vgg/data/pets/](https://www.robots.ox.ac.uk/~vgg/data/pets/)'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://www.robots.ox.ac.uk/~vgg/data/pets/](https://www.robots.ox.ac.uk/~vgg/data/pets/)'
 - en: 'This is an 800MB dataset, which is a small one at the standard of computer
     vision datasets. The images are annotated in the Pascal VOC format. In short,
     each image has a corresponding XML file that looks like the following:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个 800MB 的数据集，在计算机视觉数据集的标准下属于小型数据集。图像以 Pascal VOC 格式进行标注。简而言之，每张图像都有一个对应的
+    XML 文件，格式如下：
 - en: XHTML
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: XHTML
 - en: '[PRE0]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The XML file tells you which image file it is referring to, and what object
     it contains, with the bounding box between the tags `<bndbox></bndbox>`.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: XML 文件告诉你它所指的图像文件，以及它包含的对象，边界框在 `<bndbox></bndbox>` 标签之间。
 - en: 'There are some Python library you can use to handle the Pascal VOC XML files.
     But for a simple case like this, you can simply use Python’s built-in XML parser.
     The following is a function that, given the XML filename, it reads the content
     and returns a Python dictionary to tell you all the objects it contains and the
     corresponding bounding boxes:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一些 Python 库可以用来处理 Pascal VOC XML 文件。但对于像这样的简单情况，你可以直接使用 Python 的内置 XML 解析器。下面是一个函数，给定
+    XML 文件名，它读取内容并返回一个 Python 字典，告诉你所有包含的对象以及相应的边界框：
 - en: '[PRE1]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'An example of the dictionary returned by the above function is as follows:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述函数返回的字典示例如下：
 - en: '[PRE2]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: In this dataset, there is only one object per image (either a cat or a dog).
     The bounding box is specified as the pixel coordinates. With the filename you
     obtained above, you can read the image using OpenCV. The image is a numpy array.
     Hence you can extract the portion using array slicing. Like the following
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个数据集中，每张图像中只有一个对象（猫或狗）。边界框以像素坐标指定。使用你上面获得的文件名，你可以使用 OpenCV 读取图像。图像是一个 numpy
+    数组，因此你可以使用数组切片提取部分内容。如下所示：
 - en: '[PRE3]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Let’s focus on our goal of training a classifier. At first, you need to design
     the parameters for HOG calculation. Let’s consider a vector that is not too long,
     namely,
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们专注于训练分类器的目标。首先，你需要设计 HOG 计算的参数。我们考虑一个长度适中的向量，即，
 - en: 'window size: (64,64)'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 窗口大小： (64,64)
 - en: 'block size: (32, 32)'
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 块大小： (32, 32)
 - en: 'block stride: (16, 16)'
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 块步幅： (16, 16)
 - en: 'cell size: (16, 16)'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 单元格大小： (16, 16)
 - en: 'number of bins: 9'
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 直方图箱数： 9
 - en: In other words, you will consider a square window of 64×64 pixels on the image
     with the cell size of 16×16 pixels. Each block has 2×2 cells.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 换句话说，你将考虑图像上一个 64×64 像素的方形窗口，单元格大小为 16×16 像素。每个块有 2×2 个单元格。
 - en: Because the window is square, and you do not want to change the image’s aspect
     ratio, you will adjust the bounding box in the dataset to a square size. Afterward,
     you should crop the adjusted bounding box, resize it to 64×64 pixels, and save
@@ -192,27 +283,40 @@
     samples. You want the negative samples to cover the background of the image. Instead
     of following the bounding boxes, you can simply randomly crop a square region
     from those images and resize to 64×64 pixels as negative samples.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为窗口是方形的，你不想改变图像的宽高比，所以你需要将数据集中的边界框调整为方形大小。之后，你应该裁剪调整后的边界框，将其调整为 64×64 像素，并将其保存为**正样本**。你还需要负样本用于训练。既然你想做一个猫检测器，你可以使用狗的图像作为负样本。你希望负样本覆盖图像的背景。你可以简单地随机裁剪这些图像中的一个方形区域，并调整为
+    64×64 像素作为负样本，而不是遵循边界框。
 - en: 'In code, below is how you can collect 1000 samples of positive and negative
     samples from the dataset. It is assumed that you downloaded the dataset and expanded
     the two tar files to the directory `oxford-iiit-pet`:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是如何从数据集中收集 1000 个正样本和负样本的代码。假设你已经下载了数据集并将两个 tar 文件解压到 `oxford-iiit-pet` 目录中：
 - en: '[PRE4]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Training Classifier using HOG Features
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 HOG 特征训练分类器
 - en: 'OpenCV comes with an SVM module in cv2.ml, and it works similarly to scikit-learn.
     In essence, you simply need to do the following for training:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV 在 cv2.ml 中提供了一个 SVM 模块，它的工作方式类似于 scikit-learn。实质上，你只需做以下操作来进行训练：
 - en: '[PRE5]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: You first create an SVM object with `cv2.ml.SVM_create()`. Then you configure
     the SVM, since there are many variations. In the above, you used `SVM_C_SVC` as
     the type, for it is a C-Support Vector Classifier (SVM for classification that
@@ -222,35 +326,54 @@
     too. For example, if RBF kernel is used, you can use `svm.setGamma()` to set the
     gamma value, and since you used C-SVC, you can set the value of parameter C using
     `svm.setC()`. In the above, you leave all parameters to OpenCV’s default.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 你首先用 `cv2.ml.SVM_create()` 创建一个 SVM 对象。然后你配置 SVM，因为它有许多变体。在上面的代码中，你使用了 `SVM_C_SVC`
+    作为类型，因为它是一个 C-Support Vector Classifier（允许不完美分离的 SVM 分类器）。你使用了径向基函数核（`SVM_RBF`），因为它通常效果较好。如果任务比较简单，你也可以选择使用更简单的线性核（`SVM_LINEAR`）。SVM
+    还有许多其他参数。例如，如果使用 RBF 核，你可以使用 `svm.setGamma()` 设置 gamma 值，既然你使用了 C-SVC，你可以使用 `svm.setC()`
+    设置参数 C 的值。在上面的代码中，你将所有参数留给了 OpenCV 的默认设置。
 - en: The training of SVM requires a terminating condition. In the above, you used
     `svm.setTermCritera()` to make the training stop at 10000 iterations or when the
     loss function falls below $10^-8$, whichever is sooner. After all is done, you
     just pass on the data and labels to the training routine.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: SVM 的训练需要一个终止条件。在上面的代码中，你使用了 `svm.setTermCritera()` 来使训练在 10000 次迭代或损失函数低于 $10^{-8}$
+    时停止，以较早出现者为准。所有操作完成后，你只需将数据和标签传递给训练程序。
 - en: 'The training data is presented as a numpy array. You set it up in such a way
     that each row in the array is one sample. The labels required are just integer
     labels, 0 or 1\. Since you’re training a HOG classifier with SVM, you need to
     convert your samples into HOG features. It is not difficult with OpenCV. Taking
     the positive and negative samples that you collected, the following is how to
     create the numpy arrays:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练数据以 numpy 数组的形式呈现。你将其设置为数组中的每一行代表一个样本。所需的标签仅是整数标签，0 或 1。由于你正在用 SVM 训练一个 HOG
+    分类器，你需要将样本转换为 HOG 特征。使用 OpenCV 进行这一操作并不困难。以下是如何创建 numpy 数组的步骤，基于你收集的正负样本：
 - en: '[PRE6]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The complete code from data collection to training is as follows:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 从数据收集到训练的完整代码如下：
 - en: '[PRE7]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The last line in the code above is to print the support vectors from the trained
     SVM. It is optional since you already saved the model into the file `svm_model.yml`.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面代码的最后一行是打印训练好的 SVM 的支持向量。这个操作是可选的，因为你已经将模型保存到 `svm_model.yml` 文件中。
 - en: 'Here is how you can use the trained model: First you create a HOG object, an
     SVM object, and then assign the SVM object into HOG as a detector. When you have
     an image, you use HOG’s `detectMultiScale()` method to find the locations of the
@@ -261,14 +384,22 @@
     you must create the HOG object using the same parameters (window, block, cells,
     and bins) as you used in training. The output of the detect function will be multiple
     bounding boxes, but you can simply take the best matching one based on the score.'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是如何使用训练好的模型：首先，你创建一个 HOG 对象，一个 SVM 对象，然后将 SVM 对象分配给 HOG 作为检测器。当你有一张图像时，你使用
+    HOG 的 `detectMultiScale()` 方法来寻找检测到的对象的位置。这个函数会多次重新缩放图像，使得你为 HOG 设置的窗口大小不需要完全匹配对象的大小。这非常有用，因为你无法知道图像中目标对象的大小。由于
+    SVM 是在特定的 HOG 特征配置上训练的，你必须使用与训练中相同的参数（窗口、块、单元和直方图）来创建 HOG 对象。检测函数的输出将是多个边界框，但你可以根据评分简单地选择最佳匹配的框。
 - en: 'In code, that is:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码如下：
 - en: '[PRE8]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: It is assumed the trained SVM has been saved into the file `svm_model.yml`.
     You create the SVM object directly using the saved file. The output `scores` from
     `hog.detectMultiScale()` is a N×1 numpy array. Hence you should flatten it to
@@ -276,95 +407,145 @@
     is the best matched one. The bounding box returned by this function is in terms
     of the coordinate of the top left corner and the width and height. The last line
     in the code above is to annotate such box directly on the image.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设训练好的 SVM 已经保存到文件 `svm_model.yml` 中。你可以直接使用保存的文件创建 SVM 对象。`hog.detectMultiScale()`
+    的输出 `scores` 是一个 N×1 的 numpy 数组。因此，你应该将其展平成一个向量并找到最大值。数组 `locations` 中的对应边界框是匹配度最高的。该函数返回的边界框是以左上角的坐标以及宽度和高度表示的。上述代码中的最后一行是直接在图像上标注这样的框。
 - en: 'You can indeed run this on the same dataset. The complete code is as follows,
     which the original bounding box and the detected one by SVM are both drawn on
     the image and displayed with OpenCV:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 你确实可以在相同的数据集上运行此代码。完整代码如下，其中原始边界框和 SVM 检测到的边界框都绘制在图像上并通过 OpenCV 显示：
 - en: '[PRE9]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: OpenCV will display the annotated images one by one from the dataset. The dataset’s
     bounding box is in red while the bounding box as reported by the SVM is in blue.
     Note that it is a cat detector so ideally nothing should be detected if it is
     a dog image. However, SVM with HOG feature is not very good at this.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV 将从数据集中逐个显示带注释的图像。数据集中的边界框为红色，而 SVM 报告的边界框为蓝色。请注意，这是一个猫检测器，因此如果是狗的图像，理想情况下不应检测到任何东西。然而，带有
+    HOG 特征的 SVM 在这方面表现不是很好。
 - en: '![](../Images/5bf9900bdd0342138348b9db905617cf.png)'
+  id: totrans-63
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/5bf9900bdd0342138348b9db905617cf.png)'
 - en: The bounding box from the dataset (red) compared to the detection output from
     the trained model (blue).
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据集中的边界框（红色）与训练模型的检测输出（蓝色）相比。
 - en: In fact, this detector is not very accurate. An example is as above, in which
     the detected bounding box is quite off from the face of a cat. Even so, it is
     not a bad model. You may improve the quality of the SVM by tuning the model parameters
     (such as C and gamma) as well as providing better data for training.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，这个检测器的准确性不是很高。上面的例子中，检测到的边界框与猫的脸相差很大。尽管如此，这仍然不是一个糟糕的模型。你可以通过调整模型参数（如 C 和
+    gamma）以及提供更好的训练数据来提高 SVM 的质量。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 OpenCV 进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即领取我的免费电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费 PDF 电子书版本。
 - en: Further Reading
+  id: totrans-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多有关此主题的资源，如果你想深入了解。
 - en: Books
+  id: totrans-71
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)),
     2019.'
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[掌握 OpenCV 4 和 Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019
+    年。'
 - en: Websites
+  id: totrans-73
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 网站
 - en: '[OpenCV](https://opencv.org/)'
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[OpenCV](https://opencv.org/)'
 - en: 'StackOverflow: [OpenCV HOG Features Explanation](https://stackoverflow.com/questions/44972099/opencv-hog-features-explanation)'
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'StackOverflow: [OpenCV HOG 特征解释](https://stackoverflow.com/questions/44972099/opencv-hog-features-explanation)'
 - en: 'OpenCV: [Introduction to Support Vector Machines](https://docs.opencv.org/4.8.0/d1/d73/tutorial_introduction_to_svm.html)'
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'OpenCV: [支持向量机简介](https://docs.opencv.org/4.8.0/d1/d73/tutorial_introduction_to_svm.html)'
 - en: Summary
+  id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: 'In this post, you learned how to train a SVM with HOG features for object detection,
     entirely using the OpenCV library. In particular, you learned:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你学习了如何使用 OpenCV 库完全训练一个带有 HOG 特征的 SVM 进行物体检测。特别是，你学到了：
 - en: How to prepare data for training, since the SVM takes only the feature as a
     numpy array
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为训练准备数据，因为 SVM 只接受特征作为 numpy 数组
 - en: How to save and load the SVM in OpenCV
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中保存和加载 SVM
 - en: How to attach a SVM object into HOG object in OpenCV for multiscale detection
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将 SVM 对象附加到 OpenCV 中的 HOG 对象以进行多尺度检测

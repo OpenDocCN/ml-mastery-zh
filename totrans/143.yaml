@@ -1,222 +1,341 @@
 - en: Using Autograd in PyTorch to Solve a Regression Problem
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 PyTorch 的 Autograd 解决回归问题
 - en: 原文：[https://machinelearningmastery.com/using-autograd-in-pytorch-to-solve-a-regression-problem/](https://machinelearningmastery.com/using-autograd-in-pytorch-to-solve-a-regression-problem/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/using-autograd-in-pytorch-to-solve-a-regression-problem/](https://machinelearningmastery.com/using-autograd-in-pytorch-to-solve-a-regression-problem/)
 - en: We usually use PyTorch to build a neural network. However, PyTorch can do more
     than this. Because PyTorch is also a tensor library with automatic differentiation
     capability, you can easily use it to solve a numerical optimization problem with
     gradient descent. In this post, you will learn how PyTorch’s automatic differentiation
     engine, autograd, works.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们通常使用 PyTorch 来构建神经网络。然而，PyTorch 不仅仅能做到这些。由于 PyTorch 还是一个具有自动微分能力的张量库，你可以轻松使用它来解决梯度下降的数值优化问题。在这篇文章中，你将学习
+    PyTorch 的自动微分引擎 autograd 是如何工作的。
 - en: 'After finishing this tutorial, you will learn:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成此教程后，你将学到：
 - en: What is autograd in PyTorch
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PyTorch 中的 autograd 是什么
 - en: How to make use of autograd and an optimizer to solve an optimization problem
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何利用 autograd 和优化器解决优化问题
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**快速启动你的项目**，参考我的书籍 [《PyTorch 深度学习》](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了
+    **自学教程** 和 **可运行的代码**。'
 - en: Let’s get started.![](../Images/2e0828a473ddb5c2989609d73a615dac.png)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/2e0828a473ddb5c2989609d73a615dac.png)
 - en: Using autograd in PyTorch to solve a regression problem.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 PyTorch 中的 autograd 来解决回归问题。
 - en: Photo by [Billy Kwok](https://unsplash.com/photos/eCzKRT7svdc). Some rights
     reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Billy Kwok](https://unsplash.com/photos/eCzKRT7svdc) 提供。版权所有。
 - en: Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is in three parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分：
 - en: Autograd in PyTorch
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PyTorch 中的 Autograd
 - en: Using Autograd for Polynomial Regression
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Autograd 进行多项式回归
 - en: Using Autograd to Solve a Math Puzzle
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Autograd 解决数学难题
 - en: Autograd in PyTorch
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: PyTorch 中的 Autograd
 - en: In PyTorch, you can create tensors as variables or constants and build an expression
     with them. The expression is essentially a function of the variable tensors. Therefore,
     you may derive its derivative function, i.e., the differentiation or the gradient.
     This is the foundation of the training loop in a deep learning model. PyTorch
     comes with this feature at its core.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中，你可以将张量创建为变量或常量，并用它们构建表达式。这个表达式本质上是变量张量的函数。因此，你可以推导出其导数函数，即微分或梯度。这是深度学习模型训练循环的基础。PyTorch
+    核心中包含了这一特性。
 - en: 'It is easier to explain autograd with an example. In PyTorch, you can create
     a constant matrix as follows:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 用一个示例来解释 autograd 更容易。在 PyTorch 中，你可以如下创建一个常量矩阵：
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The above prints:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述打印：
 - en: '[PRE1]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: This creates an integer vector (in the form of a PyTorch tensor). This vector
     can work like a NumPy vector in most cases. For example, you can do `x+x` or `2*x`,
     and the result is just what you would expect. PyTorch comes with many functions
     for array manipulation that match NumPy, such as `torch.transpose` or `torch.concatenate`.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将创建一个整数向量（以 PyTorch 张量的形式）。这个向量在大多数情况下可以像 NumPy 向量一样工作。例如，你可以进行 `x+x` 或 `2*x`，结果正是你所期望的。PyTorch
+    配有许多与 NumPy 匹配的数组操作函数，如 `torch.transpose` 或 `torch.concatenate`。
 - en: 'But this tensor is not assumed to be a variable for a function in the sense
     that differentiation with it is not supported. You can create tensors that work
     like a variable with an extra option:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这个张量不被视为函数的变量，因为不支持对其进行微分。你可以通过一个额外的选项创建像变量一样工作的张量：
 - en: '[PRE2]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'This will print:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印：
 - en: '[PRE3]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Note that, in the above, a tensor of floating point values was created. It is
     required because differentiation requires floating points, not integers.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，上述创建了一个浮点值的张量。这是必要的，因为微分需要浮点数，而不是整数。
 - en: 'The operations (such as `x+x` and `2*x`) can still be applied, but in this
     case, the tensor will remember how it got its values. You can demonstrate this
     feature in the following:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 操作（如 `x+x` 和 `2*x`）仍然可以应用，但在这种情况下，张量将记住它如何获得其值。你可以在以下示例中演示这一特性：
 - en: '[PRE4]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'This prints:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印：
 - en: '[PRE5]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'What it does is the following: This defined a variable `x` (with value 3.6)
     and then computed `y=x*x` or $y=x^2$. Then you ask for the differentiation of
     $y$. Since $y$ obtained its value from $x$, you can find the derivative $\dfrac{dy}{dx}$
     at `x.grad`, in the form of a tensor, immediately after you run `y.backward()`.
     You know $y=x^2$ means $y’=2x$. Hence the output would give you a value of $3.6\times
     2=7.2$.'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 它的作用如下：这定义了一个变量 `x`（值为 3.6），然后计算 `y=x*x` 或 $y=x^2$。然后你请求 $y$ 的微分。由于 $y$ 的值来源于
+    $x$，你可以在运行 `y.backward()` 之后立即在 `x.grad` 中以张量形式找到 $\dfrac{dy}{dx}$。你知道 $y=x^2$
+    意味着 $y’=2x$。因此输出会给你 $3.6\times 2=7.2$ 的值。
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在立即报名我的免费电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击报名，还可以获得免费 PDF 电子书版本的课程。
 - en: Using Autograd for Polynomial Regression
+  id: totrans-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 Autograd 进行多项式回归
 - en: How is this feature in PyTorch helpful? Let’s consider a case where you have
     a polynomial in the form of $y=f(x)$, and you are given several $(x,y)$ samples.
     How can you recover the polynomial $f(x)$? One way is to assume a random coefficient
     for the polynomial and feed in the samples $(x,y)$. If the polynomial is found,
     you should see the value of $y$ matches $f(x)$. The closer they are, the closer
     your estimate is to the correct polynomial.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 中这个特性有什么帮助？假设你有一个形式为 $y=f(x)$ 的多项式，并且你得到了一些 $(x,y)$ 样本。你如何恢复多项式 $f(x)$？一种方法是对多项式假设一个随机系数，并将样本
+    $(x,y)$ 输入进去。如果多项式被找到，你应该看到 $y$ 的值与 $f(x)$ 匹配。它们越接近，你的估计就越接近正确的多项式。
 - en: This is indeed a numerical optimization problem where you want to minimize the
     difference between $y$ and $f(x)$. You can use gradient descent to solve it.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 这确实是一个数值优化问题，你想最小化 $y$ 和 $f(x)$ 之间的差异。你可以使用梯度下降来解决它。
 - en: 'Let’s consider an example. You can build a polynomial $f(x)=x^2 + 2x + 3$ in
     NumPy as follows:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们考虑一个例子。你可以按照如下方式在 NumPy 中构建一个多项式 $f(x)=x^2 + 2x + 3$：
 - en: '[PRE6]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'This prints:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将输出：
 - en: '[PRE7]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'You may use the polynomial as a function, such as:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以将多项式用作函数，例如：
 - en: '[PRE8]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: And this prints `8.25`, for $(1.5)^2+2\times(1.5)+3 = 8.25$.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将输出 `8.25`，因为 $(1.5)^2+2\times(1.5)+3 = 8.25$。
 - en: 'Now you can generate a number of samples from this function using NumPy:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你可以使用 NumPy 从这个函数生成大量样本：
 - en: '[PRE9]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: In the above, both `X` and `Y` are NumPy arrays of the shape `(20,1)`, and they
     are related as $y=f(x)$ for the polynomial $f(x)$.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述内容中，`X` 和 `Y` 都是形状为 `(20,1)` 的 NumPy 数组，它们与多项式 $f(x)$ 的 $y=f(x)$ 相关。
 - en: 'Now, assume you do not know what the polynomial is except it is quadratic.
     And you want to recover the coefficients. Since a quadratic polynomial is in the
     form of $Ax^2+Bx+C$, you have three unknowns to find. You can find them using
     the gradient descent algorithm you implement or an existing gradient descent optimizer.
     The following demonstrates how it works:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，假设你不知道这个多项式是什么，只知道它是二次的。你想恢复系数。由于二次多项式的形式为 $Ax^2+Bx+C$，你有三个未知数需要找出。你可以使用你实现的梯度下降算法或现有的梯度下降优化器来找到它们。以下展示了它是如何工作的：
 - en: '[PRE10]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'The `print` statement before the for loop gives three random numbers, such
     as:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 循环之前的 `print` 语句给出了三个随机数字，例如：
 - en: '[PRE11]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'But the one after the for loop gives you the coefficients very close to that
     in the polynomial:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 但在循环之后的结果会给你非常接近多项式中的系数：
 - en: '[PRE12]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'What the above code does is the following: First, it creates a variable vector
     `w` of 3 values, namely the coefficients $A,B,C$. Then you create an array of
     shape $(N,3)$, in which $N$ is the number of samples in the array `X`. This array
     has 3 columns: the values of $x^2$, $x$, and 1, respectively. Such an array is
     built from the vector `X` using the  `np.hstack()` function. Similarly, you build
     the TensorFlow constant `y` from the NumPy array `Y`.'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码的作用如下：首先，它创建了一个包含 3 个值的变量向量 `w`，即系数 $A,B,C$。然后，你创建了一个形状为 $(N,3)$ 的数组，其中
+    $N$ 是数组 `X` 中样本的数量。这个数组有 3 列：分别是 $x^2$、$x$ 和 1。这样的数组是通过 `np.hstack()` 函数从向量 `X`
+    构建的。类似地，你可以从 NumPy 数组 `Y` 构建 TensorFlow 常量 `y`。
 - en: Afterward, you use a for loop to run the gradient descent in 1,000 iterations.
     In each iteration, you compute $x \times w$ in matrix form to find $Ax^2+Bx+C$
     and assign it to the variable `y_pred`. Then, compare `y` and `y_pred` and find
@@ -224,116 +343,178 @@
     the mean square error with respect to the coefficients `w` using the `backward()`
     function. And based on this gradient, you use gradient descent to update `w` via
     the optimizer.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 随后，你使用for循环在1,000次迭代中运行梯度下降。在每次迭代中，你以矩阵形式计算$x \times w$以找到$Ax^2+Bx+C$并将其分配给变量`y_pred`。然后，比较`y`和`y_pred`并计算均方误差。接下来，使用`backward()`函数导出梯度，即均方误差相对于系数`w`的变化率。根据这个梯度，你通过优化器使用梯度下降更新`w`。
 - en: In essence, the above code will find the coefficients `w` that minimizes the
     mean square error.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 本质上，上述代码将找到最小化均方误差的系数`w`。
 - en: 'Putting everything together, the following is the complete code:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合以上，以下是完整的代码：
 - en: '[PRE13]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Using Autograd to Solve a Math Puzzle
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用自动微分解决数学难题
 - en: 'In the above, 20 samples were used, which is more than enough to fit a quadratic
     equation. You may use gradient descent to solve some math puzzles as well. For
     example, the following problem:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述中，使用了20个样本，这足以拟合一个二次方程。你也可以使用梯度下降来解决一些数学难题。例如，以下问题：
 - en: '[PRE14]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'In other words,  to find the values of $A,B,C,D$ such that:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 换句话说，要找到$A,B,C,D$的值，使得：
 - en: $$\begin{aligned}
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\begin{aligned}
 - en: A + B &= 9 \\
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: A + B &= 9 \\
 - en: C – D &= 1 \\
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: C – D &= 1 \\
 - en: A + C &= 8 \\
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: A + C &= 8 \\
 - en: B – D &= 2
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: B – D &= 2
 - en: \end{aligned}$$
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}$$
 - en: 'This can also be solved using autograd, as follows:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这也可以使用自动微分来解决，如下所示：
 - en: '[PRE15]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'There can be multiple solutions to this problem. One solution is the following:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个问题可能有多个解决方案。一个解决方案如下：
 - en: '[PRE16]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Which means $A=4.72$, $B=4.28$, $C=3.28$, and $D=2.28$. You can verify this
     solution fits the problem.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着$A=4.72$，$B=4.28$，$C=3.28$，$D=2.28$。你可以验证这个解是否符合问题要求。
 - en: The above code defines the four unknowns as variables with a random initial
     value. Then you compute the result of the four equations and compare it to the
     expected answer. You then sum up the squared error and ask PyTorch’s optimizer
     to minimize it. The minimum possible square error is zero, attained when our solution
     exactly fits the problem.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码将四个未知数定义为具有随机初始值的变量。然后你计算四个方程的结果并与期望答案进行比较。接着，你将平方误差求和，并要求PyTorch的优化器最小化它。最小的平方误差是零，当我们的解完全符合问题时实现。
 - en: 'Note the way PyTorch produces the gradient: You ask for the gradient of `sqerr`,
     which it noticed that, among other things, only `A`, `B`, `C`, and `D` are its
     dependencies that `requires_grad=True`. Hence four gradients are found. You then
     apply each gradient to the respective variables in each iteration via the optimizer.'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意PyTorch生成梯度的方式：你要求`sqerr`的梯度，它注意到，除了其他内容外，只有`A`、`B`、`C`和`D`是其依赖项，且`requires_grad=True`。因此找到四个梯度。然后，你通过优化器在每次迭代中将每个梯度应用到相应的变量上。
 - en: Further Reading
+  id: totrans-76
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想深入了解这个主题，本节提供了更多资源。
 - en: '**Articles:**'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: '**文章：**'
 - en: '[Autograd mechanics](https://pytorch.org/docs/stable/notes/autograd.html)'
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[自动微分机制](https://pytorch.org/docs/stable/notes/autograd.html)'
 - en: '[Automatic differentiation package – torch.autograd](https://pytorch.org/docs/stable/autograd.html)'
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[自动微分包 – torch.autograd](https://pytorch.org/docs/stable/autograd.html)'
 - en: Summary
+  id: totrans-81
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this post, we demonstrated how PyTorch’s automatic differentiation works.
     This is the building block for carrying out deep learning training. Specifically,
     you learned:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我们展示了PyTorch的自动微分是如何工作的。这是进行深度学习训练的基础。具体来说，你学到了：
 - en: What is automatic differentiation in PyTorch
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PyTorch中的自动微分是什么
 - en: How you can use gradient tape to carry out automatic differentiation
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用梯度记录来进行自动微分
 - en: How you can use automatic differentiation to solve an optimization problem
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用自动微分来解决优化问题

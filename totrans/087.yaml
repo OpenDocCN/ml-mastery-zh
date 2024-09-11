@@ -1,502 +1,782 @@
 - en: Google Colab for Machine Learning Projects
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Google Colab 机器学习项目
 - en: 原文：[https://machinelearningmastery.com/google-colab-for-machine-learning-projects/](https://machinelearningmastery.com/google-colab-for-machine-learning-projects/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/google-colab-for-machine-learning-projects/](https://machinelearningmastery.com/google-colab-for-machine-learning-projects/)
 - en: Have you ever wanted an easy-to-configure interactive environment to run your
     machine learning code that came with access to GPUs for free? Google Colab is
     the answer you’ve been looking for. It is a convenient and easy-to-use way to
     run Jupyter notebooks on the cloud, and their free version comes with some limited
     access to GPUs as well.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 您是否曾想要一个易于配置的交互环境来运行您的机器学习代码，并且可以免费访问 GPU？Google Colab 是您一直在寻找的答案。它是一种方便且易于使用的方式来在云端运行
+    Jupyter notebooks，其免费版本还提供了一些有限的 GPU 访问权限。
 - en: If you’re familiar with Jupyter notebooks, learning Colab will be a piece of
     cake, and we can even import Jupyter notebooks to be run on Google Colab. But,
     there are a lot of nifty things that Colab can do as well, which we’re going to
     explore in this article. Let’s dive right in!
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您熟悉 Jupyter notebooks，学习 Colab 将会非常简单，我们甚至可以导入 Jupyter notebooks 以在 Google
+    Colab 上运行。但 Colab 还有很多巧妙的功能，我们将在本文中探索。让我们深入了解吧！
 - en: 'After completing the tutorial, you will learn how to:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成教程后，您将学习如何：
 - en: Speed up training using Google Colab’s free tier with GPU
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Google Colab 的免费 GPU 额度加速训练
 - en: Using Google Colab’s extensions to save to Google Drive, present interactive
     display for pandas DataFrame, etc.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Google Colab 的扩展程序保存到 Google Drive，为 pandas DataFrame 提供交互式显示等。
 - en: Save your model’s progress when training with Google Colab
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在使用 Google Colab 训练时保存模型进度
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用我的新书**Kick-start your project** [《Python 机器学习》](https://machinelearningmastery.com/python-for-machine-learning/)，包括*逐步教程*和所有示例的*Python
+    源代码*文件。
 - en: Let’s get started!![](../Images/7fb262d5888a4236460d8e90fea26c52.png)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！！[](../Images/7fb262d5888a4236460d8e90fea26c52.png)
 - en: Google Colab for Machine Learning Projects
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: Google Colab 机器学习项目
 - en: Photo by NASA and processing by [Thomas Thomopoulos](https://photojournal.jpl.nasa.gov/beta/catalog/PIA25015).
     Some rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 由 NASA 拍摄并由 [托马斯·托莫普洛斯](https://photojournal.jpl.nasa.gov/beta/catalog/PIA25015)
+    处理。保留部分权利。
 - en: Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is divided into five parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为五个部分，它们是：
 - en: What is Google Colab?
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是 Google Colab？
 - en: Google Colab quick start guide
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Google Colab 快速入门指南
 - en: Exploring your Colab environment
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 探索您的 Colab 环境
 - en: Useful Google Colab extensions
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 实用的 Google Colab 扩展
 - en: 'Example: Saving model progress on Google Drive'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 示例：将模型进度保存到 Google Drive
 - en: What Is Google Colab?
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是 Google Colab？
 - en: 'From the “[Welcome to Colab](https://colab.research.google.com/notebooks/intro.ipynb)”
     notebook:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 来自 “[欢迎使用 Colab](https://colab.research.google.com/notebooks/intro.ipynb)” notebook：
 - en: Colab notebooks allow you to combine **executable code** and **rich text** in
     a single document, along with images, HTML, LaTeX and more. When you create your
     own Colab notebooks, they are stored in your Google Drive account. You can easily
     share your Colab notebooks with co-workers or friends, allowing them to comment
     on your notebooks or even edit them.
+  id: totrans-21
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: Colab notebooks 允许您在一个文档中结合**可执行代码**和**富文本**，以及图像、HTML、LaTeX 等。当您创建自己的 Colab
+    notebooks 时，它们会存储在您的 Google Drive 帐户中。您可以轻松地与同事或朋友分享您的 Colab notebooks，允许他们对您的
+    notebooks 进行评论或甚至编辑它们。
 - en: We can use Google Colabs like Jupyter notebooks. They are really convenient
     because Google Colab hosts them, so we don’t use any of our own computer resources
     to run the notebook. We can also share these notebooks so other people can easily
     run our code, all with a standard environment since it’s not dependent on our
     own local machines. However, we might need to install some libraries in our environment
     during initialization.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以像使用 Jupyter notebooks 一样使用 Google Colabs。它们非常方便，因为 Google Colab 托管它们，所以我们不使用任何自己的计算机资源来运行
+    notebook。我们还可以分享这些 notebooks，使其他人能够轻松运行我们的代码，所有这些都在标准环境中，因为它不依赖于我们自己的本地机器。然而，在初始化期间，我们可能需要在我们的环境中安装一些库。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 Python 进行机器学习？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在参加我的免费 7 天电子邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并免费获取课程的 PDF 电子书版。
 - en: Google Colab Quick Start Guide
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Google Colab 快速入门指南
 - en: To create your Google Colab file and get started with Google Colab, you can
     go to [Google Drive](https://drive.google.com/) and create a Google Drive account
     if you do not have one. Now, click on the “New” button at the top left corner
     of your Google Drive page, then click on More ▷ Google Colaboratory.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 要创建你的 Google Colab 文件并开始使用 Google Colab，你可以前往 [Google Drive](https://drive.google.com/)
+    并创建一个 Google Drive 帐户（如果你还没有）。现在，点击 Google Drive 页面左上角的“新建”按钮，然后点击“更多” ▷ “Google
+    Colaboratory”。
 - en: '![](../Images/dfaf75b1df615fd45b626c9b021da7a9.png)'
+  id: totrans-28
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/dfaf75b1df615fd45b626c9b021da7a9.png)'
 - en: Creating a New Google Colab Notebook
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建一个新的 Google Colab 笔记本
 - en: 'You will then enter the page for your new Google Colab file:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将进入你的新 Google Colab 文件页面：
 - en: '[![](../Images/90de6b47369c01ca117ebce2c7b1b111.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Empty.png)'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/90de6b47369c01ca117ebce2c7b1b111.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Empty.png)'
 - en: New Google Colab Notebook
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 新 Google Colab 笔记本
 - en: From here, you can share your Google Colab file with others using the Share
     button on the top right-hand corner or start coding!
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 从这里，你可以使用右上角的共享按钮与他人分享你的 Google Colab 文件，或者开始编程！
 - en: 'The hotkeys on Colab and that on Jupyter notebooks are similar. These are some
     of the useful ones:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: Colab 上的快捷键与 Jupyter 笔记本上的类似。以下是一些有用的快捷键：
 - en: 'Run cell: Ctrl + Enter'
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 运行单元格：Ctrl + Enter
 - en: 'Run cell and add new cell below: Alt + Enter'
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 运行单元格并在下面添加新单元格：Alt + Enter
 - en: 'Run cell and goto cell below: Shift + Enter'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 运行单元格并转到下一个单元格：Shift + Enter
 - en: 'Indent line by two spaces: Ctrl + ]'
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 增加两格缩进：Ctrl + ]
 - en: 'Unindent line by two spaces: Ctrl + ['
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 减少两格缩进：Ctrl + [
 - en: 'But there’s also one extra that’s pretty useful that lets you only run a particular
     selected part of the code in a cell:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 但还有一个非常有用的功能，可以让你只运行单元格中的特定选定部分代码：
 - en: 'Run selected part of a cell: Ctrl + Shift + Enter'
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 运行单元格的选定部分：Ctrl + Shift + Enter
 - en: Just like the Jupyter notebook, you can also write text with Markdown cells.
     But Colab has an additional feature that automatically generates a table of contents
     based on your markdown content, and you can also hide parts of the code based
     on their headings in the markdown cells.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像 Jupyter 笔记本一样，你也可以使用 Markdown 单元格编写文本。但 Colab 还有一个额外的功能，可以根据你的 Markdown 内容自动生成目录，你还可以根据
+    Markdown 单元格中的标题隐藏部分代码。
 - en: '[![](../Images/6450168d285836ec11b1723ec41d8326.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Headings-1.png)'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/6450168d285836ec11b1723ec41d8326.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Headings-1.png)'
 - en: Google Colab with Markdown and Table of Contents
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: Google Colab 使用 Markdown 和目录
 - en: 'If you run Jupyter on your own computer, you have no choice but to use the
     CPU from your computer. But in Colab, you can change the **runtime** to include
     GPUs and TPUs in addition to CPUs because it is executed on Google’s cloud. You
     can switch to a different runtime by going to Runtime ▷ Change runtime type:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你在自己的电脑上运行 Jupyter，你只能使用电脑的 CPU。但在 Colab 中，你可以将**运行时**更改为包括 GPU 和 TPU，除了 CPU，因为它是在
+    Google 的云端执行的。你可以通过访问 Runtime ▷ Change runtime type 来切换到不同的运行时：
 - en: '[![](../Images/6401db985125f36823fdd08cdaccec1e.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Runtime-Menu.png)'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/6401db985125f36823fdd08cdaccec1e.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Runtime-Menu.png)'
 - en: Changing the Runtime Type for Google Colab
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 更改 Google Colab 的运行时类型
 - en: You can then select from the different hardware accelerators to equip your environment
     with.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后你可以从不同的硬件加速器中选择，以装备你的环境。
 - en: '[![](../Images/9d4d90bf4af30b645501c140279a3b9f.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Runtime-Settings.png)'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/9d4d90bf4af30b645501c140279a3b9f.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Runtime-Settings.png)'
 - en: Adding GPU/TPU to Google Colab Notebook Environment
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 将 GPU/TPU 添加到 Google Colab 笔记本环境
 - en: Unlike your own computer, Google Colab does not provide you with a terminal
     to enter commands to manage your Python environment. To install Python libraries
     and other programs, we can use the `!` character to run shell commands just like
     in Jupyter notebooks, e.g. `!pip install numpy` (but as we’ll see later on, Colab
     already comes pre-installed with a lot of the libraries we’ll need, such as NumPy)
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 与自己的电脑不同，Google Colab 不提供终端来输入命令以管理你的 Python 环境。要安装 Python 库和其他程序，我们可以使用 `!`
+    字符来运行 shell 命令，就像在 Jupyter 笔记本中一样，例如 `!pip install numpy`（但正如我们稍后看到的，Colab 已经预装了很多我们需要的库，例如
+    NumPy）
 - en: Now that we know how to set up our Colab environment and start running some
     code, let’s do some exploration of the environment!
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们知道如何设置 Colab 环境并开始运行一些代码，让我们来探索一下这个环境吧！
 - en: Exploring Your Colab Environment
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 探索你的 Colab 环境
 - en: 'As we can run some shell commands with `!` using the `wget` command, it is
     probably the easiest way to get some data. For example, running this will bring
     you a CSV file to the Colab environment:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们可以使用 `!` 运行一些 shell 命令，`wget` 命令可能是获取数据的最简单方法。例如，运行此命令将把一个 CSV 文件带到 Colab
+    环境中：
 - en: '[PRE0]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'To explore the current working directory of your Colab file on the virtual
     machine, click on the File icon on the left-hand side of the screen. By default,
     Colab provides you with a directory named `sample_data` with a few files:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 要探索你在虚拟机上 Colab 文件的当前工作目录，请点击屏幕左侧的文件图标。默认情况下，Colab 为你提供一个名为 `sample_data` 的目录，其中包含一些文件：
 - en: '[![](../Images/78a9335356f366d1327d8e05af346c40.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Default-Files-Tab-1.png)'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/78a9335356f366d1327d8e05af346c40.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Default-Files-Tab-1.png)'
 - en: Files Tab of Google Colab Notebook
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: Google Colab 笔记本的文件选项卡
 - en: 'This is the current working directory for our Colab notebook. You can read
     one of these files in Python by using a code like this on the notebook:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我们 Colab 笔记本的当前工作目录。你可以在笔记本中使用类似这样的代码读取其中的一个文件：
 - en: '[PRE1]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Later we’ll see how to use Colab extensions to mount our Google Drive to this
     directory in order to store and access files on our Google Drive account.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 稍后我们将探讨如何使用 Colab 扩展将我们的 Google Drive 挂载到这个目录，以便存储和访问我们 Google Drive 帐户中的文件。
 - en: 'By running shell commands using `!`, we can also look at the hardware configuration
     of our Colab environment. To take a look at the CPU, we can use:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过使用 `!` 运行 shell 命令，我们还可以查看 Colab 环境的硬件配置。要查看 CPU，我们可以使用：
 - en: '[PRE2]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'This gives the output for my environment as:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 这给出了我的环境的输出：
 - en: '[PRE3]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'We can also check if we have a GPU attached to the runtime by using:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以通过使用以下命令检查是否附加了 GPU：
 - en: '[PRE4]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'This gives the output if you’ve got one:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你有一个，这将给出输出：
 - en: '[PRE5]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: These are just some examples of the shell commands that we can use to explore
     the Colab environment. There are also many others, such as `!pip list` to look
     at the libraries that the Colab environment has access to, the standard `!ls`
     to explore the files in the working directory, etc.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些只是一些我们可以用来探索 Colab 环境的 shell 命令示例。还有许多其他命令，如 `!pip list` 用于查看 Colab 环境访问的库，标准的
+    `!ls` 用于探索工作目录中的文件等。
 - en: Useful Colab Extensions
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 有用的 Colab 扩展
 - en: 'Colab also comes with a lot of really useful extensions. One such extension
     allows us to mount our Google Drive to our working directory. We can do this using:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: Colab 还配备了许多非常有用的扩展。其中一个扩展允许我们将 Google Drive 挂载到我们的工作目录。我们可以通过以下方式完成这项操作：
 - en: '[PRE6]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Then, Colab will request permission to access your Google Drive files, which
     you can do after selecting which Google account you want to give it access to.
     After giving it the required permissions, we can see our Google Drive mounted
     in the Files tab on the left-hand side.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，Colab 将请求访问你的 Google Drive 文件的权限，你可以在选择要授权的 Google 帐户后完成。授予所需权限后，我们可以在左侧的文件选项卡中看到我们的
+    Google Drive 已挂载。
 - en: '[![](../Images/69d83c31b4918b5d533eb1affc855dab.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Mounted-GDrive-1.png)'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/69d83c31b4918b5d533eb1affc855dab.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Mounted-GDrive-1.png)'
 - en: Google Drive Mounted onto Current Working Directory of Google Colab Notebook
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: Google Drive 挂载到 Google Colab 笔记本的当前工作目录
 - en: 'Then, to write a file to our Google Drive, we can do the following:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，要将文件写入我们的 Google Drive，我们可以执行以下操作：
 - en: '[PRE7]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'This code snippet writes `Hello World!` to a `test.txt` file in the top level
     of your Google Drive. Similarly, we can read from a file in our Google Drive as
     well by using:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码将 `Hello World!` 写入到 Google Drive 顶层的 `test.txt` 文件中。同样，我们也可以通过使用以下代码从 Google
+    Drive 文件中读取内容：
 - en: '[PRE8]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'This outputs:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 这输出：
 - en: '[PRE9]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: It is based on our earlier example.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 这基于我们之前的示例。
 - en: 'Furthermore, Google Colab comes with some extensions to create a better experience
     using a notebook. If we use pandas DataFrame a lot, there is an extension to display
     interactive tables. To use this, we can use magic functions:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，Google Colab 还提供了一些扩展，以创造更好的笔记本体验。如果我们经常使用 pandas DataFrame，有一个扩展可以显示交互式表格。要使用此功能，我们可以使用魔法函数：
 - en: '[PRE10]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'This enables the interactive display for DataFrames, then when we run:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 这启用了 DataFrames 的交互式显示，然后当我们运行：
 - en: '[PRE11]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: This will show you the DataFrame as an interactive table, where we can filter
     based on columns, see the different rows in the table, etc.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将把 DataFrame 显示为一个交互式表格，我们可以根据列进行筛选，查看表格中的不同行等。
 - en: '[![](../Images/349f009b2d11e84b1db5e10c15abba81.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Interactive-DataFrame-1.png)'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/349f009b2d11e84b1db5e10c15abba81.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Interactive-DataFrame-1.png)'
 - en: Interactive Interface for pandas DataFrame in Google Colab
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: Google Colab 中 pandas DataFrame 的交互式接口
 - en: 'To disable this feature later on, we can run:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 要稍后禁用此功能，我们可以运行：
 - en: '[PRE12]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'When we display the same DataFrame `X` again, we get the standard Pandas DataFrame
     interface:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们再次显示相同的 DataFrame `X` 时，我们得到标准的 Pandas DataFrame 接口：
 - en: '[![](../Images/1f942cc0d27ea341c7af13d958daa269.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Normal-DataFrame.png)'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/1f942cc0d27ea341c7af13d958daa269.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/Colab-Normal-DataFrame.png)'
 - en: Standard Interface for pandas DataFrame
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: pandas DataFrame 的标准接口
 - en: 'Example: Saving Model Progress on Google Drive'
+  id: totrans-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 示例：在 Google Drive 上保存模型进度
 - en: Google Colab is probably the easiest way to give us powerful GPU resources for
     your machine learning project. But in the free version of Colab, Google limits
     the time we can use our Colab notebook in each session. Our kernel may terminate
     for no reason. We can restart our notebook and continue our work, but we may lose
     everything in the memory. This is a problem if we need to train our model for
     a long time. Our Colab instance may terminate before the training is completed.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: Google Colab 可能是为您的机器学习项目提供强大 GPU 资源的最简单方法。但是在 Colab 的免费版本中，Google 限制了我们每个会话中使用
+    Colab 笔记本的时间。我们的内核可能会无缘无故终止。我们可以重新启动笔记本并继续工作，但可能会丢失内存中的所有内容。如果我们需要长时间训练模型，这是一个问题。我们的
+    Colab 实例可能会在训练完成之前终止。
 - en: Using the Google Colab extension to mount our Google Drive and Keras ModelCheckpoint
     callback, we can save our model progress on Google Drive. This is particularly
     useful to work around Colab timeouts. It is more lenient for paid Pro and Pro+
     users, but there is always a chance that our model training terminates midway
     at random times. It is valuable if we don’t want to lose our partially trained
     model.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Google Colab 扩展来挂载我们的 Google Drive 和 Keras ModelCheckpoint 回调，我们可以将模型进度保存到
+    Google Drive。这对于绕过 Colab 超时特别有用。对于付费的 Pro 和 Pro+ 用户，限制较宽松，但始终有可能在随机时间中途终止模型训练。如果我们不想丢失部分训练的模型，这非常有价值。
 - en: For this demonstration, we’ll use the LeNet-5 model on the MNIST dataset.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个演示中，我们将使用 LeNet-5 模型对 MNIST 数据集进行训练。
 - en: '[PRE13]'
+  id: totrans-100
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Then, to save model progress during training on Google Drive, first, we need
     to mount our Google Drive onto our Colab environment.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，为了在训练期间将模型进度保存到 Google Drive，我们首先需要将 Google Drive 挂载到 Colab 环境中。
 - en: '[PRE14]'
+  id: totrans-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Afterward, we declare the Callback to save our checkpoint model to Google Drive.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，我们声明回调以将检查点模型保存到 Google Drive。
 - en: '[PRE15]'
+  id: totrans-104
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'Next, we begin training on the MNIST dataset with the checkpoint callbacks
     to ensure we can resume at the last epoch should our Colab session time out:'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们开始在 MNIST 数据集上训练，并使用检查点回调，以确保在 Colab 会话超时时可以从最后一个周期恢复：
 - en: '[PRE16]'
+  id: totrans-106
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'This trains our model and gives the output:'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将训练我们的模型并给出输出：
 - en: '[PRE17]'
+  id: totrans-108
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: And from the output, we can see that the checkpoints have been saved. Looking
     at my Google Drive folder, we can also see the checkpoints stored there.
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 从输出中，我们可以看到检查点已经被保存。查看我的 Google Drive 文件夹，我们还可以看到检查点存储在那里。
 - en: '[![](../Images/5e1e847b7b4e46bf32307855c355fc5e.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/GDrive-Checkpoints.png)'
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/5e1e847b7b4e46bf32307855c355fc5e.png)](https://machinelearningmastery.com/wp-content/uploads/2022/04/GDrive-Checkpoints.png)'
 - en: Checkpoints Stored in Google Drive
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 存储在 Google Drive 的检查点
 - en: Colab instance is on Google’s cloud environment. The machine it is running has
     some storage, so we can install a package or download some files into it. However,
     we should not save our checkpoint there because we have no guarantee we will get
     it back after our session is terminated. Therefore, in the above, we mount our
     Google Drive into the instance and save the checkpoint in our Google Drive. This
     is how we can be assured the checkpoint files are accessible.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: Colab 实例在 Google 的云环境中运行。运行的机器有一些存储空间，因此我们可以安装软件包或下载一些文件。然而，我们不应将检查点保存到那里，因为我们不能保证会在会话终止后重新获得它。因此，我们在上面将
+    Google Drive 挂载到实例中，并将检查点保存在 Google Drive 中。这是确保检查点文件可访问的方式。
 - en: 'Here we attach the full code for the model training and saving to Google Drive:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里附上模型训练和保存到 Google Drive 的完整代码：
 - en: '[PRE18]'
+  id: totrans-114
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'If model training stops midway, we can continue by just recompiling the model
     and loading the weights, and then we can continue our training:'
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果模型训练中途停止，我们只需重新编译模型并加载权重，然后可以继续训练：
 - en: '[PRE19]'
+  id: totrans-116
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Further Reading
+  id: totrans-117
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: Articles
+  id: totrans-119
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 文章
 - en: '“Welcome to Colab” Notebook: [https://colab.research.google.com/](https://colab.research.google.com/?utm_source=scs-index)'
+  id: totrans-120
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: “欢迎使用Colab”笔记本：[https://colab.research.google.com/](https://colab.research.google.com/?utm_source=scs-index)
 - en: 'Jupyter Notebook Documentation: [https://docs.jupyter.org/en/latest/](https://docs.jupyter.org/en/latest/)'
+  id: totrans-121
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Jupyter Notebook文档：[https://docs.jupyter.org/en/latest/](https://docs.jupyter.org/en/latest/)
 - en: Summary
+  id: totrans-122
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you have learned what Google Colab is, how to leverage Google
     Colab to get free access to GPUs using its free tier, how to use Google Colab
     with your Google Drive account, and how to save models to store model progress
     during training on Google Drive in a Google Colab notebook.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你已经了解了Google Colab是什么，如何利用Google Colab的免费层获得免费的GPU访问，如何将Google Colab与Google
+    Drive帐户配合使用，以及如何将模型保存到Google Drive以存储训练过程中的模型进度。
 - en: 'Specifically, you learned:'
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体而言，你学到了：
 - en: What is Google Colab, and how to start using it
+  id: totrans-125
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是Google Colab，以及如何开始使用它
 - en: How to explore your Google Colab notebook’s environment using bash commands
     with `!`
+  id: totrans-126
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用`!`和bash命令探索你的Google Colab笔记本环境
 - en: Useful extensions that come with Google Colab
+  id: totrans-127
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Google Colab附带的有用扩展
 - en: Saving model progress during training to Google Drive
+  id: totrans-128
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在训练过程中将模型进度保存到Google Drive

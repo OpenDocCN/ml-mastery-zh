@@ -1,201 +1,304 @@
 - en: Building a Single Layer Neural Network in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中构建单层神经网络
 - en: 原文：[https://machinelearningmastery.com/building-a-single-layer-neural-network-in-pytorch/](https://machinelearningmastery.com/building-a-single-layer-neural-network-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/building-a-single-layer-neural-network-in-pytorch/](https://machinelearningmastery.com/building-a-single-layer-neural-network-in-pytorch/)
 - en: A neural network is a set of neuron nodes that are interconnected with one another.
     The neurons are not just connected to their adjacent neurons but also to the ones
     that are farther away.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络是一组彼此相连的神经元节点。这些神经元不仅与相邻的神经元连接，还与距离更远的神经元连接。
 - en: The main idea behind neural networks is that every neuron in a layer has one
     or more input values, and they produce output values by applying some mathematical
     functions to the input. The outputs of the neurons in one layer become the inputs
     for the next layer.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络的主要思想是每个层中的神经元有一个或多个输入值，并通过对输入应用某些数学函数来生成输出值。一层中的神经元的输出成为下一层的输入。
 - en: 'A single layer neural network is a type of artificial neural network where
     there is only one hidden layer between the input and output layers. This is the
     classic architecture before the deep learning became popular. In this tutorial,
     you will get a chance to build a neural network with only a single hidden layer.
     Particularly, you will learn:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 单层神经网络是一种人工神经网络，其中输入层和输出层之间只有一个隐藏层。这是深度学习流行之前的经典架构。在本教程中，你将有机会构建一个仅具有一个隐藏层的神经网络。特别地，你将学习：
 - en: How to build a single layer neural network in PyTorch.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中构建单层神经网络。
 - en: How to train a single layer neural network with PyTorch.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 PyTorch 训练单层神经网络。
 - en: How to classify one-dimensional data using a single layer neural network.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用单层神经网络对一维数据进行分类。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**快速启动你的项目**，参考我的书籍 [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了**自学教程**和**有效代码**。'
 - en: Let’s get started.![](../Images/5d222a4a9a81586d10e46bcea04b481b.png)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。![](../Images/5d222a4a9a81586d10e46bcea04b481b.png)
 - en: Building a Single Layer Neural Network in PyTorch.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中构建单层神经网络。
 - en: Picture by [Tim Cheung](https://unsplash.com/photos/He3wMrz8c7k). Some rights
     reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Tim Cheung](https://unsplash.com/photos/He3wMrz8c7k) 提供。保留部分权利。
 - en: Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in three parts; they are
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分，分别是
 - en: Preparing the Dataset
+  id: totrans-14
   prefs:
   - PREF_UL
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备数据集
 - en: Build the Model
+  id: totrans-15
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建模型
 - en: Train the Model
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练模型
 - en: Preparing the Data
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备数据
 - en: A neural network simply a function that approximates other functions with some
     parameters. Let’s build some data and see how our single layer neural network
     approximates the function to make the data linearly separable. Later in this tutorial,
     you will visualize the function during training to see how the approximated function
     overlaps over the given set of data points.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络简单来说是一个用某些参数近似其他函数的函数。让我们生成一些数据，看看我们的单层神经网络如何将函数近似化以使数据线性可分。稍后在本教程中，你将可视化训练过程中函数的重叠情况。
 - en: '[PRE0]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The data, as plotted using matplotlib, looks like the following.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据使用 matplotlib 绘制后，呈现如下图。
 - en: '[PRE1]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '![](../Images/75aa284a267d06f9beca5af59e392dbc.png)'
+  id: totrans-22
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/75aa284a267d06f9beca5af59e392dbc.png)'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费 PDF 电子书版本。
 - en: Build the Model with `nn.Module`
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 `nn.Module` 构建模型
 - en: Next, let’s build our custom module for single layer neural network with `nn.Module`.
     Please check previous tutorials of the series if you need more information on
     `nn.Module`.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，让我们使用 `nn.Module` 构建自定义的单层神经网络模块。如果需要更多关于 `nn.Module` 的信息，请查看之前的教程。
 - en: This neural network features an input layer, a hidden layer with two neurons,
     and an output layer. After each layer, a sigmoid activation function is applied.
     Other kind of activation functions are available in PyTorch but the classic design
     for this network is to use sigmoid function.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 该神经网络包括一个输入层、一个具有两个神经元的隐藏层和一个输出层。在每一层之后，应用一个 sigmoid 激活函数。PyTorch 中还提供了其他激活函数，但该网络的经典设计是使用
+    sigmoid 函数。
 - en: Here is how your single layer neural network looks like in code.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是你的单层神经网络的代码示例。
 - en: '[PRE2]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Let’s also instantiate a model object.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们也实例化一个模型对象。
 - en: '[PRE3]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Train the Model
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 训练模型
 - en: Before starting the training loop, let’s define loss function and optimizer
     for the model. You will write a loss function for the cross entropy loss and use
     stochastic gradient descent for parameter optimization.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在开始训练循环之前，让我们为模型定义损失函数和优化器。您将编写一个用于交叉熵损失的损失函数，并使用随机梯度下降进行参数优化。
 - en: '[PRE4]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Now you have all components to train the model. Let’s train the model for 5000
     epochs. You will see a plot of how the neural network approximates the function
     after every 1000 epochs.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你已经有了所有组件来训练模型。让我们训练5000个epochs。您将看到神经网络在每1000个epochs后如何逼近函数的图表。
 - en: '[PRE5]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: After 1000 epochs, the model approximated the function like the following:![](../Images/abcc65969416e141fc5bbaa935035a0b.png)
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 在1000个epochs之后，模型近似了以下函数：![](../Images/abcc65969416e141fc5bbaa935035a0b.png)
 - en: But after 5000 epochs, it improves to the following:![](../Images/14b59102632200a0307b78e58395314c.png)
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是在5000个epochs之后，它改进到以下结果：![](../Images/14b59102632200a0307b78e58395314c.png)
 - en: From which, you can see the approximation in blue is closer to the data in purple.
     As you can see, the neural network approximates the functions quite nicely. If
     the function is more complex, you may need more hidden layers or more neurons
     in the hidden layer, i.e., a more complex model.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 从中可以看出，蓝色的近似值更接近紫色的数据。正如你所见，神经网络相当好地近似了这些函数。如果函数更复杂，你可能需要更多的隐藏层或更多的隐藏层神经元，即一个更复杂的模型。
 - en: Let’s also plot to see how the loss reduced during training.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们也绘制图表，看看训练过程中损失是如何减少的。
 - en: '[PRE6]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: You should see:![](../Images/423642b2e038969698998972e2b0655f.png)
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该会看到：![](../Images/423642b2e038969698998972e2b0655f.png)
 - en: 'Putting everything together, the following is the complete code:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容整合在一起，以下是完整的代码：
 - en: '[PRE7]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Summary
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you learned how you can build and train a neural network
     and estimate the function. Particularly, you learned:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您学习了如何构建和训练神经网络并估计函数。特别是，您学到了：
 - en: How to build a single layer neural network in PyTorch.
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中构建一个单层神经网络。
 - en: How to train a single layer neural network with PyTorch.
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用PyTorch训练单层神经网络。
 - en: How to classify one-dimensional data using a single layer neural network.
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用单层神经网络对一维数据进行分类。

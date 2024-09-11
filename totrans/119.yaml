@@ -1,214 +1,329 @@
 - en: Training Logistic Regression with Cross-Entropy Loss in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中使用交叉熵损失训练逻辑回归
 - en: 原文：[https://machinelearningmastery.com/training-logistic-regression-with-cross-entropy-loss-in-pytorch/](https://machinelearningmastery.com/training-logistic-regression-with-cross-entropy-loss-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/training-logistic-regression-with-cross-entropy-loss-in-pytorch/](https://machinelearningmastery.com/training-logistic-regression-with-cross-entropy-loss-in-pytorch/)
 - en: In the previous session of our PyTorch series, we demonstrated how badly initialized
     weights can impact the accuracy of a classification model when mean square error
     (MSE) loss is used. We noticed that the model didn’t converge during training
     and its accuracy was also significantly reduced.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们 PyTorch 系列的上一节中，我们演示了初始化不良的权重如何影响分类模型的准确性，尤其是当使用均方误差（MSE）损失时。我们注意到模型在训练过程中没有收敛，其准确性也显著下降。
 - en: In the following, you will see what happens if you randomly initialize the weights
     and use cross-entropy as loss function for model training. This loss function
     fits logistic regression and other categorical classification problems better.
     Therefore, cross-entropy loss is used for most of the classification problems
     today.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，你将看到如果随机初始化权重并使用交叉熵作为模型训练的损失函数会发生什么。这个损失函数更适合逻辑回归和其他分类问题。因此，今天大多数分类问题都使用交叉熵损失。
 - en: 'In this tutorial, you will train a logistic regression model using cross-entropy
     loss and make predictions on test data. Particularly, you will learn:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将使用交叉熵损失训练逻辑回归模型，并对测试数据进行预测。特别地，你将学习：
 - en: How to train a logistic regression model with Cross-Entropy loss in Pytorch.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中使用交叉熵损失训练逻辑回归模型。
 - en: How Cross-Entropy loss can influence the model accuracy.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 交叉熵损失如何影响模型准确性。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍[《用 PyTorch 进行深度学习》](https://machinelearningmastery.com/deep-learning-with-pytorch/)来**
+    **启动你的项目**。这本书提供了**自学教程**和**示例代码**。'
 - en: Let’s get started.![](../Images/3f1dd51c1dfa683e51e61e81c344ff43.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 开始吧。![](../Images/3f1dd51c1dfa683e51e61e81c344ff43.png)
 - en: Training Logistic Regression with Cross-Entropy Loss in PyTorch.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中使用交叉熵损失训练逻辑回归。
 - en: Picture by [Y K](https://unsplash.com/photos/qD2BYEkp3ns). Some rights reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：[Y K](https://unsplash.com/photos/qD2BYEkp3ns)。保留部分权利。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in three parts; they are
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是：
 - en: Preparing the Data and Building a Model
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据准备与模型构建
 - en: Model Training with Cross-Entropy
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用交叉熵的模型训练
 - en: Verifying with Test Data
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用测试数据验证
 - en: Preparing the Data and the Model
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数据准备与模型
 - en: Just like the previous tutorials, you will build a class to get the dataset
     to perform the experiments. This dataset will be split into train and test samples.
     The test samples are an unseen data used to measure the performance of the trained
     model.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像之前的教程一样，你将构建一个类来获取数据集以进行实验。这个数据集将被拆分成训练样本和测试样本。测试样本是用于测量训练模型性能的未见数据。
 - en: 'First, we make a `Dataset` class:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们创建一个`Dataset`类：
 - en: '[PRE0]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Then, instantiate the dataset object.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，实例化数据集对象。
 - en: '[PRE1]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Next, you’ll build a custom module for our logistic regression model. It will
     be based on the attributes and methods from PyTorch’s `nn.Module`. This package
     allows us to build sophisticated custom modules for our deep learning models and
     makes the overall process a lot easier.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，你将为我们的逻辑回归模型构建一个自定义模块。它将基于 PyTorch 的`nn.Module`中的属性和方法。这个包允许我们为深度学习模型构建复杂的自定义模块，并使整个过程变得更简单。
 - en: 'The module consist of only one linear layer, as follows:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 该模块只包含一个线性层，如下所示：
 - en: '[PRE2]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Let’s create the model object.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们创建模型对象。
 - en: '[PRE3]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'This model should have randomized weights. You can check this by printing its
     states:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 该模型应具有随机初始化的权重。你可以通过打印其状态来检查这一点：
 - en: '[PRE4]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'You may see:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会看到：
 - en: '[PRE5]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-31
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费 PDF 电子书版。
 - en: Model Training with Cross-Entropy
+  id: totrans-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用交叉熵的模型训练
 - en: Recall that this model didn’t converge when you used these parameter values
     with MSE loss in the previous tutorial. Let’s see what happens when cross-entropy
     loss is used.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 回想一下，当你在上一教程中使用这些参数值和 MSE 损失时，这个模型没有收敛。我们来看一下使用交叉熵损失时会发生什么。
 - en: Since you are performing logistic regression with one output, it is a classification
     problem with two classes. In other words, it is a binary classification problem
     and hence we are using binary cross-entropy. You set up the optimizer and the
     loss function as follows.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于你正在进行具有一个输出的逻辑回归，这是一个具有两个类别的分类问题。换句话说，这是一个二分类问题，因此我们使用二元交叉熵。你设置优化器和损失函数如下。
 - en: '[PRE6]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Next, we prepare a `DataLoader` and train the model for 50 epochs.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们准备一个`DataLoader`并将模型训练50个周期。
 - en: '[PRE7]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'The output during training would be like the following:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练期间的输出会像下面这样：
 - en: '[PRE8]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: As you can see, the loss reduces during the training and converges to a minimum.
     Let’s also plot the training graph.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 如你所见，损失在训练过程中减少并收敛到最低值。我们也来绘制一下训练图表。
 - en: '[PRE9]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: You shall see the following:![](../Images/5b7b7c1e1605d88e7dfb475651be6bb7.png)
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将看到以下内容：![](../Images/5b7b7c1e1605d88e7dfb475651be6bb7.png)
 - en: Verifying with Test Data
+  id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用测试数据验证
 - en: The plot above shows that the model learned well on the training data. Lastly,
     let’s check how the model performs on unseen data.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述图表显示模型在训练数据上表现良好。最后，让我们检查一下模型在未见数据上的表现。
 - en: '[PRE10]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: which gives
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这给出了
 - en: '[PRE11]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: When the model is trained on MSE loss, it didn’t do well. It was around 57%
     accurate previously. But here, we get a perfect prediction. Partially because
     the model is simple, a one-variable logsitic function. Partially because we set
     up the training correctly. Hence the cross-entropy loss significantly improves
     the model accuracy over MSE loss as we demonstrated in our experiments.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 当模型在均方误差（MSE）损失上训练时，它的表现不佳。之前的准确率大约是57%。但在这里，我们得到了完美的预测。这部分是因为模型简单，是一个单变量逻辑函数。部分是因为我们正确设置了训练。因此，交叉熵损失显著提高了模型在实验中表现的准确性，相比于MSE损失。
 - en: 'Putting everything together, the following is the complete code:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容放在一起，以下是完整的代码：
 - en: '[PRE12]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Summary
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you learned how cross-entropy loss can influence the performance
     of a classification model. Particularly, you learned:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了交叉熵损失如何影响分类模型的性能。特别是，你学习了：
 - en: How to train a logistic regression model with cross-entropy loss in Pytorch.
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在Pytorch中使用交叉熵损失训练逻辑回归模型。
 - en: How Cross-Entropy loss can influence the model accuracy.
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 交叉熵损失如何影响模型准确性。

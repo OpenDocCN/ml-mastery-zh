@@ -1,306 +1,460 @@
 - en: Support Vector Machines for Image Classification and Detection Using OpenCV
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 OpenCV 进行图像分类和检测的支持向量机
 - en: 原文：[https://machinelearningmastery.com/support-vector-machines-for-image-classification-and-detection-using-opencv/](https://machinelearningmastery.com/support-vector-machines-for-image-classification-and-detection-using-opencv/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/support-vector-machines-for-image-classification-and-detection-using-opencv/](https://machinelearningmastery.com/support-vector-machines-for-image-classification-and-detection-using-opencv/)
 - en: In a [previous tutorial](https://machinelearningmastery.com/?p=14889&preview=true),
     we explored using the Support Vector Machine algorithm as one of the most popular
     supervised machine learning techniques implemented in the OpenCV library.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[之前的教程](https://machinelearningmastery.com/?p=14889&preview=true)中，我们探讨了将支持向量机算法作为
+    OpenCV 库中最受欢迎的监督学习技术之一。
 - en: So far, we have seen how to apply Support Vector Machines to a custom dataset
     that we have generated, consisting of two-dimensional points gathered into two
     classes.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们已经看到如何将支持向量机应用于我们生成的自定义数据集，该数据集由两个类的二维点组成。
 - en: In this tutorial, you will learn how to apply OpenCV’s Support Vector Machine
     algorithm to solve image classification and detection problems.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将学习如何将 OpenCV 的支持向量机算法应用于解决图像分类和检测问题。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解到：
 - en: Several of the most important characteristics of Support Vector Machines.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 支持向量机的几个重要特征。
 - en: How to apply Support Vector Machines to the problems of image classification
     and detection.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将支持向量机应用于图像分类和检测问题。
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍[《OpenCV中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)**来**启动你的项目**。它提供了**自学教程**和**实用代码**。'
 - en: Let’s get started. [![](../Images/47afd0d4c22fd547010be0754a657edd.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_class_detect_cover-scaled.jpg)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。[![](../Images/47afd0d4c22fd547010be0754a657edd.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_class_detect_cover-scaled.jpg)
 - en: Support Vector Machines for Image Classification and Detection Using OpenCV
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 OpenCV 进行图像分类和检测的支持向量机
 - en: Photo by [Patrick Ryan](https://unsplash.com/photos/3kUIaB2EPp8), some rights
     reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Patrick Ryan](https://unsplash.com/photos/3kUIaB2EPp8)提供，部分版权保留。
 - en: '**Tutorial Overview**'
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是：
 - en: Recap of How Support Vector Machines Work
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 支持向量机工作原理回顾
 - en: Applying the SVM Algorithm to Image Classification
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将 SVM 算法应用于图像分类
 - en: Using the SVM Algorithm for Image Detection
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 SVM 算法进行图像检测
 - en: '**Recap of How Support Vector Machines Work**'
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**支持向量机工作原理回顾**'
 - en: In a [previous tutorial](https://machinelearningmastery.com/?p=14889&preview=true),
     we were introduced to using the Support Vector Machine (SVM) algorithm in the
     OpenCV library. So far, we have applied it to a custom dataset that we have generated,
     consisting of two-dimensional points gathered into two classes.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[之前的教程](https://machinelearningmastery.com/?p=14889&preview=true)中，我们介绍了如何在
+    OpenCV 库中使用支持向量机（SVM）算法。到目前为止，我们已将其应用于我们生成的自定义数据集，该数据集由两个类的二维点组成。
 - en: We have seen that SVMs seek to separate data points into classes by computing
     a decision boundary that maximizes the margin to the closest data points from
     each class, called the support vectors. The constraint of maximizing the margin
     can be relaxed by tuning a parameter called *C*, which controls the trade-off
     between maximizing the margin and reducing the misclassifications on the training
     data.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经看到，SVM 旨在通过计算一个决策边界来将数据点分为不同的类，该边界最大化到每个类的最近数据点（称为支持向量）的间隔。通过调整一个名为*C*的参数，可以放宽最大化间隔的约束，该参数控制最大化间隔和减少训练数据中的错误分类之间的权衡。
 - en: The SVM algorithm may use different kernel functions, depending on whether the
     input data is linearly separable. In the case of non-linearly separable data,
     a non-linear kernel may be used to transform the data to a higher-dimensional
     space in which it becomes linearly separable. This is analogous to the SVM finding
     a non-linear decision boundary in the original input space.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: SVM 算法可能会使用不同的核函数，这取决于输入数据是否是线性可分的。在非线性可分的数据情况下，可能使用非线性核将数据转换到更高维空间，以便在其中线性可分。这类似于
+    SVM 在原始输入空间中找到一个非线性的决策边界。
 - en: '**Applying the SVM Algorithm to Image Classification**'
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**将 SVM 算法应用于图像分类**'
 - en: We will use the [digits dataset in OpenCV](https://machinelearningmastery.com/?p=14607&preview=true)
     for this task, although the code we will develop may also be used with other datasets.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用[OpenCV 中的数字数据集](https://machinelearningmastery.com/?p=14607&preview=true)来完成这个任务，尽管我们开发的代码也可以用于其他数据集。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 OpenCV 进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件速成课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，同时获取课程的免费 PDF 电子书版本。
 - en: 'Our first step is to load the OpenCV digits image, divide it into its many
     sub-images that feature handwritten digits from 0 to 9, and create their corresponding
     ground truth labels that will enable us to quantify the accuracy of the trained
     SVM classifier later. For this particular example, we will allocate 80% of the
     dataset images to the training set and the remaining 20% of the images to the
     testing set:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的第一步是加载 OpenCV 数字图像，将其分成多个包含手写数字 0 到 9 的子图像，并创建相应的真实标签，以便我们以后可以量化训练好的 SVM
+    分类器的准确性。对于这个具体的例子，我们将把 80% 的数据集图像分配给训练集，剩下的 20% 图像分配给测试集：
 - en: Python
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Our next step is to create an SVM in OpenCV that uses an RBF kernel. As we
     have done in [our previous tutorial](https://machinelearningmastery.com/?p=14889&preview=true),
     we must set several parameter values related to the SVM type and the kernel function.
     We shall also include the termination criteria to stop the iterative process of
     the SVM optimization problem:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的下一步是在 OpenCV 中创建一个使用 RBF 核的 SVM。正如我们在[之前的教程](https://machinelearningmastery.com/?p=14889&preview=true)中所做的那样，我们必须设置与
+    SVM 类型和核函数相关的几个参数值。我们还将包括终止标准，以停止 SVM 优化问题的迭代过程：
 - en: Python
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Rather than training and testing the SVM on the raw image data, we will first
     convert each image into its HOG descriptors, as explained in [this tutorial](https://machinelearningmastery.com/?p=14553&preview=true).
     The HOG technique aims for a more compact representation of an image by exploiting
     its local shape and appearance. Training a classifier on HOG descriptors can potentially
     increase its discriminative power in distinguishing between different classes
     while at the same time reducing the computational expense of processing the data:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将首先将每张图像转换为其 HOG 描述符，如[本教程](https://machinelearningmastery.com/?p=14553&preview=true)中所述，而不是直接在原始图像数据上训练和测试
+    SVM。HOG 技术旨在通过利用图像的局部形状和外观来获得更紧凑的表示。对 HOG 描述符进行分类器训练可以提高其区分不同类别的能力，同时减少数据处理的计算开销：
 - en: Python
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'We may finally train the SVM on the HOG descriptors and proceed to predict
     labels for the testing data, based on which we may compute the classifier’s accuracy:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以最终对 HOG 描述符上的 SVM 进行训练，并继续预测测试数据的标签，基于此我们可以计算分类器的准确性：
 - en: Python
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '[PRE4]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: For this particular example, the values for *C* and *gamma* are being set empirically.
     However, it is suggested that a tuning technique, such as the *grid search* algorithm,
     is employed to investigate whether a better combination of hyperparameters can
     push the classifier’s accuracy even higher.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这个具体的例子，*C* 和 *gamma* 的值是经验性地设置的。然而，建议采用调优技术，如 *网格搜索* 算法，来研究是否有更好的超参数组合可以进一步提升分类器的准确性。
 - en: 'The complete code listing is as follows:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码清单如下：
 - en: Python
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '**Using the SVM Algorithm for Image Detection**'
+  id: totrans-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**使用 SVM 算法进行图像检测**'
 - en: It is possible to extend the ideas we have developed above from image classification
     to image detection, where the latter refers to identifying and localizing objects
     of interest within an image.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以将我们上面开发的图像分类思路扩展到图像检测中，后者指的是在图像中识别和定位感兴趣的对象。
 - en: We can achieve this by repeating the image classification we developed in the
     previous section at different positions within a larger image (we will refer to
     this larger image as the *test image*).
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过在更大图像中的不同位置重复我们在前一部分开发的图像分类来实现这一点（我们将把这个更大的图像称为 *测试图像*）。
 - en: For this particular example, we will create an image that consists of a *collage*
     of randomly selected sub-images from OpenCV’s digits dataset, and we will then
     attempt to detect any occurrences of a digit of interest.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这个具体的例子，我们将创建一个由 OpenCV 数字数据集中随机选择的子图像拼接而成的 *拼贴画*，然后尝试检测感兴趣的数字出现情况。
 - en: 'Let’s start by creating the test image first. We will do so by randomly selecting
     25 sub-images equally spaced across the entire dataset, shuffling their order,
     and joining them together into a $100\times 100$-pixel image:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先创建测试图像。我们将通过从整个数据集中随机选择25个等间距的子图像，打乱它们的顺序，并将它们组合成一个$100\times 100$像素的图像来实现：
 - en: '[PRE6]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The resulting test image looks as follows:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果测试图像如下所示：
 - en: '[![](../Images/17e26fca020891683effdb809b4cc102.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_class_detect_1.png)'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/17e26fca020891683effdb809b4cc102.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_class_detect_1.png)'
 - en: Test Image for Image Detection
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 图像检测的测试图像
 - en: Next, we shall train a newly created SVM like in the previous section. However,
     given that we are now addressing a detection problem, the ground truth labels
     should not correspond to the digits in the images; instead, they should distinguish
     between the positive and the negative samples in the training set.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将像前一节那样训练一个新创建的SVM。然而，鉴于我们现在处理的是检测问题，真实标签不应对应图像中的数字，而应区分训练集中正样本和负样本。
 - en: Say, for instance, that we are interested in detecting the two occurrences of
     the *0* digit in the test image. Hence, the images featuring a *0* in the training
     portion of the dataset are taken to represent the *positive* samples and distinguished
     by a class label of 1\. All other images belonging to the remaining digits are
     taken to represent the *negative* samples and consequently distinguished by a
     class label of 0.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 比如说，我们有兴趣检测测试图像中两个*0*数字的出现。因此，数据集中训练部分中的*0*图像被视为*正样本*，并通过类标签1区分。所有其他属于剩余数字的图像被视为*负样本*，并通过类标签0区分。
 - en: 'Once we have the ground truth labels generated, we may proceed to create and
     train an SVM on the training dataset:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦生成了真实标签，我们可以开始在训练数据集上创建和训练SVM：
 - en: Python
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'The final piece of code that we shall be adding to the code listing above performs
     the following operations:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将要添加到上面代码列表中的最终代码执行以下操作：
 - en: Traverses the test image by a pre-defined stride.
+  id: totrans-58
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 按预定义的步幅遍历测试图像。
 - en: Crops an image patch of equivalent size to the sub-images that feature the digits
     (i.e., 20 $\times$ 20 pixels) from the test image at every iteration.
+  id: totrans-59
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从测试图像中裁剪出与特征数字的子图像（即，20 $\times$ 20 像素）等大小的图像块，并在每次迭代时进行处理。
 - en: Extracts the HOG descriptors of every image patch.
+  id: totrans-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 提取每个图像块的HOG描述符。
 - en: Feeds the HOG descriptors into the trained SVM to obtain a label prediction.
+  id: totrans-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将HOG描述符输入到训练好的SVM中，以获得标签预测。
 - en: Stores the image patch coordinates whenever a detection is found.
+  id: totrans-62
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 每当检测到时，存储图像块坐标。
 - en: Draws the bounding box for each detection on the original test image.
+  id: totrans-63
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在原始测试图像上为每个检测绘制边界框。
 - en: Python
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The complete code listing is as follows:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码列表如下：
 - en: Python
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'The resulting image shows that we have successfully detected the two occurrences
     of the *0* digit in the test image:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果图像显示我们成功检测到了测试图像中出现的两个*0*数字：
 - en: '[![](../Images/05595d0267b5f6dbe6f185ba18a8c1f3.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_class_detect_2.png)'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/05595d0267b5f6dbe6f185ba18a8c1f3.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/svm_class_detect_2.png)'
 - en: Detecting the Two Occurrences of the *0* Digit
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 检测*0*数字的两个出现
 - en: 'We have considered a simple example, but the same ideas can be easily adapted
     to address more challenging real-life problems. If you plan to adapt the code
     above to more challenging problems:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们考虑了一个简单的示例，但相同的思想可以轻松地适应更具挑战性的实际问题。如果你打算将上述代码适应更具挑战性的问题：
 - en: Remember that the object of interest may appear in various sizes inside the
     image, so you might need to carry out a multi-scale detection task.
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 记住，感兴趣的对象可能会在图像中以不同的大小出现，因此可能需要进行多尺度检测任务。
 - en: Do not run into the class imbalance problem when generating positive and negative
     samples to train your SVM. The examples we have considered in this tutorial were
     images of very little variation (we were limited to just 10 digits, featuring
@@ -308,61 +462,91 @@
     seems to have had very little effect on the detection result. However, real-life
     challenges do not tend to be this simple, and an imbalanced distribution between
     classes can lead to poor performance.
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在生成正负样本来训练你的 SVM 时，避免遇到类别不平衡问题。本教程中考虑的示例是变化非常小的图像（我们仅限于 10 个数字，没有尺度、光照、背景等方面的变化），任何数据集不平衡似乎对检测结果几乎没有影响。然而，现实中的挑战通常不会如此简单，类别之间的不平衡分布可能会导致性能较差。
 - en: '**Further Reading**'
+  id: totrans-75
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想深入了解，本节提供了更多资源。
 - en: '**Books**'
+  id: totrans-77
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
     2017.'
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[OpenCV 的机器学习](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1)，2017年。'
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[掌握 OpenCV 4 与 Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019年。'
 - en: '**Websites**'
+  id: totrans-80
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: Introduction to Support Vector Machines, [https://docs.opencv.org/4.x/d1/d73/tutorial_introduction_to_svm.html](https://docs.opencv.org/4.x/d1/d73/tutorial_introduction_to_svm.html)
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 支持向量机介绍，[https://docs.opencv.org/4.x/d1/d73/tutorial_introduction_to_svm.html](https://docs.opencv.org/4.x/d1/d73/tutorial_introduction_to_svm.html)
 - en: '**Summary**'
+  id: totrans-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you learned how to apply OpenCV’s Support Vector Machine algorithm
     to solve image classification and detection problems.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何应用 OpenCV 的支持向量机算法来解决图像分类和检测问题。
 - en: 'Specifically, you learned:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学习了：
 - en: Several of the most important characteristics of Support Vector Machines.
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 支持向量机的一些重要特征。
 - en: How to apply Support Vector Machines to the problems of image classification
     and detection.
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将支持向量机应用于图像分类和检测问题。
 - en: Do you have any questions?
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提问，我会尽力回答。

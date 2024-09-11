@@ -1,76 +1,114 @@
 - en: A Guide to Getting Datasets for Machine Learning in Python
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 《获取机器学习数据集的指南》
 - en: 原文：[https://machinelearningmastery.com/a-guide-to-getting-datasets-for-machine-learning-in-python/](https://machinelearningmastery.com/a-guide-to-getting-datasets-for-machine-learning-in-python/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-guide-to-getting-datasets-for-machine-learning-in-python/](https://machinelearningmastery.com/a-guide-to-getting-datasets-for-machine-learning-in-python/)
 - en: Compared to other programming exercises, a machine learning project is a blend
     of code and data. You need both to achieve the result and do something useful.
     Over the years, many well-known datasets have been created, and many have become
     standards or benchmarks. In this tutorial, we are going to see how we can obtain
     those well-known public datasets easily. We will also learn how to make a synthetic
     dataset if none of the existing datasets fits our needs.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 与其他编程练习相比，机器学习项目是代码和数据的结合。你需要两者才能实现结果并做些有用的事情。多年来，许多著名的数据集被创建，许多已经成为标准或基准。在本教程中，我们将学习如何轻松获取这些著名的公共数据集。如果现有的数据集都不符合我们的需求，我们还将学习如何生成合成数据集。
 - en: 'After finishing this tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将知道：
 - en: Where to look for freely available datasets for machine learning projects
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何寻找适合机器学习项目的免费数据集
 - en: How to download datasets using libraries in Python
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 Python 中的库下载数据集
 - en: How to generate synthetic datasets using scikit-learn
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 scikit-learn 生成合成数据集
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，阅读我的新书 [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/)，包括
+    *逐步教程* 和 *所有示例的 Python 源代码* 文件。'
 - en: Let’s get started.![](../Images/c8d8d914e32227dd6a9b2a836dca18bc.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。![](../Images/c8d8d914e32227dd6a9b2a836dca18bc.png)
 - en: A Guide to Getting Datasets for Machine Learning in Python
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 《获取机器学习数据集的指南》
 - en: Photo by [Olha Ruskykh](https://www.pexels.com/photo/close-up-shot-of-cassette-tapes-with-small-pieces-of-flowers-7166023/).
     Some rights reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Olha Ruskykh](https://www.pexels.com/photo/close-up-shot-of-cassette-tapes-with-small-pieces-of-flowers-7166023/)
+    提供。保留一些权利。
 - en: Tutorial Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into four parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四个部分；它们是：
 - en: Dataset repositories
+  id: totrans-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 数据集库
 - en: Retrieving dataset in scikit-learn and Seaborn
+  id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在 scikit-learn 和 Seaborn 中检索数据集
 - en: Retrieving dataset in TensorFlow
+  id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在 TensorFlow 中检索数据集
 - en: Generating dataset in scikit-learn
+  id: totrans-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在 scikit-learn 中生成数据集
 - en: Dataset Repositories
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数据集库
 - en: Machine learning has been developed for decades, and therefore there are some
     datasets of historical significance. One of the most well-known repositories for
     these datasets is the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/index.php).
@@ -79,31 +117,44 @@
     located in this repository are the iris flower dataset (introduced by Ronald Fisher
     in 1936) and the 20 newsgroups dataset (textual data usually referred to by information
     retrieval literature).
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 机器学习已经发展了几十年，因此有些数据集具有历史意义。一个最著名的数据集库是[UCI 机器学习库](https://archive.ics.uci.edu/ml/index.php)。那里的大多数数据集都很小，因为当时的技术还不够先进，无法处理更大的数据。一些著名的数据集包括
+    1936 年 Ronald Fisher 介绍的鸢尾花数据集和 20 个新闻组数据集（通常在信息检索文献中提到的文本数据）。
 - en: Newer datasets are usually larger in size. For example, the ImageNet dataset
     is over 160 GB. These datasets are commonly found in [Kaggle](https://www.kaggle.com/),
     and we can search them by name. If we need to download them, it is recommended
     to use Kaggle’s command line tool after registering for an account.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 较新的数据集通常更大。例如，ImageNet 数据集超过 160 GB。这些数据集通常可以在 [Kaggle](https://www.kaggle.com/)
+    上找到，我们可以按名称搜索它们。如果需要下载，建议在注册账户后使用 Kaggle 的命令行工具。
 - en: '[OpenML](https://www.openml.org/) is a newer repository that hosts a lot of
     datasets. It is convenient because you can search for the dataset by name, but
     it also has a standardized web API for users to retrieve data. It would be useful
     if you want to use Weka since it provides files in ARFF format.'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '[OpenML](https://www.openml.org/) 是一个较新的数据集库，托管了大量的数据集。它非常方便，因为你可以按名称搜索数据集，但它也提供了一个标准化的网络
+    API 供用户检索数据。如果你想使用 Weka，这个库会很有用，因为它提供 ARFF 格式的文件。'
 - en: But still, many datasets are publicly available but not in these repositories
     for various reasons. You may also want to check out the “[List of datasets for
     machine-learning research](https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research)”
     on Wikipedia. That page contains a long list of datasets attributed to different
     categories, with links to download them.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 但仍然，有许多数据集公开可用，但由于各种原因不在这些存储库中。你还可以查看维基百科上的“[机器学习研究数据集列表](https://en.wikipedia.org/wiki/List_of_datasets_for_machine_learning_research)”。该页面包含了长长的一列数据集，按不同类别归类，并提供了下载链接。
 - en: Retrieving Datasets in scikit-learn and Seaborn
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在scikit-learn和Seaborn中检索数据集
 - en: Trivially, you may obtain those datasets by downloading them from the web, either
     through the browser, via command line, using the `wget` tool, or using network
     libraries such as `requests` in Python. Since some of those datasets have become
@@ -111,373 +162,560 @@
     to help retrieve them. For practical reasons, often, the datasets are not shipped
     with the libraries but downloaded in real time when you invoke the functions.
     Therefore, you need to have a steady internet connection to use them.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 显而易见，你可以通过从网络上下载这些数据集来获取它们，无论是通过浏览器、命令行、使用`wget`工具，还是使用Python中的`requests`等网络库。由于其中一些数据集已成为标准或基准，许多机器学习库都创建了帮助检索它们的函数。出于实际考虑，通常这些数据集不会与库一起提供，而是在调用函数时实时下载。因此，你需要有稳定的互联网连接才能使用这些数据集。
 - en: 'Scikit-learn is an example where you can download the dataset using its API.
     The related functions are defined under `sklearn.datasets,`and you may see the
     list of functions at:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: Scikit-learn是一个可以通过其API下载数据集的例子。相关函数定义在`sklearn.datasets`下，你可以查看函数列表：
 - en: '[https://scikit-learn.org/stable/modules/classes.html#module-sklearn.datasets](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.datasets)'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://scikit-learn.org/stable/modules/classes.html#module-sklearn.datasets](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.datasets)'
 - en: 'For example, you can use the function `load_iris()` to get the iris flower
     dataset as follows:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，你可以使用`load_iris()`函数获取鸢尾花数据集，如下所示：
 - en: '[PRE0]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The `load_iris()` function would return numpy arrays (i.e., does not have column
     headers) instead of pandas DataFrame unless the argument `as_frame=True` is specified.
     Also, we pass `return_X_y=True` to the function, so only the machine learning
     features and targets are returned, rather than some metadata such as the description
     of the dataset. The above code prints the following:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '`load_iris()`函数会返回numpy数组（即，没有列标题），而不是pandas DataFrame，除非指定参数`as_frame=True`。另外，我们将`return_X_y=True`传递给函数，因此仅返回机器学习特征和目标，而不是一些元数据，如数据集的描述。上述代码打印如下内容：'
 - en: '[PRE1]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Separating the features and targets is convenient for training a scikit-learn
     model, but combining them would be helpful for visualization. For example, we
     may combine the DataFrame as above and then visualize the correlogram using Seaborn:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 将特征和目标分开对训练scikit-learn模型很方便，但将它们结合起来对可视化会有帮助。例如，我们可以如上所述合并DataFrame，然后使用Seaborn可视化相关图：
 - en: '[PRE2]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '![](../Images/4305dbb0e95e1ce50c49f4469fd7f7c5.png)'
+  id: totrans-32
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4305dbb0e95e1ce50c49f4469fd7f7c5.png)'
 - en: 'From the correlogram, we can see that target 0 is easy to distinguish, but
     targets 1 and 2 usually have some overlap. Because this dataset is also useful
     to demonstrate plotting functions, we can find the equivalent data loading function
     from Seaborn. We can rewrite the above into the following:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 从相关图中，我们可以看到目标0容易区分，但目标1和目标2通常有一些重叠。因为这个数据集也用于演示绘图函数，我们可以从Seaborn中找到等效的数据加载函数。我们可以将上述代码改写为以下内容：
 - en: '[PRE3]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '![](../Images/8d0b3bd7b0346af0cb3a86092ea90bdb.png)'
+  id: totrans-35
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/8d0b3bd7b0346af0cb3a86092ea90bdb.png)'
 - en: 'The dataset supported by Seaborn is more limited. We can see the names of all
     supported datasets by running:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: Seaborn支持的数据集比较有限。我们可以通过运行以下命令查看所有受支持的数据集名称：
 - en: '[PRE4]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'where the following is all the datasets from Seaborn:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是Seaborn中的所有数据集：
 - en: '[PRE5]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: There are a handful of similar functions to load the “[toy datasets](https://scikit-learn.org/stable/datasets/toy_dataset.html)”
     from scikit-learn. For example, we have `load_wine()` and `load_diabetes()` defined
     in similar fashion.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一些类似的函数可以从scikit-learn加载“[玩具数据集](https://scikit-learn.org/stable/datasets/toy_dataset.html)”。例如，我们有`load_wine()`和`load_diabetes()`，它们的定义方式类似。
 - en: Larger datasets are also similar. We have `fetch_california_housing()`, for
     example, that needs to download the dataset from the internet (hence the “fetch”
     in the function name). Scikit-learn documentation calls these the “[real-world
     datasets](https://scikit-learn.org/stable/datasets/real_world.html),” but, in
     fact, the toy datasets are equally real.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 较大的数据集也是类似的。例如，我们有`fetch_california_housing()`，需要从互联网下载数据集（因此函数名称中包含“fetch”）。Scikit-learn文档将这些称为“[真实世界数据集](https://scikit-learn.org/stable/datasets/real_world.html)”
+    ，但实际上，玩具数据集同样真实。
 - en: '[PRE6]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '[PRE7]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: If we need more than these, scikit-learn provides a handy function to read any
     dataset from OpenML. For example,
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们需要更多，scikit-learn提供了一个方便的函数从OpenML读取任何数据集。例如，
 - en: '[PRE8]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '[PRE9]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Sometimes, we should not use the name to identify a dataset in OpenML as there
     may be multiple datasets of the same name. We can search for the data ID on OpenML
     and use it in the function as follows:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时，我们不应该使用名称在OpenML中识别数据集，因为可能有多个同名的数据集。我们可以在OpenML上搜索数据ID，并在函数中使用如下：
 - en: '[PRE10]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'The data ID in the code above refers to the titanic dataset. We can extend
     the code into the following to show how we can obtain the titanic dataset and
     then run the logistic regression:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 以上代码中的数据ID指的是泰坦尼克号数据集。我们可以扩展代码如下，展示如何获取泰坦尼克号数据集，然后运行逻辑回归：
 - en: '[PRE11]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[PRE12]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-52
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始Python机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在免费订阅我的7天电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 单击注册并获得课程的免费PDF电子书版本。
 - en: Retrieving Datasets in TensorFlow
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在TensorFlow中检索数据集
 - en: 'Besides scikit-learn, TensorFlow is another tool that we can use for machine
     learning projects. For similar reasons, there is also a dataset API for TensorFlow
     that gives you the dataset in a format that works best with TensorFlow. Unlike
     scikit-learn, the API is not part of the standard TensorFlow package. You need
     to install it using the command:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了scikit-learn，TensorFlow是另一个可以用于机器学习项目的工具。出于类似的原因，TensorFlow还有一个数据集API，以最适合TensorFlow的格式提供数据集。与scikit-learn不同，这个API不是标准TensorFlow包的一部分。您需要使用以下命令安装它：
 - en: '[PRE13]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'The list of all datasets is available on the catalog:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有数据集的列表可在目录中找到：
 - en: '[https://www.tensorflow.org/datasets/catalog/overview#all_datasets](https://www.tensorflow.org/datasets/catalog/overview#all_datasets)'
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://www.tensorflow.org/datasets/catalog/overview#all_datasets](https://www.tensorflow.org/datasets/catalog/overview#all_datasets)'
 - en: 'All datasets are identified by a name. The names can be found in the catalog
     above. You may also get a list of names using the following:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有数据集都有一个名称。这些名称可以在上述目录中找到。您也可以使用以下方法获取名称列表：
 - en: '[PRE14]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: which prints more than 1,000 names.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 打印超过1,000个名称。
 - en: 'As an example, let’s pick the MNIST handwritten digits dataset as an example.
     We can download the data as follows:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，让我们以MNIST手写数字数据集为例。我们可以按如下方式下载数据：
 - en: '[PRE15]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'This shows us that `tfds.load()` gives us an object of type `tensorflow.data.OptionsDataset`:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 这显示我们使用`tfds.load()`会得到一个`tensorflow.data.OptionsDataset`类型的对象：
 - en: '[PRE16]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: In particular, this dataset has the data instances (images) in a numpy array
     of shapes (28,28,1), and the targets (labels) are scalars.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 特别是，这个数据集将数据实例（图像）存储在形状为（28,28,1）的numpy数组中，目标（标签）是标量。
 - en: 'With minor polishing, the data is ready for use in the Keras `fit()` function.
     An example is as follows:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 经过轻微的整理，数据即可在Keras的`fit()`函数中使用。一个示例如下：
 - en: '[PRE17]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: If we provided `as_supervised=True`, the dataset would be records of tuples
     (features, targets) instead of the dictionary. It is required for Keras. Moreover,
     to use the dataset in the `fit()` function, we need to create an iterable of batches.
     This is done by setting up the batch size of the dataset to convert it from `OptionsDataset`
     object into `BatchDataset` object.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们提供`as_supervised=True`，数据集将是元组（特征，目标）的记录，而不是字典。这对于Keras是必需的。此外，为了在`fit()`函数中使用数据集，我们需要创建一个批次的可迭代对象。通过设置数据集的批次大小，将其从`OptionsDataset`对象转换为`BatchDataset`对象。
 - en: We applied the LeNet5 model for the image classification. But since the target
     in the dataset is a numerical value (0 to 9) rather than a Boolean vector, we
     ask Keras to convert the softmax output vector into a number before computing
     accuracy and loss by specifying `sparse_categorical_accuracy` and `sparse_categorical_crossentropy`
     in the `compile()` function.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们应用了LeNet5模型进行图像分类。但由于数据集中的目标是一个数值（0到9），而不是布尔向量，因此我们要求Keras在计算精度和损失之前将softmax输出向量转换为数字，方法是在`compile()`函数中指定`sparse_categorical_accuracy`和`sparse_categorical_crossentropy`。
 - en: The key here is to understand every dataset is in a different shape. When you
     use it with your TensorFlow model, you need to adapt your model to fit the dataset.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 关键在于理解每个数据集的形状都是不同的。当你用它与你的TensorFlow模型时，你需要调整模型以适应数据集。
 - en: Generating Datasets in scikit-learn
+  id: totrans-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在scikit-learn中生成数据集
 - en: In scikit-learn, there is a set of very useful functions to generate a dataset
     with particular properties. Because we can control the properties of the synthetic
     dataset, it is helpful to evaluate the performance of our models in a specific
     situation that is not commonly seen in other datasets.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 在scikit-learn中，有一组非常有用的函数可以生成具有特定属性的数据集。由于我们可以控制合成数据集的属性，这对于在特定情况下评估模型性能非常有帮助，这种情况在其他数据集中不常见。
 - en: 'Scikit-learn documentation calls these functions the **samples generator**.
     It is easy to use; for example:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: Scikit-learn文档称这些函数为**样本生成器**。它使用起来很简单，例如：
 - en: '[PRE18]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: '![](../Images/74f67b0e82c50b686cfd8f92f8a49201.png)'
+  id: totrans-77
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/74f67b0e82c50b686cfd8f92f8a49201.png)'
 - en: The `make_circles()` function generates coordinates of scattered points in a
     2D plane such that there are two classes positioned in the form of concentric
     circles. We can control the size and overlap of the circles with the parameters
     `factor` and `noise` in the argument. This synthetic dataset is helpful to evaluate
     classification models such as a support vector machine since there is no linear
     separator available.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: '`make_circles()`函数生成二维平面中散布点的坐标，这些点以同心圆的形式排列为两个类别。我们可以通过参数`factor`和`noise`来控制圆的大小和重叠程度。这个合成数据集对于评估分类模型（如支持向量机）很有帮助，因为没有线性分隔器可用。'
 - en: 'The output from `make_circles()` is always in two classes, and the coordinates
     are always in 2D. But some other functions can generate points of more classes
     or in higher dimensions, such as `make_blob()`. In the example below, we generate
     a dataset in 3D with 4 classes:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '`make_circles()`生成的输出始终分为两个类别，坐标总是在二维空间中。但是一些其他函数可以生成更多类别或更高维度的点，例如`make_blob()`。在下面的示例中，我们生成了一个包含4个类别的三维数据集：'
 - en: '[PRE19]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: '![](../Images/dad0a3a3f7b08bd39e3a2cb94867db43.png)'
+  id: totrans-81
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/dad0a3a3f7b08bd39e3a2cb94867db43.png)'
 - en: There are also some functions to generate a dataset for regression problems.
     For example, `make_s_curve()` and `make_swiss_roll()` will generate coordinates
     in 3D with targets as continuous values.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有一些函数用于生成回归问题的数据集。例如，`make_s_curve()`和`make_swiss_roll()`将生成三维坐标，目标值为连续值。
 - en: '[PRE20]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: '![](../Images/cc63c3079ac131349251431c22ea6eeb.png)'
+  id: totrans-84
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/cc63c3079ac131349251431c22ea6eeb.png)'
 - en: If we prefer not to look at the data from a geometric perspective, there are
     also `make_classification()` and `make_regression()`. Compared to the other functions,
     these two provide us more control over the feature sets, such as introducing some
     redundant or irrelevant features.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们不希望从几何角度查看数据，还有`make_classification()`和`make_regression()`。与其他函数相比，这两个函数提供了更多对特征集的控制，例如引入一些冗余或无关的特征。
 - en: 'Below is an example of using `make_regression()` to generate a dataset and
     run linear regression with it:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是使用`make_regression()`生成数据集并进行线性回归的示例：
 - en: '[PRE21]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: In the example above, we created 10-dimensional features, but only 4 of them
     are informative. Hence from the result of the regression, we found only 4 of the
     coefficients are significantly non-zero.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的示例中，我们创建了10维特征，但只有4个特征是有用的。因此，从回归结果中我们发现只有4个系数显著非零。
 - en: '[PRE22]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'An example of using `make_classification()` similarly is as follows. A support
     vector machine classifier is used in this case:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用`make_classification()`的一个类似示例如下。在这个案例中使用了支持向量机分类器：
 - en: '[PRE23]'
+  id: totrans-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: Further Reading
+  id: totrans-92
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你希望深入了解。
 - en: Repositories
+  id: totrans-94
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 仓库
 - en: '[UCI machine learning repository](https://archive.ics.uci.edu/ml/index.php)'
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[UCI机器学习库](https://archive.ics.uci.edu/ml/index.php)'
 - en: '[Kaggle](https://www.kaggle.com/)'
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Kaggle](https://www.kaggle.com/)'
 - en: '[OpenML](https://www.openml.org/)'
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[OpenML](https://www.openml.org/)'
 - en: Wikipedia, [https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research](https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research)
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 维基百科，[https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research](https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research)
 - en: Articles
+  id: totrans-99
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[List of datasets for machine-learning research](https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research),
     Wikipedia'
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[机器学习研究的数据集列表](https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research)，维基百科'
 - en: '[scikit-learn toy datasets](https://scikit-learn.org/stable/datasets/toy_dataset.html)'
+  id: totrans-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scikit-learn 玩具数据集](https://scikit-learn.org/stable/datasets/toy_dataset.html)'
 - en: '[scikit-learn real-world datasets](https://scikit-learn.org/stable/datasets/real_world.html)'
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scikit-learn 真实世界数据集](https://scikit-learn.org/stable/datasets/real_world.html)'
 - en: '[TensorFlow datasets catalog](https://www.tensorflow.org/datasets/catalog/overview#all_datasets)'
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[TensorFlow 数据集目录](https://www.tensorflow.org/datasets/catalog/overview#all_datasets)'
 - en: '[Training a neural network on MNIST with Keras using TensorFlow Datasets](https://www.tensorflow.org/datasets/keras_example)'
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[使用 TensorFlow 数据集的 Keras 训练 MNIST 神经网络](https://www.tensorflow.org/datasets/keras_example)'
 - en: APIs
+  id: totrans-105
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: API
 - en: '[Kaggle API and tools](https://www.kaggle.com/docs/api)'
+  id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Kaggle API 和工具](https://www.kaggle.com/docs/api)'
 - en: '[TensorFlow datasets](https://www.tensorflow.org/datasets)'
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[TensorFlow 数据集](https://www.tensorflow.org/datasets)'
 - en: '[scikit-learn datasets](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.datasets)'
+  id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scikit-learn 数据集](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.datasets)'
 - en: '[scikit-learn samples generator](https://scikit-learn.org/stable/modules/classes.html#samples-generator)'
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scikit-learn 样本生成器](https://scikit-learn.org/stable/modules/classes.html#samples-generator)'
 - en: Summary
+  id: totrans-110
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you discovered various options for loading a common dataset
     or generating one in Python.
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了在 Python 中加载常见数据集或生成数据集的各种选项。
 - en: 'Specifically, you learned:'
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to use the dataset API in scikit-learn, Seaborn, and TensorFlow to load
     common machine learning datasets
+  id: totrans-113
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 scikit-learn、Seaborn 和 TensorFlow 中使用数据集 API 加载常见的机器学习数据集
 - en: The small differences in the format of the dataset returned by different APIs
     and how to use them
+  id: totrans-114
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不同 API 返回的数据集格式的小差异及其使用方法
 - en: How to generate a dataset using scikit-learn
+  id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 scikit-learn 生成数据集

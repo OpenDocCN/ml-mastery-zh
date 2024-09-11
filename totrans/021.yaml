@@ -1,69 +1,102 @@
 - en: Detecting and Overcoming Perfect Multicollinearity in Large Datasets
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在大型数据集中检测和克服完美的多重共线性
 - en: 原文：[https://machinelearningmastery.com/detecting-and-overcoming-perfect-multicollinearity-in-large-datasets/](https://machinelearningmastery.com/detecting-and-overcoming-perfect-multicollinearity-in-large-datasets/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/detecting-and-overcoming-perfect-multicollinearity-in-large-datasets/](https://machinelearningmastery.com/detecting-and-overcoming-perfect-multicollinearity-in-large-datasets/)
 - en: One of the significant challenges statisticians and data scientists face is
     multicollinearity, particularly its most severe form, perfect multicollinearity.
     This issue often lurks undetected in large datasets with many features, potentially
     disguising itself and skewing the results of statistical models.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 统计学家和数据科学家面临的一个重大挑战是多重共线性，特别是其最严重的形式——完美的多重共线性。这个问题常常在特征众多的大型数据集中未被察觉，可能伪装自己并扭曲统计模型的结果。
 - en: In this post, we explore the methods for detecting, addressing, and refining
     models affected by perfect multicollinearity. Through practical analysis and examples,
     we aim to equip you with the tools necessary to enhance your models’ robustness
     and interpretability, ensuring that they deliver reliable insights and accurate
     predictions.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我们探讨了检测、解决和优化受完美多重共线性影响的模型的方法。通过实际分析和示例，我们旨在为您提供必要的工具，以增强模型的鲁棒性和可解释性，确保它们提供可靠的见解和准确的预测。
 - en: Let’s get started.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/fcc19ef4088d150c20c8db33e1c5fa32.png)'
+  id: totrans-5
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/fcc19ef4088d150c20c8db33e1c5fa32.png)'
 - en: Detecting and Overcoming Perfect Multicollinearity in Large Datasets
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在大型数据集中检测和克服完美的多重共线性
 - en: Photo by [Ryan Stone](https://unsplash.com/photos/red-bridge-during-daytime-sOLbaTbs5mU).
     Some rights reserved.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Ryan Stone](https://unsplash.com/photos/red-bridge-during-daytime-sOLbaTbs5mU)
+    提供。部分权利保留。
 - en: Overview
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分；它们是：
 - en: Exploring the Impact of Perfect Multicollinearity on Linear Regression Models
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 探索完美的多重共线性对线性回归模型的影响
 - en: Addressing Multicollinearity with Lasso Regression
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用套索回归解决多重共线性问题
 - en: Refining the Linear Regression Model Using Insights from Lasso Regression
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用套索回归的见解来优化线性回归模型
 - en: Exploring the Impact of Perfect Multicollinearity on Linear Regression Models
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 探索完美的多重共线性对线性回归模型的影响
 - en: Multiple linear regression is particularly valued for its interpretability.
     It allows a direct understanding of how each predictor impacts the response variable.
     However, its effectiveness hinges on the assumption of independent features.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 多重线性回归因其可解释性而特别受到重视。它可以直接理解每个预测变量对响应变量的影响。然而，它的有效性依赖于特征独立的假设。
 - en: Collinearity means that a variable can be expressed as a linear combination
     of some other variables. Hence, the variables are not independent of each other.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 共线性意味着一个变量可以被表示为其他变量的线性组合。因此，这些变量不是彼此独立的。
 - en: Linear regression works under the assumption that the feature set has no collinearity.
     To ensure this assumption holds, understanding a core concept in linear algebra—the
     rank of a matrix—is vital. In linear regression, the rank reveals the linear independence
@@ -72,55 +105,81 @@
     the rank is less than the number of features—lead to perfect multicollinearity.
     This condition can distort the interpretability and reliability of a regression
     model, impacting its utility in making informed decisions.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 线性回归在特征集没有共线性的假设下进行。为了确保这一假设成立，理解线性代数中的一个核心概念——矩阵的秩，是至关重要的。在线性回归中，秩揭示了特征的线性独立性。本质上，没有特征应该是另一个特征的直接线性组合。这种独立性至关重要，因为特征之间的依赖关系——即秩小于特征数量——会导致完美的多重共线性。这种情况可能会扭曲回归模型的可解释性和可靠性，影响其在做出明智决策时的实用性。
 - en: Let’s explore this with the Ames Housing dataset. We will examine the dataset’s
     rank and the number of features to detect multicollinearity.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们使用 Ames Housing 数据集来探讨这个问题。我们将检查数据集的秩和特征数量，以检测多重共线性。
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Our preliminary results show that the Ames Housing dataset has multicollinearity,
     with 27 features but only a rank of 26:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的初步结果显示，Ames Housing 数据集存在多重共线性，具有 27 个特征但只有 26 的秩。
 - en: '[PRE1]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: To address this, let’s identify the redundant features using a tailored function.
     This approach helps make informed decisions about feature selection or modifications
     to enhance model reliability and interpretability.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了处理这一点，让我们使用定制的函数来识别冗余特征。这种方法有助于做出明智的特征选择或修改决策，从而提升模型的可靠性和可解释性。
 - en: '[PRE2]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The following features have been identified as redundant, indicating that they
     do not contribute uniquely to the predictive power of the model:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下特征已被识别为冗余，表明它们对模型的预测能力没有独特贡献：
 - en: '[PRE3]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Having identified redundant features in our dataset, it is crucial to understand
     the nature of their redundancy. Specifically, we suspect that ‘GrLivArea’ may
     simply be a sum of the first floor area (“1stFlrSF”), second floor area (“2ndFlrSF”),
     and low-quality finished square feet (“LowQualFinSF”). To verify this, we will
     calculate the total of these three areas and compare it directly with “GrLivArea”
     to confirm if they are indeed identical.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在识别出数据集中的冗余特征后，了解它们冗余的性质至关重要。具体而言，我们怀疑‘GrLivArea’可能只是第一层面积（“1stFlrSF”）、第二层面积（“2ndFlrSF”）和低质量完工平方英尺（“LowQualFinSF”）的总和。为了验证这一点，我们将计算这三个面积的总和，并将其与“GrLivArea”直接比较，以确认它们是否确实相同。
 - en: '[PRE4]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Our analysis confirms that “GrLivArea” is precisely the sum of “1stFlrSF”,
     “2ndFlrSF”, and “LowQualFinSF” in 100% of the cases in the dataset:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的分析确认，“GrLivArea”在数据集中100%的情况下正好是“1stFlrSF”、“2ndFlrSF”和“LowQualFinSF”的总和：
 - en: '[PRE5]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Having established the redundancy of “GrLivArea” through matrix rank analysis,
     we now aim to visualize the effects of multicollinearity on our regression model’s
     stability and predictive power. The following steps will involve running a Multiple
@@ -128,17 +187,25 @@
     estimates. This exercise will help demonstrate the practical impact of multicollinearity
     in a tangible way, reinforcing the need for careful feature selection in model
     building.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在通过矩阵秩分析确认了“GrLivArea”的冗余性后，我们现在的目标是可视化多重共线性对回归模型稳定性和预测能力的影响。接下来的步骤将涉及使用冗余特征运行多重线性回归，以观察系数估计的方差。这个练习将帮助以一种具体的方式展示多重共线性的实际影响，强化了在模型构建中仔细选择特征的必要性。
 - en: '[PRE6]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The results can be demonstrated with the two plots below:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果可以通过下面的两个图表来演示：
 - en: '[![](../Images/5c151c386335f581bbf5f668ba482cd6.png)](https://machinelearningmastery.com/?attachment_id=17325)'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/5c151c386335f581bbf5f668ba482cd6.png)](https://machinelearningmastery.com/?attachment_id=17325)'
 - en: The box plot on the left illustrates the substantial variance in the coefficient
     estimates. This significant spread in values not only points to the instability
     of our model but also directly challenges its interpretability. Multiple linear
@@ -148,29 +215,42 @@
     which are essential for making informed decisions based on the model’s predictions.
     Given these challenges, a more robust approach is needed to address the variability
     and instability in our model’s coefficients.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 左侧的箱线图展示了系数估计的显著方差。这些值的显著分布不仅指出了我们模型的不稳定性，还直接挑战了其可解释性。多重线性回归特别重视其可解释性，这依赖于其系数的稳定性和一致性。当系数在不同的数据子集之间变化很大时，很难得出清晰且可操作的见解，这对于根据模型的预测做出明智决策至关重要。鉴于这些挑战，需要一种更为稳健的方法来解决模型系数的变异性和不稳定性。
 - en: Addressing Multicollinearity with Lasso Regression
+  id: totrans-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 Lasso 回归处理多重共线性
 - en: Lasso regression presents itself as a robust solution. Unlike multiple linear
     regression, Lasso can penalize the coefficients’ size and, crucially, set some
     coefficients to zero, effectively reducing the number of features in the model.
     This feature selection is particularly beneficial in mitigating multicollinearity.
     Let’s apply Lasso to our previous example to demonstrate this.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: Lasso 回归作为一种稳健的解决方案出现。与多重线性回归不同，Lasso 可以惩罚系数的大小，并且可以将一些系数设置为零，从而有效地减少模型中的特征数量。这种特征选择在缓解多重共线性方面特别有益。让我们应用
+    Lasso 到之前的例子中以演示这一点。
 - en: '[PRE7]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'By varying the regularization strength (alpha), we can observe how increasing
     the penalty affects the coefficients and the predictive accuracy of the model:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过调整正则化强度（alpha），我们可以观察到增加惩罚如何影响系数和模型的预测准确性：
 - en: '[![](../Images/1b5a2cf4d504b65eb0ceb862e65c3d6b.png)](https://machinelearningmastery.com/?attachment_id=17327)'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/1b5a2cf4d504b65eb0ceb862e65c3d6b.png)](https://machinelearningmastery.com/?attachment_id=17327)'
 - en: The box plots on the left show that as alpha increases, the spread and magnitude
     of the coefficients decrease, indicating more stable estimates. Notably, the coefficient
     for ‘2ndFlrSF’ begins to approach zero as alpha is set to 1 and is virtually zero
@@ -179,36 +259,53 @@
     may be redundant or collinear with other features in the model. This stabilization
     is a direct result of Lasso’s ability to reduce the influence of less important
     features, which are likely contributing to multicollinearity.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 左侧的箱型图显示，随着 alpha 的增加，系数的分布范围和幅度减少，表明估计更加稳定。特别是，当 alpha 设置为 1 时，‘2ndFlrSF’ 的系数开始接近零，并且当
+    alpha 增加到 2 时几乎为零。这一趋势表明，随着正则化强度的增加，‘2ndFlrSF’ 对模型的贡献最小，这表明它可能在模型中是冗余的或与其他特征存在共线性。这种稳定性直接归因于
+    Lasso 减少不重要特征影响的能力，这些特征可能会导致多重共线性。
 - en: The fact that ‘2ndFlrSF’ can be removed with minimal impact on the model’s predictability
     is significant. It underscores the efficiency of Lasso in identifying and eliminating
     unnecessary predictors. Importantly, the overall predictability of the model remains
     unchanged even as this feature is effectively zeroed out, demonstrating the robustness
     of Lasso in maintaining model performance while simplifying its complexity.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: ‘2ndFlrSF’ 可以在对模型的预测能力影响最小的情况下被移除，这一点非常重要。它突显了 Lasso 在识别和消除不必要预测因子方面的高效性。值得注意的是，即使这个特征被有效地归零，模型的整体预测能力也保持不变，这展示了
+    Lasso 在简化模型复杂度的同时维持模型性能的鲁棒性。
 - en: Refining the Linear Regression Model Using Insights from Lasso Regression
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 Lasso 回归洞见优化线性回归模型
 - en: Following the insights gained from the Lasso regression, we have refined our
     model by removing ‘2ndFlrSF’, a feature identified as contributing minimally to
     the predictive power. This section evaluates the performance and stability of
     the coefficients in the revised model, using only ‘GrLivArea’, ‘1stFlrSF’, and
     ‘LowQualFinSF’.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据 Lasso 回归获得的洞见，我们通过移除被识别为对预测能力贡献最小的特征‘2ndFlrSF’来优化我们的模型。本节评估了修订模型的系数性能和稳定性，仅使用‘GrLivArea’，‘1stFlrSF’，和‘LowQualFinSF’。
 - en: '[PRE8]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The results of our refined multiple regression model can be demonstrated with
     the two plots below:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们优化后的多元回归模型的结果可以通过下面的两个图示展示：
 - en: '[![](../Images/487ff0ad305599d84982682cd0bf9601.png)](https://machinelearningmastery.com/?attachment_id=17328)'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/487ff0ad305599d84982682cd0bf9601.png)](https://machinelearningmastery.com/?attachment_id=17328)'
 - en: The box plot on the left illustrates the coefficients’ distribution across different
     folds of cross-validation. Notably, the variance in the coefficients appears reduced
     compared to previous models that included “2ndFlrSF.” This reduction in variability
@@ -216,8 +313,10 @@
     the model’s estimates and enhance its interpretability. Each feature’s coefficient
     now exhibits less fluctuation, suggesting that the model can consistently evaluate
     the importance of these features across various subsets of the data.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 左侧的箱型图展示了系数在不同交叉验证折中的分布情况。与包括“2ndFlrSF”的先前模型相比，系数的方差明显减少。这种方差减少突显了移除冗余特征的有效性，这可以帮助稳定模型的估计并增强其可解释性。每个特征的系数现在表现出更少的波动，这表明模型可以在不同数据子集中一致地评估这些特征的重要性。
 - en: In addition to maintaining the model’s predictability, the reduction in feature
     complexity has significantly enhanced the interpretability of the model. With
     fewer variables, each contributing distinctly to the outcome, we can now more
@@ -228,77 +327,114 @@
     facilitating clearer communication and more actionable insights. This improved
     transparency is invaluable, particularly in fields where explaining model predictions
     is as important as the predictions themselves.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了保持模型的预测能力外，特征复杂性的减少显著提高了模型的可解释性。变量减少后，每个变量对结果的贡献更为明确，我们现在可以更容易地评估这些特定特征对销售价格的影响。这种清晰度允许更直接的解释，并基于模型输出做出更有信心的决策。利益相关者可以更好地理解“GrLivArea”，“1stFlrSF”和“LowQualFinSF”的变化如何影响物业价值，从而促进更清晰的沟通和更具操作性的见解。这种透明度在解释模型预测与预测本身同样重要的领域中尤其宝贵。
 - en: '**Further****Reading**'
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步**阅读'
 - en: APIs
+  id: totrans-49
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: API
 - en: '[sklearn.linear_model.Lasso](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html)
     API'
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[sklearn.linear_model.Lasso](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html)
+    API'
 - en: Tutorials
+  id: totrans-51
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[Apply Lasso regression to automate feature selection](https://developer.ibm.com/tutorials/awb-lasso-regression-automatic-feature-selection/)
     by Eda Kavlakoglu'
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[应用Lasso回归自动特征选择](https://developer.ibm.com/tutorials/awb-lasso-regression-automatic-feature-selection/)
+    作者：Eda Kavlakoglu'
 - en: '[Feature selection in machine learning using Lasso regression](https://www.yourdatateacher.com/2021/05/05/feature-selection-in-machine-learning-using-lasso-regression/)
     by Gianluca Malato'
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[使用Lasso回归进行机器学习中的特征选择](https://www.yourdatateacher.com/2021/05/05/feature-selection-in-machine-learning-using-lasso-regression/)
+    作者：Gianluca Malato'
 - en: '**Ames Housing Dataset & Data Dictionary**'
+  id: totrans-54
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**艾姆斯房屋数据集与数据字典**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[艾姆斯数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[艾姆斯数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: This blog post tackled the challenge of perfect multicollinearity in regression
     models, starting with its detection using matrix rank analysis in the Ames Housing
     dataset. We then explored Lasso regression to mitigate multicollinearity by reducing
     feature count, stabilizing coefficient estimates, and preserving model predictability.
     It concluded by refining the linear regression model and enhancing its interpretability
     and reliability through strategic feature reduction.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇博客文章解决了回归模型中的完美多重共线性问题，从使用矩阵秩分析检测开始。随后我们探讨了如何通过减少特征数量、稳定系数估计并保持模型预测能力来缓解多重共线性。最后，通过战略性特征减少来改进线性回归模型，并提高其可解释性和可靠性。
 - en: 'Specifically, you learned:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The use of matrix rank analysis to detect perfect multicollinearity in a dataset.
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用矩阵秩分析检测数据集中的完美多重共线性。
 - en: The application of Lasso regression to mitigate multicollinearity and assist
     in feature selection.
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 应用Lasso回归来缓解多重共线性并协助特征选择。
 - en: The refinement of a linear regression model using insights from Lasso to enhance
     interpretability.
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用Lasso的见解来改进线性回归模型，以提高可解释性。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 有任何问题吗？请在下面的评论中提出问题，我会尽力回答。

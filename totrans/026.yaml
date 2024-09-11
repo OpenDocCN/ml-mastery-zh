@@ -1,112 +1,161 @@
 - en: 'One Hot Encoding: Understanding the “Hot” in Data'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 一热编码：理解数据中的“Hot”
 - en: 原文：[https://machinelearningmastery.com/one-hot-encoding-understanding-the-hot-in-data/](https://machinelearningmastery.com/one-hot-encoding-understanding-the-hot-in-data/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/one-hot-encoding-understanding-the-hot-in-data/](https://machinelearningmastery.com/one-hot-encoding-understanding-the-hot-in-data/)
 - en: Preparing categorical data correctly is a fundamental step in machine learning,
     particularly when using linear models. One Hot Encoding stands out as a key technique,
     enabling the transformation of categorical variables into a machine-understandable
     format. This post tells you why you cannot use a categorical variable directly
     and demonstrates the use One Hot Encoding in our search for identifying the most
     predictive categorical features for linear regression.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 正确准备类别数据是机器学习中的一个基本步骤，特别是在使用线性模型时。一热编码作为一个关键技术，使得将类别变量转换为机器可理解的格式成为可能。本文告诉你为什么不能直接使用类别变量，并展示了在寻找线性回归中最具预测性的类别特征时使用一热编码的方法。
 - en: Let’s get started.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/84a746c5b165dc1f69ee148356c2ca81.png)'
+  id: totrans-4
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/84a746c5b165dc1f69ee148356c2ca81.png)'
 - en: 'One Hot Encoding: Understanding the “Hot” in Data'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 一热编码：理解数据中的“Hot”
 - en: Photo by [sutirta budiman](https://unsplash.com/photos/low-angle-photography-of-yellow-hot-air-balloon-eN6c3KWNXcA).
     Some rights reserved.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [sutirta budiman](https://unsplash.com/photos/low-angle-photography-of-yellow-hot-air-balloon-eN6c3KWNXcA)
+    提供。保留部分权利。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分：
 - en: What is One Hot Encoding?
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是一热编码？
 - en: Identifying the Most Predictive Categorical Feature
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 确定最具预测性的类别特征
 - en: Evaluating Individual Features’ Predictive Power
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 评估单个特征的预测能力
 - en: What is One Hot Encoding?
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是一热编码？
 - en: In data preprocessing for linear models, “One Hot Encoding” is a crucial technique
     for managing categorical data. In this method, “hot” signifies a category’s presence
     (encoded as one), while “cold” (or zero) signals its absence, using binary vectors
     for representation.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在线性模型的数据预处理过程中，“一热编码”是管理类别数据的关键技术。在这种方法中，“hot”表示类别的存在（编码为1），而“cold”（或0）表示其不存在，使用二进制向量进行表示。
 - en: From the angle of levels of measurement, categorical data are **nominal data**,
     which means if we used numbers as labels (e.g., 1 for male and 2 for female),
     operations such as addition and subtraction would not make sense. And if the labels
     are not numbers, you can’t even do any math with it.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 从测量水平的角度看，类别数据是**名义数据**，这意味着如果我们使用数字作为标签（例如，1代表男性，2代表女性），加法和减法等操作将没有意义。而且如果标签不是数字，你甚至无法进行任何数学运算。
 - en: One hot encoding separates each category of a variable into distinct features,
     preventing the misinterpretation of categorical data as having some ordinal significance
     in linear regression and other linear models. After the encoding, the number bears
     meaning, and it can readily be used in a math equation.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 一热编码将变量的每个类别分隔成独立的特征，防止在线性回归和其他线性模型中将类别数据误解为具有某种序数意义。编码后，数字具有实际意义，并且可以直接用于数学方程。
 - en: For instance, consider a categorical feature like “Color” with the values Red,
     Blue, and Green. One Hot Encoding translates this into three binary features (“Color_Red,”
     “Color_Blue,” and “Color_Green”), each indicating the presence (1) or absence
     (0) of a color for each observation. Such a representation clarifies to the model
     that these categories are distinct, with no inherent order.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，考虑一个像“颜色”这样的类别特征，其值为红色、蓝色和绿色。一热编码将其转换为三个二进制特征（“Color_Red”，“Color_Blue”和“Color_Green”），每个特征指示每个观察值的颜色的存在（1）或不存在（0）。这种表示方式向模型明确说明这些类别是不同的，没有固有的顺序。
 - en: Why does this matter? Many machine learning models, including linear regression,
     operate on numerical data and assume a numerical relationship between values.
     Directly encoding categories as numbers (e.g., Red=1, Blue=2, Green=3) could imply
     a non-existent hierarchy or quantitative relationship, potentially skewing predictions.
     One Hot Encoding sidesteps this issue, preserving the categorical nature of the
     data in a form that models can accurately interpret.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么这很重要？许多机器学习模型，包括线性回归，都在数值数据上运行，并假设值之间存在数值关系。直接将类别编码为数字（例如，红色=1，蓝色=2，绿色=3）可能会暗示不存在的层次结构或定量关系，从而可能扭曲预测。一热编码避免了这个问题，以模型可以准确解释的形式保留了数据的类别性质。
 - en: 'Let’s apply this technique to the Ames dataset, demonstrating the transformation
     process with an example:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们将这一技术应用于Ames数据集，通过示例展示转换过程：
 - en: '[PRE0]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'This will output:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将输出：
 - en: '[PRE1]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: As seen, the Ames dataset’s categorical columns are converted into 188 distinct
     features, illustrating the expanded complexity and detailed representation that
     One Hot Encoding provides. This expansion, while increasing the dimensionality
     of the dataset, is a crucial preprocessing step when modeling the relationship
     between categorical features and the target variable in linear regression.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 如图所示，Ames数据集的分类列被转换为188个不同的特征，展示了独热编码提供的扩展复杂性和详细表示。虽然这种扩展增加了数据集的维度，但在建模分类特征与线性回归目标变量之间的关系时，这是一个至关重要的预处理步骤。
 - en: Identifying the Most Predictive Categorical Feature
+  id: totrans-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 识别最具预测性的分类特征
 - en: 'After understanding the basic premise and application of One Hot Encoding in
     linear models, the next step in our analysis involves identifying which categorical
     feature contributes most significantly to predicting our target variable. In the
@@ -114,30 +163,43 @@
     apply One Hot Encoding, and evaluate its predictive power using a linear regression
     model in conjunction with cross-validation. Here, the `drop="first"` parameter
     in the `OneHotEncoder` function plays a vital role:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 在理解了独热编码在线性模型中的基本前提和应用后，我们分析的下一步是确定哪个分类特征对预测目标变量贡献最大。在下面的代码片段中，我们迭代数据集中的每个分类特征，应用独热编码，并结合交叉验证评估其预测能力。在这里，`drop="first"`
+    参数在 `OneHotEncoder` 函数中起着至关重要的作用：
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The `drop="first"` parameter is used to mitigate perfect collinearity. By dropping
     the first category (encoding it implicitly as zeros across all other categories
     for a feature), we reduce redundancy and the number of input variables without
     losing any information. This practice simplifies the model, making it easier to
     interpret and often improving its performance. The code above will output:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '`drop="first"` 参数用于缓解完全共线性。通过丢弃第一个类别（在所有其他类别中隐式编码为零），我们减少了冗余和输入变量的数量，而不会丢失任何信息。这种做法简化了模型，使其更易于解释，并且通常提高其性能。上面的代码将输出：'
 - en: '[PRE3]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Our analysis reveals that “Neighborhood” is the categorical feature with the
     highest predictability in our dataset. This finding highlights the significant
     impact of location on housing prices within the Ames dataset.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的分析揭示了“Neighborhood”是数据集中预测能力最高的分类特征。这一发现突显了位置在Ames数据集中的房价上的显著影响。
 - en: Evaluating Individual Features’ Predictive Power
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 评估单个特征的预测能力
 - en: With a deeper understanding of One Hot Encoding and identifying the most predictive
     categorical feature, we now expand our analysis to uncover the top five categorical
     features that significantly impact housing prices. This step is essential for
@@ -146,21 +208,31 @@
     R² score, we can determine not just the importance of these features individually
     but also gain insights into how different aspects of a property contribute to
     its overall valuation.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过对独热编码的更深入理解以及识别最具预测性的分类特征，我们现在将分析扩展到揭示对房价有显著影响的前五个分类特征。这一步对微调我们的预测模型至关重要，使我们能够专注于那些在预测结果中提供最大价值的特征。通过评估每个特征的平均交叉验证R²分数，我们不仅可以确定这些特征的个体重要性，还能洞察不同方面的属性如何影响整体估值。
 - en: 'Let’s delve into this evaluation:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们*深入探讨*这个评估：
 - en: '[PRE4]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The output from our analysis presents a revealing snapshot of the factors that
     play pivotal roles in determining housing prices:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们分析的输出呈现了决定房价的关键因素的揭示性快照：
 - en: '[PRE5]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: This result accentuates the importance of the feature “Neighborhood” as the
     top predictor, reinforcing the idea that location significantly influences housing
     prices. Following closely are “ExterQual” (Exterior Material Quality) and “KitchenQual”
@@ -169,73 +241,107 @@
     also emerge as significant, albeit with lower predictive power, suggesting that
     structural integrity and comfort features are critical considerations for home
     buyers.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一结果突显了“Neighborhood”作为顶级预测因子的作用，强化了位置对房价的显著影响。紧随其后的是“ExterQual”（外部材料质量）和“KitchenQual”（厨房质量），这表明买家对建筑质量和装修的重视。“Foundation”和“HeatingQC”（供暖质量和状态）也显得重要，尽管预测能力较低，这表明结构完整性和舒适性特征是购房者的重要考量因素。
 - en: '**Further****Reading**'
+  id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: APIs
+  id: totrans-37
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: APIs
 - en: '[sklearn.preprocessing.OneHotEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html)
     API'
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[sklearn.preprocessing.OneHotEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html)
+    API'
 - en: Tutorials
+  id: totrans-39
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[One-hot encoding categorical variables](https://www.blog.trainindata.com/one-hot-encoding-categorical-variables/)
     by Sole Galli'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[One-hot 编码分类变量](https://www.blog.trainindata.com/one-hot-encoding-categorical-variables/)
+    作者 Sole Galli'
 - en: '**Ames Housing Dataset & Data Dictionary**'
+  id: totrans-41
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**Ames 房屋数据集及数据字典**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this post, we focused on the critical process of preparing categorical data
     for linear models. Starting with an explanation of One Hot Encoding, we showed
     how this technique makes categorical data interpretable for linear regression
     by creating binary vectors. Our analysis identified “Neighborhood” as the categorical
     feature with the highest impact on housing prices, underscoring location’s pivotal
     role in real estate valuation.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我们重点讲解了为线性模型准备分类数据的关键过程。我们从解释 One Hot Encoding 开始，展示了该技术如何通过创建二进制向量使分类数据对线性回归变得可解释。我们的分析确定了“Neighborhood”作为对房价影响最大的分类特征，强调了位置在房地产估价中的关键作用。
 - en: 'Specifically, you learned:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: One Hot Encoding’s role in converting categorical data to a format usable by
     linear models, preventing the algorithm from misinterpreting the data’s nature.
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: One Hot Encoding 在将分类数据转换为线性模型可用格式中的作用，防止算法误解数据的性质。
 - en: The importance of the `drop='first'` parameter in One Hot Encoding to avoid
     perfect collinearity in linear models.
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`drop=''first''` 参数在 One Hot Encoding 中的重要性，以避免线性模型中的完全共线性。'
 - en: How to evaluate the predictive power of individual categorical features and
     rank their performance within the context of linear models.
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何评估单个分类特征的预测能力，并在线性模型中对其表现进行排名。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？请在下方评论中提问，我会尽力回答。

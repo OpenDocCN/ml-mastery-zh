@@ -1,279 +1,424 @@
 - en: 'A Gentle Introduction to OpenCV: An Open Source Library for Computer Vision
     and Machine Learning'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 温和介绍OpenCV：开源计算机视觉与机器学习库
 - en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-opencv-an-open-source-library-for-computer-vision-and-machine-learning/](https://machinelearningmastery.com/a-gentle-introduction-to-opencv-an-open-source-library-for-computer-vision-and-machine-learning/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-opencv-an-open-source-library-for-computer-vision-and-machine-learning/](https://machinelearningmastery.com/a-gentle-introduction-to-opencv-an-open-source-library-for-computer-vision-and-machine-learning/)
 - en: If you are interested in working with images and video and would like to introduce
     machine learning into your computer vision applications, then OpenCV is a library
     you will need to get hold of.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你对图像和视频处理感兴趣，并希望在计算机视觉应用中引入机器学习，那么OpenCV是你需要获取的库。
 - en: OpenCV is a huge open source library that can interface with various programming
     languages, including Python, and is extensively used by many individuals and commercial
     entities.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV是一个庞大的开源库，可以与多种编程语言接口，包括Python，并被许多个人和商业实体广泛使用。
 - en: In this tutorial, you will familiarise yourself with the OpenCV library and
     what makes it important.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将熟悉OpenCV库及其重要性。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将知道：
 - en: What is the OpenCV library.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV库是什么。
 - en: What is it used for, and who is using it.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它的用途是什么，谁在使用它。
 - en: How to install and import OpenCV in Python.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在Python中安装和导入OpenCV。
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [《OpenCV中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)
+    **来启动你的项目**。它提供了**自学教程**和**有效的代码**。'
 - en: Let’s get started. [![](../Images/1ea718634d73bc68816bd23f334eb0b7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/opencv_intro_cover-scaled.jpg)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。[![](../Images/1ea718634d73bc68816bd23f334eb0b7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/opencv_intro_cover-scaled.jpg)
 - en: 'A Gentle Introduction to OpenCV: An Open Source Library for Computer Vision
     and Machine Learning'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 温和介绍OpenCV：开源计算机视觉与机器学习库
 - en: Photo by [Greg Rakozy](https://unsplash.com/photos/oMpAz-DN-9I), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Greg Rakozy](https://unsplash.com/photos/oMpAz-DN-9I)拍摄，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概览**'
 - en: 'This tutorial is divided into four parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四部分，它们是：
 - en: What is OpenCV?
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV是什么？
 - en: What is OpenCV used for?
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV的用途是什么？
 - en: Who is using OpenCV?
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 谁在使用OpenCV？
 - en: How is OpenCV installed and imported in Python?
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在Python中安装和导入OpenCV？
 - en: '**What is** **OpenCV?**'
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**OpenCV是什么？**'
 - en: OpenCV stands for *Open Source Computer Vision* *Library; as the name hints,
     it is an open-source* library of computer vision and machine learning software.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV代表*开源计算机视觉* *库；顾名思义，它是一个开源的*计算机视觉和机器学习软件库。
 - en: It has an Apache 2.0 license, which permits users to utilize, modify, and distribute
     the software. This makes it especially attractive for commercial entities to use
     this library in their products.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 它拥有Apache 2.0许可证，允许用户使用、修改和分发软件。这使得商业实体特别愿意在其产品中使用此库。
 - en: Written natively in C++, the OpenCV library supports Windows, Linux, Android,
     and MacOS, and has C++, Python, Java, and MATLAB interfaces.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV库是用C++原生编写的，支持Windows、Linux、Android和MacOS，并提供C++、Python、Java和MATLAB接口。
 - en: It is geared mostly towards real-time computer vision applications.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 它主要针对实时计算机视觉应用。
 - en: '**What is** **OpenCV used for?**'
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**OpenCV的用途是什么？**'
 - en: 'OpenCV is a huge library containing more than 2500 optimized algorithms that
     can be used for many different computer vision applications, such as:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV是一个庞大的库，包含超过2500个优化的算法，可以用于许多不同的计算机视觉应用，如：
 - en: '**Face detection and recognition. **'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**人脸检测和识别。**'
 - en: '***   **Object identification. *****   **Object tracking. *****   **Image registration
     and stitching. *****   **Augmented reality. **********'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **物体识别。 *****   **物体跟踪。 *****   **图像配准与拼接。 *****   **增强现实。 **********'
 - en: '******and many others.'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '******以及许多其他内容。'
 - en: In this series of tutorials, you will discover the specific role that the OpenCV
     library plays in applying machine learning to computer vision applications.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一系列教程中，你将发现OpenCV库在将机器学习应用于计算机视觉应用中的具体作用。
 - en: 'Some popular machine learning algorithms that are implemented in the OpenCV
     library include:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV库中实现的一些流行机器学习算法包括：
 - en: '**K-Nearest Neighbors**'
+  id: totrans-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**K最近邻**'
 - en: '***   **Support Vector Machines*****   **Decision Trees******'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **支持向量机*****   **决策树******'
 - en: '******as well as the support of a number of deep learning frameworks, including
     TensorFlow and PyTorch.'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '******以及包括 TensorFlow 和 PyTorch 在内的多个深度学习框架的支持。'
 - en: '**Who is using OpenCV****?**'
+  id: totrans-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**谁在使用 OpenCV****？**'
 - en: The OpenCV website estimates that the number of library downloads exceeds 18
     million, and a user community is formed by more than 47 thousand users.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV 网站估计库的下载量超过 1800 万次，用户社区由超过 4.7 万名用户组成。
 - en: The OpenCV library is also used by many well-established companies.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多知名公司也在使用 OpenCV 库。
 - en: The OpenCV website mentions well-known companies, such as Google, Yahoo, Microsoft,
     Intel and Toyota, that employ the library in their work.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV 网站提到了一些知名公司，如 Google、Yahoo、Microsoft、Intel 和 Toyota，它们在工作中使用该库。
 - en: 'The range of applications for which the OpenCV library is being used by these
     companies is also vast:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些公司使用 OpenCV 库的应用范围也非常广泛：
 - en: '*OpenCV’s deployed uses span the range from stitching streetview images together,
     detecting intrusions in surveillance video in Israel, monitoring mine equipment
     in China, helping robots navigate and pick up objects at Willow Garage, detection
     of swimming pool drowning accidents in Europe, running interactive art in Spain
     and New York, checking runways for debris in Turkey, inspecting labels on products
     in factories around the world on to rapid face detection in Japan.*'
+  id: totrans-39
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*OpenCV 的应用范围包括从拼接街景图像、检测以色列监控视频中的入侵、监控中国矿山设备、帮助 Willow Garage 的机器人导航和拾取物体、检测欧洲游泳池溺水事故、在西班牙和纽约运行互动艺术、检查土耳其跑道上的碎片、检查全球工厂中产品的标签到日本的快速人脸检测。*'
 - en: ''
+  id: totrans-40
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* [OpenCV](https://opencv.org/about/), 2022.'
+  id: totrans-41
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* [OpenCV](https://opencv.org/about/)，2022 年。'
 - en: This shows how extensive the use of the OpenCV library is.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 这显示了 OpenCV 库的广泛应用。
 - en: '**How is OpenCV installed and imported in Python****?**'
+  id: totrans-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**OpenCV 在 Python 中如何安装和导入****？**'
 - en: As mentioned earlier, the OpenCV library is written in C++, but its functions
     can still be called from Python.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 如前所述，OpenCV 库是用 C++ 编写的，但其功能仍可以从 Python 中调用。
 - en: This is made possible by binding generators that create a bridge between C++
     and Python.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是通过绑定生成器创建 C++ 和 Python 之间的桥梁实现的。
 - en: 'Installing the OpenCV library from the Python Package Index (PyPi) can be done
     through the following single-line command:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以通过以下单行命令从 Python 包索引（PyPi）安装 OpenCV 库：
 - en: Python
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Importing OpenCV to make use of its functions is, then, as simple as calling:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 导入 OpenCV 以利用其功能，就像调用以下命令一样简单：
 - en: Python
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: We will make frequent use of the `import` command as we journey our way through
     the library.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们浏览库的过程中，我们将频繁使用 `import` 命令。
 - en: We’ll start from the very basics by seeing how to read images and videos as
     NumPy arrays, display them, access their pixel values, and convert between color
     spaces.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将从最基础的开始，学习如何将图像和视频读取为 NumPy 数组，显示它们，访问其像素值，以及在颜色空间之间转换。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-54
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 OpenCV 进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费 PDF 电子书版本。
 - en: So let’s get started!
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，让我们开始吧！
 - en: '**Further Reading**'
+  id: totrans-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想深入了解本主题，这一部分提供了更多资源。
 - en: '**Books**'
+  id: totrans-60
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[掌握 OpenCV 4 和 Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019
+    年。'
 - en: '**Websites**'
+  id: totrans-62
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV，[https://opencv.org/](https://opencv.org/)
 - en: '**Summary**'
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you familiarize yourself with the OpenCV library and what
     makes it important.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将熟悉 OpenCV 库以及它的重要性。
 - en: 'Specifically, you learned:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: What is the OpenCV library.
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是 OpenCV 库。
 - en: What is it used for, and who is using it.
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它用于什么，谁在使用它。
 - en: How to install and import OpenCV in Python.
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 Python 中安装和导入 OpenCV。
 - en: Do you have any questions?
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.************
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提出你的问题，我会尽力回答。************

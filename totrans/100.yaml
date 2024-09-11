@@ -1,428 +1,649 @@
 - en: A Gentle Introduction to Unit Testing in Python
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Python单元测试的温和介绍
 - en: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-unit-testing-in-python/](https://machinelearningmastery.com/a-gentle-introduction-to-unit-testing-in-python/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-gentle-introduction-to-unit-testing-in-python/](https://machinelearningmastery.com/a-gentle-introduction-to-unit-testing-in-python/)
 - en: Unit testing is a method for testing software that looks at the smallest testable
     pieces of code, called units, which are tested for correct operation. By doing
     unit testing, we can verify that each part of the code, including helper functions
     that may not be exposed to the user, works correctly and as intended.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 单元测试是一种测试软件的方法，关注代码中最小的可测试单元，并测试其正确性。通过单元测试，我们可以验证代码的每个部分，包括可能不对用户公开的辅助函数，是否正常工作并按预期执行。
 - en: The idea is that we are independently checking each small piece of our program
     to ensure that it works. This contrasts with regression and integration testing,
     which tests that the different parts of the program work well together and as
     intended.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个理念是，我们独立检查程序中的每一个小部分，以确保它正常工作。这与回归测试和集成测试形成对比，后者测试程序的不同部分是否协同工作并按预期执行。
 - en: 'In this post, you will discover how to implement unit testing in Python using
     two popular unit testing frameworks: the built-in PyUnit framework and the PyTest
     framework.'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你将发现如何使用两个流行的单元测试框架：内置的PyUnit框架和PyTest框架来实现Python中的单元测试。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将知道：
 - en: Unit testing libraries in Python such as PyUnit and PyTest
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python中的单元测试库，如PyUnit和PyTest
 - en: Checking expected function behavior through the use of unit tests
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过使用单元测试检查预期的函数行为
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的新书** [《Python机器学习》](https://machinelearningmastery.com/python-for-machine-learning/)，**启动你的项目**，包括*逐步教程*和所有示例的*Python源代码*文件。'
 - en: Let’s get started!![](../Images/9387df1b101457bd8a20d9afde5e585f.png)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！！[](../Images/9387df1b101457bd8a20d9afde5e585f.png)
 - en: A Gentle Introduction to Unit Testing in Python
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: Python单元测试的温和介绍
 - en: Photo by [Bee Naturalles](https://unsplash.com/photos/IRM9qgZdlW0). Some rights
     reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Bee Naturalles](https://unsplash.com/photos/IRM9qgZdlW0)提供。版权所有。
 - en: Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'The tutorial is divided into five parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为五个部分；它们是：
 - en: What are unit tests, and why are they important?
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是单元测试，它们为什么重要？
 - en: What is Test Driven Development (TDD)?
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是测试驱动开发（TDD）？
 - en: Using Python’s built-in PyUnit framework
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用Python内置的PyUnit框架
 - en: Using PyTest library
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用PyTest库
 - en: Unit testing in action
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 单元测试的实际操作
 - en: What Are Unit Tests, and Why Are They Important?
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是单元测试，它们为什么重要？
 - en: Remember doing math back in school, completing different arithmetic procedures
     before combining them to get the correct answer? Imagine how you would check to
     ensure that the calculations done at each step were correct, and you didn’t make
     any careless mistakes or miswrote anything.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 记得在学校做数学时，完成不同的算术步骤，然后将它们组合以获得正确答案吗？想象一下，你如何检查每一步的计算是否正确，确保没有粗心的错误或写错任何东西。
 - en: Now, extend that idea to code! We wouldn’t want to have to constantly look through
     our code to statically verify its correctness, so how would you create a test
     to ensure that the following piece of code actually returns the area of the rectangle?
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，把这个理念扩展到代码上！我们不希望不断检查代码以静态验证其正确性，那么你会如何创建测试以确保以下代码片段实际返回矩形的面积？
 - en: '[PRE0]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: We could run the code with a few test examples and see if it returns the expected
     output.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以用一些测试示例运行代码，看看它是否返回预期的输出。
 - en: That’s the idea of a unit test! A unit test is a test that checks a single component
     of code, usually modularized as a function, and ensures that it performs as expected.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是单元测试的理念！单元测试是检查单一代码组件的测试，通常模块化为函数，并确保其按预期执行。
 - en: Unit tests are an important part of regression testing to ensure that the code
     still functions as expected after making changes to the code and helps ensure
     code stability. After making changes to our code, we can run the unit tests we
     have created previously to ensure that the existing functionality in other parts
     of the codebase has not been impacted by our changes.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 单元测试是回归测试的重要组成部分，以确保在对代码进行更改后，代码仍然按预期功能运行，并帮助确保代码的稳定性。在对代码进行更改后，我们可以运行之前创建的单元测试，以确保我们对代码库其他部分的更改没有影响到现有功能。
 - en: Another key benefit of unit tests is that they help easily isolate errors. Imagine
     running the entire project and receiving a string of errors. How would we go about
     debugging our code?
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 单元测试的另一个关键好处是它们有助于轻松隔离错误。想象一下运行整个项目并收到一连串的错误。我们该如何调试代码呢？
 - en: That’s where unit tests come in. We can analyze the outputs of our unit tests
     to see if any component of our code has been throwing errors and start debugging
     from there. That’s not to say that unit testing can always help us find the bug,
     but it allows for a much more convenient starting point before we start looking
     at the integration of components in integration testing.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是单元测试的作用。我们可以分析单元测试的输出，查看代码中的任何组件是否出现错误，并从那里开始调试。这并不是说单元测试总能帮助我们找到错误，但它在我们开始查看集成测试中的组件集成之前提供了一个更方便的起点。
 - en: 'For the rest of the article, we will be showing how to do unit testing by testing
     the functions in this Rectangle class:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 在接下来的文章中，我们将展示如何通过测试 Rectangle 类中的函数来进行单元测试：
 - en: '[PRE1]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Now that we have motivated unit tests, let’s explore how exactly we can use
     unit tests as part of our development pipeline and how to implement them in Python!
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经了解了单元测试的意义，让我们探索一下如何将单元测试作为开发流程的一部分，以及如何在 Python 中实现它们！
 - en: Test Driven Development
+  id: totrans-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 测试驱动开发
 - en: 'Testing is so important to good software development that there’s even a software
     development process based on testing, Test Driven Development (TDD). Three rules
     of TDD proposed by Robert C. Martin are:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 测试在良好的软件开发中如此重要，以至于甚至存在一个基于测试的软件开发过程——测试驱动开发（TDD）。Robert C. Martin 提出的 TDD 三条规则是：
 - en: '*You are not allowed to write any production code unless it is to make a failing
     unit test pass.*'
+  id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*除非是为了让一个失败的单元测试通过，否则你不允许编写任何生产代码。*'
 - en: '*You are not allowed to write any more of a unit test than is sufficient to
     fail, and compilation failures are failures.*'
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*除非是为了让单元测试失败，否则你不允许编写超过必要的单元测试代码，编译失败也是失败。*'
 - en: '*You are not allowed to write any more production code than is sufficient to
     pass the one failing unit test.*'
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*除非是为了让一个失败的单元测试通过，否则你不允许编写比通过一个失败单元测试所需的更多生产代码。*'
 - en: The key idea of TDD is that we base our software development around a set of
     unit tests that we have created, which makes unit testing the heart of the TDD
     software development process. This way, you are assured that you have a test for
     every component you develop.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: TDD 的关键理念是，我们围绕一组我们创建的单元测试来进行软件开发，这使得单元测试成为 TDD 软件开发过程的核心。这样，你可以确保你为开发的每个组件都制定了测试。
 - en: TDD is also biased toward having smaller tests which means tests that are more
     specific and test fewer components at a time. This aids in tracking down errors,
     and smaller tests are also easier to read and understand since there are fewer
     components at play in a single run.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: TDD 还偏向于进行更小的测试，这意味着测试更具体，并且每次测试的组件更少。这有助于追踪错误，而且小的测试更易于阅读和理解，因为每次运行中涉及的组件更少。
 - en: It doesn’t mean you must use TDD for your projects. But you may consider that
     as a method to develop your code and the tests at the same time.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 这并不意味着你必须在你的项目中使用 TDD。但你可以考虑将其作为同时开发代码和测试的方法。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-39
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 Python 进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费7天邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费 PDF 电子书版本。
 - en: Using Python Built-in PyUnit Framework
+  id: totrans-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 Python 内置的 PyUnit 框架
 - en: You might be wondering, why do we need unit testing frameworks since Python
     and other languages offer the `assert` keyword? Unit testing frameworks help automate
     the testing process and allow us to run multiple tests on the same function with
     different parameters, check for expected exceptions, and many others.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会想，既然 Python 和其他语言提供了 `assert` 关键字，我们为什么还需要单元测试框架？单元测试框架有助于自动化测试过程，并允许我们对同一函数运行多个测试，使用不同的参数，检查预期的异常等等。
 - en: 'PyUnit is Python’s built-in unit testing framework and Python’s version of
     the corresponding JUnit testing framework for Java. To get started building a
     test file, we need to import the `unittest` library to use PyUnit:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: PyUnit 是 Python 内置的单元测试框架，也是 Python 版的 JUnit 测试框架。要开始编写测试文件，我们需要导入 `unittest`
+    库以使用 PyUnit：
 - en: '[PRE2]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Then, we can get started writing out first unit test. Unit tests in PyUnit
     are structured as subclasses of the `unittest.TestCase` class, and we can override
     the `runTest()` method to perform our own unit tests which check conditions using
     different assert functions in `unittest.TestCase`:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以开始编写第一个单元测试。PyUnit 中的单元测试结构为 `unittest.TestCase` 类的子类，我们可以重写 `runTest()`
+    方法来执行自己的单元测试，使用 `unittest.TestCase` 中的不同断言函数检查条件：
 - en: '[PRE3]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: That’s our first unit test! It checks if the `rectangle.get_area()` method returns
     the correct area for a rectangle with width = 2 and length = 3\. We use `self.assertEqual`
     instead of simply using `assert` to allow the `unittest` library to allow the
     runner to accumulate all test cases and produce a report.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是我们的第一个单元测试！它检查 `rectangle.get_area()` 方法是否返回宽度 = 2 和长度 = 3 的矩形的正确面积。我们使用
+    `self.assertEqual` 而不是简单使用 `assert`，以便 `unittest` 库允许测试运行器累积所有测试用例并生成报告。
 - en: Using the different assert functions in `unittest.TestCase` also gives us a
     better ability to test different behaviors such as `self.assertRaises(exception)`.
     This allows us to check if a certain block of code produces an expected exception.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 `unittest.TestCase` 中的不同断言函数还可以更好地测试不同的行为，例如 `self.assertRaises(exception)`。这允许我们检查某段代码是否产生了预期的异常。
 - en: To run the unit test, we make a call to `unittest.main()` in our program,
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 要运行单元测试，我们在程序中调用 `unittest.main()`，
 - en: '[PRE4]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Since the code returns the expected output for this case, it returns that the
     tests run successfully, with the output:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于代码返回了预期的输出，它显示测试成功运行，输出为：
 - en: '[PRE5]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'The complete code is as follows:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码如下：
 - en: '[PRE6]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '**Note:** While in the above, our business logic `Rectangle` class and our
     test code `TestGetAreaRectangle` are put together. In reality, you may put them
     in separate files and `import` the business logic into your test code. This can
     help you better manage the code.'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意：** 在上面，我们的业务逻辑 `Rectangle` 类和我们的测试代码 `TestGetAreaRectangle` 被放在一起。实际上，你可以将它们放在不同的文件中，并将业务逻辑
+    `import` 到你的测试代码中。这可以帮助你更好地管理代码。'
 - en: 'We can also nest multiple unit tests together in one subclass of `unittest.TestCase`,
     by naming methods in the new subclass with the “`test`” prefix, for example:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以在 `unittest.TestCase` 的一个子类中嵌套多个单元测试，通过在新子类中的方法名前加上 “`test`” 前缀，例如：
 - en: '[PRE7]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Running this will give us our first error:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行这段代码将给我们第一个错误：
 - en: '[PRE8]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: We can see the unit test that failed, which is the `test_negative_case` as highlighted
     in the output along with the stderr message since `get_area()` doesn’t return
     -1 as we expected in our test.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以看到失败的单元测试，即 `test_negative_case`，如输出中突出显示的内容和 stderr 消息，因为 `get_area()`
+    没有返回我们在测试中预期的 -1。
 - en: 'There are many different kinds of assert functions defined in the unittest.
     For example, we can use the TestCase class:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: unittest 中定义了许多不同种类的断言函数。例如，我们可以使用 TestCase 类：
 - en: '[PRE9]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'We can even check whether a particular exception was thrown during execution:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们甚至可以检查在执行过程中是否抛出了特定的异常：
 - en: '[PRE10]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Now, we look at building up our tests. What if we had some code that we needed
     to run to set up before running each test? Well, we can override the setUp method
     in unittest.TestCase.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们来看看如何建立我们的测试。如果我们有一些代码需要在每个测试运行之前执行呢？我们可以重写 `unittest.TestCase` 中的 `setUp`
+    方法。
 - en: '[PRE11]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: In the above code example, we have overridden the `setUp()` method from `unittest.TestCase`,
     with our own `setUp()` method that initializes a `Rectangle` object. This `setUp()`
     method is run prior to each unit test and is helpful in avoiding code duplication
     when multiple tests rely on the same piece of code to set up the test. This is
     similar to the `@Before` decorator in JUnit.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述代码示例中，我们重写了来自 `unittest.TestCase` 的 `setUp()` 方法，使用了我们自己的 `setUp()` 方法来初始化一个
+    `Rectangle` 对象。这个 `setUp()` 方法在每个单元测试之前运行，有助于避免在多个测试依赖相同代码来设置测试时的代码重复。这类似于 JUnit
+    中的 `@Before` 装饰器。
 - en: Likewise, there is a `tearDown()` method that we can override as well for code
     to be executed after each test.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样，我们还可以重写 `tearDown()` 方法，用于在每个测试之后执行代码。
 - en: 'To run the method only once per TestCase class, we can also use the setUpClass
     method as follows:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了在每个 TestCase 类中只运行一次该方法，我们也可以使用 `setUpClass` 方法，如下所示：
 - en: '[PRE12]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: The above code is only run once per TestCase instead of once per test run as
     is the case with setUp.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码在每个 TestCase 中仅运行一次，而不是像 setUp 那样在每次测试运行时运行一次。
 - en: 'To help us organize tests and select which set of tests we want to run, we
     can aggregate test cases into test suites which help to group tests that should
     executed together into a single object:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了帮助我们组织测试并选择要运行的测试集，我们可以将测试用例汇总到测试套件中，这有助于将应一起执行的测试分组到一个对象中：
 - en: '[PRE13]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Here, we also introduce another way to run tests in PyUnit by using the `unittest.TextTestRunner`
     class, which allows us to run specific test suites.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们还介绍了另一种通过使用 `unittest.TextTestRunner` 类在 PyUnit 中运行测试的方法，该类允许我们运行特定的测试套件。
 - en: '[PRE14]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: This gives the same output as running the file from the command line and calling
     `unittest.main()`.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 这与从命令行运行文件并调用 `unittest.main()` 的输出相同。
 - en: 'Bringing everything together, this is what the complete script for the unit
     test would look like:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合所有内容，这就是单元测试的完整脚本：
 - en: '[PRE15]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: This is just the tip of the iceberg with what you can do with PyUnit. We can
     also write tests that look for exception messages that match a regex expression
     or `setUp`/`tearDown` methods that are run only once—(`setUpClass`), for example.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 这只是 PyUnit 能做的一部分。我们还可以编写测试，查找与正则表达式匹配的异常消息或仅运行一次的 `setUp`/`tearDown` 方法（例如
+    `setUpClass`）。
 - en: Using PyTest
+  id: totrans-81
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 PyTest
 - en: 'PyTest is an alternative to the built-in unittest module. To get started with
     PyTest, you will first need to install it, which you can do using:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTest 是内置 unittest 模块的替代品。要开始使用 PyTest，您首先需要安装它，可以通过以下方式进行安装：
 - en: Shell
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE16]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: To write tests, you just need to write functions with names prefixed with “`test`,”
     and PyTest’s test discovery procedure will be able to find your tests, e.g.,
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 要编写测试，您只需编写以“`test`”为前缀的函数名，PyTest 的测试发现程序将能够找到您的测试，例如，
 - en: '[PRE17]'
+  id: totrans-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: You will notice that PyTest uses Python’s built-in `assert` keyword instead
     of its own set of assert functions as PyUnit does, which might make it slightly
     more convenient since we can avoid searching for the different assert functions.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 您会注意到 PyTest 使用 Python 内置的 `assert` 关键字，而不是像 PyUnit 那样的一组断言函数，这可能会更方便，因为我们可以避免查找不同的断言函数。
 - en: 'The complete code is as follows:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码如下：
 - en: '[PRE18]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'After saving this into a file `test_file.py`, we can run PyTest unit test by:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 将其保存到文件 `test_file.py` 中后，我们可以通过以下方式运行 PyTest 单元测试：
 - en: Shell
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE19]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'And this gives us the output:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将给我们以下输出：
 - en: '[PRE20]'
+  id: totrans-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: You may notice that while in PyUnit, we need to invoke the test routine by a
     runner or calling `unittest.main()`. But in PyTest, we simply pass the file to
     the module. The PyTest module will collect all the functions defined with prefix
     `test` and call them one by one. And then it will verify if any exception is raised
     by the `assert` statement. It can be more convenient to allow the tests to stay
     with the business logic.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可能会注意到，在 PyUnit 中，我们需要通过运行程序或调用 `unittest.main()` 来触发测试例程。但在 PyTest 中，我们只需将文件传递给模块。PyTest
+    模块将收集所有以 `test` 为前缀定义的函数并逐一调用它们。然后，它将验证 `assert` 语句是否引发了任何异常。这样可以更方便地让测试保持与业务逻辑一起。
 - en: PyTest also supports grouping functions together in classes, but the class should
     be named with prefix “`Test`” (with uppercase T), e.g.,
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTest 还支持将函数归组到类中，但类名应该以“`Test`”作为前缀（大写的 T），例如，
 - en: '[PRE21]'
+  id: totrans-97
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'Running this with PyTest will produce the following output:'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 PyTest 运行此测试将生成以下输出：
 - en: '[PRE22]'
+  id: totrans-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'The complete code is as follows:'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码如下：
 - en: '[PRE23]'
+  id: totrans-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: To implement the setup and teardown code for our tests, PyTest has an extremely
     flexible fixture system, where fixtures are functions that have a return value.
     PyTest’s fixture system allows sharing of fixtures across classes, modules, packages,
     or sessions, and fixtures that can call other fixtures as arguments.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 为我们的测试实现设置和拆解代码，PyTest 具有极其灵活的 fixture 系统，其中 fixture 是具有返回值的函数。PyTest 的 fixture
+    系统允许在类、模块、包或会话之间共享 fixture，并且 fixture 可以将其他 fixture 作为参数调用。
 - en: 'Here we include a simple introduction to PyTest’s fixture system:'
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们简单介绍了 PyTest 的 fixture 系统：
 - en: '[PRE24]'
+  id: totrans-104
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: The above code introduces Rectangle as a fixture, and PyTest matches the rectangle
     in the argument list of `test_negative_case` with the fixture and provides `test_negative_case`
     with its own set of outputs from the rectangle function. It does this for every
@@ -431,144 +652,217 @@
     means that all references to that fixture during the running of an individual
     test are referencing the same return value (which is important if the return value
     is a reference type).
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码将 Rectangle 引入为 fixture，PyTest 在 `test_negative_case` 的参数列表中匹配这个矩形 fixture，并为
+    `test_negative_case` 提供来自矩形函数的输出集合。这对每个其他测试也会如此。然而，请注意，fixtures 可以在每个测试中请求多次，每个测试中
+    fixture 只运行一次，并且结果会被缓存。这意味着在单个测试运行期间对该 fixture 的所有引用都引用了相同的返回值（如果返回值是引用类型，这一点很重要）。
 - en: 'The complete code is as follows:'
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整代码如下：
 - en: '[PRE25]'
+  id: totrans-107
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: Like PyUnit, PyTest has a lot of other functionality that will allow you to
     build more comprehensive and advanced unit tests.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 PyUnit 类似，PyTest 具有许多其他功能，使你能够构建更全面和高级的单元测试。
 - en: Unit Testing in Action
+  id: totrans-109
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 单元测试的实际应用
 - en: 'Now, we’ll explore unit testing in action. For our example, we’ll be testing
     a function that gets stock data from Yahoo Finance using `pandas_datareader` and
     do this in PyUnit:'
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们将探讨单元测试的实际应用。在我们的示例中，我们将测试一个从 Yahoo Finance 获取股票数据的函数，使用 `pandas_datareader`，并在
+    PyUnit 中进行测试：
 - en: '[PRE26]'
+  id: totrans-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'This function gets the stock data on a particular stock ticker by crawling
     from the Yahoo Finance website and returns the pandas DataFrame. This can fail
     in multiple ways. For example, the data reader may fail to return anything (if
     Yahoo Finance is down) or return a DataFrame with missing columns or missing data
     in the columns (if the source restructured its website). Therefore, we should
     provide multiple test functions to check for multiple modes of failure:'
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个函数通过从 Yahoo Finance 网站爬取数据来获取特定股票代码的股票数据，并返回 pandas DataFrame。这可能会以多种方式失败。例如，数据读取器可能无法返回任何内容（如果
+    Yahoo Finance 出现故障）或返回一个缺少列或列中缺少数据的 DataFrame（如果来源重构了其网站）。因此，我们应该提供多个测试函数以检查多种失败模式：
 - en: '[PRE27]'
+  id: totrans-113
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: Our series of unit tests above check if certain columns are present (`test_columns_present`),
     whether the dataframe is non-empty (`test_non_empty`), whether the “high” and
     “low” columns are really the high and low of the same row (`test_high_low`), and
     whether the most recent data in the DataFrame was within the last 7 days (`test_most_recent_within_week`).
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们上面的单元测试系列检查了某些列是否存在（`test_columns_present`）、数据框是否为空（`test_non_empty`）、"high"
+    和 "low" 列是否确实是同一行的最高和最低值（`test_high_low`），以及数据框中最最近的数据是否在过去 7 天内（`test_most_recent_within_week`）。
 - en: Imagine you are doing a machine learning project that consumes the stock market
     data. Having a unit test framework can help you identify if your data preprocessing
     is working as expected.
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象一下，你正在进行一个消耗股市数据的机器学习项目。拥有一个单元测试框架可以帮助你识别数据预处理是否按预期工作。
 - en: Using these unit tests, we are able to identify if there was a material change
     in the output of our function, and this can be a part of a Continuous Integration
     (CI) process. We can also attach other unit tests as required depending on the
     functionality that we depend on from that function.
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这些单元测试，我们能够识别函数输出是否发生了重大变化，这可以成为持续集成（CI）过程的一部分。我们还可以根据需要附加其他单元测试，具体取决于我们对该函数的功能的依赖。
 - en: 'For completeness, here’s an equivalent version for PyTest:'
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了完整性，这里提供一个 PyTest 的等效版本：
 - en: '[PRE28]'
+  id: totrans-118
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: Building unit tests might seem time consuming and tedious, but they can be a
     critical part of any CI pipeline and are invaluable tools for catching bugs early
     on before they move further down the pipeline and become more costly to address.
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 构建单元测试可能看起来费时且繁琐，但它们可能是任何 CI 流水线的关键部分，并且是捕获早期 bug 的宝贵工具，以避免它们进一步传递到流水线中并变得更难处理。
 - en: '*If you like it then you should have put a test on it.*'
+  id: totrans-120
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*如果你喜欢它，那么你应该对其进行测试。*'
 - en: '*— Software Engineering at Google*'
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: '*— 谷歌的软件工程*'
 - en: Further Reading
+  id: totrans-122
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多资源，以便你可以深入了解这个主题。
 - en: Libraries
+  id: totrans-124
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 库
 - en: unittest module (and the list of [assert methods](https://docs.python.org/3/library/unittest.html#assert-methods)),
     [https://docs.python.org/3/library/unittest.html](https://docs.python.org/3/library/unittest.html)
+  id: totrans-125
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: unittest 模块（以及 [assert 方法列表](https://docs.python.org/3/library/unittest.html#assert-methods)），[https://docs.python.org/3/library/unittest.html](https://docs.python.org/3/library/unittest.html)
 - en: PyTest, [https://docs.pytest.org/en/7.0.x/](https://docs.pytest.org/en/7.0.x/)
+  id: totrans-126
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PyTest，[https://docs.pytest.org/en/7.0.x/](https://docs.pytest.org/en/7.0.x/)
 - en: Articles
+  id: totrans-127
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 文章
 - en: Test Driven Development (TDD), [https://www.ibm.com/garage/method/practices/code/practice_test_driven_development/](https://www.ibm.com/garage/method/practices/code/practice_test_driven_development/)
+  id: totrans-128
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 测试驱动开发 (TDD)，[https://www.ibm.com/garage/method/practices/code/practice_test_driven_development/](https://www.ibm.com/garage/method/practices/code/practice_test_driven_development/)
 - en: Python Unit Testing Framework, [http://pyunit.sourceforge.net/pyunit.html](http://pyunit.sourceforge.net/pyunit.html)
+  id: totrans-129
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python 单元测试框架，[http://pyunit.sourceforge.net/pyunit.html](http://pyunit.sourceforge.net/pyunit.html)
 - en: Books
+  id: totrans-130
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '*Software Engineering at Google*, by Titus Winters, Tom Manshreck, and Hyrum
     Wright [https://www.amazon.com/dp/1492082791](https://www.amazon.com/dp/1492082791)'
+  id: totrans-131
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*谷歌的软件工程*，作者：Titus Winters, Tom Manshreck 和 Hyrum Wright [https://www.amazon.com/dp/1492082791](https://www.amazon.com/dp/1492082791)'
 - en: '*Practice of Programming*, by Brian Kernighan and Rob Pike (Chapters 5 and
     6), [https://www.amazon.com/dp/020161586X](https://www.amazon.com/dp/020161586X)'
+  id: totrans-132
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*编程实践*，作者：Brian Kernighan 和 Rob Pike（第 5 章和第 6 章），[https://www.amazon.com/dp/020161586X](https://www.amazon.com/dp/020161586X)'
 - en: Summary
+  id: totrans-133
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: In this post, you discovered what unit testing is and how to use two popular
     libraries in Python to conduct unit testing (PyUnit, PyTest). You have also learned
     how to configure unit tests and have seen an example of a use case for unit testing
     in the data science pipeline.
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你了解了什么是单元测试，以及如何使用两个流行的 Python 库（PyUnit 和 PyTest）进行单元测试。你还学会了如何配置单元测试，并看到了数据科学流程中单元测试的一个用例示例。
 - en: 'Specifically, you learned:'
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: what unit testing is, and why it is useful
+  id: totrans-136
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是单元测试，及其为何有用
 - en: how unit testing fits within the Test Driven Development pipeline
+  id: totrans-137
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 单元测试如何融入测试驱动开发流程
 - en: how to do unit testing in Python using PyUnit and PyTest
+  id: totrans-138
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 PyUnit 和 PyTest 在 Python 中进行单元测试

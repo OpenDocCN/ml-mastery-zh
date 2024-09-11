@@ -1,63 +1,91 @@
 - en: 'Testing Assumptions in Real Estate: A Dive into Hypothesis Testing with the
     Ames Housing Dataset'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 房地产中的假设检验：深入研究使用Ames房屋数据集的假设检验
 - en: 原文：[https://machinelearningmastery.com/a-dive-into-hypothesis-testing/](https://machinelearningmastery.com/a-dive-into-hypothesis-testing/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-dive-into-hypothesis-testing/](https://machinelearningmastery.com/a-dive-into-hypothesis-testing/)
 - en: In doing inferential statistics, you often want to test your assumptions. Indeed
     there is a way to quantitatively test an assumption that you thought of. Using
     the Ames Housing dataset, you’ll delve deep into the concept of hypothesis testing
     and explore if the presence of an air conditioner affects the sale price of a
     house.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在进行推断统计时，你通常需要测试你的假设。确实，有一种定量测试你想到的假设的方法。通过使用Ames房屋数据集，你将深入探讨假设检验的概念，并探索空调的存在是否影响房屋的销售价格。
 - en: Let’s get started.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/fb0e5f1e872bec7b992b0838d7ea098d.png)'
+  id: totrans-4
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/fb0e5f1e872bec7b992b0838d7ea098d.png)'
 - en: 'Testing Assumptions in Real Estate: A Dive into Hypothesis Testing with the
     Ames Housing Dataset'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 房地产中的假设检验：深入研究使用Ames房屋数据集的假设检验
 - en: Photo by [Alex Staudinger](https://www.pexels.com/photo/sun-piercing-of-brown-concrete-house-near-sea-1732414/).
     Some rights reserved.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[亚历克斯·斯陶丁格](https://www.pexels.com/photo/sun-piercing-of-brown-concrete-house-near-sea-1732414/)提供。保留部分权利。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post unfolds through the following segments:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文通过以下几个部分展开：
 - en: The Role of Hypothesis Testing in Inferential Statistics.
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 假设检验在推断统计中的作用。
 - en: How does Hypothesis Testing work?
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 假设检验是如何工作的？
 - en: Does Air Conditioning Affect Sale Price?
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 空调是否影响销售价格？
 - en: The Role of Hypothesis Testing in Inferential Statistics
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 假设检验在推断统计中的作用
 - en: Inferential Statistics uses a sample of data to make inferences about the population
     from which it was drawn. Hypothesis testing, a fundamental component of inferential
     statistics, is crucial when making informed decisions about a population based
     on sample data, especially when studying the entire population is unfeasible.
     Hypothesis testing is a way to make a statement about the data.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 推断统计使用数据样本来对所抽取的总体做出推断。假设检验是推断统计的一个基本组成部分，当基于样本数据对总体做出有根据的决策时，特别是在研究整个总体不可行的情况下，假设检验是至关重要的。假设检验是一种关于数据的陈述方法。
 - en: Imagine you’ve come across a claim stating that houses with air conditioners
     sell at a higher price than those without. To verify this claim, you’d gather
     data on house sales and analyze if there’s a significant difference in prices
@@ -66,187 +94,269 @@
     hypothesis testing allows us to make an informed decision (either rejecting or
     failing to reject a starting assumption) based on evidence from the sample and
     the likelihood that the observed effect occurred by chance.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象一下你发现了一个声明，称有空调的房子比没有空调的房子售价更高。为了验证这一声明，你会收集房屋销售数据，并分析是否存在基于空调存在与否的价格显著差异。这一过程即是通过样本数据测试关于总体的声明或假设，称为假设检验。从本质上讲，假设检验允许我们基于样本的证据以及观察到的效果是否是偶然发生的可能性，做出有根据的决定（即拒绝或不拒绝一个初始假设）。
 - en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参阅我的书籍[数据科学入门指南](https://machinelearning.samcart.com/products/beginners-guide-data-science/)。它提供了**自学教程**和**可运行的代码**。'
 - en: How does Hypothesis Testing work?
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 假设检验是如何工作的？
 - en: 'Hypothesis Testing is a methodological approach in inferential statistics where
     you start with an initial claim (hypothesis) about a population parameter. You
     then use sample data to determine whether or not there’s enough evidence to reject
     this initial claim. The components of hypothesis testing include:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设检验是一种推断统计的方法论，你从关于总体参数的初始声明（假设）开始。然后，你使用样本数据来确定是否有足够的证据来拒绝这个初始声明。假设检验的组成部分包括：
 - en: '**Null Hypothesis ($H_0$):** The **default state** of no effect or no different.
     A statement that you aim to test against.'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**原假设 ($H_0$):** **默认状态**为没有效果或没有差异。你要测试的陈述。'
 - en: '**Alternative Hypothesis ($H_a$):** What you want to prove. It is what you
     believe if the null hypothesis is wrong.'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**替代假设 ($H_a$):** 你想要证明的内容。它是当原假设错误时你所相信的内容。'
 - en: '**Test Statistic:** A value computed from the sample data that’s used to test
     the null hypothesis.'
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**检验统计量：** 从样本数据中计算出的一个值，用于检验原假设。'
 - en: '**P-value:** The probability that the observed effect in the sample occurred
     by random chance under the null hypothesis situation.'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**p 值：** 在原假设情况下，样本中观察到的效应发生的概率。'
 - en: 'Performing hypothesis testing is like a detective: Ordinarily, you assume something
     should happen ($H_0$), but you suspect something else is actually happening ($H_1$).
     Then you collect your evidence (the test statistic) to argue why $H_0$ is not
     reasonable; hence $H_1$ should be the truth.'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 进行假设检验就像侦探工作：通常，你假设某事应该发生（$H_0$），但你怀疑实际上发生了其他事情（$H_1$）。然后你收集证据（检验统计量）来论证为何 $H_0$
+    不合理；因此 $H_1$ 应该是事实。
 - en: 'In a typical hypothesis test:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 在典型的假设检验中：
 - en: You state the null and alternative hypotheses. You should carefully design these
     hypotheses to reflect a reasonable assumption about the reality.
+  id: totrans-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你陈述原假设和替代假设。你应该仔细设计这些假设，以反映对现实的合理假设。
 - en: You choose a significance level ($\alpha$); it is common to use $\alpha=0.05$
     in statistical hypothesis tests.
+  id: totrans-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你选择一个显著性水平（$\alpha$）；在统计假设检验中，通常使用 $\alpha=0.05$。
 - en: You collect and analyze the data to get our test statistic and p-value, based
     on the situation of $H_0$.
+  id: totrans-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你收集并分析数据，以获得我们的检验统计量和 p 值，基于 $H_0$ 的情况。
 - en: 'You make a decision based on the p-value: You reject the null hypothesis and
     accept the alternative hypothesis if and only if the p-value is less than $\alpha$.'
+  id: totrans-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你基于 p 值做出决定：当且仅当 p 值小于 $\alpha$ 时，你才会拒绝原假设并接受替代假设。
 - en: Let’s see an example on how these steps are carried out.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们来看一个示例，展示这些步骤是如何执行的。
 - en: Does Air Conditioning Affect Sales Price?
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 空调是否影响销售价格？
 - en: Based on the [Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv),
     we want to know if the presence of air conditioning can affect the price.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 基于 [Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)，我们想知道空调的存在是否会影响价格。
 - en: 'To explore the impact of air conditioning on sales prices, you’ll set our hypotheses
     as:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了探讨空调对销售价格的影响，你将设定我们的假设为：
 - en: '$H_0$: The average sales price of houses with air conditioning is the same
     as those without.'
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $H_0$：带有空调的房屋的平均销售价格与没有空调的房屋相同。
 - en: '$H_a$: The average sales price of houses with air conditioning is not the same
     as those without.'
+  id: totrans-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: $H_a$：带有空调的房屋的平均销售价格与没有空调的房屋不同。
 - en: Before performing the hypothesis test, let’s visualize our data to get a preliminary
     understanding.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在进行假设检验之前，我们先可视化数据，以获得初步了解。
 - en: '[PRE0]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '![](../Images/9aea6a0ea0f94b92fc92cb63564163c8.png)'
+  id: totrans-36
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/9aea6a0ea0f94b92fc92cb63564163c8.png)'
 - en: Overlapped histogram to compare the sales prices
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 重叠直方图比较销售价格
 - en: 'The code above called `plt.hist()` twice with different data to show two overlapped
     histograms, one for the distribution of sales price with air conditioning (AC)
     and one without. Here are a few observations that can be made from the visual:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码调用了 `plt.hist()` 两次，使用不同的数据来显示两个重叠的直方图，一个用于带空调的销售价格分布，另一个用于没有空调的分布。根据这些视觉效果，可以做出以下几个观察：
 - en: '**Distinct Peaks:** Both distributions exhibit a **distinct** peak, which indicates
     the most frequent sale prices in their respective categories.'
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**明显的峰值：** 两个分布都展示了**明显的**峰值，这表明了各自类别中最频繁的销售价格。'
 - en: '**Mean Sale Price:** The mean sale price of houses with AC is higher than that
     of houses without AC, as indicated by the vertical dashed lines.'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**平均销售价格：** 带有空调的房屋的平均销售价格高于没有空调的房屋，如垂直虚线所示。'
 - en: '**Spread and Skewness:** The distribution of sale prices for houses with AC
     appears slightly right-skewed, indicating that while most houses are sold at a
     lower price, there are some properties with significantly higher prices. In contrast,
     the distribution for houses without AC is more compact, with a smaller range of
     prices.'
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**分布和偏态：** 带有空调的房屋销售价格分布呈现出轻微的右偏，这表明尽管大多数房屋以较低价格出售，但也有一些房产的价格显著较高。相比之下，没有空调的房屋价格分布更为紧凑，价格范围较小。'
 - en: '**Overlap:** Despite the differences in means, there’s an overlap in the price
     range of houses with and without AC. This suggests that while AC may influence
     price, other factors are also at play in determining a house’s value.'
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**重叠：** 尽管均值有所不同，但有空调和没有空调的房屋在价格范围上存在重叠。这表明，虽然空调可能会影响价格，但其他因素也在决定房屋价值方面发挥作用。'
 - en: Given these insights, the presence of AC seems to be associated with a higher
     sale price. The next step would be to perform the hypothesis test to numerically
     determine if this difference is significant.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 基于这些见解，有空调的房子似乎与更高的销售价格相关。下一步将是执行假设检验，以数字方式确定这种差异是否显著。
 - en: '[PRE1]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'This shows:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这表明：
 - en: '[PRE2]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The p-value is less than $\alpha$. The p-value says that it is very unlikely,
     under $H_0$, that the difference in the price is by chance. This indicates that
     there’s a statistically significant difference in the average sale prices of houses
     with air conditioning compared to those without. This aligns with our visual observations
     from the histogram. Thus, the presence of an air conditioner does seem to have
     a significant effect on the sale price of houses in the Ames dataset.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: p 值小于 $\alpha$。p 值表明，在 $H_0$ 下，价格差异很可能不是偶然的。这表明有空调的房子的平均销售价格与没有空调的房子之间存在统计学上显著的差异。这与我们从直方图中的视觉观察一致。因此，空调的存在似乎确实对
+    Ames 数据集中的房子销售价格产生了显著影响。
 - en: This p-value is computed using t-test. It is a statistic aimed at comparing
     the **means of two groups**. There are many statistics available, and t-test is
     a suitable one here because our hypotheses $H_0$, $H_a$ are about the average
     sales price.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个 p 值是使用 t 检验计算的。它是一种统计量，旨在比较**两个组的均值**。有许多统计方法可用，t 检验在这里是合适的，因为我们的假设 $H_0$、$H_a$
+    关注的是平均销售价格。
 - en: 'Note that the alternative hypothesis $H_a$ defined above can be changed. You
     can make it mean “the average sales price of houses with air conditioning is **less
     than** those without”; however, this is counter-intuitive to the reality.  You
     can also make it mean “the average sales price of houses with air conditioning
     is **more than** those without”; which you should change the t-test in the code
     to include the extra argument `alternative=''greater''`:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，上述定义的备择假设 $H_a$ 可以更改。你可以将其设为“有空调的房子的平均销售价格**低于**没有空调的房子”；然而，这与现实情况相悖。你也可以将其设为“有空调的房子的平均销售价格**高于**没有空调的房子”；在这种情况下，你应当将代码中的
+    t 检验修改为包括额外的参数 `alternative='greater'`：
 - en: '[PRE3]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '[PRE4]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: This changes the two-sided t-test to one-sided t-test, but the resulting outcome
     is the same. Switching from a two-sided to a one-sided t-test but arriving at
     the same conclusion implies that we had a clear expectation of the direction of
     the difference from the start, or the data strongly supported one direction of
     difference, making the outcome consistent across both test types.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将双侧 t 检验更改为单侧 t 检验，但结果是相同的。从双侧 t 检验转换为单侧 t 检验但得出相同的结论，意味着我们从一开始就对差异的方向有明确的预期，或者数据强烈支持某一方向的差异，使得两种检验类型的结果一致。
 - en: The setup of the null hypothesis ($H_0$) and alternative hypothesis ($H_a$)
     is fundamental to the design of statistical tests, influencing the test’s directionality
     (one-sided vs. two-sided), the interpretation of results (how we understand p-values
@@ -254,55 +364,83 @@
     to the significance level $\alpha$). This framework determines not only what we
     are testing for but also how we interpret and act on the statistical evidence
     obtained.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 原假设 ($H_0$) 和备择假设 ($H_a$) 的设定是统计检验设计的基础，它影响检验的方向性（单侧与双侧）、结果的解释（我们如何理解 p 值和证据）以及决策过程（尤其是在
+    p 值接近显著性水平 $\alpha$ 时）。这一框架不仅决定了我们测试的内容，还决定了我们如何解释和采取统计证据。
 - en: Want to Get Started With Beginner's Guide to Data Science?
+  id: totrans-54
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习数据科学的初学者指南吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费 PDF 电子书版本。
 - en: Further Reading
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: Online
+  id: totrans-58
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 在线
 - en: '[Hypothesis Testing Tutorial](https://www.khanacademy.org/math/statistics-probability/significance-tests-one-sample)'
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[假设检验教程](https://www.khanacademy.org/math/statistics-probability/significance-tests-one-sample)'
 - en: '[scipy.stats.ttest_ind](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html)
     API'
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scipy.stats.ttest_ind](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html)
+    API'
 - en: '[Student’s t-test](https://en.wikipedia.org/wiki/Student%27s_t-test) in Wikipedia'
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[学生 t 检验](https://en.wikipedia.org/wiki/Student%27s_t-test) 维基百科'
 - en: Resources
+  id: totrans-62
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 资源
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this exploration, you delved into the world of hypothesis testing using the
     Ames Housing dataset. You examined how the presence of an air conditioner might
     impact the sale price of a house. Through rigorous statistical testing, you found
@@ -311,26 +449,38 @@
     the importance of amenities like air conditioning in the real estate market but
     also showcases the power of hypothesis testing in making informed decisions based
     on data.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这次探索中，你**深入**了解了使用Ames Housing数据集进行假设检验的世界。你研究了空调的存在如何影响房屋的售价。通过严格的统计检验，你发现有空调的房屋售价往往高于没有空调的房屋，这一结果具有统计学意义。这不仅突显了像空调这样的设施在房地产市场中的重要性，还展示了基于数据做出明智决策的假设检验的**力量**。
 - en: 'Specifically, you learned:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The importance of hypothesis testing within inferential statistics.
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 假设检验在推断统计中的重要性。
 - en: How to set up and evaluate null and alternative hypothesis using detailed methods
     of hypothesis testing.
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过详细的假设检验方法设置和评估原假设与备择假设。
 - en: The practical implications of hypothesis testing in real-world scenarios, exemplified
     by the presence of air conditioning on property values in the Ames housing market.
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 假设检验在现实世界情境中的实际应用，以Ames住房市场中空调对房产价值的影响为例。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有什么问题吗？请在下面的评论中提问，我会尽力回答。

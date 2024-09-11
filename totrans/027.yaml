@@ -1,11 +1,15 @@
 - en: The Search for the Sweet Spot in a Linear Regression with Numeric Features
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在具有数值特征的线性回归中的甜蜜点搜索
 - en: 原文：[https://machinelearningmastery.com/the-search-for-the-sweet-spot-in-a-linear-regression-with-numeric-features/](https://machinelearningmastery.com/the-search-for-the-sweet-spot-in-a-linear-regression-with-numeric-features/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/the-search-for-the-sweet-spot-in-a-linear-regression-with-numeric-features/](https://machinelearningmastery.com/the-search-for-the-sweet-spot-in-a-linear-regression-with-numeric-features/)
 - en: Consistent with the principle of Occam’s razor, starting simple often leads
     to the most profound insights, especially when piecing together a predictive model.
     In this post, using the Ames Housing Dataset, we will first pinpoint the key features
@@ -16,100 +20,151 @@
     This methodical approach will guide us to the “sweet spot” — a harmonious blend
     where the selected features maximize our model’s predictive precision without
     overburdening it with unnecessary data.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 与奥卡姆剃刀的原则一致，简单的开始往往会导致最深刻的洞见，特别是在构建预测模型时。在这篇文章中，我们将使用Ames Housing Dataset，首先找出那些独自闪耀的关键特征。然后，逐步将这些洞察层叠起来，观察它们的综合效果如何提升我们的准确预测能力。随着我们深入探讨，我们将利用Sequential
+    Feature Selector (SFS)来筛选复杂性，突出特征的最佳组合。这种系统的方法将指导我们找到“甜蜜点”——一个和谐的组合，其中选定的特征在不增加不必要数据负担的情况下最大化了模型的预测精度。
 - en: Let’s get started.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/7e42c34ceb3610fcb7dc01ed7efbfea4.png)'
+  id: totrans-4
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/7e42c34ceb3610fcb7dc01ed7efbfea4.png)'
 - en: The Search for the Sweet Spot in a Linear Regression with Numeric Features
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 在具有数值特征的线性回归中的甜蜜点搜索
 - en: Photo by [Joanna Kosinska](https://unsplash.com/photos/assorted-color-candies-on-container--ayOfwsd9mY).
     Some rights reserved.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：[Joanna Kosinska](https://unsplash.com/photos/assorted-color-candies-on-container--ayOfwsd9mY)。部分权利保留。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分；它们是：
 - en: From Single Features to Collective Impact
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从单一特征到集体影响
 - en: 'Diving Deeper with SFS: The Power of Combination'
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用SFS深入挖掘：组合的力量
 - en: Finding the Predictive “Sweet Spot”
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 寻找预测的“甜蜜点”
 - en: From Individual Strengths to Collective Impact
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 从个体优势到集体影响
 - en: Our first step is to identify which features out of the myriad available in
     the Ames dataset stand out as powerful predictors on their own. We turn to simple
     linear regression models, each dedicated to one of the top standalone features
     identified based on their predictive power for housing prices.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的第一步是识别在Ames数据集中众多可用特征中，哪些特征在单独使用时表现出强大的预测能力。我们转向简单的线性回归模型，每个模型专注于根据对房价的预测能力识别出的顶级独立特征之一。
 - en: '[PRE0]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'This will output the top 5 features that can be used individually in a simple
     linear regression:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将输出可以单独用于简单线性回归的前5个特征：
 - en: '[PRE1]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Curiosity leads us further: what if we combine these top features into a single
     multiple linear regression model? Will their collective power surpass their individual
     contributions?'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 好奇心驱使我们更深入地思考：如果我们将这些顶级特征组合成一个多重线性回归模型，会发生什么？它们的集体力量是否会超过它们各自的贡献？
 - en: '[PRE2]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The initial findings are promising; each feature indeed has its strengths. However,
     when combined in a multiple regression model, we observe a “decent” improvement—a
     testament to the complexity of housing price predictions.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 初步发现令人鼓舞；每个特征确实都有其优点。然而，当它们结合在一个多重回归模型中时，我们观察到了一种“相当”的改善——这证明了房价预测的复杂性。
 - en: '[PRE3]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'This result hints at untapped potential: Could there be a more strategic way
     to select and combine features for even greater predictive accuracy?'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个结果暗示了未被充分发掘的潜力：是否有更具战略性的方法来选择和组合特征，以提高预测准确性？
 - en: 'Diving Deeper with SFS: The Power of Combination'
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用SFS深入挖掘：组合的力量
 - en: 'As we expand our use of Sequential Feature Selector (SFS) from $n=1$ to $n=5$,
     an important concept comes into play: the power of combination. Let’s illustrate
     as we build on the code above:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 随着我们将Sequential Feature Selector (SFS)的使用从$n=1$扩展到$n=5$，一个重要的概念浮现出来：组合的力量。让我们通过构建上述代码来说明：
 - en: '[PRE4]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Choosing $n=5$ doesn’t merely mean selecting the five best standalone features.
     Rather, it’s about identifying the set of five features that, when used together,
     optimize the model’s predictive ability:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 选择$n=5$不仅仅是选择五个最佳的独立特征。而是识别出五个特征的组合，这些特征组合在一起时，可以优化模型的预测能力：
 - en: '[PRE5]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'This outcome is particularly enlightening when we compare it to the top five
     features selected based on their standalone predictive power. The attribute “FullBath”
     (not selected by SFS) was replaced by “KitchenAbvGr” in the SFS selection. This
@@ -118,18 +173,24 @@
     it seeks out features that work best in concert. This might mean selecting a feature
     that, on its own, wouldn’t top the list but, when combined with others, improves
     the model’s accuracy.'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一结果在与基于单独预测能力选择的前五个特征进行比较时尤为令人启发。属性“FullBath”（未被SFS选择）被“SFS选择中的“KitchenAbvGr”取代。这种差异突显了特征选择的一个基本原则：**关键在于组合**。SFS不仅仅寻找强大的单一预测变量；它寻求在一起效果最好的特征。这可能意味着选择一个单独看起来不够优秀的特征，但当与其他特征组合时，会提高模型的准确性。
 - en: If you wonder why this is the case, the features selected in the combination
     should be complementary to each other rather than correlated. In this way, each
     new feature provides new information for the predictor instead of agreeing with
     what is already known.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想知道为什么会这样，特征组合中的特征应当是互补的，而不是相关的。这样，每个新特征为预测器提供了新的信息，而不是与已知信息重复。
 - en: Finding the Predictive “Sweet Spot”
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 寻找预测的“最佳点”
 - en: 'The journey to optimal feature selection begins by pushing our model to its
     limits. By initially considering the maximum possible features, we gain a comprehensive
     view of how model performance evolves by adding each feature. This visualization
@@ -137,97 +198,146 @@
     and guiding us toward finding the “sweet spot.” Let’s start by running a Sequential
     Feature Selector (SFS) across the entire feature set, plotting the performance
     to visualize the impact of each addition:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 达到最佳特征选择的过程始于将我们的模型推向极限。通过最初考虑所有可能的特征，我们能够全面了解每添加一个特征后模型性能的变化。这种可视化作为我们的起点，突出了模型预测能力的递减收益，并引导我们找到“最佳点”。让我们通过对整个特征集运行顺序特征选择器（SFS），并绘制性能图来可视化每次添加的影响：
 - en: '[PRE6]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The plot below demonstrates how model performance improves as more features
     are added but eventually plateaus, indicating a point of diminishing returns:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 下图展示了随着更多特征的添加，模型性能如何提高，但最终趋于平稳，表明收益递减的点：
 - en: '[![](../Images/72b6861d0c9ee3d5349ba73b3612671f.png)](https://machinelearningmastery.com/?attachment_id=16806)'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/72b6861d0c9ee3d5349ba73b3612671f.png)](https://machinelearningmastery.com/?attachment_id=16806)'
 - en: Comparing the effect of adding features to the predictor
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 比较添加特征对预测器的影响
 - en: From this plot, you can see that using more than ten features has little benefit.
     Using three or fewer features, however, is suboptimal. You can use the “elbow
     method” to find where this curve bends and determine the optimal number of features.
     This is a subjective decision. This plot suggests anywhere from 5 to 9 looks right.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 从这张图中可以看到，使用超过十个特征的收益很小。然而，使用三种或更少的特征则是不理想的。你可以使用“肘部法则”来找到曲线弯曲的地方，从而确定最佳特征数量。这是一个主观的决策。该图建议选择5到9个特征比较合适。
 - en: 'Armed with the insights from our initial exploration, we apply a tolerance
     (`tol=0.005`) to our feature selection process. This can help us determine the
     optimal number of features objectively and robustly:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 凭借我们初步探索中的见解，我们对特征选择过程应用了一个容差（`tol=0.005`）。这有助于我们客观而稳健地确定最佳特征数量：
 - en: '[PRE7]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'This strategic move allows us to concentrate on those features that provide
     the highest predictability, culminating in the selection of 8 optimal features:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一战略举措使我们能够集中于那些提供最高预测性的特征，最终选择出8个最佳特征：
 - en: '[![](../Images/2a59d56f014d23a7c1fcc073dad006b8.png)](https://machinelearningmastery.com/?attachment_id=16808)'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/2a59d56f014d23a7c1fcc073dad006b8.png)](https://machinelearningmastery.com/?attachment_id=16808)'
 - en: Finding the optimal number of features from a plot
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 从图中找到最佳特征数量
 - en: 'We can now conclude our findings by showing the features selected by SFS:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们现在可以通过展示SFS选择的特征来总结我们的发现：
 - en: '[PRE8]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '[PRE9]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: By focusing on these 8 features, we achieve a model that balances complexity
     with high predictability, showcasing the effectiveness of a measured approach
     to feature selection.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过关注这8个特征，我们实现了一个在复杂性与高预测性之间取得平衡的模型，展示了特征选择的有效方法。
 - en: '**Further****Reading**'
+  id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: APIs
+  id: totrans-46
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: APIs
 - en: '[sklearn.feature_selection.SequentialFeatureSelector](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SequentialFeatureSelector.html)
     API'
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[sklearn.feature_selection.SequentialFeatureSelector](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SequentialFeatureSelector.html)
+    API'
 - en: Tutorials
+  id: totrans-48
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[Sequential Feature Selection](https://www.youtube.com/watch?v=0vCXcGJg5Bo)
     by Sebastian Raschka'
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[序列特征选择](https://www.youtube.com/watch?v=0vCXcGJg5Bo) 由Sebastian Raschka提供'
 - en: '**Ames Housing Dataset & Data Dictionary**'
+  id: totrans-50
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**艾姆斯房屋数据集与数据字典**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[艾姆斯数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[艾姆斯数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: Through this three-part post, you have embarked on a journey from assessing
     the predictive power of individual features to harnessing their combined strength
     in a refined model. Our exploration has demonstrated that while more features
@@ -238,30 +348,42 @@
     overcomplicating the predictive landscape. This sweet spot—identified as eight
     key features—epitomizes the strategic melding of simplicity and sophistication
     in predictive modeling.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过这三部分的文章，你已经从评估单个特征的预测能力开始，逐步掌握了在精炼模型中利用它们的综合力量。我们的探索表明，虽然更多的特征可以增强模型捕捉复杂模式的能力，但也会有一个点，额外的特征不再对提高预测有所贡献。通过对序列特征选择器应用容差水平，你已经锁定了一组最佳特征，这些特征在不使预测变得过于复杂的情况下，将我们的模型性能提升至顶峰。这个被识别为八个关键特征的最佳点，体现了预测建模中简单与复杂的战略融合。
 - en: 'Specifically, you learned:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: '**The Art of Starting Simple**: Beginning with simple linear regression models
     to understand each feature’s standalone predictive value sets the foundation for
     more complex analyses.'
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**从简单开始的艺术**：通过从简单的线性回归模型开始，了解每个特征的单独预测价值，为更复杂的分析奠定了基础。'
 - en: '**Synergy in Selection**: The transition to the Sequential Feature Selector
     underscores the importance of not just individual feature strengths but their
     synergistic impact when combined effectively.'
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**选择的协同效应**：过渡到序列特征选择器突显了不仅要关注单个特征的强度，还要注意它们在有效结合时的协同效应。'
 - en: '**Maximizing Model Efficacy**: The quest for the predictive sweet spot through
     SFS with a set tolerance teaches us the value of precision in feature selection,
     achieving the most with the least.'
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**最大化模型效能**：通过SFS寻找预测的最佳点并设定容差值，让我们认识到特征选择中精确度的重要性，实现以最少的特征获得最大的效果。'
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 有问题吗？请在下面的评论中提出你的问题，我会尽力回答。

@@ -1,165 +1,255 @@
 - en: Building a Binary Classification Model in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中构建二元分类模型
 - en: 原文：[https://machinelearningmastery.com/building-a-binary-classification-model-in-pytorch/](https://machinelearningmastery.com/building-a-binary-classification-model-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/building-a-binary-classification-model-in-pytorch/](https://machinelearningmastery.com/building-a-binary-classification-model-in-pytorch/)
 - en: PyTorch library is for deep learning. Some applications of deep learning models
     are to solve regression or classification problems.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 库是用于深度学习的。深度学习模型的一些应用是解决回归或分类问题。
 - en: In this post, you will discover how to use PyTorch to develop and evaluate neural
     network models for binary classification problems.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，您将发现如何使用 PyTorch 开发和评估用于二元分类问题的神经网络模型。
 - en: 'After completing this post, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本文后，您将了解：
 - en: How to load training data and make it available to PyTorch
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何加载训练数据并使其在 PyTorch 中可用
 - en: How to design and train a neural network
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何设计和训练神经网络
 - en: How to evaluate the performance of a neural network model using k-fold cross
     validation
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 k 折交叉验证评估神经网络模型的性能
 - en: How to run a model in inference mode
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何以推理模式运行模型
 - en: How to create receiver operating characteristics curve for a binary classification
     model
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为二元分类模型创建接收器操作特性曲线
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书 [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    开始您的项目**。它提供**自学教程**和**可运行的代码**。'
 - en: Let’s get started.![](../Images/e9eeb55887fe1686c2c425077d9c631c.png)
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！![](../Images/e9eeb55887fe1686c2c425077d9c631c.png)
 - en: Building a Binary Classification Model in PyTorch
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中构建二元分类模型
 - en: Photo by [David Tang](https://unsplash.com/photos/Ufx030zbA3s). Some rights
     reserved.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [David Tang](https://unsplash.com/photos/Ufx030zbA3s) 拍摄。部分权利保留。
 - en: Description of the Dataset
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数据集描述
 - en: The dataset you will use in this tutorial is the [Sonar dataset](https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks)).
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 您在本教程中将使用的数据集是 [Sonar 数据集](https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks))。
 - en: This is a dataset that describes sonar chirp returns bouncing off different
     services. The 60 input variables are the strength of the returns at different
     angles. It is a binary classification problem that requires a model to differentiate
     rocks from metal cylinders.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是描述声纳回波反射不同表面的数据集。60 个输入变量是不同角度的回波强度。这是一个需要模型区分岩石和金属圆柱体的二元分类问题。
 - en: You can learn more about this dataset on the [UCI Machine Learning repository](https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks)).
     You can [download the dataset](https://archive.ics.uci.edu/ml/machine-learning-databases/undocumented/connectionist-bench/sonar/sonar.all-data)
     for free and place it in your working directory with the filename `sonar.csv`.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以在 [UCI 机器学习库](https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks))
+    上了解更多关于这个数据集的信息。您可以免费[下载数据集](https://archive.ics.uci.edu/ml/machine-learning-databases/undocumented/connectionist-bench/sonar/sonar.all-data)，并将其放置在工作目录中，文件名为
+    `sonar.csv`。
 - en: It is a well-understood dataset. All the variables are continuous and generally
     in the range of 0 to 1\. The output variable is a string “M” for mine and “R”
     for rock, which will need to be converted to integers 1 and 0.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个被广泛理解的数据集。所有变量都是连续的，通常在 0 到 1 的范围内。输出变量是字符串“M”表示矿石和“R”表示岩石，需要将其转换为整数 1 和
+    0。
 - en: A benefit of using this dataset is that it is a standard benchmark problem.
     This means that we have some idea of the expected skill of a good model. Using
     cross-validation, a neural network [should be able to achieve a performance](http://www.is.umk.pl/projects/datasets.html#Sonar)
     of 84% to 88% accuracy.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这个数据集的一个好处是它是一个标准的基准问题。这意味着我们对一个优秀模型的预期技能有一些了解。使用交叉验证，一个神经网络应该能够达到 84% 到 88%
+    的准确率。[链接](http://www.is.umk.pl/projects/datasets.html#Sonar)
 - en: Load the Dataset
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 加载数据集
 - en: If you have downloaded the dataset in CSV format and saved it as `sonar.csv`
     in the local directory, you can load the dataset using pandas. There are 60 input
     variables (`X`) and one output variable (`y`). Because the file contains mixed
     data of strings and numbers, it is easier to read them using pandas rather than
     other tools such as NumPy.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您已经以 CSV 格式下载并将数据集保存为 `sonar.csv` 在本地目录中，您可以使用 pandas 加载数据集。有 60 个输入变量 (`X`)
+    和一个输出变量 (`y`)。由于文件包含混合数据（字符串和数字），使用 pandas 比其他工具如 NumPy 更容易读取它们。
 - en: 'Data can be read as follows:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据可以如下读取：
 - en: '[PRE0]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: It is a binary classification dataset. You would prefer a numeric label over
     a string label. You can do such conversion with `LabelEncoder` in scikit-learn.
     The `LabelEncoder` is to map each label to an integer. In this case, there are
     only two labels and they will become 0 and 1.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个二分类数据集。你更倾向于使用数值标签而不是字符串标签。你可以使用 scikit-learn 中的 `LabelEncoder` 进行这种转换。`LabelEncoder`
+    是将每个标签映射到一个整数。在这种情况下，只有两个标签，它们将变成 0 和 1。
 - en: 'Using it, you need to first call the `fit()` function to make it learn what
     labels are available. Then call `transform()` to do the actual conversion. Below
     is how you use `LabelEncoder` to convert `y` from strings into 0 and 1:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用它时，你需要首先调用 `fit()` 函数以让它学习可用的标签。然后调用 `transform()` 进行实际转换。下面是如何使用 `LabelEncoder`
+    将 `y` 从字符串转换为 0 和 1：
 - en: '[PRE1]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'You can see the labels using:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以使用以下方法查看标签：
 - en: '[PRE2]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'which outputs:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出为：
 - en: '[PRE3]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: and if you run `print(y)`, you would see the following
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你运行 `print(y)`，你会看到以下内容
 - en: '[PRE4]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: You see the labels are converted into 0 and 1\. From the `encoder.classes_`,
     you know that 0 means “M” and 1 means “R”. They are also called the negative and
     positive classes respectively in the context of binary classification.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 你会看到标签被转换为 0 和 1。从 `encoder.classes_` 中，你知道 0 代表“M”，1 代表“R”。在二分类的背景下，它们也分别被称为负类和正类。
 - en: Afterward, you should convert them into PyTorch tensors as this is the format
     a PyTorch model would like to work with.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，你应该将它们转换为 PyTorch 张量，因为这是 PyTorch 模型希望使用的格式。
 - en: '[PRE5]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得免费的 PDF 电子书版本课程。
 - en: Creating a Model
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建模型
 - en: Now you’re ready for the neural network model.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你已经准备好进行神经网络模型训练了。
 - en: As you have seen in some previous posts, the easiest neural network model is
     a 3-layer model that has only one hidden layer. A deep learning model is usually
     referring to those with more than one hidden layer. All neural network models
@@ -167,52 +257,77 @@
     we believe that it is more powerful. Should you use a model with fewer layers
     but more parameters on each layer, or a model with more layers but less parameters
     each? Let’s find out.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你在之前的一些帖子中看到的，最简单的神经网络模型是一个只有一个隐藏层的 3 层模型。深度学习模型通常指的是那些有多个隐藏层的模型。所有神经网络模型都有称为权重的参数。模型的参数越多，按照经验我们认为它就越强大。你应该使用一个层数较少但每层参数更多的模型，还是使用一个层数较多但每层参数较少的模型？让我们来探讨一下。
 - en: 'A model with more parameters on each layer is called a wider model. In this
     example, the input data has 60 features to predict one binary variable. You can
     assume to make a wide model with one hidden layer of 180 neurons (three times
     the input features). Such model can be built using PyTorch:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 每层具有更多参数的模型称为更宽的模型。在这个例子中，输入数据有60个特征用于预测一个二分类变量。你可以假设构建一个具有180个神经元的单隐层宽模型（是输入特征的三倍）。这样的模型可以使用
+    PyTorch 构建：
 - en: '[PRE6]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Because it is a binary classification problem, the output have to be a vector
     of length 1\. Then you also want the output to be between 0 and 1 so you can consider
     that as probability or the model’s confidence of prediction that the input corresponds
     to the “positive” class.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为这是一个二分类问题，输出必须是长度为 1 的向量。然后你还希望输出在 0 和 1 之间，因此你可以将其视为概率或模型对输入属于“正类”的预测置信度。
 - en: 'A model with more layer is called a deeper model. Considering that the previous
     model has one layer with 180 neurons, you can try one with three layers of 60
     neurons each instead. Such model can be built using PyTorch:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 更多层的模型称为更深的模型。考虑到之前的模型有一个包含 180 个神经元的层，你可以尝试一个具有三个层，每层 60 个神经元的模型。这样的模型可以使用
+    PyTorch 构建：
 - en: '[PRE7]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'You can confirm that these two models are having similar number of parameters,
     as follows:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以确认这两个模型的参数数量是相似的，如下所示：
 - en: '[PRE8]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: There will be all the model’s parameters returned by `model1.parameters()` and
     each is a PyTorch tensors. Then you can reformat each tensor into a vector and
     count the length of the vector, using `x.reshape(-1).shape[0]`. So the above sum
     up the total number of parameters in each model.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '`model1.parameters()` 将返回所有模型的参数，每个参数都是 PyTorch 张量。然后你可以将每个张量重塑为向量并计算向量的长度，使用
+    `x.reshape(-1).shape[0]`。因此，上述方法总结了每个模型中的总参数数量。'
 - en: Comparing Models with Cross-Validation
+  id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用交叉验证比较模型
 - en: Should you use a wide model or a deep model? One way to tell is to use cross-validation
     to compare them.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该使用宽模型还是深度模型？一种方法是使用交叉验证来比较它们。
 - en: It is a technique that, use a “training set” of data to train the model and
     then use a “test set” of data to see how accurate the model can predict. The result
     from test set is what you should focus on. But you do not want to test a model
@@ -220,28 +335,38 @@
     You want to run this process $k$ times with different training and test sets,
     such that you are ensured that you are comparing the **model design**, not the
     result of a particular training.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一种技术，利用“训练集”数据来训练模型，然后使用“测试集”数据来查看模型的预测准确性。测试集的结果是你应该关注的。然而，你不想只测试一次模型，因为如果你看到极端好的或坏的结果，可能是偶然的。你希望运行这个过程$k$次，使用不同的训练集和测试集，以确保你在比较**模型设计**，而不是某次训练的结果。
 - en: The technique that you can use here is called k-fold cross validation. It is
     to split a larger dataset into $k$ portions and take one portion as the test set
     while the $k-1$ portions are combined as the training set. There are $k$ different
     such combinations. Therefore you can repeat the experiment for $k$ times and take
     the average result.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以在这里使用的技术称为k折交叉验证。它将较大的数据集拆分成$k$份，然后将一份作为测试集，而其他$k-1$份作为训练集。这样会有$k$种不同的组合。因此，你可以重复实验$k$次并取平均结果。
 - en: In scikit-learn, you have a function for stratified k-fold. Stratified means
     that when the data is split into $k$ portions, the algorithm will look at the
     labels (i.e., the positive and negative classes in a binary classification problem)
     to ensure it is split in such a way that each portion contains equal number of
     either classes.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 在scikit-learn中，你有一个用于分层k折的函数。分层的意思是，当数据拆分成$k$份时，算法会查看标签（即，二分类问题中的正负类），以确保每份数据中包含相等数量的各类。
 - en: 'Running k-fold cross validation is trivial, such as the following:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行k折交叉验证是微不足道的，例如以下代码：
 - en: '[PRE9]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Simply speaking, you use `StratifiedKFold()` from scikit-learn to split the
     dataset. This function returns to you the indices. Hence you can create the splitted
     dataset using `X[train]` and `X[test]` and named them training set and validation
@@ -252,14 +377,20 @@
     such model design. Note that you need to create a new model every time in the
     for-loop above because you should not re-train a trained model in the k-fold cross
     valiation.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 简单来说，你使用`StratifiedKFold()`来自scikit-learn来拆分数据集。这个函数会返回给你索引。因此，你可以使用`X[train]`和`X[test]`来创建拆分后的数据集，并将它们命名为训练集和验证集（以免与“测试集”混淆，测试集会在我们选择模型设计后使用）。你假设有一个函数可以在模型上运行训练循环，并给出验证集上的准确率。然后你可以找出这个得分的均值和标准差，作为这种模型设计的性能指标。请注意，在上面的for循环中，你需要每次创建一个新的模型，因为你不应该在k折交叉验证中重新训练一个已经训练好的模型。
 - en: 'The training loop can be defined as follows:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练循环可以定义如下：
 - en: '[PRE10]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'The training loop above contains the usual elements: The forward pass, the
     backward pass, and the gradient descent weight updates. But it is extended to
     have an evaluation step after each epoch: You run the model at evaluation mode
@@ -268,94 +399,140 @@
     best weight is restored to the model and the best accuracy is returned. This returned
     value is the best you ever encountered during the many epochs of training and
     it is based on the validation set.'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述训练循环包含了通常的元素：前向传播、反向传播和梯度下降权重更新。但它扩展到每个epoch后有一个评估步骤：你以评估模式运行模型，并检查模型如何预测**验证集**。验证集上的准确率会被记住，并与模型权重一起保存。在训练结束时，最佳权重会被恢复到模型中，并返回最佳准确率。这个返回值是你在多次训练的epoch中遇到的最佳值，并且基于验证集。
 - en: Note that you set `disable=True` in the `tqdm` above. You can set it to `False`
     to see the training set loss and accuracy as you progress in the training.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，你在上面的`tqdm`中设置了`disable=True`。你可以将其设置为`False`，以便在训练过程中查看训练集的损失和准确率。
 - en: Remind that the goal is to pick the best design and train the model again, which
     in the training, you want to have an evaluation score so you know what to expect
     in production. Thus you should split the entire dataset you obtained into a training
     set and test set. Then you further split the training set in k-fold cross validation.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 请记住，目标是选择最佳设计并重新训练模型。在训练中，你需要一个评估得分，以便了解生产中的预期效果。因此，你应该将获得的整个数据集拆分为训练集和测试集。然后，你可以在
+    k 折交叉验证中进一步拆分训练集。
 - en: 'With these, here is how you can compare the two model designs: By running k-fold
     cross validation on each and compare the accuracy:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这些，下面是你如何比较两个模型设计的方法：通过对每个模型进行 k 折交叉验证，并比较准确度：
 - en: '[PRE11]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'You may see the output of above as follows:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会看到上述输出如下：
 - en: '[PRE12]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: So you found that the deeper model is better than the wider model, in the sense
     that the mean accuracy is higher and its standard deviation is lower.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，你发现较深的模型优于较宽的模型，因为其平均准确度更高且标准差更低。
 - en: Retrain the Final Model
+  id: totrans-68
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 重新训练最终模型
 - en: Now you know which design to pick, you want to rebuild the model and retrain
     it. Usually in k-fold cross validation, you will use a smaller dataset to make
     the training faster. The final accuracy is not an issue because the gold of k-fold
     cross validation to to tell which design is better. In the final model, you want
     to provide more data and produce a better model, since this is what you will use
     in production.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你知道选择哪个设计了，你想要重新构建模型并重新训练它。通常在 k 折交叉验证中，你会使用较小的数据集来加快训练速度。最终准确度不是问题，因为 k 折交叉验证的目的在于确定哪个设计更好。在最终模型中，你想提供更多的数据并生成更好的模型，因为这是你在生产中将使用的。
 - en: As you already split the data into training and test set, these are what you
     will use. In Python code,
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 既然你已经将数据分为训练集和测试集，这些就是你将使用的数据。在 Python 代码中，
 - en: '[PRE13]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: You can reuse the `model_train()` function as it is doing all the required training
     and validation. This is because the training procedure doesn’t change for the
     final model or during k-fold cross validation.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以重用 `model_train()` 函数，因为它执行了所有必要的训练和验证。这是因为最终模型或在 k 折交叉验证中的训练过程不会改变。
 - en: 'This model is what you can use in production. Usually it is unlike training,
     prediction is one data sample at a time in production. The following is how we
     demonstate using the model for inference by running five samples from the test
     set:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个模型是你可以在生产中使用的。通常，与训练不同，预测是在生产中逐个数据样本进行的。以下是我们通过运行五个测试集样本来演示使用模型进行推断的方法：
 - en: '[PRE14]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'Its output should look like the following:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 它的输出应如下所示：
 - en: '[PRE15]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: You run the code under `torch.no_grad()` context because you sure there’s no
     need to run the optimizer on the result. Hence you want to relieve the tensors
     involved from remembering how the values are computed.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 你在 `torch.no_grad()` 上下文中运行代码，因为你确定没有必要在结果上运行优化器。因此，你希望解除涉及的张量对如何计算值的记忆。
 - en: The output of a binary classification neural network is between 0 and 1 (because
     of the sigmoid function at the end). From `encoder.classes_`, you can see that
     0 means “M” and 1 means “R”. For a value between 0 and 1, you can simply round
     it to the nearest integer and interpret the 0-1 result, i.e.,
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 二分类神经网络的输出介于 0 和 1 之间（由于最后的 sigmoid 函数）。从 `encoder.classes_` 中，你可以看到 0 代表“M”，1
+    代表“R”。对于介于 0 和 1 之间的值，你可以简单地将其四舍五入为最接近的整数并解释 0-1 结果，即，
 - en: '[PRE16]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: or use any other threshold to quantize the value into 0 or 1, i.e.,
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者使用其他阈值将值量化为 0 或 1，即，
 - en: '[PRE17]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'Indeed, round to the nearest integer is equivalent to using 0.5 as the threshold.
     A good model should be robust to the choice of threshold. It is when the model
     output exactly 0 or 1\. Otherwise you would prefer a model that seldom report
@@ -364,49 +541,75 @@
     which is to plot the true positive rate against the false positive rate of the
     model under various threshold. You can make use of scikit-learn and matplotlib
     to plot the ROC:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，将其四舍五入为最接近的整数等同于使用 0.5 作为阈值。一个好的模型应该对阈值的选择具有鲁棒性。这是指模型输出恰好为 0 或 1。否则，你会更喜欢一个很少报告中间值但经常返回接近
+    0 或接近 1 值的模型。要判断你的模型是否优秀，你可以使用**接收者操作特征曲线**（ROC），它是绘制模型在各种阈值下的真正率与假正率的图。你可以利用
+    scikit-learn 和 matplotlib 来绘制 ROC：
 - en: '[PRE18]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: You may see the following. The curve is always start from the lower left corner
     and ends at upper right corner. The closer the curve to the upper left corner,
     the better your model is.![](../Images/4b42ed8d731efa28450b20623da84dc2.png)
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会看到以下内容。曲线总是从左下角开始，并在右上角结束。曲线越靠近左上角，模型的效果就越好。![](../Images/4b42ed8d731efa28450b20623da84dc2.png)
 - en: Complete Code
+  id: totrans-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 完整代码
 - en: 'Putting everything together, the following is the complete code of the above:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容汇总，以下是上述代码的完整版本：
 - en: '[PRE19]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Summary
+  id: totrans-88
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this post, you discovered the use of PyTorch to build a binary classification
     model.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你发现了如何使用 PyTorch 构建二分类模型。
 - en: 'You learned how you can work through a binary classification problem step-by-step
     with PyTorch, specifically:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 你学会了如何使用 PyTorch 一步一步地解决二分类问题，具体包括：
 - en: How to load and prepare data for use in PyTorch
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何加载和准备 PyTorch 中使用的数据
 - en: How to create neural network models and use k-fold cross validation to compare
     them
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何创建神经网络模型并使用 k 折交叉验证对其进行比较
 - en: How to train a binary classification model and obtain the receiver operating
     characteristics curve for it
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何训练二分类模型并获取其接收者操作特征曲线

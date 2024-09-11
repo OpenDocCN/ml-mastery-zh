@@ -1,8 +1,10 @@
 - en: Further Stable Diffusion Pipeline with Diffusers
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 原文：[https://machinelearningmastery.com/further-stable-diffusion-pipeline-with-diffusers/](https://machinelearningmastery.com/further-stable-diffusion-pipeline-with-diffusers/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -13,63 +15,79 @@
     generative AI, enabling rapid experimentation and development. This library is
     very powerful. Not only you can use it to generate pictures from text prompts,
     but also to leverage LoRA and ControlNet to create a better picture.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
 - en: 'In this post, you will learn about Hugging Face’s Diffusers, how to generate
     images, and how to apply various image generation techniques similar to Stable
     Diffusion WebUI. Specifically, you will learn how to:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
 - en: Build a Diffusers Pipeline and generate a simple image with a prompt.
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Loading LoRA weights of fine-tuned models and generating IKEA-style images.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Build ControlNet OpenPose pipeline to generate an image using a reference image.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s get started.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
 - en: '![](../Images/34c4912f68b0bec21520237b0a1fc7ef.png)'
+  id: totrans-9
   prefs: []
   type: TYPE_IMG
 - en: Further Stable Diffusion Pipeline with Diffusers
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
 - en: Photo by [Felicia Buitenwerf](https://unsplash.com/photos/white-and-black-light-bulb-8xFgmFnOnAg).
     Some rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
 - en: Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'This post is in three parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
 - en: Using Diffusers on Google Colab
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Loading LoRA Weights
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: ControlNet OpenPose
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Using Diffusers on Google Colab
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -79,233 +97,352 @@
     special about this library is that with just a few lines of code, you can download
     the model from Hugging Face Hub and use it to generate images, similar to the
     Stable Diffusion WebUI.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
 - en: Instead of setting up locally, you will use Google Colab’s free GPU-based Notebook.
     To do so, go to [https://colab.research.google.com/](https://colab.research.google.com/)
     and create a new notebook. To access the GPU, you must head to “Runtime” → “Change
     runtime type” and select “T4 GPU” option.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
 - en: '![](../Images/d453ae11b11152c6017994290692e9a0.png)'
+  id: totrans-20
   prefs: []
   type: TYPE_IMG
 - en: Selecting a GPU on Google Colab
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
 - en: Using Colab saves you from the burden of owning a GPU device to run Stable Diffusion
     efficiently. By the nature of a Jupyter notebook, you just need to keep all the
     following code in their own cell to run. It would be convenient for you to experiment.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'After that, install all necessary Python libraries to run `diffusers` pipeline.
     You need to create a notebook cell with the following line:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，安装所有必要的Python库来运行`diffusers`管道。您需要创建一个笔记本单元，包含以下行：
 - en: '[PRE0]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: In the colab notebook, the `!` at the beginning of the line means this is a
     system command, not a Python code.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在colab笔记本中，行首的`!`表示这是一个系统命令，而不是Python代码。
 - en: To generate an image using a prompt, you must first create a Diffusion pipeline.
     In the following, you will download and use Stable Diffusion XL with “float 16”
     type to save memory. Then, you will set up a pipeline to use the GPU as an accelerator.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使用提示生成图像，必须首先创建一个Diffusion管道。接下来，您将下载并使用“float 16”类型的Stable Diffusion XL以节省内存。然后，您将设置一个使用GPU作为加速器的管道。
 - en: '[PRE1]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: To generate the image of a young woman, you will provide the same generic prompt
     to the pipeline.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 要生成一个年轻女性的图像，您将为管道提供相同的通用提示。
 - en: '[PRE2]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'As you can see, you got exceptional results with a few lines of code:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 如您所见，您用几行代码就获得了异常的结果：
 - en: '![](../Images/c1e6045c73d34ce4f01d60520c127531.png)'
+  id: totrans-31
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/c1e6045c73d34ce4f01d60520c127531.png)'
 - en: Image as generated using diffusers library with Stable Diffusion XL pipeline
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用Stable Diffusion XL管道生成的diffusers库图像
 - en: 'Similar to Stable Diffusion WebUI, you can provide a positive prompt, a negative
     prompt, inference steps, set random seed, change the size, and guidance scale
     to generate the image as you wished:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于Stable Diffusion WebUI，您可以提供正向提示、负向提示、推理步骤、设置随机种子、更改大小和指导比例来生成您想要的图像：
 - en: '[PRE3]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The image is perfect, and it looks like a digital artist spent almost 200 hours
     creating it:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片完美无缺，看起来像是一位数字艺术家花费了将近200小时创作：
 - en: '![](../Images/73fd244c562d96bb4fd921f7f89e18f7.png)'
+  id: totrans-36
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/73fd244c562d96bb4fd921f7f89e18f7.png)'
 - en: Another picture generated by the Stable Diffusion XL pipeline
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用Stable Diffusion XL管道生成的另一张图片
 - en: Loading LoRA Weights
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 加载LoRA权重
 - en: Not only you can invoke the pipeline directly, you can also load LoRA weights
     into your pipeline. LoRA weights are model adapters that are fine-tuned for specific
     types of images. They can be attached to the base model to produce custom results.
     In the following, you will use LoRA weights to generate images in the style of
     IKEA instructional images.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 您不仅可以直接调用管道，还可以将LoRA权重加载到您的管道中。LoRA权重是针对特定类型图像进行微调的模型适配器。它们可以附加到基础模型以生成定制结果。接下来，您将使用LoRA权重生成IKEA说明图像风格的图像。
 - en: You will download and load the LoRA adapter `ostris/ikea-instructions-lora-sdxl`
     by providing the Hugging Face link, the location of the adapter in the repository,
     and the name of the adapter.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 您将通过提供Hugging Face链接、适配器在存储库中的位置和适配器名称来下载和加载LoRA适配器`ostris/ikea-instructions-lora-sdxl`。
 - en: '[PRE4]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: To generate an IKEA-style image, you will provide a simple prompt, inference
     step, scale argument, and manual seed to the pipeline.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 要生成IKEA风格的图像，您将为管道提供一个简单的提示、推理步骤、规模参数和手动种子。
 - en: '[PRE5]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'You created a super villain that comes with instructions. Although not perfect,
     it can be used to generate custom images for your work:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 您创建了一个带有说明书的超级反派。虽然不完美，但可以用来为您的工作生成定制图像：
 - en: '![](../Images/6bcc1d5a4d8f670dd886abcfe055d8ef.png)'
+  id: totrans-45
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/6bcc1d5a4d8f670dd886abcfe055d8ef.png)'
 - en: An IKEA style picture generated using a LoRA
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用LoRA生成的IKEA风格图片
 - en: ControlNet OpenPose
+  id: totrans-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: ControlNet OpenPose
 - en: Let’s see another extension. You will now use the ControlNet OpenPose model
     to generate a control image using the reference image. ControlNet is a type of
     neural network architecture that controls diffusion models by adding extra conditions.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们再看一个扩展。现在，您将使用ControlNet OpenPose模型来生成一个控制图像，使用参考图像。ControlNet是一种神经网络架构，通过添加额外条件来控制扩散模型。
 - en: You will install `controlnet_aux` for the detecting pose of the body in the
     image.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 您将安装`controlnet_aux`来检测图像中身体的姿势。
 - en: '[PRE6]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: You will then build the ControlNet pipeline by loading the model from Hugging
     Face Hub in fp16 type. After that, you will load the free image from Pexels.com
     into our environment using the link.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，您将通过从Hugging Face Hub加载fp16类型的模型来构建ControlNet管道。之后，您将使用来自Pexels.com的免费图像链接到我们的环境中。
 - en: '[PRE7]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: To display a grid of images, you will create a Python function that takes a
     list of images and displays them in a grid in a Colab notebook.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 要显示图像网格，您将创建一个Python函数，该函数接受图像列表并在Colab笔记本中以网格形式显示它们。
 - en: '[PRE8]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: In the next step, you will build the OpenPose detector pipeline and feed it
     the image that you loaded. To see the original image and OpenPose image side by
     side, you will use the `image_grid` function.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一步中，您将构建 OpenPose 检测器管道并将其馈送到加载的图像中。为了将原始图像和 OpenPose 图像并排显示，您将使用 `image_grid`
+    函数。
 - en: '[PRE9]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: The detector has successfully generated the structure of the human pose.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 检测器成功生成了人体姿势的结构。
 - en: '![](../Images/e944bb08888a21f5c184b10ef1dfbbd8.png)'
+  id: totrans-58
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/e944bb08888a21f5c184b10ef1dfbbd8.png)'
 - en: The original image and the detected pose. Note both pictures are in 1:1 aspect
     ratio to match the default in Stable Diffusion
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 原始图像和检测到的姿势。请注意，这两张图片都是1:1的长宽比，以匹配 Stable Diffusion 的默认设置。
 - en: Now, you will combine everything together. You will create Stable Diffusion
     1.5 text to image pipeline and provide a ControlNet OpenPose model. You are using
     the fp16 variant for memory optimization.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，您将把所有内容结合起来。您将创建 Stable Diffusion 1.5 文本到图像管道，并提供 ControlNet OpenPose 模型。您正在使用
+    fp16 变体进行内存优化。
 - en: '[PRE10]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: You will generate four images using the same positive and negative prompts and
     display them in a grid. Note that you provide the pose image instead of the original
     image.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 您将使用相同的正面和负面提示生成四张图像，并在网格中显示它们。请注意，您提供的是姿势图像而不是原始图像。
 - en: '[PRE11]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: The results are fantastic. All of the women are dancing in the same pose. There
     are a few deformities, but you cannot expect much from stable diffusion 1.5.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果非常出色。所有女性都在同一个姿势中跳舞。有一些畸变，但从 Stable Diffusion 1.5 中不能期望太多。
 - en: '![](../Images/a6cf788480411ef491e669204b9fcd00.png)'
+  id: totrans-65
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/a6cf788480411ef491e669204b9fcd00.png)'
 - en: Four images were generated using ControlNet pipeline
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 ControlNet 管道生成了四张图像
 - en: Further Readings
+  id: totrans-67
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想深入了解这个主题，本节提供了更多资源。
 - en: '[diffusers API manual](https://huggingface.co/docs/diffusers/main/en/index)'
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[diffusers API 手册](https://huggingface.co/docs/diffusers/main/en/index)'
 - en: '[DiffusionPipeline API](https://huggingface.co/docs/diffusers/main/en/api/diffusion_pipeline)'
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[DiffusionPipeline API](https://huggingface.co/docs/diffusers/main/en/api/diffusion_pipeline)'
 - en: '[AutoPipelineForText2Image API](https://huggingface.co/docs/diffusers/en/api/pipelines/auto_pipeline)'
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[AutoPipelineForText2Image API](https://huggingface.co/docs/diffusers/en/api/pipelines/auto_pipeline)'
 - en: '[controlnet_aux Python package](https://github.com/huggingface/controlnet_aux)'
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[controlnet_aux Python 包](https://github.com/huggingface/controlnet_aux)'
 - en: Summary
+  id: totrans-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this post, you learned about the Hugging Face Diffuser library and how to
     use it to generate high quality and custom images. Specifically, you covered:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，您了解了 Hugging Face Diffuser 库及其如何生成高质量和定制图像的用法。具体来说，您涵盖了：
 - en: What is Diffusers, and how does it work?
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Diffusers 是什么，它是如何工作的？
 - en: How to apply advanced settings and negative prompts to generate consistent images.
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何应用高级设置和负面提示来生成一致的图像。
 - en: How to load LoRA weights to generate IKEA-style images.
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何加载 LoRA 权重以生成 IKEA 风格的图像。
 - en: How to control Stable Diffusion output using the ControlNet OpenPose model.
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 ControlNet OpenPose 模型控制 Stable Diffusion 的输出。

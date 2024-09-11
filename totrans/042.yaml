@@ -1,162 +1,236 @@
 - en: 'Spotting the Exception: Classical Methods for Outlier Detection in Data Science'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 发现异常：数据科学中的经典异常值检测方法
 - en: 原文：[https://machinelearningmastery.com/spotting-the-exception-classical-methods-for-outlier-detection-in-data-science/](https://machinelearningmastery.com/spotting-the-exception-classical-methods-for-outlier-detection-in-data-science/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/spotting-the-exception-classical-methods-for-outlier-detection-in-data-science/](https://machinelearningmastery.com/spotting-the-exception-classical-methods-for-outlier-detection-in-data-science/)
 - en: Outliers are unique in that they often don’t play by the rules. These data points,
     which significantly differ from the rest, can skew your analyses and make your
     predictive models less accurate. Although detecting outliers is critical, there
     is no universally agreed-upon method for doing so. While some advanced techniques
     like machine learning offer solutions, in this chapter, you will focus on the
     foundational Data Science methods that have been in use for decades.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 异常值的独特之处在于它们常常不按常规来处理。这些与其余数据点有显著差异的数据点可能会扭曲你的分析，并使你的预测模型不够准确。尽管检测异常值至关重要，但目前尚无公认的普遍方法来进行检测。虽然一些先进技术如机器学习提供了解决方案，但在本章中，你将重点关注那些使用了几十年的基础数据科学方法。
 - en: Let’s get started.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/6837aefe3bf7e5349fde454fca265350.png)'
+  id: totrans-4
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/6837aefe3bf7e5349fde454fca265350.png)'
 - en: 'Spotting the Exception: Classical Methods for Outlier Detection in Data Science'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 发现异常：数据科学中的经典异常值检测方法
 - en: Photo by [Haley Truong](https://unsplash.com/photos/white-and-black-polka-dot-ceramic-mug-YQEj2rYbQ8Y).
     Some rights reserved.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Haley Truong](https://unsplash.com/photos/white-and-black-polka-dot-ceramic-mug-YQEj2rYbQ8Y)提供。版权所有。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三部分；它们是：
 - en: Understanding Outliers and Their Impact
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 理解异常值及其影响
 - en: Traditional Methods for Outlier Detection
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 异常值检测的传统方法
 - en: Detecting Outliers in the Ames Dataset
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在Ames数据集中检测异常值
 - en: Understanding Outliers and Their Impact
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 理解异常值及其影响
 - en: 'Outliers can emerge for a variety of reasons, from data entry errors to genuine
     anomalies. Their presence can be attributed to factors like:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 异常值可能由于多种原因出现，从数据录入错误到真正的异常现象。这些异常值的存在可能归因于如下因素：
 - en: Measurement errors
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 测量误差
 - en: Data processing errors
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据处理错误
 - en: Genuine extreme observations
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 真实的极端观察值
 - en: Understanding the source of an outlier is crucial for determining whether to
     keep, modify, or discard it. The impact of outliers on statistical analyses can
     be profound. They can change the results of data visualizations, central tendency
     measurements, and other statistical tests. Outliers can also influence the assumptions
     of normality, linearity, and homoscedasticity in a dataset, leading to unreliable
     and spurious conclusions.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 理解异常值的来源对于决定是否保留、修改或丢弃它至关重要。异常值对统计分析的影响可能是深远的。它们可以改变数据可视化、集中趋势测量和其他统计测试的结果。异常值还可能影响数据集中的正态性、线性和同方差性的假设，从而导致不可靠和虚假的结论。
 - en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，可以参考我的书籍[《数据科学初学者指南》](https://machinelearning.samcart.com/products/beginners-guide-data-science/)。它提供了**自学教程**和**可运行的代码**。'
 - en: Traditional Methods for Outlier Detection
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 异常值检测的传统方法
 - en: 'In the realm of Data Science, several classical methods exist for detecting
     outliers. These can be broadly categorized into:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在数据科学领域，有几种经典的方法用于检测异常值。这些方法可以大致分为：
 - en: '**Visual methods:** Plots and graphs, such as scatter plots, box plots, and
     histograms, provide an intuitive feel of the data distribution and any extreme
     values.'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**视觉方法：** 绘图和图表，如散点图、箱形图和直方图，提供了对数据分布和任何极端值的直观了解。'
 - en: '**Statistical methods:** Techniques like the Z-score, IQR (Interquartile Range),
     and the modified Z-score are mathematical methods used to define outliers based
     on data distribution.'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**统计方法：** 技术如Z分数、IQR（四分位数间距）和修正后的Z分数是用于基于数据分布定义异常值的数学方法。'
 - en: '**Probabilistic and statistical models:** These leverage the probability distribution
     of data, such as the Gaussian distribution, to detect unlikely observations.'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**概率和统计模型：** 这些方法利用数据的概率分布，例如高斯分布，来检测不太可能的观察值。'
 - en: It’s essential to understand that the choice of method often depends on the
     nature of your dataset and the specific problem at hand.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要了解的是，选择的方法通常取决于你的数据集的性质和具体的问题。
 - en: Detecting Outliers in the Ames Dataset
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在Ames数据集中检测异常值
 - en: 'In this section, you’ll dive into the practical application of detecting outliers
     using the [Ames Housing Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv).
     Specifically, you’ll explore three features: Lot Area, Sales Price, and Total
     Rooms Above Ground.'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本节中，你将深入探讨使用[Ames Housing数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)来检测异常值的实际应用。具体来说，你将探索三个特征：地块面积、销售价格和地上房间总数。
 - en: '**Visual Inspection**'
+  id: totrans-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**视觉检查**'
 - en: Visual methods are a quick and intuitive way to identify outliers. Let’s start
     with box plots for your chosen features.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 视觉方法是快速而直观的识别异常值的方式。让我们从为你选择的特征开始使用箱型图。
 - en: '[PRE0]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '![](../Images/646e82f0ff1786c1c011a19ca5781229.png)'
+  id: totrans-30
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/646e82f0ff1786c1c011a19ca5781229.png)'
 - en: These plots provide immediate insights into potential outliers in your data.
     The dots you see beyond the whiskers represent data points that are considered
     outliers, lying outside 1.5 times the Interquartile Range (IQR) from the first
     and third quartiles. For instance, you might notice properties with exceptionally
     large lot areas or homes with a large number of rooms above ground.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些图提供了有关数据中潜在异常值的即时见解。你在胡须之外看到的点表示被视为异常值的数据点，位于第一和第三四分位数1.5倍的四分位距（IQR）之外。例如，你可能会注意到一些具有异常大地块面积或地上房间数量异常多的属性。
 - en: '**Statistical Methods: IQR**'
+  id: totrans-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**统计方法：IQR**'
 - en: 'The dots in the box plots above are greater than 1.5 times the Interquartile
     Range (IQR) from the third quartiles. It is a robust method to quantitatively
     identify outliers. You can precisely find and count these dots from the pandas
     DataFrame without the box plot:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述箱型图中的点超出了第三四分位数1.5倍的四分位距（IQR）。这是一种定量识别异常值的稳健方法。你可以通过pandas DataFrame精确找到和计算这些点，而无需箱型图：
 - en: '[PRE1]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'This prints:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 这打印出：
 - en: '[PRE2]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: In your analysis of the Ames Housing Dataset using the Interquartile Range (IQR)
     method, you identified 113 outliers in the “Lot Area” feature, 116 outliers in
     the “Sales Price” feature, and 35 outliers for the “Total Rooms Above Ground”
@@ -165,12 +239,17 @@
     the IQR from the first and third quartiles, and data points beyond these whiskers
     are considered outliers. This is just one definition of outliers. Such values
     should be further investigated or treated appropriately in subsequent analyses.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 在你使用四分位距（IQR）方法分析Ames Housing数据集时，你在“Lot Area”特征中识别了113个异常值，在“Sales Price”特征中识别了116个异常值，在“Total
+    Rooms Above Ground”特征中识别了35个异常值。这些异常值在箱型图中以超出胡须的点来表示。箱型图的胡须通常延伸到第一和第三四分位数1.5倍的IQR，超出这些胡须的数据点被认为是异常值。这只是异常值的一种定义。此类值应在后续分析中进一步调查或适当处理。
 - en: '**Probabilistic and Statistical Models**'
+  id: totrans-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**概率和统计模型**'
 - en: The natural distribution of data can sometimes help you identify outliers. One
     of the most common assumptions about data distribution is that it follows a Gaussian
     (or normal) distribution. In a perfectly Gaussian distribution, about 68% of the
@@ -178,58 +257,82 @@
     deviations, and 99.7% within three standard deviations. Data points that fall
     far away from the mean (typically beyond three standard deviations) can be considered
     outliers.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据的自然分布有时可以帮助你识别异常值。关于数据分布的一个常见假设是它遵循高斯（或正态）分布。在一个完美的高斯分布中，大约68%的数据位于均值的一个标准差内，95%位于两个标准差内，99.7%位于三个标准差内。远离均值的数据点（通常超出三个标准差）可以被认为是异常值。
 - en: This method is particularly effective when the dataset is large and is believed
     to be normally distributed. Let’s apply this technique to your Ames Housing Dataset
     and see what you find.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 当数据集较大且被认为是正态分布时，此方法特别有效。让我们将这一技术应用于你的Ames Housing数据集，看看你发现了什么。
 - en: '[PRE3]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'This shows these charts of distribution: [![](../Images/89c784309ede9ba6847592aa7616385a.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_2-5.png)'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 这展示了这些分布图：[![](../Images/89c784309ede9ba6847592aa7616385a.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_2-5.png)
 - en: '![](../Images/66c1676de9535431b9c24ae2a1b62623.png)'
+  id: totrans-43
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/66c1676de9535431b9c24ae2a1b62623.png)'
 - en: '[![](../Images/1a2229db98afd65d81e99b193ec38b8c.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_4.png)Then
     it prints the following:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/1a2229db98afd65d81e99b193ec38b8c.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_4.png)然后它打印出以下内容：'
 - en: '[PRE4]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Upon applying the Gaussian model for outlier detection, you observed that there
     are outliers in the “Lot Area,” “Sales Price,” and “Total Rooms Above Ground”
     features. These outliers are identified based on the upper threshold of three
     standard deviations from the mean:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 在应用高斯模型进行离群值检测时，您观察到在“地块面积”、“销售价格”和“地上总房间数”特征中存在离群值。这些离群值是基于从均值出发的三个标准差的上限来识别的：
 - en: '**Lot Area:** Any observation with a lot area larger than 34,505.44 square
     feet is considered an outlier. You found 24 such outliers in the dataset.'
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**地块面积：** 任何地块面积大于34,505.44平方英尺的观察值被视为离群值。您在数据集中发现了24个这样的离群值。'
 - en: '**Sales Price:** Any observation above US$403,188.39 is considered an outlier.
     Your analysis revealed 42 outliers in the “Sales Price” feature.'
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**销售价格：** 任何高于403,188.39美元的观察值都被视为离群值。您的分析揭示了在“销售价格”特征中有42个离群值。'
 - en: '**Total Rooms Above Ground:** Observations with more than 10.99 rooms above
     ground are considered outliers. You identified 35 outliers using this criterion.'
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**地上总房间数：** 超过10.99个地上房间的观察值被视为离群值。您根据这一标准识别出了35个离群值。'
 - en: The number of outliers is different because the definition of outliers is different.
     These figures differ from your earlier IQR method, emphasizing the importance
     of utilizing multiple techniques for a more comprehensive understanding. The visualizations
     accentuate these outliers, allowing for a clear distinction from the main distribution
     of the data. Such discrepancies underscore the necessity of domain expertise and
     context when deciding on the best approach for outlier management.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 离群值的数量不同是因为离群值的定义不同。这些数据与您之前的 IQR 方法不同，强调了利用多种技术以获得更全面理解的重要性。可视化图表突出了这些离群值，使其与数据的主要分布清晰区分。这些差异突显了在决定离群值管理最佳方法时需要领域专业知识和上下文的必要性。
 - en: 'To enhance your understanding and facilitate further analysis, it’s valuable
     to compile a comprehensive list of identified outliers. This list provides a clear
     overview of the specific data points that deviate significantly from the norm.
@@ -237,14 +340,21 @@
     list these outliers into a DataFrame for each feature: “Lot Area,” “Sales Price,”
     and “Total Rooms Above Ground.” This tabulated format allows for easy inspection
     and potential actions, such as further investigation or targeted data treatment.'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了增强您的理解并促进进一步分析，编制一个已识别离群值的综合列表非常有价值。这个列表提供了一个清晰的概述，显示了显著偏离常规的数据点。在接下来的部分中，您将展示如何系统地将这些离群值整理并列入每个特征的
+    DataFrame 中： “地块面积”、“销售价格”和“地上总房间数”。这种表格化格式便于检查和采取潜在措施，如进一步调查或有针对性的数据处理。
 - en: Let’s explore the approach that accomplishes this task.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们探索完成这一任务的方法。
 - en: '[PRE5]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Now, before you unveil the results, it’s essential to note that the code snippet
     allows for user customization. By adjusting the parameter `num_rows`, you have
     the flexibility to define the number of rows you want to see in each DataFrame.
@@ -252,55 +362,81 @@
     the default setting is `num_rows=None`, which prints the entire DataFrame. Feel
     free to tailor this parameter to suit your preferences and the specific requirements
     of your analysis.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，在揭示结果之前，需要注意的是代码片段允许用户自定义。通过调整参数 `num_rows`，您可以灵活定义希望在每个 DataFrame 中看到的行数。在之前共享的示例中，您使用了
+    `num_rows=7` 进行简洁显示，但默认设置是 `num_rows=None`，这将打印整个 DataFrame。请随意调整此参数以适应您的偏好和分析的具体要求。
 - en: '[PRE6]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: In this exploration of probabilistic and statistical models for outlier detection,
     you focused on the Gaussian model applied to the Ames Housing Dataset, specifically
     utilizing a threshold of three standard deviations. By leveraging the insights
     provided by visualizations and statistical methods, you identified outliers and
     demonstrated their listing in a customizable DataFrame.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在对离群值检测的概率和统计模型进行探索时，您重点关注了应用于 Ames Housing 数据集的高斯模型，特别是利用了三个标准差的阈值。通过利用可视化和统计方法提供的见解，您识别了离群值并展示了它们在可定制的
+    DataFrame 中的列出。
 - en: Want to Get Started With Beginner's Guide to Data Science?
+  id: totrans-57
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始学习数据科学初学者指南吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在立即参加我的免费电子邮件速成课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取免费的PDF电子书版本课程。
 - en: '**Further Reading**'
+  id: totrans-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: '**Resources**'
+  id: totrans-61
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**资源**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: Outliers, stemming from diverse causes, significantly impact statistical analyses.
     Recognizing their origins is crucial as they can distort visualizations, central
     tendency measures, and statistical tests. Classical Data Science methods for outlier
     detection encompass visual, statistical, and probabilistic approaches, with the
     choice dependent on dataset nature and specific problems.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 异常值来源多样，对统计分析有显著影响。识别其来源至关重要，因为它们可能扭曲可视化、集中趋势度量和统计检验。经典的数据科学异常值检测方法包括可视化、统计和概率方法，选择取决于数据集的性质和具体问题。
 - en: Application of these methods on the Ames Housing Dataset, focusing on Lot Area,
     Sales Price, and Total Rooms Above Ground, revealed insights. Visual methods like
     box plots provided quick outlier identification. The Interquartile Range (IQR)
@@ -308,38 +444,54 @@
     Sales Price, and Total Rooms Above Ground. Probabilistic models, particularly
     the Gaussian model with three standard deviations, found 24, 42, and 35 outliers
     in the respective features.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Ames 房屋数据集上应用这些方法，重点关注地块面积、销售价格和地面以上总房间数，揭示了一些见解。诸如箱形图这样的可视化方法提供了快速的异常值识别。四分位距（IQR）方法量化了异常值，分别揭示了地块面积、销售价格和地面以上总房间数的113、116和35个异常值。概率模型，特别是三个标准差的高斯模型，在相应特征中发现了24、42和35个异常值。
 - en: These results underscore the need for a multifaceted approach to outlier detection.
     Beyond identification, systematically organizing and listing outliers in tabulated
     DataFrames facilitates in-depth inspection. Customizability, demonstrated by the
     `num_rows` parameter, ensures flexibility in presenting tailored results. In conclusion,
     this exploration enhances understanding and provides practical guidance for managing
     outliers in real-world datasets.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些结果强调了异常值检测需要多方面的方法。除了识别之外，将异常值系统地组织和列入数据框中，有助于深入检查。通过`num_rows`参数展示的自定义性，确保了在呈现定制结果时的灵活性。总之，这一探索提升了理解，并提供了实际指导，用于管理现实世界数据集中的异常值。
 - en: 'Specifically, you learned:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The significance of outliers and their potential impact on data analyses.
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 异常值的重要性及其对数据分析的潜在影响。
 - en: Various traditional methods are used in Data Science for outlier detection.
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据科学中有多种传统方法用于异常值检测。
 - en: How to apply these methods in a real-world dataset, using the Ames Housing Dataset
     as an example.
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在实际数据集中应用这些方法，以 Ames 房屋数据集为例。
 - en: Systematic organization and listing of identified outliers into customizable
     DataFrames for detailed inspection and further analysis.
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 系统地组织和列出识别出的异常值到可自定义的数据框中，以便进行详细检查和进一步分析。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？请在下面的评论中提问，我会尽力回答。

@@ -1,18 +1,25 @@
 - en: Making Predictions with Multilinear Regression in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 PyTorch 进行多元线性回归预测
 - en: 原文：[https://machinelearningmastery.com/making-predictions-with-multilinear-regression-in-pytorch/](https://machinelearningmastery.com/making-predictions-with-multilinear-regression-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/making-predictions-with-multilinear-regression-in-pytorch/](https://machinelearningmastery.com/making-predictions-with-multilinear-regression-in-pytorch/)
 - en: The multilinear regression model is a supervised learning algorithm that can
     be used to predict the target variable `y` given multiple input variables `x`.
     It is a linear regression problem where more than one input variables `x` or features
     are used to predict the target variable `y`. A typical use case of this algorithm
     is predicting the price of a house given its size, number of rooms, and age.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 多元线性回归模型是一种监督学习算法，可用于在给定多个输入变量 `x` 的情况下预测目标变量 `y`。它是一个线性回归问题，其中使用了多个输入变量 `x`
+    或特征来预测目标变量 `y`。该算法的一个典型使用案例是根据房屋的大小、房间数量和年龄预测房价。
 - en: In previous tutorials, we focused on simple linear regression where we used
     only a single variable `x` to predict the target variable `y`. From here on we’ll
     be working with multiple input variables for prediction. While this tutorial only
@@ -20,271 +27,418 @@
     subsequent ones we’ll introduce you to multiple input-multiple output regression
     problems. Usually, same practice is opted in real world scenarios to build more
     sophisticated neural network architectures.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在之前的教程中，我们关注了简单线性回归，其中我们使用了单个变量 `x` 来预测目标变量 `y`。从现在开始，我们将使用多个输入变量进行预测。虽然本教程仅关注从多个输入变量
+    `x` 中进行单个输出预测 `y`，但在后续教程中，我们将介绍多个输入-多个输出回归问题。通常，实际场景中会采用相同的实践来构建更复杂的神经网络架构。
 - en: This tutorial will show how you can implement a multi
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程将展示如何实现一个多元
 - en: 'linear regression model in PyTorch. Particularly, you’ll learn:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 中的线性回归模型。特别地，您将学习：
 - en: How to review linear regression in multiple dimensions.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在多维中回顾线性回归。
 - en: How to make predictions with multilinear regression model using Pytroch.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 PyTorch 进行多元线性回归模型预测。
 - en: How to use `Linear` class for multilinear regression in PyTorch.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中使用 `Linear` 类进行多元线性回归。
 - en: How to build custom modules using `nn.Module` in PyTorch.
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 PyTorch 中的 `nn.Module` 构建自定义模块。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动您的项目**，请参阅我的书 [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了
+    **自学教程** 和 **可运行的代码**。'
 - en: Let’s get started.![](../Images/cfb414ae8bd3f39d9577ea2dcbbf4ef5.png)
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/cfb414ae8bd3f39d9577ea2dcbbf4ef5.png)
 - en: Using Optimizers from PyTorch.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 PyTorch 的优化器。
 - en: Picture by [Mark Boss](https://unsplash.com/photos/W0zGOsdNFaE). Some rights
     reserved.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Mark Boss](https://unsplash.com/photos/W0zGOsdNFaE) 提供。保留所有权利。
 - en: Overview
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in three parts; they are
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是
 - en: Preparing Data for Prediction
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备预测数据
 - en: Using `Linear` Class for Multilinear Regression
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 `Linear` 类进行多元线性回归
 - en: Visualize the Results
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可视化结果
 - en: Preparing Data for Prediction
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备预测数据
 - en: As in the case of simple linear regression model, let’s initialize the weights
     and bias for our model. Note that we have used multi-dimensional tensors for our
     weights and bias as we’ll be working with more than one input variables.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 与简单线性回归模型的情况类似，我们来初始化模型的权重和偏差。请注意，由于我们将处理多个输入变量，因此我们使用了多维张量来表示权重和偏差。
 - en: '[PRE0]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Next, we’ll define our forward function for prediction. Previously we used scalar
     multiplications but here we use the `mm` function from PyTorch for **matrix multiplication**.
     This function implements a linear equation with more than one input variables.
     Note that multi-dimensional tensors are matrices and require a few rules to be
     followed, like matrix multiplication. We’ll discuss more on this later.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将定义用于预测的前向函数。之前我们使用了标量乘法，但在这里我们使用 PyTorch 的 `mm` 函数进行 **矩阵乘法**。这个函数实现了一个具有多个输入变量的线性方程。请注意，多维张量是矩阵，并且需要遵循一些规则，例如矩阵乘法。我们将在后面进一步讨论这些规则。
 - en: '[PRE1]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Now that we have initialized the weights and bias, and built a forward function
     for prediction, let’s define a tensor `x` for input variables.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 既然我们已经初始化了权重和偏差，并构建了用于预测的前向函数，我们来定义一个用于输入变量的张量 `x`。
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: This prints
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印
 - en: '[PRE3]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Note that in matrix multiplication `torch.mm(x, w)`, the number of **columns**
     in the matrix `x` must be equal to the number of **rows** in `w`. In this case,
     we have a $1\times 2$ tensor for `x` and $2\times 1$ tensor for `w`, resulting
     in a $1\times 1$ tensor after matrix multiplication.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，在矩阵乘法`torch.mm(x, w)`中，矩阵`x`中的**列数**必须等于`w`中的**行数**。在这种情况下，我们有一个$1\times
+    2$的张量`x`和一个$2\times 1$的张量`w`，矩阵乘法后得到一个$1\times 1$的张量。
 - en: Similarly, we can apply the linear equation for multiple samples. For instance,
     let’s create a tensor `X` where each row represents a sample.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似地，我们可以对多个样本应用线性方程。例如，让我们创建一个张量`X`，其中每一行代表一个样本。
 - en: '[PRE4]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: For prediction, we’ll use the same function as above.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于预测，我们将使用上面相同的函数。
 - en: '[PRE5]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: which prints
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 其输出为
 - en: '[PRE6]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: As you can see, we have obtained the result for multiple input variables.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 如你所见，我们已经得到了多个输入变量的结果。
 - en: Using `Linear` Class for Multilinear Regression
+  id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用`Linear`类进行多线性回归
 - en: Instead of writing the functions from scratch, we can use PyTorch’s own built-in
     class `Linear` for making predictions. This is more useful while building the
     complex and powerful model architectures.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 与其从头编写函数，我们可以使用PyTorch的内置`Linear`类进行预测。这在构建复杂而强大的模型架构时更为有用。
 - en: 'Let’s create a `Linear` model and make predictions for the same tensor `X`
     defined above. Here we’ll define two parameters:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们创建一个`Linear`模型，并对上面定义的相同张量`X`进行预测。这里我们将定义两个参数：
 - en: '`in_features`: represents the number of input variables `X` and number of model
     weights, which in this case is 2.'
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`in_features`：表示输入变量`X`的数量以及模型权重的数量，在这种情况下为2。'
 - en: '`out_features`: represents number of output/predicted values, which in this
     case is 1.'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`out_features`：表示输出/预测值的数量，在这种情况下为1。'
 - en: '[PRE7]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Now, let’s make predictions for `X` using our `lr_model` object, with randomly
     initialized weights and bias.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们使用随机初始化的权重和偏差，通过`lr_model`对象对`X`进行预测。
 - en: '[PRE8]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The output in this case is as follows:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，输出如下：
 - en: '[PRE9]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Note not the value but the shape of the output. This is same as the previous
     case when we used the matrix multiplication.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意输出的形状，而不是值。这与我们使用矩阵乘法的先前情况相同。
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-47
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用PyTorch进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即获取我的免费电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: Creating Custom Modules with `nn.Module`
+  id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用`nn.Module`创建自定义模块
 - en: Alternatively, we can also create custom modules for our linear models. While
     this may seem redundant for the time being, this can be the requirement when we
     build state-of-the-art neural networks.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 另外，我们还可以为线性模型创建自定义模块。虽然目前看来这可能有些多余，但当我们构建最先进的神经网络时，这可能是必要的。
 - en: Note that custom modules are objects and classes. In this case, we’ll define
     a linear regression class `LR` and make it a subclass of the package `nn.Module`.
     Consequently, all the methods and attributes inside the `nn.Module` package will
     be inherited.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，自定义模块是对象和类。在这种情况下，我们将定义一个线性回归类`LR`，并将其设置为`nn.Module`包的子类。因此，`nn.Module`包中的所有方法和属性都将被继承。
 - en: We’ll define the size of the input and output, namely `input_features` and `output_features`,
     in the arguments of the constructor. Plus, we’ll call `super()` in the object
     constructor which enables us to use methods and attributes from the parent class
     `nn.Module`. Now we can use the `torch.nn.Linear` object and define the arguments
     `input_features` and `output_features` inside.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将在构造函数的参数中定义输入和输出的大小，即`input_features`和`output_features`。此外，我们将在对象构造函数中调用`super()`，这使我们能够使用父类`nn.Module`中的方法和属性。现在我们可以使用`torch.nn.Linear`对象，并在其中定义参数`input_features`和`output_features`。
 - en: Lastly, for making predictions, we’ll define the `forward` function.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，为了进行预测，我们将定义`forward`函数。
 - en: '[PRE10]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: We’ll build our linear regression model with two inputs and one output as follows.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将按照以下方式构建具有两个输入和一个输出的线性回归模型。
 - en: '[PRE11]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Now let’s make predictions again using our custom module for the tensor `X`
     having multiple input samples.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们再次使用自定义模块对包含多个输入样本的张量`X`进行预测。
 - en: '[PRE12]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: which prints
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 其输出为
 - en: '[PRE13]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Using the `parameters()` method, we can obtain the list of randomly initialized
     parameters.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用`parameters()`方法，我们可以获得随机初始化参数的列表。
 - en: '[PRE14]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: which prints
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 其输出为
 - en: '[PRE15]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Alternatively, we can also use `state_dict()` method to check the parameters
     of the model.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 另外，我们还可以使用`state_dict()`方法检查模型的参数。
 - en: 'Putting everything together, the following is the complete code to create multilinear
     regression models in different ways:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容结合起来，以下是用不同方式创建多元线性回归模型的完整代码：
 - en: '[PRE16]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Summary
+  id: totrans-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you learned how you can make predictions using multilinear
     regression models. Particularly, you learned:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何使用多元线性回归模型进行预测。特别是，你学习了：
 - en: How to review linear regression in multiple dimensions.
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何回顾多维线性回归。
 - en: How to make predictions with multilinear regression model using PyTorch.
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 PyTorch 进行多元线性回归模型预测。
 - en: How to use class `Linear` for multilinear regression in PyTorch.
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中使用类 `Linear` 进行多元线性回归。
 - en: How to build custom modules using `nn.Module` in PyTorch.
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中使用 `nn.Module` 构建自定义模块。

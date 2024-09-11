@@ -1,87 +1,128 @@
 - en: 'Inferential Insights: How Confidence Intervals Illuminate the Ames Real Estate
     Market'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 推断性见解：置信区间如何揭示艾姆斯房地产市场的情况
 - en: 原文：[https://machinelearningmastery.com/inferential-insights-confidence-intervals/](https://machinelearningmastery.com/inferential-insights-confidence-intervals/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/inferential-insights-confidence-intervals/](https://machinelearningmastery.com/inferential-insights-confidence-intervals/)
 - en: In the vast universe of data, it’s not always about what you can see but rather
     what you can infer. Confidence intervals, a cornerstone of inferential statistics,
     empower you to make educated guesses about a larger population based on your sample
     data. Using the Ames Housing dataset, let’s unravel the concept of confidence
     intervals and see how they can provide actionable insights into the real estate
     market.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在数据的广阔宇宙中，有时重要的不是你能看到什么，而是你能推断出什么。置信区间，作为推断统计学的基石，使你能够根据样本数据对更大的人群做出有根据的猜测。利用艾姆斯住房数据集，让我们揭开置信区间的概念，并看看它们如何为房地产市场提供可操作的见解。
 - en: Let’s get started.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/9bb0c1d442e18c72634e116d8129967a.png)'
+  id: totrans-4
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/9bb0c1d442e18c72634e116d8129967a.png)'
 - en: 'Inferential Insights: How Confidence Intervals Illuminate the Ames Real Estate
     Market.'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 推断性见解：置信区间如何揭示艾姆斯房地产市场的情况。
 - en: Photo by [Jonathan Klok](https://unsplash.com/photos/gray-and-black-wooden-bridge-across-mountains-covered-by-trees-JS8RhWVk74Q).
     Some rights reserved.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：[Jonathan Klok](https://unsplash.com/photos/gray-and-black-wooden-bridge-across-mountains-covered-by-trees-JS8RhWVk74Q)。部分权利保留。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post unfolds through the following segments:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为以下几个部分：
 - en: The Core of Inferential Statistics
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 推断统计学的核心
 - en: What are Confidence Intervals?
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是置信区间？
 - en: Estimating Sales Prices with Confidence Intervals
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用置信区间估算销售价格
 - en: Understanding the Assumptions Behind Confidence Intervals
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 理解置信区间背后的假设
 - en: The Core of Inferential Statistics
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 推断统计学的核心
 - en: 'Inferential Statistics uses a sample of data to make inferences about the population
     from which it was drawn. The main components include:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 推断统计学使用数据样本对所抽样的总体进行推断。主要组成部分包括：
 - en: '**Confidence Intervals:** Range within which a population parameter is likely
     to lie.'
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**置信区间：** 人口参数可能落在的范围。'
 - en: '**Hypothesis Testing:** Process of making inferences about population parameters.'
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**假设检验：** 对总体参数进行推断的过程。'
 - en: Inferential Statistics is indispensable when it is impractical to study an entire
     population, and insights need to be derived from a representative sample, as is
     the case with the [Ames properties dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv).
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 当研究整个总体不切实际，需要从代表性样本中得出见解时，推断统计学是不可或缺的，就像在[Ames属性数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)的情况一样。
 - en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [《数据科学入门指南》](https://machinelearning.samcart.com/products/beginners-guide-data-science/)
+    **来启动你的项目**。它提供了**自学教程**和**可运行的代码**。'
 - en: What are Confidence Intervals?
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是置信区间？
 - en: Imagine you’ve taken a random sample of houses from a city and calculated the
     average sales price. While this gives you a single estimate, wouldn’t it be more
     informative to have a range in which the true average sales price for the entire
@@ -89,12 +130,17 @@
     In essence, a confidence interval gives us a range of values within which we can
     be reasonably sure (e.g., 95% confident) that the true population parameter (like
     the mean or proportion) lies.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象一下你从一个城市随机抽取了一些房屋，并计算了平均销售价格。虽然这为你提供了一个单一的估算值，但如果有一个范围可以表示整个城市的真实平均销售价格可能落在何处，那不是更有信息量吗？这个范围估计就是置信区间提供的。实际上，置信区间给了我们一个范围，在这个范围内，我们可以合理地确定（例如，95%
+    确定）真实的人口参数（如均值或比例）位于其中。
 - en: Estimating Sales Prices with Confidence Intervals
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用置信区间估算销售价格
 - en: While point estimates like means and medians give us an idea about central tendency,
     they don’t inform us about the range in which the true population parameter might
     lie. Confidence intervals bridge this gap. For instance, if you want to estimate
@@ -102,49 +148,74 @@
     a 95% confidence interval for the mean sales price. This interval will give us
     a range in which we can be 95% confident that the true mean sales price of all
     houses in Ames lies.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然像均值和中位数这样的点估计能让我们了解中心趋势，但它们无法告知我们真实的总体参数可能落在什么范围内。置信区间填补了这一空白。例如，如果你想估计所有房屋的平均销售价格，你可以使用数据集计算95%的置信区间。这一区间将给我们一个范围，我们可以95%确信所有房屋的真实平均销售价格落在这个范围内。
 - en: 'You will use the t-distribution to find the confidence interval:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将使用t分布来找到置信区间：
 - en: '[PRE0]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '[PRE1]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Confidence Intervals provide a range that, with a certain level of confidence,
     is believed to encompass the true population parameter. Interpreting this range
     allows us to understand the variability and precision of our estimate. If a 95%
     confidence interval for the mean ‘SalePrice’ is (\$175,156, \$180,951), we can
     be 95% confident that the true mean sales price for all properties in Ames lies
     between \$175,156 and \$180,951.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 置信区间提供了一个范围，依据一定的置信水平，我们相信这个范围涵盖了真实的总体参数。解释这个范围可以让我们理解估计的变异性和精确度。如果均值‘SalePrice’的95%置信区间是(\$175,156,
+    \$180,951)，我们可以95%确信所有Ames物业的真实平均销售价格介于\$175,156和\$180,951之间。
 - en: '[PRE2]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '![](../Images/be6d577c4c53c3c3d902a916ac8d0d96.png)'
+  id: totrans-28
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/be6d577c4c53c3c3d902a916ac8d0d96.png)'
 - en: Distribution of sales prices and the mean
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 销售价格和均值的分布
 - en: In the visual above, the histogram represents the distribution of sales prices
     in the Ames Housing dataset. The blue vertical line corresponds to the sample
     mean, providing a point estimate for the average sales price. The dashed red and
     green lines represent the 95% lower and upper confidence intervals, respectively.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的可视化中，直方图表示了Ames住房数据集中的销售价格分布。蓝色垂直线对应样本均值，提供了平均销售价格的点估计。虚线红色和绿色线分别表示95%的下限和上限置信区间。
 - en: Let’s delve deeper into the price range between \$150,000 and \$200,000.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们*深入了解*在\$150,000和\$200,000之间的价格区间。
 - en: '[PRE3]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '![](../Images/72bb43c6c325005626a4a201c6af6fab.png)'
+  id: totrans-33
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/72bb43c6c325005626a4a201c6af6fab.png)'
 - en: 'The confidence interval is interpreted as follows: We are 95% confident that
     the true mean sales price for all houses in Ames lies between the lower confidence
     level of \$175,156 and the upper confidence level of \$180,951\. This range accounts
@@ -152,124 +223,180 @@
     The mean computed from the collected sample is \$178,053, but the actual value
     from the entire population may differ. In other words, this interval is narrow
     because it is calculated from a large number of samples.'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 置信区间的解释如下：我们95%确信所有房屋的真实平均销售价格介于\$175,156和\$180,951之间。这个范围考虑了从样本估计总体参数时固有的变异性。从收集的样本中计算出的均值是\$178,053，但整个总体的实际值可能有所不同。换句话说，这个区间较窄，因为它是基于大量样本计算得出的。
 - en: Want to Get Started With Beginner's Guide to Data Science?
+  id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始数据科学初学者指南吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: Understanding the Assumptions Behind Confidence Intervals
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 理解置信区间背后的假设
 - en: To skillfully apply confidence intervals in the dynamic landscape of the Ames
     real estate market, it’s crucial to apprehend the foundational assumptions underpinning
     our analysis.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Ames房地产市场这个动态环境中熟练应用置信区间，关键在于理解支撑我们分析的基础假设。
 - en: '**Assumption 1: Random Sampling. **Our analysis assumes that the data is collected
     through a random sampling process, ensuring that each property in Ames has an
     equal chance of being included. This randomness enhances the generalizability
     of our findings to the entire real estate market.'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '**假设1：随机抽样。**我们的分析假设数据是通过随机抽样过程收集的，确保Ames中的每个物业都有相等的被包含机会。这种随机性增强了我们对整个房地产市场发现的推广性。'
 - en: '**Assumption 2: The Central Limit Theorem (CLT) and Large Samples. **A pivotal
     assumption in our analysis is the Central Limit Theorem (CLT), which enables the
     use of the t-distribution in calculating confidence intervals. The CLT holds that
     for large samples, the sampling distribution of the sample mean approximates a
     normal distribution, regardless of the population’s distribution. In our case,
     with 2,579 observations, the CLT is robustly satisfied.'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '**假设 2：中心极限定理 (CLT) 和大样本。**我们分析中的一个关键假设是中心极限定理 (CLT)，它使得在计算置信区间时可以使用 t 分布。中心极限定理认为，对于大样本，样本均值的抽样分布近似于正态分布，无论总体的分布如何。在我们的案例中，有
+    2,579 个观察值，中心极限定理得到了可靠满足。'
 - en: '**Assumption 3: Independence. **We assume that the sales prices of individual
     houses are independent of each other. This assumption is crucial, ensuring that
     the sales price of one house does not influence the sales price of another. It’s
     particularly relevant in the diverse real estate market of Ames.'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '**假设 3：独立性。**我们假设各个房屋的销售价格彼此独立。这个假设至关重要，确保一个房屋的销售价格不会影响另一个房屋的销售价格。这在 Ames 多样化的房地产市场中特别相关。'
 - en: '**Assumption 4: Known or Estimated Population Standard Deviation (for Z-Interval). **While
     our primary approach involves using the t-distribution, it’s worth noting that
     confidence intervals can be calculated using the Z-score, requiring knowledge
     or a reliable estimate of the population standard deviation. However, our analysis
     favors the t-distribution, which is more robust when dealing with smaller sample
     sizes or when the population standard deviation is unknown.'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '**假设 4：已知或估计的总体标准差（用于 Z-区间）。**虽然我们的主要方法涉及使用 t 分布，但值得注意的是，置信区间也可以通过 Z 分数计算，这要求知道或可靠估计总体标准差。然而，我们的分析偏向于
+    t 分布，当样本量较小或总体标准差未知时，t 分布更为稳健。'
 - en: '**Assumption 5:** **Continuous Data. **Confidence intervals are applied to
     continuous data. In our context, the sales prices of houses in Ames are continuous
     variables, making confidence intervals appropriate for estimating population parameters.'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '**假设 5：** **连续数据。** 置信区间应用于连续数据。在我们的背景中，Ames 的房屋销售价格是连续变量，因此置信区间适合用于估计总体参数。'
 - en: These assumptions form the bedrock of our analysis, and it’s imperative to recognize
     their role and assess their validity for dependable and insightful real estate
     market analysis. Violations of these assumptions could compromise the reliability
     of our conclusions. In summary, our methodology, rooted in the t-distribution,
     leverages these assumptions to provide nuanced insights into market trends and
     property values in Ames.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些假设构成了我们分析的基础，认识它们的作用并评估其有效性对可靠且有洞察力的房地产市场分析至关重要。违反这些假设可能会危及我们结论的可靠性。总之，我们的方法论基于
+    t 分布，利用这些假设为 Ames 的市场趋势和物业价值提供了细致的洞察。
 - en: Further Reading
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: Tutorials
+  id: totrans-47
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[Confidence Intervals Tutorial](https://www.khanacademy.org/math/statistics-probability/confidence-intervals-one-sample)'
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[置信区间教程](https://www.khanacademy.org/math/statistics-probability/confidence-intervals-one-sample)'
 - en: '[scipy.stats.t](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.t.html)
     API'
+  id: totrans-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scipy.stats.t](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.t.html)
+    API'
 - en: Resources
+  id: totrans-50
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 资源
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this exploration, we introduced the concept of confidence intervals using
     the Ames Housing dataset. By understanding the range in which the true average
     sales price of houses in Ames likely falls, stakeholders can make more informed
     decisions in the real estate market.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这次探索中，我们通过 Ames 房地产数据集介绍了置信区间的概念。通过理解 Ames 房屋真实平均销售价格可能落在的范围，利益相关者可以在房地产市场中做出更明智的决策。
 - en: 'Specifically, you learned:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The foundational concept of confidence intervals in inferential statistics.
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 推断统计中的置信区间的基础概念。
 - en: How to estimate and interpret the 95% confidence interval for the mean sales
     price in the Ames housing market.
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何估计和解释 Ames 房地产市场中平均销售价格的 95% 置信区间。
 - en: The critical assumptions underlying confidence interval calculations.
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 置信区间计算的关键假设。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？请在下面的评论中提问，我将尽力回答。

@@ -1,201 +1,307 @@
 - en: Training a Single Output Multilinear Regression Model in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中训练单输出多元线性回归模型
 - en: 原文：[https://machinelearningmastery.com/training-a-single-output-multilinear-regression-model-in-pytorch/](https://machinelearningmastery.com/training-a-single-output-multilinear-regression-model-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/training-a-single-output-multilinear-regression-model-in-pytorch/](https://machinelearningmastery.com/training-a-single-output-multilinear-regression-model-in-pytorch/)
 - en: A neural network architecture is built with hundreds of neurons where each of
     them takes in multiple inputs to perform a multilinear regression operation for
     prediction. In the previous tutorials, we built a single output multilinear regression
     model that used only a forward function for prediction.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络架构由数百个神经元构成，其中每个神经元接受多个输入，执行多元线性回归操作以进行预测。在之前的教程中，我们建立了一个单输出的多元线性回归模型，仅使用前向函数进行预测。
 - en: 'In this tutorial, we’ll add optimizer to our single output multilinear regression
     model and perform backpropagation to reduce the loss of the model. Particularly,
     we’ll demonstrate:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将向我们的单输出多元线性回归模型添加优化器，并执行反向传播以减少模型的损失。特别是，我们将演示：
 - en: How to build a single output multilinear regression model in PyTorch.
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中构建单输出多元线性回归模型。
 - en: How PyTorch built-in packages can be used to create complicated models.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何利用 PyTorch 内置包创建复杂模型。
 - en: How to train a single output multilinear regression model with mini-batch gradient
     descent in PyTorch.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中使用小批量梯度下降训练单输出多元线性回归模型。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参阅我的书籍[《深度学习与 PyTorch》](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了**自学教程**和**实用代码**。'
 - en: Let’s get started.![](../Images/56305823125c76e32f310decba0c6ab0.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。![](../Images/56305823125c76e32f310decba0c6ab0.png)
 - en: Training a Single Output Multilinear Regression Model in PyTorch.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中训练单输出多元线性回归模型。
 - en: Picture by [Bruno Nascimento](https://unsplash.com/photos/PHIgYUGQPvU). Some
     rights reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[布鲁诺·纳西门托](https://unsplash.com/photos/PHIgYUGQPvU)提供。版权所有。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in three parts; they are
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分，它们是
 - en: Preparing Data for Prediction
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为预测准备数据
 - en: Using `Linear` Class for Multilinear Regression
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 `Linear` 类进行多元线性回归
 - en: Visualize the Results
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可视化结果
 - en: Build the Dataset Class
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建数据集类
 - en: Just like previous tutorials, we’ll create a sample dataset to perform our experiments
     on. Our data class includes a dataset constructor, a getter `__getitem__()` to
     fetch the data samples, and `__len__()` function to get the length of the created
     data. Here is how it looks like.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 和之前的教程一样，我们将创建一个样本数据集来进行实验。我们的数据类包括一个数据集构造函数、一个获取数据样本的`__getitem__()`方法，以及一个获取创建数据长度的`__len__()`函数。它的样子如下。
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: With this, we can easily create the dataset object.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这个，我们可以轻松创建数据集对象。
 - en: '[PRE1]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件速成课程（附样例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得免费的 PDF 电子书版本。
 - en: Build the Model Class
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建模型类
 - en: Now that we have the dataset, let’s build a custom multilinear regression model
     class. As discussed in the previous tutorial, we define a class and make it a
     subclass of `nn.Module`. As a result, the class inherits all the methods and attributes
     from the latter.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们有了数据集，让我们构建一个自定义的多元线性回归模型类。如在之前的教程中所讨论的，我们定义一个类并将其作为 `nn.Module` 的子类。因此，该类继承了所有方法和属性。
 - en: '[PRE2]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: We’ll create a model object with an input size of 2 and output size of 1\. Moreover,
     we can print out all model parameters using the method `parameters()`.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将创建一个输入大小为 2 和输出大小为 1 的模型对象。此外，我们可以使用`parameters()`方法打印出所有模型参数。
 - en: '[PRE3]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Here’s what the output looks like.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是输出的样子。
 - en: '[PRE4]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: In order to train our multilinear regression model, we also need to define the
     optimizer and loss criterion. We’ll employ stochastic gradient descent optimizer
     and mean square error loss for the model. We’ll keep the learning rate at 0.1.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了训练我们的多元线性回归模型，我们还需要定义优化器和损失标准。我们将使用随机梯度下降优化器和均方误差损失。学习率保持在 0.1。
 - en: '[PRE5]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Train the Model with Mini-Batch Gradient Descent
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用小批量梯度下降训练模型
 - en: Before we start the training process, let’s load up our data into the `DataLoader`
     and define the batch size for the training.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在开始训练过程之前，让我们将数据加载到`DataLoader`中，并定义训练的批次大小。
 - en: '[PRE6]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: We’ll start the training and let the process continue for 20 epochs, using the
     same for-loop as in our previous tutorial.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将开始训练，并让过程持续20个周期，使用与我们之前教程相同的`for-loop`。
 - en: '[PRE7]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'In the training loop above, the loss is reported in each epoch. You should
     see the output similar to the following:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的训练循环中，每个周期都会报告损失。你应该会看到类似以下的输出：
 - en: '[PRE8]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: This training loop is typical in PyTorch. You will reuse it very often in future
     projects.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个训练循环在PyTorch中很典型。你将在未来的项目中频繁使用它。
 - en: Plot the Graph
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 绘制图表
 - en: Lastly, let’s plot the graph to visualize how the loss decreases during the
     training process and converge to a certain point.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，让我们绘制图表来可视化损失在训练过程中如何减少并收敛到某一点。
 - en: '[PRE9]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '![](../Images/f96a509edf9cb1ce999a9ed3eb7de3a9.png)'
+  id: totrans-44
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/f96a509edf9cb1ce999a9ed3eb7de3a9.png)'
 - en: Loss during training
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练过程中的损失
 - en: Putting everything together, the following is the complete code.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容汇总，以下是完整的代码。
 - en: '[PRE10]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Summary
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial you learned how to build a single output multilinear regression
     model in PyTorch. Particularly, you learned:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学会了如何在PyTorch中构建一个单输出的多元线性回归模型。特别是，你学到了：
 - en: How to build a single output multilinear regression model in PyTorch.
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中构建一个单输出的多元线性回归模型。
 - en: How PyTorch built-in packages can be used to create complicated models.
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用PyTorch内置的包来创建复杂的模型。
 - en: How to train a single output multilinear regression model with mini-batch gradient
     descent in PyTorch.
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用迷你批量梯度下降在PyTorch中训练单输出的多元线性回归模型。

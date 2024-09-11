@@ -1,644 +1,1024 @@
 - en: Manipulating Tensors in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中操作张量
 - en: 原文：[https://machinelearningmastery.com/manipulating-tensors-in-pytorch/](https://machinelearningmastery.com/manipulating-tensors-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/manipulating-tensors-in-pytorch/](https://machinelearningmastery.com/manipulating-tensors-in-pytorch/)
 - en: PyTorch is a deep-learning library. Just like some other deep learning libraries,
     it applies operations on numerical arrays called **tensors**. In the simplest
     terms, tensors are just multidimensional arrays. When we deal with the tensors,
     some operations are used very often. In PyTorch, there are some functions defined
     specifically for dealing with tensors.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 是一个深度学习库。就像一些其他深度学习库一样，它对称为 **张量** 的数值数组执行操作。简而言之，张量就是多维数组。当我们处理张量时，某些操作使用得非常频繁。在
+    PyTorch 中，有一些函数专门用于处理张量。
 - en: 'In the following, we will give a brief overview of what PyTorch provides on
     tensors and how we can use them. After finishing this tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在接下来的内容中，我们将简要概述 PyTorch 在张量方面的提供以及如何使用它们。完成本教程后，你将了解：
 - en: How to create and operate on PyTorch tensors
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何创建和操作 PyTorch 张量
 - en: PyTorch’s tensor syntax is similar to NumPy
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PyTorch 的张量语法类似于 NumPy
 - en: The common functions you can use from PyTorch to manipulate a tensor
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你可以使用 PyTorch 中的常用函数来操作张量。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参阅我的书 [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了
+    **自学教程** 和 **可运行的代码**。'
 - en: Let’s get started.![](../Images/468f6fbc5538c89afe0de5bd41bcfef4.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。![](../Images/468f6fbc5538c89afe0de5bd41bcfef4.png)
 - en: Manipulating tensors in PyTorch. Photo by [Big Dodzy](https://unsplash.com/photos/n4BW2LPf7t8).
     Some rights reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中操作张量。照片由 [Big Dodzy](https://unsplash.com/photos/n4BW2LPf7t8) 提供。版权所有。
 - en: Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is in four parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四个部分；它们是：
 - en: Creating Tensors
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建张量
 - en: Checking a Tensor
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 检查张量
 - en: Manipulating Tensors
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 操作张量
 - en: Tensor Functions
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 张量函数
 - en: Creating Tensors
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建张量
 - en: 'If you’re familiar with NumPy, you should recall that there are multiple ways
     of creating an array. The same is true in PyTorch for creating tensors. The simplest
     way to create a specific constant matrix like the following:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你对 NumPy 熟悉，你应该会记得有多种方式来创建数组。在 PyTorch 中创建张量也是如此。创建特定常量矩阵的最简单方法如下：
 - en: $$
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{bmatrix}
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{bmatrix}
 - en: 1 & 2 & 3 \\
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 1 & 2 & 3 \\
 - en: 4 & 5 & 6
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 4 & 5 & 6
 - en: \end{bmatrix}
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{bmatrix}
 - en: $$
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: 'is by using:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是通过使用：
 - en: '[PRE0]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'It prints:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 它打印：
 - en: '[PRE1]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The `dtype` argument specifies the data type of the values in the tensor. It
     is optional. You can also provide the values from a NumPy array and convert it
     to a PyTorch tensor.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '`dtype` 参数指定张量中值的数据类型。它是可选的。你还可以提供来自 NumPy 数组的值，并将其转换为 PyTorch 张量。'
 - en: 'Usually, you would create a tensor for some specific purpose. For example,
     if you want to have ten values evenly distributed between -1 and 1, you can use
     the `linspace()` function:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，你会为了某个特定目的创建张量。例如，如果你想要十个在 -1 和 1 之间均匀分布的值，你可以使用 `linspace()` 函数：
 - en: '[PRE2]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'It prints:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 它打印：
 - en: '[PRE3]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'However, if you want to have a tensor of random values (which is very useful
     in testing your functions), you can make one like the following:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 不过，如果你想要一个包含随机值的张量（这在测试你的函数时非常有用），你可以创建一个如下的张量：
 - en: '[PRE4]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'It prints, for example:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，它打印：
 - en: '[PRE5]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'This resulting tensor is of dimension $3\times 4$, and each value is uniformly
     distributed between 0 and 1\. If you want to have the values normally distributed,
     just change the function to `randn()`:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果张量的维度为 $3\times 4$，每个值在 0 和 1 之间均匀分布。如果你想要值呈正态分布，只需将函数更改为 `randn()`：
 - en: '[PRE6]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'If you want to have the random values be an integer, e.g., between 3 to 10,
     you can use the `randint()` function:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想要随机值为整数，例如，在 3 到 10 之间，你可以使用 `randint()` 函数：
 - en: '[PRE7]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'This will give, for example:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，这将产生：
 - en: '[PRE8]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The values are in the range $3 \le x < 10$. By default, the lower bound is
     zero, so if you want the values to be $0 \le x < 10$, you can use:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些值的范围是 $3 \le x < 10$。默认情况下，下限是零，因此如果你希望值的范围是 $0 \le x < 10$，你可以使用：
 - en: '[PRE9]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'The other commonly used tensors are the zero tensor and tensors with all values
     the same. To create a zero tensor (e.g., of dimension $2\times 3\times 4$), you
     can use:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 其他常用的张量包括零张量和所有值相同的张量。要创建一个零张量（例如，维度为 $2\times 3\times 4$），你可以使用：
 - en: '[PRE10]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'It prints:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 它打印：
 - en: '[PRE11]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'And to create a tensor of all values are 5, you can use:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想创建一个所有值都是 5 的张量，你可以使用：
 - en: '[PRE12]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'It prints:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 它打印：
 - en: '[PRE13]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'But if you want all values to be one, there is a simpler function:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 但如果你想要所有值都为一，有一个更简单的函数：
 - en: '[PRE14]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'Finally, if you want an identity matrix, you can get it with `diag()` or `eye()`:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，如果你想要一个单位矩阵，可以使用 `diag()` 或 `eye()` 来获得：
 - en: '[PRE15]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'It prints:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 它将打印出：
 - en: '[PRE16]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-59
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费 PDF 电子书版本。
 - en: Checking a Tensor
+  id: totrans-62
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 检查张量
 - en: 'Once you have a tensor and you want to know more about it, you can simply print
     it to the screen using `print()`. But if the tensor is too big, it is easier to
     show its dimension by checking its shape:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你有了一个张量，并且你想了解更多关于它的信息，你可以简单地使用 `print()` 将其打印到屏幕上。但如果张量太大，可以通过检查其形状来更容易地显示其维度：
 - en: '[PRE17]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'It prints:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 它将打印出：
 - en: '[PRE18]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'The shape of a tensor can be accessed using the `shape` property or the `size()`
     function. If you want to see how many dimensions you have (i.e., $2\times 3\times
     4$ is 3 and $3\times 4$ is 2), you can read the `ndim` property:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 张量的形状可以通过 `shape` 属性或 `size()` 函数来访问。如果你想查看有多少个维度（例如，$2\times 3\times 4$ 是 3，而
+    $3\times 4$ 是 2），你可以读取 `ndim` 属性：
 - en: '[PRE19]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'This will give you “3”. If you use `len()` to check a tensor, it will only
     give you the size of the first dimension, e.g.:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将给你“3”。如果你使用 `len()` 检查张量，它只会给你第一个维度的大小，例如：
 - en: '[PRE20]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'It prints:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 它将打印出：
 - en: '[PRE21]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'Another property that you want to learn about a tensor is its data type. Usually,
     you use floating points in deep learning, but sometimes, the tensors should be
     in integers (e.g., in an image as pixel values). To check the data type, you can
     read the `dtype` property:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个你可能想了解的张量属性是其数据类型。通常，在深度学习中你使用浮点数，但有时张量应为整数（例如，在图像作为像素值中）。要检查数据类型，你可以读取 `dtype`
+    属性：
 - en: '[PRE22]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'It prints:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 它将打印出：
 - en: '[PRE23]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'If you want to change the data type, you can recreate the tensor with a new
     type:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想更改数据类型，你可以使用新的类型重新创建张量：
 - en: '[PRE24]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: 'The above prints:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的打印结果是：
 - en: '[PRE25]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: Manipulating Tensors
+  id: totrans-81
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 操作张量
 - en: One common operation on tensors in deep learning is to change the tensor shape.
     For example, you may want to convert a 2D tensor into 1D or add a dummy dimension
     to a tensor. You may also want to extract a sub-tensor from a larger tensor.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 深度学习中的一个常见操作是改变张量的形状。例如，你可能想要将 2D 张量转换为 1D 或向张量添加一个虚拟维度。你也可能想从较大的张量中提取子张量。
 - en: 'For example, you can create a tensor like the following:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，你可以创建一个如下所示的张量：
 - en: '[PRE26]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'If you get:'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你得到：
 - en: '[PRE27]'
+  id: totrans-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: 'It allows you to take a slice using the same syntax as in NumPy:'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 它允许你使用与 NumPy 相同的语法进行切片：
 - en: '[PRE28]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: 'This will be:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将是：
 - en: '[PRE29]'
+  id: totrans-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: 'Or if you use:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者如果你使用：
 - en: '[PRE30]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: 'It will be:'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 它将是：
 - en: '[PRE31]'
+  id: totrans-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: You can also make use of the same slicing syntax to **add** a new dimension.
     For example,
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 你还可以利用相同的切片语法来 **添加** 一个新维度。例如，
 - en: '[PRE32]'
+  id: totrans-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: 'You will see:'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将看到：
 - en: '[PRE33]'
+  id: totrans-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: 'Here you use `None` to insert a new dimension at a specific place. This is
     useful if, for example, you need to convert an image into a batch of only one
     image. If you’re familiar with NumPy, you may recall there is a function `expand_dims()`
     for this purpose, but PyTorch doesn’t provide it. A similar function is `unsqueeze()`,
     which is demonstrated below:'
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，你使用 `None` 在特定位置插入一个新维度。如果你需要将图像转换为只有一张图像的批次时，这很有用。如果你熟悉 NumPy，你可能会记得有一个
+    `expand_dims()` 函数用于此目的，但 PyTorch 没有提供。一个类似的函数是 `unsqueeze()`，如下所示：
 - en: '[PRE34]'
+  id: totrans-100
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: 'This prints:'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印出：
 - en: '[PRE35]'
+  id: totrans-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: 'One powerful nature of NumPy slicing syntax is Boolean indexing. This is also
     supported with PyTorch tensors. For example:'
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: NumPy 切片语法的一个强大特性是布尔索引。这在 PyTorch 张量中也受支持。例如：
 - en: '[PRE36]'
+  id: totrans-104
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE36]'
 - en: 'You may see:'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会看到：
 - en: '[PRE37]'
+  id: totrans-106
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE37]'
 - en: 'The above selects the columns where all elements are greater than -1\. You
     can also manipulate the tensor by selecting specific columns:'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的代码选择了所有元素都大于 -1 的列。你也可以通过选择特定的列来操作张量：
 - en: '[PRE38]'
+  id: totrans-108
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE38]'
 - en: 'This results in:'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将导致：
 - en: '[PRE39]'
+  id: totrans-110
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE39]'
 - en: 'To convert a 2D tensor into 1D, you can use:'
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 要将 2D 张量转换为 1D，你可以使用：
 - en: '[PRE40]'
+  id: totrans-112
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE40]'
 - en: 'The result will be:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果将是：
 - en: '[PRE41]'
+  id: totrans-114
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE41]'
 - en: 'You may also use the  `reshape()` function to achieve the same:'
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 你也可以使用 `reshape()` 函数来实现相同的效果：
 - en: '[PRE42]'
+  id: totrans-116
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE42]'
 - en: 'The result should be the same as that of `ravel()`. But usually, the `reshape()`
     function is for more complicated target shapes:'
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果应该与 `ravel()` 相同。但通常，`reshape()` 函数用于更复杂的目标形状：
 - en: '[PRE43]'
+  id: totrans-118
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE43]'
 - en: 'This will print:'
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印出：
 - en: '[PRE44]'
+  id: totrans-120
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE44]'
 - en: 'One common case of reshaping tensors is to do matrix transpose. For a 2D matrix,
     it is easily done in the same way as NumPy:'
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 张量重塑的一个常见情况是矩阵转置。对于 2D 矩阵，它可以像 NumPy 一样轻松完成：
 - en: '[PRE45]'
+  id: totrans-122
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE45]'
 - en: 'which prints:'
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印出：
 - en: '[PRE46]'
+  id: totrans-124
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE46]'
 - en: 'But the `transpose()` function in PyTorch requires you to specify which axes
     to swap explicitly:'
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 但 PyTorch 中的 `transpose()` 函数要求你显式指定要交换的轴：
 - en: '[PRE47]'
+  id: totrans-126
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE47]'
 - en: 'This result is same as above. If you have multiple tensors, you can combine
     them by stacking them (`vstack()` for vertically and `hstack()` for horizontally).
     For example:'
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个结果与上面相同。如果你有多个张量，可以通过堆叠它们来组合（`vstack()` 用于垂直堆叠，`hstack()` 用于水平堆叠）。例如：
 - en: '[PRE48]'
+  id: totrans-128
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE48]'
 - en: 'This may print:'
+  id: totrans-129
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可能会打印：
 - en: '[PRE49]'
+  id: totrans-130
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE49]'
 - en: 'The concatenate function is similar:'
+  id: totrans-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 连接函数类似：
 - en: '[PRE50]'
+  id: totrans-132
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE50]'
 - en: 'You will get the same tensor:'
+  id: totrans-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将得到相同的张量：
 - en: '[PRE51]'
+  id: totrans-134
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE51]'
 - en: The reverse is to split, e.g.,
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 反向操作是分割，例如，
 - en: '[PRE52]'
+  id: totrans-136
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE52]'
 - en: It prints
+  id: totrans-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 它会打印
 - en: '[PRE53]'
+  id: totrans-138
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE53]'
 - en: 'This function tells how many tensors to split into, rather than what size each
     tensor is. The latter is indeed more useful in deep learning (e.g., to split a
     tensor of a large dataset into many tensors of small batches). The equivalent
     function would be:'
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个函数告诉你要将张量分割成多少个，而不是每个张量的大小。后者在深度学习中确实更有用（例如，将一个大数据集的张量分割成许多小批量的张量）。等效的函数是：
 - en: '[PRE54]'
+  id: totrans-140
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE54]'
 - en: This should give you the same result as before. So `split(c, 3, dim=0)` means
     to split on dimension 0 such that each resulting tensor will be of size 3.
+  id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应与你之前得到的结果相同。所以 `split(c, 3, dim=0)` 意味着在维度 0 上分割，使得每个结果张量的大小为 3。
 - en: Tensor Functions
+  id: totrans-142
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 张量函数
 - en: 'PyTorch tensors can be treated as arrays. So you can often use it in a similar
     way as NumPy arrays. For example, you have the functions of common mathematical
     functions:'
+  id: totrans-143
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 张量可以被视为数组。因此，你通常可以像使用 NumPy 数组一样使用它。例如，你可以使用常见数学函数的函数：
 - en: '[PRE55]'
+  id: totrans-144
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE55]'
 - en: 'This prints:'
+  id: totrans-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 这会打印：
 - en: '[PRE56]'
+  id: totrans-146
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE56]'
 - en: 'Note that if a function is undefined (e.g., square root of negative numbers),
     `nan` will be the result, but no exception will be raised. In PyTorch, you have
     a function to check if the values of a tensor are `nan`:'
+  id: totrans-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，如果函数未定义（例如，负数的平方根），`nan` 将是结果，但不会引发异常。在 PyTorch 中，你可以使用一个函数来检查张量的值是否为 `nan`：
 - en: '[PRE57]'
+  id: totrans-148
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE57]'
 - en: 'You will get:'
+  id: totrans-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将得到：
 - en: '[PRE58]'
+  id: totrans-150
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE58]'
 - en: 'Indeed, besides these defined functions, the Python operators can be applied
     to the tensors too:'
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 确实，除了这些定义的函数，Python 运算符也可以应用于张量：
 - en: '[PRE59]'
+  id: totrans-152
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE59]'
 - en: 'You get:'
+  id: totrans-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 你得到：
 - en: '[PRE60]'
+  id: totrans-154
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE60]'
 - en: 'But among the operators, matrix multiplications are very important in deep
     learning. You can do this with:'
+  id: totrans-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 但在运算符中，矩阵乘法在深度学习中非常重要。你可以使用以下方法实现：
 - en: '[PRE61]'
+  id: totrans-156
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE61]'
 - en: This prints
+  id: totrans-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 这会打印
 - en: '[PRE62]'
+  id: totrans-158
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE62]'
 - en: 'These two are the same. Indeed, the `@` operator from Python can also be used
     for vector dot-product, e.g.:'
+  id: totrans-159
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两者是相同的。实际上，Python 的 `@` 运算符也可以用于向量点积，例如：
 - en: '[PRE63]'
+  id: totrans-160
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE63]'
 - en: 'It prints:'
+  id: totrans-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 它会打印：
 - en: '[PRE64]'
+  id: totrans-162
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE64]'
 - en: 'If you treat the values in a tensor as samples, you may also want to find some
     statistics about it. Some are provided in PyTorch too:'
+  id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你把张量中的值视为样本，你可能还想找出一些关于它的统计数据。PyTorch 也提供了一些：
 - en: '[PRE65]'
+  id: totrans-164
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE65]'
 - en: 'It prints:'
+  id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 它会打印：
 - en: '[PRE66]'
+  id: totrans-166
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE66]'
 - en: 'But for linear algebra functions, you should find it in PyTorch’s linalg submodule.
     For example:'
+  id: totrans-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 但对于线性代数函数，你应在 PyTorch 的 linalg 子模块中找到它。例如：
 - en: '[PRE67]'
+  id: totrans-168
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE67]'
 - en: 'You will see:'
+  id: totrans-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将看到：
 - en: '[PRE68]'
+  id: totrans-170
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE68]'
 - en: 'And specifically for convolution neural networks, padding a tensor is done
     with the following:'
+  id: totrans-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 特别是对于卷积神经网络，填充张量可以使用以下方法：
 - en: '[PRE69]'
+  id: totrans-172
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE69]'
 - en: 'This prints:'
+  id: totrans-173
   prefs: []
   type: TYPE_NORMAL
+  zh: 这会打印：
 - en: '[PRE70]'
+  id: totrans-174
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE70]'
 - en: This example of the `pad()` function is to create (1,1) padding on dimension
     0 and (0,2) on dimension 1\. In other words, for each dimension 0 (rows), we add
     one dummy value (0) at the beginning and the end. For each dimension 1 (columns),
     we add zero dummy values at the beginning but two dummy values at the end.
+  id: totrans-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个 `pad()` 函数的例子是创建维度 0 上的 (1,1) 填充和维度 1 上的 (0,2) 填充。换句话说，对于每个维度 0（行），我们在开始和结束各添加一个虚拟值（0）。对于每个维度
+    1（列），我们在开始处添加零个虚拟值，但在结束处添加两个虚拟值。
 - en: 'Finally, since PyTorch tensors can be considered arrays, you can use them directly
     with other tools such as matplotlib. Below is an example of plotting a surface
     using PyTorch tensors:'
+  id: totrans-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，由于 PyTorch 张量可以被视为数组，你可以直接将它们与其他工具如 matplotlib 一起使用。下面是一个使用 PyTorch 张量绘制表面的例子：
 - en: '[PRE71]'
+  id: totrans-177
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE71]'
 - en: 'The mesh grid produced the `xx` tensor as:'
+  id: totrans-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 网格生成器产生的 `xx` 张量为：
 - en: '[PRE72]'
+  id: totrans-179
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE72]'
 - en: And the plot created is:![](../Images/1598946c006f3d6132863705446d5e93.png)
+  id: totrans-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建的图像是：![](../Images/1598946c006f3d6132863705446d5e93.png)
 - en: Summary
+  id: totrans-181
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you discovered how to manipulate PyTorch tensors. Specifically,
     you learned:'
+  id: totrans-182
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了如何操作 PyTorch 张量。具体来说，你学到了：
 - en: What is a tensor
+  id: totrans-183
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是张量
 - en: How to create various kinds of tensors in PyTorch
+  id: totrans-184
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中创建各种类型的张量
 - en: How to reshape, slice, and manipulate tensors in PyTorch
+  id: totrans-185
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中重新形状、切片和操作张量
 - en: The common functions that can be applied to PyTorch tensors
+  id: totrans-186
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可以应用于 PyTorch 张量的常见函数

@@ -1,301 +1,459 @@
 - en: Two-Dimensional Tensors in Pytorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: PyTorch 中的二维张量
 - en: 原文：[https://machinelearningmastery.com/two-dimensional-tensors-in-pytorch/](https://machinelearningmastery.com/two-dimensional-tensors-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/two-dimensional-tensors-in-pytorch/](https://machinelearningmastery.com/two-dimensional-tensors-in-pytorch/)
 - en: Two-dimensional tensors are analogous to two-dimensional metrics. Like a two-dimensional
     metric, a two-dimensional tensor also has $n$ number of rows and columns.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 二维张量类似于二维度量。就像二维度量一样，二维张量也有 $n$ 行和列。
 - en: Let’s take a gray-scale image as an example, which is a two-dimensional matrix
     of numeric values, commonly known as pixels. Ranging from ‘0’ to ‘255’, each number
     represents a pixel intensity value. Here, the lowest intensity number (which is
     ‘0’) represents black regions in the image while the highest intensity number
     (which is ‘255’) represents white regions in the image. Using the PyTorch framework,
     this two-dimensional image or matrix can be converted to a two-dimensional tensor.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们以灰度图像为例，这是一个由数值构成的二维矩阵，通常称为像素。从 '0' 到 '255'，每个数字代表像素强度值。这里，最小强度数（即 '0'）代表图像中的黑色区域，而最高强度数（即
+    '255'）代表图像中的白色区域。使用 PyTorch 框架，这种二维图像或矩阵可以转换为二维张量。
 - en: 'In the previous post, we learned about [one-dimensional tensors in PyTorch](https://machinelearningmastery.com/one-dimensional-tensors-in-pytorch/)
     and applied some useful tensor operations. In this tutorial, we’ll apply those
     operations to two-dimensional tensors using the PyTorch library. Specifically,
     we’ll learn:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上一篇文章中，我们了解了 [PyTorch 中的一维张量](https://machinelearningmastery.com/one-dimensional-tensors-in-pytorch/)
+    并应用了一些有用的张量操作。在本教程中，我们将使用 PyTorch 库将这些操作应用于二维张量。具体来说，我们将学习：
 - en: How to create two-dimensional tensors in PyTorch and explore their types and
     shapes.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中创建二维张量并探索它们的类型和形状。
 - en: About slicing and indexing operations on two-dimensional tensors in detail.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于二维张量的切片和索引操作的详细信息。
 - en: To apply a number of methods to tensors such as, tensor addition, multiplication,
     and more.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 要对张量应用多种方法，如张量加法、乘法等。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动您的项目**，使用我的书籍 [深度学习与 PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了带有
+    **工作代码** 的 **自学教程**。'
 - en: Let’s get started.![](../Images/9660d9ef15ab9f0b20162f27d5ced700.png)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！![](../Images/9660d9ef15ab9f0b20162f27d5ced700.png)
 - en: Two-Dimensional Tensors in Pytorch
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 中的二维张量
 - en: Picture by [dylan dolte](https://unsplash.com/photos/NIrgENd0sAY). Some rights
     reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [dylan dolte](https://unsplash.com/photos/NIrgENd0sAY) 拍摄。部分权利保留。
 - en: Tutorial Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概览
 - en: 'This tutorial is divided into parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为几部分，它们是：
 - en: Types and shapes of two-dimensional tensors
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 二维张量的类型和形状
 - en: Converting two-dimensional tensors into NumPy arrays
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将二维张量转换为 NumPy 数组
 - en: Converting pandas series to two-dimensional tensors
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将 pandas series 转换为二维张量
 - en: Indexing and slicing operations on two-dimensional tensors
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 二维张量上的索引和切片操作
 - en: Operations on two-dimensional tensors
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 二维张量的操作
 - en: '**Types and Shapes of Two-Dimensional Tensors**'
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**二维张量的类型和形状**'
 - en: Let’s first import a few necessary libraries we’ll use in this tutorial.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先导入本教程中将要使用的几个必要库。
 - en: '[PRE0]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: To check the types and shapes of the two-dimensional tensors, we’ll use the
     same methods from PyTorch, [introduced previously for one-dimensional tensors](https://machinelearningmastery.com/one-dimensional-tensors-in-pytorch/).
     But, should it work the same way it did for the one-dimensional tensors?
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 要检查二维张量的类型和形状，我们将使用来自 PyTorch 的相同方法，[之前介绍过用于一维张量](https://machinelearningmastery.com/one-dimensional-tensors-in-pytorch/)
+    的方法。但是，它对于二维张量的工作方式应该是一样的吗？
 - en: Let’s demonstrate by converting a 2D list of integers to a 2D tensor object.
     As an example, we’ll create a 2D list and apply `torch.tensor()` for conversion.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们演示通过将整数的二维列表转换为二维张量对象。作为示例，我们将创建一个二维列表，并应用 `torch.tensor()` 进行转换。
 - en: '[PRE1]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: As you can see, the `torch.tensor()` method also works well for the two-dimensional
     tensors. Now, let’s use `shape()`, `size()`, and `ndimension()` methods to return
     the shape, size, and dimensions of a tensor object.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如您所见，`torch.tensor()` 方法对于二维张量也非常有效。现在，让我们使用 `shape()`、`size()` 和 `ndimension()`
+    方法来返回张量对象的形状、大小和维度。
 - en: '[PRE3]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '[PRE4]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-29
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即注册我的免费电子邮件崩溃课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获取课程的免费PDF电子书版本。
 - en: '**Converting Two-Dimensional Tensors to NumPy Arrays**'
+  id: totrans-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**将二维张量转换为NumPy数组**'
 - en: PyTorch allows us to convert a two-dimensional tensor to a NumPy array and then
     back to a tensor. Let’s find out how.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch允许我们将二维张量转换为NumPy数组，然后再转换回张量。让我们看看如何操作。
 - en: '[PRE5]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '[PRE6]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '**Converting Pandas Series to Two-Dimensional Tensors**'
+  id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**将Pandas Series转换为二维张量**'
 - en: Similarly, we can also convert a pandas DataFrame to a tensor. As with the one-dimensional
     tensors, we’ll use the same steps for the conversion. Using values attribute we’ll
     get the NumPy array and then use `torch.from_numpy` that allows you to convert
     a pandas DataFrame to a tensor.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样地，我们也可以将pandas DataFrame转换为张量。与一维张量类似，我们将使用相同的步骤进行转换。使用`values`属性获取NumPy数组，然后使用`torch.from_numpy`将pandas
+    DataFrame转换为张量。
 - en: Here is how we’ll do it.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我们将如何执行此操作。
 - en: '[PRE7]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '[PRE8]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '**Indexing and Slicing Operations on Two-Dimensional Tensors**'
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**二维张量的索引和切片操作**'
 - en: For indexing operations, different elements in a tensor object can be accessed
     using square brackets. You can simply put corresponding indices in square brackets
     to access the desired elements in a tensor.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于索引操作，可以使用方括号访问张量对象中的不同元素。只需将对应的索引放入方括号中，即可访问张量中所需的元素。
 - en: In the below example, we’ll create a tensor and access certain elements using
     two different methods. Note that the index value should always be one less than
     where the element is located in a two-dimensional tensor.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的例子中，我们将创建一个张量，并使用两种不同的方法访问某些元素。请注意，索引值应始终比二维张量中元素实际位置少一个。
 - en: '[PRE9]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '[PRE10]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: What if we need to access two or more elements at the same time? That’s where
     tensor slicing comes into play. Let’s use the previous example to access first
     two elements of the second row and first three elements of the third row.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们需要同时访问两个或更多元素时，我们需要使用张量切片。让我们使用之前的例子来访问第二行的前两个元素和第三行的前三个元素。
 - en: '[PRE11]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[PRE12]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '**Operations on Two-Dimensional Tensors**'
+  id: totrans-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**二维张量的操作**'
 - en: While there are a lot of operations you can apply on two-dimensional tensors
     using the PyTorch framework, here, we’ll introduce you to tensor addition, and
     scalar and matrix multiplication.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 在使用PyTorch框架处理二维张量时，有许多操作可以进行。在这里，我们将介绍张量加法、标量乘法和矩阵乘法。
 - en: '**Adding Two-Dimensional Tensors**'
+  id: totrans-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**二维张量的加法**'
 - en: Adding two tensors is similar to matrix addition. It’s quite a straight forward
     process as you simply need an addition (+) operator to perform the operation.
     Let’s add two tensors in the below example.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 将两个张量相加类似于矩阵加法。这是一个非常直接的过程，您只需使用加号（+）运算符即可执行操作。让我们在下面的例子中相加两个张量。
 - en: '[PRE13]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '[PRE14]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '**Scalar and Matrix Multiplication of Two-Dimensional Tensors**'
+  id: totrans-55
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**二维张量的标量和矩阵乘法**'
 - en: Scalar multiplication in two-dimensional tensors is also identical to scalar
     multiplication in matrices. For instance, by multiplying a tensor with a scalar,
     say a scalar 4, you’ll be multiplying every element in a tensor by 4.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 二维张量的标量乘法与矩阵中的标量乘法相同。例如，通过与标量（例如4）相乘，您将对张量中的每个元素乘以4。
 - en: '[PRE15]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '[PRE16]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Coming to the multiplication of the two-dimensional tensors, `torch.mm()` in
     PyTorch makes things easier for us. Similar to the matrix multiplication in linear
     algebra, number of columns in tensor object A (i.e. 2×3) must be equal to the
     number of rows in tensor object B (i.e. 3×2).
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于二维张量的乘法，`torch.mm()`在PyTorch中为我们简化了操作。与线性代数中的矩阵乘法类似，张量对象A（即2×3）的列数必须等于张量对象B（即3×2）的行数。
 - en: '[PRE17]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: '[PRE18]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: Further Reading
+  id: totrans-62
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: 'Developed at the same time as TensorFlow, PyTorch used to have a simpler syntax
     until TensorFlow adopted Keras in its 2.x version. To learn the basics of PyTorch,
     you may want to read the PyTorch tutorials:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch与TensorFlow同时开发，直到TensorFlow在其2.x版本中采用了Keras之前，PyTorch的语法更为简单。要学习PyTorch的基础知识，您可以阅读PyTorch教程：
 - en: '[https://pytorch.org/tutorials/](https://pytorch.org/tutorials/)'
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://pytorch.org/tutorials/](https://pytorch.org/tutorials/)'
 - en: 'Especially the basics of PyTorch tensor can be found in the Tensor tutorial
     page:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 特别是PyTorch张量的基础知识可以在张量教程页面找到：
 - en: '[https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html](https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html)'
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html](https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html)'
 - en: There are also quite a few books on PyTorch that are suitable for beginners.
     A more recently published book should be recommended as the tools and syntax are
     actively evolving. One example is
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于PyTorch的入门者来说，也有不少适合的书籍。应推荐较新出版的书籍，因为工具和语法在积极地发展变化。一个例子是
 - en: Deep Learning with PyTorch by Eli Stevens, Luca Antiga, and Thomas Viehmann,
     2020.
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 《深度学习与PyTorch》由Eli Stevens、Luca Antiga和Thomas Viehmann编写，2020年出版。
 - en: '[https://www.manning.com/books/deep-learning-with-pytorch](https://www.manning.com/books/deep-learning-with-pytorch)'
+  id: totrans-69
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '[《深度学习与PyTorch》书籍链接](https://www.manning.com/books/deep-learning-with-pytorch)'
 - en: '**Summary**'
+  id: totrans-70
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you learned about two-dimensional tensors in PyTorch.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您了解了PyTorch中的二维张量。
 - en: 'Specifically, you learned:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，您学到了：
 - en: How to create two-dimensional tensors in PyTorch and explore their types and
     shapes.
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中创建二维张量并探索它们的类型和形状。
 - en: About slicing and indexing operations on two-dimensional tensors in detail.
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于二维张量的切片和索引操作的详细信息。
 - en: To apply a number of methods to tensors such as, tensor addition, multiplication,
     and more.
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 应用多种方法对张量进行操作，如张量的加法、乘法等。

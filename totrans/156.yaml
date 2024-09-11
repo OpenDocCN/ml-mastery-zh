@@ -1,298 +1,459 @@
 - en: Using Optimizers from PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 PyTorch 中的优化器
 - en: 原文：[https://machinelearningmastery.com/using-optimizers-from-pytorch/](https://machinelearningmastery.com/using-optimizers-from-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/using-optimizers-from-pytorch/](https://machinelearningmastery.com/using-optimizers-from-pytorch/)
 - en: Optimization is a process where we try to find the best possible set of parameters
     for a deep learning model. Optimizers generate new parameter values and evaluate
     them using some criterion to determine the best option. Being an important part
     of neural network architecture, optimizers help in determining best weights, biases
     or other hyper-parameters that will result in the desired output.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 优化是一个过程，我们试图为深度学习模型找到最佳的参数集。优化器生成新的参数值，并使用某些标准评估它们，以确定最佳选项。作为神经网络架构的重要组成部分，优化器有助于确定最佳的权重、偏置或其他超参数，以达到期望的输出。
 - en: There are many kinds of optimizers available in PyTorch, each with its own strengths
     and weaknesses. These include Adagrad, Adam, RMSProp and so on.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中有许多种优化器，每种优化器都有其自身的优缺点。这些包括 Adagrad、Adam、RMSProp 等等。
 - en: 'In the previous tutorials, we implemented all necessary steps of an optimizer
     to update the weights and biases during training. Here, you’ll learn about some
     PyTorch packages that make the implementation of the optimizers even easier. Particularly,
     you’ll learn:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在之前的教程中，我们实现了优化器的所有必要步骤，以在训练过程中更新权重和偏置。在这里，您将学习一些 PyTorch 包，这些包使优化器的实现更加简单。特别是，您将学习：
 - en: How optimizers can be implemented using some packages in PyTorch.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 PyTorch 中的一些包实现优化器。
 - en: How you can import linear class and loss function from PyTorch’s ‘nn’ package.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从 PyTorch 的 'nn' 包中导入线性类和损失函数。
 - en: How Stochastic Gradient Descent and Adam (most commonly used optimizer) can
     be implemented using ‘optim’ package in PyTorch.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 PyTorch 的 'optim' 包实现随机梯度下降和 Adam（最常用的优化器）。
 - en: How you can customize weights and biases of the model.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何自定义模型的权重和偏置。
 - en: Note that we’ll use the same implementation steps in our subsequent tutorials
     of our PyTorch series.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，我们将在我们 PyTorch 系列的后续教程中使用相同的实现步骤。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书 [使用 PyTorch 进行深度学习](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    开始你的项目**。它提供了**自学教程**和**可工作的代码**。'
 - en: Let’s get started.![](../Images/3daa381da11dd812966375615e472a74.png)
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！![](../Images/3daa381da11dd812966375615e472a74.png)
 - en: Using Optimizers from PyTorch.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 PyTorch 中的优化器。
 - en: Picture by [Jean-Daniel Calame](https://unsplash.com/photos/vK8a67HU7To). Some
     rights reserved.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Jean-Daniel Calame](https://unsplash.com/photos/vK8a67HU7To) 提供。部分权利保留。
 - en: Overview
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in five parts; they are
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 此教程分为五个部分；它们是
 - en: Preparing Data
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据准备
 - en: Build the Model and Loss Function
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建模型和损失函数
 - en: Train a Model with Stochastic Gradient Descent
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用随机梯度下降法训练模型
 - en: Train a Model with Adam Optimizer
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Adam 优化器训练模型
 - en: Plotting Graphs
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 绘制图表
 - en: Preparing Data
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数据准备
 - en: Let’s start by importing the libraries we’ll use in this tutorial.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从导入我们将在本教程中使用的库开始。
 - en: '[PRE0]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: We will use a custom data class. The data is a line with values from $-5$ to
     $5$ having slope and bias of $-5$ and $1$ respectively. Also, we’ll add the noise
     with same values as `x` and train our model to estimate this line.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用一个自定义的数据类。数据是一条线，值从$-5$到$5$，斜率和偏置分别为$-5$和$1$。此外，我们将添加与 `x` 相同值的噪声，并训练我们的模型来估计这条线。
 - en: '[PRE1]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Now let’s use it to create our dataset object and plot the data.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们使用它来创建我们的数据集对象并绘制数据。
 - en: '[PRE2]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '![](../Images/c10d8ca1946b09d916bfef58395b7e15.png)'
+  id: totrans-28
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/c10d8ca1946b09d916bfef58395b7e15.png)'
 - en: Data from the custom dataset object
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 自定数据集对象的数据
 - en: 'Putting everything together, the following is the complete code to create the
     plot:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有东西放在一起，以下是创建图表的完整代码：
 - en: '[PRE3]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Build the Model and Loss Function
+  id: totrans-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建模型和损失函数
 - en: In the previous tutorials, we created some functions for our linear regression
     model and loss function. PyTorch allows us to do just that with only a few lines
     of code. Here’s how we’ll import our built-in linear regression model and its
     loss criterion from PyTorch’s `nn` package.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在之前的教程中，我们为线性回归模型和损失函数创建了一些函数。PyTorch 允许我们仅用几行代码就能做到这一点。这是我们如何从 PyTorch 的 `nn`
+    包中导入我们内置的线性回归模型及其损失标准。
 - en: '[PRE4]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The model parameters are randomized at creation. We can verify this with the
     following:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 模型参数在创建时是随机的。我们可以通过以下方式验证这一点：
 - en: '[PRE5]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: which prints
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 打印
 - en: '[PRE6]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: While PyTorch will randomly initialize the model parameters, we can also customize
     them to use our own. We can set our weights and bias as follows. Note that we
     rarely need to do this in practice.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然 PyTorch 会随机初始化模型参数，我们也可以自定义它们以使用自己的参数。我们可以按如下方式设置权重和偏差。注意，在实际应用中我们很少需要这样做。
 - en: '[PRE7]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Before we start the training, let’s create a `DataLoader` object to load our
     dataset into the pipeline.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 在开始训练之前，让我们创建一个 `DataLoader` 对象，将数据集加载到管道中。
 - en: '[PRE8]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取免费 PDF 电子书版本的课程。
 - en: Train a Model with Stochastic Gradient Descent
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用随机梯度下降训练模型
 - en: To use the optimizer of our choice, we can import the `optim` package from PyTorch.
     It includes several state-of-the-art parameter optimization algorithms that can
     be implemented with only a single line of code. As an example, stochastic gradient
     descent (SGD) is available as follows.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使用我们选择的优化器，我们可以从 PyTorch 中导入 `optim` 包。它包含了几个最先进的参数优化算法，只需一行代码即可实现。作为示例，随机梯度下降
+    (SGD) 如下所示。
 - en: '[PRE9]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: As an input, we provided `model.parameters()` to the constructor to denote what
     to optimize. We also defined the step size or learning rate (`lr`).
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为输入，我们提供了 `model.parameters()` 给构造函数以表示要优化的内容。我们还定义了步长或学习率 (`lr`)。
 - en: To help visualize the optimizer’s progress later, we create an empty list to
     store the loss and let our model train for 20 epochs.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了帮助可视化优化器的进展，我们创建了一个空列表来存储损失，并让模型训练 20 个周期。
 - en: '[PRE10]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: In above, we feed the data samples into the model for prediction and calculate
     the loss. Gradients are computed during the backward pass, and parameters are
     optimized. While in previous sessions we used some extra lines of code to update
     the parameters and zero the gradients, PyTorch features `zero_grad()` and `step()`
     methods from the optimizer to make the process concise.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述过程中，我们将数据样本输入模型进行预测，并计算损失。在反向传播过程中计算梯度，并优化参数。虽然在之前的会话中我们使用了一些额外的代码来更新参数和清零梯度，但
+    PyTorch 的 `zero_grad()` 和 `step()` 方法使这个过程更加简洁。
 - en: You may increase the `batch_size` argument in the `DataLoader` object above
     for mini-batch gradient descent.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以增加上述 `DataLoader` 对象中的 `batch_size` 参数来进行小批量梯度下降。
 - en: 'Together, the complete code is as follows:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合来看，完整的代码如下：
 - en: '[PRE11]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Train the Model with Adam Optimizer
+  id: totrans-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 Adam 优化器训练模型
 - en: Adam is one of the most used optimizers for training deep learning models. It
     is fast and quite efficient when you have a lot of data for training. Adam is
     an optimizer with **momentum** that can perform better than SGD when the model
     is complex, as in most cases of deep learning.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: Adam 是用于训练深度学习模型的最常用优化器之一。当你有大量训练数据时，它速度快且效率高。Adam 是一种带有**动量**的优化器，在模型复杂时（如大多数深度学习情况）比
+    SGD 更具优势。
 - en: In PyTorch, replacing the SGD optimizer above with Adam optimizer is as simple
     as follows. While all other steps would be the same, we only need to replace `SGD()`
     method with `Adam()` to implement the algorithm.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中，将上述 SGD 优化器替换为 Adam 优化器非常简单。虽然所有其他步骤都是相同的，但我们只需将 `SGD()` 方法替换为 `Adam()`
+    即可实现该算法。
 - en: '[PRE12]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Similarly, we’ll define number of iterations and an empty list to store the
     model loss. Then we can run our training.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似地，我们将定义迭代次数和一个空列表来存储模型损失。然后我们可以运行训练。
 - en: '[PRE13]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Putting everything together, the following is the complete code.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合所有内容，以下是完整的代码。
 - en: '[PRE14]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Plotting Graphs
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 绘制图表
 - en: 'We have successfully implemented the SGD and Adam optimizers for model training.
     Let’s visualize how the model loss decreases in both algorithms during training
     process, which are stored in the lists `loss_SGD` and `loss_Adam`:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们成功实现了 SGD 和 Adam 优化器用于模型训练。让我们可视化在训练过程中这两种算法中模型损失的减少情况，这些损失存储在 `loss_SGD`
+    和 `loss_Adam` 列表中：
 - en: '[PRE15]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '![](../Images/2670f3bd5a6e3af1b22dce51466785f5.png)'
+  id: totrans-67
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/2670f3bd5a6e3af1b22dce51466785f5.png)'
 - en: You can see that SGD converges faster than Adam in the above examples. This
     is because we are training a linear regression model, in which the algorithm provided
     by Adam is overkilled.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到在上述示例中，SGD 收敛速度快于 Adam。这是因为我们训练的是线性回归模型，而 Adam 提供的算法过于复杂。
 - en: Putting everything together, the following is the complete code.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合所有内容，以下是完整的代码。
 - en: '[PRE16]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Summary
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you implemented optimization algorithms using some built-in
     packages in PyTorch. Particularly, you learned:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您使用了PyTorch中的一些内置包实现了优化算法。特别是，您学会了：
 - en: How optimizers can be implemented using some packages in PyTorch.
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用PyTorch中的一些包实现优化器。
 - en: How you can import linear class and loss function from PyTorch’s `nn` package.
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从PyTorch的`nn`包中导入线性类和损失函数。
 - en: How Stochastic Gradient Descent and Adam (the most commonly used optimizer)
     can be implemented using `optim` package in PyTorch.
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用PyTorch的`optim`包实现随机梯度下降和Adam（最常用的优化器）。
 - en: How you can customize weights and biases of the model.
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何自定义模型的权重和偏置。

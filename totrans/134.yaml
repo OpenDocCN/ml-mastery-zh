@@ -1,11 +1,15 @@
 - en: How to Grid Search Hyperparameters for PyTorch Models
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何为 PyTorch 模型进行超参数网格搜索
 - en: 原文：[https://machinelearningmastery.com/how-to-grid-search-hyperparameters-for-pytorch-models/](https://machinelearningmastery.com/how-to-grid-search-hyperparameters-for-pytorch-models/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/how-to-grid-search-hyperparameters-for-pytorch-models/](https://machinelearningmastery.com/how-to-grid-search-hyperparameters-for-pytorch-models/)
 - en: The “weights” of a neural network is referred as “parameters” in PyTorch code
     and it is fine-tuned by optimizer during training. On the contrary, hyperparameters
     are the parameters of a neural network that is fixed by design and not tuned by
@@ -13,358 +17,540 @@
     functions. Hyperparameter optimization is a big part of deep learning. The reason
     is that neural networks are notoriously difficult to configure, and a lot of parameters
     need to be set. On top of that, individual models can be very slow to train.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络的“权重”在 PyTorch 代码中被称为“参数”，并且在训练过程中由优化器进行微调。相反，超参数是神经网络的参数，设计固定并且不通过训练进行调整。例如隐藏层数量和激活函数的选择。超参数优化是深度学习的重要部分。原因在于神经网络配置非常困难，并且需要设置很多参数。此外，单个模型的训练可能非常缓慢。
 - en: 'In this post, you will discover how to use the grid search capability from
     the scikit-learn Python machine learning library to tune the hyperparameters of
     PyTorch deep learning models. After reading this post, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，您将发现如何使用 scikit-learn Python 机器学习库的网格搜索功能来调整 PyTorch 深度学习模型的超参数。阅读完本文后，您将了解到：
 - en: How to wrap PyTorch models for use in scikit-learn and how to use grid search
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将 PyTorch 模型包装以在 scikit-learn 中使用，以及如何使用网格搜索
 - en: How to grid search common neural network parameters, such as learning rate,
     dropout rate, epochs, and number of neurons
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何网格搜索常见的神经网络参数，如学习率、退出率、时期和神经元数量
 - en: How to define your own hyperparameter tuning experiments on your own projects
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在自己的项目中定义自己的超参数调整实验
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书 [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    **来** 开始你的项目 **。它提供** 自学教程 **和** 可工作的代码 **。'
 - en: Let’s get started.![](../Images/68cf4cc263eb39c28a29db22beb8dee9.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！![](../Images/68cf4cc263eb39c28a29db22beb8dee9.png)
 - en: How to Grid Search Hyperparameters for PyTorch Models
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何为 PyTorch 模型进行超参数网格搜索
 - en: Photo by [brandon siu](https://unsplash.com/photos/2ePI2R4ka0I). Some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [brandon siu](https://unsplash.com/photos/2ePI2R4ka0I) 提供。部分权利保留。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'In this post, you will see how to use the scikit-learn grid search capability
     with a suite of examples that you can copy-and-paste into your own project as
     a starting point. Below is a list of the topics we are going to cover:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，您将看到如何使用 scikit-learn 的网格搜索功能，提供一系列示例，您可以将其复制粘贴到自己的项目中作为起点。以下是我们将要涵盖的主题列表：
 - en: How to use PyTorch models in scikit-learn
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 scikit-learn 中使用 PyTorch 模型
 - en: How to use grid search in scikit-learn
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 scikit-learn 中使用网格搜索
 - en: How to tune batch size and training epochs
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何调整批量大小和训练时期
 - en: How to tune optimization algorithms
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何调整优化算法
 - en: How to tune learning rate and momentum
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何调整学习率和动量
 - en: How to tune network weight initialization
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何调整网络权重初始化
 - en: How to tune activation functions
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何调整激活函数
 - en: How to tune dropout regularization
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何调整退出正则化
 - en: How to tune the number of neurons in the hidden layer
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何调整隐藏层中神经元的数量
 - en: How to Use PyTorch Models in scikit-learn
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何在 scikit-learn 中使用 PyTorch 模型
 - en: PyTorch models can be used in scikit-learn if wrapped with skorch. This is to
     leverage the duck-typing nature of Python to make the PyTorch model provide similar
     API as a scikit-learn model, so everything in scikit-learn can work along. In
     skorch, there are `NeuralNetClassifier` for classification neural networks and
     `NeuralNetRegressor` for regression neural networks. You may need to run the follownig
     command to install the module.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果使用 skorch 包装，PyTorch 模型可以在 scikit-learn 中使用。这是为了利用 Python 的鸭子类型特性，使 PyTorch
+    模型提供类似于 scikit-learn 模型的 API，以便可以与 scikit-learn 中的所有内容一起使用。在 skorch 中，有 `NeuralNetClassifier`
+    用于分类神经网络和 `NeuralNetRegressor` 用于回归神经网络。您可能需要运行以下命令来安装模块。
 - en: '[PRE0]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'To use these wrappers, you must define a your PyTorch model as a class using
     `nn.Module`, then pass the name of the class to the `module` argument when constructing
     the `NeuralNetClassifier` class. For example:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使用这些包装器，你必须将你的 PyTorch 模型定义为使用 `nn.Module` 的一个类，然后在构造 `NeuralNetClassifier`
+    类时将类的名称传递给 `module` 参数。例如：
 - en: '[PRE1]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The constructor for the `NeuralNetClassifier` class can take default arguments
     that are passed on to the calls to `model.fit()` (the way to invoke a training
     loop in scikit-learn models), such as the number of epochs and the batch size.
     For example:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '`NeuralNetClassifier` 类的构造函数可以接受默认参数，这些参数会传递给 `model.fit()`（这是在 scikit-learn
+    模型中调用训练循环的方式），例如训练轮数和批次大小。例如：'
 - en: '[PRE2]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The constructor for the `NeuralNetClassifier` class can also take new arguments
     that can be passed to your model class’ constructor, but you have to prepend it
     with `module__` (with two underscores). These new arguments may carry a default
     value in the constructor but they will be overridden when the wrapper instantiate
     the model. For example:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '`NeuralNetClassifier` 类的构造函数还可以接受新的参数，这些参数可以传递给你的模型类的构造函数，但你必须在参数前加上 `module__`（两个下划线）。这些新参数可能在构造函数中有默认值，但当包装器实例化模型时，它们会被覆盖。例如：'
 - en: '[PRE3]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'You can verify the result by initializing a model and print it:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过初始化模型并打印它来验证结果：
 - en: '[PRE4]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'In this example, you should see:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个示例中，你应该能看到：
 - en: '[PRE5]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并免费获得课程的 PDF Ebook 版本。
 - en: How to Use Grid Search in scikit-learn
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何在 scikit-learn 中使用网格搜索
 - en: Grid search is a model hyperparameter optimization technique. It simply exhaust
     all combinations of the hyperparameters and find the one that gave the best score.
     In scikit-learn, this technique is provided in the `GridSearchCV` class. When
     constructing this class, you must provide a dictionary of hyperparameters to evaluate
     in the `param_grid` argument. This is a map of the model parameter name and an
     array of values to try.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 网格搜索是一种模型超参数优化技术。它通过穷举所有超参数的组合，找到给出最佳分数的组合。在 scikit-learn 中，这种技术由 `GridSearchCV`
+    类提供。在构造这个类时，你必须在 `param_grid` 参数中提供一个超参数字典。这是模型参数名称与要尝试的值数组的映射。
 - en: By default, accuracy is the score that is optimized, but other scores can be
     specified in the score argument of the `GridSearchCV` constructor. The `GridSearchCV`
     process will then construct and evaluate one model for each combination of parameters.
     Cross-validation is used to evaluate each individual model, and the default of
     3-fold cross-validation is used, although you can override this by specifying
     the cv argument to the `GridSearchCV` constructor.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，准确率是优化的评分指标，但你可以在 `GridSearchCV` 构造函数的 score 参数中指定其他评分指标。`GridSearchCV`
+    过程将为每个参数组合构建和评估一个模型。交叉验证用于评估每个单独的模型，默认使用的是 3 折交叉验证，虽然你可以通过将 cv 参数指定给 `GridSearchCV`
+    构造函数来覆盖这一点。
 - en: 'Below is an example of defining a simple grid search:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是一个定义简单网格搜索的示例：
 - en: '[PRE6]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: By setting the `n_jobs` argument in the `GridSearchCV` constructor to $-1$,
     the process will use all cores on your machine. Otherwise the grid search process
     will only run in single thread, which is slower in the multi-core CPUs.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过将 `GridSearchCV` 构造函数中的 `n_jobs` 参数设置为 $-1$，该过程将使用你机器上的所有核心。否则，网格搜索过程将仅在单线程中运行，这在多核
+    CPU 上较慢。
 - en: Once completed, you can access the outcome of the grid search in the result
     object returned from `grid.fit()`. The `best_score_` member provides access to
     the best score observed during the optimization procedure, and the `best_params_`
     describes the combination of parameters that achieved the best results. You can
     learn more about the `GridSearchCV` class in the scikit-learn API documentation.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成后，你可以在 `grid.fit()` 返回的结果对象中访问网格搜索的结果。`best_score_` 成员提供了在优化过程中观察到的最佳分数，而
+    `best_params_` 描述了获得最佳结果的参数组合。你可以在 scikit-learn API 文档中了解更多关于 `GridSearchCV` 类的信息。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '**快速启动你的项目**，可以参考我的书籍 [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了**自学教程**和**可运行的代码**。'
 - en: Problem Description
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 问题描述
 - en: Now that you know how to use PyTorch models with scikit-learn and how to use
     grid search in scikit-learn, let’s look at a bunch of examples.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你已经知道如何将PyTorch模型与scikit-learn配合使用以及如何在scikit-learn中使用网格搜索，让我们看一些示例。
 - en: All examples will be demonstrated on a small standard machine learning dataset
     called the [Pima Indians onset of diabetes classification dataset](https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.csv).
     This is a small dataset with all numerical attributes that is easy to work with.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有示例将在一个小型标准机器学习数据集上演示，名为[Pima Indians糖尿病发作分类数据集](https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.csv)。这是一个包含所有数值属性的小数据集，易于处理。
 - en: As you proceed through the examples in this post, you will aggregate the best
     parameters. This is not the best way to grid search because parameters can interact,
     but it is good for demonstration purposes.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本帖中的示例中，你将汇总最佳参数。这不是网格搜索的最佳方式，因为参数可能相互作用，但它适用于演示目的。
 - en: How to Tune Batch Size and Number of Epochs
+  id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何调整批量大小和轮数
 - en: In this first simple example, you will look at tuning the batch size and number
     of epochs used when fitting the network.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第一个简单的示例中，你将查看调整批量大小和训练网络时使用的轮数。
 - en: The batch size in iterative gradient descent is the number of patterns shown
     to the network before the weights are updated. It is also an optimization in the
     training of the network, defining how many patterns to read at a time and keep
     in memory.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 在迭代梯度下降中，批量大小是指在权重更新之前展示给网络的样本数。它也是网络训练中的一种优化，定义了每次读取多少样本并保持在内存中。
 - en: The number of epochs is the number of times the entire training dataset is shown
     to the network during training. Some networks are sensitive to the batch size,
     such as LSTM recurrent neural networks and Convolutional Neural Networks.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 轮数是指整个训练数据集在训练过程中被展示给网络的次数。一些网络对批量大小比较敏感，比如LSTM递归神经网络和卷积神经网络。
 - en: Here you will evaluate a suite of different minibatch sizes from 10 to 100 in
     steps of 20.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，你将评估从10到100的不同小批量大小，每次递增20。
 - en: 'The full code listing is provided below:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码列表如下：
 - en: '[PRE7]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Running this example produces the following output:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行此示例将产生以下输出：
 - en: '[PRE8]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: You can see that the batch size of 10 and 100 epochs achieved the best result
     of about 71% accuracy (but you should also take into account the accuracy’s standard
     deviation).
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到，批量大小为10和100轮数取得了约71%准确率的最佳结果（但你还应该考虑准确率的标准差）。
 - en: How to Tune the Training Optimization Algorithm
+  id: totrans-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何调整训练优化算法
 - en: All deep learning library should offer a variety of optimization algorithms.
     PyTorch is no exception.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有深度学习库应提供多种优化算法。PyTorch也不例外。
 - en: In this example, you will tune the optimization algorithm used to train the
     network, each with default parameters.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此示例中，你将调整用于训练网络的优化算法，每种算法都使用默认参数。
 - en: This is an odd example because often, you will choose one approach a priori
     and instead focus on tuning its parameters on your problem (see the next example).
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个奇特的示例，因为通常你会先选择一种方法，然后专注于调整其在问题上的参数（见下一个示例）。
 - en: Here, you will evaluate the [suite of optimization algorithms](https://pytorch.org/docs/stable/optim.html)
     available in PyTorch.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，你将评估PyTorch中可用的[优化算法套件](https://pytorch.org/docs/stable/optim.html)。
 - en: 'The full code listing is provided below:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码列表如下：
 - en: '[PRE9]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Running this example produces the following output:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行此示例将产生以下输出：
 - en: '[PRE10]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The results suggest that the Adamax optimization algorithm is the best with
     a score of about 72% accuracy.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果表明，Adamax优化算法表现最佳，准确率约为72%。
 - en: It is worth to mention that `GridSearchCV` will recreate your model often so
     every trial is independent. The reason it can be done is because of the `NeuralNetClassifier`
     wrapper, which knows the name of the class for your PyTorch model and instantiate
     one for you upon request.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 值得一提的是，`GridSearchCV`会经常重新创建你的模型，因此每次试验都是独立的。之所以能够做到这一点，是因为`NeuralNetClassifier`封装器知道你PyTorch模型的类名，并在请求时为你实例化一个。
 - en: How to Tune Learning Rate and Momentum
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何调整学习率和动量
 - en: It is common to pre-select an optimization algorithm to train your network and
     tune its parameters.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，预先选择一种优化算法来训练网络并调整其参数是很常见的。
 - en: By far, the most common optimization algorithm is plain old Stochastic Gradient
     Descent (SGD) because it is so well understood. In this example, you will look
     at optimizing the SGD learning rate and momentum parameters.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 迄今为止，最常见的优化算法是传统的随机梯度下降（SGD），因为它被广泛理解。在这个示例中，你将优化SGD学习率和动量参数。
 - en: The learning rate controls how much to update the weight at the end of each
     batch, and the momentum controls how much to let the previous update influence
     the current weight update.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 学习率控制每个批次结束时更新权重的幅度，动量控制前一次更新对当前权重更新的影响程度。
 - en: 'You will try a suite of small standard learning rates and a momentum values
     from 0.2 to 0.8 in steps of 0.2, as well as 0.9 (because it can be a popular value
     in practice). In PyTorch, the way to set the learning rate and momentum is the
     following:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将尝试一系列小的标准学习率和动量值，从0.2到0.8，步长为0.2，以及0.9（因为它在实际中可能是一个流行的值）。在PyTorch中，设置学习率和动量的方法如下：
 - en: '[PRE11]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: In the skorch wrapper, you will can route the parameters to the optimizer with
     the prefix `optimizer__`.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 在skorch包装器中，你可以使用前缀`optimizer__`将参数路由到优化器。
 - en: Generally, it is a good idea to also include the number of epochs in an optimization
     like this as there is a dependency between the amount of learning per batch (learning
     rate), the number of updates per epoch (batch size), and the number of epochs.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，将优化中的纪元数也包含在内是一个好主意，因为每批次的学习量（学习率）、每纪元的更新次数（批量大小）和纪元数之间存在依赖关系。
 - en: 'The full code listing is provided below:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码清单如下：
 - en: '[PRE12]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Running this example produces the following output.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行此示例将产生以下输出。
 - en: '[PRE13]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: You can see that, with SGD, the best results were achieved using a learning
     rate of 0.001 and a momentum of 0.9 with an accuracy of about 68%.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到，使用SGD时，最佳结果是学习率为0.001和动量为0.9，准确率约为68%。
 - en: How to Tune Network Weight Initialization
+  id: totrans-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何调整网络权重初始化
 - en: 'Neural network weight initialization used to be simple: use small random values.'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络权重初始化曾经很简单：使用小的随机值。
 - en: Now there is a suite of different techniques to choose from. You can get a [laundry
     list from `torch.nn.init`](https://pytorch.org/docs/stable/nn.init.html) documentation.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在有一套不同的技术可供选择。你可以从[`torch.nn.init`](https://pytorch.org/docs/stable/nn.init.html)文档中获得一个[备选列表]。
 - en: In this example, you will look at tuning the selection of network weight initialization
     by evaluating all the available techniques.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个例子中，你将通过评估所有可用技术来调整网络权重初始化的选择。
 - en: 'You will use the same weight initialization method on each layer. Ideally,
     it may be better to use different weight initialization schemes according to the
     activation function used on each layer. In the example below, you will use a rectifier
@@ -372,237 +558,355 @@
     are binary. The weight initialization is implicit in PyTorch models. Therefore
     you need to write your own logic to initialize the weight, after the layer is
     created but before it is used. Let’s modify the PyTorch as follows:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将在每一层上使用相同的权重初始化方法。理想情况下，根据每层使用的激活函数，使用不同的权重初始化方案可能更好。在下面的示例中，你将在隐藏层使用整流函数。由于预测是二元的，因此在输出层使用sigmoid。权重初始化在PyTorch模型中是隐式的。因此，你需要在层创建后但在使用前编写自己的逻辑来初始化权重。让我们按如下方式修改PyTorch：
 - en: '[PRE14]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: An argument `weight_init` is added to the class `PimaClassifier` and it expects
     one of the initializers from `torch.nn.init`. In `GridSearchCV`, you need to use
     the `module__` prefix to make `NeuralNetClassifier` route the parameter to the
     model’s class constructor.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 向`PimaClassifier`类添加了一个参数`weight_init`，它期望来自`torch.nn.init`的一个初始化器。在`GridSearchCV`中，你需要使用`module__`前缀来使`NeuralNetClassifier`将参数路由到模型类构造函数。
 - en: 'The full code listing is provided below:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码清单如下：
 - en: '[PRE15]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Running this example produces the following output.
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行此示例将产生以下输出。
 - en: '[PRE16]'
+  id: totrans-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: The best results were achieved with a He-uniform weight initialization scheme
     achieving a performance of about 70%.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 最佳结果是通过He-uniform权重初始化方案实现的，性能达到约70%。
 - en: How to Tune the Neuron Activation Function
+  id: totrans-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何调整神经元激活函数
 - en: The activation function controls the nonlinearity of individual neurons and
     when to fire.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 激活函数控制单个神经元的非线性及其触发时机。
 - en: Generally, the rectifier activation function is the most popular. However, it
     used to be the sigmoid and the tanh functions, and these functions may still be
     more suitable for different problems.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 一般来说，整流线性单元（ReLU）激活函数是最受欢迎的。然而，过去使用过的是 sigmoid 和 tanh 函数，这些函数可能在不同的问题上仍然更为适用。
 - en: In this example, you will evaluate some of the activation functions available
     in PyTorch. You will only use these functions in the hidden layer, as a sigmoid
     activation function is required in the output for the binary classification problem.
     Similar to the previous example, this is an argument to the class constructor
     of the model, and you will use the `module__` prefix for the `GridSearchCV` parameter
     grid.
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个示例中，你将评估 PyTorch 中一些可用的激活函数。你只会在隐藏层中使用这些函数，因为在输出层中需要一个 sigmoid 激活函数用于二分类问题。类似于之前的示例，这个是模型类构造函数的一个参数，你将使用
+    `module__` 前缀来设置 `GridSearchCV` 参数网格。
 - en: Generally, it is a good idea to prepare data to the range of the different transfer
     functions, which you will not do in this case.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 一般来说，将数据准备到不同传递函数的范围是一个好主意，但在这个案例中你不会这样做。
 - en: 'The full code listing is provided below:'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码清单如下所示：
 - en: '[PRE17]'
+  id: totrans-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Running this example produces the following output.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行此示例将产生以下输出。
 - en: '[PRE18]'
+  id: totrans-104
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: It shows that ReLU activation function achieved the best results with an accuracy
     of about 70%.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 它显示 ReLU 激活函数在准确率约为 70% 时取得了最佳结果。
 - en: How to Tune Dropout Regularization
+  id: totrans-106
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何调整 dropout 正则化
 - en: In this example, you will look at tuning the [dropout rate for regularization](https://machinelearningmastery.com/dropout-for-regularizing-deep-neural-networks/)
     in an effort to limit overfitting and improve the model’s ability to generalize.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个示例中，你将调整 [dropout 率以进行正则化](https://machinelearningmastery.com/dropout-for-regularizing-deep-neural-networks/)
+    以限制过拟合并提高模型的泛化能力。
 - en: For the best results, dropout is best combined with a weight constraint such
     as the max norm constraint, which is implemented in the forward pass function.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了获得最佳结果，dropout 最好与权重约束（例如最大范数约束）结合使用，后者在前向传播函数中实现。
 - en: This involves fitting both the dropout percentage and the weight constraint.
     We will try dropout percentages between 0.0 and 0.9 (1.0 does not make sense)
     and MaxNorm weight constraint values between 0 and 5.
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 这涉及到拟合 dropout 百分比和权重约束。我们将尝试 0.0 到 0.9 之间的 dropout 百分比（1.0 不合适）以及 0 到 5 之间的
+    MaxNorm 权重约束值。
 - en: The full code listing is provided below.
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码清单如下所示。
 - en: '[PRE19]'
+  id: totrans-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Running this example produces the following output.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行此示例将产生以下输出。
 - en: '[PRE20]'
+  id: totrans-113
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: You can see that the dropout rate of 10% and the weight constraint of 2.0 resulted
     in the best accuracy of about 70%.
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到 10% 的 dropout 率和 2.0 的权重约束得到了最佳的准确率，约为 70%。
 - en: How to Tune the Number of Neurons in the Hidden Layer
+  id: totrans-115
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何调整隐藏层中的神经元数量
 - en: The number of neurons in a layer is an important parameter to tune. Generally
     the number of neurons in a layer controls the representational capacity of the
     network, at least at that point in the topology.
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 层中神经元的数量是一个重要的调整参数。通常，层中神经元的数量控制网络的表示能力，至少在拓扑结构的那个点上是如此。
 - en: Generally, a large enough single layer network can approximate any other neural
     network, due to the [universal approximation theorem](https://en.wikipedia.org/wiki/Universal_approximation_theorem).
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 一般来说，足够大的单层网络可以近似任何其他神经网络，这归因于 [通用逼近定理](https://en.wikipedia.org/wiki/Universal_approximation_theorem)。
 - en: In this example, you will look at tuning the number of neurons in a single hidden
     layer. you will try values from 1 to 30 in steps of 5.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个示例中，你将调整单个隐藏层中的神经元数量。你将尝试从 1 到 30 的值，步长为 5。
 - en: A larger network requires more training and at least the batch size and number
     of epochs should ideally be optimized with the number of neurons.
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 更大的网络需要更多的训练，并且批量大小和训练轮数至少应该与神经元的数量一起进行优化。
 - en: The full code listing is provided below.
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码清单如下所示。
 - en: '[PRE21]'
+  id: totrans-121
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: Running this example produces the following output.
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行此示例将产生以下输出。
 - en: '[PRE22]'
+  id: totrans-123
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: You can see that the best results were achieved with a network with 30 neurons
     in the hidden layer with an accuracy of about 71%.
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到，最佳结果是在隐藏层有 30 个神经元的网络中获得的，准确率约为 71%。
 - en: Tips for Hyperparameter Optimization
+  id: totrans-125
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 超参数优化的提示
 - en: This section lists some handy tips to consider when tuning hyperparameters of
     your neural network.
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节列出了一些在调整神经网络的超参数时需要考虑的实用提示。
 - en: '**$k$-Fold Cross-Validation**. You can see that the results from the examples
     in this post show some variance. A default cross-validation of 3 was used, but
     perhaps $k=5$ or $k=10$ would be more stable. Carefully choose your cross-validation
     configuration to ensure your results are stable.'
+  id: totrans-127
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**$k$ 折交叉验证**。你可以看到本文示例中的结果存在一些变化。默认使用了3折交叉验证，但也许使用 $k=5$ 或 $k=10$ 会更稳定。仔细选择交叉验证配置以确保结果稳定。'
 - en: '**Review the Whole Grid**. Do not just focus on the best result, review the
     whole grid of results and look for trends to support configuration decisions.
     Of course, there will be more combinations and it takes a longer time to evaluate.'
+  id: totrans-128
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**审查整个网格**。不要只关注最佳结果，审查整个结果网格并寻找支持配置决策的趋势。当然，会有更多的组合，评估时间更长。'
 - en: '**Parallelize**. Use all your cores if you can, neural networks are slow to
     train and we often want to try a lot of different parameters. Consider to run
     it on a cloud platform, such as AWS.'
+  id: totrans-129
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**并行化**。如果可以的话，请使用所有核心，神经网络训练速度较慢，我们经常希望尝试许多不同的参数。考虑在云平台如 AWS 上运行它。'
 - en: '**Use a Sample of Your Dataset**. Because networks are slow to train, try training
     them on a smaller sample of your training dataset, just to get an idea of general
     directions of parameters rather than optimal configurations.'
+  id: totrans-130
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**使用数据集的样本**。由于网络训练速度较慢，请尝试在训练数据集的较小样本上进行训练，只是为了了解参数的一般方向，而不是最优配置。'
 - en: '**Start with Coarse Grids**. Start with coarse-grained grids and zoom into
     finer grained grids once you can narrow the scope.'
+  id: totrans-131
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**从粗网格开始**。从粗粒度的网格开始，并在能够缩小范围后逐渐缩放到更细粒度的网格。'
 - en: '**Do Not Transfer Results**. Results are generally problem specific. Try to
     avoid favorite configurations on each new problem that you see. It is unlikely
     that optimal results you discover on one problem will transfer to your next project.
     Instead look for broader trends like number of layers or relationships between
     parameters.'
+  id: totrans-132
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**不要转移结果**。结果通常是特定于问题的。尽量避免在每个新问题上使用喜爱的配置。你发现的一个问题上的最优结果不太可能转移到下一个项目上。相反，要寻找像层的数量或参数之间的关系这样更广泛的趋势。'
 - en: '**Reproducibility is a Problem**. Although we set the seed for the random number
     generator in NumPy, the results are not 100% reproducible. There is more to reproducibility
     when grid searching wrapped PyTorch models than is presented in this post.'
+  id: totrans-133
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**可复现性是一个问题**。虽然我们在 NumPy 中设置了随机数生成器的种子，但结果并不是100%可复现的。在网格搜索包装的 PyTorch 模型中，可复现性比本文介绍的更多。'
 - en: Further Reading
+  id: totrans-134
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 此部分提供了更多关于这个主题的资源，如果你想深入了解的话。
 - en: '[skorch](https://skorch.readthedocs.io/en/latest/) documentation'
+  id: totrans-136
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[skorch](https://skorch.readthedocs.io/en/latest/) 文档'
 - en: '[torch.nn](https://pytorch.org/docs/stable/nn.html) from PyTorch'
+  id: totrans-137
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 来自 PyTorch 的 [torch.nn](https://pytorch.org/docs/stable/nn.html)
 - en: '[GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html)
     from scikit-learn'
+  id: totrans-138
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html)
+    来自 scikit-learn'
 - en: Summary
+  id: totrans-139
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: In this post, you discovered how you can tune the hyperparameters of your deep
     learning networks in Python using PyTorch and scikit-learn.
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，你了解到如何使用 PyTorch 和 scikit-learn 在 Python 中调整深度学习网络的超参数。
 - en: 'Specifically, you learned:'
+  id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，您学到了：
 - en: How to wrap PyTorch models for use in scikit-learn and how to use grid search.
+  id: totrans-142
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将 PyTorch 模型包装以在 scikit-learn 中使用以及如何使用网格搜索。
 - en: How to grid search a suite of different standard neural network parameters for
     PyTorch models.
+  id: totrans-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为 PyTorch 模型网格搜索一套不同的标准神经网络参数。
 - en: How to design your own hyperparameter optimization experiments.
+  id: totrans-144
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何设计您自己的超参数优化实验。

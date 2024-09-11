@@ -1,11 +1,15 @@
 - en: Integrating Scikit-Learn and Statsmodels for Regression
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 结合Scikit-Learn和Statsmodels进行回归
 - en: 原文：[https://machinelearningmastery.com/integrating-scikit-learn-and-statsmodels-for-regression/](https://machinelearningmastery.com/integrating-scikit-learn-and-statsmodels-for-regression/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/integrating-scikit-learn-and-statsmodels-for-regression/](https://machinelearningmastery.com/integrating-scikit-learn-and-statsmodels-for-regression/)
 - en: Statistics and Machine Learning both aim to extract insights from data, though
     their approaches differ significantly. Traditional statistics primarily concerns
     itself with inference, using the entire dataset to test hypotheses and estimate
@@ -13,56 +17,82 @@
     prediction and decision-making, typically employing a train-test split methodology
     where models learn from a portion of the data (the training set) and validate
     their predictions on unseen data (the testing set).
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 统计学和机器学习都旨在从数据中提取洞察，但它们的方法大相径庭。传统统计学主要关注推断，使用整个数据集来检验假设和估计关于更大人群的概率。相对而言，机器学习强调预测和决策，通常采用训练-测试分割的方法，其中模型从数据的一个部分（训练集）学习，并在未见过的数据（测试集）上验证其预测。
 - en: In this post, we will demonstrate how a seemingly straightforward technique
     like linear regression can be viewed through these two lenses. We will explore
     their unique contributions by using Scikit-Learn for machine learning and Statsmodels
     for statistical inference.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我们将展示一个看似简单的线性回归技术如何从这两个角度来看待。我们将通过使用Scikit-Learn进行机器学习和Statsmodels进行统计推断，探讨它们的独特贡献。
 - en: Let’s get started.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/ebca9f6b8212bb3833601155dab5008c.png)'
+  id: totrans-5
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/ebca9f6b8212bb3833601155dab5008c.png)'
 - en: Integrating Scikit-Learn and Statsmodels for Regression.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 结合Scikit-Learn和Statsmodels进行回归。
 - en: Photo by [Stephen Dawson](https://unsplash.com/photos/turned-on-monitoring-screen-qwtCeJ5cLYs).
     Some rights reserved.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Stephen Dawson](https://unsplash.com/photos/turned-on-monitoring-screen-qwtCeJ5cLYs)提供。版权所有。
 - en: Overview
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分：
 - en: 'Supervised Learning: Classification vs. Regression'
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 监督学习：分类与回归
 - en: Diving into Regression with a Machine Learning Focus
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从机器学习角度深入回归
 - en: Enhancing Understanding with Statistical Insights
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过统计洞察提升理解
 - en: 'Supervised Learning: Classification vs. Regression'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 监督学习：分类与回归
 - en: Supervised learning is a branch of machine learning where the model is trained
     on a labeled dataset. This means that each example in the training dataset is
     paired with the correct output. Once trained, the model can apply what it has
     learned to new, unseen data.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 监督学习是机器学习的一个分支，其中模型在标记的数据集上进行训练。这意味着训练数据集中的每个示例都与正确的输出配对。训练完成后，模型可以将其学到的知识应用于新的、未见过的数据。
 - en: 'In supervised learning, we encounter two main tasks: classification and regression.
     These tasks are determined by the type of output we aim to predict. If the goal
     is to predict categories, such as determining if an email is spam, we are dealing
@@ -70,259 +100,375 @@
     the miles per gallon (MPG) a car will achieve based on its features, it falls
     under regression. The output’s nature — a category or a number — steers us toward
     the appropriate approach.'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在监督学习中，我们遇到两个主要任务：分类和回归。这些任务取决于我们要预测的输出类型。如果目标是预测类别，例如确定一封邮件是否为垃圾邮件，那么我们处理的是分类任务。相反，如果我们估计一个值，例如根据汽车的特征计算每加仑多少英里（MPG），这属于回归。输出的性质——一个类别还是一个数字——引导我们选择合适的方法。
 - en: In this series, we will used the [Ames housing dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv).
     It provides a comprehensive collection of features related to houses, including
     architectural details, condition, and location, aimed at predicting the “SalePrice”
     (the sales price) of each house.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一系列中，我们将使用[Ames住房数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)。该数据集提供了与房屋相关的全面特征，包括建筑细节、条件和位置，旨在预测每栋房屋的“SalePrice”（销售价格）。
 - en: Python
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'This should output:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应该输出：
 - en: '[PRE1]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The “SalePrice” column is of data type `int64`, indicating that it represents
     integer values. Since “SalePrice” is a numerical (continuous) variable rather
     than categorical, predicting the “SalePrice” would be a **regression task**. This
     means the goal is to predict a continuous quantity (the sale price of a house)
     based on the input features provided in your dataset.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: “SalePrice” 列的数据类型为 `int64`，表示它代表整数值。由于 “SalePrice” 是一个数值型（连续型）变量而非分类变量，因此预测
+    “SalePrice” 将是一个**回归任务**。这意味着目标是根据数据集中提供的输入特征预测一个连续的量（房屋的售价）。
 - en: Diving into Regression with a Machine Learning Focus
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 从机器学习的角度深入回归分析
 - en: Supervised learning in machine learning focuses on predicting outcomes based
     on input data. In our case, using the Ames Housing dataset, we aim to predict
     a house’s sale price from its living area—a classic regression task. For this,
     we turn to scikit-learn, renowned for its simplicity and effectiveness in building
     predictive models.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 机器学习中的监督学习专注于基于输入数据预测结果。在我们的案例中，使用 Ames Housing 数据集，我们的目标是根据房屋的生活面积预测其售价——这是一项经典的回归任务。为此，我们使用
+    scikit-learn，该工具因其在构建预测模型方面的简单性和有效性而闻名。
 - en: To start, we select “GrLivArea” (ground living area) as our feature and “SalePrice”
     as the target. The next step involves splitting our dataset into training and
     testing sets using scikit-learn’s `train_test_split()` function. This crucial
     step allows us to train our model on one set of data and evaluate its performance
     on another, ensuring the model’s reliability.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们选择 “GrLivArea”（地面生活面积）作为特征，“SalePrice” 作为目标。下一步是使用 scikit-learn 的 `train_test_split()`
+    函数将数据集分为训练集和测试集。这一步至关重要，它使我们能够在一组数据上训练模型，并在另一组数据上评估其性能，从而确保模型的可靠性。
 - en: 'Here’s how we do it:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是我们如何做：
 - en: '[PRE2]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'This should output:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应该输出：
 - en: '[PRE3]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The `LinearRegression` object imported in the code above is scikit-learn’s implementation
     of linear regression. The model’s R² score of 0.4789 indicates that our model
     explains approximately 48% of the variation in sale prices based on the living
     area alone—a significant insight for such a simple model. This step marks our
     initial foray into machine learning with scikit-learn, showcasing the ease with
     which we can assess model performance on unseen or test data.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码中导入的 `LinearRegression` 对象是 scikit-learn 的线性回归实现。模型的 R² 分数为 0.4789 表明我们的模型仅凭生活面积就能解释大约
+    48% 的售价变异——对于这样一个简单的模型来说这是一个重要的见解。这一步标志着我们初步涉足机器学习，展示了我们如何轻松地评估模型在未见或测试数据上的性能。
 - en: Enhancing Understanding with Statistical Insights
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 通过统计见解增强理解
 - en: 'After exploring how scikit-learn can help us assess model performance on unseen
     data, we now turn our attention to `statsmodels`, a Python package that offers
     a different angle of analysis. While scikit-learn excels in building models and
     predicting outcomes, `statsmodels` shines by diving deep into the statistical
     aspects of our data and model. Let’s see how `statsmodels` can provide you with
     insight at a different level:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 在探讨了 scikit-learn 如何帮助我们评估模型在未见数据上的性能后，我们现在将注意力转向 `statsmodels`，这是一个提供不同分析角度的
+    Python 包。虽然 scikit-learn 在构建模型和预测结果方面表现出色，但 `statsmodels` 通过深入分析数据和模型的统计方面脱颖而出。让我们看看
+    `statsmodels` 如何从不同的层面为你提供见解：
 - en: '[PRE4]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The first key distinction to highlight is `statsmodels`‘ use of all observations
     in our dataset. Unlike the predictive modeling approach, where we split our data
     into training and testing sets, `statsmodels` leverages the entire dataset to
     provide comprehensive statistical insights. This full utilization of data allows
     for a detailed understanding of the relationships between variables and enhances
     the accuracy of our statistical estimates. The above code should output the following:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个关键区别是 `statsmodels` 使用我们数据集中的所有观察值。与预测建模方法不同，预测建模方法中我们将数据分为训练集和测试集，`statsmodels`
+    利用整个数据集提供全面的统计见解。这种完全利用数据的方法使我们能够详细理解变量之间的关系，并提高统计估计的准确性。上述代码应该输出以下内容：
 - en: '[PRE5]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Note that it is not the same regerssion as in the case of scikit-learn because
     the full dataset is used without train-test split.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，这与 scikit-learn 中的回归不同，因为此处使用的是整个数据集，而没有进行训练-测试分割。
 - en: 'Let’s dive into the `statsmodels`‘ output for our OLS regression and explain
     what the P-values, coefficients, confidence intervals, and diagnostics tell us
     about our model, specifically focusing on predicting “SalePrice” from “GrLivArea”:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们深入 `statsmodels` 对我们 OLS 回归的输出，并解释 p 值、系数、置信区间和诊断信息告诉我们关于我们模型的什么，特别是关注于从
+    “GrLivArea” 预测 “SalePrice”：
 - en: P-values and Coefficients
+  id: totrans-37
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: p 值和系数
 - en: '**Coefficient of “GrLivArea”**: The coefficient for “GrLivArea” is 110.5551\.
     This means that for every additional square foot of living area, the sales price
     of the house is expected to increase by approximately $110.55\. This coefficient
     quantifies the impact of living area size on the house’s sales price.'
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**“GrLivArea”的系数**： “GrLivArea”的系数为110.5551。这意味着每增加一平方英尺的生活面积，房屋的销售价格预计会增加约$110.55。这个系数量化了生活面积对房屋销售价格的影响。'
 - en: '**P-value for “GrLivArea”**: The p-value associated with the “GrLivArea” coefficient
     is essentially 0 (indicated by `P>|t|` near 0.000), suggesting that the living
     area is a highly significant predictor of the sales price. In statistical terms,
     we can reject the null hypothesis that the coefficient is zero (no effect) and
     confidently state that there is a strong relationship between the living area
     and sales price (but not necessarily the only factor).'
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**“GrLivArea”的p值**：与“GrLivArea”系数相关的p值基本为0（由`P>|t|`接近0.000指示），表明生活面积是一个高度显著的销售价格预测因素。在统计学上，我们可以拒绝系数为零（无效应）的原假设，并且可以自信地表示生活面积与销售价格之间存在强关系（但不一定是唯一因素）。'
 - en: Confidence Intervals
+  id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 信赖区间
 - en: '**Confidence Interval for “GrLivArea”**: The confidence interval for the “GrLivArea”
     coefficient is [106.439, 114.671]. This range tells us that we can be 95% confident
     that the true impact of living area on sale price falls within this interval.
     It offers a measure of the precision of our coefficient estimate.'
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**“GrLivArea”的信赖区间**： “GrLivArea”系数的信赖区间为[106.439, 114.671]。这个范围告诉我们我们可以有95%的信心认为生活面积对销售价格的真实影响落在这个区间内。它提供了我们对系数估计值精确度的度量。'
 - en: Diagnostics
+  id: totrans-42
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Diagnostics
 - en: '**R-squared (R²)**: The R² value of 0.518 indicates that the living area can
     explain approximately 51.8% of the variability in sale prices. It’s a measure
     of how well the model fits the data. It is expected that this number is not the
     same as the case in scikit-learn regression since the data is different.'
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**R-squared (R²)**：R²值为0.518，表示生活面积可以解释约51.8%的销售价格变动。这是衡量模型拟合数据的程度的指标。由于数据不同，因此预计这个数值与scikit-learn回归中的情况不相同。'
 - en: '**F-statistic and Prob (F-statistic)**: The F-statistic is a measure of the
     overall significance of the model. With an F-statistic of 2774 and a Prob (F-statistic)
     essentially at 0, this indicates that the model is statistically significant.'
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**F-statistic 和 Prob (F-statistic)**：F-statistic是衡量模型整体显著性的指标。F-statistic为2774，Prob
+    (F-statistic)基本为0，这表明模型在统计上是显著的。'
 - en: '**Omnibus, Prob(Omnibus)**: These tests assess the normality of the residuals.
     Residual is the difference between the predicted value $\hat{y}$) and the actual
     value ($y$). The linear regression algorithm is based on the assumption that the
     residuals are normally distributed. A Prob(Omnibus) value close to 0 suggests
     the residuals are not normally distributed, which could be a concern for the validity
     of some statistical tests.'
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Omnibus, Prob(Omnibus)**：这些测试评估残差的正态性。残差是预测值$\hat{y}$和实际值$y$之间的差异。线性回归算法基于残差服从正态分布的假设。Prob(Omnibus)值接近0表明残差不是正态分布的，这可能对某些统计测试的有效性构成担忧。'
 - en: '**Durbin-Watson**: The Durbin-Watson statistic tests the presence of autocorrelation
     in the residuals. It is between 0 and 4\. A value close to 2 (1.926) suggests
     there is no strong autocorrelation. Otherwise, this suggests that the relationship
     between $X$ and $y$ may not be linear.'
+  id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Durbin-Watson**：Durbin-Watson统计量测试残差中的自相关性。它的范围在0到4之间。接近2的值（1.926）表明没有强自相关。否则，这表明$X$和$y$之间的关系可能不是线性的。'
 - en: This comprehensive output from `statsmodels` provides a deep understanding of
     how and why “GrLivArea” influences “SalePrice,” backed by statistical evidence.
     It underscores the importance of not just using models for predictions but also
     interpreting them to make informed decisions based on a solid statistical foundation.
     This insight is invaluable for those looking to explore the statistical story
     behind their data.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '`statsmodels`提供的这份全面输出深入了解了“GrLivArea”如何以及为何影响“SalePrice”，并以统计证据为基础。它强调了不仅仅依赖模型进行预测的重要性，还要对模型进行解释，以便根据扎实的统计基础做出明智的决策。这些见解对于那些希望探索数据背后统计故事的人来说极为宝贵。'
 - en: '**Further****Reading**'
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: APIs
+  id: totrans-49
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: APIs
 - en: '[sklearn.linear_model.LinearRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html)
     API'
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[sklearn.linear_model.LinearRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html)
+    API'
 - en: '[statsmodels.api](https://www.statsmodels.org/stable/api.html) API'
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[statsmodels.api](https://www.statsmodels.org/stable/api.html) API'
 - en: Tutorials
+  id: totrans-52
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[Scikit-Learn Linear Regression: A Comprehensive Guide with Examples](https://www.simplilearn.com/tutorials/scikit-learn-tutorial/sklearn-linear-regression-with-examples)
     by Avijeet Biswal'
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Scikit-Learn线性回归：带实例的全面指南](https://www.simplilearn.com/tutorials/scikit-learn-tutorial/sklearn-linear-regression-with-examples)
+    作者：Avijeet Biswal'
 - en: '**Books**'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/)
     by Jake VanderPlas'
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python数据科学手册](https://jakevdp.github.io/PythonDataScienceHandbook/) 作者：Jake
+    VanderPlas'
 - en: '**Ames Housing Dataset & Data Dictionary**'
+  id: totrans-56
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**Ames住房数据集与数据字典**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this post, we navigated through the foundational concepts of supervised learning,
     specifically focusing on regression analysis. Using the Ames Housing dataset,
     we demonstrated how to employ `scikit-learn` for model building and performance,
     and `statsmodels` for gaining statistical insights into our data. This journey
     from data to insights underscores the critical role of both predictive modeling
     and statistical analysis in understanding and leveraging data effectively.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我们探讨了监督学习的基础概念，特别是回归分析。通过使用Ames住房数据集，我们展示了如何使用`scikit-learn`进行模型构建和性能评估，以及使用`statsmodels`获取对数据的统计见解。从数据到见解的过程凸显了预测建模和统计分析在有效理解和利用数据中的关键作用。
 - en: 'Specifically, you learned:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体而言，你学到了：
 - en: The distinction between classification and regression tasks in supervised learning.
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 监督学习中分类任务和回归任务的区别。
 - en: How to identify which approach to use based on the nature of your data.
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何根据数据的性质确定使用哪种方法。
 - en: How to use `scikit-learn` to implement a simple linear regression model, assess
     its performance, and understand the significance of the model’s R² score.
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用`scikit-learn`实现一个简单的线性回归模型，评估其性能，并理解模型的R²得分的重要性。
 - en: The value of employing `statsmodels` to explore the statistical aspects of your
     data, including the interpretation of coefficients, p-values, and confidence intervals,
     and the importance of diagnostic tests for model assumptions.
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用`statsmodels`探索数据的统计方面，包括系数、p值和置信区间的解释，以及诊断测试对模型假设的重要性。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？请在下方评论中提出你的问题，我会尽力回答。

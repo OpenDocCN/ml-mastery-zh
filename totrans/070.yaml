@@ -1,301 +1,447 @@
 - en: 'Image Feature Extraction in OpenCV: Edges and Corners'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: OpenCV中的图像特征提取：边缘和角点
 - en: 原文：[https://machinelearningmastery.com/opencv_edges_and_corners/](https://machinelearningmastery.com/opencv_edges_and_corners/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/opencv_edges_and_corners/](https://machinelearningmastery.com/opencv_edges_and_corners/)
 - en: In the world of computer vision and image processing, the ability to extract
     meaningful features from images is important. These features serve as vital inputs
     for various downstream tasks, such as object detection and classification. There
     are multiple ways to find these features. The naive way is to count the pixels.
     But in OpenCV, there are many routines to help you extract features from an image.
     In this post, you will see how OpenCV can help find some high-level features.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在计算机视觉和图像处理的世界里，从图像中提取有意义的特征是非常重要的。这些特征作为各种下游任务的重要输入，如目标检测和分类。找出这些特征有多种方式。最简单的方法是计数像素。但在OpenCV中，有许多例程可以帮助你从图像中提取特征。在这篇文章中，你将看到OpenCV如何帮助发现一些高级特征。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: Corner and edges can be extracted from an image
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 角点和边缘可以从图像中提取
 - en: What are the common algorithms available in OpenCV for extracting corners and
     edges
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在OpenCV中提取角点和边缘的常见算法有哪些
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书** [《OpenCV中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)
+    **来启动你的项目**。它提供了**自学教程**和**可运行代码**。'
 - en: Let’s get started.![](../Images/53a71141b9fec057868923016859fea3.png)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/53a71141b9fec057868923016859fea3.png)
 - en: 'Image Feature Extraction in OpenCV: Edges and Corners'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV中的图像特征提取：边缘和角点
 - en: Photo by [Michael Barth](https://unsplash.com/photos/gray-building-under-calm-sky-7Yp3v4Ol1jI),
     some rights reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Michael Barth](https://unsplash.com/photos/gray-building-under-calm-sky-7Yp3v4Ol1jI)提供，版权所有。
 - en: '**Overview**'
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**概述**'
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三部分；它们是：
 - en: Understanding Image Feature Extraction
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 理解图像特征提取
 - en: Canny Edge Detection in OpenCV
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV中的Canny边缘检测
 - en: Harris Corner Detection in OpenCV
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV中的Harris角点检测
 - en: '**Prerequisites**'
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**先决条件**'
 - en: 'For this tutorial, we assume that you are already familiar with:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设你已经熟悉：
 - en: '[Reading and displaying images using OpenCV](https://machinelearningmastery.com/?p=14402&preview=true)'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[使用OpenCV读取和显示图像](https://machinelearningmastery.com/?p=14402&preview=true)'
 - en: Understanding Image Feature Extraction
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 理解图像特征提取
 - en: Image feature extraction involves identifying and representing distinctive structures
     within an image. Reading the pixels of an image is certainly one. But this is
     a low-level feature. A high-level feature of an image can be anything from edges,
     corners, or even more complex textures and shapes.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 图像特征提取涉及到识别和表示图像中的独特结构。读取图像的像素当然是一种方法，但这属于低级特征。图像的高级特征可以是边缘、角点，甚至是更复杂的纹理和形状。
 - en: Features are characteristics of an image. With these unique characteristics,
     you may be able to distinguish one image from another. This is the first step
     in computer vision. By extracting these features, you can create representations
     that are more compact and meaningful than merely the pixels of the image. It helps
     further analysis and processing.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 特征是图像的特征属性。通过这些独特的特征，你可以区分不同的图像。这是计算机视觉中的第一步。通过提取这些特征，你可以创建比单纯的像素更紧凑和有意义的表示。这有助于进一步的分析和处理。
 - en: In the following, you will learn the two basic but very common feature extraction
     algorithms. Both of them return a pixel-based classification in the format of
     numpy arrays.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在接下来的内容中，你将学习到两个基本但非常常见的特征提取算法。这两种算法都以numpy数组格式返回基于像素的分类。
 - en: Canny Edge Detection in OpenCV
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: OpenCV中的Canny边缘检测
 - en: Over the years, there have been many algorithms developed for image feature
     extraction. They are not machine learning models, but closer to deterministic
     algorithms. These algorithms each aimed at a particular feature.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 多年来，已经开发了许多图像特征提取算法。这些算法不是机器学习模型，而是更接近于确定性算法。这些算法各自针对特定的特征。
 - en: OpenCV provides a rich set of tools and functions for image feature extraction.
     Let’s start with the first, Canny edge detection.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV提供了一整套丰富的工具和函数用于图像特征提取。我们首先从Canny边缘检测开始。
 - en: Finding lines in an image is probably the simplest feature extraction. Its goal
     is to identify which pixel is on an edge. An edge is defined as a gradient on
     the pixel intensity. In other words, if there is an abrupt color change, it is
     considered an edge. But there are more details to it, so noises are excluded.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在图像中寻找边缘可能是最简单的特征提取。其目标是识别哪个像素在边缘上。边缘定义为像素强度的梯度。换句话说，如果有突兀的颜色变化，则认为它是一个边缘。但其中还有更多细节，因此噪声被排除。
 - en: 'Let’s consider the following image and save it as `image.jpg` in the local
     directory:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们考虑以下图像，并将其保存为 `image.jpg` 在本地目录中：
 - en: '[https://unsplash.com/photos/VSLPOL9PwB8](https://unsplash.com/photos/VSLPOL9PwB8)'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://unsplash.com/photos/VSLPOL9PwB8](https://unsplash.com/photos/VSLPOL9PwB8)'
 - en: 'An example of finding and illustrating edges is as follows:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个寻找和说明边缘的示例如下：
 - en: Python
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: In the above, the image is converted into grayscale and then called `cv2.Canny()`
     function. Grayscale images are required in many feature extraction algorithm because
     many are designed to work on a single color channel.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面，图像被转换为灰度图像，然后调用了 `cv2.Canny()` 函数。许多特征提取算法需要灰度图像，因为它们通常设计为在单一颜色通道上工作。
 - en: The argument to the `cv2.Canny()` function takes two numerical values, for minimum
     and maximum thresholds respectively. They are used in the **hysteresis thresholding**
     to consolidate pixels into edges. The higher the maximum, only the stronger edges
     are kept in the result. The higher the minimum, however, you will see more “disconnected
     edges” returned.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '`cv2.Canny()` 函数的参数需要两个数值，分别用于最小和最大阈值。这些阈值用于**滞后阈值处理**以将像素合并成边缘。最大阈值越高，结果中仅保留更强的边缘。然而，最小阈值越高，你将会看到更多的“断裂边缘”。'
 - en: 'This function returns an numpy array that matched the pixel dimension of the
     image, which the value is either 0 (not on an edge) or 255 (on an edge). The code
     above color those pixels in blue. The result is as follows:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 此函数返回一个与图像像素维度匹配的 numpy 数组，其值要么为 0（不在边缘上），要么为 255（在边缘上）。上面的代码将这些像素着色为蓝色。结果如下：
 - en: '![](../Images/270cb779b61c2c5d48a8b0b85fa7f47f.png)'
+  id: totrans-34
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/270cb779b61c2c5d48a8b0b85fa7f47f.png)'
 - en: Result of Canny edge detection
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: Canny 边缘检测的结果
 - en: Original photo by [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8),
     some rights reserved.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 原始照片由 [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8) 提供，部分版权保留。
 - en: You should see the blue lines above marked the door and window and also outlined
     each brick. You adjust the two thresholds to see a different result.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该能看到上面的蓝色线条标记了门和窗户，并且勾勒出了每一块砖。你可以调整这两个阈值以查看不同的结果。
 - en: Harris Corner Detection in OpenCV
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: OpenCV 中的 Harris 角点检测
 - en: Harris Corner Detection is a method used to identify significant variations
     in intensity, which often correspond to the corners of objects in an image. OpenCV
     offers a simple and efficient implementation of this technique, allowing us to
     detect corners that serve as prominent features for image analysis and matching.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: Harris 角点检测是一种用于识别强度显著变化的方法，这些变化通常对应于图像中物体的角点。OpenCV 提供了该技术的简单高效实现，使我们能够检测角点，这些角点作为图像分析和匹配的显著特征。
 - en: 'Extracting corners from an image can be done in three steps:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 从图像中提取角点可以分为三个步骤：
 - en: Convert the image into grayscale, because Harris corner detection algorithm
     works only on a single color channel
+  id: totrans-41
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将图像转换为灰度图像，因为 Harris 角点检测算法仅在单一颜色通道上工作
 - en: Run `cv2.cornerHarris(image, blockSize, ksize, k)` and get a score for every
     pixel
+  id: totrans-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 运行 `cv2.cornerHarris(image, blockSize, ksize, k)` 并获取每个像素的分数
 - en: Identify which pixel is at the corner by comparing the score against the image
     maximum
+  id: totrans-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 通过比较分数与图像最大值，确定哪个像素在角落处
 - en: The argument to `cornerHarris()` function include the neighborhood size `blockSize`
     and a kernel size `ksize`. Both are small positive integers but the latter must
     be an odd number. The final argument `k` is a positive floating point value that
     controls the sensitivity of corner detection. Too large such a value will make
     the algorithm mistake a corner as an edge. You may need to experiment with its
     value.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '`cornerHarris()` 函数的参数包括邻域大小 `blockSize` 和核大小 `ksize`。这两个值都是小的正整数，但后者必须是奇数。最后一个参数
+    `k` 是一个正浮点值，用于控制角点检测的敏感度。该值过大可能会导致算法将角点误认为边缘。你可能需要对其值进行实验。'
 - en: 'An example code, running Harris corner detection on the same image above:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个示例代码，运行 Harris 角点检测在上述相同图像上：
 - en: '[PRE1]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The image produced will be as follows:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成的图像如下：
 - en: '![](../Images/4217f16f4749ab12366b58e4c60f9e84.png)'
+  id: totrans-48
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4217f16f4749ab12366b58e4c60f9e84.png)'
 - en: Result of Harris corner detection
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: Harris 角点检测的结果
 - en: Original photo by [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8),
     some rights reserved.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 原始照片由 [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8)提供，保留部分版权。
 - en: The red dots were drawn by the `cv2.circle()` function inside the for loop above.
     They are just for illustration. The key idea is that the algorithm gives a score
     of each pixel of the image to tell how much it is believed to be a corner, or
     on an edge, or “flat” (i.e., neither). You need to control the sensitivity of
     your conclusion by comparing the score to the maximum among the entire image,
     in the line
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 红点是通过 `cv2.circle()` 函数在上面的 for 循环中绘制的。它们仅用于说明。关键思想是，算法为图像的每个像素提供一个分数，以表示该像素被认为是角点、边缘还是“平坦”的（即，两者都不是）。你需要通过将分数与整个图像中的最大值进行比较来控制结论的敏感度，具体见
 - en: '[PRE2]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The result is a Boolean numpy array `corners`, which is then converted into
     an array of coordinates using the `np.argwhere()` function.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果是一个布尔型 numpy 数组 `corners`，它随后通过 `np.argwhere()` 函数被转换为坐标数组。
 - en: From the image above, you can see that Harris corner detection is not perfect,
     but if the corner is obvious enough, it can be detected.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 从上面的图像可以看出，Harris 角点检测并不完美，但如果角点足够明显，它是可以被检测到的。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-55
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 OpenCV 进行机器学习？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就报名参加我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可获得课程的免费 PDF 电子书版本。
 - en: '**Further Reading**'
+  id: totrans-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解，可以参考。
 - en: '**Books**'
+  id: totrans-60
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[掌握 OpenCV 4 与 Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019。'
 - en: '**Websites**'
+  id: totrans-62
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV，[https://opencv.org/](https://opencv.org/)
 - en: OpenCV Feature Detection and Description, [https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html](https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html)
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV 特征检测与描述，[https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html](https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html)
 - en: OpenCV Canny Edge Detection, [https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html](https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html)
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV Canny 边缘检测，[https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html](https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html)
 - en: '**Summary**'
+  id: totrans-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you learned how to apply OpenCV’s Canny Edge Detection and
     Harris Corner Detection algorithms on an image
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何在图像上应用 OpenCV 的 Canny 边缘检测和 Harris 角点检测算法。
 - en: 'Specifically, you learned:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: These are pixel-based algorithms that classify each pixel into edge or non-edge,
     or corner or non-corner
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 这些是基于像素的算法，它们将每个像素分类为边缘或非边缘、角点或非角点。
 - en: How to apply these algorithms using OpenCV functions to an image and interpret
     the result
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 OpenCV 函数将这些算法应用于图像并解读结果
 - en: If you have any questions, please put into the comment below.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你有任何问题，请在下面的评论中提出。

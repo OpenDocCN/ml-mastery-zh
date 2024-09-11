@@ -1,11 +1,15 @@
 - en: Initializing Weights for Deep Learning Models
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 深度学习模型的权重初始化
 - en: 原文：[https://machinelearningmastery.com/initializing-weights-for-deep-learning-models/](https://machinelearningmastery.com/initializing-weights-for-deep-learning-models/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/initializing-weights-for-deep-learning-models/](https://machinelearningmastery.com/initializing-weights-for-deep-learning-models/)
 - en: In order to build a classifier that accurately classifies the data samples and
     performs well on test data, you need to initialize the weights in a way that the
     model converges well. Usually we randomized the weights. But when we use mean
@@ -13,256 +17,390 @@
     face a few problems. Before we get into further details, note that the methodology
     used here also applies to classification models other than logistic regression
     and it will be used in the upcoming tutorials.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了构建一个准确分类数据样本并在测试数据上表现良好的分类器，你需要以一种使模型良好收敛的方式初始化权重。通常我们会随机初始化权重。但是，当我们使用均方误差（MSE）作为训练逻辑回归模型的损失函数时，有时可能会遇到一些问题。在进一步细节之前，请注意，这里使用的方法也适用于除逻辑回归之外的分类模型，并将在接下来的教程中使用。
 - en: 'Our model can converge well if the weights are initialized in a proper region.
     However, if we started the model weights in an unfavorable region, we may see
     the model difficult to converge or very slow to converge. In this tutorial you’ll
     learn what happens to the model training if you use MSE loss and model weights
     are adversely initialized. Particularly, you will learn:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果权重在一个适当的区域初始化，我们的模型可以良好收敛。然而，如果我们将模型权重初始化在一个不利的区域，我们可能会发现模型难以收敛或收敛非常缓慢。在本教程中，你将学习使用MSE损失函数且模型权重初始化不当时会发生什么。特别地，你将学习：
 - en: How bad initialization can affect training of a logistic regression model.
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不良初始化如何影响逻辑回归模型的训练。
 - en: How to train a logistic regression model with PyTorch.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何用PyTorch训练一个逻辑回归模型。
 - en: How badly initialized weights with MSE loss can significantly reduce the accuracy
     of the model.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何不良的初始化权重和MSE损失函数会显著降低模型的准确性。
 - en: So, let’s get started.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 那么，让我们开始吧。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [《深度学习与PyTorch》](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    **快速启动你的项目**。它提供了**自学教程**和**有效代码**。'
 - en: Let’s get started.![](../Images/5f22cfe68592c3485a4e47004638df0c.png)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。![](../Images/5f22cfe68592c3485a4e47004638df0c.png)
 - en: Initializing Weights for Deep Learning Models.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 深度学习模型的权重初始化。
 - en: Picture by [Priscilla Serneo](https://unsplash.com/photos/kvCTQkcbWAc). Some
     rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来自 [Priscilla Serneo](https://unsplash.com/photos/kvCTQkcbWAc)。保留部分权利。
 - en: Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in three parts; they are
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是
 - en: Preparing the Data and Building a Model
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备数据和构建模型
 - en: The Effect of Initial Values of Model Weights
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 模型权重初始值的影响
 - en: Appropriate Weight Initialization
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 适当的权重初始化
 - en: Preparing the Data and Building a Model
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备数据和构建模型
 - en: First, let’s prepare some synthetic data for training and evaluating the model.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们准备一些合成数据来训练和评估模型。
 - en: The data will be predicting a value of 0 or 1 based on a single variable.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据将基于单一变量预测0或1的值。
 - en: '[PRE0]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: With this `Dataset` class, we can create a dataset object.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这个 `Dataset` 类，我们可以创建一个数据集对象。
 - en: '[PRE1]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Now, let’s build a custom module with `nn.Module` for our logistic regression
     model. As explained in our previous tutorials, you are going to use the methods
     and attributes from `nn.Module` package to build custom modules.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们使用 `nn.Module` 为我们的逻辑回归模型构建一个自定义模块。如我们之前的教程中所述，你将使用 `nn.Module` 包中的方法和属性来构建自定义模块。
 - en: '[PRE2]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: You’ll create a model object for logistic regression, as follows.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将创建一个用于逻辑回归的模型对象，如下所示。
 - en: '[PRE3]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用PyTorch进行深度学习？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件速成课程（附样例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还能免费获得课程的PDF电子书版本。
 - en: The Effect of Initial Values of Model Weights
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 模型权重初始值的影响
 - en: In order to prove the point, let’s replace the randomly initialized model weights
     with other values (or predetermined bad values) that will not let the model converge.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了证明这一点，让我们用其他值（或预定的不良值）替换随机初始化的模型权重，这样模型将无法收敛。
 - en: '[PRE4]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'It prints:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 它会打印：
 - en: '[PRE5]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: As you can see, the randomly initialized parameters have been replaced.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 如你所见，随机初始化的参数已经被替换。
 - en: You will train this model with stochastic gradient descent and set the learning
     rate at 2\. As you have to check how badly initialized values with MSE loss may
     impact the model performance, you’ll set this criterion to check the model loss.
     In training, the data is provided by the dataloader with a batch size of 2.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将使用随机梯度下降训练这个模型，并将学习率设置为 2。由于你需要检查初始化值不佳和 MSE 损失对模型性能的影响，你将设置这个标准来检查模型损失。在训练过程中，数据由数据加载器提供，批量大小为
+    2。
 - en: '[PRE6]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Now, let’s train our model for 50 epochs.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们训练模型 50 个周期。
 - en: '[PRE7]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'while the model is trained, you will see the progress of each epoch:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 在模型训练期间，你将看到每个周期的进展：
 - en: '[PRE8]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: As you can see, the loss during training remains constant and there isn’t any
     improvements. This indicates that the model is not learning and it won’t perform
     well on test data.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 如你所见，训练过程中的损失保持不变，没有任何改进。这表明模型没有学习，并且在测试数据上表现不好。
 - en: Let’s also visualize the plot for model training.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们还可视化模型训练的图表。
 - en: '[PRE9]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: You shall see the following:![](../Images/93a425471065e967769debf2947a89d7.png)The
     graph also tells us the same story that there wasn’t any change or reduction in
     the model loss during training.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将看到如下图：![](../Images/93a425471065e967769debf2947a89d7.png)图表也告诉我们同样的故事，即训练过程中模型损失没有任何变化或减少。
 - en: While our model didn’t do well during training, let’s get the predictions for
     test data and measure the overall accuracy of the model.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然我们的模型在训练过程中表现不佳，但让我们获取测试数据的预测结果，并测量模型的整体准确率。
 - en: '[PRE10]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: which gives
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这给出
 - en: '[PRE11]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: The accuracy of the model is around 57 percent only, which isn’t what you would
     expect. That’s how badly initialized weights with MSE loss may impact the model
     accuracy. In order to reduce this error, we apply maximum likelihood estimation
     and cross entropy loss, which will be covered in the next tutorial.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 模型的准确率仅为 57%，这不是你期望的结果。这表明初始化权重不佳以及使用 MSE 损失可能会对模型准确性产生很大影响。为了减少这种误差，我们应用最大似然估计和交叉熵损失，这将在下一个教程中讲解。
 - en: 'Putting everything together, the following is the complete code:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合考虑，以下是完整的代码：
 - en: '[PRE12]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Appropriate Weight Initialization
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 适当的权重初始化
 - en: By default, the initialized weight from PyTorch should give you the correct
     model. If you modify the code above to comment out the two lines that overwrote
     the model weigths before training and re-run it, you should see the result works
     quite well. The reason it works horribly above is because the weights are too
     far off from the optimal weights, and the use of MSE as loss function in logistic
     regression problems.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，从 PyTorch 初始化的权重应该能给你正确的模型。如果你修改上述代码，将训练前覆盖模型权重的两行注释掉，并重新运行，你应该会看到结果相当不错。之所以之前效果很差，是因为权重离最佳权重太远，以及在逻辑回归问题中使用了均方误差（MSE）作为损失函数。
 - en: The nature of optimization algorithms such as stochastic gradient descent does
     not guarantee it to work in all cases. In order to make the optimization algorithms
     to find the solution, i.e., the model to converge, it is best to have the model
     weights located at the proximity of the solution. Of course, we would not know
     where is the proximity before the model converge. But research has found that
     we should prefer the weights be set such that in a batch of the sample data,
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 像随机梯度下降这样的优化算法的性质并不能保证在所有情况下都有效。为了使优化算法找到解决方案，即使模型收敛，最好是将模型权重设置在接近解决方案的位置。当然，在模型收敛之前我们无法知道接近的位置在哪里。但研究发现，我们应该倾向于将权重设置为在一批样本数据中，
 - en: the mean of activation is zero
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 激活的均值为零。
 - en: the variance of the the activation is comparable to the variance of a layer’s
     input
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 激活的方差与层输入的方差相当。
 - en: One popular method is to initialize model weights using Xavier initialization,
     i.e., set weights randomly according to a Uniform distribution, $U[-\frac{1}{\sqrt{n}},
     \frac{1}{\sqrt{n}}]$, where $n$ is the number of input to the layer (in our case
     is 1).
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 一种流行的方法是使用 Xavier 初始化来初始化模型权重，即，根据均匀分布 $U[-\frac{1}{\sqrt{n}}, \frac{1}{\sqrt{n}}]$
+    随机设置权重，其中 $n$ 是层的输入数量（在我们的例子中是 1）。
 - en: Another method is normalized Xavier initialization, which is to use the distribution
     $U[-\sqrt{\frac{6}{n+m}}, \sqrt{\frac{6}{n+m}}]$, for $n$ and $m$ the number of
     inputs and outputs to the layer. In our case, both are 1.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种方法是标准化 Xavier 初始化，即使用分布 $U[-\sqrt{\frac{6}{n+m}}, \sqrt{\frac{6}{n+m}}]$，其中
+    $n$ 和 $m$ 是层的输入和输出数量。在我们的例子中，两者都是 1。
 - en: If we prefer not to use uniform distribution, He initialization suggested to
     use Gaussian distribution with mean 0 and variance $\sqrt{2/n}$.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们不想使用均匀分布，He 初始化建议使用均值为 0 和方差为 $\sqrt{2/n}$ 的高斯分布。
 - en: You can see more about weight initialization at the post, [Weight Initialization
     for Deep Learning Neural Networks](https://machinelearningmastery.com/weight-initialization-for-deep-learning-neural-networks/).
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以在这篇文章中查看更多关于权重初始化的内容，[深度学习神经网络的权重初始化](https://machinelearningmastery.com/weight-initialization-for-deep-learning-neural-networks/)。
 - en: Summary
+  id: totrans-62
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you learned how bad weights may reduce the model performance.
     Particularly, you learned:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了权重不当如何降低模型性能。特别是，你学到了：
 - en: How bad initialization can affect training of a logistic regression model.
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 初始化不当如何影响逻辑回归模型的训练。
 - en: How to train a logistic regression model with PyTorch.
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 PyTorch 训练逻辑回归模型。
 - en: How badly initialized weights values with MSE loss can significantly reduce
     the accuracy of the model.
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 初始化不当的权重值与 MSE 损失如何显著降低模型的准确性。

@@ -1,63 +1,92 @@
 - en: 'Capturing Curves: Advanced Modeling with Polynomial Regression'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 捕捉曲线：使用多项式回归进行高级建模
 - en: 原文：[https://machinelearningmastery.com/capturing-curves-advanced-modeling-with-polynomial-regression/](https://machinelearningmastery.com/capturing-curves-advanced-modeling-with-polynomial-regression/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/capturing-curves-advanced-modeling-with-polynomial-regression/](https://machinelearningmastery.com/capturing-curves-advanced-modeling-with-polynomial-regression/)
 - en: When we analyze relationships between variables in machine learning, we often
     find that a straight line doesn’t tell the whole story. That’s where polynomial
     transformations come in, adding layers to our regression models without complicating
     the calculation process. By transforming our features into their polynomial counterparts—squares,
     cubes, and other higher-degree terms—we give linear models the flexibility to
     curve and twist, fitting snugly to the underlying trends of our data.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们在机器学习中分析变量之间的关系时，我们常常发现直线无法全面描述情况。这时，多项式变换发挥作用，它为我们的回归模型添加了层次，同时不会使计算过程复杂化。通过将特征转换为它们的多项式对应物——平方、立方以及其他高阶项——我们赋予线性模型弯曲和扭曲的灵活性，从而更好地适应数据的潜在趋势。
 - en: This blog post will explore how we can move beyond simple linear models to capture
     more complex relationships in our data. You’ll learn about the power of polynomial
     and cubic regression techniques, which allow us to see beyond the apparent and
     uncover the underlying patterns that a straight line might miss. We will also
     delve into the balance between adding complexity and maintaining predictability
     in your models, ensuring that they are both powerful and practical.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文将探讨如何超越简单的线性模型，以捕捉数据中的更复杂关系。你将了解多项式回归和立方回归技术的强大功能，这些技术使我们能够看到表面现象之外的潜在模式，这些模式可能会被直线忽略。我们还将深入讨论在模型中添加复杂性与保持预测能力之间的平衡，确保模型既强大又实用。
 - en: Let’s get started.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/e51c144c7f906e5661d9b65dc57e088f.png)'
+  id: totrans-5
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/e51c144c7f906e5661d9b65dc57e088f.png)'
 - en: 'Capturing Curves: Advanced Modeling with Polynomial Regression'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 捕捉曲线：使用多项式回归进行高级建模
 - en: Photo by [Joakim Aglo](https://unsplash.com/photos/white-concrete-building-low-angle-photography-rr-euqNcCf4).
     Some rights reserved.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Joakim Aglo](https://unsplash.com/photos/white-concrete-building-low-angle-photography-rr-euqNcCf4)
+    提供。保留所有权利。
 - en: Overview
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分，它们是：
 - en: Establishing a Baseline with Linear Regression
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过线性回归建立基准
 - en: Capturing Curves with a Polynomial Regression
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用多项式回归捕捉曲线
 - en: Experimenting with a Cubic Regression
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 立方回归的实验
 - en: Establishing a Baseline with Linear Regression
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 通过线性回归建立基准
 - en: When we talk about relationships between two variables, linear regression is
     often the first step because it is the simplest. It models the relationship by
     fitting a straight line to the data. This line is described by the simple equation
@@ -65,34 +94,49 @@
     `m` is the slope of the line, and `b` is the y-intercept. Let’s demonstrate this
     by predicting the “SalePrice” in the Ames dataset based on its overall quality,
     which is an integer value ranging from 1 to 10.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们谈论两个变量之间的关系时，线性回归通常是第一步，因为它最简单。它通过将直线拟合到数据上来建模这种关系。这条直线由简单的方程 `y = mx + b`
+    描述，其中 `y` 是因变量，`x` 是自变量，`m` 是直线的斜率，`b` 是 y 轴截距。让我们通过预测 Ames 数据集中基于整体质量的“SalePrice”来演示这一点，整体质量是一个范围从
+    1 到 10 的整数值。
 - en: '[PRE0]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '[![](../Images/a0cbec5586cde38dd94a45f45688bf47.png)](https://machinelearningmastery.com/?attachment_id=16977)'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/a0cbec5586cde38dd94a45f45688bf47.png)](https://machinelearningmastery.com/?attachment_id=16977)'
 - en: 'With a basic linear regression, our model came up with the following equation:
     `y = 43383x - 84264`. This means that each additional point in quality is associated
     with an increase of approximately $43,383 in the sale price. To evaluate the performance
     of our model, we used 5-fold cross-validation, resulting in an R² of 0.618\. This
     value indicates that about 61.8% of the variability in sale prices can be explained
     by the overall quality of the house using this simple model.'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 在基本线性回归中，我们的模型得出了以下方程：`y = 43383x - 84264`。这意味着每增加一个质量点，与销售价格的增加约为 $43,383。为了评估模型的表现，我们使用了
+    5 折交叉验证，得出的 R² 值为 0.618。这个值表明，通过这个简单的模型，约 61.8% 的销售价格变异性可以通过房屋的整体质量来解释。
 - en: Linear regression is straightforward to understand and implement. However, it
     assumes that the relationship between the independent and dependent variables
     is linear, which might not always be the case, as seen in the scatterplot above.
     While linear regression provides a good starting point, real-world data often
     require more complex models to capture curved relationships, as we’ll see in the
     next section on polynomial regression.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 线性回归易于理解和实现。然而，它假设自变量和因变量之间的关系是线性的，但这可能并不总是如此，如上图的散点图所示。虽然线性回归提供了一个良好的起点，但现实世界的数据通常需要更复杂的模型来捕捉曲线关系，正如我们将在下一个关于多项式回归的部分中看到的那样。
 - en: Capturing Curves with Polynomial Regression
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用多项式回归捕捉曲线
 - en: 'Real-world relationships are often not straight lines but curves. Polynomial
     regression allows us to model these curved relationships. For a third-degree polynomial,
     this method takes our simple linear equation and adds terms for each power of
@@ -101,22 +145,31 @@
     matrix consisting of all polynomial combinations of the features with a degree
     less than or equal to the specified degree. Here’s how we can apply it to our
     dataset:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 现实世界中的关系通常不是直线而是曲线。多项式回归允许我们建模这些曲线关系。对于三次多项式，这种方法将我们的简单线性方程扩展到每个`x`的幂：`y = ax
+    + bx^2 + cx^3 + d`。我们可以通过使用`sklearn.preprocessing`库中的`PolynomialFeatures`类来实现，它生成一个新的特征矩阵，包括所有小于或等于指定度数的特征的多项式组合。以下是我们如何将其应用于我们的数据集：
 - en: '[PRE1]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: First, we transform our predictor variable into polynomial features up to the
     third degree. This enhancement expands our feature set from just `x` (Overall
     Quality) to `x, x^2, x^3` (i.e., each feature becomes three different but correlated
     features), allowing our linear model to fit a more complex, curved relationship
     in the data. We then fit this transformed data into a linear regression model
     to capture the nonlinear relationship between the overall quality and sale price.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们将预测变量转换为最高三次的多项式特征。这一增强将我们的特征集从仅有的`x`（整体质量）扩展到`x, x^2, x^3`（即，每个特征变为三个不同但相关的特征），使我们的线性模型能够拟合数据中的更复杂的曲线关系。然后，我们将这些转换后的数据拟合到线性回归模型中，以捕捉整体质量和销售价格之间的非线性关系。
 - en: '[![](../Images/eea7859aff3c260e402ca4e6914a31b8.png)](https://machinelearningmastery.com/?attachment_id=16978)'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/eea7859aff3c260e402ca4e6914a31b8.png)](https://machinelearningmastery.com/?attachment_id=16978)'
 - en: Our new model has the equation `y = 65966x^1 - 11619x^2 + 1006x^3 - 31343`.
     The curve fits the data points more closely than the straight line, indicating
     a better model. Our 5-fold cross-validation gave us an R² of 0.681, which is an
@@ -125,12 +178,16 @@
     regression introduces the ability to fit curves, but sometimes focusing on a specific
     power, like the cubic term, can reveal deeper insights, as we will explore in
     cubic regression.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的新模型的方程为`y = 65966x^1 - 11619x^2 + 1006x^3 - 31343`。该曲线比直线更贴合数据点，表明模型更优。我们的5折交叉验证给出了0.681的R²值，相比我们的线性模型有所改进。这表明包括平方项和立方项有助于模型捕捉数据中的更多复杂性。多项式回归引入了拟合曲线的能力，但有时专注于特定的幂，例如立方项，可以揭示更深刻的见解，如我们在立方回归中将深入探讨的那样。
 - en: Experimenting with a Cubic Regression
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 实验立方回归
 - en: 'Sometimes, we may suspect that a specific power of `x` is particularly important.
     In these cases, we can focus on that power. Cubic regression is a special case
     where we model the relationship with a cube of the independent variable: `y =
@@ -140,20 +197,29 @@
     for isolating and highlighting the impact of higher-degree terms like `x^3` on
     the response variable, providing a clear view of how the cubic term alone explains
     the variability in the data.'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时，我们可能怀疑`x`的特定幂尤为重要。在这种情况下，我们可以专注于该幂。立方回归是一种特殊情况，我们通过独立变量的立方来建模关系：`y = ax^3
+    + b`。为了有效地专注于这个幂，我们可以利用`sklearn.preprocessing`库中的`FunctionTransformer`类，它允许我们创建自定义转换器，将特定函数应用于数据。这种方法对于隔离和突出高阶项如`x^3`对响应变量的影响非常有用，提供了立方项如何单独解释数据变异性的清晰视图。
 - en: '[PRE2]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: We applied a cubic transformation to our independent variable and obtained a
     cubic model with the equation `y = 361x^3 + 85579`. This represents a slightly
     simpler approach than the full polynomial regression model, focusing solely on
     the cubic term’s predictive power.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们对自变量进行了立方变换，得到了立方模型，其方程为`y = 361x^3 + 85579`。这比完整的多项式回归模型稍简单，专注于立方项的预测能力。
 - en: '[![](../Images/43ee8ab9c13dfbe508ea6c06cc179913.png)](https://machinelearningmastery.com/?attachment_id=16985)'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/43ee8ab9c13dfbe508ea6c06cc179913.png)](https://machinelearningmastery.com/?attachment_id=16985)'
 - en: With cubic regression, our 5-fold cross-validation yielded an R² of 0.678\.
     This performance is slightly below the full polynomial model but still notably
     better than the linear one. Cubic regression is simpler than a higher-degree polynomial
@@ -165,56 +231,83 @@
     the price, suggesting that properties with exceptional quality see a disproportionately
     higher increase in their sale price. This insight is particularly valuable for
     investors or developers focused on high-end properties where quality is a premium.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用立方回归，我们的5折交叉验证得到了0.678的R²。这一表现略低于完整的多项式模型，但仍显著优于线性模型。立方回归比更高阶的多项式回归更简单，并且在某些数据集中足以捕捉关系。它比高阶多项式模型更不容易过拟合，但比线性模型更灵活。立方回归模型中的系数361，表示随着质量**立方**的增加，销售价格的增长率。这强调了非常高质量水平对价格的重大影响，表明具有卓越质量的物业，其销售价格的增长幅度不成比例。这一见解对关注高端物业的投资者或开发商尤其有价值。
 - en: As you may imagine, this technique does not limit you from polynomial regression.
     You can introduce more exotic functions such as log and exponential if you think
     that makes sense in the scenario.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你可能想象的，这种技术并不限制于多项式回归。如果你认为在特定场景下有意义，你可以引入更复杂的函数，如对数函数和指数函数。
 - en: '**Further****Reading**'
+  id: totrans-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: APIs
+  id: totrans-33
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: API
 - en: '[sklearn.preprocessing.PolynomialFeatures](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PolynomialFeatures.html)
     API'
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[sklearn.preprocessing.PolynomialFeatures](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PolynomialFeatures.html)
+    API'
 - en: '[sklearn.preprocessing.FunctionTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.FunctionTransformer.html)
     API'
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[sklearn.preprocessing.FunctionTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.FunctionTransformer.html)
+    API'
 - en: Tutorials
+  id: totrans-36
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[Polynomial Regression in Python using scikit-learn](https://data36.com/polynomial-regression-python-scikit-learn/)
     by Tamas Ujhelyi'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[使用 scikit-learn 进行 Python 多项式回归](https://data36.com/polynomial-regression-python-scikit-learn/)
+    作者：Tamas Ujhelyi'
 - en: '**Ames Housing Dataset & Data Dictionary**'
+  id: totrans-38
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**Ames 房价数据集与数据字典**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: This blog post explored different regression techniques suited for modeling
     relationships in data across varying complexities. We started with **linear regression**
     to establish a baseline for predicting house prices based on quality ratings.
@@ -228,24 +321,36 @@
     of higher-degree terms on the dependent variable. The cubic model proved to be
     particularly effective, capturing the essential characteristics of the relationship
     with sufficient precision and simplicity.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文探讨了适用于不同复杂度数据建模的各种回归技术。我们从**线性回归**开始，以建立预测房价的基线，基于质量评分。配套的视觉图示展示了线性模型如何试图通过数据点拟合一条直线，阐明了回归的基本概念。进一步使用**多项式回归**，我们处理了更复杂的非线性趋势，这提高了模型的灵活性和准确性。配套图表显示了多项式曲线如何比简单的线性模型更紧密地拟合数据点。最后，我们聚焦于**立方回归**，以检验预测变量特定幂次的影响，隔离高阶项对因变量的影响。立方模型被证明特别有效，以足够的精度和简单性捕捉了关系的基本特征。
 - en: 'Specifically, you learned:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体而言，你学习了：
 - en: How to identify non-linear trends using visualization techniques.
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用可视化技术识别非线性趋势。
 - en: How to model non-linear trends using polynomial regression techniques.
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用多项式回归技术建模非线性趋势。
 - en: How cubic regression can capture similar predictability with fewer model complexities.
+  id: totrans-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过较少的模型复杂度来捕捉类似的预测性。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有什么问题吗？请在下面的评论中提出问题，我会尽力回答。

@@ -1,225 +1,336 @@
 - en: Develop Your First Neural Network with PyTorch, Step by Step
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 逐步开发你的第一个 PyTorch 神经网络
 - en: 原文：[https://machinelearningmastery.com/develop-your-first-neural-network-with-pytorch-step-by-step/](https://machinelearningmastery.com/develop-your-first-neural-network-with-pytorch-step-by-step/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/develop-your-first-neural-network-with-pytorch-step-by-step/](https://machinelearningmastery.com/develop-your-first-neural-network-with-pytorch-step-by-step/)
 - en: 'PyTorch is a powerful Python library for building deep learning models. It
     provides everything you need to define and train a neural network and use it for
     inference. You don’t need to write much code to complete all this. In this pose,
     you will discover how to create your first deep learning neural network model
     in Python using PyTorch. After completing this post, you will know:'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 是一个强大的用于构建深度学习模型的 Python 库。它提供了定义和训练神经网络以及用于推理的一切所需工具。你不需要写很多代码就能完成所有这些。在这篇文章中，你将了解如何使用
+    PyTorch 在 Python 中创建你的第一个深度学习神经网络模型。完成本文后，你将了解到：
 - en: How to load a CSV dataset and prepare it for use with PyTorch
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何加载 CSV 数据集并准备用于 PyTorch 使用
 - en: How to define a Multilayer Perceptron model in PyToch
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyToch 中定义多层感知器模型
 - en: How to train and evaluate a PyToch model on a validation dataset
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在验证数据集上训练和评估 PyToch 模型
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**使用我的书 [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    快速启动你的项目**。它提供了**带有工作代码的自学教程**。'
 - en: Let’s get started.![](../Images/c98e1f3e5f9db5608610e28f74622e06.png)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！![](../Images/c98e1f3e5f9db5608610e28f74622e06.png)
 - en: Develop your Ffrst neural network with PyTorch, step by step
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 逐步开发你的第一个 PyTorch 神经网络
 - en: Photo by [drown_ in_city](https://unsplash.com/photos/V2DylCx9kkc). Some rights
     reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [drown_ in_city](https://unsplash.com/photos/V2DylCx9kkc) 拍摄。部分权利保留。
 - en: Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'There is not a lot of code required. You will go over it slowly so that you
     will know how to create your own models in the future. The steps you will learn
     in this post are as follows:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要的代码不多。你将会慢慢过一遍，这样你将来就会知道如何创建自己的模型。本文你将学到的步骤如下：
 - en: Load Data
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 加载数据
 - en: Define PyToch Model
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 定义 PyToch 模型
 - en: Define Loss Function and Optimizers
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 定义损失函数和优化器
 - en: Run a Training Loop
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 运行训练循环
 - en: Evaluate the Model
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 评估模型
 - en: Make Predictions
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 进行预测
 - en: Load Data
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 加载数据
 - en: The first step is to define the functions and classes you intend to use in this
     post. You will use the NumPy library to load your dataset and the  PyTorch library
     for deep learning models.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一步是定义本文中打算使用的函数和类。你将使用 NumPy 库加载你的数据集，并使用 PyTorch 库进行深度学习模型。
 - en: 'The imports required are listed below:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面列出了所需的导入：
 - en: '[PRE0]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: You can now load your dataset.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你可以加载你的数据集了。
 - en: In this post, you will use the Pima Indians onset of diabetes dataset. This
     has been a standard machine learning dataset since the early days of the field.
     It describes patient medical record data for Pima Indians and whether they had
     an onset of diabetes within five years.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，你将使用 Pima Indians 糖尿病发作数据集。这是自该领域早期以来的标准机器学习数据集。它描述了 Pima 印第安人的患者医疗记录数据及其在五年内是否有糖尿病发作。
 - en: It is a binary classification problem (onset of diabetes as 1 or not as 0).
     All the input variables that describe each patient are transformed and numerical.
     This makes it easy to use directly with neural networks that expect numerical
     input and output values and is an ideal choice for our first neural network in
     PyTorch.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个二元分类问题（糖尿病的发作为1，否则为0）。描述每个患者的所有输入变量都被转换为数值。这使得它可以直接与期望数值输入和输出的神经网络一起使用，并且是我们在
+    PyTorch 中首次尝试神经网络的理想选择。
 - en: You can also download it [here](https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv).
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 你也可以在这里下载它 [here](https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv)。
 - en: 'Download the dataset and place it in your local working directory, the same
     location as your Python file. Save it with the filename `pima-indians-diabetes.csv`.
     Take a look inside the file; you should see rows of data like the following:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 下载数据集并将其放在本地工作目录中，与你的 Python 文件位于同一位置。将其保存为文件名 `pima-indians-diabetes.csv`。打开文件后，你应该看到类似以下的数据行：
 - en: '[PRE1]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'You can now load the file as a matrix of numbers using the NumPy function `loadtxt()`.
     There are eight input variables and one output variable (the last column). You
     will be learning a model to map rows of input variables ($X$) to an output variable
     ($y$), which is often summarized as $y = f(X)$. The variables are summarized as
     follows:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 你现在可以使用NumPy函数`loadtxt()`将文件作为数字矩阵加载。共有八个输入变量和一个输出变量（最后一列）。你将学习一个模型来将输入变量的行（$X$）映射到输出变量（$y$），这通常总结为$y
+    = f(X)$。变量总结如下：
 - en: 'Input Variables ($X$):'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 输入变量（$X$）：
 - en: Number of times pregnant
+  id: totrans-30
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 怀孕次数
 - en: Plasma glucose concentration at 2 hours in an oral glucose tolerance test
+  id: totrans-31
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 口服葡萄糖耐量测试中2小时的血浆葡萄糖浓度
 - en: Diastolic blood pressure (mm Hg)
+  id: totrans-32
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 舒张压（mm Hg）
 - en: Triceps skin fold thickness (mm)
+  id: totrans-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 三头肌皮肤褶皱厚度（mm）
 - en: 2-hour serum insulin (μIU/ml)
+  id: totrans-34
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 2小时血清胰岛素（μIU/ml）
 - en: Body mass index (weight in kg/(height in m)2)
+  id: totrans-35
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 身体质量指数（体重kg/（身高m）²）
 - en: Diabetes pedigree function
+  id: totrans-36
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 糖尿病家族史功能
 - en: Age (years)
+  id: totrans-37
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 年龄（岁）
 - en: 'Output Variables ($y$):'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出变量（$y$）：
 - en: Class label (0 or 1)
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 类别标签（0或1）
 - en: Once the CSV file is loaded into memory, you can split the columns of data into
     input and output variables.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦CSV文件被加载到内存中，你可以将数据列拆分为输入变量和输出变量。
 - en: The data will be stored in a 2D array where the first dimension is rows and
     the second dimension is columns, e.g., (rows, columns). You can split the array
     into two arrays by selecting subsets of columns using the standard NumPy slice
     operator “`:`“. You can select the first eight columns from index 0 to index 7
     via the slice `0:8`. You can then select the output column (the 9th variable)
     via index 8.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据将存储在一个二维数组中，其中第一个维度是行，第二个维度是列，例如（行，列）。你可以通过使用标准的NumPy切片操作符“`:`”将数组分割成两个数组。你可以通过切片`0:8`从索引0到索引7选择前八列。然后，你可以通过索引8选择输出列（第9个变量）。
 - en: '[PRE2]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: But these data should be converted to PyTorch tensors first. One reason is that
     PyTorch usually operates in a 32-bit floating point while NumPy, by default, uses
     a 64-bit floating point. Mix-and-match is not allowed in most operations. Converting
     to PyTorch tensors can avoid the implicit conversion that may cause problems.
     You can also take this chance to correct the shape to fit what PyTorch would expect,
     e.g., prefer $n\times 1$ matrix over $n$-vectors.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这些数据应该先转换为PyTorch张量。一个原因是PyTorch通常使用32位浮点数，而NumPy默认使用64位浮点数。大多数操作中不允许混用。转换为PyTorch张量可以避免可能引起问题的隐式转换。你也可以借此机会纠正形状以符合PyTorch的预期，例如，优选$n\times
+    1$矩阵而不是$n$-向量。
 - en: 'To convert, create a tensor out of NumPy arrays:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 要转换，请从NumPy数组创建张量：
 - en: '[PRE3]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: You are now ready to define your neural network model.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 你现在已经准备好定义你的神经网络模型了。
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-47
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用PyTorch进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就来参加我的免费电子邮件速成课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费PDF电子书版本。
 - en: Define the Model
+  id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 定义模型
 - en: Indeed, there are two ways to define a model in PyTorch. The goal is to make
     it like a function that takes an input and returns an output.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 确实，在PyTorch中有两种定义模型的方法。目标是将其制作成一个接受输入并返回输出的函数。
 - en: A model can be defined as a sequence of layers. You create a `Sequential` model
     with the layers listed out. The first thing you need to do to get this right is
     to ensure the first layer has the correct number of input features. In this example,
     you can specify the input dimension  `8` for the eight input variables as one
     vector.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个模型可以定义为一系列层。你可以创建一个`Sequential`模型，其中列出这些层。为了确保正确，首先需要确认第一层具有正确数量的输入特征。在这个例子中，你可以为八个输入变量指定输入维度`8`作为一个向量。
 - en: The other parameters for a layer or how many layers you need for a model is
     not an easy question. You may use heuristics to help you design the model, or
     you can refer to other people’s designs in dealing with a similar problem. Often,
@@ -227,25 +338,33 @@
     experimentation. Generally, you need a network large enough to capture the structure
     of the problem but small enough to make it fast. In this example, let’s use a
     fully-connected network structure with three layers.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 确定层的其他参数或模型需要多少层并不是一个简单的问题。你可以使用启发式方法来帮助你设计模型，或者参考其他人在处理类似问题时的设计。通常，最佳的神经网络结构是通过试错实验过程找到的。一般来说，你需要一个足够大的网络来捕捉问题的结构，但又要足够小以提高速度。在这个例子中，我们使用一个具有三层的全连接网络结构。
 - en: Fully connected layers or dense layers are defined using the `Linear` class
     in PyTorch. It simply means an operation similar to matrix multiplication. You
     can specify the number of inputs as the first argument and the number of outputs
     as the second argument. The number of outputs is sometimes called the number of
     neurons or number of nodes in the layer.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 在PyTorch中使用`Linear`类定义全连接层或密集层。它简单地意味着类似于矩阵乘法的操作。您可以将输入的数量指定为第一个参数，将输出的数量指定为第二个参数。输出的数量有时被称为层中的神经元数或节点数。
 - en: You also need an activation function **after** the layer. If not provided, you
     just take the output of the matrix multiplication to the next step, or sometimes
     you call it using linear activation, hence the name of the layer.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在该层之后，您还需要一个激活函数**after**。如果未提供，您只需将矩阵乘法的输出传递给下一步，或者有时您称之为线性激活，因此该层的名称如此。
 - en: In this example, you will use the rectified linear unit activation function,
     referred to as ReLU, on the first two layers and the sigmoid function in the output
     layer.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个例子中，您将在前两个层上使用修正线性单元激活函数（称为ReLU），并在输出层上使用sigmoid函数。
 - en: A sigmoid on the output layer ensures the output is between 0 and 1, which is
     easy to map to either a probability of class 1 or snap to a hard classification
     of either class by a cut-off threshold of 0.5\. In the past, you might have used
@@ -253,76 +372,114 @@
     activation can lead to the problem of vanishing gradient in deep neural networks,
     and ReLU activation is found to provide better performance in terms of both speed
     and accuracy.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出层上的sigmoid函数确保输出在0和1之间，这很容易映射到类1的概率或通过0.5的截止阈值划分为任一类的硬分类。过去，您可能已经在所有层上使用了sigmoid和tanh激活函数，但事实证明，sigmoid激活可能导致深度神经网络中的梯度消失问题，而ReLU激活则在速度和准确性方面表现更佳。
 - en: 'You can piece it all together by adding each layer such that:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以通过添加每一层来将所有这些部分组合在一起，例如：
 - en: The model expects rows of data with 8 variables (the first argument at the first
     layer set to `8`)
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 该模型期望具有8个变量的数据行（第一层的第一个参数设置为`8`）
 - en: The first hidden layer has 12 neurons, followed by a ReLU activation function
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第一个隐藏层有12个神经元，后面跟着一个ReLU激活函数
 - en: The second hidden layer has 8 neurons, followed by another ReLU activation function
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第二个隐藏层有8个神经元，后面跟着另一个ReLU激活函数
 - en: The output layer has one neuron, followed by a sigmoid activation function
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 输出层有一个神经元，后面跟着一个sigmoid激活函数
 - en: '[PRE4]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'You can check the model by printing it out as follows:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过以下方式打印模型：
 - en: '[PRE5]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'You will see:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 您将看到：
 - en: '[PRE6]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: You are free to change the design and see if you get a better or worse result
     than the subsequent part of this post.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以自由更改设计并查看是否比本文后续部分获得更好或更差的结果。
 - en: 'But note that, in PyTorch, there is a more verbose way of creating a model.
     The model above can be created as a Python `class` inherited from the `nn.Module`:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 但请注意，在PyTorch中，有一种更冗长的创建模型的方式。上面的模型可以作为从`nn.Module`继承的Python `class`来创建：
 - en: '[PRE7]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'In this case, the model printed will be:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，打印出的模型将是：
 - en: '[PRE8]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: In this approach, a class needs to have all the layers defined in the constructor
     because you need to prepare all its components when it is created, but the input
     is not yet provided. Note that you also need to call the parent class’s constructor
     (the line `super().__init__()`) to bootstrap your model. You also need to define
     a `forward()` function in the class to tell, if an input tensor `x` is provided,
     how you produce the output tensor in return.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种方法中，一个类需要在构造函数中定义所有的层，因为在创建时需要准备所有的组件，但是输入尚未提供。请注意，您还需要调用父类的构造函数（`super().__init__()`行）来启动您的模型。您还需要在类中定义一个`forward()`函数，以告诉输入张量`x`如何生成返回的输出张量。
 - en: You can see from the output above that the model remembers how you call each
     layer.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以从上面的输出中看到，模型记住了您如何调用每一层。
 - en: Preparation for Training
+  id: totrans-75
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 训练准备
 - en: A defined model is ready for training, but you need to specify what the goal
     of the training is. In this example, the data has the input features $X$ and the
     output label $y$. You want the neural network model to produce an output that
@@ -330,52 +487,72 @@
     of weights to map inputs to outputs in your dataset. The loss function is the
     metric to measure the prediction’s distance to $y$. In this example, you should
     use binary cross entropy because it is a binary classification problem.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个定义好的模型已经准备好进行训练，但你需要指定训练的目标。在这个例子中，数据有输入特征$X$和输出标签$y$。你希望神经网络模型产生一个尽可能接近$y$的输出。训练网络意味着找到将输入映射到数据集中输出的最佳权重集。损失函数是用来衡量预测距离$y$的指标。在这个例子中，你应该使用二元交叉熵，因为这是一个二分类问题。
 - en: Once you decide on the loss function, you also need an optimizer. The optimizer
     is the algorithm you use to adjust the model weights progressively to produce
     a better output. There are many optimizers to choose from, and in this example,
     Adam is used. This popular version of gradient descent can automatically tune
     itself and gives good results in a wide range of problems.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你决定了损失函数，你还需要一个优化器。优化器是你用来逐步调整模型权重以产生更好输出的算法。可以选择许多优化器，在这个例子中使用的是Adam。这个流行的梯度下降版本可以自动调整自己，并在广泛的问题中提供良好的结果。
 - en: '[PRE9]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: The optimizer usually has some configuration parameters. Most notably, the learning
     rate `lr`. But all optimizers need to know what to optimize. Therefore. you pass
     on `model.parameters()`, which is a generator of all parameters from the model
     you created.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 优化器通常具有一些配置参数。最重要的是学习率`lr`。但所有优化器都需要知道优化的内容。因此，你需要传递`model.parameters()`，这是你创建的模型中所有参数的生成器。
 - en: Training a Model
+  id: totrans-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 训练模型
 - en: You have defined your model, the loss metric, and the optimizer. It is ready
     for training by executing the model on some data.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 你已经定义了你的模型、损失度量和优化器。通过在一些数据上执行模型，它已经准备好进行训练。
 - en: 'Training a neural network model usually takes in epochs and batches. They are
     idioms for how data is passed to a model:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练神经网络模型通常需要轮次和批次。这些术语用于描述数据如何传递给模型：
 - en: '**Epoch**: Passes the entire training dataset to the model once'
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**轮次**：将整个训练数据集传递给模型一次。'
 - en: '**Batch**: One or more samples passed to the model, from which the gradient
     descent algorithm will be executed for one iteration'
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**批次**：一个或多个传递给模型的样本，从中梯度下降算法将执行一次迭代。'
 - en: Simply speaking, the entire dataset is split into batches, and you pass the
     batches one by one into a model using a training loop. Once you have exhausted
     all the batches, you have finished one epoch. Then you can start over again with
     the same dataset and start the second epoch, continuing to refine the model. This
     process repeats until you are satisfied with the model’s output.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，整个数据集被分成批次，你通过训练循环将批次一个一个传递给模型。一旦你用完了所有批次，你就完成了一轮。然后，你可以用相同的数据集重新开始，开始第二轮，继续优化模型。这个过程会重复，直到你对模型的输出感到满意为止。
 - en: The size of a batch is limited by the system’s memory. Also, the number of computations
     required is linearly proportional to the size of a batch. The total number of
     batches over many epochs is how many times you run the gradient descent to refine
@@ -383,39 +560,55 @@
     so you can produce a better model, but at the same time, you do not want the training
     to take too long to complete. The number of epochs and the size of a batch can
     be chosen experimentally by trial and error.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 批次的大小受系统内存的限制。此外，所需的计算量与批次的大小成线性比例。多个轮次中的批次数量决定了你进行梯度下降以优化模型的次数。这是一个权衡，你希望有更多的梯度下降迭代以便产生更好的模型，但同时又不希望训练时间过长。轮次和批次的大小可以通过试验和错误的方法来选择。
 - en: The goal of training a model is to ensure it learns a good enough mapping of
     input data to output classification. It will not be perfect, and errors are inevitable.
     Usually, you will see the amount of error reducing when in the later epochs, but
     it will eventually level out. This is called model convergence.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练模型的目标是确保它学习到一个足够好的输入数据到输出分类的映射。它不会是完美的，错误是不可避免的。通常，你会看到在后期轮次中错误的数量减少，但最终会趋于平稳。这被称为模型收敛。
 - en: 'The simplest way to build a training loop is to use two nested for-loops, one
     for epochs and one for batches:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 构建训练循环的最简单方法是使用两个嵌套的for循环，一个用于轮次，一个用于批次：
 - en: '[PRE10]'
+  id: totrans-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'When this runs, it will print the following:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 当运行时，它将打印以下内容：
 - en: '[PRE11]'
+  id: totrans-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Evaluate the Model
+  id: totrans-92
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 评估模型
 - en: You have trained our neural network on the entire dataset, and you can evaluate
     the performance of the network on the same dataset. This will only give you an
     idea of how well you have modeled the dataset (e.g., train accuracy) but no idea
     of how well the algorithm might perform on new data. This was done for simplicity,
     but ideally, you could separate your data into train and test datasets for training
     and evaluation of your model.
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 你已经在整个数据集上训练了我们的神经网络，你可以在相同的数据集上评估网络的性能。这将只给你一个关于你如何建模数据集的概念（例如，训练准确率），但无法了解算法在新数据上的表现。这是为了简化，但理想情况下，你可以将数据分为训练和测试数据集，用于模型的训练和评估。
 - en: You can evaluate your model on your training dataset in the same way you invoked
     the model in training. This will generate predictions for each input, but then
     you still need to compute a score for the evaluation. This score can be the same
@@ -423,14 +616,20 @@
     you can use accuracy as your evaluation score by converting the output (a floating
     point in the range of 0 to 1) to an integer (0 or 1) and compare to the label
     we know.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以按照训练时调用模型的方式，在训练数据集上评估你的模型。这将为每个输入生成预测，但你仍然需要计算一个评价分数。这个分数可以与你的损失函数相同，也可以不同。因为你正在进行二分类，你可以通过将输出（范围在0到1之间的浮点数）转换为整数（0或1）来使用准确率作为评价分数，并与我们已知的标签进行比较。
 - en: 'This is done as follows:'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可以如下进行：
 - en: '[PRE12]'
+  id: totrans-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: The `round()` function rounds off the floating point to the nearest integer.
     The `==` operator compares and returns a Boolean tensor, which can be converted
     to floating point numbers 1.0 and 0.0\. The `mean()` function will provide you
@@ -438,19 +637,29 @@
     the total number of samples. The `no_grad()` context is optional but suggested,
     so you relieve `y_pred` from remembering how it comes up with the number since
     you are not going to do differentiation on it.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: '`round()` 函数将浮点数舍入到最接近的整数。`==` 操作符进行比较并返回一个布尔张量，这可以转换为浮点数1.0和0.0。`mean()` 函数将提供1的数量（即，预测与标签匹配）除以样本总数。`no_grad()`
+    上下文是可选的，但建议使用，这样你可以让 `y_pred` 不用记住它是如何得出这个数的，因为你不会对其进行微分。'
 - en: Putting everything together, the following is the complete code.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 把所有内容整合在一起，以下是完整的代码。
 - en: '[PRE13]'
+  id: totrans-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: You can copy all the code into your Python file and save it as “`pytorch_network.py`”
     in the same directory as your data file “`pima-indians-diabetes.csv`”. You can
     then run the Python file as a script from your command line.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以将所有代码复制到你的 Python 文件中，并将其保存为“`pytorch_network.py`”在与你的数据文件“`pima-indians-diabetes.csv`”相同的目录下。然后，你可以从命令行运行
+    Python 文件作为脚本。
 - en: Running this example, you should see that the training loop progresses on each
     epoch with the loss with the final accuracy printed last. Ideally, you would like
     the loss to go to zero and the accuracy to go to 1.0 (e.g., 100%). This is not
@@ -458,8 +667,10 @@
     will always have some error in your model. The goal is to choose a model configuration
     and training configuration that achieves the lowest loss and highest accuracy
     possible for a given dataset.
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行这个示例时，你应该会看到每个时期的训练循环进展，最后打印出最终的准确率。理想情况下，你希望损失降低到零，准确率达到1.0（例如，100%）。但对于大多数非平凡的机器学习问题，这是不可能的。相反，你的模型总会有一些误差。目标是选择一个模型配置和训练配置，以实现给定数据集上最低的损失和最高的准确率。
 - en: 'Neural networks are stochastic algorithms, meaning that the same algorithm
     on the same data can train a different model with different skill each time the
     code is run. This is a feature, not a bug. The variance in the performance of
@@ -467,44 +678,65 @@
     is performing, you may need to fit it many times and calculate the average of
     the accuracy scores. For example, below are the accuracy scores from re-running
     the example five times:'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络是随机算法，这意味着相同的数据上，相同的算法每次运行代码时都可以训练出不同的模型，具有不同的技能。这是一种特性，而不是错误。模型性能的差异意味着，为了获得对模型性能的合理近似，你可能需要多次训练，并计算准确率分数的平均值。例如，下面是重新运行示例五次得到的准确率分数：
 - en: '[PRE14]'
+  id: totrans-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: You can see that all accuracy scores are around 77%, roughly.
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到所有的准确率分数大约在77%左右。
 - en: Make Predictions
+  id: totrans-105
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 做出预测
 - en: 'You can adapt the above example and use it to generate predictions on the training
     dataset, pretending it is a new dataset you have not seen before. Making predictions
     is as easy as calling the model as if it is a function. You are using a sigmoid
     activation function on the output layer so that the predictions will be a probability
     in the range between 0 and 1\. You can easily convert them into a crisp binary
     prediction for this classification task by rounding them. For example:'
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以修改上述示例，并将其用于生成训练数据集上的预测，假装这是一个你之前未见过的新数据集。进行预测就像调用模型作为一个函数一样简单。你在输出层上使用了
+    sigmoid 激活函数，因此预测值将在0和1之间的范围内表示概率。你可以通过四舍五入将它们轻松转换为这个分类任务的明确二元预测。例如：
 - en: '[PRE15]'
+  id: totrans-107
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'Alternately, you can convert the probability into 0 or 1 to predict crisp classes
     directly; for example:'
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 另外，你可以将概率转换为0或1，直接预测明确的类别；例如：
 - en: '[PRE16]'
+  id: totrans-109
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: The complete example below makes predictions for each example in the dataset,
     then prints the input data, predicted class, and expected class for the first
     five examples in the dataset.
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面的完整示例对数据集中的每个示例进行预测，然后打印出数据集前五个示例的输入数据、预测类别和预期类别。
 - en: '[PRE17]'
+  id: totrans-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: This code uses a different way of building the model but should functionally
     be the same as before. After the model is trained, predictions are made for all
     examples in the dataset, and the input rows and predicted class value for the
@@ -512,65 +744,98 @@
     can see that most rows are correctly predicted. In fact, you can expect about
     77% of the rows to be correctly predicted based on your estimated performance
     of the model in the previous section.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码使用了不同的构建模型的方法，但功能上应该与之前相同。模型训练完成后，会对数据集中所有示例进行预测，并打印出前五个示例的输入行和预测类别值，并与预期类别值进行比较。你可以看到大多数行的预测是正确的。实际上，根据你在上一节对模型性能的估计，你可以预期大约77%的行会被正确预测。
 - en: '[PRE18]'
+  id: totrans-113
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: Further Reading
+  id: totrans-114
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: 'To learn more about deep learning and PyTorch, take a look at some of these:'
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 要了解更多关于深度学习和 PyTorch 的信息，可以查看以下内容：
 - en: Books
+  id: totrans-116
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: Ian Goodfellow, Yoshua Bengio, and Aaron Courville. [Deep Learning](https://www.amazon.com/dp/0262035618).
     MIT Press, 2016.
+  id: totrans-117
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Ian Goodfellow, Yoshua Bengio 和 Aaron Courville. [深度学习](https://www.amazon.com/dp/0262035618)。MIT
+    Press, 2016。
 - en: ([Online version](http://www.deeplearningbook.org)).
+  id: totrans-118
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: ([在线版本](http://www.deeplearningbook.org))。
 - en: APIs
+  id: totrans-119
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: API
 - en: '[PyTorch documentation](https://pytorch.org/docs/stable/index.html)'
+  id: totrans-120
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[PyTorch文档](https://pytorch.org/docs/stable/index.html)'
 - en: Summary
+  id: totrans-121
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this post, you discovered how to create your first neural network model
     using PyTorch. Specifically, you learned the key steps in using PyTorch to create
     a neural network or deep learning model step by step, including:'
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你了解了如何使用 PyTorch 创建你的第一个神经网络模型。具体来说，你学习了使用 PyTorch 一步一步创建神经网络或深度学习模型的关键步骤，包括：
 - en: How to load data
+  id: totrans-123
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何加载数据
 - en: How to define a neural network in PyTorch
+  id: totrans-124
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中定义神经网络
 - en: How to train a model on data
+  id: totrans-125
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在数据上训练模型
 - en: How to evaluate a model
+  id: totrans-126
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何评估模型
 - en: How to make predictions with the model
+  id: totrans-127
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用模型进行预测

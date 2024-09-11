@@ -1,58 +1,86 @@
 - en: 'Revealing the Invisible: Visualizing Missing Values in Ames Housing'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 揭示隐形：可视化Ames住房中的缺失值
 - en: 原文：[https://machinelearningmastery.com/revealing_the_invisible/](https://machinelearningmastery.com/revealing_the_invisible/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/revealing_the_invisible/](https://machinelearningmastery.com/revealing_the_invisible/)
 - en: The digital age has ushered in an era where data-driven decision-making is pivotal
     in various domains, real estate being a prime example. Comprehensive datasets,
     like the one concerning properties in Ames, offer a treasure trove for data enthusiasts.
     Through meticulous exploration and analysis of such datasets, one can uncover
     patterns, gain insights, and make informed decisions.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 数字时代带来了一个数据驱动决策至关重要的时代，房地产就是一个典型的例子。像Ames房产这样的综合数据集，为数据爱好者提供了丰富的宝藏。通过细致的探索和分析这些数据集，人们可以发现模式，获得洞见，并做出明智的决策。
 - en: Starting from this post, you will embark on a captivating journey through the
     intricate lanes of Ames properties, focusing primarily on Data Science techniques.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 从这篇文章开始，你将踏上一次引人入胜的旅程，深入探索Ames房产的复杂领域，主要集中在数据科学技术上。
 - en: Let’s get started.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/62b3f5a77321631871e0ca726f549d6e.png)'
+  id: totrans-5
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/62b3f5a77321631871e0ca726f549d6e.png)'
 - en: 'Revealing the Invisible: Visualizing Missing Values in Ames Housing'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 揭示隐形：可视化Ames住房中的缺失值
 - en: Photo by [Joakim Honkasalo](https://unsplash.com/photos/beige-and-black-lighthouse-on-hill-with-starry-sky-xNRWtb6mkao).
     Some rights reserved
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Joakim Honkasalo](https://unsplash.com/photos/beige-and-black-lighthouse-on-hill-with-starry-sky-xNRWtb6mkao)提供，版权所有
 - en: Overview
+  id: totrans-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分，分别是：
 - en: '**The Ames Properties Dataset**'
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Ames房产数据集**'
 - en: '***   Loading & Sizing Up the Dataset*   Uncovering & Visualizing Missing Values**'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   加载与评估数据集*   揭示与可视化缺失值**'
 - en: '**## **T****he****Ames****Properties****Dataset**'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '**## **Ames**房产**数据集**'
 - en: Every dataset has a story to tell, and understanding its background can offer
     invaluable context. While the Ames Housing Dataset is widely known in academic
     circles, the dataset we’re analyzing today, [`Ames.csv`](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv),
     is a more comprehensive collection of property details from Ames.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个数据集都有一个故事，理解其背景可以提供宝贵的背景信息。虽然Ames Housing Dataset在学术界广为人知，但我们今天分析的数据集，[`Ames.csv`](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)，是一个更全面的Ames房产细节集合。
 - en: Dr. Dean De Cock, a dedicated academician, recognized the need for a new, robust
     dataset in the domain of real estate. He meticulously compiled the [Ames Housing
     Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/decock.pdf),
@@ -60,14 +88,18 @@
     This dataset stands out due to its comprehensive details, capturing myriad facets
     of real estate properties. It has been a foundation for numerous predictive modeling
     exercises and offers a rich landscape for exploratory data analysis.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 学者Dr. Dean De Cock认识到房地产领域需要一个新的、强大的数据集。他细致地编制了[Ames Housing Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/decock.pdf)，该数据集自此成为了新兴数据科学家和研究人员的基石。由于其详尽的细节，这个数据集在捕捉房地产属性的诸多方面方面表现出色。它已成为许多预测建模练习的基础，并为探索性数据分析提供了丰富的领域。
 - en: The Ames Housing Dataset was envisioned as a modern alternative to the older
     Boston Housing Dataset. Covering residential sales in Ames, Iowa between 2006
     and 2010, it presents a diverse array of variables, setting the stage for advanced
     regression techniques.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: Ames Housing Dataset被设想为旧有Boston Housing Dataset的现代替代品。覆盖了2006年至2010年间在爱荷华州Ames的住宅销售，它呈现了多种变量，为高级回归技术奠定了基础。
 - en: This time frame is particularly significant in U.S. history. The period leading
     up to 2007-2008 saw the dramatic inflation of housing prices, fueled by speculative
     frenzy and subprime mortgages. This culminated in the devastating collapse of
@@ -77,50 +109,75 @@
     many Americans found themselves underwater on their mortgages. The Ames dataset
     provides a glimpse into this turbulent period, capturing property sales in the
     midst of national economic upheaval.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段时间在美国历史上具有特别重要的意义。2007-2008 年之前的时期见证了住房价格的急剧上涨，受到投机狂潮和次贷危机的推动。这一切在 2007 年末以住房泡沫的毁灭性崩溃告终，这一事件在《大空头》等叙事中被生动地记录了下来。这次崩溃的余波席卷全国，导致了大萧条。住房价格暴跌，止赎数量激增，许多美国人发现自己在抵押贷款中陷入困境。Ames
+    数据集提供了这一动荡时期的一个快照，记录了在国家经济动荡中进行的房地产销售。
 - en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [《数据科学初学者指南》](https://machinelearning.samcart.com/products/beginners-guide-data-science/)
+    **快速启动你的项目**。它提供了**自学教程**和**实用代码**。'
 - en: '**Loading****&****Sizing****Up****the****Dataset**'
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**加载****&****调整****数据****集** '
 - en: For those who are venturing into the realm of data science, having the right
     tools in your arsenal is paramount. If you require some help to set up your Python
     environment, this [comprehensive guide](https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/)
     is an excellent resource.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于那些进入数据科学领域的人来说，拥有合适的工具是至关重要的。如果你需要一些帮助来设置你的 Python 环境，这个 [全面指南](https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/)
+    是一个极好的资源。
 - en: '**Dataset****Dimensions**: Before diving into intricate analyses, it’s essential
     to familiarize yourself with the dataset’s basic structure and data types. This
     step provides a roadmap for subsequent exploration and ensures you tailor your
     analyses based on the data’s nature. With the environment in place, let’s load
     and gauge the dataset’s extent in terms of rows (representing individual properties)
     and columns (representing attributes of these properties).'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '**数据集****维度**：在深入复杂分析之前，了解数据集的基本结构和数据类型是至关重要的。这个步骤为后续探索提供了路线图，并确保你能够根据数据的性质调整你的分析。在环境设置好之后，让我们加载数据集，并评估其行数（代表各个物业）和列数（代表这些物业的属性）。'
 - en: '[PRE0]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Python
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '**Data****Types**: Recognizing the datatype of each attribute helps shape our
     analysis approach. Numerical attributes might be summarized using measures like
     mean or median, while mode (most frequent value) is apt for categorical attributes.'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '**数据****类型**：识别每个属性的数据类型有助于塑造我们的分析方法。数值属性可以通过均值或中位数等措施来总结，而类别属性则适合用众数（最频繁的值）。'
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '[PRE3]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '**The****Data****Dictionary**: A data dictionary, often accompanying comprehensive
     datasets, is a handy resource. It offers detailed descriptions of each feature,
     specifying its meaning, possible values, and sometimes even the logic behind its
@@ -132,31 +189,44 @@
     an unfamiliar feature or discerning the significance of particular values, the
     data dictionary serves as a comprehensive guide. It bridges the gap between raw
     data and actionable insights, ensuring that the analyses and decisions are well-informed.'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '**数据字典**：数据字典通常伴随全面的数据集，是一个非常实用的资源。它提供了每个特征的详细描述，说明其含义、可能的值，有时甚至包括其收集逻辑。对于像
+    Ames properties 这样包含广泛特征的数据集，数据字典可以成为清晰的指引。通过参考附带的 [数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)，分析师、数据科学家，甚至领域专家都可以更深入地理解每个特征的细微差别。无论是解读不熟悉特征的含义还是辨别特定值的重要性，数据字典都作为一个全面的指南。它架起了原始数据与可操作洞察之间的桥梁，确保分析和决策基于充分的信息。'
 - en: '[PRE4]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '[PRE5]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Ground Living Area and Sale Price are numerical (int64) data types, while Sale
     Condition (object, which is string type in this example) is a categorical data
     type.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Ground Living Area和Sale Price是数值（int64）数据类型，而Sale Condition（在本例中为字符串类型的对象）是类别数据类型。
 - en: '**Uncovering****&****Visualizing****Missing****Values**'
+  id: totrans-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**揭示****和****可视化****缺失****值**'
 - en: Real-world datasets seldom arrive perfectly curated, often presenting analysts
     with the challenge of missing values. These gaps in data can arise due to various
     reasons, such as errors in data collection, system limitations, or the absence
     of information. Addressing missing values is not merely a technical necessity
     but a critical step that significantly impacts the integrity and reliability of
     subsequent analyses.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 现实世界的数据集很少是完美整理的，通常会给分析师带来缺失值的挑战。这些数据的空白可能由于各种原因产生，如数据收集错误、系统限制或信息缺失。解决缺失值不仅仅是技术上的必要性，而是一个关键步骤，对后续分析的完整性和可靠性有显著影响。
 - en: Understanding the patterns of missing values is essential for informed data
     analysis. This insight guides the selection of appropriate imputation methods,
     which fill in missing data based on available information, thereby influencing
@@ -166,167 +236,254 @@
     information. In essence, grasping the patterns of missing values ensures robust
     and trustworthy data analyses, guiding imputation strategies and optimizing feature
     inclusion for more accurate insights.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 理解缺失值的模式对于知情的数据分析至关重要。这些见解指导了适当的填补方法的选择，这些方法基于可用信息填补缺失数据，从而影响结果的准确性和可解释性。此外，评估缺失值模式有助于决策特征选择；大量缺失数据的特征可能会被排除，以提高模型性能并集中在更可靠的信息上。总之，掌握缺失值的模式确保了稳健和可靠的数据分析，指导填补策略并优化特征选择，以获得更准确的见解。
 - en: '**NaN or None?:** In pandas, the `isnull()` function is used to detect missing
     values in a DataFrame or Series. Specifically, it identifies the following types
     or missing data:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '**NaN或None？** 在pandas中，`isnull()`函数用于检测DataFrame或Series中的缺失值。具体来说，它识别以下类型的缺失数据：'
 - en: '`np.nan` (Not a Number), often used to denote missing numerical data'
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`np.nan`（Not a Number），通常用于表示缺失的数值数据'
 - en: '`None`, which is Python’s built-in object to denote the absence of a value
     or a null value'
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`None`，这是Python内置的对象，用于表示值的缺失或空值'
 - en: Both `nan` and `NaN` are just different ways to refer to NumPy’s `np.nan`, and
     `isnull()` will identify them as missing values. Here is a quick example.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '`nan`和`NaN`只是不同的方式来指代NumPy的`np.nan`，`isnull()`会将它们识别为缺失值。这里是一个快速示例。'
 - en: '[PRE6]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '[PRE7]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '[PRE8]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '**Visualizing****Missing****Values****:** When it comes to visualizing missing
     data, tools like **DataFrames****,** **missingno**, **matplotlib**, and **seaborn**come
     in handy. By sorting the features based on the percentage of missing values and
     placing them into a DataFrame, you can easily rank the features most affected
     by missing data.'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '**可视化****缺失****值****：** 在可视化缺失数据时，工具如**DataFrames**、**missingno**、**matplotlib**和**seaborn**非常有用。通过根据缺失值的百分比对特征进行排序并将其放入DataFrame中，你可以轻松地对受缺失数据影响最大的特征进行排名。'
 - en: '[PRE9]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '[PRE10]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The **missingno** package facilitates a swift, graphical representation of missing
     data. The visualization’s white lines or gaps denote missing values. However,
     it will only accommodate up to 50 labeled variables. Past that range, labels begin
     to overlap or become unreadable, and by default, large displays omit them.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '**missingno**包提供了缺失数据的快速图形表示。可视化中的白线或空隙表示缺失值。然而，它仅能容纳最多50个标签变量。超过此范围，标签开始重叠或变得不可读，默认情况下，大型显示会省略它们。'
 - en: '[PRE11]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[![](../Images/3e171c180e81a744c03df145fc8ee586.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_1.png)'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/3e171c180e81a744c03df145fc8ee586.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_1.png)'
 - en: Visual representation of missing values using `missingno.matrix()`.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用`missingno.matrix()`对缺失值进行可视化表示。
 - en: Using the `msno.bar()` visual after extracting the top 15 features with the
     most missing values provides a crisp illustration by column.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用`msno.bar()`视觉展示在提取前15个缺失值最多的特征后，通过列提供了清晰的图示。
 - en: '[PRE12]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '[![](../Images/1e8622b1dd0e995e9c841399bfb9d972.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Screenshot-2024-01-08-at-19.50.04.png)'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/1e8622b1dd0e995e9c841399bfb9d972.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Screenshot-2024-01-08-at-19.50.04.png)'
 - en: Using `missingno.bar()` to visualize features with missing data.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 `missingno.bar()` 来可视化缺失数据的特征。
 - en: The illustration above denotes that Pool Quality, Miscellaneous Feature, and
     the type of Alley access to the property are the three features with the highest
     number of missing values.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 上图表示 Pool Quality、Miscellaneous Feature 和通往房产的 Alley 访问类型是缺失值最多的三个特征。
 - en: '[PRE13]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '[![](../Images/f76fc47b0119f35fb3e5f92ea2abdadc.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_2-1.png)'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/f76fc47b0119f35fb3e5f92ea2abdadc.png)](https://machinelearningmastery.com/wp-content/uploads/2024/01/Figure_2-1.png)'
 - en: Using seaborn horizontal bar plots to visualize missing data.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 seaborn 横向条形图来可视化缺失数据。
 - en: A horizontal bar plot using seaborn allows you to list features with the highest
     missing values in a vertical format, adding both readability and aesthetic value.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 seaborn 制作的横向条形图可以让你以垂直格式列出缺失值最多的特征，增加了可读性和美观性。
 - en: Handling missing values is more than just a technical requirement; it’s a significant
     step that can influence the quality of your machine learning models. Understanding
     and visualizing these missing values are the first steps in this intricate dance.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 处理缺失值不仅仅是技术要求；这是一项重要的步骤，可能会影响你的机器学习模型的质量。理解和可视化这些缺失值是这场复杂舞蹈的第一步。
 - en: Want to Get Started With Beginner's Guide to Data Science?
+  id: totrans-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始数据科学初学者指南吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就报名参加我的免费电子邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并获取课程的免费 PDF 电子书版本。
 - en: '**Further****Reading**'
+  id: totrans-61
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想深入了解这个话题，本节提供了更多资源。
 - en: Tutorials
+  id: totrans-63
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[Anaconda Setup Tutorial](https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/)'
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Anaconda 设置教程](https://machinelearningmastery.com/setup-python-environment-machine-learning-deep-learning-anaconda/)'
 - en: '**Papers**'
+  id: totrans-65
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**论文**'
 - en: '[1\. Ames, Iowa: Alternative to the Boston Housing Data as an End of Semester
     Regression Project by Dr. Dean De Cock](https://raw.githubusercontent.com/Padre-Media/dataset/main/decock.pdf)'
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[1. Ames, Iowa: 作为学期结束回归项目的波士顿住房数据替代方案 by Dr. Dean De Cock](https://raw.githubusercontent.com/Padre-Media/dataset/main/decock.pdf)'
 - en: '**Resources**'
+  id: totrans-67
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**资源**'
 - en: '[Ames Housing Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 房产数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-70
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you embarked on an exploration of the Ames Properties dataset,
     a comprehensive collection of housing data tailored for data science applications.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你开始探索 Ames Properties 数据集，这是一个针对数据科学应用的全面房产数据集。
 - en: 'Specifically, you learned:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: '**About the context of the Ames dataset, including the pioneers and academic
     importance behind it. **'
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**关于 Ames 数据集的背景，包括其先驱和学术重要性。**'
 - en: '***   **How to extract dataset dimensions, data types, and missing values. *****   **How
     to use packages like `missingno`, Matplotlib, and Seaborn to quickly visualize
     your missing data. ******'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **如何提取数据集的维度、数据类型和缺失值。*****   **如何使用像 `missingno`、Matplotlib 和 Seaborn
+    等包来快速可视化缺失数据。******'
 - en: '******Do you have any questions? Please ask your questions in the comments
     below, and I will do my best to answer.********'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '******有任何问题吗？请在下面的评论中提问，我会尽力回答。********'

@@ -1,217 +1,324 @@
 - en: Normal Bayes Classifier for Image Segmentation Using OpenCV
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 OpenCV 进行图像分割的常规贝叶斯分类器
 - en: 原文：[https://machinelearningmastery.com/normal-bayes-classifier-for-image-segmentation-using-opencv/](https://machinelearningmastery.com/normal-bayes-classifier-for-image-segmentation-using-opencv/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/normal-bayes-classifier-for-image-segmentation-using-opencv/](https://machinelearningmastery.com/normal-bayes-classifier-for-image-segmentation-using-opencv/)
 - en: The Naive Bayes algorithm is a simple but powerful technique for supervised
     machine learning. Its Gaussian variant is implemented in the OpenCV library.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 朴素贝叶斯算法是一种简单而强大的监督学习技术。其高斯变体已在 OpenCV 库中实现。
 - en: In this tutorial, you will learn how to apply OpenCV’s normal Bayes algorithm,
     first on a custom two-dimensional dataset and subsequently for segmenting an image.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将学习如何应用 OpenCV 的常规贝叶斯算法，首先是在一个自定义的二维数据集上，然后用于图像分割。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将知道：
 - en: Several of the most important points in applying the Bayes theorem to machine
     learning.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 应用贝叶斯定理到机器学习中的几个最重要的要点。
 - en: How to use the normal Bayes algorithm on a custom dataset in OpenCV.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中对自定义数据集使用常规贝叶斯算法。
 - en: How to use the normal Bayes algorithm to segment an image in OpenCV.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用常规贝叶斯算法在 OpenCV 中进行图像分割。
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书 [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/)
+    **启动你的项目**。它提供了 **自学教程** 和 **实用代码**。'
 - en: Let’s get started. [![](../Images/972c9ab25c3889aec66be4c91f0d9a54.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_cover-scaled.jpg)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。[![](../Images/972c9ab25c3889aec66be4c91f0d9a54.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_cover-scaled.jpg)
 - en: Normal Bayes Classifier for Image Segmentation Using OpenCV
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 OpenCV 进行图像分割的常规贝叶斯分类器
 - en: Photo by [Fabian Irsara](https://unsplash.com/photos/_SwLdgVGfVY), some rights
     reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Fabian Irsara](https://unsplash.com/photos/_SwLdgVGfVY) 提供，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三部分，它们是：
 - en: Reminder of the Bayes Theorem As Applied to Machine Learning
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 机器学习中应用贝叶斯定理的提醒
 - en: Discovering Bayes Classification in OpenCV
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 发现 OpenCV 中的贝叶斯分类
 - en: Image Segmentation Using a Normal Bayes Classifier
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用常规贝叶斯分类器进行图像分割
 - en: '**Reminder of the Bayes Theorem As Applied to Machine Learning**'
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**机器学习中应用贝叶斯定理的提醒**'
 - en: '[This tutorial](https://machinelearningmastery.com/bayes-theorem-for-machine-learning/)
     by Jason Brownlee gives an in-depth explanation of Bayes Theorem for machine learning,
     so let’s first start with brushing up on some of the most important points from
     his tutorial:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '[这个教程](https://machinelearningmastery.com/bayes-theorem-for-machine-learning/)由
+    Jason Brownlee 编写，深入解释了机器学习中的贝叶斯定理，所以让我们先从复习他教程中的一些最重要的要点开始：'
 - en: '**The Bayes Theorem is useful in machine learning because it provides a statistical
     model to formulate the relationship between data and a [hypothesis](https://machinelearningmastery.com/what-is-a-hypothesis-in-machine-learning/). **'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '**贝叶斯定理在机器学习中非常有用，因为它提供了一个统计模型来形成数据与[假设](https://machinelearningmastery.com/what-is-a-hypothesis-in-machine-learning/)之间的关系。**'
 - en: '***   **Expressed as $P(h | D) = P(D | h) * P(h) / P(D)$, the Bayes Theorem
     states that the probability of a given hypothesis being true (denoted by $P(h
     | D)$ and known as the *posterior probability* of the hypothesis) can be calculated
     in terms of:**'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **贝叶斯定理表示为 $P(h | D) = P(D | h) * P(h) / P(D)$，该定理指出给定假设为真的概率（记作 $P(h
+    | D)$，也称为*后验概率*）可以通过以下方式计算：**'
 - en: '***   *   **The probability of observing the data given the hypothesis (denoted
     by $P(D | h)$ and known as the *likelihood*).**'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   *   **观察到数据的概率给定假设（记作 $P(D | h)$，也称为*似然*）。**'
 - en: '***   **The probability of the hypothesis being true, independently of the
     data (denoted by $P(h)$ and known as the *prior probability* of the hypothesis).*****   **The
     probability of observing the data independently of the hypothesis (denoted by
     $P(D)$ and known as the *evidence*).******'
+  id: totrans-22
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '***   **假设为真而独立于数据的概率（记作 $P(h)$，也称为*先验概率*）。*****   **观察到数据独立于假设的概率（记作 $P(D)$，也称为*证据*）。******'
 - en: '*******   **The Bayes Theorem assumes that every variable (or feature) making
     up the input data, $D$, depends on all the other variables (or features). **'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '*******   **贝叶斯定理假设构成输入数据 $D$ 的每个变量（或特征）都依赖于所有其他变量（或特征）。**'
 - en: '***   **Within the context of data classification, the Bayes Theorem may be
     applied to the problem of calculating the conditional probability of a class label
     given a data sample: $P(class | data) = P(data | class) * P(class) / P(data)$,
     where the class label now substitutes the hypothesis. The evidence, $P(data)$,
     is a constant and can be dropped. **'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **在数据分类的背景下，可以将贝叶斯定理应用于计算给定数据样本的类别标签的条件概率问题：$P(class | data) = P(data
+    | class) * P(class) / P(data)$，其中类别标签现在替代了假设。证据 $P(data)$ 是一个常数，可以省略。**'
 - en: '***   **In the formulation of the problem as outlined in the bullet point above,
     the estimation of the likelihood, $P(data | class)$, can be difficult because
     it requires that the number of data samples is sufficiently large to contain all
     possible combinations of variables (or features) for each class. This is seldom
     the case, especially with high-dimensional data with many variables. **'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **如上所述问题的公式化，估计 $P(data | class)$ 的可能性可能会很困难，因为这要求数据样本的数量足够大，以包含每个类别的所有可能变量（或特征）组合。这种情况很少见，尤其是对于具有许多变量的高维数据。**'
 - en: '***   **The formulation above can be simplified into what is known as *Naive
     Bayes*, where each input variable is treated separately: $P(class | X_1, X_2,
     \dots, X_n) = P(X_1 | class) * P(X_2 | class) * \dots * P(X_n | class) * P(class)$**'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **上述公式可以简化为所谓的*朴素贝叶斯*，其中每个输入变量被单独处理：$P(class | X_1, X_2, \dots, X_n)
+    = P(X_1 | class) * P(X_2 | class) * \dots * P(X_n | class) * P(class)$**'
 - en: '***   **The Naive Bayes estimation changes the formulation from a *dependent*
     conditional probability model to an *independent* conditional probability model,
     where the input variables (or features) are now assumed to be independent. This
     assumption rarely holds with real-world data, hence the name *naive*. **'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **朴素贝叶斯估计将公式从*依赖*条件概率模型更改为*独立*条件概率模型，其中输入变量（或特征）现在被假定为独立。这一假设在现实世界的数据中很少成立，因此得名*朴素*。**'
 - en: '**## **Discovering Bayes Classification in OpenCV**'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '**## **在 OpenCV 中发现贝叶斯分类**'
 - en: Suppose the input data we are working with is continuous. In that case, it may
     be modeled using a continuous probability distribution, such as a Gaussian (or
     normal) distribution, where the data belonging to each class is modeled by its
     mean and standard deviation.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们处理的输入数据是连续的。在这种情况下，可以使用连续概率分布来建模，例如高斯（或正态）分布，其中每个类别的数据由其均值和标准差建模。
 - en: The Bayes classifier implemented in OpenCV is a normal Bayes classifier (also
     commonly known as *Gaussian Naive Bayes*), which assumes that the input features
     from each class are normally distributed.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV 中实现的贝叶斯分类器是普通贝叶斯分类器（也常被称为*高斯朴素贝叶斯*），它假设来自每个类别的输入特征是正态分布的。
 - en: '*This simple classification model assumes that feature vectors from each class
     are normally distributed (though, not necessarily independently distributed).*'
+  id: totrans-31
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*这个简单的分类模型假设来自每个类别的特征向量是正态分布的（尽管不一定是独立分布的）。*'
 - en: ''
+  id: totrans-32
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*–* OpenCV, [Machine Learning Overview](https://docs.opencv.org/4.x/dc/dd6/ml_intro.html),
     2023.'
+  id: totrans-33
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*–* OpenCV，[机器学习概述](https://docs.opencv.org/4.x/dc/dd6/ml_intro.html)，2023。'
 - en: To discover how to use the normal Bayes classifier in OpenCV, let’s start by
     testing it on a simple two-dimensional dataset, as we did in previous tutorials.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 要发现如何在 OpenCV 中使用普通贝叶斯分类器，让我们从在一个简单的二维数据集上测试它开始，就像我们在之前的教程中做过的那样。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用 OpenCV 进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在立即参加我的免费电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费 PDF 电子书版本。
 - en: 'For this purpose, let’s generate a dataset consisting of 100 data points (specified
     by `n_samples`), which are equally divided into 2 Gaussian clusters (identified
     by `centers`) having a standard deviation set to 1.5 (specified by `cluster_std`).
     Let’s also define a value for `random_state` to be able to replicate the results:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，让我们生成一个包含 100 个数据点的 dataset（由 `n_samples` 指定），这些数据点被均等地划分为 2 个高斯簇（由 `centers`
+    标识），标准差设为 1.5（由 `cluster_std` 指定）。我们还定义一个 `random_state` 值，以便能够复制结果：
 - en: Python
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The code above should generate the following plot of data points:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码应生成以下数据点的图：
 - en: '[![](../Images/81951cebd834f49ffc6cf167d61906e5.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_1.png)'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/81951cebd834f49ffc6cf167d61906e5.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_1.png)'
 - en: Scatter Plot of Dataset Consisting of 2 Gaussian Clusters
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 包含 2 个高斯簇的数据集的散点图
 - en: 'We shall then split this dataset, allocating 80% of the data to the training
     set and the remaining 20% to the test set:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们将拆分数据集，将80%的数据分配到训练集，其余20%分配到测试集：
 - en: Python
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Following this, we will create the normal Bayes classifier and proceed with
     training and testing it on the dataset values after having type cast to 32-bit
     float:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将创建标准贝叶斯分类器，并在将数据类型转换为32位浮点数后，对数据集进行训练和测试：
 - en: Python
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: By making use of the `predictProb` method, we will obtain the predicted class
     for each input vector (with each vector being stored on each row of the array
     fed into the normal Bayes classifier) and the output probabilities.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过使用`predictProb`方法，我们将获得每个输入向量的预测类别（每个向量存储在输入到标准贝叶斯分类器的数组的每一行）和输出概率。
 - en: In the code above, the predicted classes are stored in `y_pred`, whereas `y_probs`
     is an array with as many columns as classes (two in this case) that holds the
     probability value of each input vector belonging to each class under consideration.
@@ -220,76 +327,111 @@
     case because the probability values the classifier returns are not normalized
     by the evidence, $P(data)$, which we have removed from the denominator, as explained
     in the previous section.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述代码中，预测的类别存储在`y_pred`中，而`y_probs`是一个与类别数（此情况下为两个）相同列数的数组，保存每个输入向量属于每个考虑类别的概率值。分类器返回的每个输入向量的输出概率值的总和应该是1。然而，这不一定是情况，因为分类器返回的概率值没有通过证据
+    $P(data)$ 进行标准化，如前节所述，我们已从分母中移除了。
 - en: '*Instead, what is being reported is a likelihood, which is basically the numerator
     of the conditional probability equation, p(C) p(M | C). The denominator, p(M),
     does not need to be computed.*'
+  id: totrans-52
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*相反，报告的是一种可能性，这基本上是条件概率方程的分子，即p(C) p(M | C)。分母p(M)不需要计算。*'
 - en: ''
+  id: totrans-53
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: – [Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
     2017.
+  id: totrans-54
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: – [OpenCV的机器学习](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1)，2017年。
 - en: Nonetheless, whether the values are normalized or not, the class prediction
     for each input vector may be found by identifying the class with the highest probability
     value.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管无论值是否被标准化，通过识别具有最高概率值的类别，可以找到每个输入向量的类别预测。
 - en: 'The code listing so far is the following:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前为止的代码列表如下：
 - en: Python
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'We may see that the class predictions produced by the normal Bayes classifier
     trained on this simple dataset are correct:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以看到，在这个简单数据集上训练的标准贝叶斯分类器生成的类别预测是正确的：
 - en: '[![](../Images/7698c83e3bb69d23b94488b898655065.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_2.png)'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/7698c83e3bb69d23b94488b898655065.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_2.png)'
 - en: Scatter Plot of Predictions Generated for the Test Samples
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 对测试样本生成的预测的散点图
 - en: '**Image Segmentation Using a Normal Bayes Classifier**'
+  id: totrans-62
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**使用标准贝叶斯分类器的图像分割**'
 - en: Among their many applications, Bayes classifiers have been frequently used for
     skin segmentation, which separates skin pixels from non-skin pixels in an image.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 贝叶斯分类器在许多应用中被广泛使用，其中包括皮肤分割，它将图像中的皮肤像素与非皮肤像素分开。
 - en: We can adapt the code above for segmenting skin pixels in images. For this purpose,
     we will use the [Skin Segmentation dataset](https://archive-beta.ics.uci.edu/dataset/229/skin+segmentation),
     consisting of 50,859 skin samples and 194,198 non-skin samples, to train the normal
     Bayes classifier. The dataset presents the pixel values in BGR order and their
     corresponding class label.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以调整上述代码以对图像中的皮肤像素进行分割。为此，我们将使用[皮肤分割数据集](https://archive-beta.ics.uci.edu/dataset/229/skin+segmentation)，该数据集包含50,859个皮肤样本和194,198个非皮肤样本，用于训练标准贝叶斯分类器。数据集以BGR顺序呈现像素值及其对应的类别标签。
 - en: 'After loading the dataset, we shall convert the BGR pixel values into HSV (denoting
     Hue, Saturation, and Value) and then use the hue values to train a normal Bayes
     classifier. Hue is often preferred over RGB in image segmentation tasks because
     it represents the true color without modification and is less affected by lighting
     variations than RGB. In the HSV color model, the hue values are arranged radially
     and span between 0 and 360 degrees:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在加载数据集后，我们将把 BGR 像素值转换为 HSV（表示色调、饱和度和值），然后使用色调值来训练普通贝叶斯分类器。色调在图像分割任务中通常优于 RGB，因为它代表了未修改的真实颜色，比
+    RGB 更不容易受到光照变化的影响。在 HSV 颜色模型中，色调值是径向排列的，范围从 0 到 360 度：
 - en: Python
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '**Note 1**: The OpenCV library provides the `cvtColor` method to convert between
     color spaces, as seen in [this tutorial](https://machinelearningmastery.com/?p=14402&preview=true),
     but the `cvtColor` method expects the source image in its original shape as an
@@ -298,43 +440,66 @@
     normalized within the range of 0 to 1\. We are using the latter here since our
     training data consists of individual pixels, which are not structured in the usual
     form of a three-channel image.'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意 1**：OpenCV 库提供了 `cvtColor` 方法来进行颜色空间转换，如 [本教程](https://machinelearningmastery.com/?p=14402&preview=true)
+    所示，但 `cvtColor` 方法要求源图像保持原始形状作为输入。而 Matplotlib 中的 `rgb_to_hsv` 方法则接受形状为 (…, 3)
+    的 NumPy 数组作为输入，其中数组值需要在 0 到 1 的范围内进行归一化。我们在这里使用后者，因为我们的训练数据由单独的像素组成，而不是以三通道图像的常见形式结构化的。'
 - en: '**Note 2**: The normal Bayes classifier assumes that the data to be modeled
     follows a Gaussian distribution. While this is not a strict requirement, the classifier’s
     performance may degrade if the data is distributed otherwise. We may check the
     distribution of the data we are working with by plotting its histogram. If we
     take the hue values of the skin pixels as an example, we find that a Gaussian
     curve can describe their distribution:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意 2**：普通贝叶斯分类器假设待建模的数据遵循高斯分布。虽然这不是一个严格的要求，但如果数据分布不同，分类器的性能可能会下降。我们可以通过绘制直方图来检查我们处理的数据的分布。例如，如果我们以皮肤像素的色调值为例，我们发现高斯曲线可以描述它们的分布：'
 - en: Python
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '[![](../Images/a6cb0962374044404ffd57b35bd59d57.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_3.png)'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/a6cb0962374044404ffd57b35bd59d57.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_3.png)'
 - en: Checking the Distribution of the Data
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查数据的分布
 - en: 'Once the normal Bayes classifier has been trained, we may test it out on an
     image (let’s consider [this example image](https://unsplash.com/photos/gPZ8vbwdV5A)
     for testing):'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦普通贝叶斯分类器经过训练，我们可以在一张图像上进行测试（我们可以考虑 [这张示例图像](https://unsplash.com/photos/gPZ8vbwdV5A)
+    进行测试）：
 - en: Python
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The resulting segmented mask displays the pixels labeled as belonging to the
     skin (with a class label equal to 1).
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果分割掩码显示了被标记为皮肤（类别标签为 1）的像素。
 - en: 'By qualitatively analyzing the result, we may see that most of the skin pixels
     have been correctly labeled as such. We may also see that some hair strands (hence,
     non-skin pixels) have been incorrectly labeled as belonging to skin. If we had
@@ -343,65 +508,102 @@
     the effectiveness of using the hue values, which remain relatively constant in
     regions of the face that otherwise appear illuminated or in shadow in the original
     RGB image:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过定性分析结果，我们可以看到大多数皮肤像素已被正确标记为皮肤。我们还可以看到一些头发丝（因此是非皮肤像素）被错误地标记为皮肤。如果我们查看它们的色调值，可能会发现这些值与皮肤区域的色调值非常相似，因此导致了错误标记。此外，我们还可以注意到使用色调值的有效性，这些值在面部区域的光照或阴影下仍相对恒定，与原始
+    RGB 图像中的表现一致：
 - en: '[![](../Images/e51ba781b0c42ea48617fbbfe4211c2f.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_4.png)'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/e51ba781b0c42ea48617fbbfe4211c2f.png)](https://machinelearningmastery.com/wp-content/uploads/2023/04/bayes_4.png)'
 - en: Original Image (Left); Hue Values (Middle); Segmented Skin Pixels (Right)
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 原始图像（左）；色调值（中）；分割后的皮肤像素（右）
 - en: Can you think of more tests to try out with a normal Bayes classifier?
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 你能想到更多的测试方法来尝试普通贝叶斯分类器吗？
 - en: '**Further Reading**'
+  id: totrans-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多资源，如果你想深入了解这个主题。
 - en: '**Books**'
+  id: totrans-84
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
     2017.'
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[OpenCV机器学习](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
+    2017.'
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python与OpenCV 4实战](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
+    2019.'
 - en: '**Summary**'
+  id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you learned how to apply OpenCV’s normal Bayes algorithm,
     first on a custom two-dimensional dataset and subsequently for segmenting an image.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何应用OpenCV的正态贝叶斯算法，首先在自定义的二维数据集上，然后用于图像分割。
 - en: 'Specifically, you learned:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: Several of the most important points in applying the Bayes theorem to machine
     learning.
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 应用贝叶斯定理到机器学习中的几个最重要的要点。
 - en: How to use the normal Bayes algorithm on a custom dataset in OpenCV.
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在OpenCV中使用正态贝叶斯算法处理自定义数据集。
 - en: How to use the normal Bayes algorithm to segment an image in OpenCV.
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在OpenCV中使用正态贝叶斯算法来进行图像分割。
 - en: Do you have any questions?
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.********************
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论区留言你的问题，我会尽力回答。

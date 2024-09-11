@@ -1,348 +1,535 @@
 - en: One-Dimensional Tensors in Pytorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Pytorch中的一维张量
 - en: 原文：[https://machinelearningmastery.com/one-dimensional-tensors-in-pytorch/](https://machinelearningmastery.com/one-dimensional-tensors-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/one-dimensional-tensors-in-pytorch/](https://machinelearningmastery.com/one-dimensional-tensors-in-pytorch/)
 - en: PyTorch is an open-source deep learning framework based on Python language.
     It allows you to build, train, and deploy deep learning models, offering a lot
     of versatility and efficiency.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch是一个基于Python语言的开源深度学习框架。它允许你构建、训练和部署深度学习模型，提供了很多灵活性和效率。
 - en: PyTorch is primarily focused on tensor operations while a tensor can be a number,
     matrix, or a multi-dimensional array.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch主要集中在张量操作上，而张量可以是数字、矩阵或多维数组。
 - en: In this tutorial, we will perform some basic operations on one-dimensional tensors
     as they are complex mathematical objects and an essential part of the PyTorch
     library. Therefore, before going into the detail and more advanced concepts, one
     should know the basics.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个教程中，我们将对一维张量执行一些基本操作，因为它们是复杂的数学对象，也是PyTorch库的重要组成部分。因此，在深入研究更高级的概念之前，我们应该先了解基础知识。
 - en: 'After going through this tutorial, you will:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 在完成本教程后，你将：
 - en: Understand the basics of one-dimensional tensor operations in PyTorch.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 了解PyTorch中一维张量操作的基础知识。
 - en: Know about tensor types and shapes and perform tensor slicing and indexing operations.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 了解张量类型和形状，并执行张量切片和索引操作。
 - en: Be able to apply some methods on tensor objects, such as mean, standard deviation,
     addition, multiplication, and more.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 能够对张量对象应用一些方法，如均值、标准差、加法、乘法等。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，使用我的书籍[《Deep Learning with PyTorch》](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了带有**工作代码**的**自学教程**。'
 - en: Let’s get started.![](../Images/a33f5fbb84b7bcd8c5bbde1f3c03eeca.png)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！![](../Images/a33f5fbb84b7bcd8c5bbde1f3c03eeca.png)
 - en: One-Dimensional Tensors in Pytorch
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: Pytorch中的一维张量
 - en: Picture by [Jo Szczepanska](https://unsplash.com/photos/9OKGEVJiTKk). Some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Jo Szczepanska](https://unsplash.com/photos/9OKGEVJiTKk)提供。部分权利保留。
 - en: '**Types and Shapes of One-Dimensional Tensors**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**一维张量的类型和形状**'
 - en: First off, let’s import a few libraries we’ll use in this tutorial.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们导入这个教程中将要使用的一些库。
 - en: '[PRE0]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: If you have experience in other programming languages, the easiest way to understand
     a tensor is to consider it as a multidimensional array. Therefore, a one-dimensional
     tensor is simply a one-dimensional array, or a vector. In order to convert a list
     of integers to tensor, apply `torch.tensor()` constructor. For instance, we’ll
     take a list of integers and convert it to various tensor objects.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你有其他编程语言的经验，理解张量的最简单方法是将其视为多维数组。因此，一维张量就是一个一维数组，或者说是一个向量。为了将整数列表转换为张量，请应用`torch.tensor()`构造函数。例如，我们将取一个整数列表并将其转换为不同的张量对象。
 - en: '[PRE1]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '[PRE2]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Also, you can apply the same method torch.tensor() to convert a float list to
     a float tensor.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样，你也可以将相同的方法`torch.tensor()`应用于将浮点列表转换为浮点张量。
 - en: '[PRE3]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '[PRE4]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Note that elements of a list that need to be converted into a tensor must have
     the same type. Moreover, if you want to convert a list to a certain tensor type,
     torch also allows you to do that. The code lines below, for example, will convert
     a list of integers to a float tensor.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，需要转换为张量的列表元素必须具有相同的类型。此外，如果你想将列表转换为特定的张量类型，torch也允许你这样做。例如，下面的代码行将整数列表转换为浮点张量。
 - en: '[PRE5]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '[PRE6]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Similarly, `size()` and `ndimension()` methods allow you to find the size and
     dimensions of a tensor object.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似地，`size()`和`ndimension()`方法允许你查找张量对象的大小和维度。
 - en: '[PRE7]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '[PRE8]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: For reshaping a tensor object, `view()` method can be applied. It takes `rows`
     and `columns` as arguments. As an example, let’s use this method to reshape `int_list_to_float_tensor`.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于重塑张量对象，可以应用`view()`方法。它接受`rows`和`columns`作为参数。举个例子，让我们使用这个方法来重塑`int_list_to_float_tensor`。
 - en: '[PRE9]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '[PRE10]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: As you can see, the `view()` method has changed the size of the tensor to `torch.Size([4,
     1])`, with 4 rows and 1 column.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 如你所见，`view()`方法已将张量的大小更改为`torch.Size([4, 1])`，其中有4行和1列。
 - en: While the number of elements in a tensor object should remain constant after
     `view()` method is applied, you can use `-1` (such as `reshaped_tensor**.**view(-1,
     1)`) to reshape a dynamic-sized tensor.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在应用`view()`方法后，张量对象中的元素数量应保持不变，但你可以使用`-1`（例如`reshaped_tensor**.**view(-1, 1)`）来重塑一个动态大小的张量。
 - en: '**Converting Numpy Arrays to Tensors**'
+  id: totrans-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**将 Numpy 数组转换为张量**'
 - en: Pytorch also allows you to convert NumPy arrays to tensors. You can use `torch.from_numpy`
     for this operation. Let’s take a NumPy array and apply the operation.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: Pytorch 也允许你将 NumPy 数组转换为张量。你可以使用 `torch.from_numpy` 完成这个操作。让我们拿一个 NumPy 数组并应用这个操作。
 - en: '[PRE11]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[PRE12]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Similarly, you can convert the tensor object back to a NumPy array. Let’s use
     the previous example to show how it’s done.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样地，你可以将张量对象转换回 NumPy 数组。让我们用之前的例子展示如何做到这一点。
 - en: '[PRE13]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '[PRE14]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '**Converting Pandas Series to Tensors**'
+  id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**将 Pandas Series 转换为张量**'
 - en: You can also convert a pandas series to a tensor. For this, first you’ll need
     to store the pandas series with `values()` function using a NumPy array.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 你也可以将 Pandas Series 转换为张量。为此，首先需要使用 `values()` 函数将 Pandas Series 存储为 NumPy 数组。
 - en: '[PRE15]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '[PRE16]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Furthermore, the Pytorch framework allows us to do a lot with tensors such as
     its `item()` method returns a python number from a tensor and `tolist()` method
     returns a list.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，Pytorch 框架允许我们对张量做很多事情，例如它的 `item()` 方法从张量返回一个 Python 数字，而 `tolist()` 方法则返回一个列表。
 - en: '[PRE17]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: '[PRE18]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: '**Indexing and Slicing in One-Dimensional Tensors**'
+  id: totrans-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**一维张量中的索引和切片**'
 - en: Indexing and slicing operations are almost the same in Pytorch as python. Therefore,
     the first index always starts at 0 and the last index is less than the total length
     of the tensor. Use square brackets to access any number in a tensor.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: Pytorch 中的索引和切片操作与 Python 几乎相同。因此，第一个索引始终从 0 开始，最后一个索引小于张量的总长度。使用方括号访问张量中的任何数字。
 - en: '[PRE19]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: '[PRE20]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: Like a list in python, you can also perform slicing operations on the values
     in a tensor. Moreover, the Pytorch library allows you to change certain values
     in a tensor as well.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像 Python 中的列表一样，你也可以在张量中的值上执行切片操作。此外，Pytorch 库还允许你更改张量中的某些值。
 - en: Let’s take an example to check how these operations can be applied.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们举个例子来检查如何应用这些操作。
 - en: '[PRE21]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: '[PRE22]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'Now, let’s change the value at index 3 of `example_tensor`:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们改变 `example_tensor` 的索引3处的值。
 - en: '[PRE23]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: '[PRE24]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就开始我的免费电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: '**Some Functions to Apply on One-Dimensional Tensors**'
+  id: totrans-61
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**应用在一维张量上的一些函数**'
 - en: In this section, we’ll review some statistical methods that can be applied on
     tensor objects.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一节中，我们将回顾一些可以应用在张量对象上的统计方法。
 - en: '**Min and Max Functions**'
+  id: totrans-63
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**最小值和最大值函数**'
 - en: These two useful methods are employed to find the minimum and maximum value
     in a tensor. Here is how they work.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两种有用的方法用于在张量中找到最小值和最大值。以下是它们的工作原理。
 - en: We’ll use a `sample_tensor` as an example to apply these methods.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用 `sample_tensor` 作为示例来应用这些方法。
 - en: '[PRE25]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: '[PRE26]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: '**Mean and Standard Deviation**'
+  id: totrans-68
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**均值和标准差**'
 - en: Mean and standard deviation are often used while doing statistical operations
     on tensors. You can apply these two metrics using `.mean()` and `.std()` functions
     in Pytorch.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 在张量进行统计操作时，常常使用均值和标准差。你可以使用 Pytorch 中的 `.mean()` 和 `.std()` 函数应用这两个指标。
 - en: Let’s use an example to see how these two metrics are calculated.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们用一个例子来看看这两个指标是如何计算的。
 - en: '[PRE27]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: '[PRE28]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: '**Simple Addition and Multiplication Operations on One-Dimensional Tensors**'
+  id: totrans-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**一维张量上的简单加法和乘法运算**'
 - en: Addition and Multiplication operations can be easily applied on tensors in Pytorch.
     In this section, we’ll create two one-dimensional tensors to demonstrate how these
     operations can be used.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Pytorch 中，可以轻松地对张量应用加法和乘法操作。在本节中，我们将创建两个一维张量来演示如何使用这些操作。
 - en: '[PRE29]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: '[PRE30]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: 'For your convenience, below is all the examples above tying together so you
     can try them in one shot:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了方便起见，以下是上述所有示例的综合，这样你可以一次尝试它们：
 - en: '[PRE31]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: Further Reading
+  id: totrans-79
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: 'Developed at the same time as TensorFlow, PyTorch used to have a simpler syntax
     until TensorFlow adopted Keras in its 2.x version. To learn the basics of PyTorch,
     you may want to read the PyTorch tutorials:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 在 TensorFlow 发布 2.x 版本前曾有着更简单的语法，直到 TensorFlow 采用 Keras。要学习 PyTorch
+    的基础知识，你可能想阅读 PyTorch 的教程：
 - en: '[https://pytorch.org/tutorials/](https://pytorch.org/tutorials/)'
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://pytorch.org/tutorials/](https://pytorch.org/tutorials/)'
 - en: 'Especially the basics of PyTorch tensor can be found in the Tensor tutorial
     page:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 特别是可以在张量教程页面找到 PyTorch 张量的基础知识：
 - en: '[https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html](https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html)'
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html](https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html)'
 - en: There are also quite a few books on PyTorch that are suitable for beginners.
     A more recently published book should be recommended as the tools and syntax are
     actively evolving. One example is
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch还有很多适合初学者的书籍。由于工具和语法在不断发展，推荐更近期出版的书籍。一个例子是
 - en: Deep Learning with PyTorch by Eli Stevens, Luca Antiga, and Thomas Viehmann,
     2020.
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 《深度学习与PyTorch》（Eli Stevens, Luca Antiga, Thomas Viehmann，2020年）
 - en: '[https://www.manning.com/books/deep-learning-with-pytorch](https://www.manning.com/books/deep-learning-with-pytorch)'
+  id: totrans-86
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '[https://www.manning.com/books/deep-learning-with-pytorch](https://www.manning.com/books/deep-learning-with-pytorch)'
 - en: '**Summary**'
+  id: totrans-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**摘要**'
 - en: In this tutorial, you’ve discovered how to use one-dimensional tensors in Pytorch.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学会了如何在PyTorch中使用一维张量。
 - en: 'Specifically, you learned:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The basics of one-dimensional tensor operations in PyTorch
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PyTorch中一维张量操作的基础
 - en: About tensor types and shapes and how to perform tensor slicing and indexing
     operations
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于张量类型和形状以及如何执行张量切片和索引操作
 - en: How to apply some methods on tensor objects, such as mean, standard deviation,
     addition, and multiplication
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在张量对象上应用一些方法，例如平均值、标准差、加法和乘法

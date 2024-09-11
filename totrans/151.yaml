@@ -1,218 +1,336 @@
 - en: Training a Multi-Target Multilinear Regression Model in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中训练多目标多重线性回归模型
 - en: 原文：[https://machinelearningmastery.com/training-a-multi-target-multilinear-regression-model-in-pytorch/](https://machinelearningmastery.com/training-a-multi-target-multilinear-regression-model-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/training-a-multi-target-multilinear-regression-model-in-pytorch/](https://machinelearningmastery.com/training-a-multi-target-multilinear-regression-model-in-pytorch/)
 - en: The multi-target multilinear regression model is a type of machine learning
     model that takes single or multiple features as input to make multiple predictions.
     In our earlier post, we discussed how to make simple predictions with multilinear
     regression and generate multiple outputs. Here we’ll build our model and train
     it on a dataset.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 多目标多重线性回归模型是一种机器学习模型，它以单个或多个特征作为输入，以进行多个预测。在我们之前的文章中，我们讨论了如何使用多重线性回归进行简单预测并生成多个输出。在这里，我们将构建我们的模型并在数据集上进行训练。
 - en: 'In this post, we’ll generate a dataset and define our model with an optimizer
     and a loss function. Then, we’ll train our model and visualize the results of
     the training process. Particularly, we’ll explain:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我们将生成一个数据集，并定义我们的模型，包括优化器和损失函数。然后，我们将训练我们的模型并可视化训练过程的结果。特别是，我们将解释：
 - en: How to train a multi-target multilinear regression model in PyTorch.
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中训练多目标多重线性回归模型。
 - en: How to generate a simple dataset and feed it to the model.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何生成简单的数据集并将其输入到模型中。
 - en: How to build the model using built-in packages in PyTorch.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 PyTorch 中的内置包构建模型。
 - en: How to train the model with mini-batch gradient descent and visualize the results.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用小批量梯度下降法训练模型并可视化结果。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请阅读我的书 [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started.![](../Images/20dd0b8f625749a1ba6b7e6c17770e84.png)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/20dd0b8f625749a1ba6b7e6c17770e84.png)
 - en: Training a Multi-Target Multilinear Regression Model in PyTorch.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中训练多目标多重线性回归模型。
 - en: Picture by [drown_in_city](https://unsplash.com/photos/vQsjbfODtak). Some rights
     reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来自 [drown_in_city](https://unsplash.com/photos/vQsjbfODtak)。保留所有权利。
 - en: Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in four parts; they are
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四个部分，它们是
 - en: Create Data Class
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建数据类
 - en: Build the Model with `nn.Module`
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 `nn.Module` 构建模型
 - en: Train with Mini-Batch Gradient Descent
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用小批量梯度下降法进行训练
 - en: Plot the Progress
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 绘制进度图
 - en: Create Data Class
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建数据类
 - en: We need data to train our model. In PyTorch, we can make use of the `Dataset`
     class. Firstly, we’ll create our data class that includes data constructer, the
     `__getitem__()` method that returns data samples from the data, and the `__len__()`
     method that allows us to check data length. We generate the data, based on a linear
     model, in the constructor. Note that `torch.mm()` is used for **m**atrix **m**ultiplication
     and the shapes of tensors should be set in such a way to allow the multiplication.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要数据来训练我们的模型。在 PyTorch 中，我们可以使用 `Dataset` 类。首先，我们将创建一个数据类，其中包括数据构造函数、返回数据样本的
+    `__getitem__()` 方法和允许我们检查数据长度的 `__len__()` 方法。我们在构造函数中基于线性模型生成数据。请注意，`torch.mm()`
+    用于**矩阵**乘法，张量的形状应设置为允许乘法。
 - en: '[PRE0]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Then, we can create the dataset object that will be used in training.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以创建用于训练的数据集对象。
 - en: '[PRE1]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费 PDF 电子书版本。
 - en: Build the Model with `nn.Module`
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 `nn.Module` 构建模型
 - en: PyTorch’s `nn.Module` contains all the methods and attributes we need to build
     our multilinear regression model. This package will help us to build more sophisticated
     neural network architectures in the future tutorials of the series.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch的 `nn.Module` 包含了构建我们多重线性回归模型所需的所有方法和属性。这个包将帮助我们在系列的后续教程中构建更复杂的神经网络架构。
 - en: We’ll make our model class a subclass of the `nn.Module` package, allowing us
     to inherit all the incorporated functionalities. Our model will include a constructor
     and a `forward()` function to make predictions.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使我们的模型类成为 `nn.Module` 包的子类，以便继承所有的功能。我们的模型将包括一个构造函数和一个 `forward()` 函数用于进行预测。
 - en: '[PRE2]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: As we have to deal with multiple outputs, let’s create a model object with two
     inputs and two outputs. We’ll list the model parameters as well.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们需要处理多个输出，让我们创建一个具有两个输入和两个输出的模型对象。我们还将列出模型参数。
 - en: This is what the parameters look like, which the weights are randomized initially.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是参数的样子，权重最初是随机化的。
 - en: '[PRE3]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Here’s what the output looks like.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是输出的样子。
 - en: '[PRE4]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: We’ll train the model using stochastic gradient descent, keeping the learning
     rate at 0.1\. For measuring the model loss, we’ll use mean square error.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用随机梯度下降来训练模型，学习率保持在 0.1。为了测量模型损失，我们将使用均方误差。
 - en: '[PRE5]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: PyTorch has a `DataLoader` class which allows us to feed the data into the model.
     This not only allow us to load the data but also can apply various transformations
     in realtime. Before we start the training, let’s define our dataloader object
     and define the batch size.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 有一个 `DataLoader` 类，可以让我们将数据输入到模型中。这不仅允许我们加载数据，还可以实时应用各种转换。在开始训练之前，让我们定义我们的
+    dataloader 对象并定义批量大小。
 - en: '[PRE6]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书** [《深度学习与 PyTorch》](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    **启动你的项目**。它提供了**自学教程**和**可运行的代码**。'
 - en: Train with Mini-Batch Gradient Descent
+  id: totrans-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用小批量梯度下降训练
 - en: With all things set, we can create our training loop to train the model. We
     create an empty list to store the model loss and train the model for 20 epochs.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 一切准备就绪后，我们可以创建训练循环来训练模型。我们创建一个空列表来存储模型损失，并训练模型 20 个轮次。
 - en: '[PRE7]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'If you run this, you should see the output similar to the following:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你运行这个，你应该会看到类似以下的输出：
 - en: '[PRE8]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Plot the Progress
+  id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 绘制进度
 - en: Because it is a linear regression model, the training should be fast. We can
     visualize how the model loss decreases after every epoch during the training process.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于这是一个线性回归模型，训练应该很快。我们可以可视化模型损失在每个训练轮次后是如何减少的。
 - en: '[PRE9]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '![](../Images/ba883c0ac9a4adb6b94a7d1f76a1f3d3.png)'
+  id: totrans-48
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/ba883c0ac9a4adb6b94a7d1f76a1f3d3.png)'
 - en: Putting everything together, the following is the complete code.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容整合在一起，以下是完整的代码。
 - en: '[PRE10]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Summary
+  id: totrans-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you learned what are the steps required to train a muti-target
     Multilinear Regression model in PyTorch. Particularly, you learned:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了在 PyTorch 中训练多目标多线性回归模型所需的步骤。特别是，你学到了：
 - en: How to train a multi-target Multilinear Regression Model in PyTorch.
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中训练多目标多线性回归模型。
 - en: How to generate a simple dataset and feed it to the model.
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何生成一个简单的数据集并将其输入模型。
 - en: How to build the model using built-in packages in PyTorch.
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 PyTorch 内置的包构建模型。
 - en: How to train the model with Mini-Batch Gradient Descent and visualize the results.
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用小批量梯度下降训练模型并可视化结果。

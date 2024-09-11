@@ -1,11 +1,15 @@
 - en: 'From Train-Test to Cross-Validation: Advancing Your Model’s Evaluation'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 从训练-测试到交叉验证：提升模型评估
 - en: 原文：[https://machinelearningmastery.com/from-train-test-to-cross-validation-advancing-your-models-evaluation/](https://machinelearningmastery.com/from-train-test-to-cross-validation-advancing-your-models-evaluation/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/from-train-test-to-cross-validation-advancing-your-models-evaluation/](https://machinelearningmastery.com/from-train-test-to-cross-validation-advancing-your-models-evaluation/)
 - en: Many beginners will initially rely on the train-test method to evaluate their
     models. This method is straightforward and seems to give a clear indication of
     how well a model performs on unseen data. However, this approach can often lead
@@ -14,94 +18,136 @@
     can offer a more thorough evaluation of model performance. Join us as we guide
     you through the essential steps to achieve a deeper and more accurate assessment
     of your machine learning models.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多初学者最初会依赖训练-测试方法来评估他们的模型。这种方法简单明了，似乎能清楚地指示模型在未见数据上的表现。然而，这种方法往往导致对模型能力的不完整理解。在这篇博客中，我们将讨论为什么超越基本的训练-测试分割是重要的，以及交叉验证如何提供对模型性能的更全面评估。加入我们，指导你完成实现对机器学习模型进行更深入、更准确评估的必要步骤。
 - en: Let’s get started.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/1a6dd8d3aeb574d9d77cc3d178743df5.png)'
+  id: totrans-4
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/1a6dd8d3aeb574d9d77cc3d178743df5.png)'
 - en: 'From Train-Test to Cross-Validation: Advancing Your Model’s Evaluation'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 从训练-测试到交叉验证：提升模型评估
 - en: Photo by [Belinda Fewings](https://unsplash.com/photos/man-in-yellow-polo-shirt-and-black-pants-standing-on-red-plastic-chair-gQELczXc_NA).
     Some rights reserved.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Belinda Fewings](https://unsplash.com/photos/man-in-yellow-polo-shirt-and-black-pants-standing-on-red-plastic-chair-gQELczXc_NA)提供。版权所有。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分；它们是：
 - en: 'Model Evaluation: Train-Test vs. Cross-Validation'
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 模型评估：训练-测试 vs. 交叉验证
 - en: The “Why” of Cross-Validation
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 交叉验证的“为什么”
 - en: Delving Deeper with K-Fold Cross-Validation
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 深入探讨K折交叉验证
 - en: 'Model Evaluation: Train-Test vs. Cross-Validation'
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 模型评估：训练-测试 vs. 交叉验证
 - en: A machine learning model is determined by its design (such as a linear vs. non-linear
     model) and its parameters (such as the coefficients in a linear regression model).
     You need to make sure the model is suitable for the data before considering how
     to fit the model.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 机器学习模型由其设计（例如线性模型与非线性模型）和其参数（例如线性回归模型中的系数）决定。在考虑如何拟合模型之前，你需要确保模型适合数据。
 - en: 'The performance of a machine learning model is gauged by how well it performs
     on previously unseen (or test) data. In a standard train-test split, we divide
     the dataset into two parts: a larger portion for training our model and a smaller
     portion for testing its performance. The model is suitable if the tested performance
     is acceptable. This approach is straightforward but doesn’t always utilize our
     data most effectively.[![](../Images/2d6ebe14ee209ccee526009fc7bffd66.png)](https://machinelearningmastery.com/cross-validation-002/)'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 机器学习模型的性能通过它在以前未见过（或测试）数据上的表现来衡量。在标准的训练-测试分割中，我们将数据集分成两部分：较大的一部分用于训练模型，较小的一部分用于测试其性能。如果测试性能令人满意，则该模型是合适的。这种方法简单直接，但并不总是最有效地利用数据。[![](../Images/2d6ebe14ee209ccee526009fc7bffd66.png)](https://machinelearningmastery.com/cross-validation-002/)
 - en: However, with cross-validation, we go a step further. The second image shows
     a 5-Fold Cross-Validation, where the dataset is split into five “folds.” In each
     round of validation, a different fold is used as the test set while the remaining
     form the training set. This process is repeated five times, ensuring each data
     point is used for training and testing.[![](../Images/e7299569de4a4d501791968df0170a78.png)](https://machinelearningmastery.com/cross-validation-003/)
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，使用交叉验证，我们更进一步。第二张图片显示了一个5折交叉验证，其中数据集被分成五个“折”。在每一轮验证中，使用一个不同的折作为测试集，其余的作为训练集。这个过程重复五次，确保每个数据点都被用于训练和测试。[![](../Images/e7299569de4a4d501791968df0170a78.png)](https://machinelearningmastery.com/cross-validation-003/)
 - en: 'Here is an example to illustrate the above:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是一个例子来说明上述内容：
 - en: '[PRE0]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'While the train-test method yields a single R² score, cross-validation provides
     us with a spectrum of five different R² scores, one from each fold of the data,
     offering a more comprehensive view of the model’s performance:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然训练-测试方法产生一个R²评分，但交叉验证提供了五个不同的R²评分，分别来自数据的每一个折，提供了对模型性能的更全面视图：
 - en: '[PRE1]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The roughly equal R² scores among the five means the model is stable. You can
     then decide whether this model (i.e., linear regression) provides an acceptable
     prediction power.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 五个折叠中大致相等的R²分数表明模型稳定。然后，您可以决定该模型（即线性回归）是否提供了可接受的预测能力。
 - en: The “Why” of Cross-Validation
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 交叉验证的“为什么”
 - en: Understanding the variability of our model’s performance across different subsets
     of data is crucial in machine learning. The train-test split method, while useful,
     only gives us a snapshot of how our model might perform on one particular set
     of unseen data.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 理解我们模型在不同数据子集上的表现变异性对机器学习至关重要。虽然训练-测试划分方法有用，但它只提供了我们模型在某一特定未见数据集上的表现快照。
 - en: Cross-validation, by systematically using multiple folds of data for both training
     and testing, offers a more robust and comprehensive evaluation of the model’s
     performance. Each fold acts as an independent test, providing insights into how
@@ -109,121 +155,179 @@
     not only helps identify potential overfitting but also ensures that the performance
     metric (in this case, R² score) is not overly optimistic or pessimistic, but rather
     a more reliable indicator of how the model will generalize to unseen data.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 交叉验证通过系统地使用多个数据折叠进行训练和测试，提供了对模型性能的更为稳健和全面的评估。每个折叠作为一个独立的测试，提供了模型在不同数据样本上的预期表现的见解。这种多样性不仅有助于识别潜在的过拟合，还确保性能指标（在本例中为R²分数）不会过于乐观或悲观，而是更可靠地反映模型对未见数据的泛化能力。
 - en: 'To visually demonstrate this, let’s consider the R² scores from both a train-test
     split and a 5-fold cross-validation process:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了直观展示这一点，我们来比较一次训练-测试划分和5折交叉验证过程中的R²分数：
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'This visualization underscores the difference in insights gained from a single
     train-test evaluation versus the broader perspective offered by cross-validation:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个可视化突出了单次训练-测试评估与交叉验证提供的更广泛视角之间的区别：
 - en: '[![](../Images/fde7a447f9c7bdd49762c49039eb658b.png)](https://machinelearningmastery.com/?attachment_id=16741)'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/fde7a447f9c7bdd49762c49039eb658b.png)](https://machinelearningmastery.com/?attachment_id=16741)'
 - en: Through cross-validation, we gain a deeper understanding of our model’s performance,
     moving us closer to developing machine learning solutions that are both effective
     and reliable.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过交叉验证，我们对模型的性能有了更深入的理解，使我们更接近于开发既有效又可靠的机器学习解决方案。
 - en: Delving Deeper with K-Fold Cross-Validation
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 深入了解K折交叉验证
 - en: 'Cross-validation is a cornerstone of reliable machine learning model evaluation,
     with `cross_val_score()` providing a quick and automated way to perform this task.
     Now, we turn our attention to the `KFold` class, a component of scikit-learn that
     offers a deeper dive into the folds of cross-validation. The `KFold` class provides
     not just a score but a window into the model’s performance across different segments
     of our data. We demonstrate this by replicating the example above:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 交叉验证是可靠的机器学习模型评估的基石，`cross_val_score()`提供了一种快速且自动化的方式来执行此任务。现在，我们将注意力转向`KFold`类，这是scikit-learn的一个组件，提供了对交叉验证折叠的深入了解。`KFold`类不仅提供一个评分，还提供了对模型在不同数据片段上的表现的窗口。我们通过复制上面的示例来演示这一点：
 - en: '[PRE3]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'This code block will show us the size of each training and testing set and
     the corresponding R² score for each fold:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码块将显示每个训练集和测试集的大小及每个折叠的R²分数：
 - en: '[PRE4]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The `KFold` class shines in its transparency and control over the cross-validation
     process. While `cross_val_score()` simplifies the process into one line, `KFold`
     opens it up, allowing us to view the exact splits of our data. This is incredibly
     valuable when you need to:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '`KFold`类在交叉验证过程中提供的透明度和控制能力上表现出色。虽然`cross_val_score()`将过程简化为一行代码，但`KFold`将其展开，让我们查看数据的确切划分。这在需要时非常有价值：'
 - en: Understand how your data is being divided.
+  id: totrans-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 了解您的数据是如何被划分的。
 - en: Implement custom preprocessing before each fold.
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在每个折叠之前实现自定义预处理。
 - en: Gain insights into the consistency of your model’s performance.
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 获得对模型性能一致性的见解。
 - en: By using the `KFold` class, you can manually iterate over each split and apply
     the model training and testing process. This not only helps in ensuring that you’re
     fully informed about the data being used at each stage but also offers the opportunity
     to modify the process to suit complex needs.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过使用`KFold`类，您可以手动迭代每个划分，并应用模型训练和测试过程。这不仅有助于确保您对每个阶段使用的数据完全了解，还提供了根据复杂需求修改过程的机会。
 - en: '**Further****Reading**'
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: APIs
+  id: totrans-40
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: APIs
 - en: '[sklearn.model_selection.train_test_split](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)
     API'
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[sklearn.model_selection.train_test_split](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)
+    API'
 - en: '[sklearn.model_selection.cross_val_score](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html)
     API'
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[sklearn.model_selection.cross_val_score](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html)
+    API'
 - en: '[sklearn.model_selection.KFold](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html)
     API'
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[sklearn.model_selection.KFold](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html)
+    API'
 - en: Tutorials
+  id: totrans-44
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[Cross Validation in Machine Learning](https://www.geeksforgeeks.org/cross-validation-machine-learning/)
     by Geeks for Geeks'
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[机器学习中的交叉验证](https://www.geeksforgeeks.org/cross-validation-machine-learning/)
+    by Geeks for Geeks'
 - en: '**Ames Housing Dataset & Data Dictionary**'
+  id: totrans-46
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**Ames房价数据集与数据字典**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**摘要**'
 - en: In this post, we explored the importance of thorough model evaluation through
     cross-validation and the `KFold` method. Both techniques meticulously avoid the
     pitfall of data leakage by keeping training and testing data distinct, thereby
@@ -234,24 +338,36 @@
     how integrating these strategies into your evaluation process leads to more reliable
     and robust machine learning models, ready for the challenges of new and unseen
     data.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我们探讨了通过交叉验证和`KFold`方法进行全面模型评估的重要性。这两种技术通过保持训练数据和测试数据的独立，细致地避免了数据泄漏的陷阱，从而确保模型性能的准确测量。此外，通过对每个数据点进行一次验证并用其进行K-1次训练，这些方法提供了模型泛化能力的详细视角，提高了对其在现实世界应用中的信心。通过实际示例，我们展示了将这些策略整合到评估过程中如何导致更可靠、更强大的机器学习模型，准备好应对新的和未见过的数据的挑战。
 - en: 'Specifically, you learned:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The efficiency of `cross_val_score()` in automating the cross-validation process.
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`cross_val_score()`在自动化交叉验证过程中的效率。'
 - en: How `KFold` offers detailed control over data splits for tailored model evaluation.
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过`KFold`提供详细的数据拆分控制，以便量身定制的模型评估。
 - en: How both methods ensure full data utilization and prevent data leakage.
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 两种方法如何确保数据的充分利用并防止数据泄漏。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？请在下方评论中提出你的问题，我将尽力回答。

@@ -1,269 +1,413 @@
 - en: Calculating Derivatives in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中计算导数
 - en: 原文：[https://machinelearningmastery.com/calculating-derivatives-in-pytorch/](https://machinelearningmastery.com/calculating-derivatives-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/calculating-derivatives-in-pytorch/](https://machinelearningmastery.com/calculating-derivatives-in-pytorch/)
 - en: Derivatives are one of the most fundamental concepts in calculus. They describe
     how changes in the variable inputs affect the function outputs. The objective
     of this article is to provide a high-level introduction to calculating derivatives
     in PyTorch for those who are new to the framework. PyTorch offers a convenient
     way to calculate derivatives for user-defined functions.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 导数是微积分中最基本的概念之一，描述了变量输入的变化如何影响函数输出。本文旨在为那些新手提供一个关于在 PyTorch 中计算导数的高级介绍。PyTorch
+    提供了一个方便的方式来计算用户定义函数的导数。
 - en: While we always have to deal with backpropagation (an algorithm known to be
     the backbone of a neural network) in neural networks, which optimizes the parameters
     to minimize the error in order to achieve higher classification accuracy; concepts
     learned in this article will be used in later posts on deep learning for image
     processing and other computer vision problems.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们在神经网络中始终需要处理反向传播（这是优化参数以最小化误差以实现更高分类精度的算法）时，本文中学到的概念将在后续关于图像处理和其他计算机视觉问题的深度学习文章中使用。
 - en: 'After going through this tutorial, you’ll learn:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过本教程，您将学到：
 - en: How to calculate derivatives in PyTorch.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中计算导数。
 - en: How to use autograd in PyTorch to perform auto differentiation on tensors.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中使用 autograd 对张量进行自动求导。
 - en: About the computation graph that involves different nodes and leaves, allowing
     you to calculate the gradients in a simple possible manner (using the chain rule).
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于涉及不同节点和叶子的计算图，使您能够以最简单的方式计算梯度（使用链式法则）。
 - en: How to calculate partial derivatives in PyTorch.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中计算偏导数。
 - en: How to implement the derivative of functions with respect to multiple values.
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何实现针对多个值的函数的导数。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，使用我的书籍 [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了具有**工作代码**的**自学教程**。'
 - en: Let’s get started.![](../Images/ad88d3f66693834ec70e4a5d9f09c4e2.png)
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/ad88d3f66693834ec70e4a5d9f09c4e2.png)
 - en: Calculating Derivatives in PyTorch
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中计算导数
 - en: Picture by [Jossuha Théophile](https://unsplash.com/photos/H-CZjCQfsFw). Some
     rights reserved.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Jossuha Théophile](https://unsplash.com/photos/H-CZjCQfsFw) 拍摄。部分权利保留。
 - en: '**Differentiation in Autograd**'
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Autograd 中的求导**'
 - en: The autograd – an auto differentiation module in PyTorch – is used to calculate
     the derivatives and optimize the parameters in neural networks. It is intended
     primarily for gradient computations.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 中的自动求导模块 - autograd - 用于计算神经网络中的导数并优化参数。它主要用于梯度计算。
 - en: Before we start, let’s load up some necessary libraries we’ll use in this tutorial.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们开始之前，让我们加载一些在本教程中将要使用的必要库。
 - en: '[PRE0]'
+  id: totrans-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Now, let’s use a simple tensor and set the `requires_grad` parameter to true.
     This allows us to perform automatic differentiation and lets PyTorch evaluate
     the derivatives using the given value which, in this case, is 3.0.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们使用一个简单的张量，并将 `requires_grad` 参数设置为 true。这样我们就可以进行自动求导，并让 PyTorch 使用给定值（本例中为
+    3.0）来计算导数。
 - en: '[PRE1]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '[PRE2]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: We’ll use a simple equation $y=3x^2$ as an example and take the derivative with
     respect to variable `x`. So, let’s create another tensor according to the given
     equation. Also, we’ll apply a neat method `.backward` on the variable `y` that
     forms acyclic graph storing the computation history, and evaluate the result with
     `.grad` for the given value.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用一个简单的方程 $y=3x^2$ 作为示例，并针对变量 `x` 求导。因此，让我们根据给定的方程创建另一个张量。此外，我们将在变量 `y` 上应用一个
+    `.backward` 方法，它形成一个存储计算历史的无环图，并使用 `.grad` 来评估给定值的结果。
 - en: '[PRE3]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '[PRE4]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: As you can see, we have obtained a value of 18, which is correct.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你所见，我们获得了一个正确的值 18。
 - en: '**Computational Graph**'
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**计算图**'
 - en: PyTorch generates derivatives by building a backwards graph behind the scenes,
     while tensors and backwards functions are the graph’s nodes. In a graph, PyTorch
     computes the derivative of a tensor depending on whether it is a leaf or not.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 在后台构建反向图来生成导数，张量和反向函数是图的节点。在图中，PyTorch 根据张量是否为叶节点来计算其导数。
 - en: PyTorch will not evaluate a tensor’s derivative if its leaf attribute is set
     to True. We won’t go into much detail about how the backwards graph is created
     and utilized, because the goal here is to give you a high-level knowledge of how
     PyTorch makes use of the graph to calculate derivatives.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果张量的leaf属性设置为True，PyTorch将不会计算其导数。我们不会详细讨论反向图是如何创建和利用的，因为这里的目标是让您对PyTorch如何利用图来计算导数有一个高层次的了解。
 - en: 'So, let’s check how the tensors `x` and `y` look internally once they are created.
     For `x`:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，让我们来看看张量`x`和`y`在创建后的内部情况。对于`x`而言：
 - en: '[PRE5]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '[PRE6]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'and for `y`:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 以及对于`y`：
 - en: '[PRE7]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '[PRE8]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: As you can see, each tensor has been assigned with a particular set of attributes.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你所见，每个张量都被分配了一组特定的属性。
 - en: 'The `data` attribute stores the tensor’s data while the `grad_fn` attribute
     tells about the node in the graph. Likewise, the `.grad` attribute holds the result
     of the derivative. Now that you have learnt some basics about the autograd and
     computational graph in PyTorch, let’s take a little more complicated equation
     $y=6x^2+2x+4$ and calculate the derivative. The derivative of the equation is
     given by:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '`data`属性存储张量的数据，而`grad_fn`属性告诉有关图中节点的信息。同样，`.grad`属性保存导数的结果。现在您已经学习了有关autograd和PyTorch计算图的一些基础知识，让我们看一看稍微复杂的方程$y=6x^2+2x+4$并计算其导数。方程的导数如下所示：'
 - en: $$\frac{dy}{dx} = 12x+2$$
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\frac{dy}{dx} = 12x+2$$
 - en: Evaluating the derivative at $x = 3$,
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 在$x=3$处评估导数，
 - en: $$\left.\frac{dy}{dx}\right\vert_{x=3} = 12\times 3+2 = 38$$
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\left.\frac{dy}{dx}\right\vert_{x=3} = 12\times 3+2 = 38$$
 - en: Now, let’s see how PyTorch does that,
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们看一看PyTorch是如何做到的，
 - en: '[PRE9]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '[PRE10]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The derivative of the equation is 38, which is correct.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 方程的导数为38，这是正确的。
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用PyTorch进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件速成课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得免费的课程PDF电子书版本。
 - en: '**Implementing Partial Derivatives of Functions**'
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**实现函数的偏导数**'
 - en: PyTorch also allows us to calculate partial derivatives of functions. For example,
     if we have to apply partial derivation to the following function,
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 还允许我们计算函数的偏导数。例如，如果我们需要对以下函数应用偏导数，
 - en: $$f(u,v) = u^3+v^2+4uv$$
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: $$f(u,v) = u^3+v^2+4uv$$
 - en: Its derivative with respect to $u$ is,
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 其关于$u$的导数为，
 - en: $$\frac{\partial f}{\partial u} = 3u^2 + 4v$$
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\frac{\partial f}{\partial u} = 3u^2 + 4v$$
 - en: Similarly, the derivative with respect to $v$ will be,
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样地，关于$v$的导数如下，
 - en: $$\frac{\partial f}{\partial v} = 2v + 4u$$
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\frac{\partial f}{\partial v} = 2v + 4u$$
 - en: Now, let’s do it the PyTorch way, where $u = 3$ and $v = 4$.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们以PyTorch的方式来做，其中$u = 3$ 且 $v = 4$。
 - en: We’ll create `u`, `v` and `f` tensors and apply the `.backward` attribute on
     `f` in order to compute the derivative. Finally, we’ll evaluate the derivative
     using the `.grad` with respect to the values of `u` and `v`.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将创建`u`、`v`和`f`张量，并在`f`上应用`.backward`属性来计算导数。最后，我们将使用`.grad`相对于`u`和`v`的值来评估导数。
 - en: '[PRE11]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[PRE12]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '**Derivative of Functions with Multiple Values**'
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**具有多个值的函数的导数**'
 - en: 'What if we have a function with multiple values and we need to calculate the
     derivative with respect to its multiple values? For this, we’ll make use of the
     sum attribute to (1) produce a scalar-valued function, and then (2) take the derivative.
     This is how we can see the ‘function vs. derivative’ plot:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们有一个具有多个值的函数，并且需要计算其关于多个值的导数怎么办？为此，我们将利用sum属性来 (1) 生成一个标量值函数，然后 (2) 求导。这就是我们可以看到‘函数
+    vs. 导数’图的方式：
 - en: '[PRE13]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '![](../Images/f8701266f80e6797e39c5a0f5cb8c2bf.png)'
+  id: totrans-60
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/f8701266f80e6797e39c5a0f5cb8c2bf.png)'
 - en: In the two `plot()` function above, we extract the values from PyTorch tensors
     so we can visualize them. The `.detach` method doesn’t allow the graph to further
     track the operations. This makes it easy for us to convert a tensor to a numpy
     array.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述的两个`plot()`函数中，我们从PyTorch张量中提取值以便进行可视化。`.detach`方法不允许图进一步跟踪操作。这使得我们可以轻松地将张量转换为numpy数组。
 - en: '**Summary**'
+  id: totrans-62
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you learned how to implement derivatives on various functions
     in PyTorch.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您学习了如何在PyTorch中实现各种函数的导数。
 - en: 'Particularly, you learned:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 特别是，您学到了：
 - en: How to calculate derivatives in PyTorch.
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中计算导数。
 - en: How to use autograd in PyTorch to perform auto differentiation on tensors.
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中使用autograd对张量执行自动微分。
 - en: About the computation graph that involves different nodes and leaves, allowing
     you to calculate the gradients in a simple possible manner (using the chain rule).
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有关涉及不同节点和叶子的计算图，使您能够以可能的最简单方式计算梯度（使用链式法则）。
 - en: How to calculate partial derivatives in PyTorch.
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中计算偏导数。
 - en: How to implement the derivative of functions with respect to multiple values.
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何实现对多个值的函数的导数。

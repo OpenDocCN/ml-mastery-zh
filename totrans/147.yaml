@@ -1,252 +1,388 @@
 - en: Building a Softmax Classifier for Images in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中为图像构建 Softmax 分类器
 - en: 原文：[https://machinelearningmastery.com/building-a-softmax-classifier-for-images-in-pytorch/](https://machinelearningmastery.com/building-a-softmax-classifier-for-images-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/building-a-softmax-classifier-for-images-in-pytorch/](https://machinelearningmastery.com/building-a-softmax-classifier-for-images-in-pytorch/)
 - en: Softmax classifier is a type of classifier in supervised learning. It is an
     important building block in deep learning networks and the most popular choice
     among deep learning practitioners.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: Softmax 分类器是监督学习中的一种分类器。它是深度学习网络中的重要构建模块，也是深度学习从业者中最受欢迎的选择。
 - en: Softmax classifier is suitable for multiclass classification, which outputs
     the probability for each of the classes.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: Softmax 分类器适用于多类分类，它为每个类别输出概率。
 - en: 'This tutorial will teach you how to build a softmax classifier for images data.
     You will learn how to prepare the dataset, and then learn how to implement softmax
     classifier using PyTorch. Particularly, you’ll learn:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程将教你如何为图像数据构建一个 Softmax 分类器。你将学习如何准备数据集，然后学习如何使用 PyTorch 实现 Softmax 分类器。特别是，你将学习：
 - en: About the Fashion-MNIST dataset.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于 Fashion-MNIST 数据集。
 - en: How you can use a Softmax classifier for images in PyTorch.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中使用 Softmax 分类器处理图像。
 - en: How to build and train a multi-class image classifier in PyTorch.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中构建和训练一个多类图像分类器。
 - en: How to plot the results after model training.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在模型训练后绘制结果。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，参考我的书籍 [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了
+    **自学教程** 和 **可用代码**。'
 - en: Let’s get started.![](../Images/1c11e009d1de000b1f5b02bf7c9745cb.png)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。![](../Images/1c11e009d1de000b1f5b02bf7c9745cb.png)
 - en: Building a Softmax Classifier for Images in PyTorch.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中为图像构建 Softmax 分类器。
 - en: Picture by [Joshua J. Cotten](https://unsplash.com/photos/Ge1t87lvyRM). Some
     rights reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来自 [Joshua J. Cotten](https://unsplash.com/photos/Ge1t87lvyRM)。保留所有权利。
 - en: Overview
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in three parts; they are
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分：
 - en: Preparing the Dataset
+  id: totrans-15
   prefs:
   - PREF_UL
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备数据集
 - en: Build the Model
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建模型
 - en: Train the Model
+  id: totrans-17
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练模型
 - en: Preparing the Dataset
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备数据集
 - en: The dataset you will use here is Fashion-MNIST. It is a pre-processed and well-organized
     dataset consisting of 70,000 images, with 60,000 images for training data and
     10,000 images for testing data.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将在这里使用的数据集是 Fashion-MNIST。它是一个经过预处理和良好组织的数据集，包含 70,000 张图像，其中 60,000 张用于训练数据，10,000
+    张用于测试数据。
 - en: Each example in the dataset is a $28\times 28$ pixels grayscale image with a
     total pixel count of 784\. The dataset has 10 classes, and each image is labelled
     as a fashion item, which is associated with an integer label from 0 through 9.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据集中的每个示例是一个 $28\times 28$ 像素的灰度图像，总像素数为 784。数据集有 10 个类别，每张图像被标记为一个时尚项目，并与从
+    0 到 9 的整数标签相关联。
 - en: 'This dataset can be loaded from `torchvision`. To make the training faster,
     we limit the dataset to 4000 samples:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 该数据集可以从 `torchvision` 中加载。为了加快训练速度，我们将数据集限制为 4000 个样本：
 - en: '[PRE0]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'At the first time you fetch the fashion-MNIST dataset, you will see PyTorch
     downloading it from Internet and saving to a local directory named `data`:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你第一次获取 fashion-MNIST 数据集时，你会看到 PyTorch 从互联网下载它并保存到名为 `data` 的本地目录中：
 - en: '[PRE1]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The dataset `train_data` above is a list of tuples, which each tuple is an image
     (in the form of a Python Imaging Library object) and an integer label.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述数据集 `train_data` 是一个元组列表，每个元组包含一个图像（以 Python Imaging Library 对象的形式）和一个整数标签。
 - en: Let’s plot the first 10 images in the dataset with matplotlib.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们用 matplotlib 绘制数据集中的前 10 张图像。
 - en: '[PRE2]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'You should see an image like the following:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该能看到类似以下的图像：
 - en: '![](../Images/c04cd8b1b12cba01ef7be6dd805a3558.png)'
+  id: totrans-29
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/c04cd8b1b12cba01ef7be6dd805a3558.png)'
 - en: 'PyTorch needs the dataset in PyTorch tensors. Hence you will convert this data
     by applying the transforms, using the `ToTensor()` method from PyTorch transforms.
     This transform can be done transparently in torchvision’s dataset API:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 需要数据集为 PyTorch 张量。因此，你将通过应用转换，使用 PyTorch transforms 中的 `ToTensor()`
+    方法来转换这些数据。此转换可以在 torchvision 的数据集 API 中透明地完成：
 - en: '[PRE3]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Before proceeding to the model, let’s also split our data into train and validation
     sets in such a way that the first 3500 images is the training set and the rest
     is for validation. Normally we want to shuffle the data before the split but we
     can skip this step to make our code concise.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在继续模型之前，我们还将数据拆分为训练集和验证集，其中前3500张图像为训练集，其余的为验证集。通常我们希望在拆分之前打乱数据，但为了简洁起见，我们可以跳过这一步。
 - en: '[PRE4]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-34
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就来参加我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费 PDF 电子书版。
 - en: Build the Model
+  id: totrans-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建模型
 - en: In order to build a custom softmax module for image classification, we’ll use
     `nn.Module` from the PyTorch library. To keep things simple, we build a model
     of just one layer.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了构建一个用于图像分类的自定义 softmax 模块，我们将使用来自 PyTorch 库的 `nn.Module`。为了简化起见，我们只构建一个层的模型。
 - en: '[PRE5]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Now, let’s instantiate our model object. It takes a one-dimensional vector as
     input and predicts for 10 different classes. Let’s also check how parameters are
     initialized.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们实例化我们的模型对象。它接受一个一维向量作为输入，并对10个不同的类别进行预测。我们还要检查一下参数的初始化情况。
 - en: '[PRE6]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'You should see the model’s weight are randomly initialized but it should be
     in the shape like the following:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该会看到模型的权重是随机初始化的，但它的形状应类似于以下：
 - en: '[PRE7]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Train the Model
+  id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 训练模型
 - en: You will use stochastic gradient descent for model training along with cross-entropy
     loss. Let’s fix the learning rate at 0.01\. To help training, let’s also load
     the data into a dataloader for both training and validation sets, and set the
     batch size at 16.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将使用随机梯度下降来训练模型，并结合交叉熵损失。让我们将学习率固定为0.01。为了帮助训练，我们还将数据加载到数据加载器中，包括训练集和验证集，并将批量大小设置为16。
 - en: '[PRE8]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Now, let’s put everything together and train our model for 200 epochs.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们将所有内容结合起来，并训练我们的模型200个周期。
 - en: '[PRE9]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'You should see the progress printed once every 10 epochs:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该会看到每10个周期打印一次进度：
 - en: '[PRE10]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: As you can see, the accuracy of the model increases after every epoch and its
     loss decreases. Here, the accuracy you achieved for the softmax images classifier
     is around 85 percent. If you use more data and increase the number of epochs,
     the accuracy may get a lot better. Now let’s see how the plots for loss and accuracy
     look like.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你所见，模型的准确率在每个周期后都会增加，而损失则会减少。在这里，你为 softmax 图像分类器取得的准确率大约是85%。如果你使用更多的数据并增加训练周期数，准确率可能会大大提高。现在让我们看看损失和准确率的图表。
 - en: 'First the loss plot:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先是损失图表：
 - en: '[PRE11]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: which should look like the following:![](../Images/d73205d0bd1c939a2ef02fb9c20601ee.png)
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 它应该类似于以下:![](../Images/d73205d0bd1c939a2ef02fb9c20601ee.png)
 - en: 'Here is the model accuracy plot:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是模型准确率的图表：
 - en: '[PRE12]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: which is like the one below:![](../Images/cdd1308460c6a5ac3b348f0f26ca2fda.png)
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 它类似于下面的样子:![](../Images/cdd1308460c6a5ac3b348f0f26ca2fda.png)
 - en: 'Putting everything together, the following is the complete code:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容整合起来，以下是完整的代码：
 - en: '[PRE13]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Summary
+  id: totrans-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you learned how to build a softmax classifier for images
     data. Particularly, you learned:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何为图像数据构建 softmax 分类器。特别是，你学到了：
 - en: About the Fashion-MNIST dataset.
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于 Fashion-MNIST 数据集。
 - en: How you can use a softmax classifier for images in PyTorch.
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中使用 softmax 分类器进行图像分类。
 - en: How to build and train a multiclass image classifier in PyTorch.
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中构建和训练一个多类别图像分类器。
 - en: How to plot the results after model training.
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在模型训练后绘制结果。

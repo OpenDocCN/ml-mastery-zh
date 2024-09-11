@@ -1,280 +1,423 @@
 - en: Image Datasets for Practicing Machine Learning in OpenCV
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 练习机器学习的图像数据集在 OpenCV 中
 - en: 原文：[https://machinelearningmastery.com/image-datasets-for-practicing-machine-learning-in-opencv/](https://machinelearningmastery.com/image-datasets-for-practicing-machine-learning-in-opencv/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/image-datasets-for-practicing-machine-learning-in-opencv/](https://machinelearningmastery.com/image-datasets-for-practicing-machine-learning-in-opencv/)
 - en: At the very start of your machine learning journey, publicly available datasets
     alleviate the worry of creating the datasets yourself and let you focus on learning
     to use the machine learning algorithms. It also helps if the datasets are moderately
     sized and do not require too much pre-processing to get you to practice using
     the algorithms quicker before moving on to more challenging problems.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在你开始机器学习之旅的最初阶段，公开可用的数据集减轻了自己创建数据集的担忧，让你能够专注于学习使用机器学习算法。如果数据集大小适中，不需要过多的预处理，可以更快地练习使用算法，然后再转向更具挑战性的问题，这也会很有帮助。
 - en: Two datasets we will be looking at are the simpler digits dataset provided with
     OpenCV and the more challenging but widely used CIFAR-10 dataset. We will use
     any of these two datasets during our journey through OpenCV’s machine learning
     algorithms.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将查看的两个数据集是 OpenCV 提供的较简单的数字数据集和更具挑战性但广泛使用的 CIFAR-10 数据集。在我们探索 OpenCV 的机器学习算法时，我们将使用这两个数据集中的任何一个。
 - en: In this tutorial, you will learn how to download and extract the OpenCV digits
     and CIFAR-10 datasets for practicing machine learning in OpenCV.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将学习如何下载和提取 OpenCV 数字和 CIFAR-10 数据集，以练习在 OpenCV 中进行机器学习。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: How to download and extract the OpenCV digits dataset.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何下载和提取 OpenCV 数字数据集。
 - en: How to download and extract the CIFAR-10 dataset without necessarily relying
     on other Python packages (such as TensorFlow).
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何下载和提取 CIFAR-10 数据集，而不依赖其他 Python 包（如 TensorFlow）。
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，可以参考我的书籍 [《OpenCV 中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started. [![](../Images/edd66ee5c05c91d99f79dbb46db3775c.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/datasets_cover-scaled.jpg)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。[![](../Images/edd66ee5c05c91d99f79dbb46db3775c.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/datasets_cover-scaled.jpg)
 - en: Image Datasets for Practicing Machine Learning in OpenCV
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 练习机器学习的图像数据集在 OpenCV 中
 - en: Photo by [OC Gonzalez](https://unsplash.com/photos/xg8z_KhSorQ), some rights
     reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [OC Gonzalez](https://unsplash.com/photos/xg8z_KhSorQ) 拍摄，版权所有。
 - en: '**Tutorial Overview**'
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概览**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是：
 - en: The Digits Dataset
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数字数据集
 - en: The CIFAR-10 Dataset
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: CIFAR-10 数据集
 - en: Loading the Datasets
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 加载数据集
 - en: '**The Digits Dataset**'
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**数字数据集**'
 - en: '[OpenCV provides the image, digits.png](https://github.com/opencv/opencv/tree/master/samples/data),
     composed of a ‘collage’ of 20$\times$20 pixel sub-images, where each sub-image
     features a digit from 0 to 9 and may be split up to create a dataset. In total,
     the *digits* image contains 5,000 handwritten digits.'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '[OpenCV 提供的图像，digits.png](https://github.com/opencv/opencv/tree/master/samples/data)，由
+    20$\times$20 像素的子图像组成，每个子图像展示了从 0 到 9 的一个数字，可以拆分成数据集。总的来说，*digits* 图像包含 5,000
+    个手写数字。'
 - en: The digits dataset provided by OpenCV does not necessarily represent the real-life
     challenges that come with more complex datasets, primarily because its image content
     features very limited variation. However, its simplicity and ease of use will
     allow us to quickly test several machine learning algorithms at a low pre-processing
     and computational cost.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV 提供的数字数据集不一定代表更复杂数据集所面临的现实挑战，主要因为其图像内容变化非常有限。然而，它的简单性和易用性将允许我们以较低的预处理和计算成本快速测试几种机器学习算法。
 - en: 'To be able to extract the dataset from the full digits image, our first step
     is to split it into the many sub-images that make it up. For this purpose, let’s
     create the following `split_images` function:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了能够从完整的数字图像中提取数据集，我们的第一步是将其拆分成构成它的多个子图像。为此，我们来创建以下 `split_images` 函数：
 - en: Python
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The `split_images` function takes as input the path to the full image, together
     with the pixel size of the sub-images. Since we are working with square sub-images,
     we shall be denoting their size by a single dimension, which is equal to 20.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '`split_images` 函数接受全图像的路径以及子图像的像素大小作为输入。由于我们处理的是正方形子图像，我们将其大小用一个维度表示，该维度等于
+    20。'
 - en: The function subsequently applies the OpenCV `imread` method to load a grayscale
     version of the image into a NumPy array. The `hsplit` and `vsplit` methods are
     then used to split the NumPy array horizontally and vertically, respectively.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 该函数随后应用 OpenCV 的 `imread` 方法将图像的灰度版本加载到 NumPy 数组中。然后，使用 `hsplit` 和 `vsplit`
+    方法分别对 NumPy 数组进行水平和垂直切割。
 - en: The array of sub-images the `split_images` function returns is of size (50,
     100, 20, 20).
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '`split_images` 函数返回的子图像数组大小为 (50, 100, 20, 20)。'
 - en: Once we have extracted the array of sub-images, we shall partition it into training
     and testing sets. We will also need to create the ground truth labels for both
     splits of data to be used during the training process and to evaluate the test
     results.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我们提取了子图像数组，我们将把它分割成训练集和测试集。我们还需要为这两个数据分割创建真实标签，以便在训练过程中使用并评估测试结果。
 - en: 'The following `split_data` function serves these purposes:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下 `split_data` 函数用于这些目的：
 - en: Python
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The `split_data` function takes the array of sub-images as input and the split
     ratio for the training portion of the dataset. The function then proceeds to compute
     the `partition` value that divides the array of sub-images along its columns into
     training and testing sets. This `partition` value is then used to allocate the
     first set of columns to the training data and the remaining set of columns to
     the testing data.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: '`split_data` 函数以子图像数组和数据集训练部分的分割比例作为输入。然后，该函数计算 `partition` 值，将子图像数组沿其列分割成训练集和测试集。这个
+    `partition` 值随后用于将第一组列分配给训练数据，将剩余的列分配给测试数据。'
 - en: 'To visualize this partitioning on the *digits.png* image, this would appear
     as follows:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了在 *digits.png* 图像上可视化这种分割，效果如下所示：
 - en: '[![](../Images/0cd17ea5c637503aa9a0929737ff62f7.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/kNN_1.png)'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/0cd17ea5c637503aa9a0929737ff62f7.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/kNN_1.png)'
 - en: Partitioning the sub-images into a training dataset and a testing dataset
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 将子图像分割为训练数据集和测试数据集
 - en: You may also note that we are flattening out every 20$\times$20 sub-image into
     a one-dimensional vector of length 400 pixels such that, in the arrays containing
     the training and testing images, every row now stores a flattened out version
     of a 20$/times$20 pixel image.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 你还会注意到，我们将每个 20$\times$20 的子图像展平为一个长度为 400 像素的一维向量，使得在包含训练和测试图像的数组中，每一行现在存储的是展平后的
+    20$/times$20 像素图像。
 - en: The final part of the `split_data` function creates ground truth labels with
     values between 0 and 9 and repeats these values according to how many training
     and testing images we have available.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '`split_data` 函数的最后一部分创建了值在 0 到 9 之间的真实标签，并根据我们拥有的训练和测试图像的数量重复这些值。'
 - en: '**The CIFAR-10 Dataset**'
+  id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**CIFAR-10 数据集**'
 - en: The CIFAR-10 dataset is not provided with OpenCV, but we shall consider it because
     it represents real-world challenges better than OpenCV’s digits dataset.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: CIFAR-10 数据集并未随 OpenCV 提供，但我们将考虑它，因为它比 OpenCV 的数字数据集更好地代表了现实世界的挑战。
 - en: The CIFAR-10 dataset consists of a total of 60,000, 32$\times$32 RGB images.
     It features a variety of images belonging to 10 different classes, such as airplanes,
     cats, and ships. The dataset files are readily split into 5 pickle files containing
     1,000 training images and labels, plus an additional one with 1,000 testing images
     and labels.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: CIFAR-10 数据集总共包含 60,000 张 32$\times$32 RGB 图像。它包括属于 10 个不同类别的各种图像，如飞机、猫和船。数据集文件已经分割成
+    5 个 pickle 文件，其中包含 1,000 张训练图像及其标签，另一个文件包含 1,000 张测试图像及其标签。
 - en: 'Let’s go ahead and download the CIFAR-10 dataset for Python from [this link](https://www.cs.toronto.edu/~kriz/cifar.html)
     (**note**: the reason for not using TensorFlow/Keras to do so is to show how we
     can work without relying on additional Python packages if need be). Take note
     of the path on your hard disk to which you have saved and extracted the dataset.'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们继续从 [这个链接](https://www.cs.toronto.edu/~kriz/cifar.html) 下载 CIFAR-10 数据集用于
+    Python (**注意**：不使用 TensorFlow/Keras 的原因是展示如何在不依赖额外 Python 包的情况下工作)。请注意你在硬盘上保存并解压数据集的路径。
 - en: 'The following code loads the dataset files and returns the training and testing,
     images, and labels:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下代码加载数据集文件，并返回训练和测试图像以及标签：
 - en: Python
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: It is important to remember that the compromise of testing out different models
     using a larger and more varied dataset, such as the CIFAR-10, over a simpler one,
     such as the digits dataset, is that training on the former might be more time-consuming.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要记住的是，使用更大且更多样化的数据集（如 CIFAR-10）进行不同模型的测试相比于使用较简单的数据集（如 digits 数据集）的妥协在于，前者的训练可能会更耗时。
 - en: '**Loading the Datasets**'
+  id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**加载数据集**'
 - en: Let’s try calling the functions that we have created above.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们试着调用我们之前创建的函数。
 - en: 'I have separated the code belonging to the digits dataset from the code belonging
     to the CIFAR-10 dataset into two different Python scripts that I named `digits_dataset.py`
     and `cifar_dataset.py`, respectively:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将属于 digits 数据集的代码与属于 CIFAR-10 数据集的代码分开成两个不同的 Python 脚本，分别命名为 `digits_dataset.py`
+    和 `cifar_dataset.py`：
 - en: Python
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '**Note**: Do not forget to change the paths in the code above to where you
     have saved *your* data files.'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意**：不要忘记将上面代码中的路径更改为你保存*数据文件*的位置。'
 - en: In the subsequent tutorials, we shall see how to use these datasets with different
     machine learning techniques, first seeing how to convert the dataset images into
     feature vectors as one of the pre-processing steps before using them for machine
     learning.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 在接下来的教程中，我们将看到如何使用不同的机器学习技术处理这些数据集，首先了解如何将数据集图像转换为特征向量，作为使用它们进行机器学习的预处理步骤之一。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 OpenCV 进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并获得课程的免费 PDF Ebook 版本。
 - en: '**Further Reading**'
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: '**Books**'
+  id: totrans-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019年。'
 - en: '**Websites**'
+  id: totrans-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV, [https://opencv.org/](https://opencv.org/)
 - en: '**Summary**'
+  id: totrans-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you learned how to download and extract the OpenCV digits
     and CIFAR-10 datasets for practicing machine learning in OpenCV.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何下载和提取 OpenCV digits 和 CIFAR-10 数据集，以便在 OpenCV 中练习机器学习。
 - en: 'Specifically, you learned:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to download and extract the OpenCV digits dataset.
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何下载和提取 OpenCV digits 数据集。
 - en: How to download and extract the CIFAR-10 dataset without necessarily relying
     on other Python packages (such as TensorFlow).
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何下载和提取 CIFAR-10 数据集，而无需依赖其他 Python 包（如 TensorFlow）。
 - en: Do you have any questions?
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提出你的问题，我会尽力回答。

@@ -1,107 +1,155 @@
 - en: 'Beyond SQL: Transforming Real Estate Data into Actionable Insights with Pandas'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 超越SQL：使用Pandas将房地产数据转化为可操作的见解
 - en: 原文：[https://machinelearningmastery.com/beyond-sql-transforming-real-estate-data-into-actionable-insights-with-pandas/](https://machinelearningmastery.com/beyond-sql-transforming-real-estate-data-into-actionable-insights-with-pandas/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/beyond-sql-transforming-real-estate-data-into-actionable-insights-with-pandas/](https://machinelearningmastery.com/beyond-sql-transforming-real-estate-data-into-actionable-insights-with-pandas/)
 - en: In data analysis, SQL stands as a mighty tool, renowned for its robust capabilities
     in managing and querying databases. The pandas library in Python brings SQL-like
     functionalities to data scientists, enabling sophisticated data manipulation and
     analysis without the need for a traditional SQL database. In the following, you
     will apply SQL-like functions in Python to dissect and understand data.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在数据分析中，SQL作为一个强大的工具，以其在管理和查询数据库方面的强大功能而闻名。Python中的pandas库为数据科学家带来了类似SQL的功能，使其能够进行复杂的数据操作和分析，而无需传统的SQL数据库。在接下来的内容中，你将应用Python中的类似SQL的函数来剖析和理解数据。
 - en: '![](../Images/3564c6b63ef18ee9b4c8ba58d3b66c41.png)'
+  id: totrans-3
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/3564c6b63ef18ee9b4c8ba58d3b66c41.png)'
 - en: 'Beyond SQL: Transforming Real Estate Data into Actionable Insights with Pandas'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 超越SQL：使用Pandas将房地产数据转化为可操作的见解
 - en: Photo by [Lukas W.](https://unsplash.com/photos/white-and-black-panda-on-brown-wooden-fence-during-daytime-e3mu-MTj7Xk)
     Some rights reserved.
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由[Lukas W.](https://unsplash.com/photos/white-and-black-panda-on-brown-wooden-fence-during-daytime-e3mu-MTj7Xk)提供，部分权利保留。
 - en: Let’s get started.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分，它们是：
 - en: Exploring Data with Pandas’ `DataFrame.query()` Method
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用Pandas的`DataFrame.query()`方法探索数据
 - en: Aggregating and Grouping Data
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据聚合与分组
 - en: Mastering Row and Column Selection in Pandas
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 精通Pandas中的行和列选择
 - en: Harnessing Pivot Table for In-Depth Housing Market Analysis
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 利用数据透视表进行深入的房市分析
 - en: Exploring Data with Pandas’ `DataFrame.query()` Method
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用Pandas的`DataFrame.query()`方法探索数据
 - en: The `DataFrame.query()` method in pandas allows for the selection of rows based
     on a specified condition, akin to the SQL `SELECT` statement. Starting with the
     basics, you filter data based on single and multiple conditions, thereby laying
     the foundation for more complex data querying.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: pandas中的`DataFrame.query()`方法允许根据指定条件选择行，类似于SQL的`SELECT`语句。从基础开始，你可以基于单个或多个条件过滤数据，从而为更复杂的数据查询奠定基础。
 - en: '[PRE0]'
+  id: totrans-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: In the code above, you utilize the `DataFrame.query()` method from pandas to
     filter out houses priced above \$600,000, storing the result in a new DataFrame
     called `high_value_houses`. This method allows for concise and readable querying
     of the data based on a condition specified as a string. In this case, `'SalePrice
     > 600000'`.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述代码中，你利用pandas中的`DataFrame.query()`方法筛选出价格高于\$600,000的房屋，将结果存储在一个名为`high_value_houses`的新DataFrame中。此方法允许基于作为字符串指定的条件对数据进行简洁易读的查询。在这种情况下，条件为`'SalePrice
+    > 600000'`。
 - en: The resulting DataFrame below showcases the selected high-value properties.
     The query effectively narrows down the dataset to houses with a sale price exceeding
     \$600,000, showcasing merely 5 properties that meet this criterion. The filtered
     view provides a focused look at the upper echelon of the housing market in the
     Ames dataset, offering insights into the characteristics and locations of the
     highest-valued properties.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面的结果DataFrame展示了所选的高价值房产。查询有效地将数据集缩小到售价超过\$600,000的房屋，仅展示了5个符合该标准的房产。过滤后的视图提供了对Ames数据集中高价值房产的集中观察，提供了有关这些高价值房产的特征和位置的见解。
 - en: '[PRE1]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: In the next example below, let’s further explore the capabilities of the `DataFrame.query()`
     method to filter the Ames Housing dataset based on more specific criteria. The
     query selects houses that have more than 3 bedrooms (`BedroomAbvGr > 3`) and are
     priced below $300,000 (`SalePrice < 300000`). This combination of conditions is
     achieved using the logical AND operator (`&`), allowing you to apply multiple
     filters to the dataset simultaneously.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的下一个示例中，让我们进一步探索`DataFrame.query()`方法的功能，以根据更具体的标准过滤Ames Housing数据集。查询选择了卧室数量超过3间（`BedroomAbvGr
+    > 3`）且价格低于\$300,000（`SalePrice < 300000`）的房屋。此条件组合通过逻辑与操作符（`&`）实现，使你能够同时应用多个过滤器到数据集中。
 - en: '[PRE2]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The result of this query is stored in a new DataFrame called `specific_houses`,
     which contains all the properties that satisfy both conditions. By printing `specific_houses`,
     you can examine the details of homes that are both relatively large (in terms
     of bedrooms) and affordable, targeting a specific segment of the housing market
     that could interest families looking for spacious living options within a certain
     budget range.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 该查询的结果存储在一个新的 DataFrame 中，名为`specific_houses`，其中包含满足两个条件的所有属性。通过打印`specific_houses`，你可以检查既相对较大（就卧室而言）又负担得起的房屋的详细信息，目标是特定的住房市场细分，这可能会吸引那些寻找在特定预算范围内有宽敞居住选择的家庭。
 - en: '[PRE3]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The advanced query successfully identified a total of 352 houses from the Ames
     Housing dataset that meet the specified criteria: having more than 3 bedrooms
     and a sale price below \$300,000\. This subset of properties highlights a significant
@@ -112,18 +160,26 @@
     the number of bedrooms. This graphical representation will help you understand
     how living space and bedroom count influence the affordability and appeal of these
     homes within the specified criteria.'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 高级查询成功识别出Ames Housing数据集中总计352套符合指定条件的房屋：有超过3个卧室且售价低于\$300,000。这个属性子集突显了市场上的一个重要部分，提供宽敞的居住选择而不会超出预算，适合寻找经济实惠但宽敞住房的家庭或个人。为了进一步探讨这个子集的动态，让我们可视化销售价格与地面居住面积之间的关系，并增加一个额外的层次来指示卧室数量。这个图形表示将帮助你理解居住空间和卧室数量如何影响这些房屋在指定条件下的可负担性和吸引力。
 - en: '[PRE4]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '![](../Images/d1de7e8953b049490ac746cc4db78258.png)'
+  id: totrans-25
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/d1de7e8953b049490ac746cc4db78258.png)'
 - en: Scatter plot showing distribution of sales price related to the number of bedrooms
     and living area
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 散点图显示了销售价格与卧室数量和居住面积之间的分布
 - en: The scatter plot above vividly demonstrates the nuanced interplay between sale
     price, living area, and bedroom count, underscoring the varied options available
     within this segment of the Ames housing market. It highlights how larger living
@@ -131,16 +187,22 @@
     insights for potential buyers and investors focusing on spacious yet affordable
     homes. This visual analysis not only makes the data more accessible but also underpins
     the practical utility of Pandas in uncovering key market trends.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的散点图生动地展示了销售价格、居住面积和卧室数量之间的微妙关系，突出了Ames住房市场中这一细分市场的多样选择。它突显了较大的居住空间和额外卧室如何影响房产的价值，为关注宽敞且经济实惠住房的潜在买家和投资者提供了宝贵的见解。这个视觉分析不仅使数据更易于理解，还强调了Pandas在揭示关键市场趋势中的实际效用。
 - en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 用我的书[《数据科学入门指南》](https://machinelearning.samcart.com/products/beginners-guide-data-science/)**启动你的项目**。它提供了**自学教程**和**实用代码**。
 - en: '**Aggregating and Grouping Data**'
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**数据聚合与分组**'
 - en: Aggregation and grouping are pivotal in summarizing data insights. Building
     on the foundational querying techniques explored in the first part of your exploration,
     let’s delve deeper into the power of data aggregation and grouping in Python.
@@ -152,96 +214,146 @@
     across different neighborhoods. By aggregating this data, you aim to highlight
     the variability in housing affordability and inventory across the spatial canvas
     of Ames, Iowa.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 聚合和分组在总结数据洞察中至关重要。在你探索的第一部分中建立在基础查询技术的基础上，让我们深入研究Python中数据聚合和分组的力量。类似于SQL的`GROUP
+    BY`子句，pandas提供了一个强大的`groupby()`方法，使你能够将数据分成子集以进行详细分析。在你旅程的下一个阶段，专注于利用这些功能揭示Ames
+    Housing数据集中隐藏的模式和洞察。具体来说，你将检查在不同邻里中，超过三个卧室且售价低于\$300,000的房屋的平均售价。通过聚合这些数据，你旨在突出Ames,
+    Iowa空间画布上住房可负担性和库存的变化。
 - en: '[PRE5]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '[PRE6]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: By employing Seaborn for visualization, let’s aim to create an intuitive and
     accessible representation of your aggregated data. You proceed with creating a
     bar plot that showcases the average sale price by neighborhood, complemented by
     annotations of house counts to illustrate both price and volume in a single, cohesive
     graph.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过使用 Seaborn 进行可视化，我们的目标是创建一个直观且易于访问的数据表示。你可以创建一个条形图，展示按社区划分的平均销售价格，并附上房屋数量的注释，以在一个连贯的图表中展示价格和数量。
 - en: '[PRE7]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '![](../Images/8acde4372862c4994564c610b58a0a32.png)'
+  id: totrans-35
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/8acde4372862c4994564c610b58a0a32.png)'
 - en: Comparing neighborhoods by ascending average sales price
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 按升序比较社区的平均销售价格
 - en: The analysis and subsequent visualization underscore the significant variability
     in both the affordability and availability of homes that meet specific criteria—more
     than three bedrooms and priced below \$300,000—across Ames, Iowa. This not only
     demonstrates the practical application of SQL-like functions in Python for real-world
     data analysis but also provides valuable insights into the dynamics of local real
     estate markets.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 分析和随后的可视化强调了在艾姆斯（Ames），爱荷华州，符合特定标准（超过三间卧室且价格低于 \$300,000）的房屋在可负担性和可获得性上的显著差异。这不仅展示了
+    SQL 类函数在 Python 中用于实际数据分析的实际应用，还提供了有关地方房地产市场动态的宝贵见解。
 - en: Mastering Row and Column Selection in Pandas
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 精通 Pandas 中的行和列选择
 - en: Selecting specific subsets of data from DataFrames is a frequent necessity.
     Two powerful methods at your disposal are `DataFrame.loc[]` and `DataFrame.iloc[]`.
     Both serve similar purposes—to select data—but they differ in how they reference
     the rows and columns.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 从 DataFrame 中选择特定的数据子集是常见的需求。你可以使用两个强大的方法：`DataFrame.loc[]` 和 `DataFrame.iloc[]`。这两者的目的相似——选择数据——但它们在引用行和列时有所不同。
 - en: Understanding The `DataFrame.loc[]` Method
+  id: totrans-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 理解 `DataFrame.loc[]` 方法
 - en: '`DataFrame.loc[]` is a label-based data selection method, meaning you use the
     labels of rows and columns to select the data. It’s highly intuitive for selecting
     data based on column names and row indexes when you know the specific labels you’re
     interested in.'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '`DataFrame.loc[]` 是一种基于标签的数据选择方法，这意味着你使用行和列的标签来选择数据。对于基于列名和行索引选择数据，它非常直观，尤其是当你知道感兴趣的具体标签时。'
 - en: '**Syntax**: `DataFrame.loc[row_label, column_label]`'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '**语法**：`DataFrame.loc[row_label, column_label]`'
 - en: '**Goal**: Let’s select all houses with more than 3 bedrooms, priced below \$300,000,
     in specific neighborhoods known for their higher average sale prices (based on
     your earlier findings), and display their  ‘Neighborhood’, ‘SalePrice’ and ‘GrLivArea’.'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '**目标**：让我们选择所有超过 3 间卧室、价格低于 \$300,000 的房屋，位于以高平均销售价格著称的特定社区（基于你之前的发现），并显示它们的
+    ‘Neighborhood’，‘SalePrice’ 和 ‘GrLivArea’。'
 - en: '[PRE8]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '[PRE9]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Understanding The `DataFrame.iloc[]` Method
+  id: totrans-46
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 理解 `DataFrame.iloc[]` 方法
 - en: In contrast, `DataFrame.iloc[]` is an integer-location based indexing method.
     This means you use integers to specify the rows and columns you want to select.
     It’s particularly useful to access data by its position in the DataFrame.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 相对而言，`DataFrame.iloc[]` 是一种基于整数位置的索引方法。这意味着你使用整数来指定要选择的行和列。它特别有用，以按位置访问 DataFrame
+    中的数据。
 - en: '**Syntax**: `DataFrame.iloc[row_position, column_position]`'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: '**语法**：`DataFrame.iloc[row_position, column_position]`'
 - en: '**Goal**: The next focus is to uncover affordable housing options within the
     Ames dataset that do not compromise on space, specifically targeting homes with
     at least 3 bedrooms above grade and priced below \$300,000 outside of high-value
     neighborhoods.'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '**目标**：接下来的重点是揭示艾姆斯数据集中不妥协于空间的经济实惠的住房选项，特别是寻找至少有 3 间以上的卧室且价格低于 \$300,000 的房屋，排除高价值社区。'
 - en: '[PRE10]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '[PRE11]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: In your exploration of `DataFrame.loc[]` and `DataFrame.iloc[]`, you’ve uncovered
     the capabilities of pandas for row and column selection, demonstrating the flexibility
     and power of these methods in data analysis. Through practical examples from the
@@ -253,22 +365,33 @@
     for high-value properties in select neighborhoods or identifying entry-level homes
     in the broader market, mastering these selection techniques enriches your data
     science toolkit, enabling more targeted and insightful data exploration.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 在你探索`DataFrame.loc[]`和`DataFrame.iloc[]`时，你发现了 pandas 在行和列选择方面的能力，展示了这些方法在数据分析中的灵活性和强大功能。通过来自
+    Ames Housing 数据集的实际示例，你看到`DataFrame.loc[]`允许基于标签进行直观的选择，适用于根据已知标签定位特定数据。相对而言，`DataFrame.iloc[]`提供了一种通过整数位置精确访问数据的方法，提供了一种用于位置选择的基本工具，特别适用于需要关注数据片段或样本的场景。无论是在特定社区中筛选高价值物业，还是在更广泛的市场中识别入门级住房，掌握这些选择技巧都丰富了你的数据科学工具包，使数据探索更加有针对性和富有洞察力。
 - en: Want to Get Started With Beginner's Guide to Data Science?
+  id: totrans-53
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习《数据科学初学者指南》吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费邮件速成课程吧（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以免费获得课程的 PDF 电子书版本。
 - en: '**Harnessing Pivot Tables for In-depth Housing Market Analysis**'
+  id: totrans-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**利用数据透视表进行深入的住房市场分析**'
 - en: As you venture further into the depths of the Ames Housing dataset, your analytical
     journey introduces you to the potent capabilities of pivot tables within pandas.
     Pivot tables serve as an invaluable tool for summarizing, analyzing, and presenting
@@ -277,48 +400,67 @@
     hidden. In this section, you’ll leverage pivot tables to dissect the housing market
     more intricately, focusing on the interplay between neighborhood characteristics,
     the number of bedrooms, and sale prices.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你深入探讨 Ames Housing 数据集时，你的分析之旅将引入 pandas 中数据透视表的强大功能。数据透视表作为一个宝贵的工具，可以总结、分析和呈现复杂数据，以易于消化的格式。这种技术允许你交叉汇总和分段数据，以揭示可能否则会被隐藏的模式和见解。在本节中，你将利用数据透视表更深入地剖析住房市场，重点关注社区特征、卧室数量和销售价格之间的相互作用。
 - en: To set the stage for your pivot table analysis, you filter the dataset for homes
     priced below \$300,000 and with at least one bedroom above grade. This criterion
     focuses on more affordable housing options, ensuring your analysis remains relevant
     to a broader audience. You then proceed to construct a pivot table that segments
     the average sale price by neighborhood and bedroom count, aiming to uncover patterns
     that dictate housing affordability and preference within Ames.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了为你的数据透视表分析做好准备，你将数据集筛选为价格低于 \$300,000 且至少有一个高于地面的卧室。这个标准关注更实惠的住房选项，确保你的分析对更广泛的受众仍然相关。然后，你将构建一个数据透视表，按社区和卧室数量分段平均销售价格，旨在揭示影响
+    Ames 住房可负担性和偏好的模式。
 - en: '[PRE12]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Let’s take a quick view of the pivot table before we discuss some insights.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们讨论一些见解之前，先快速查看一下数据透视表。
 - en: '[PRE13]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'The pivot table above provides a comprehensive snapshot of how the average
     sale price varies across neighborhoods with the inclusion of different bedroom
     counts. This analysis reveals several key insights:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述数据透视表提供了一个全面的快照，展示了不同卧室数量在各社区中如何影响平均销售价格。此分析揭示了几个关键见解：
 - en: '**Affordability by Neighborhood**: You can see at a glance which neighborhoods
     offer the most affordable options for homes with specific bedroom counts, aiding
     in targeted home searches.'
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**各社区的可负担性**：你可以一目了然地看到哪些社区提供了具有特定卧室数量的最实惠的住房选项，有助于有针对性地寻找住房。'
 - en: '**Impact of Bedrooms on Price**: The table highlights how the number of bedrooms
     influences sale prices within each neighborhood, offering a gauge of the premium
     placed on larger homes.'
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**卧室数量对价格的影响**：该表格突出显示了卧室数量如何影响每个社区的销售价格，提供了对大房子的溢价的评估。'
 - en: '**Market Gaps and Opportunities**: Areas with zero values indicate a lack of
     homes meeting certain criteria, signaling potential market gaps or opportunities
     for developers and investors.'
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**市场缺口和机会**：零值区域表明缺乏符合特定标准的住房，这意味着市场上可能存在缺口或开发者和投资者的机会。'
 - en: By leveraging pivot tables for this analysis, you’ve managed to distill complex
     relationships within the Ames housing market into a format that’s both accessible
     and informative. This process not only showcases the powerful synergy between
@@ -326,25 +468,35 @@
     sophisticated data manipulation tools in uncovering actionable insights within
     real estate markets. As insightful as pivot tables are, their true potential is
     unleashed when combined with visual analysis.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过利用数据透视表进行分析，你成功地将Ames房地产市场中的复杂关系提炼为一种既易于访问又信息丰富的格式。这一过程不仅展示了pandas和类似SQL的分析技术之间的强大协同作用，还强调了先进数据处理工具在揭示房地产市场中可操作见解的重要性。尽管数据透视表非常有见地，但其真正的潜力是在与可视化分析相结合时发挥的。
 - en: To further illuminate your findings and make them more intuitive, you’ll transition
     from numerical analysis to visual representation. A heatmap is an excellent tool
     for this purpose, especially when dealing with multidimensional data like this.
     However, to enhance the clarity of your heatmap and direct attention towards actionable
     data, you will employ a custom color scheme that distinctly highlights non-existent
     combinations of neighborhood and bedroom counts.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了进一步阐明你的发现并使其更具直观性，你将从数值分析过渡到可视化表示。热图是实现这一目的的优秀工具，特别是在处理像这样的多维数据时。然而，为了提高热图的清晰度并将注意力集中在可操作的数据上，你将使用自定义的颜色方案，以明确突出不存在的社区和卧室数量组合。
 - en: '[PRE14]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '![](../Images/f4316886e11be4175e0a26fad3ac5191.png)'
+  id: totrans-69
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/f4316886e11be4175e0a26fad3ac5191.png)'
 - en: Heatmap showing the average sales price by neighborhood
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 显示按社区划分的平均销售价格的热图
 - en: The heatmap vividly illustrates the distribution of average sale prices across
     neighborhoods, segmented by the number of bedrooms. This color-coded visual aid
     makes it immediately apparent which areas of Ames offer the most affordable housing
@@ -356,62 +508,90 @@
     homes with 6 bedrooms in the “Old Town” neighborhood are listed at below \$100,000\.
     This discovery points to exceptional value for larger families or investors looking
     for properties with high bedroom counts at affordable price points.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 热图生动地展示了不同社区中按卧室数量划分的平均销售价格的分布。这种颜色编码的视觉辅助工具使得哪些Ames地区为各种规模的家庭提供了最实惠的住房选择一目了然。此外，针对零值的独特阴影——表示不存在的社区和卧室数量组合——是市场分析中的一个关键工具。它突出了市场中可能存在需求但供应不足的缺口，为开发者和投资者提供了宝贵的见解。值得注意的是，你的分析还揭示了“旧城”社区的6间卧室的房屋价格低于\$100,000。这一发现为大型家庭或寻找高卧室数量且价格合理的投资物业的投资者指明了优异的价值。
 - en: Through this visual exploration, you’ve not only enhanced your understanding
     of the housing market’s dynamics but also demonstrated the indispensable role
     of advanced data visualization in real estate analysis. The pivot table, complemented
     by the heatmap, exemplifies how sophisticated data manipulation and visualization
     techniques can reveal informative insights into the housing sector.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过这一视觉探索，你不仅加深了对房地产市场动态的理解，还展示了高级数据可视化在房地产分析中的不可或缺的作用。数据透视表配合热图，展示了复杂的数据处理和可视化技术如何揭示房地产领域的有价值见解。
 - en: '**Further****Reading**'
+  id: totrans-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多相关资源，如果你想深入了解，请参考。
 - en: Python Documentation
+  id: totrans-75
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: Python 文档
 - en: '[Pandas’ `DataFrame.query()` Method](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html#pandas.DataFrame.query)'
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Pandas的`DataFrame.query()`方法](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html#pandas.DataFrame.query)'
 - en: '[Pandas’ `DataFrame.groupby()` Method](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html)'
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Pandas的`DataFrame.groupby()`方法](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html)'
 - en: '[Pandas’ `DataFrame.loc[]` Method](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html)'
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Pandas的 `DataFrame.loc[]` 方法](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html)'
 - en: '[Pandas’ `DataFrame.iloc[]` Method](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iloc.html)'
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Pandas的 `DataFrame.iloc[]` 方法](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iloc.html)'
 - en: '[Pandas’ `DataFrame.pivot_table()` Method](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pivot_table.html)'
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Pandas的 `DataFrame.pivot_table()` 方法](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pivot_table.html)'
 - en: '**Resources**'
+  id: totrans-81
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**资源**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: 'This comprehensive journey through the Ames Housing dataset underscores the
     versatility and strength of pandas for conducting sophisticated data analysis,
     often achieving or exceeding what’s possible with SQL in an environment that doesn’t
@@ -419,23 +599,34 @@
     to identifying unique investment opportunities, you’ve showcased a range of techniques
     that equip analysts with the tools needed for deep data exploration. Specifically,
     you learned how to:'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过对Ames住房数据集的全面探索，突显了pandas在进行复杂数据分析中的多功能性和强大能力，常常在不依赖传统数据库的环境中实现或超越SQL的可能性。从精准确定详细的住房市场趋势到识别独特的投资机会，你展示了一系列技术，使分析师具备了深度数据探索所需的工具。具体来说，你学会了如何：
 - en: Leverage the `DataFrame.query()` for data selection akin to SQL’s `SELECT` statement.
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 利用 `DataFrame.query()` 进行数据选择，类似于SQL的 `SELECT` 语句。
 - en: Use `DataFrame.groupby()` for aggregating and summarizing data, similar to SQL’s
     `GROUP BY`.
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 `DataFrame.groupby()` 进行数据汇总和总结，类似于SQL的 `GROUP BY`。
 - en: Apply advanced data manipulation techniques like `DataFrame.loc[]`, `DataFrame.iloc[]`,
     and `DataFrame.pivot_table()` for deeper analysis.
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 应用高级数据处理技术，如 `DataFrame.loc[]`、`DataFrame.iloc[]` 和 `DataFrame.pivot_table()`
+    以进行更深入的分析。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 有任何问题吗？请在下方评论中提出问题，我会尽力回答。

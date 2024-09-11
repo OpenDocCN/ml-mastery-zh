@@ -1,11 +1,15 @@
 - en: Managing Data for Machine Learning Projects
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 管理机器学习项目的数据
 - en: 原文：[https://machinelearningmastery.com/managing-data-for-machine-learning-project/](https://machinelearningmastery.com/managing-data-for-machine-learning-project/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/managing-data-for-machine-learning-project/](https://machinelearningmastery.com/managing-data-for-machine-learning-project/)
 - en: Big data, labeled data, noisy data. Machine learning projects all need to look
     at data. Data is a critical aspect of machine learning projects, and how we handle
     that data is an important consideration for our project. When the amount of data
@@ -13,106 +17,162 @@
     or simply have a better way to retrieve data, it is natural to consider using
     a database system. It can be a relational database or a flat-file format. It can
     be local or remote.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 大数据、标记数据、噪声数据。机器学习项目都需要查看数据。数据是机器学习项目的一个关键方面，我们如何处理这些数据是我们项目的重要考虑因素。当数据量增长，需要管理这些数据，或让它们服务于多个项目，或者只是需要更好的数据检索方式时，考虑使用数据库系统是很自然的。这可以是关系型数据库或平面文件格式。它可以是本地的，也可以是远程的。
 - en: In this post, we explore different formats and libraries that you can use to
     store and retrieve your data in Python.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我们探讨了可以用于在 Python 中存储和检索数据的不同格式和库。
 - en: 'After completing this tutorial, you will learn:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将学会：
 - en: Managing data using SQLite, Python dbm library, Excel, and Google Sheets
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 SQLite、Python dbm 库、Excel 和 Google Sheets 管理数据
 - en: How to use the data stored externally for training your machine learning model
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用外部存储的数据来训练你的机器学习模型
 - en: What are the pros and cons of using a database in a machine learning project
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在机器学习项目中使用数据库的优缺点
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，可以参考我新书 [《Python 机器学习》](https://machinelearningmastery.com/python-for-machine-learning/)，其中包含
+    *一步一步的教程* 和所有示例的 *Python 源代码* 文件。'
 - en: Let’s get started!![](../Images/c04dc999bff0167a744a6febecdbbee6.png)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧!![](../Images/c04dc999bff0167a744a6febecdbbee6.png)
 - en: Managing Data with Python
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Python 管理数据
 - en: Photo by [Bill Benzon](https://www.flickr.com/photos/stc4blues/25260822078/).
     Some rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [比尔·本宗](https://www.flickr.com/photos/stc4blues/25260822078/) 提供。一些权利保留。
 - en: Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is divided into seven parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为七个部分；它们是：
 - en: Managing data in SQLite
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 SQLite 中管理数据
 - en: SQLite in action
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: SQLite 的实际应用
 - en: Managing data in dbm
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 dbm 中管理数据
 - en: Using  the dbm database in a machine learning pipeline
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在机器学习流程中使用 dbm 数据库
 - en: Managing data in Excel
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 Excel 中管理数据
 - en: Managing data in Google Sheets
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 Google Sheets 中管理数据
 - en: Other uses of the database
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据库的其他用途
 - en: Managing Data in SQLite
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在 SQLite 中管理数据
 - en: When we mention a database, it often means a relational database that stores
     data in a tabular format.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们提到数据库时，它通常指的是以表格格式存储数据的关系型数据库。
 - en: To start off, let’s grab a tabular dataset from `sklearn.dataset` (to learn
     more about getting datasets for machine learning, look at our [previous article](https://machinelearningmastery.com/a-guide-to-getting-datasets-for-machine-learning-in-python/)).
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们从 `sklearn.dataset` 获取一个表格数据集（要了解更多关于获取机器学习数据集的信息，请查看我们的 [上一篇文章](https://machinelearningmastery.com/a-guide-to-getting-datasets-for-machine-learning-in-python/)）。
 - en: '[PRE0]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The above lines read the “Pima Indians diabetes dataset” from OpenML and create
     a pandas DataFrame. This is a classification dataset with multiple numerical features
     and one binary class label. We can explore the DataFrame with:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码读取了来自 OpenML 的“皮马印第安人糖尿病数据集”并创建了一个 pandas DataFrame。这是一个具有多个数值特征和一个二元类别标签的分类数据集。我们可以使用以下方法探索
+    DataFrame：
 - en: '[PRE1]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'This gives us:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这为我们提供了：
 - en: '[PRE2]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: This is not a very large dataset, but if it was too large, we might not fit
     it in memory. A relational database is a tool to help us manage tabular data efficiently
     without keeping everything in memory. Usually, a relational database would understand
@@ -121,44 +181,64 @@
     library support in Python. In the following, we will demonstrate how we can make
     use of SQLite to manage data but using a different database such as MariaDB or
     PostgreSQL, which would be very similar.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这不是一个非常大的数据集，但如果它太大，我们可能无法将其放入内存。关系数据库是帮助我们高效管理表格数据的工具，而不必将所有内容保留在内存中。通常，关系数据库将理解SQL的一个方言，这是一种描述对数据进行操作的语言。SQLite是一种无服务器数据库系统，不需要任何设置，在Python中有内置库支持。接下来，我们将演示如何利用SQLite来管理数据，但使用其他数据库如MariaDB或PostgreSQL也是非常相似的。
 - en: 'Now, let’s start by creating an in-memory database in SQLite and getting a
     cursor object for us to execute queries to our new database:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们从在SQLite中创建一个内存数据库开始，并获取一个游标对象，以便我们可以执行对我们新数据库的查询：
 - en: '[PRE3]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'If we want to store our data on a disk so that we can reuse it another time
     or share it with another program, we can store the database in a database file
     instead of replacing the magic string `:memory:` in the above code snippet with
     the filename (e.g., `example.db`), as such:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们想把数据存储在硬盘上，以便稍后重复使用或与另一个程序共享，我们可以将数据库存储在数据库文件中，而不是像上面的代码片段中替换魔术字符串`:memory:`一样，可以用文件名（例如`example.db`）来替换，如下所示：
 - en: '[PRE4]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Now, let’s go ahead and create a new table for our diabetes data.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们继续为我们的糖尿病数据创建一个新表。
 - en: '[PRE5]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The `cur.execute()` method executes the SQL query that we have passed into it
     as an argument. In this case, the SQL query creates the `diabetes` table with
     the different columns and their respective data types. The language of SQL is
     not described here, but you may learn more from many database books and courses.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '`cur.execute()`方法执行我们传递给它作为参数的SQL查询。在本例中，SQL查询创建了`diabetes`表，其中包含不同的列及其各自的数据类型。SQL的语言不在此描述，但您可以从许多数据库书籍和课程中了解更多。'
 - en: Next, we can go ahead and insert data from our diabetes dataset, which is stored
     in a pandas DataFrame, into our newly created diabetes table in our in-memory
     SQL database.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们可以继续将存储在pandas DataFrame中的糖尿病数据集中的数据插入到我们新创建的糖尿病表中，这个表位于我们的内存SQL数据库中。
 - en: '[PRE6]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Let’s break down the above code: `dataset.to_numpy().tolist()` gives us a list
     of rows of the data in `dataset`, which we will pass as an argument into `cur.executemany()`.
     Then, `cur.executemany()` runs the SQL statement multiple times, each time with
@@ -166,51 +246,74 @@
     The parameterized SQL expects a list of values each time, and hence we should
     pass a list of the list into `executemany()`, which is what `dataset.to_numpy().tolist()`
     creates.'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们分解上述代码：`dataset.to_numpy().tolist()`给我们提供了`dataset`中数据的行列表，我们将其作为参数传递给`cur.executemany()`。然后，`cur.executemany()`多次运行SQL语句，每次使用从`dataset.to_numpy().tolist()`得到的数据行，这是从`dataset`中获取的数据行。参数化的SQL期望每次传递一个值列表，因此我们应该将列表的列表传递给`executemany()`，这就是`dataset.to_numpy().tolist()`创建的内容。
 - en: 'Now, we can check to confirm that all data are stored in the database:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们可以检查确认所有数据都存储在数据库中：
 - en: '[PRE7]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'In the above, we use the `SELECT` statement in SQL to query the table `diabetes`
     for 5 random rows. The result will be returned as a list of tuples (one tuple
     for each row). Then we convert the list of tuples into a pandas DataFrame by associating
     a name to each column. Running the above code snippet, we get this output:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述代码中，我们使用SQL中的`SELECT`语句来查询`diabetes`表的5行随机数据。结果将作为元组列表返回（每行一个元组）。然后，我们通过为每列分配一个名称，将元组列表转换为pandas
+    DataFrame。运行上面的代码片段，我们会得到这个输出：
 - en: '[PRE8]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Here’s the complete code for creating, inserting, and retrieving a sample from
     a relational database for the diabetes dataset using `sqlite3`:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是使用`sqlite3`创建、插入和检索糖尿病数据集中样本的完整代码：
 - en: '[PRE9]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: The benefit of using a database is pronounced when the dataset is not obtained
     from the Internet but collected by you over time. For example, you may be collecting
     data from sensors over many days. You may write the data you collected each hour
     into the database using an automated job. Then your machine learning project can
     run using the dataset from the database, and you may see a different result as
     your data accumulates.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用数据库的好处在于，当数据集不是从互联网获取，而是由你随时间收集时，会更加明显。例如，你可能会在多天内从传感器收集数据。你可以通过自动化任务将每小时收集的数据写入数据库。然后，你的机器学习项目可以使用数据库中的数据集运行，你可能会看到随着数据的积累而不同的结果。
 - en: Let’s see how we can build our relational database into our machine learning
     pipeline!
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看如何将我们的关系数据库构建到机器学习流程中！
 - en: SQLite in Action
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: SQLite 实战
 - en: Now that we’ve explored how to store and retrieve data from a relational database
     using sqlite3, we might be interested in how to integrate it into our machine
     learning pipeline.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经探讨了如何使用 sqlite3 存储和检索数据，我们可能会对如何将其集成到我们的机器学习流程中感兴趣。
 - en: 'Usually, in this situation, we will have a process to collect the data and
     write it to the database (e.g., read from sensors over many days). This will be
     similar to the code in the previous section, except we would prefer to write the
@@ -219,25 +322,38 @@
     on the model, there are different ways to use the data. Let’s consider a binary
     classification model in Keras for the diabetes dataset. We may build a generator
     to read a random batch of data from the database:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，在这种情况下，我们会有一个过程来收集数据并将其写入数据库（例如，从传感器读取数据多天）。这将类似于前一节中的代码，只不过我们更愿意将数据库写入磁盘以便持久存储。然后，我们将从数据库中读取数据用于机器学习过程，无论是训练还是预测。根据模型的不同，有不同的方式来使用数据。让我们考虑
+    Keras 中的一个二分类模型用于糖尿病数据集。我们可以构建一个生成器，从数据库中读取随机批次的数据：
 - en: '[PRE10]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'The above code is a generator function that gets the `batch_size` number of
     rows from the SQLite database and returns them as a NumPy array. We may use data
     from this generator for training in our classification network:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码是一个生成器函数，它从 SQLite 数据库中获取`batch_size`数量的行，并将其作为 NumPy 数组返回。我们可以使用来自这个生成器的数据在我们的分类网络中进行训练：
 - en: '[PRE11]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Running the above code gives us this output:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行上述代码会给我们以下输出：
 - en: '[PRE12]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Note that we read only the batch in the generator function and not everything.
     We rely on the database to provide us with the data, and we are not concerned
     about how large the dataset is in the database. Although SQLite is not a client-server
@@ -245,37 +361,53 @@
     systems that can do that. Thus you can imagine an extraordinarily large dataset
     can be used while only a limited amount of memory is provided for our machine
     learning application.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，我们在生成器函数中只读取一个批次，而不是全部数据。我们依赖数据库提供数据，而不关心数据库中数据集的大小。虽然 SQLite 不是一个客户端-服务器数据库系统，因此不适合网络扩展，但还有其他数据库系统可以做到这一点。因此，你可以想象在只提供有限内存的情况下使用异常庞大的数据集进行机器学习应用。
 - en: 'The following is the full code, from preparing the database to training a Keras
     model using data read in realtime from it:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是完整的代码，从准备数据库到使用实时读取的数据训练 Keras 模型：
 - en: '[PRE13]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Before moving on to the next section, we should emphasize that all databases
     are a bit different. The SQL statement we use may not be optimal in other database
     implementations. Also, note that SQLite is not very advanced as its objective
     is to be a database that requires no server setup. Using a large-scale database
     and how to optimize the usage is a big topic, but the concept demonstrated here
     should still apply.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 在进入下一部分之前，我们应该强调所有数据库都有些许不同。我们使用的 SQL 语句在其他数据库实现中可能并不最优。此外，请注意，SQLite 并不非常先进，因为它的目标是成为一个不需要服务器设置的数据库。使用大型数据库及其优化使用是一个重要话题，但这里演示的概念仍然适用。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-60
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 Python 进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费 7 天电子邮件速成课程（附样例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费 PDF 电子书版本。
 - en: Managing Data in dbm
+  id: totrans-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在 dbm 中管理数据
 - en: A relational database is great for tabular data, but not all datasets are in
     a tabular structure. Sometimes, data are best stored in a structure like Python’s
     dictionary, namely, a key-value store. There are many key-value data stores. MongoDB
@@ -283,114 +415,178 @@
     PostgreSQL. GNU dbm is a serverless store just like SQLite, and it is installed
     in almost every Linux system. In Python’s standard library, we have the `dbm`
     module to work with it.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 关系型数据库非常适合表格数据，但并非所有数据集都采用表格结构。有时，数据最适合存储在类似于 Python 字典的结构中，即键值对存储。存在许多键值对数据存储。MongoDB
+    可能是最著名的一种，它需要像 PostgreSQL 一样进行服务器部署。GNU dbm 是一种无服务器存储，类似于 SQLite，并且几乎每个 Linux
+    系统中都已安装。在 Python 的标准库中，我们有`dbm`模块来处理它。
 - en: 'Let’s explore Python’s `dbm` library. This library supports two different dbm
     implementations: the GNU dbm and the ndbm. If neither is installed in the system,
     there is Python’s own implementation as a fallback. Regardless of the underlying
     dbm implementation, the same syntax is used in our Python program.'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们来探索一下 Python 的 `dbm` 库。该库支持两种不同的 dbm 实现：GNU dbm 和 ndbm。如果系统中未安装这两种实现，则有 Python
+    自己的实现作为备用。无论底层的 dbm 实现如何，我们在 Python 程序中使用相同的语法。
 - en: 'This time, we’ll demonstrate using scikit-learn’s digits dataset:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 这次，我们将演示如何使用 scikit-learn 的数字数据集：
 - en: '[PRE14]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'The `dbm` library uses a dictionary-like interface to store and retrieve data
     from a dbm file, mapping keys to values where both keys and values are strings.
     The code to store the digits dataset in the file `digits.dbm` is as follows:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '`dbm`库使用类似字典的接口来存储和检索来自 dbm 文件的数据，将键映射到值，其中键和值都是字符串。将数字数据集存储在文件 `digits.dbm`
+    中的代码如下：'
 - en: '[PRE15]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: The above code snippet creates a new file `digits.dbm` if it does not exist
     yet. Then we pick each digits image (from `digits.images`) and the label (from
     `digits.target`) and create a tuple. We use the offset of the data as the key
     and the pickled string of the tuple as a value to store in the database. Unlike
     Python’s dictionary, dbm allows only string keys and serialized values. Hence
     we cast the key into the string using `str(idx)` and store only the pickled data.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码片段会在 `digits.dbm` 文件不存在时创建一个新文件。然后我们从 `digits.images` 中选择每个数字图像，从 `digits.target`
+    中选择标签，并创建一个元组。我们使用数据的偏移量作为键，将元组的 pickle 字符串作为值存储在数据库中。与 Python 的字典不同，dbm 只允许字符串键和序列化值。因此，我们使用
+    `str(idx)` 将键转换为字符串，并仅存储 pickle 数据。
 - en: You may learn more about serialization in our [previous article](https://machinelearningmastery.com/a-gentle-introduction-to-serialization-for-python/).
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以在我们的[上一篇文章](https://machinelearningmastery.com/a-gentle-introduction-to-serialization-for-python/)中了解更多关于序列化的内容。
 - en: 'The following is how we can read the data back from the database:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是如何从数据库中读取数据：
 - en: '[PRE16]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: In the above code snippet, we get 4 random keys from the database, then get
     their corresponding values and deserialize using `pickle.loads()`. As we know,
     the deserialized data will be a tuple; we assign them to the variables `image`
     and `target` and then collect each of the random samples in the list `images`
     and `targets`. For convenience in training in scikit-learn or Keras, we usually
     prefer to have the entire batch as a NumPy array.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述代码片段中，我们从数据库中获取 4 个随机键，然后获取它们的对应值，并使用 `pickle.loads()` 进行反序列化。正如我们所知，反序列化的数据将是一个元组；我们将其分配给变量
+    `image` 和 `target`，然后将每个随机样本收集到列表 `images` 和 `targets` 中。为了方便在 scikit-learn 或
+    Keras 中进行训练，我们通常更喜欢将整个批次作为 NumPy 数组。
 - en: 'Running the code above gets us the output:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行上述代码会得到以下输出：
 - en: '[PRE17]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'Putting everything together, this is what the code for retrieving the digits
     dataset, then creating, inserting, and sampling from a dbm database looks like:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合起来，这就是检索数字数据集的代码，然后创建、插入和从 dbm 数据库中采样的代码：
 - en: '[PRE18]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: Next, let’s look at how to use our newly created dbm database in our machine
     learning pipeline!
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，让我们看看如何在我们的机器学习管道中使用新创建的 dbm 数据库！
 - en: Using dbm Database in a Machine Learning Pipeline
+  id: totrans-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在机器学习管道中使用 dbm 数据库
 - en: 'Here, you probably realized that we can create a generator and a Keras model
     for digits classification, just like what we did in the example of the SQLite
     database. Here is how we can modify the code. First is our generator function.
     We just need to select a random batch of keys in a loop and fetch data from the
     dbm store:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，你可能意识到我们可以为数字分类创建生成器和 Keras 模型，就像在 SQLite 数据库示例中所做的那样。以下是如何修改代码的步骤。首先是我们的生成器函数。我们只需在循环中选择一个随机批次的键并从
+    dbm 存储中获取数据：
 - en: '[PRE19]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'Then, we can create a simple MLP model for the data:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以为数据创建一个简单的 MLP 模型：
 - en: '[PRE20]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'Running the above code gives us the following output:'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行上述代码会产生以下输出：
 - en: '[PRE21]'
+  id: totrans-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'This is how we used our dbm database to train our MLP for the digits dataset.
     The complete code for training the model using dbm is here:'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是我们如何使用 dbm 数据库来训练 MLP 以处理数字数据集的。使用 dbm 训练模型的完整代码在这里：
 - en: '[PRE22]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: In more advanced systems such as MongoDB or Couchbase, we may simply ask the
     database system to read random records for us instead of picking random samples
     from the list of all keys. But the idea is still the same; we can rely on an external
     store to keep our data and manage our dataset rather than doing it in our Python
     script.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 在更高级的系统如 MongoDB 或 Couchbase 中，我们可以简单地要求数据库系统为我们读取随机记录，而不是从所有键的列表中选择随机样本。但思想仍然是相同的；我们可以依赖外部存储来保存我们的数据并管理数据集，而不是在我们的
+    Python 脚本中完成。
 - en: Managing Data in Excel
+  id: totrans-90
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在 Excel 中管理数据
 - en: Sometimes, memory is not why we keep our data outside of our machine learning
     script. It’s because there are better tools to manipulate the data. Maybe we want
     to have tools to show us all data on the screen and allow us to scroll, with formatting
@@ -399,324 +595,495 @@
     Excel to manage data in situations where a relational database can be used. While
     Excel can read and export CSV files, the chances are that we may want to deal
     with Excel files directly.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时候，内存不是我们将数据保存在机器学习脚本之外的原因。原因是有更好的工具来处理数据。也许我们希望拥有能够在屏幕上显示所有数据并允许我们滚动、添加格式和高亮等工具。或者我们希望与不关心我们
+    Python 程序的其他人分享数据。在需要使用关系数据库的情况下，人们常常使用 Excel 来管理数据。虽然 Excel 可以读取和导出 CSV 文件，但我们可能希望直接处理
+    Excel 文件。
 - en: 'In Python, there are several libraries to handle Excel files, and OpenPyXL
     is one of the most famous. We need to install this library before we can use it:'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Python 中，有几个库可以处理 Excel 文件，OpenPyXL 是其中最著名的一个。在使用之前，我们需要安装这个库：
 - en: '[PRE23]'
+  id: totrans-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: Today, Excel uses the “Open XML Spreadsheet” format with the filename ending
     in `.xlsx`. The older Excel files are in a binary format with filename suffix
     `.xls`, and it is not supported by OpenPyXL (in which you can use `xlrd` and `xlwt`
     modules for reading and writing).
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前，Excel 使用的格式是“Open XML Spreadsheet”，文件名以 `.xlsx` 结尾。较旧的 Excel 文件是以二进制格式保存，文件名后缀为
+    `.xls`，这不被 OpenPyXL 支持（在这种情况下，你可以使用 `xlrd` 和 `xlwt` 模块进行读写）。
 - en: 'Let’s consider the same example we used in the case of SQLite above. We can
     open a new Excel workbook and write our diabetes dataset as a worksheet:'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们考虑一下在 SQLite 的情况下使用的相同示例。我们可以打开一个新的 Excel 工作簿，将我们的糖尿病数据集作为工作表写入：
 - en: '[PRE24]'
+  id: totrans-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: 'The code above is to prepare data for each cell in the worksheet (specified
     by the rows and columns). When we create a new Excel file, there will be one worksheet
     by default. Then the cells are identified by the row and column offset, beginning
     with 1\. We write to a cell with the syntax:'
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码用于为工作表中的每个单元格准备数据（由行和列指定）。当我们创建一个新的 Excel 文件时，默认会有一个工作表。然后，单元格通过行和列偏移来标识，从
+    1 开始。我们使用以下语法向单元格写入数据：
 - en: '[PRE25]'
+  id: totrans-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: 'To read from a cell, we use:'
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 要从单元格中读取数据，我们使用：
 - en: '[PRE26]'
+  id: totrans-100
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'Writing data into Excel cell by cell is tedious, and indeed we can add data
     row by row. The following is how we can modify the code above to operate in rows
     rather than cells:'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 一次一个单元格地向 Excel 写入数据是繁琐的，实际上我们可以逐行添加数据。以下是我们如何修改上述代码以逐行操作而不是逐单元格操作：
 - en: '[PRE27]'
+  id: totrans-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: Once we have written our data into the file, we may use Excel to visually browse
     the data, add formatting, and so on:![](../Images/d720837cd9e730ea9c4fab3e5f3b9303.png)
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我们将数据写入文件后，我们可以使用 Excel 直观地浏览数据、添加格式等：![](../Images/d720837cd9e730ea9c4fab3e5f3b9303.png)
 - en: 'To use it for a machine learning project is not any harder than using an SQLite
     database. The following is the same binary classification model in Keras, but
     the generator is reading from the Excel file instead:'
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 将其用于机器学习项目并不比使用 SQLite 数据库更难。以下是 Keras 中相同的二分类模型，但生成器从 Excel 文件中读取数据：
 - en: '[PRE28]'
+  id: totrans-105
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: 'In the above, we deliberately give the argument `steps_per_epoch=20` to the
     `fit()` function because the code above will be extremely slow. This is because
     OpenPyXL is implemented in Python to maximize compatibility but trades off the
     speed that a compiled module can provide. Hence it’s best to avoid reading data
     row by row every time from Excel. If we need to use Excel, a better option is
     to read the entire data into memory in one shot and use it directly afterward:'
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述操作中，我们故意给 `fit()` 函数传递 `steps_per_epoch=20` 参数，因为上面的代码会非常慢。这是因为 OpenPyXL
+    是用 Python 实现的，以最大化兼容性，但牺牲了编译模块所能提供的速度。因此，最好避免每次都逐行读取 Excel 数据。如果我们需要使用 Excel，较好的选择是一次性将所有数据读入内存，然后直接使用：
 - en: '[PRE29]'
+  id: totrans-107
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: Managing Data in Google Sheets
+  id: totrans-108
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在 Google Sheets 中管理数据
 - en: 'Besides an Excel workbook, sometimes we may find Google Sheets more convenient
     to handle data because it is “in the cloud.” We may also manage data using Google
     Sheets in a similar logic as Excel. But to begin, we need to install some modules
     before we can access it in Python:'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了 Excel 工作簿，有时我们会发现 Google Sheets 更方便处理数据，因为它是在“云端”中。我们也可以使用与 Excel 类似的逻辑来管理数据。但首先，我们需要安装一些模块才能在
+    Python 中访问它：
 - en: '[PRE30]'
+  id: totrans-110
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: 'Assume you have a Gmail account, and you created a Google Sheet. The URL you
     saw on the address bar, right before the `/edit` part, tells you the ID of the
     sheet, and we will use this ID later:'
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设你有一个 Gmail 账户，并且创建了一个 Google Sheet。你在地址栏看到的 URL，在 `/edit` 部分之前的部分，告诉你这个表格的
+    ID，我们将稍后使用这个 ID：
 - en: '![](../Images/bb73e2dacbc3df0154c867b4e01b1c43.png)'
+  id: totrans-112
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/bb73e2dacbc3df0154c867b4e01b1c43.png)'
 - en: To access this sheet from a Python program, it is best if you create a **service
     account** for your code. This is a machine-operable account that authenticates
     using a key but is manageable by the account owner. You can control what this
     service account can do and when it will expire. You may also revoke the service
     account at any time as it is separate from your Gmail account.
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 要从 Python 程序访问这个表格，最好为你的代码创建一个**服务账户**。这是一个通过密钥进行身份验证的机器可操作账户，但由账户所有者管理。你可以控制这个服务账户的权限和过期时间。你也可以随时撤销服务账户，因为它与
+    Gmail 账户是分开的。
 - en: 'To create a service account, first, you need to go to the Google developers
     console, [https://console.developers.google.com](https://console.developers.google.com/),
     and create a project by clicking the “Create Project” button:'
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 要创建服务账户，首先，你需要前往 Google 开发者控制台，[https://console.developers.google.com](https://console.developers.google.com/)，并通过点击“创建项目”按钮来创建一个项目：
 - en: '![](../Images/57cae22114bd3a3d2ecaf15c51164e25.png)'
+  id: totrans-115
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/57cae22114bd3a3d2ecaf15c51164e25.png)'
 - en: 'You need to provide a name, and then you can click “Create”:'
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 你需要提供一个名称，然后点击“创建”：
 - en: '![](../Images/d67a409b9978d3796ec0bed1d01b3645.png)'
+  id: totrans-117
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/d67a409b9978d3796ec0bed1d01b3645.png)'
 - en: 'It will bring you back to the console, but your project name will appear next
     to the search box. The next step is to enable the APIs by clicking “Enable APIs
     and Services” beneath the search box:'
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 它会将你带回控制台，但你的项目名称会出现在搜索框旁边。下一步是通过点击搜索框下方的“启用 API 和服务”来启用 API：
 - en: '![](../Images/840af135bd6a619b774f1b28d286b442.png)'
+  id: totrans-119
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/840af135bd6a619b774f1b28d286b442.png)'
 - en: 'Since we are to create a service account to use Google Sheets, we search for
     “sheets” on the search box:'
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们需要创建一个服务账户来使用 Google Sheets，我们在搜索框中搜索“sheets”：
 - en: '![](../Images/0b6c0c1cb54073588136680cea85a4a8.png)'
+  id: totrans-121
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/0b6c0c1cb54073588136680cea85a4a8.png)'
 - en: 'and then click on the Google Sheets API:'
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后点击 Google Sheets API：
 - en: '![](../Images/401bd565b03fe212219429e95c7360fc.png)'
+  id: totrans-123
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/401bd565b03fe212219429e95c7360fc.png)'
 - en: and enable it
+  id: totrans-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 并启用它
 - en: '![](../Images/b82e796d273fe8c70ca3c9c0cc8e4b30.png)'
+  id: totrans-125
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/b82e796d273fe8c70ca3c9c0cc8e4b30.png)'
 - en: 'Afterward, we will be sent back to the console main screen, and we can click
     on “Create Credentials” at the top right corner to create the service account:'
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，我们将被送回控制台主屏幕，我们可以点击右上角的“创建凭据”来创建服务账户：
 - en: '![](../Images/debbc816737d11d651d51dc97395ad3a.png)'
+  id: totrans-127
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/debbc816737d11d651d51dc97395ad3a.png)'
 - en: 'There are different types of credentials, and we select “Service Account”:'
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 有不同类型的凭据，我们选择“服务账户”：
 - en: '![](../Images/97184cb4221313f707ccfb8ae4cd98e6.png)'
+  id: totrans-129
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/97184cb4221313f707ccfb8ae4cd98e6.png)'
 - en: 'We need to provide a name (for our reference), an account ID (as a unique identifier
     for the project), and a description. The email address shown beneath the “Service
     account ID” box is the email for this service account. Copy it, and we will add
     it to our Google Sheet later. After we have created all these, we can skip the
     rest and click “Done”:'
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要提供一个名称（供我们参考）、一个帐户 ID（作为项目的唯一标识符）和一个描述。显示在“服务帐户 ID”框下方的电子邮件地址是该服务帐户的电子邮件。复制它，稍后我们将将其添加到我们的
+    Google 表中。创建所有这些之后，我们可以跳过其余部分，然后点击“完成”：
 - en: '![](../Images/7a1016955a665f831d1f483aaeaffe88.png)'
+  id: totrans-131
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/7a1016955a665f831d1f483aaeaffe88.png)'
 - en: 'When we finish, we will be sent back to the main console screen, and we know
     the service account is created if we see it under the “Service Account” section:'
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们完成后，将被送回到主控制台屏幕，并且如果我们在“服务帐户”部分下看到它，就知道服务帐户已经创建：
 - en: '![](../Images/ac270fda2a63e3a91acefd1d2f1fa770.png)'
+  id: totrans-133
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/ac270fda2a63e3a91acefd1d2f1fa770.png)'
 - en: 'Next, we need to click on the pencil icon at the right of the account, which
     brings us to the following screen:'
+  id: totrans-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们需要点击帐户右侧的铅笔图标，这将带我们到以下屏幕：
 - en: '![](../Images/207ae004c0b6005a1e293c57aaeb9223.png)'
+  id: totrans-135
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/207ae004c0b6005a1e293c57aaeb9223.png)'
 - en: 'Instead of a password, we need to create a key for this account. We click on
     the “Keys” page at the top, and then click “Add Key” and select “Create new key”:'
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要为此帐户创建一个密钥，而不是密码。我们点击页面顶部的“键”，然后点击“添加键”并选择“创建新键”：
 - en: '![](../Images/454adac64723c7ab15f9414ab97a72b3.png)'
+  id: totrans-137
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/454adac64723c7ab15f9414ab97a72b3.png)'
 - en: 'There are two different formats for the keys, and JSON is the preferred one.
     Selecting JSON and clicking “Create” at the bottom will download the key in a
     JSON file:'
+  id: totrans-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 键有两种不同的格式，JSON 是首选格式。选择 JSON 并在底部点击“创建”将会下载 JSON 文件的键：
 - en: '![](../Images/48dd0135bb8e96035149a2f2dc5c9f47.png)'
+  id: totrans-139
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/48dd0135bb8e96035149a2f2dc5c9f47.png)'
 - en: 'The JSON file will be like the following:'
+  id: totrans-140
   prefs: []
   type: TYPE_NORMAL
+  zh: JSON 文件将如下所示：
 - en: '[PRE31]'
+  id: totrans-141
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: After saving the JSON file, then we can go back to our Google Sheet and share
     the sheet with our service account. Click on the “Share” button at the top right
     corner and enter the email address of the service account. You can skip the notification
     and just click “Share.” Then we are all set!
+  id: totrans-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 保存 JSON 文件后，我们可以返回到我们的 Google 表，并与我们的服务帐户共享该表。点击右上角的“共享”按钮，输入服务帐户的电子邮件地址。您可以跳过通知，直接点击“共享”。然后我们就准备好了！
 - en: '![](../Images/2c8e3ccbf52e03e8855f791b23d889ad.png)'
+  id: totrans-143
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/2c8e3ccbf52e03e8855f791b23d889ad.png)'
 - en: 'At this point, we are ready to access this particular Google Sheet using the
     service account from our Python program. To write to a Google Sheet, we can use
     Google’s API. We depend on the JSON file we just downloaded for the service account
     (`mlm-python.json` in this example) to create a connection first:'
+  id: totrans-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，我们已准备好使用来自我们 Python 程序的服务帐户访问此特定 Google 表格。要向 Google 表格写入内容，我们可以使用 Google
+    的 API。我们首先依赖于刚刚下载的服务帐户的 JSON 文件（在本示例中为 `mlm-python.json`）来创建连接：
 - en: '[PRE32]'
+  id: totrans-145
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: 'If we just created it, there should be only one sheet in the file, and it has
     ID 0.  All operation using Google’s API is in the form of a JSON format. For example,
     the following is how we can delete everything on the entire sheet using the connection
     we just created:'
+  id: totrans-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们刚刚创建它，文件中应该只有一个工作表，并且其 ID 为 0。使用 Google 的 API 的所有操作都是以 JSON 格式进行的。例如，以下是我们如何使用刚刚创建的连接删除整个工作表上的所有内容：
 - en: '[PRE33]'
+  id: totrans-147
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: 'Assume we read the diabetes dataset into a DataFrame as in our first example
     above. Then, we can write the entire dataset into the Google Sheet in one shot.
     To do so, we need to create a list of lists to reflect the 2D array structure
     of the cells on the sheet, then put the data into the API query:'
+  id: totrans-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们像上面的第一个示例那样将糖尿病数据集读入一个 DataFrame 中。然后，我们可以一次性将整个数据集写入 Google 表格中。为此，我们需要创建一个列表的列表来反映表格中单元格的二维数组结构，然后将数据放入
+    API 查询中：
 - en: '[PRE34]'
+  id: totrans-149
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: In the above, we assumed the sheet has the name “Sheet1” (the default, as you
     can see at the bottom of the screen). We will write our data aligned at the top
     left corner, filling cell A1 (top left corner) onward. We use `dataset.to_numpy().tolist()`
     to collect all data into a list of lists, but we also add the column header as
     the extra row at the beginning.
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述内容中，我们假设表格的名称为“Sheet1”（默认名称，您可以在屏幕底部看到）。我们将数据写入到左上角对齐，从单元格 A1（左上角）开始填充。我们使用
+    `dataset.to_numpy().tolist()` 将所有数据收集到一个列表的列表中，但我们还将列标题作为额外的行添加在开头。
 - en: 'Reading the data back from the Google Sheet is similar. The following is how
     we can read a random row of data:'
+  id: totrans-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 从 Google 表格中读取数据的方式类似。以下是我们如何读取随机一行数据：
 - en: '[PRE35]'
+  id: totrans-152
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: 'Firstly, we can tell how many rows in the sheet by checking its properties.
     The `print()` statement above will produce the following:'
+  id: totrans-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们可以通过检查其属性来了解表中的行数。上面的`print()`语句将产生如下结果：
 - en: '[PRE36]'
+  id: totrans-154
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE36]'
 - en: 'As we have only one sheet, the list contains only one properties dictionary.
     Using this information, we can select a random row and specify the range to read.
     The variable `data` above will be a dictionary like the following, and the data
     will be in the form of a list of lists and can be accessed using `data["values"]`:'
+  id: totrans-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们只有一个表单，列表只包含一个属性字典。使用这些信息，我们可以选择一行随机行并指定读取范围。上面的变量`data`将是如下所示的字典，数据将以列表的形式存在，可以使用`data["values"]`访问：
 - en: '[PRE37]'
+  id: totrans-156
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE37]'
 - en: 'Tying all these together, the following is the complete code to load data into
     Google Sheet and read a random row from it: (be sure to change the `sheet_id`
     when you run it)'
+  id: totrans-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 将这些内容结合起来，以下是将数据加载到Google Sheet并从中读取随机行的完整代码：（运行时请确保更改`sheet_id`）
 - en: '[PRE38]'
+  id: totrans-158
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE38]'
 - en: 'Undeniably, accessing Google Sheets in this way is too verbose. Hence we have
     a third-party module `gspread` available to simplify the operation. After we install
     the module, we can check the size of the spreadsheet as simple as the following:'
+  id: totrans-159
   prefs: []
   type: TYPE_NORMAL
+  zh: 不可否认，以这种方式访问Google Sheets过于冗长。因此，我们有一个第三方模块`gspread`可用于简化操作。安装模块后，我们可以像下面这样简单地检查电子表格的大小：
 - en: '[PRE39]'
+  id: totrans-160
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE39]'
 - en: 'To clear the sheet, write rows into it, and read a random row can be done as
     follows:'
+  id: totrans-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 清除电子表格、写入行以及读取随机行可以如下进行：
 - en: '[PRE40]'
+  id: totrans-162
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE40]'
 - en: 'Hence the previous example can be simplified into the following, much shorter:'
+  id: totrans-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，之前的示例可以简化为以下内容，更短：
 - en: '[PRE41]'
+  id: totrans-164
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE41]'
 - en: 'Similar to reading Excel, using the dataset stored in a Google Sheet, it is
     better to read it in one shot rather than reading row by row during the training
     loop. This is because every time you read, you send a network request and wait
     for the reply from Google’s server. This cannot be fast and hence is better avoided.
     The following is an example of how we can combine data from a Google Sheet with
     Keras code for training:'
+  id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 与读取Excel类似，使用存储在Google Sheet中的数据集，最好一次性读取，而不是在训练循环中逐行读取。这是因为每次读取时，都会发送网络请求并等待Google服务器的回复。这不可能很快，因此最好避免。以下是我们如何将Google
+    Sheet中的数据与Keras代码结合起来进行训练的示例：
 - en: '[PRE42]'
+  id: totrans-166
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE42]'
 - en: Other Uses of the Database
+  id: totrans-167
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数据库的其他用途
 - en: 'The examples above show you how to access a database from a spreadsheet. We
     assume the dataset is stored and consumed by a machine learning model in the training
     loop. While this is one way of using external data storage, it’s not the only
     way. Some other use cases of a database would be:'
+  id: totrans-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的示例向您展示了如何从电子表格访问数据库。我们假设数据集在训练循环中由机器学习模型存储和使用。这是一种使用外部数据存储的方法，但不是唯一的方法。数据库的其他一些使用案例包括：
 - en: As storage for logs to keep a record of the details of the program, e.g., at
     what time some script is executed. This is particularly useful to keep track of
     changes if the script is going to mutate something, e.g., downloading some file
     and overwriting the old version
+  id: totrans-169
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 作为存储日志的工具，以记录程序的详细信息，例如某些脚本何时被执行。这对于跟踪更改特别有用，如果脚本将要更改某些内容，例如，下载某些文件并覆盖旧版本。
 - en: As a tool to collect data. Just like we may use `GridSearchCV` from scikit-learn,
     very often, we might evaluate the model performance with different combinations
     of hyperparameters. If the model is large and complex, we may want to distribute
@@ -725,125 +1092,184 @@
     to a database of a spreadsheet so we can tabulate the result with the hyperparameters
     selected. Having these data stored in a structural format allows us to report
     our conclusion later.
+  id: totrans-170
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 作为收集数据的工具。就像我们可能使用来自scikit-learn的`GridSearchCV`一样，我们经常会用不同的超参数组合来评估模型性能。如果模型很大且复杂，我们可能希望将评估分布到不同的机器上，并收集结果。在程序末尾添加几行代码，将交叉验证结果写入数据库或电子表格，以便我们可以将结果与选择的超参数制成表格是很方便的。将这些数据以结构化格式存储允许我们稍后报告结论。
 - en: As a tool to configure the model. Instead of writing the hyperparameter combination
     and the validation score, we can use it as a tool to provide us with the hyperparameter
     selection for running our program. Should we decide to change the parameters,
     we can simply open up a Google Sheet, for example, to make the change instead
     of modifying the code.
+  id: totrans-171
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 作为配置模型的工具。我们可以将其用作提供超参数选择的工具，以运行程序，而不是编写超参数组合和验证得分。如果我们决定更改参数，可以简单地打开一个Google
+    Sheet，例如，进行更改，而不是修改代码。
 - en: Further Reading
+  id: totrans-172
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: 'The following are some resources for you to go deeper:'
+  id: totrans-173
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是一些让你深入了解的资源：
 - en: '**Books**'
+  id: totrans-174
   prefs: []
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Practical SQL](https://www.amazon.com/dp/1718501064/), 2nd Edition, by Anthony
     DeBarros'
+  id: totrans-175
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[实用 SQL](https://www.amazon.com/dp/1718501064/)，第二版，作者：安东尼·德巴罗斯'
 - en: '[SQL Cookbook](https://www.amazon.com/dp/1492077445/), 2nd Edition, by Anthony
     Molinaro and Robert de Graaf'
+  id: totrans-176
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[SQL 食谱](https://www.amazon.com/dp/1492077445/)，第二版，作者：安东尼·莫利纳罗和罗伯特·德·格拉夫'
 - en: '[Automate the Boring Stuff with Python](https://www.amazon.com/dp/1593279922/),
     2nd Edition, by Al Sweigart'
+  id: totrans-177
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[用 Python 自动化无聊的事情](https://www.amazon.com/dp/1593279922/)，第二版，作者：阿尔·斯维加特'
 - en: '**APIs and Libraries**'
+  id: totrans-178
   prefs: []
   type: TYPE_NORMAL
+  zh: '**API 和库**'
 - en: '[sqlite3](https://docs.python.org/3/library/sqlite3.html) in Python standard
     library'
+  id: totrans-179
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 标准库中的 sqlite3](https://docs.python.org/3/library/sqlite3.html)'
 - en: '[apsw](https://rogerbinns.github.io/apsw/) – Another Python SQLite Wrapper'
+  id: totrans-180
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[apsw](https://rogerbinns.github.io/apsw/) – 另一个 Python SQLite 包装器'
 - en: '[dbm](https://docs.python.org/3/library/dbm.html) in Python standard library'
+  id: totrans-181
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 标准库中的 dbm](https://docs.python.org/3/library/dbm.html)'
 - en: '[Openpyxl](https://openpyxl.readthedocs.io/en/stable/)'
+  id: totrans-182
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Openpyxl](https://openpyxl.readthedocs.io/en/stable/)'
 - en: '[Google Sheets API](https://developers.google.com/sheets/api)'
+  id: totrans-183
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Google Sheets API](https://developers.google.com/sheets/api)'
 - en: '[gspread](https://docs.gspread.org/en/latest/)'
+  id: totrans-184
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[gspread](https://docs.gspread.org/en/latest/)'
 - en: Articles
+  id: totrans-185
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[Service accounts](https://cloud.google.com/iam/docs/service-accounts) in Google
     Cloud'
+  id: totrans-186
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Google Cloud 中的服务账户](https://cloud.google.com/iam/docs/service-accounts)'
 - en: '[Creating and managing service accounts](https://cloud.google.com/iam/docs/creating-managing-service-accounts)'
+  id: totrans-187
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[创建和管理服务账户](https://cloud.google.com/iam/docs/creating-managing-service-accounts)'
 - en: Software
+  id: totrans-188
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 软件
 - en: '[SQLite](https://www.sqlite.org/index.html)'
+  id: totrans-189
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[SQLite](https://www.sqlite.org/index.html)'
 - en: '[GNU dbm](https://www.gnu.org.ua/software/gdbm/)'
+  id: totrans-190
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[GNU dbm](https://www.gnu.org.ua/software/gdbm/)'
 - en: '**Summary**'
+  id: totrans-191
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you saw how you could use external data storage, including
     a database or a spreadsheet.
+  id: totrans-192
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学会了如何使用外部数据存储，包括数据库或电子表格。
 - en: 'Specifically, you learned:'
+  id: totrans-193
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How you can make your Python program access a relational database such as SQLite
     using SQL statements
+  id: totrans-194
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使你的 Python 程序通过 SQL 语句访问像 SQLite 这样的关系数据库
 - en: How you can use dbm as a key-value store and use it like a Python dictionary
+  id: totrans-195
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将 dbm 用作键值存储，并像使用 Python 字典一样使用它
 - en: How to read from Excel files and write to it
+  id: totrans-196
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从 Excel 文件中读取数据并写入数据
 - en: How to access Google Sheet over the Internet
+  id: totrans-197
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过互联网访问 Google Sheet
 - en: How we can use all these to host datasets and use them in our machine learning
     project
+  id: totrans-198
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们如何利用这些来托管数据集并在机器学习项目中使用它们

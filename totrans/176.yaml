@@ -1,310 +1,472 @@
 - en: Inpainting and Outpainting with Diffusers
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 Diffusers 进行图像修复和扩展
 - en: 原文：[https://machinelearningmastery.com/inpainting-and-outpainting-with-diffusers/](https://machinelearningmastery.com/inpainting-and-outpainting-with-diffusers/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/inpainting-and-outpainting-with-diffusers/](https://machinelearningmastery.com/inpainting-and-outpainting-with-diffusers/)
 - en: Inpainting and outpainting are popular image editing techniques. You have seen
     how to perform inpainting and outpainting using the WebUI. You can do the same
     using code as well.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 图像修复和扩展是流行的图像编辑技术。您已经看到如何使用 WebUI 进行图像修复和扩展。您也可以使用代码完成相同的操作。
 - en: In this post, you will see how you can use the diffusers library from Hugging
     Face to run Stable Diffusion pipeline to perform inpainting and outpainting.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本篇文章中，您将看到如何使用 Hugging Face 的 diffusers 库运行 Stable Diffusion 流水线以执行图像修复和扩展。
 - en: After finishing this tutorial, you will learn
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将学习到
 - en: How to perform inpainting using the corresponding pipeline from diffusers
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 diffusers 的对应流水线进行图像修复
 - en: How to understand a outpainting problem as a special form of inpainting
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将图像扩展问题理解为图像修复的特殊形式
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用我的书籍[《掌握数字艺术与稳定扩散》](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/)**启动您的项目**。它提供了**自学教程**和**有效代码**。
 - en: Let’s get started.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/e250ba0fb5f4a8c71b82ced60796fc7e.png)'
+  id: totrans-9
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/e250ba0fb5f4a8c71b82ced60796fc7e.png)'
 - en: Inpainting and Outpainting with Diffusers
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Diffusers 进行图像修复和扩展
 - en: Photo by [Anna Kolosyuk](https://unsplash.com/photos/three-silver-paint-brushes-on-white-textile-D5nh6mCW52c).
     Some rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Anna Kolosyuk](https://unsplash.com/photos/three-silver-paint-brushes-on-white-textile-D5nh6mCW52c)提供。保留所有权利。
 - en: Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in two parts; they are
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两个部分；它们是
 - en: Inpainting with the Diffusers Library
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Diffusers 库进行图像修复
 - en: Outpainting with the Diffusers Library
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Diffusers 库进行图像扩展
 - en: Inpainting with the Diffusers Library
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 Diffusers 库进行图像修复
 - en: We covered the idea of inpainting the a [previous post](https://machinelearningmastery.com/inpainting-and-outpainting-with-stable-diffusion/)
     and showed how inpainting can be done using the WebUI. In this section, you will
     see how you can do the same using Python code.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在[之前的帖子](https://machinelearningmastery.com/inpainting-and-outpainting-with-stable-diffusion/)中讨论了图像修复的概念，并展示了如何使用
+    WebUI 进行图像修复。在本节中，您将看到如何使用 Python 代码完成相同的操作。
 - en: You are going to use Google Colab in this post, for the convenience that you
     do not need to own a GPU. If you decided to run the code locally, some small modification
     may be needed. For example, you can call `cv2.imshow()` function directly instead
     of using Google’s patched `cv2_imshow()` function.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，您将使用 Google Colab，因为这样您不需要拥有 GPU。如果您决定在本地运行代码，可能需要一些小的修改。例如，您可以直接调用 `cv2.imshow()`
+    函数，而不是使用 Google 修改过的 `cv2_imshow()` 函数。
 - en: 'Inpainting requires you to mask regions of the image that have to be reconstructed
     and a capable model to fill the region with missing pixels. Instead of drawing
     the mask on the image, you will utilize:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 图像修复要求您对需要重建的图像区域进行遮罩，并使用能够填充缺失像素的模型。您将使用以下方法，而不是在图像上绘制遮罩：
 - en: Meta AI’s SAM ([Segment Anything Model](https://github.com/facebookresearch/segment-anything)),
     a very strong image segmentation model, you will utilize it to generate masks
     for input images.
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Meta AI 的 SAM ([Segment Anything Model](https://github.com/facebookresearch/segment-anything))，一个非常强大的图像分割模型，您将利用它来生成输入图像的遮罩。
 - en: '`StableDiffusionInpaintPipeline` from Hugging Face library for text-guided
     inpainting with stable diffusion'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 来自 Hugging Face 库的 `StableDiffusionInpaintPipeline` 用于文本引导的稳定扩散修复
 - en: 'First, you should create a notebook on Google Colab and set to use T4 GPU.
     At the beginning of the notebook, you should install all dependencies and load
     the checkpoint ViT-B (URL: [https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth](https://github.com/facebookresearch/segment-anything),
     ) for SAM.'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '首先，您应该在 Google Colab 上创建一个笔记本并设置为使用 T4 GPU。在笔记本的开头，您应该安装所有依赖项并加载检查点 ViT-B（URL:
+    [https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth](https://github.com/facebookresearch/segment-anything)）以用于
+    SAM。'
 - en: 'The code below should go first:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下代码应首先运行：
 - en: '[PRE0]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Next, you can upload an image to Colab for reconstruction. It can be done conveniently
     by clicking on the “File” icon on the left toolbar and then upload a file from
     your local computer:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，您可以将图像上传到 Colab 进行重建。您可以通过点击左侧工具栏上的“文件”图标，然后从本地计算机上传文件来方便地完成此操作：
 - en: '![](../Images/aa8f223363d291aa59d318577d445624.png)'
+  id: totrans-26
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/aa8f223363d291aa59d318577d445624.png)'
 - en: The left panel on Google Colab allows you to upload a file
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: Google Colab的左侧面板允许您上传文件。
 - en: 'The file you uploaded there is under the directory `/content/` . You can load
     the image by providing the full path and convert it into RGB format:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 你上传的文件在目录`/content/`下。提供完整路径加载图像，并将其转换为RGB格式：
 - en: '[PRE1]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'This is the sample image to start with:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是开始的示例图像：
 - en: '![](../Images/311f9e2fd19c5b89bb266e9daf8e98ca.png)'
+  id: totrans-31
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/311f9e2fd19c5b89bb266e9daf8e98ca.png)'
 - en: The sample picture to perform inpainting
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 执行修补的示例图片
 - en: Now load the SAM model with the checkpoint you have downloaded above. Here you
     are using the `SamPredictor` class to segment images. You provide image coordinates
     for the object to be masked, the model will automatically segment the image.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在加载您已经下载的SAM模型的检查点。在这里，您使用`SamPredictor`类来分割图像。您为要掩盖的对象提供图像坐标，模型将自动分割图像。
 - en: '[PRE2]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The object selected is the one with the pixel at position (250,250), i.e., at
     the center of the image. The array `mask` is a boolean array (for the binary image),
     we’ll convert it into pixel values, change the shape from (1,512,512) to (512,512,1),
     and convert it into black-and-white version.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 选定的对象是图像中（250,250）位置的像素。数组`mask`是布尔数组（用于二进制图像），我们将其转换为像素值，将形状从（1,512,512）转换为（512,512,1），并将其转换为黑白版本。
 - en: '[PRE3]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The mask created is as follows:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建的掩模如下所示：
 - en: '![](../Images/fcbe5c99e35e5ed73b811a80ac0a928d.png)'
+  id: totrans-38
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/fcbe5c99e35e5ed73b811a80ac0a928d.png)'
 - en: The mask created by SAM for inpainting. White pixels are to be changed and black
     pixels are preserved.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: SAM为修补生成的掩模。白色像素将被更改，黑色像素将被保留。
 - en: SAM has done its job by helping us generate a mask, now we’re ready to use Stable
     Diffusion for inpainting.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: SAM已经完成了生成掩模的工作，现在我们准备使用稳定扩散进行修补。
 - en: 'Create a pipeline using a Stable Diffusion model from Hugging Face repository:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用Hugging Face库中的稳定扩散模型创建管道：
 - en: '[PRE4]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: In the above, you used `StableDiffusionInpaintPipeline` and it works only for
     Stable Diffusion 1.x Inpainting models. If you are not sure your model is one,
     you can also try with `AutoPipelineForInpainting` instead and see if the correct
     architecture can be figured out automatically.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述内容中，您使用了`StableDiffusionInpaintPipeline`，它仅适用于稳定扩散1.x修补模型。如果您不确定您的模型是否是这样的模型，您也可以尝试使用`AutoPipelineForInpainting`，看看是否可以自动找到正确的架构。
 - en: Now provide a prompt for the reconstruction and wait for the magic!
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在为重建提供提示，并等待魔法！
 - en: '[PRE5]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'This image is also created under the directory `/content` in Colab. You can
     now display the image like the previous:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 此图像也是在Colab中的`/content`目录下创建的。现在，您可以像之前一样显示图像了：
 - en: '[PRE6]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'This is what you may see:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是您可能看到的内容：
 - en: '![](../Images/1f51d45eac5636aae81565e984be8c26.png)'
+  id: totrans-49
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/1f51d45eac5636aae81565e984be8c26.png)'
 - en: Result of inpainting
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 修补的结果
 - en: Congratulations on completing this quick tutorial! Now, here’s where the real
     fun begins. That’s it for this short tutorial, Note that in the example image,
     there’s only one main object (Dog), but if there are multiple objects or if you
     wanna try different masking techniques, try exploring `SamAutomaticMaskGenerator`
     or use the same `SamPredictor` but with bounding boxes to tackle different objects.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 恭喜您完成了这个快速教程！现在，真正有趣的部分开始了。这就是本短教程的全部内容，注意在示例图像中，只有一个主要对象（狗），但如果有多个对象或者您想尝试不同的掩模技术，请尝试探索`SamAutomaticMaskGenerator`或者使用相同的`SamPredictor`但带有边界框来处理不同的对象。
 - en: Outpainting with the Diffusers Library
+  id: totrans-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用Diffusers库进行外扩。
 - en: Unlike inpainting, there is not a dedicated pipeline in diffusers library for
     outpainting. But in fact, outpainting is just like inpainting with some modification
     to the mask and the image. Let’s see how this can be done.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 与修补不同，在扩散库中没有专门的管道用于外扩。但事实上，外扩就像修补一样，只是对掩模和图像进行了一些修改。让我们看看如何实现这一点。
 - en: Same as before, you will need the same prerequisties such as set up a notebook
     with GPU and install the diffusers library. But instead of using SAM as a segmentation
     model to create a mask of an object **inside** the picture, you should create
     a mask to highlight the pixels **outside** the border of the picture.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 与之前相同，您需要相同的先决条件，例如使用GPU设置笔记本并安装diffusers库。但不同于使用SAM作为图像分割模型来创建图像内部对象的掩模，您应该创建一个掩模来突出显示图片边框**外部**的像素。
 - en: '[PRE7]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The code above is check the original image for its size (and save into variables
     `height` and `width`). Then create a outpaint mask with 100 pixels border in such
     a way that an array of integer value 255 is created to match the size of the outpainted
     image, then set the center (excluding the padding) to zero value. Recall that
     zero value in the mask means the pixel would not change.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码是检查原始图像的大小（并保存到变量`height`和`width`）。然后创建一个100像素边框的外部绘制遮罩，使得创建的整数值数组为255以匹配外部绘制图像的大小，然后将中心（不包括填充）设置为零值。请注意，遮罩中的零值意味着像素不会改变。
 - en: Next, you can create an “extended image” to match the shape of an outpainted
     one. Together with the mask created, you converted an outpainting problem into
     an inpainting problem in which the mask is along the border.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，您可以创建一个“扩展图像”，以匹配外部绘制图像的形状。与创建的遮罩一起，您将外部绘制问题转换为遮罩沿边界的修复问题。
 - en: 'You can simply fill the pixels outside the original border with gray. You can
     easily do that with numpy:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以简单地用灰色填充原始边界之外的像素。您可以使用numpy轻松实现：
 - en: '[PRE8]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'This is what the extended image looks like:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是扩展图像的样子：
 - en: '![](../Images/0adaac4dec6ed974fb5f5a8f26bb2bc9.png)'
+  id: totrans-61
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/0adaac4dec6ed974fb5f5a8f26bb2bc9.png)'
 - en: Extended image for outpainting
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 扩展图像用于外部绘制
 - en: 'Now you can run the inpainting as in the previous section:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在您可以像上一节那样运行修复：
 - en: '[PRE9]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'You can check the output as follows:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以按以下方式检查输出：
 - en: '[PRE10]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'and the result is the following:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果如下：
 - en: '![](../Images/b3bd4f346eeea5fa17d0f82b151b5c5a.png)'
+  id: totrans-68
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/b3bd4f346eeea5fa17d0f82b151b5c5a.png)'
 - en: Outpainting result. Note the trees are added on the side.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 外部绘制结果。请注意，树木已添加在侧面。
 - en: You may wonder why in outpainting you still need to provide a prompt. It is
     required by the pipeline’s API but you can provide an empty string as prompt.
     But describing the original picture is necessary indeed. You can try and observe
     the result with a different prompt such as “a framed picture of a dog on a bench”.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可能会想知道为什么在外部绘制中仍然需要提供提示。这是由管道的API所要求的，但您可以提供一个空字符串作为提示。但确实需要描述原始图片。您可以尝试使用不同的提示来观察结果，例如“长凳上一只狗的框架图片”。
 - en: Further Reading
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多有关该主题的资源，如果您想深入了解。
 - en: '[diffusers API manual](https://huggingface.co/docs/diffusers/main/en/index)'
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[diffusers API manual](https://huggingface.co/docs/diffusers/main/en/index)'
 - en: '[StableDiffusionInpaintPipeline API](https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/inpaint)'
+  id: totrans-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[StableDiffusionInpaintPipeline API](https://huggingface.co/docs/diffusers/main/en/api/pipelines/stable_diffusion/inpaint)'
 - en: '[Segment Anything Github](https://github.com/facebookresearch/segment-anything)'
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Segment Anything Github](https://github.com/facebookresearch/segment-anything)'
 - en: '[Segment Anything Example Code](https://github.com/facebookresearch/segment-anything/blob/main/demo/README.md)'
+  id: totrans-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Segment Anything Example Code](https://github.com/facebookresearch/segment-anything/blob/main/demo/README.md)'
 - en: Summary
+  id: totrans-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: In this post, you have learned the building blocks to use Stable Diffusion for
     inpainting and outpainting with the diffusers library. In particular, you learned
     to use `StablediffusionInpaintPipeline` and SAM for image segmentation & creating
     masks for inpainting. You also learned how to convert an outpainting problem into
     an inpainting problem so you can do the same in Python code.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，您已经学会了使用Diffusers库中的稳定扩散来进行修复和外部绘制的基本构建块。特别是，您学会了如何使用`StablediffusionInpaintPipeline`和SAM进行图像分割，并创建修复图像的遮罩。您还学会了如何将外部绘制问题转化为修复问题，以便在Python代码中执行相同操作。

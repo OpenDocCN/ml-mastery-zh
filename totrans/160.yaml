@@ -1,243 +1,375 @@
 - en: Making Linear Predictions in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中进行线性预测
 - en: 原文：[https://machinelearningmastery.com/making-linear-predictions-in-pytorch/](https://machinelearningmastery.com/making-linear-predictions-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/making-linear-predictions-in-pytorch/](https://machinelearningmastery.com/making-linear-predictions-in-pytorch/)
 - en: Linear regression is a statistical technique for estimating the relationship
     between two variables. A simple example of linear regression is to predict the
     height of someone based on the square root of the person’s weight (that’s what
     BMI is based on). To do this, we need to find the slope and intercept of the line.
     The slope is how much one variable changes with the change in other variable by
     one unit. The intercept is where our line crosses with the $y$-axis.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 线性回归是一种统计技术，用于估计两个变量之间的关系。线性回归的一个简单示例是根据某人的体重的平方根预测其身高（这也是BMI的基础）。为此，我们需要找到直线的斜率和截距。斜率是一个变量随另一个变量变化一个单位时的变化量。截距是我们直线与$y$轴的交点。
 - en: Let’s use the simple linear equation $y=wx+b$ as an example. The output variable
     is $y$, while the input variable is $x$. The slope and $y$-intercept of the equation
     are represented by the letters $w$ and $b$, hence referring them as the equation’s
     parameters. Knowing these parameters allows you to forecast the outcome $y$ for
     any given value of $x$.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们以简单的线性方程 $y=wx+b$ 为例。输出变量是 $y$，输入变量是 $x$。方程的斜率和 $y$ 截距由字母 $w$ 和 $b$ 表示，因此称它们为方程的参数。知道这些参数可以让你预测任何给定
+    $x$ 值的结果 $y$。
 - en: 'Now that you have learnt some basics of the simple linear regression, let’s
     try to implement this useful algorithm in the PyTorch framework. Here, we’ll focus
     on a few points described as follows:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 既然你已经学会了简单线性回归的一些基础知识，让我们尝试在 PyTorch 框架中实现这个有用的算法。在这里，我们将重点关注以下几点：
 - en: What is Linear Regression and how it can be implemented in PyTorch.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是线性回归，它如何在 PyTorch 中实现。
 - en: How to import linear class in PyTorch and use it for making predictions.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中导入线性类并使用它进行预测。
 - en: How we can build custom module for a linear regression problem, or for more
     complex models in the future.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们如何为线性回归问题构建自定义模块，或者为未来更复杂的模型构建模块。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书** [《深度学习与 PyTorch》](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    **启动你的项目**。它提供了 **自学教程** 和 **可运行的代码**。'
 - en: So let’s get started.![](../Images/823dae920371197bb77b9912d74465ff.png)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么让我们开始吧！[](../Images/823dae920371197bb77b9912d74465ff.png)
 - en: Making Linear Predictions in PyTorch.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中进行线性预测。
 - en: Picture by [Daryan Shamkhali](https://unsplash.com/photos/pMCbPPPBSkA). Some
     rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Daryan Shamkhali](https://unsplash.com/photos/pMCbPPPBSkA) 提供。保留所有权利。
 - en: Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in three parts; they are
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三部分，它们是
 - en: Preparing Tensors
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备张量
 - en: Using Linear Class from PyTorch
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 PyTorch 的线性类
 - en: Building a Custom Linear Class
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建自定义线性类
 - en: Preparing Tensors
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备张量
 - en: 'Note that in this tutorial we’ll be covering one-dimensional linear regression
     having only two parameters. We’ll create this linear expression:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，在本教程中，我们将涵盖只有两个参数的一维线性回归。我们将创建这个线性表达式：
 - en: $$y=3x+1$$
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: $$y=3x+1$$
 - en: 'We’ll define the parameters $w$ and $b$ as tensors in PyTorch. We set the `requires_grad`
     parameter to `True`, indicating that our model has to learn these parameters:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将在 PyTorch 中将参数 $w$ 和 $b$ 定义为张量。我们将 `requires_grad` 参数设置为 `True`，表示我们的模型需要学习这些参数：
 - en: '[PRE0]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: In PyTorch prediction step is called forward step. So, we’ll write a function
     that allows us to make predictions for $y$ at any given value of $x$.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中，预测步骤称为前向步骤。因此，我们将编写一个函数，使我们能够在任何给定的 $x$ 值下进行 $y$ 的预测。
 - en: '[PRE1]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Now that we have defined the function for linear regression, let’s make a prediction
     at $x=2$.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经定义了线性回归函数，让我们在 $x=2$ 处做一个预测。
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: This prints
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这会输出
 - en: '[PRE3]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Let’s also evaluate the equation with multiple inputs of $x$.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们也用多个 $x$ 输入来评估方程。
 - en: '[PRE4]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: This prints
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 这会输出
 - en: '[PRE5]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: As you can see, the function for linear equation successfully predicted outcome
     for multiple values of $x$.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你所见，线性方程的函数成功地预测了多个 $x$ 值的结果。
 - en: In summary, this is the complete code
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 总结来说，这就是完整的代码。
 - en: '[PRE6]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就报名参加我的免费电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并免费获取课程的 PDF 电子书版本。
 - en: Using Linear Class from PyTorch
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用PyTorch中的线性类
 - en: In order to solve real-world problems, you’ll have to build more complex models
     and, for that, PyTorch brings along a lot of useful packages including the linear
     class that allows us to make predictions. Here is how we can import linear class
     module from PyTorch. We’ll also randomly initialize the parameters.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 要解决实际问题，你需要构建更复杂的模型，为此，PyTorch带来了许多有用的包，包括线性类，允许我们进行预测。以下是我们如何从PyTorch导入线性类模块。我们还将随机初始化参数。
 - en: '[PRE7]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Note that previously we defined the values of $w$ and $b$ but in practice they
     are randomly initialized before we start the machine learning algorithm.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，之前我们定义了$w$和$b$的值，但在实践中，它们在启动机器学习算法之前是随机初始化的。
 - en: 'Let’s create a linear object model and use the `parameters()` method to access
     the parameters ($w$ and $b$) of the model. The `Linear` class is initialized with
     the following parameters:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们创建一个线性对象模型，并使用`parameters()`方法访问模型的参数（$w$和$b$）。`Linear`类使用以下参数初始化：
 - en: '`in_features`: reflects the size of each input sample'
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`in_features`：反映每个输入样本的大小'
 - en: '`out_features`: reflects the size of each output sample'
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`out_features`：反映每个输出样本的大小'
 - en: '[PRE8]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: This prints
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 这打印
 - en: '[PRE9]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Likewise, you can use `state_dict()` method to get the dictionary containing
     the parameters.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样地，你可以使用`state_dict()`方法获取包含参数的字典。
 - en: '[PRE10]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: This prints
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 这打印
 - en: '[PRE11]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Now we can repeat what we did before. Let’s make a prediction using a single
     value of $x$.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以重复之前的操作。让我们使用单个$x$值进行预测。
 - en: '[PRE12]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: This gives
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 这给出了
 - en: '[PRE13]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: which corresponds to $0.5153\times 2 – 0.4414 = 0.5891$. Similarly, we’ll make
     predictions for multiple values of $x$.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这对应于$0.5153 \times 2 - 0.4414 = 0.5891$。同样地，我们将为多个$x$值进行预测。
 - en: '[PRE14]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: This prints
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这打印
 - en: '[PRE15]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Put everything together, the complete code is as follows
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容放在一起，完整的代码如下所示
 - en: '[PRE16]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Building a Custom Linear Class
+  id: totrans-62
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建自定义线性类
 - en: PyTorch offers the possibility to build custom linear class. For later tutorials,
     we’ll be using this method for building more complex models. Let’s start by importing
     the `nn` module from PyTorch in order to build a custom linear class.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch提供了构建自定义线性类的可能性。在后续教程中，我们将使用这种方法构建更复杂的模型。让我们从PyTorch中导入`nn`模块，以构建自定义线性类。
 - en: '[PRE17]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Custom modules in PyTorch are classes derived from `nn.Module`. We’ll build
     a class for simple linear regression and name it as `Linear_Regression`. This
     should make it a child class of the `nn.Module`. Consequently, all the methods
@@ -245,80 +377,124 @@
     declare the input and output parameters. Also, we create a super constructor to
     call linear class from the `nn.Module`. Lastly, in order to generate prediction
     from the input samples, we’ll define a forward function in the class.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch中的自定义模块是从`nn.Module`派生的类。我们将构建一个简单线性回归的类，并命名为`Linear_Regression`。这将使它成为`nn.Module`的子类。因此，所有方法和属性将继承到这个类中。在对象构造函数中，我们将声明输入和输出参数。此外，我们通过调用`nn.Module`中的线性类来创建一个超级构造函数。最后，在定义类中的前向函数时，我们将从输入样本生成预测。
 - en: '[PRE18]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: Now, let’s create a simple linear regression model. It will simply be an equation
     of line in this case. For sanity check, let’s also print out the model parameters.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们创建一个简单的线性回归模型。在这种情况下，它将仅是一条线的方程。为了检查，让我们也打印出模型参数。
 - en: '[PRE19]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: This prints
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这打印
 - en: '[PRE20]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: As we did in the earlier sessions of the tutorial, we’ll evaluate our custom
     linear regression model and try to make predictions for single and multiple values
     of $x$ as input.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像我们在教程的早期会话中所做的那样，我们将评估我们的自定义线性回归模型，并尝试为单个和多个输入$x$进行预测。
 - en: '[PRE21]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: This prints
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 这打印
 - en: '[PRE22]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: which corresponds to $-0.1939*2+0.4694=0.0816$. As you can see, our model has
     been able to predict the outcome and the result is a tensor object. Similarly,
     let’s try to get predictions for multiple values of $x$.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 这对应于$-0.1939 \times 2 + 0.4694 = 0.0816$。正如你所看到的，我们的模型能够预测结果，并且结果是一个张量对象。同样地，让我们尝试为多个$x$值获取预测。
 - en: '[PRE23]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: This prints
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 这打印
 - en: '[PRE24]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: So, the model also works well for multiple values of $x$.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，该模型也适用于多个$x$值。
 - en: Putting everything together, the following is the complete code
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容放在一起，以下是完整的代码
 - en: '[PRE25]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: Summary
+  id: totrans-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial we discussed how we can build neural networks from scratch,
     starting off with a simple linear regression model. We have explored multiple
     ways of implementing simple linear regression in PyTorch. In particular, we learned:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们讨论了如何从头开始构建神经网络，从一个简单的线性回归模型开始。我们探索了在PyTorch中实现简单线性回归的多种方法。特别是，我们学到了：
 - en: What is Linear Regression and how it can be implemented in PyTorch.
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是线性回归，以及如何在 PyTorch 中实现它。
 - en: How to import linear class in PyTorch and use it for making predictions.
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中导入线性类并用它进行预测。
 - en: How we can build custom module for a linear regression problem, or for more
     complex models in the future.
+  id: totrans-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为线性回归问题构建自定义模块，或者为将来更复杂的模型构建准备。

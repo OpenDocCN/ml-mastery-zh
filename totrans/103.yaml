@@ -1,173 +1,258 @@
 - en: Easier Experimenting in Python
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在Python中更容易进行实验
 - en: 原文：[https://machinelearningmastery.com/easier-experimenting-in-python/](https://machinelearningmastery.com/easier-experimenting-in-python/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/easier-experimenting-in-python/](https://machinelearningmastery.com/easier-experimenting-in-python/)
 - en: When we work on a machine learning project, we quite often need to experiment
     with multiple alternatives. Some features in Python allow us to try out different
     options without much effort. In this tutorial, we are going to see some tips to
     make our experiments faster.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们在进行机器学习项目时，经常需要尝试多种替代方案。Python中的一些特性允许我们尝试不同的选项而不需要太多的努力。在本教程中，我们将看到一些加速实验的技巧。
 - en: 'After finishing this tutorial, you will learn:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将学到：
 - en: How to leverage a duck-typing feature to easily swap functions and objects
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何利用鸭子类型特性轻松交换函数和对象
 - en: How making components into drop-in replacements for  each other can help experiments
     run faster
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将组件变成彼此的插拔替换以帮助实验更快地运行
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用我的新书[Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/)
+    **启动您的项目**，包括*逐步教程*和所有示例的*Python源代码*文件。
 - en: Let’s get started.![](../Images/0975618a0760ede0fe8c1345db6a7e39.png)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/0975618a0760ede0fe8c1345db6a7e39.png)
 - en: Easier experimenting in Python. Photo by [Jake Givens](https://unsplash.com/photos/iR8m2RRo-z4).
     Some rights reserved
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Python中更容易进行实验。由[Jake Givens](https://unsplash.com/photos/iR8m2RRo-z4)拍摄。部分权利保留
 - en: Overview
+  id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is in three parts; they are:'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是：
 - en: Workflow of a machine learning project
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 机器学习项目的工作流程
 - en: Functions as objects
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 函数作为对象
 - en: Caveats
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 注意事项
 - en: Workflow of a Machine Learning Project
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 机器学习项目的工作流程
 - en: 'Consider a very simple machine learning project as follows:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑一个非常简单的机器学习项目如下：
 - en: '[PRE0]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'This is a typical machine learning project workflow. We have a stage of preprocessing
     the data, then training a model, and afterward, evaluating our result. But in
     each step, we may want to try something different. For example, we may wonder
     if normalizing the data would make it better. So we may rewrite the code above
     into the following:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个典型的机器学习项目工作流程。我们有数据预处理阶段，然后是模型训练，之后是评估我们的结果。但在每个步骤中，我们可能想尝试一些不同的东西。例如，我们可能会想知道是否归一化数据会使其更好。因此，我们可以将上面的代码重写为以下内容：
 - en: '[PRE1]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: So far, so good. But what if we keep experimenting with different datasets,
     different models, or different score functions? Each time, we keep flipping between
     using a scaler and not would mean a lot of code change, and it would be quite
     easy to make mistakes.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止一切顺利。但是如果我们继续用不同的数据集、不同的模型或不同的评分函数进行实验，每次在使用缩放器和不使用之间进行切换将意味着大量的代码更改，并且很容易出错。
 - en: 'Because Python supports duck typing, we can see that the following two classifier
     models implemented the same interface:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为Python支持鸭子类型，我们可以看到以下两个分类器模型实现了相同的接口：
 - en: '[PRE2]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Therefore, we can simply select between these two version and keep everything
     intact. We can say these two models are **drop-in replacements** for each other.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们可以简单地在这两个版本之间选择并保持一切完整。我们可以说这两个模型是**插拔替换**。
 - en: 'Making use of this property, we can create a toggle variable to control the
     design choice we make:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 利用此属性，我们可以创建一个切换变量来控制我们所做的设计选择：
 - en: '[PRE3]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'By toggling the variable `USE_SCALER` between `True` and `False`, we can select
     whether a scaler should be applied. A more complex example would be to select
     among different scaler and the classifier models, such as:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过在`USE_SCALER`变量之间切换`True`和`False`，我们可以选择是否应用缩放器。更复杂的例子是在不同的缩放器和分类器模型之间进行选择，例如：
 - en: '[PRE4]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'A complete example is as follows:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个完整的示例如下：
 - en: '[PRE5]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'If you go one step further, you may even skip the toggle variable and use a
     string directly for a quick experiment:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您进一步走一步，甚至可以跳过切换变量，直接使用字符串进行快速实验：
 - en: '[PRE6]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Functions as Objects
+  id: totrans-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 函数作为对象
 - en: In Python, functions are first-class citizens. You can assign functions to a
     variable. Indeed, functions are objects in Python, as are classes (the classes
     themselves, not only incarnations of classes). Therefore, we can use the same
     technique as above to experiment with similar functions.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Python中，函数是一等公民。您可以将函数分配给变量。事实上，在Python中，函数是对象，类也是（类本身，不仅仅是类的具体实例）。因此，我们可以使用上述相似函数的相同技术进行实验。
 - en: '[PRE7]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'The above is similar to calling `np.random.normal(size=(10,5))`, but we hold
     the function in a variable for the convenience of swapping one function with another.
     Note that since we call the functions with the same argument, we have to make
     sure all variations will accept it. In case it is not, we may need some additional
     lines of code to make a wrapper. For example, in the case of generating Student’s
     t distribution, we need an additional parameter for the degree of freedom:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 以上类似于调用`np.random.normal(size=(10,5))`，但我们将函数保存在变量中，以便于随时替换一个函数。请注意，由于我们使用相同的参数调用函数，我们必须确保所有变体都能接受它。如果不能，我们可能需要一些额外的代码行来创建一个包装器。例如，在生成学生t分布的情况下，我们需要一个额外的自由度参数：
 - en: '[PRE8]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: This works because in the above, `np.random.normal`, `np.random.uniform`, and `t_wrapper`
     as we defined, are all drop-in replacements of each other.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是因为在上述情况中，`np.random.normal`、`np.random.uniform`和我们定义的`t_wrapper`都可以互换使用。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-37
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习Python进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在免费参加我的7天电子邮件快速课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以免费获得课程的PDF电子书版本。
 - en: Caveats
+  id: totrans-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 注意事项
 - en: Machine learning differs from other programming projects because there are more
     uncertainties in the workflow. When you build a web page or build a game, you
     have a picture in your mind of what to achieve. But there is some exploratory
     work in machine learning projects.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 机器学习与其他编程项目不同，因为工作流程中存在更多的不确定性。当您构建网页或游戏时，您心中有一个目标。但在机器学习项目中，有一些探索性工作。
 - en: You will probably use some source code control system like git or Mercurial
     to manage your source code development history in other projects. In machine learning
     projects, however, we are trying out different **combinations** of many steps.
@@ -175,42 +260,62 @@
     may be overkill. Therefore, using a toggle variable to control the flow should
     allow us to try out different things faster. This is especially handy when we
     are working on our projects in Jupyter notebooks.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 在其他项目中，您可能会使用像git或Mercurial这样的源代码控制系统来管理您的源代码开发历史。然而，在机器学习项目中，我们试验许多步骤的不同**组合**。使用git管理这些不同的变化可能并不合适，更不用说有时可能会过度。因此，使用切换变量来控制流程应该能让我们更快地尝试不同的方法。当我们在Jupyter笔记本上工作时，这特别方便。
 - en: However, as we put multiple versions of code together, we made the program clumsy
     and less readable. It is better to do some clean-up after we confirm what to do.
     This will help us with maintenance in the future.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，当我们将多个版本的代码放在一起时，程序变得笨拙且不易读。确认决策后最好进行一些清理工作。这将有助于我们将来的维护工作。
 - en: Further reading
+  id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供更多关于该主题的资源，如果您希望深入了解。
 - en: Books
+  id: totrans-46
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '*Fluent Python*, second edition, by Luciano Ramalho, [https://www.amazon.com/dp/1492056359/](https://www.amazon.com/dp/1492056359/)'
+  id: totrans-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*流畅的Python*，第二版，作者Luciano Ramalho，[https://www.amazon.com/dp/1492056359/](https://www.amazon.com/dp/1492056359/)'
 - en: Summary
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you’ve seen how the duck typing property in Python helps
     us create drop-in replacements. Specifically, you learned:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您已经看到Python中的鸭子类型属性如何帮助我们创建可互换的替代品。具体而言，您学到了：
 - en: Duck typing can help us switch between alternatives easily in a machine learning
     workflow
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 鸭子类型可以帮助我们在机器学习工作流中轻松切换替代方案。
 - en: We can make use of a toggle variable to experiment among alternatives
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们可以利用切换变量来在替代方案之间进行实验。

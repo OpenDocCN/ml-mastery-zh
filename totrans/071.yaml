@@ -1,304 +1,462 @@
 - en: K-Nearest Neighbors Classification Using OpenCV
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用OpenCV的k-最近邻分类
 - en: 原文：[https://machinelearningmastery.com/k-nearest-neighbors-classification-using-opencv/](https://machinelearningmastery.com/k-nearest-neighbors-classification-using-opencv/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '[https://machinelearningmastery.com/k-nearest-neighbors-classification-using-opencv/](https://machinelearningmastery.com/k-nearest-neighbors-classification-using-opencv/)'
 - en: The OpenCV library has a module that implements the k-Nearest Neighbors algorithm
     for machine learning applications.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV库有一个模块实现了用于机器学习应用的k-最近邻算法。
 - en: In this tutorial, you will learn how to apply OpenCV’s k-Nearest Neighbors algorithm
     for classifying handwritten digits.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将学习如何应用OpenCV的k-最近邻算法来分类手写数字。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: Several of the most important characteristics of the k-Nearest Neighbors algorithm.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: k-最近邻算法的几个最重要特征。
 - en: How to use the k-Nearest Neighbors algorithm for image classification in OpenCV.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在OpenCV中使用k-最近邻算法进行图像分类。
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书[《OpenCV中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)**
+    **启动你的项目**。它提供了**自学教程**和**可工作的代码**。'
 - en: Let’s get started. [![](../Images/84c2d4834131494865dc8e314a88819b.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/kNN_cover-scaled.jpg)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。[![](../Images/84c2d4834131494865dc8e314a88819b.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/kNN_cover-scaled.jpg)
 - en: K-Nearest Neighbors Classification Using OpenCV
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用OpenCV的k-最近邻分类
 - en: Photo by [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8), some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8)提供，部分版权保留。
 - en: '**Tutorial Overview**'
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两个部分；它们是：
 - en: Reminder of How the k-Nearest Neighbors Algorithm Works
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: k-最近邻算法如何工作的提醒
 - en: Using k-Nearest Neighbors for Image Classification in OpenCV
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用k-最近邻算法进行OpenCV中的图像分类
 - en: '**Prerequisites**'
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**前提条件**'
 - en: 'For this tutorial, we assume that you are already familiar with:'
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设你已经熟悉：
 - en: '[How the k-Nearest Neighbors algorithm works](https://machinelearningmastery.com/k-nearest-neighbors-for-machine-learning/)'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[k-最近邻算法如何工作](https://machinelearningmastery.com/k-nearest-neighbors-for-machine-learning/)'
 - en: '[Reading and displaying images using OpenCV](https://machinelearningmastery.com/?p=14402&preview=true)'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[使用OpenCV读取和显示图像](https://machinelearningmastery.com/?p=14402&preview=true)'
 - en: '**Reminder of How the k-Nearest Neighbors Algorithm Works**'
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**k-最近邻算法如何工作的提醒**'
 - en: 'The k-Nearest Neighbors (kNN) algorithm has already been explained well in
     [this tutorial by Jason Brownlee](https://machinelearningmastery.com/k-nearest-neighbors-for-machine-learning/),
     but let’s first start with brushing up on some of the most important points from
     his tutorial:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: k-最近邻（kNN）算法已经在[Jason Brownlee的这篇教程](https://machinelearningmastery.com/k-nearest-neighbors-for-machine-learning/)中讲解得很好，但让我们先回顾一下他教程中一些最重要的点：
 - en: '**The kNN algorithm does not involve any learning. It simply stores and uses
     the entire training dataset as its model representation. For this reason, kNN
     is also called a *lazy learning* algorithm. **'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**kNN算法不涉及任何学习。它只是存储和使用整个训练数据集作为其模型表示。因此，kNN也被称为*懒惰学习*算法。** '
 - en: '***   **Since the entire training dataset is stored, it would make sense to
     keep it curated, updated often with new data, and as free as possible from outliers. **'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **由于整个训练数据集被存储，因此保持其整理良好、经常用新数据更新，并尽可能避免异常值是有意义的。** '
 - en: '***   **A new instance is predicted by searching the entire training dataset
     for the most similar instance based on a distance measure of choice. The choice
     of distance measure is typically based on the properties of the data. **'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **新的实例通过根据选择的距离度量在整个训练数据集中搜索最相似的实例来预测。距离度量的选择通常基于数据的特性。**'
 - en: '***   **If the kNN is used to solve a regression problem, then the mean or
     the median of the k-most similar instances is typically used to generate a prediction. **'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **如果kNN用于解决回归问题，则通常使用k个最相似实例的均值或中位数来生成预测。** '
 - en: '***   **If the kNN is used to solve a classification problem, a prediction
     can be generated from the class with the highest frequency of k-most similar instances. **'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **如果kNN用于解决分类问题，则可以从k个最相似实例中频率最高的类别生成预测。** '
 - en: '***   **A value for *k* can be tuned by trying out different values and seeing
     what works best for the problem. **'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **可以通过尝试不同的值来调整 *k* 的值，并查看哪种值最适合问题。**'
 - en: '***   **The kNN algorithm’s computational cost increases with the training
     dataset’s size. The kNN algorithm also struggles as the dimensionality of the
     input data increases. **'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '***   **kNN 算法的计算成本随着训练数据集的大小增加而增加。kNN 算法在输入数据的维度增加时也会遇到困难。**'
 - en: '**## **Using k-Nearest Neighbors for Image Classification in OpenCV**'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '**## **在 OpenCV 中使用 k-最近邻进行图像分类**'
 - en: In this tutorial, we will be considering the application of classifying handwritten
     digits.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将考虑对手写数字进行分类的应用。
 - en: In a [previous tutorial](https://machinelearningmastery.com/image-datasets-for-practicing-machine-learning-in-opencv),
     we have seen that OpenCV provides the image, digits.png, composed of a ‘collage’
     of 5,000 sub-images in $20\times 20$ pixels, where each sub-image features a handwritten
     digit from 0 to 9.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[之前的教程](https://machinelearningmastery.com/image-datasets-for-practicing-machine-learning-in-opencv)中，我们看到
+    OpenCV 提供了图像 digits.png，该图像由 5,000 个 $20\times 20$ 像素的子图像组成，每个子图像展示了从 0 到 9 的手写数字。
 - en: We have also seen how to [convert dataset images into feature vector representations](https://machinelearningmastery.com/image-vector-representation-for-machine-learning-using-opencv)
     before feeding them into a machine learning algorithm.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还看到如何[将数据集图像转换为特征向量表示](https://machinelearningmastery.com/image-vector-representation-for-machine-learning-using-opencv)，然后再输入到机器学习算法中。
 - en: We shall be splitting OpenCV’s digits dataset into training and testing sets,
     converting them into feature vectors, and then using these feature vectors to
     *train* and test a kNN classifier to classify handwritten digits.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将把 OpenCV 的数字数据集拆分为训练集和测试集，将其转换为特征向量，然后使用这些特征向量来*训练*和测试一个 kNN 分类器以分类手写数字。
 - en: '**Note**: We have previously mentioned that the kNN algorithm does not involve
     any training/learning, but we shall be referring to a *training dataset* to distinguish
     the images that will be used for the model representation from those that will
     be later used for testing.'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意**：我们之前提到 kNN 算法不涉及任何训练/学习，但我们将参考一个*训练数据集*，以区分用于模型表示的图像和稍后用于测试的图像。'
 - en: 'Let’s start by loading OpenCV’s digits image, splitting it into training and
     testing sets of images, and converting them into feature vectors using the Histogram
     of Oriented Gradients (HOG) technique:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们首先加载 OpenCV 的数字图像，将其拆分为训练集和测试集，并使用方向梯度直方图（HOG）技术将其转换为特征向量：
 - en: Python
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Next, we’re going to initiate a kNN classifier:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将初始化一个 kNN 分类器：
 - en: Python
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Then ‘train’ it on the training split of the dataset. For the training split
     of the dataset, we may either use the intensity values of the image pixels themselves
     (type casted to 32-bit floating-point values, according to the expected input
     of the function):'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后在数据集的训练分割上“训练”它。对于数据集的训练分割，我们可以使用图像像素本身的强度值（类型转换为 32 位浮点值，以符合函数的预期输入）：
 - en: Python
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Or use the feature vectors generated by the HOG technique. In the previous
     section, we mentioned that the kNN algorithm struggles with high-dimensional data.
     Using the HOG technique to generate a more compact representation of the image
     data helps with alleviating this problem:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者使用 HOG 技术生成的特征向量。在前一节中，我们提到 kNN 算法在处理高维数据时会遇到困难。使用 HOG 技术生成更紧凑的图像数据表示有助于缓解这个问题：
 - en: Python
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Let’s continue this tutorial by making use of the HOG feature vectors.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们继续这个教程，利用 HOG 特征向量。
 - en: 'The trained kNN classifier can now be tested on the testing split of the dataset,
     following which its accuracy can be computed by working out the percentage of
     correct predictions that match the ground truth. For the time being, the value
     for `k` will be empirically set to 3:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练好的 kNN 分类器现在可以在数据集的测试分割上进行测试，然后通过计算与真实值匹配的正确预测的百分比来计算其准确性。暂时将 `k` 的值经验性地设置为
+    3：
 - en: Python
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: However, as we have mentioned in the previous section, it is typical practice
     that the value of *k* is tuned by trying out different values and seeing what
     works best for the problem at hand. We can also try splitting the dataset using
     different ratio values to see their effect on prediction accuracy.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，正如我们在前一节中提到的，通常做法是通过尝试不同的 *k* 值来调整，并查看哪种值最适合当前问题。我们还可以尝试使用不同的比例值拆分数据集，以观察它们对预测准确性的影响。
 - en: To do so, we’ll place the kNN classifier code above into a nested `for` loop,
     where the outer loop iterates over different ratio values, whereas the inner loop
     iterates over different values of *k*. Inside the inner loop, we shall also populate
     a dictionary with the computed accuracy values to plot them later using Matplotlib.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，我们将把 kNN 分类器代码放入一个嵌套的 `for` 循环中，其中外部循环迭代不同的比率值，而内部循环迭代不同的 *k* 值。在内部循环中，我们还将填充一个字典，记录计算出的准确度值，以便稍后使用
+    Matplotlib 绘制它们。
 - en: 'One last detail that we will include is a check to ensure that we are loading
     the correct image and correctly splitting it into sub-images. For this purpose,
     we’ll make use of OpenCV’s `imshow` method to display the images, followed by
     a `waitKey` with an input of zero that will stop and wait for a keyboard event:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将包括的最后一个细节是检查我们是否正确加载了图像并将其正确拆分为子图像。为此，我们将使用 OpenCV 的 `imshow` 方法来显示图像，然后使用输入为零的
+    `waitKey` 方法来停止并等待键盘事件：
 - en: Python
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Plotting the computed prediction accuracy for different ratio values and different
     values of *k*, gives a better insight into the effect that these different values
     have on the prediction accuracy for this particular application:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 绘制不同比率值和不同 *k* 值下计算出的预测准确度，可以更好地了解这些不同值对特定应用中预测准确度的影响：
 - en: '[![](../Images/0c6a71bb4b294afaeede172838c4ca62.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/kNN.png)'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/0c6a71bb4b294afaeede172838c4ca62.png)](https://machinelearningmastery.com/wp-content/uploads/2023/01/kNN.png)'
 - en: Line plots of the prediction accuracy for different training splits of the dataset,
     and different values of ‘k’
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 不同训练数据拆分和不同 ‘k’ 值下的预测准确度线图
 - en: Try using different image descriptors and tweaking the different parameters
     for the algorithms of choice before feeding the data into the kNN algorithm, and
     investigate the kNN’s outputs that result from your changes.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 尝试使用不同的图像描述符，并调整所选算法的不同参数，然后将数据输入到 kNN 算法中，并调查你更改所导致的 kNN 输出。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-59
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 OpenCV 进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在立即报名参加我的免费邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费 PDF 电子书版本。
 - en: '**Further Reading**'
+  id: totrans-62
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: '**Books**'
+  id: totrans-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[掌握 OpenCV 4 与 Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019
+    年。'
 - en: '**Websites**'
+  id: totrans-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV，[https://opencv.org/](https://opencv.org/)
 - en: OpenCV KNearest Class, [https://docs.opencv.org/4.7.0/dd/de1/classcv_1_1ml_1_1KNearest.html](https://docs.opencv.org/4.7.0/dd/de1/classcv_1_1ml_1_1KNearest.html)
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV KNearest 类， [https://docs.opencv.org/4.7.0/dd/de1/classcv_1_1ml_1_1KNearest.html](https://docs.opencv.org/4.7.0/dd/de1/classcv_1_1ml_1_1KNearest.html)
 - en: '**Summary**'
+  id: totrans-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you learned how to apply OpenCV’s k-Nearest Neighbors algorithm
     to classify handwritten digits.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学会了如何应用 OpenCV 的 k-最近邻算法来分类手写数字。
 - en: 'Specifically, you learned:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: Several of the most important characteristics of the k-Nearest Neighbors algorithm.
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: k-最近邻算法的一些重要特性。
 - en: How to use the k-Nearest Neighbors algorithm for image classification in OpenCV.
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中使用 k-最近邻算法进行图像分类。
 - en: Do you have any questions?
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.**************
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提出你的问题，我会尽力回答。**************

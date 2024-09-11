@@ -1,84 +1,127 @@
 - en: LSTM for Time Series Prediction in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: PyTorch 中的时间序列预测 LSTM
 - en: 原文：[https://machinelearningmastery.com/lstm-for-time-series-prediction-in-pytorch/](https://machinelearningmastery.com/lstm-for-time-series-prediction-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/lstm-for-time-series-prediction-in-pytorch/](https://machinelearningmastery.com/lstm-for-time-series-prediction-in-pytorch/)
 - en: Long Short-Term Memory (LSTM) is a structure that can be used in neural network.
     It is a type of recurrent neural network (RNN) that expects the input in the form
     of a sequence of features. It is useful for data such as time series or string
     of text. In this post, you will learn about LSTM networks. In particular,
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 长短期记忆（LSTM）是一种可以在神经网络中使用的结构。它是一种递归神经网络（RNN），期望输入为特征序列。它对时间序列或文本串等数据非常有用。在本文中，您将了解
+    LSTM 网络。特别是，
 - en: What is LSTM and how they are different
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是 LSTM 及其不同之处
 - en: How to develop LSTM network for time series prediction
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何开发用于时间序列预测的 LSTM 网络
 - en: How to train a LSTM network
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何训练 LSTM 网络
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**快速启动您的项目**，请参考我的书 [深度学习与 PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started.
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/d214fb104993b3841ed55d66abcce14e.png)'
+  id: totrans-8
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/d214fb104993b3841ed55d66abcce14e.png)'
 - en: LSTM for Time Series Prediction in PyTorch
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 中的时间序列预测 LSTM
 - en: Photo by [Carry Kung](https://unsplash.com/photos/5W5Fb6bHOQc). Some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Carry Kung](https://unsplash.com/photos/5W5Fb6bHOQc) 提供。保留所有权利。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This post is divided into three parts; they are
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三部分；它们是
 - en: Overview of LSTM Network
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: LSTM 网络概述
 - en: LSTM for Time Series Prediction
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 时间序列预测的 LSTM
 - en: Training and Verifying Your LSTM Network
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练和验证您的 LSTM 网络
 - en: Overview of LSTM Network
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: LSTM 网络概述
 - en: LSTM cell is a building block that you can use to build a larger neural network.
     While the common building block such as fully-connected layer are merely matrix
     multiplication of the weight tensor and the input to produce an output tensor,
     LSTM module is much more complex.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: LSTM 单元是您可以用来构建更大神经网络的构建块。虽然常见的构建块如全连接层仅仅是权重张量与输入的矩阵乘法以产生输出张量，但 LSTM 模块要复杂得多。
 - en: A typical LSTM cell is illustrated as follows
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 典型的 LSTM 单元如图所示
 - en: '![](../Images/5ed2042866eadfa98c5156de25eaaebd.png)'
+  id: totrans-19
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/5ed2042866eadfa98c5156de25eaaebd.png)'
 - en: LSTM cell. Illustration from Wikipedia.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: LSTM 单元。插图来自维基百科。
 - en: It takes one time step of an input tensor $x$ as well as a cell memory $c$ and
     a hidden state $h$. The cell memory and hidden state can be initialized to zero
     at the beginning. Then within the LSTM cell, $x$, $c$, and $h$ will be multiplied
@@ -87,144 +130,219 @@
     $h$ will be used on the **next time step** of the input tensor. Until the end
     of the last time step, the output of the LSTM cell will be its cell memory and
     hidden state.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 它接收一个时间步的输入张量 $x$ 以及一个单元记忆 $c$ 和一个隐藏状态 $h$。单元记忆和隐藏状态可以在开始时初始化为零。然后在 LSTM 单元内，$x$、$c$
+    和 $h$ 将分别与不同的权重张量相乘，并通过一些激活函数处理几次。结果是更新后的单元记忆和隐藏状态。这些更新后的 $c$ 和 $h$ 将用于输入张量的**下一个时间步**。直到最后一个时间步结束，LSTM
+    单元的输出将是其单元记忆和隐藏状态。
 - en: 'Specifically, the equation of one LSTM cell is as follows:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体而言，一个 LSTM 单元的方程如下：
 - en: $$
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \begin{aligned}
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: \begin{aligned}
 - en: f_t &= \sigma_g(W_{f} x_t + U_{f} h_{t-1} + b_f) \\
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: f_t &= \sigma_g(W_{f} x_t + U_{f} h_{t-1} + b_f) \\
 - en: i_t &= \sigma_g(W_{i} x_t + U_{i} h_{t-1} + b_i) \\
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: i_t &= \sigma_g(W_{i} x_t + U_{i} h_{t-1} + b_i) \\
 - en: o_t &= \sigma_g(W_{o} x_t + U_{o} h_{t-1} + b_o) \\
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: o_t &= \sigma_g(W_{o} x_t + U_{o} h_{t-1} + b_o) \\
 - en: \tilde{c}_t &= \sigma_c(W_{c} x_t + U_{c} h_{t-1} + b_c) \\
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: \tilde{c}_t &= \sigma_c(W_{c} x_t + U_{c} h_{t-1} + b_c) \\
 - en: c_t &= f_t \odot c_{t-1} + i_t \odot \tilde{c}_t \\
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: c_t &= f_t \odot c_{t-1} + i_t \odot \tilde{c}_t \\
 - en: h_t &= o_t \odot \sigma_h(c_t)
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: h_t &= o_t \odot \sigma_h(c_t)
 - en: \end{aligned}
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: \end{aligned}
 - en: $$
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: Where $W$, $U$, $b$ are trainable parameters of the LSTM cell. Each equation
     above is computed for each time step, hence with subscript $t$. These trainable
     parameters are **reused** for all the time steps. This nature of shared parameter
     bring the memory power to the LSTM.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中 $W$、$U$、$b$ 是 LSTM 单元的可训练参数。每个方程是针对每个时间步计算的，因此带有下标 $t$。这些可训练参数在所有时间步中**重复使用**。这种共享参数的特性赋予了
+    LSTM 记忆的能力。
 - en: Note that the above is only one design of the LSTM. There are multiple variations
     in the literature.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，上述只是 LSTM 的一种设计。文献中存在多种变体。
 - en: 'Since the LSTM cell expects the input $x$ in the form of multiple time steps,
     each input sample should be a 2D tensors: One dimension for time and another dimension
     for features. The power of an LSTM cell depends on the size of the hidden state
     or cell memory, which usually has a larger dimension than the number of features
     in the input.'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于LSTM单元期望输入$x$为多个时间步的形式，每个输入样本应为2D张量：一个维度表示时间，另一个维度表示特征。LSTM单元的强大依赖于隐藏状态或单元内存的大小，通常这个维度大于输入特征的数量。
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用PyTorch进行深度学习？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在立即参加我的免费电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: LSTM for Time Series Prediction
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: LSTM用于时间序列预测
 - en: Let’s see how LSTM can be used to build a time series prediction neural network
     with an example.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看如何使用LSTM构建一个时间序列预测神经网络的示例。
 - en: The problem you will look at in this post is the international airline passengers
     prediction problem. This is a problem where, given a year and a month, the task
     is to predict the number of international airline passengers in units of 1,000\.
     The data ranges from January 1949 to December 1960, or 12 years, with 144 observations.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文中讨论的问题是国际航空乘客预测问题。这是一个给定年份和月份后，预测以1,000为单位的国际航空乘客数量的问题。数据范围从1949年1月到1960年12月，共12年，包含144个观测值。
 - en: 'It is a regression problem. That is, given the number of passengers (in unit
     of 1,000) the recent months, what is the number of passengers the next month.
     The dataset has only one feature: The number of passengers.'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个回归问题。即，给定最近几个月的乘客数量（以1,000为单位），预测下个月的乘客数量。数据集只有一个特征：乘客数量。
 - en: Let’s start by reading the data. The data can be downloaded [here](https://raw.githubusercontent.com/jbrownlee/Datasets/master/airline-passengers.csv).
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从读取数据开始。数据可以[在这里](https://raw.githubusercontent.com/jbrownlee/Datasets/master/airline-passengers.csv)下载。
 - en: Save this file as `airline-passengers.csv` in the local directory for the following.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 将此文件保存为`airline-passengers.csv`，以便在本地目录中使用。
 - en: 'Below is a sample of the first few lines of the file:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是文件前几行的样本：
 - en: '[PRE0]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The data has two columns, the month and the number of passengers. Since the
     data are arranged in chronological order, you can take only the number of passenger
     to make a single-feature time series. Below you will use pandas library to read
     the CSV file and convert it into a 2D numpy array, then plot it using matplotlib:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据有两列：月份和乘客数量。由于数据按时间顺序排列，你可以只取乘客数量来构建一个单特征时间序列。下面你将使用pandas库读取CSV文件，并将其转换为2D
+    numpy数组，然后使用matplotlib绘制：
 - en: '[PRE1]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '![](../Images/a407c053d0bfadeaeb4c9f1b8446b9e4.png)'
+  id: totrans-49
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/a407c053d0bfadeaeb4c9f1b8446b9e4.png)'
 - en: This time series has 144 time steps. You can see from the plot that there is
     an upward trend. There are also some periodicity in the dataset that corresponds
     to the summer holiday period in the northern hemisphere. Usually a time series
     should be “detrended” to remove the linear trend component and normalized before
     processing. For simplicity, these are skipped in this project.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个时间序列有144个时间步。你可以从图中看到上升的趋势。数据集中还有一些周期性现象，对应于北半球的暑假。通常时间序列应该被“去趋势化”以去除线性趋势成分，并在处理前进行标准化。为了简便，这些步骤在本项目中被省略。
 - en: 'To demonstrate the predictive power of our model, the time series is splitted
     into training and test sets. Unlike other dataset, usually time series data are
     splitted without shuffling. That is, the training set is the first half of time
     series and the remaining will be used as the test set. This can be easily done
     on a numpy array:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了展示我们模型的预测能力，时间序列被分割为训练集和测试集。与其他数据集不同，时间序列数据通常是分割而不打乱的。即，训练集是时间序列的前半部分，其余部分用作测试集。这可以很容易地在numpy数组上完成：
 - en: '[PRE2]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The more complicated problem is how do you want the network to predict the time
     series. Usually time series prediction is done on a window. That is, given data
     from time $t-w$ to time $t$, you are asked to predict for time $t+1$ (or deeper
     into the future). The size of window $w$ governs how much data you are allowed
     to look at when you make the prediction. This is also called the **look back period**.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 更复杂的问题是你希望网络如何预测时间序列。通常，时间序列预测是在一个窗口上进行的。也就是说，给定从时间$t-w$到时间$t$的数据，你需要预测时间$t+1$（或更远的未来）。窗口大小$w$决定了你在做出预测时可以查看多少数据。这也称为**回顾期**。
 - en: 'On a long enough time series, multiple overlapping window can be created. It
     is convenient to create a function to generate a dataset of fixed window from
     a time series. Since the data is going to be used in a PyTorch model, the output
     dataset should be in PyTorch tensors:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 在足够长的时间序列上，可以创建多个重叠窗口。创建一个函数以从时间序列生成固定窗口的数据集很方便。由于数据将用于 PyTorch 模型，因此输出数据集应为
+    PyTorch 张量：
 - en: '[PRE3]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This function is designed to apply windows on the time series. It is assumed
     to predict for one time step into the immediate future. It is designed to convert
     a time series into a tensor of dimensions (window sample, time steps, features).
@@ -233,167 +351,250 @@
     of the time series). Within one window, there are multiple consecutive time steps
     of values. In each time step, there can be multiple features. In this dataset,
     there is only one.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 此函数旨在对时间序列应用窗口。它假定预测未来一个时间步长。它设计成将时间序列转换为维度为 (窗口样本数, 时间步长, 特征) 的张量。一个包含 $L$
+    个时间步长的时间序列大约可以生成 $L$ 个窗口（因为窗口可以从任何时间步开始，只要窗口不超出时间序列的边界）。在一个窗口内，有多个连续的时间步长值。在每个时间步长中，可以有多个特征。在此数据集中，只有一个特征。
 - en: 'It is intentional to produce the “feature” and the “target” the same shape:
     For a window of three time steps, the “feature” is the time series from $t$ to
     $t+2$ and the target is from $t+1$ to $t+3$. What we are interested is $t+3$ but
     the information of $t+1$ to $t+2$ is useful in training.'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 故意生成“特征”和“目标”具有相同的形状：对于三个时间步长的窗口，从 $t$ 到 $t+2$ 的“特征”是时间序列，从 $t+1$ 到 $t+3$ 的“目标”。我们感兴趣的是
+    $t+3$，但 $t+1$ 到 $t+2$ 的信息在训练中是有用的。
 - en: 'Note that the input time series is a 2D array and the output from the `create_dataset()`
     function will be a 3D tensors. Let’s try with `lookback=1`. You can verify the
     shape of the output tensor as follows:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，输入时间序列是一个二维数组，而 `create_dataset()` 函数的输出将是一个三维张量。让我们尝试 `lookback=1`。您可以验证输出张量的形状如下：
 - en: '[PRE4]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'which you should see:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 您应该看到：
 - en: '[PRE5]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Now you can build the LSTM model to predict the time series. With `lookback=1`,
     it is quite surely that the accuracy would not be good for too little clues to
     predict. But this is a good example to demonstrate the structure of the LSTM model.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在您可以构建 LSTM 模型来预测时间序列。使用 `lookback=1`，准确性可能不太好，因为线索太少。但这是一个很好的例子，可以展示 LSTM
+    模型的结构。
 - en: The model is created as a class, in which a LSTM layer and a fully-connected
     layer is used.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 模型被创建为一个类，其中包括一个 LSTM 层和一个全连接层。
 - en: '[PRE6]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The output of `nn.LSTM()` is a tuple. The first element is the generated hidden
     states, one for each time step of the input. The second element is the LSTM cell’s
     memory and hidden states, which is not used here.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: '`nn.LSTM()` 的输出是一个元组。第一个元素是生成的隐藏状态，每个时间步的输入都有一个。第二个元素是 LSTM 单元的记忆和隐藏状态，这里没有使用。'
 - en: The LSTM layer is created with option `batch_first=True` because the tensors
     you prepared is in the dimension of (window sample, time steps, features) and
     where a batch is created by sampling on the first dimension.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: LSTM 层使用选项 `batch_first=True` 创建，因为您准备的张量的维度为 (窗口样本数, 时间步长, 特征)，其中批次通过对第一个维度进行采样创建。
 - en: 'The output of hidden states is further processed by a fully-connected layer
     to produce a single regression result. Since the output from LSTM is one per each
     input time step, you can chooce to pick only the last timestep’s output, which
     you should have:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 隐藏状态的输出经过一个全连接层进一步处理，以生成单个回归结果。由于 LSTM 的输出是每个输入时间步长的一个，您可以选择仅选择最后一个时间步长的输出，您应该有：
 - en: '[PRE7]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: and the model’s output will be the prediction of the next time step. But here,
     the fully connected layer is applied to each time step. In this design, you should
     extract only the last time step from the model output as your prediction. However,
     in this case, the window is 1, there is no difference in these two approach.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 模型的输出将是下一个时间步的预测。但在这里，全连接层应用于每个时间步。在此设计中，应从模型输出中仅提取最后一个时间步作为预测值。然而，在此情况下，窗口为1，这两种方法没有区别。
 - en: Training and Verifying Your LSTM Network
+  id: totrans-70
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 训练和验证您的 LSTM 网络
 - en: 'Because it is a regression problem, MSE is chosen as the loss function, which
     is to be minimized by Adam optimizer. In the code below, the PyTorch tensors are
     combined into a dataset using `torch.utils.data.TensorDataset()` and batch for
     training is provided by a `DataLoader`. The model performance is evaluated once
     per 100 epochs, on both the trainning set and the test set:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为这是一个回归问题，所以选择了均方误差（MSE）作为损失函数，通过Adam优化器进行最小化。在下面的代码中，PyTorch张量通过 `torch.utils.data.TensorDataset()`
+    组合成数据集，并通过 `DataLoader` 提供批量训练数据。模型性能每100个周期评估一次，包括训练集和测试集：
 - en: '[PRE8]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'As the dataset is small, the model should be trained for long enough to learn
     about the pattern. Over these 2000 epochs trained, you should see the RMSE on
     both training set and test set decreasing:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于数据集较小，模型应训练足够长的时间以学习模式。在这2000个训练周期中，你应该看到训练集和测试集的RMSE逐渐降低：
 - en: '[PRE9]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: It is expected to see the RMSE of test set is an order of magnitude larger.
     The RMSE of 100 means the prediction and the actual target would be in average
     off by 100 in value (i.e., 100,000 passengers in this dataset).
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 预计测试集的RMSE会大一个数量级。RMSE为100意味着预测值与实际目标值的平均偏差为100（即，该数据集中100,000名乘客）。
 - en: 'To better understand the prediction quality, you can indeed plot the output
     using matplotlib, as follows:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了更好地理解预测质量，你确实可以使用 matplotlib 绘制输出，如下所示：
 - en: '[PRE10]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '![](../Images/5ee4e3caa78be0fbe0045b477b74c9b1.png)'
+  id: totrans-78
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/5ee4e3caa78be0fbe0045b477b74c9b1.png)'
 - en: From the above, you take the model’s output as `y_pred` but extract only the
     data from the last time step as `y_pred[:, -1, :]`. This is what is plotted on
     the chart.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 从上图，你将模型的输出作为 `y_pred`，但只提取最后一个时间步的数据作为 `y_pred[:, -1, :]`。这就是图表上绘制的内容。
 - en: The training set is plotted in red while the test set is plotted in green. The
     blue curve is what the actual data looks like. You can see that the model can
     fit well to the training set but not very well on the test set.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练集用红色绘制，而测试集用绿色绘制。蓝色曲线表示实际数据的样子。你可以看到模型对训练集拟合良好，但对测试集的效果不是很好。
 - en: 'Tying together, below is the complete code, except the parameter `lookback`
     is set to 4 this time:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合来看，以下是完整代码，除了参数 `lookback` 本次设置为4：
 - en: '[PRE11]'
+  id: totrans-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '![](../Images/2a2483a409d79342ae403ac5b1d101e5.png)'
+  id: totrans-83
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/2a2483a409d79342ae403ac5b1d101e5.png)'
 - en: Running the above code will produce the plot below. From both the RMSE measure
     printed and the plot, you can notice that the model can now do better on the test
     set.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行上述代码将产生下面的图表。从打印出的RMSE度量和图表中，你可以注意到模型现在在测试集上的表现有所改善。
 - en: 'This is also why the `create_dataset()` function is designed in such way: When
     the model is given a time series of time $t$ to $t+3$ (as `lookback=4`), its output
     is the prediction of $t+1$ to $t+4$. However, $t+1$ to $t+3$ are also known from
     the input. By using these in the loss function, the model effectively was provided
     with more clues to train. This design is not always suitable but you can see it
     is helpful in this particular example.'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 这也是为什么 `create_dataset()` 函数是这样设计的原因：当模型接收到时间序列从时间 $t$ 到 $t+3$（如 `lookback=4`），其输出是对
+    $t+1$ 到 $t+4$ 的预测。然而，$t+1$ 到 $t+3$ 也从输入中得知。通过在损失函数中使用这些数据，模型实际上获得了更多的线索进行训练。这种设计并不总是适用，但你可以看到在这个特定的例子中是有帮助的。
 - en: Further Readings
+  id: totrans-86
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: '[`nn.LSTM()` from PyTorch documentation](https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html)'
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[`nn.LSTM()`来自PyTorch文档](https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html)'
 - en: '[`torch.utils.data` API from PyTorch](https://pytorch.org/docs/stable/data.html)'
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[`torch.utils.data` API来自PyTorch](https://pytorch.org/docs/stable/data.html)'
 - en: Summary
+  id: totrans-90
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this post, you discovered what is LSTM and how to use it for time series
     prediction in PyTorch. Specifically, you learned:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你发现了什么是LSTM以及如何在PyTorch中使用它进行时间序列预测。具体来说，你学到了：
 - en: What is the international airline passenger time series prediction dataset
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是国际航空乘客时间序列预测数据集
 - en: What is a LSTM cell
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是LSTM单元
 - en: How to create an LSTM network for time series prediction
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何创建用于时间序列预测的LSTM网络

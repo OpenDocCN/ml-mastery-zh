@@ -1,72 +1,106 @@
 - en: The Strategic Use of Sequential Feature Selector for Housing Price Predictions
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 顺序特征选择器在住房价格预测中的战略性使用
 - en: 原文：[https://machinelearningmastery.com/the-strategic-use-of-sequential-feature-selector-for-housing-price-predictions/](https://machinelearningmastery.com/the-strategic-use-of-sequential-feature-selector-for-housing-price-predictions/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/the-strategic-use-of-sequential-feature-selector-for-housing-price-predictions/](https://machinelearningmastery.com/the-strategic-use-of-sequential-feature-selector-for-housing-price-predictions/)
 - en: To understand housing prices better, simplicity and clarity in our models are
     key. Our aim with this post is to demonstrate how straightforward yet powerful
     techniques in feature selection and engineering can lead to creating an effective,
     simple linear regression model. Working with the Ames dataset, we use a Sequential
     Feature Selector (SFS) to identify the most impactful numeric features and then
     enhance our model’s accuracy through thoughtful feature engineering.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了更好地理解住房价格，我们的模型需要简洁明了。我们发布此文的目的是展示如何通过简单但有效的特征选择和工程技术来创建一个有效且简单的线性回归模型。我们使用Ames数据集，通过顺序特征选择器（SFS）来识别最具影响力的数值特征，并通过深思熟虑的特征工程提升模型的准确性。
 - en: Let’s get started.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/7191b4fc5d8692c5c8dca04a63ddfcb3.png)'
+  id: totrans-4
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/7191b4fc5d8692c5c8dca04a63ddfcb3.png)'
 - en: The Strategic Use of Sequential Feature Selector for Housing Price Predictions
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 顺序特征选择器在住房价格预测中的战略性使用
 - en: Photo by [Mahrous Houses](https://unsplash.com/photos/brown-and-black-table-lamp-on-black-wooden-shelf-kUCTWQG9IJo).
     Some rights reserved.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：[Mahrous Houses](https://unsplash.com/photos/brown-and-black-table-lamp-on-black-wooden-shelf-kUCTWQG9IJo)。部分版权保留。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三个部分，它们是：
 - en: Identifying the Most Predictive Numeric Feature
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 确定最具预测性的数值特征
 - en: Evaluating Individual Features’ Predictive Power
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 评估单个特征的预测能力
 - en: Enhancing Predictive Accuracy with Feature Engineering
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过特征工程提升预测准确性
 - en: Identifying the Most Predictive Numeric Feature
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 确定最具预测性的数值特征
 - en: 'In the initial segment of our exploration, we embark on a mission to identify
     the most predictive numeric feature within the Ames dataset. This is achieved
     by applying Sequential Feature Selector (SFS), a tool designed to sift through
     features and select the one that maximizes our model’s predictive accuracy. The
     process is straightforward, focusing solely on numeric columns and excluding any
     with missing values to ensure a clean and robust analysis:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们探索的初始阶段，我们着手确定Ames数据集中最具预测性的数值特征。这是通过应用顺序特征选择器（SFS）来实现的，该工具旨在筛选特征并选择能够最大化我们模型预测准确性的特征。该过程非常简单，仅关注数值列，并排除任何缺失值，以确保分析的干净和稳健：
 - en: '[PRE0]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'This will output:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将输出：
 - en: '[PRE1]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: This result notably challenges the initial presumption that the area might be
     the most predictive feature for housing prices. Instead, it underscores the **significance
     of overall quality**, suggesting that, contrary to initial expectations, quality
@@ -75,94 +109,140 @@
     to evaluate the performance of each feature subset. This approach ensures that
     the selected feature—reflected by the highest mean cross-validation R² score—is
     robust and likely to generalize well on unseen data.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一结果显著挑战了最初认为面积可能是住房价格最具预测性的特征的假设。相反，它强调了**整体质量的重要性**，表明与最初的预期相反，质量是买家的主要考虑因素。需要注意的是，顺序特征选择器[利用交叉验证，默认设置为五折(cv=5)](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SequentialFeatureSelector.html)来评估每个特征子集的性能。这种方法确保了所选特征——通过最高的平均交叉验证R²得分来体现——是稳健的，并且有可能在未见过的数据上良好地泛化。
 - en: Evaluating Individual Features’ Predictive Power
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 评估单个特征的预测能力
 - en: Building upon our initial findings, we delve deeper to rank features by their
     predictive capabilities. Employing cross-validation, we evaluate each feature
     independently, calculating their mean R² scores from cross-validation to ascertain
     their individual contributions to the model’s accuracy.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 在初步发现的基础上，我们进一步深入分析，按特征的预测能力进行排名。通过交叉验证，我们独立评估每个特征，计算其交叉验证的平均R²得分，以确定其对模型准确性的个体贡献。
 - en: '[PRE2]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'This will output:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将输出：
 - en: '[PRE3]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: These findings underline the key role of overall quality (“OverallQual”), as
     well as the importance of living area (“GrLivArea”) and first-floor space (“1stFlrSF”)
     in the context of housing price predictions.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些发现突出了整体质量（“OverallQual”）、生活面积（“GrLivArea”）和一层面积（“1stFlrSF”）在房价预测中的关键作用。
 - en: Enhancing Predictive Accuracy with Feature Engineering
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 通过特征工程提升预测准确性
 - en: In the final stride of our journey, we employ feature engineering to create
     a novel feature, “Quality Weighted Area,” by multiplying ‘OverallQual’ by ‘GrLivArea’.
     This fusion aims to synthesize a more powerful predictor, encapsulating both the
     quality and size dimensions of a property.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们旅程的最后阶段，我们通过将‘OverallQual’与‘GrLivArea’相乘，创建了一个新特征“质量加权面积”。这种融合旨在合成一个更强大的预测因子，囊括了房产的质量和面积维度。
 - en: '[PRE4]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'This will output:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将输出：
 - en: '[PRE5]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: This remarkable increase in R² score vividly demonstrates the efficacy of combining
     features to capture more nuanced aspects of data, providing a compelling case
     for the thoughtful application of feature engineering in predictive modeling.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一 R² 分数的显著提高生动展示了特征组合捕捉数据更细微方面的效果，为在预测建模中谨慎应用特征工程提供了有力的案例。
 - en: '**Further****Reading**'
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: APIs
+  id: totrans-31
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: API
 - en: '[sklearn.feature_selection.SequentialFeatureSelector](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SequentialFeatureSelector.html)
     API'
+  id: totrans-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[sklearn.feature_selection.SequentialFeatureSelector](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SequentialFeatureSelector.html)
+    API'
 - en: Tutorials
+  id: totrans-33
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 教程
 - en: '[A practical introduction to sequential feature selection](https://www.yourdatateacher.com/2023/02/15/a-practical-introduction-to-sequential-feature-selection/)
     by Gianluca Malato'
+  id: totrans-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[序列特征选择的实用介绍](https://www.yourdatateacher.com/2023/02/15/a-practical-introduction-to-sequential-feature-selection/)
+    by Gianluca Malato'
 - en: '**Ames Housing Dataset & Data Dictionary**'
+  id: totrans-35
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**Ames 房价数据集与数据字典**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: Through this three-part exploration, you have navigated the process of pinpointing
     and enhancing predictors for housing price predictions with an emphasis on simplicity.
     Starting with identifying the most predictive feature using a Sequential Feature
@@ -178,27 +258,40 @@
     housing prices. This exploration emphasizes that with the right techniques, even
     simple models can yield profound insights into complex datasets like Ames’ housing
     prices.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过这三部分的探索，你已经掌握了用简洁的方法确定和增强房价预测因子的过程。从使用序列特征选择器（SFS）识别最具预测性的特征开始，我们发现整体质量至关重要。这一步骤尤其重要，因为我们的目标是创建最佳的简单线性回归模型，从而排除分类特征以进行简化分析。这一探索从使用序列特征选择器（SFS）识别整体质量作为关键预测因子，进而评估生活面积和一层面积的影响。创建“质量加权面积”这一融合质量与面积的特征，显著提升了模型的准确性。通过特征选择和工程的旅程突显了简洁在改进房地产预测模型中的力量，深入揭示了真正影响房价的因素。这一探索强调了即使是简单模型，只要使用正确的技术，也能对像
+    Ames 房价这样的复杂数据集提供深刻的见解。
 - en: 'Specifically, you learned:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学习了：
 - en: The value of Sequential Feature Selection in revealing the most important predictors
     for housing prices.
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 序列特征选择在揭示房价最重要预测因子方面的价值。
 - en: The importance of quality over size when predicting housing prices in Ames,
     Iowa.
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在预测爱荷华州 Ames 的房价时，质量比面积更重要。
 - en: How merging features into a “Quality Weighted Area” enhances model accuracy.
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 合并特征到“质量加权面积”如何提升模型准确性。
 - en: Do you have experiences with feature selection or engineering you would like
     to share, or questions about the process? Please ask your questions or give us
     feedback in the comments below, and I will do my best to answer.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 你是否有关于特征选择或工程方面的经验想要分享，或者对这个过程有疑问？请在下方评论中提出你的问题或给我们反馈，我会尽力回答。

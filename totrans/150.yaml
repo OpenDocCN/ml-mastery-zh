@@ -1,84 +1,124 @@
 - en: Making Predictions with Logistic Regression in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用PyTorch中的逻辑回归进行预测
 - en: 原文：[https://machinelearningmastery.com/making-predictions-with-logistic-regression-in-pytorch/](https://machinelearningmastery.com/making-predictions-with-logistic-regression-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/making-predictions-with-logistic-regression-in-pytorch/](https://machinelearningmastery.com/making-predictions-with-logistic-regression-in-pytorch/)
 - en: Logistic regression is a statistical technique for modeling the probability
     of an event. It is often used in machine learning for making predictions. We apply
     logistic regression when a categorical outcome needs to be predicted.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 逻辑回归是一种用于建模事件概率的统计技术。它常用于机器学习中进行预测。当需要预测分类结果时，我们应用逻辑回归。
 - en: In PyTorch, the construction of logistic regression is similar to that of linear
     regression. They both applied to linear inputs. But logistic regression is specifically
     classification problems, such as classifying into one of the two outcomes (0 or
     1).
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在PyTorch中，逻辑回归的构建类似于线性回归。它们都应用于线性输入。但逻辑回归专门用于分类问题，例如将数据分类为两种结果之一（0或1）。
 - en: 'In this tutorial, we’ll focus on making predictions with logistic regression.
     We’ll learn how some of the useful packages in the PyTorch library can help easily
     create a logistic regression model. Particularly, we’ll learn:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将重点介绍如何使用逻辑回归进行预测。我们将学习如何利用PyTorch库中的一些有用包轻松创建逻辑回归模型。特别是，我们将学习：
 - en: How to make predictions with logistic regression in PyTorch.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用PyTorch中的逻辑回归进行预测。
 - en: The logistic function and its implementation on tensors.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 逻辑函数及其在张量上的实现。
 - en: How to build a logistic regression model with `nn.Sequential`.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过`nn.Sequential`构建逻辑回归模型。
 - en: How to build a custom module for logistic regression.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何构建用于逻辑回归的自定义模块。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，参考我的书籍 [《深度学习与PyTorch》](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了**自学教程**和**可运行代码**。'
 - en: Let’s get started.![](../Images/457c0f3b051171ebdac81b5c3ccf40da.png)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。![](../Images/457c0f3b051171ebdac81b5c3ccf40da.png)
 - en: Making Predictions with Logistic Regression in PyTorch.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用PyTorch中的逻辑回归进行预测。
 - en: Picture by [Manson Yim](https://unsplash.com/photos/O-hXklfVxOo). Some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Manson Yim](https://unsplash.com/photos/O-hXklfVxOo) 提供。版权所有。
 - en: Overview
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in four parts; they are
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四部分；它们是
 - en: Create Data Class
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建数据类
 - en: Build the Model with `nn.Module`
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用`nn.Module`构建模型
 - en: Train with Mini-Batch Gradient Descent
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用小批量梯度下降进行训练
 - en: Plot the Progress
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 绘制进度图
 - en: What is a Logistic Function?
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是逻辑函数？
 - en: When class of a certain point in a dataset is calculated using a linear function,
     we get a positive or a negative number such as $-3$, $2$, $4$, etc. When we build
     a classifier, or specifically a binary classifier, we wish it can return either
@@ -86,168 +126,262 @@
     always return a value between 0 and 1\. Usually we will set a threshold, such
     as 0.5, to round up or round down the result to designate the output to one class
     or another.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 当数据集中某一点的类别使用线性函数计算时，我们得到一个正数或负数，如$-3$、$2$、$4$等。当我们构建分类器，尤其是二分类器时，我们希望它能返回0或1。在这种情况下，可以使用sigmoid或逻辑函数，因为该函数总是返回0到1之间的值。通常，我们会设置一个阈值，如0.5，将结果四舍五入以确定输出类别。
 - en: In PyTorch, the logistic function is implemented by the `nn.Sigmoid()` method.
     Let’s define a tensor by using the `range()` method in PyTorch and apply the logistic
     function to observe the output.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在PyTorch中，逻辑函数由`nn.Sigmoid()`方法实现。让我们使用PyTorch中的`range()`方法定义一个张量，并应用逻辑函数以观察输出。
 - en: '[PRE0]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Let’s see how the plot looks like.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看图像的样子。
 - en: '[PRE1]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '![](../Images/4c9e9cf96e0d95b2e9e4ea434eb7aefa.png)'
+  id: totrans-25
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4c9e9cf96e0d95b2e9e4ea434eb7aefa.png)'
 - en: Logistic function
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 逻辑函数
 - en: As you can see in the plot, the values of a logistic function range between
     0 and 1, with the transition happen mostly around 0.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 如图所示，逻辑函数的值范围在0和1之间，过渡发生在0附近。
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-28
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用PyTorch进行深度学习？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并免费获得课程的PDF电子书版。
 - en: Logistic Regression Model via `nn.Sequential`
+  id: totrans-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 通过`nn.Sequential`构建逻辑回归模型
 - en: The `nn.Sequential` package in PyTorch enables us to build logistic regression
     model just like we can build our linear regression models. We simply need to define
     a tensor for input and process it through the model.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 中的`nn.Sequential`包使我们能够构建逻辑回归模型，就像我们可以构建线性回归模型一样。我们只需定义一个输入张量并通过模型处理它。
 - en: Let’s define a Logistic Regression model object that takes one-dimensional tensor
     as input.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们定义一个逻辑回归模型对象，该对象接受一维张量作为输入。
 - en: '[PRE2]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: This model has a linear function layer. The output from the linear function
     is passed on to the logistic function that makes the prediction.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个模型包含一个线性函数层。线性函数的输出传递给逻辑函数进行预测。
 - en: We can check the list of model parameters using `parameters()` method. The parameters
     should be randomly initialized in this case but we can see the shape match what
     we specified in the model above.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用`parameters()`方法检查模型参数的列表。这些参数在此情况下应被随机初始化，但我们可以看到它们的形状与我们在模型中指定的形状一致。
 - en: '[PRE3]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Here’s what the output looks like.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出结果如下所示。
 - en: '[PRE4]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Now, let’s define a one-dimensional tensor `x` and make predictions with our
     logistic regression model.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们定义一个一维张量`x`，并使用我们的逻辑回归模型进行预测。
 - en: '[PRE5]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: We force the tensor to be in `float32` type because this is what our model expects.
     Feeding this samples of data into the model, we will get the following predictions.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将张量强制设置为`float32`类型，因为这是我们的模型所期望的。将这些数据样本输入模型后，我们将得到以下预测结果。
 - en: '[PRE6]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Its output is like the following:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 它的输出如下：
 - en: '[PRE7]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Putting everything together, the following is the complete code:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 把所有内容整合在一起，以下是完整的代码：
 - en: '[PRE8]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Custom Module for Logistic Regression
+  id: totrans-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 自定义逻辑回归模块
 - en: Knowing how to build custom modules is necessary when you work on advanced deep
     learning solutions. We can try out the syntax and build our custom logistic regerssion
     module. This should work identically to the `nn.Sequential` model above.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 了解如何构建自定义模块在处理高级深度学习解决方案时是必要的。我们可以尝试语法并构建我们自定义的逻辑回归模块。它应与上面的`nn.Sequential`模型完全相同。
 - en: We’ll define the class and inherit all the methods and attributes from the `nn.Module`
     package. In the `forward()` function of the class, we’ll use `sigmoid()` method
     which takes the output from the linear function of the class and makes the prediction.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将定义类并继承`nn.Module`包中的所有方法和属性。在类的`forward()`函数中，我们将使用`sigmoid()`方法，该方法接受来自类的线性函数的输出并进行预测。
 - en: '[PRE9]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: We can instantiate the class object.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以实例化这个类对象。
 - en: '[PRE10]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Now, let’s make predictions for the tensor `x` we defined above.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们对我们上面定义的张量`x`进行预测。
 - en: '[PRE11]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'The output would be:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出将是：
 - en: '[PRE12]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: As you can see, our custom model for Logistic Regression works exactly like
     the `nn.Sequential` version above.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 如你所见，我们自定义的逻辑回归模型的工作方式与上面的`nn.Sequential`版本完全相同。
 - en: 'Putting everything together, the following is the complete code:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 把所有内容整合在一起，以下是完整的代码：
 - en: '[PRE13]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Summary
+  id: totrans-61
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you learned some basics of Logistic Regression and how it
     can be implemented in PyTorch. Particularly, you learned:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了逻辑回归的一些基础知识以及如何在 PyTorch 中实现它。特别是，你学习了：
 - en: How to make predictions with Logistic Regression in Pytroch.
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中使用逻辑回归进行预测。
 - en: About the Logistic Function and its implementation on tensors.
+  id: totrans-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关于逻辑函数及其在张量上的实现。
 - en: How to build a Logistic Regression model with `nn.Sequential`.
+  id: totrans-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用`nn.Sequential`构建逻辑回归模型。
 - en: How to build a custom module for Logistic Regression.
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何构建自定义的逻辑回归模块。

@@ -1,83 +1,126 @@
 - en: How to Use Stable Diffusion Effectively
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何有效地使用稳定扩散
 - en: 原文：[https://machinelearningmastery.com/how-to-use-stable-diffusion-effectively/](https://machinelearningmastery.com/how-to-use-stable-diffusion-effectively/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/how-to-use-stable-diffusion-effectively/](https://machinelearningmastery.com/how-to-use-stable-diffusion-effectively/)
 - en: 'From the prompt to the picture, Stable Diffusion is a pipeline with many components
     and parameters. All these components working together creates the output. If a
     component behave differently, the output will change. Therefore, a bad setting
     can easily ruin your picture. In this post, you will see:'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 从提示到图片，稳定扩散是一个包含许多组件和参数的管道。所有这些组件共同工作产生输出。如果某个组件行为不同，输出也会发生变化。因此，设置不当很容易毁掉你的图片。在这篇文章中，你将看到：
 - en: How the different components of the Stable Diffusion pipeline affects your output
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不同组件如何影响稳定扩散管道的输出
 - en: How to find the best configuration to help you generate a high quality picture
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何找到最佳配置以帮助你生成高质量的图片
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [《掌握稳定扩散数字艺术》](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/)
+    **来启动你的项目**。它提供了**自学教程**和**有效代码**。'
 - en: Let’s get started.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/d12db7fd03b2701f6b41c78eca632763.png)'
+  id: totrans-7
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/d12db7fd03b2701f6b41c78eca632763.png)'
 - en: How to Use Stable Diffusion Effectively.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何有效地使用稳定扩散。
 - en: Photo by [Kam Idris](https://unsplash.com/photos/black-and-white-bed-linen-kyt0PkBSCNQ).
     Some rights reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Kam Idris](https://unsplash.com/photos/black-and-white-bed-linen-kyt0PkBSCNQ)
+    提供。保留部分权利。
 - en: Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is in three parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三部分；它们是：
 - en: Importance of a Model
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 模型的重要性
 - en: Selecting a Sampler and Scheduler
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 选择采样器和调度器
 - en: Size and the CFG Scale
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 尺寸和 CFG 规模
 - en: Importance of a Model
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 模型的重要性
 - en: If there is one component in the pipeline that has the most impact, it must
     be the model. In the Web UI, it is called the “checkpoint”, named after how we
     saved the model when we trained a deep learning model.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果管道中有一个组件影响最大，那一定是模型。在Web UI中，它被称为“检查点”，以我们在训练深度学习模型时保存模型的方式命名。
 - en: The Web UI supports multiple Stable Diffusion model architectures. The most
     common architecture nowadays is the version 1.5 (SD 1.5). Indeed, all version
     1.x share a similar architecture (each model has 860M parameters) but are trained
     or fine-tuned under different strategies.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: Web UI 支持多种稳定扩散模型架构。如今最常见的架构是 1.5 版 (SD 1.5)。事实上，所有 1.x 版本共享相似的架构（每个模型有 860M
+    参数），但在不同的策略下进行训练或微调。
 - en: '![](../Images/4b5e0eec24a9e8aca0e6b3943b472e8a.png)'
+  id: totrans-18
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4b5e0eec24a9e8aca0e6b3943b472e8a.png)'
 - en: Architecture of Stable Diffusion 1.x. Figure from Rombach et al (2022)
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散 1.x 的架构。图源：Rombach et al (2022)
 - en: There is also Stable Diffusion 2.0 (SD 2.0), and its updated version 2.1\. This
     is not a “revision” from version 1.5, but a model trained from scratch. It uses
     a different text encoder ([OpenCLIP](https://github.com/mlfoundations/open_clip)
@@ -86,8 +129,12 @@
     OpenCLIP knows fewer names of celebrities and artists. Hence, the prompt from
     Stable Diffusion 1.5 may be obsolete in 2.1\. Because the encoder is different,
     SD2.x and SD1.x are incompatible, while they share a similar architecture.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有稳定扩散 2.0 (SD 2.0) 和其更新版本 2.1。这不是对版本 1.5 的“修订”，而是从头训练的模型。它使用不同的文本编码器（[OpenCLIP](https://github.com/mlfoundations/open_clip)
+    而不是 [CLIP](https://huggingface.co/openai/clip-vit-large-patch14)）；因此，它们对关键词的理解不同。一个显著的区别是
+    OpenCLIP 知道的名人和艺术家的名字较少。因此，稳定扩散 1.5 的提示在 2.1 中可能已经过时。由于编码器不同，SD2.x 和 SD1.x 不兼容，但它们共享类似的架构。
 - en: 'Next comes the Stable Diffusion XL (SDXL). While version 1.5 has a native resolution
     of 512×512 and version 2.0 increased it to 768×768, SDXL is at 1024×1024\. You
     are not suggested to use a vastly different size than their native resolution.
@@ -97,65 +144,97 @@
     or skip the refiner if you wish. The text encoder used combines CLIP and OpenCLIP.
     Hence, it should understand your prompt better than any older architecture. Running
     SDXL is slower and requires much more memory, but usually in better quality.'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来是 Stable Diffusion XL（SDXL）。虽然版本 1.5 的原生分辨率为 512×512，版本 2.0 将其增加到了 768×768，但
+    SDXL 的分辨率为 1024×1024。建议不要使用与其原生分辨率差异很大的尺寸。SDXL 是一种不同的架构，具有更大的66亿参数流水线。最显著的是，这些模型分为两部分：基础模型和精化器模型。它们成对出现，但您可以将其中一个替换为兼容的对应模型，或者如果愿意，跳过精化器。所使用的文本编码器结合了
+    CLIP 和 OpenCLIP。因此，它应该比任何旧架构更好地理解您的提示。运行 SDXL 的速度较慢，需要更多内存，但通常能提供更好的质量。
 - en: '![](../Images/47685ba5f9fb0a80f640da4370ead373.png)'
+  id: totrans-22
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/47685ba5f9fb0a80f640da4370ead373.png)'
 - en: Architecture of SDXL. Figure from Podell et al (2023)
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: SDXL 的架构。来自 Podell 等人（2023）的图示。
 - en: 'What matters to you is that you should classify your models into three incompatible
     families: SD1.5, SD2.x, and SDXL. They behave differently with your prompt. You
     will also find that SD1.5 and SD2.x would need a negative prompt for a good picture,
     but it is less important in SDXL. If you’re using SD2.x models, you will also
     notice that you can select your refiner in the Web UI.'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 对您而言重要的是，您应该将您的模型分类为三个不兼容的系列：SD1.5、SD2.x 和 SDXL。它们在您的提示下表现不同。您还会发现，SD1.5 和 SD2.x
+    需要一个负面的提示才能获得好的图片，但在 SDXL 中则不那么重要。如果您正在使用 SD2.x 模型，您还会注意到您可以在 Web UI 中选择您的精化器。
 - en: '![](../Images/806e9c16fa29da73a9ca4aca296f4a89.png)'
+  id: totrans-25
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/806e9c16fa29da73a9ca4aca296f4a89.png)'
 - en: Images generated with the prompt, ‘A fast food restaurant in a desert with name
     “Sandy Burger”’, using SD 1.5 with different random seed. Note that none of them
     spelled the name correctly.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用提示“沙漠中的快餐店，名为‘Sandy Burger’”，使用不同的随机种子，使用 SD 1.5 生成的图片。请注意，没有一张图片正确拼写了名字。
 - en: '![](../Images/42e52ad1c2ac1c2eea4aa65b31a49ae9.png)'
+  id: totrans-27
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/42e52ad1c2ac1c2eea4aa65b31a49ae9.png)'
 - en: Images generated with the prompt, ‘A fast food restaurant in a desert with name
     “Sandy Burger”’, using SD 2.0 with different random seed. Note that not all of
     them spelled the name correctly.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用提示“沙漠中的快餐店，名为‘Sandy Burger’”，使用不同的随机种子，使用 SD 2.0 生成的图片。请注意，并非所有图片都正确拼写了名字。
 - en: '![](../Images/593621857aaf689860cb5b8c2b34c04f.png)'
+  id: totrans-29
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/593621857aaf689860cb5b8c2b34c04f.png)'
 - en: Images generated with the prompt, ‘A fast food restaurant in a desert with name
     “Sandy Burger”’, using SDXL with different random seed. Note that three of them
     spelled the name correctly and only one letter is missing on the last one.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用提示“沙漠中的快餐店，名为‘Sandy Burger’”，使用不同的随机种子，使用 SDXL 生成的图片。请注意，其中三张正确拼写了名字，最后一张只缺少一个字母。
 - en: One characteristic of Stable Diffusion is that the original models are less
     capable but adaptable. Therefore, a lot of third-party fine-tuned models are produced.
     Most significant are the models specializing in certain styles, such as Japanese
     anime, western cartoons, Pixar-style 2.5D graphics, or photorealistic pictures.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散的一个特点是原始模型功能较弱但适应性强。因此，产生了大量第三方精细调整的模型。其中最重要的是专门用于某些风格的模型，比如日本动漫、西方卡通、Pixar
+    风格的2.5D图形或逼真的图片。
 - en: You can find models on Civitai.com or Hugging Face Hub. Search with keywords
     such as “photorealistic” or “2D” and sorting by rating would usually help.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以在 Civitai.com 或 Hugging Face Hub 上找到这些模型。使用关键词如“逼真”或“2D”进行搜索，并按评分排序通常会有帮助。
 - en: Selecting a Sampler and Scheduler
+  id: totrans-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 选择采样器和调度器
 - en: Image diffusion is to start with noise and replaces the noise strategically
     with pixels until the final picture is produced. It is later found that this process
     can be represented as a stochastic differential equation. Solving the equation
     numerically is possible, and there are different algorithms of varying accuracy.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 图像扩散是从噪声开始，并通过策略性地用像素替换噪声，直到生成最终图片。后来发现这一过程可以表示为随机微分方程。可以通过数值方法求解该方程，并有不同精度的不同算法。
 - en: The most commonly used sampler is Euler. It is traditional but still useful.
     Then, there is a family of DPM samplers. Some new samplers, such as UniPC and
     LCM, have been introduced recently. Each sampler is an algorithm. It is to run
@@ -166,109 +245,161 @@
     their name, such as “Euler a” instead of “Euler”. The non-ancestral samplers converge,
     i.e., they will cease changing the output after certain steps. Ancestral samplers
     would give a different output if you increase the step size.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 最常用的采样器是 Euler。它是传统但仍然有用的。然后，有一系列 DPM 采样器。最近还引入了一些新的采样器，如 UniPC 和 LCM。每个采样器都是一个算法。它要运行多个**步骤**，并且每个步骤使用不同的参数。这些参数是通过**调度器**（如
+    Karras 或指数）设置的。一些采样器有一个替代的“祖先”模式，它在每个步骤中增加随机性。如果你想要更具创意的输出，这是很有用的。那些采样器通常在名称中带有后缀“a”，例如“Euler
+    a”而不是“Euler”。非祖先采样器会收敛，即它们在一定步骤后不会再改变输出。祖先采样器在增加步骤大小时会产生不同的输出。
 - en: '![](../Images/93fa8f3477c7375decdf0d71694680fa.png)'
+  id: totrans-36
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/93fa8f3477c7375decdf0d71694680fa.png)'
 - en: Selecting sampler, scheduler, steps, and other parameters in the Stable Diffusion
     Web UI
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Stable Diffusion Web UI 中选择采样器、调度器、步骤和其他参数
 - en: As a user, you can assume Karras is the scheduler for all cases. However, the
     scheduler and step size would need some experimentation. Either Euler or DPM++2M
     should be selected because they balance quality and speed best. You can start
     with a step size of around 20 to 30; the more steps you choose, the better the
     output quality in terms of details and accuracy, but proportionally slower.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为用户，你可以假设 Karras 是所有情况的调度器。然而，调度器和步长需要一些实验。应该选择 Euler 或 DPM++2M，因为它们在平衡质量和速度方面表现最佳。你可以从大约
+    20 到 30 的步长开始；你选择的步数越多，输出的质量（细节和准确性）就越好，但相应地速度会变慢。
 - en: Size and CFG Scale
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 尺寸和 CFG 比例
 - en: Recall that the image diffusion process starts from a noisy picture, gradually
     placing pixels conditioned by the prompt. How much the conditioning can impact
     the diffusion process is controlled by the parameter CFG scale (classifier-free
     guidance scale).
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 请记住，图像扩散过程从一个嘈杂的图片开始，逐渐放置由提示条件的像素。调节参数 CFG 比例（无分类器引导比例）可以控制条件对扩散过程的影响程度。
 - en: Unfortunately, the optimal value of CFG scale depends on the model. Some models
     work best with a CFG scale of 1 to 2, while others are optimized for 7 to 9\.
     The default value is 7.5 in the Web UI. But as a general rule, the higher the
     CFG scale, the stronger the output image conforms to your prompt.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，CFG 比例的最佳值取决于模型。一些模型最适合 CFG 比例为 1 到 2，而其他模型则优化为 7 到 9。在 Web UI 中，默认值为 7.5。但一般而言，CFG
+    比例越高，输出图像越符合你的提示。
 - en: 'If your CFG scale is too low, the output image may not be what you expected.
     However, there is another reason you do not get what you expected: The output
     size. For example, if you prompt for a picture of a man standing, you may get
     a headshot of a half-body shot instead unless you set the image size to a height
     significantly greater than the width. The diffusion process sets the picture composition
     in the early steps. It is easier to devise a standing man on a taller canvas.'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你的 CFG 比例过低，输出的图像可能与你预期的不同。然而，导致未达到预期效果的另一个原因是输出大小。例如，如果你提示要一个站立男人的图片，除非将图像大小设置为高度明显大于宽度，否则可能得到一个半身照片或者头部特写。扩散过程在早期阶段设定图片构图。在较高的画布上更容易设计站立的人物。
 - en: '![](../Images/ee61baa5c333951b640d931d59e1cfea.png)'
+  id: totrans-43
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/ee61baa5c333951b640d931d59e1cfea.png)'
 - en: Generating a half-body shot if provided a square canvas.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在提供正方形画布时生成半身照片。
 - en: '![](../Images/fc081d8edd1ae7354dd37c641d146810.png)'
+  id: totrans-45
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/fc081d8edd1ae7354dd37c641d146810.png)'
 - en: Generating a full body shot with the same prompt, same seed, and only the canvas
     size is changed.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用相同的提示、相同的种子，只改变画布大小来生成全身照片。
 - en: Similarly, if you give too much detail to something that occupies a small part
     of the image, those details would be ignored because there are not enough pixels
     to render those details. That is why SDXL, for example, is generally better than
     SD 1.5 since you usually use a larger pixel size.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似地，如果你给一个占图像小部分的物体过多的细节，这些细节可能会被忽略，因为像素不足以呈现这些细节。这就是为什么 SDXL 通常比 SD 1.5 更好的原因，因为通常使用更大的像素大小。
 - en: As a final remark, generating pictures using image diffusion models involves
     randomness. Always start with a batch of several pictures to make sure the bad
     output is not merely due to the random seed.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一点，使用图像扩散模型生成图片涉及随机性。始终从一批几张图片开始，以确保不良输出不仅仅是由于随机种子造成的。
 - en: Further Readings
+  id: totrans-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您希望深入了解这个主题，本节提供了更多资源。
 - en: '[High-Resolution Image Synthesis with Latent Diffusion Models](https://arxiv.org/abs/2112.10752),
     by Rombach et al (2022)'
+  id: totrans-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[使用潜在扩散模型进行高分辨率图像合成](https://arxiv.org/abs/2112.10752)，作者为 Rombach 等人（2022）'
 - en: '[SDXL: Improving Latent Diffusion Models for High-Resolution Image Synthesis](http://arxiv.org/abs/2307.01952),
     by Podell et al (2023)'
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[SDXL: 改进高分辨率图像合成的潜在扩散模型](http://arxiv.org/abs/2307.01952)，作者为 Podell 等人（2023）'
 - en: '[Stable Diffusion page](https://en.wikipedia.org/wiki/Stable_Diffusion) on
     Wikipedia'
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[稳定扩散页面](https://en.wikipedia.org/wiki/Stable_Diffusion) 在维基百科上'
 - en: Summary
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概要
 - en: 'In this post, you learned about some subtle details that affects the image
     generation in Stable Diffusion. Specifically, you learned:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，您了解了一些微妙的细节，这些细节影响了稳定扩散中的图像生成。具体来说，您学到了：
 - en: The difference between different versions of Stable Diffusion
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不同版本稳定扩散之间的区别
 - en: How the scheduler and sampler affects the image diffusion process
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 调度器和采样器如何影响图像扩散过程
 - en: How the canvas size may affect the output
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 画布大小如何影响输出结果

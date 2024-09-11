@@ -1,11 +1,15 @@
 - en: A First Course on Deploying Python Projects
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 部署 Python 项目的第一课
 - en: 原文：[https://machinelearningmastery.com/a-first-course-on-deploying-python-projects/](https://machinelearningmastery.com/a-first-course-on-deploying-python-projects/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-first-course-on-deploying-python-projects/](https://machinelearningmastery.com/a-first-course-on-deploying-python-projects/)
 - en: After all the hard work developing a project in Python, we want to share our
     project with other people. It can be your friends or your colleagues. Maybe they
     are not interested in your code, but they want to run it and make some real use
@@ -15,74 +19,110 @@
     simple as sending your friend a small script. There can be many supporting files,
     multiple scripts, and also dependencies on a list of libraries. Getting all these
     right can be a challenge.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在用 Python 开发项目的艰苦工作之后，我们想与其他人分享我们的项目。可以是你的朋友或同事。也许他们对你的代码不感兴趣，但他们希望运行并实际使用它。例如，你创建了一个回归模型，可以根据输入特征预测一个值。你的朋友希望提供自己的特征，看看你的模型预测了什么值。但随着你的
+    Python 项目变大，发送一个小脚本给朋友就不那么简单了。可能有许多支持文件、多重脚本，还依赖于一个库列表。正确处理这些问题可能是一个挑战。
 - en: 'After finishing this tutorial, you will learn:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将学习到：
 - en: How to harden your code for easier deployment by making it a module
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过将代码模块化来增强其部署的简易性
 - en: How to create a package for your module so we can rely on `pip` to manage the
     dependencies
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为你的模块创建一个包，以便我们可以依赖 `pip` 来管理依赖
 - en: How to use a venv module to create reproducible running environments
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 venv 模块创建可重复的运行环境
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**快速启动你的项目**，请参考我的新书 [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/)，包括
+    *逐步教程* 和 *Python 源代码* 文件，涵盖所有示例。'
 - en: Let’s get started!![](../Images/6c832d8443a1f25dddb3bb7e7d7cde92.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 开始吧！！[](../Images/6c832d8443a1f25dddb3bb7e7d7cde92.png)
 - en: A First Course on Deploying Python Projects
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 部署 Python 项目的第一课
 - en: Photo by [Kelly L](https://www.pexels.com/photo/tanker-ship-unloading-containers-in-port-6595774/).
     Some rights reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源于 [Kelly L](https://www.pexels.com/photo/tanker-ship-unloading-containers-in-port-6595774/)。版权所有。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is divided into four parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四个部分，它们是：
 - en: From development to deployment
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从开发到部署
 - en: Creating modules
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建模块
 - en: From module to package
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从模块到包
 - en: Using venv for your project
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为你的项目使用 venv
 - en: From Development to Deployment
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 从开发到部署
 - en: When we finish a project in Python, occasionally, we don’t want to shelve it
     but want to make it a routine job. We may finish training a machine learning model
     and actively use the trained model for prediction. We may build a time series
     model and use it for next-step prediction. However, new data comes in every day,
     so we need to re-train it to adapt to the development and keep future predictions
     accurate.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们完成一个 Python 项目时，有时我们不想将其搁置，而是希望将其转变为常规工作。我们可能完成了一个机器学习模型的训练，并积极使用训练好的模型进行预测。我们可能构建了一个时间序列模型，并用它进行下一步预测。然而，新数据每天都在进入，所以我们需要重新训练模型，以适应发展，并保持未来预测的准确性。
 - en: Whatever the reason, we need to make sure the program will run as expected.
     However, this can be harder than we thought. A simple Python script may not be
     a difficult issue, but as our program gets larger with more dependencies, many
@@ -91,187 +131,286 @@
     that may cease to work after an upgrade of our OS. Another case is when the program
     depends on some files located at a specific path, but we may accidentally delete
     or rename a file.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论原因如何，我们需要确保程序按预期运行。然而，这可能比我们想象的要困难得多。一个简单的 Python 脚本可能不是什么大问题，但随着程序变大，依赖增多，许多事情可能会出错。例如，我们使用的库的新版可能会破坏工作流程。或者我们的
+    Python 脚本可能运行某个外部程序，而在操作系统升级后，该程序可能停止工作。另一种情况是程序依赖于位于特定路径的文件，但我们可能会不小心删除或重命名文件。
 - en: There is always a way for our program to fail to execute. But we have some techniques
     to make it more robust and more reliable.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的程序总是有可能执行失败的。但我们有一些技巧可以使它更稳健，更可靠。
 - en: Creating Modules
+  id: totrans-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建模块
 - en: 'In a previous post, we demonstrated that we could check a code snippet’s time
     to finish with the following command:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在之前的文章中，我们演示了如何使用以下命令检查代码片段的完成时间：
 - en: '[PRE0]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'At the same time, we can also use it as part of a script and do the following:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 同时，我们还可以将其作为脚本的一部分来使用，并执行以下操作：
 - en: '[PRE1]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The `import` statement in Python allows you to reuse functions defined in another
     file by considering it as a module. You may wonder how we can make a module not
     only provide functions but also become an executable program. This is the first
     step to help deploy our code. If we can make our module executable, the users
     would not need to understand how our code is structured to use it.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 中的`import`语句允许你重用定义在另一个文件中的函数，将其视为模块。你可能会想知道我们如何让一个模块不仅提供函数，还能成为一个可执行程序。这是帮助我们部署代码的第一步。如果我们能让模块可执行，用户将无需理解我们的代码结构即可使用它。
 - en: If our program is large enough to have multiple files, it is better to package
     it as a module. A module in Python is usually a folder of Python scripts with
     a clear entry point. Hence it is more convenient to send to other people and easier
     to understand the flow. Moreover, we can add versions to the module and let `pip`
     keep track of the version installed.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们的程序足够大，有多个文件，最好将其打包成一个模块。在 Python 中，模块通常是一个包含 Python 脚本的文件夹，并且有一个明确的入口点。因此，这样更方便传递给其他人，并且更容易理解程序的流程。此外，我们可以为模块添加版本，并让`pip`跟踪安装的版本。
 - en: 'A simple, single file program can be written as follows:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个简单的单文件程序可以如下编写：
 - en: '[PRE2]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'If we save this as `randomsample.py` in the local directory, we can either
     run it with:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们将其保存为`randomsample.py`在本地目录中，我们可以通过以下方式运行它：
 - en: '[PRE3]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'or:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 或：
 - en: '[PRE4]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'And we can reuse the functions in another script with:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过以下方式在另一个脚本中重用这些函数：
 - en: '[PRE5]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'This works because the magic variable `__name__` will be `"__main__"` only
     if the script is run as the main program but not when imported from another script.
     With this, your machine learning project can probably be packaged as the following:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样有效是因为魔法变量`__name__` 只有在脚本作为主程序运行时才会是`"__main__"`，而在从另一个脚本导入时不会是。这样，你的机器学习项目可以可能被打包成如下形式：
 - en: '[PRE6]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Now, `regressor` is a directory with those five files in it. And `__init__.py` is
     an **empty file**, just to signal that this directory is a Python module that
     you can `import`. The script `train.py` is as follows:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，`regressor`是一个包含这五个文件的目录。`__init__.py`是一个**空文件**，仅用于表示该目录是一个可以`import`的 Python
+    模块。脚本`train.py`如下所示：
 - en: '[PRE7]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'The script for `predict.py` is:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '`predict.py`的脚本是：'
 - en: '[PRE8]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Then, we can run the following under the parent directory of `regressor/` to
     load the data and train a linear regression model. Then we can save the model
     with pickle:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以在`regressor/`的父目录下运行以下命令来加载数据并训练线性回归模型。然后，我们可以使用 pickle 保存模型：
 - en: '[PRE9]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'If we move this pickle file into the `regressor/` directory, we can also do
     the following in a command line to run the model:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们将这个 pickle 文件移动到`regressor/`目录中，我们还可以在命令行中执行以下操作来运行模型：
 - en: '[PRE10]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'Here the numerical arguments are a vector of input features to the model. If
     we further move out the `if` block, namely, create a file `regressor/__main__.py` with
     the following code:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的数值参数是输入特征的向量。如果我们进一步移除`if`块，即创建一个文件`regressor/__main__.py`，并使用以下代码：
 - en: '[PRE11]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Then we can run the model directly from the module:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们可以直接从模块运行模型：
 - en: '[PRE12]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Note the line `form .predict import predict` in the example above uses Python’s
     [relative import syntax](https://docs.python.org/3/reference/import.html#package-relative-imports).
     This should be used inside a module to import components from other scripts of
     the same module.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意上例中的`form .predict import predict`行使用了 Python 的[相对导入语法](https://docs.python.org/3/reference/import.html#package-relative-imports)。这应该在模块内部用于从同一模块的其他脚本中导入组件。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 Python 进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费 7 天电子邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费 PDF 电子书版本。
 - en: From Module to Package
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 从模块到包
 - en: 'If you want to distribute your Python project as a final product, it is convenient
     to be able to install your project as a package with the `pip install` command.
     This can be done easily. As you already created a module from your project, what
     you need to supplement is some simple setup instructions. Now you need to create
     a project directory and put your module in it with a `pyproject.toml` file, a `setup.cfg` file,
     and a `MANIFEST.in` file. The file structure would be like this:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想将你的 Python 项目作为最终产品进行分发，能够将项目作为包用 `pip install` 命令安装会很方便。这很容易做到。既然你已经从项目中创建了一个模块，你需要补充一些简单的设置说明。现在你需要创建一个项目目录，并将你的模块放在其中，配上一个
+    `pyproject.toml` 文件，一个 `setup.cfg` 文件和一个 `MANIFEST.in` 文件。文件结构应如下所示：
 - en: '[PRE13]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'We will use `setuptools` as it has become a standard for this task. The file `pyproject.toml` is
     to specify `setuptools`:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用 `setuptools`，因为它已成为这项任务的标准。文件 `pyproject.toml` 用于指定 `setuptools`：
 - en: '[PRE14]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'The key information is provided in `setup.cfg`. We need to specify the name
     of the module, the version, some optional description, what to include, and what
     to depend on, such as the following:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 关键信息在 `setup.cfg` 中提供。我们需要指定模块的名称、版本、一些可选描述、包含的内容和依赖项，例如以下内容：
 - en: '[PRE15]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'The `MANIFEST.in` is just to specify what extra file we need to include. In
     projects that do not have a non-Python script included, this file can be omitted.
     But in our case, we need to include the trained model and the data file:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '`MANIFEST.in` 只是用来指定我们需要包含哪些额外的文件。在没有包含非 Python 脚本的项目中，这个文件可以省略。但在我们的情况下，我们需要包含训练好的模型和数据文件：'
 - en: '[PRE16]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'Then in the project directory, we can install it as a module into our Python
     system with the following command:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后在项目目录中，我们可以使用以下命令将其作为模块安装到我们的 Python 系统中：
 - en: '[PRE17]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'Afterward, the following code works **anywhere** as `regressor` is a module
     accessible in our Python installation:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 随后，以下代码在**任何地方**都能正常工作，因为 `regressor` 是我们 Python 安装中的一个可访问模块：
 - en: '[PRE18]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'There are a few details worth explaining in the `setup.cfg`: The `metadata`
     section is for the `pip` system. Hence we named our package `mlm_demo`, which
     you can see in the output of the `pip list` command. However, Python’s module
@@ -282,11 +421,18 @@
     0.0.1 appears in `pip` but is not known from the code. It is a convention to put
     this in `__init__.py` in the module directory, so you can check the version in
     another script that uses it:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 `setup.cfg` 中有一些细节值得解释：`metadata` 部分是为 `pip` 系统准备的。因此我们将包命名为 `mlm_demo`，你可以在
+    `pip list` 命令的输出中看到这个名称。然而，Python 的模块系统会将模块名称识别为 `regressor`，如 `options` 部分所指定。因此，这是你在
+    `import` 语句中应使用的名称。通常，为了用户的方便，这两个名称是相同的，这就是为什么人们会互换使用“包”和“模块”这两个术语。类似地，版本 0.0.1
+    出现在 `pip` 中，但代码中并未显示。通常将其放在模块目录中的 `__init__.py` 中，因此你可以在使用它的其他脚本中检查版本：
 - en: '[PRE19]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: The `install_requires` part in the `options` section is the key to making our
     project run. It means that when we install this module, we also need to install
     those other modules at those versions (if specified). This may create a tree of
@@ -294,53 +440,78 @@
     As you can expect, we are using Python’s comparison operator `==` for a specific
     version. But if we can accept multiple versions, we use a comma (`,`) to separate
     the conditions, such as in the case of `numpy` above.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '`options` 部分中的 `install_requires` 是让我们的项目运行的关键。这意味着在安装此模块时，我们还需要安装那些其他模块（如果指定的话）。这可能会创建一个依赖树，但当你运行
+    `pip install` 命令时，`pip` 会处理它。正如你所预期的，我们使用 Python 的比较运算符 `==` 来指定特定版本。但如果我们可以接受多个版本，我们使用逗号（`,
+    `）来分隔条件，例如在 `numpy` 的情况中。'
 - en: Now you can ship the entire project directory to other people (e.g., in a ZIP
     file). They can install it with `pip install` in the project directory and then
     run your code with `python -m regressor` given the appropriate command line argument
     provided.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你可以将整个项目目录发送给其他人（例如，打包成 ZIP 文件）。他们可以在项目目录中使用 `pip install` 安装它，然后使用 `python
+    -m regressor` 运行你的代码，前提是提供了适当的命令行参数。
 - en: 'A final note: Perhaps you heard of the `requirements.txt` file in a Python
     project. It is just a text file, usually placed in a directory with a Python module
     or some Python scripts. It has a format similar to the dependency specification
     mentioned above. For example, it may look like this:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一点：也许你听说过 Python 项目中的`requirements.txt`文件。它只是一个文本文件，通常放在一个 Python 模块或一些 Python
+    脚本所在的目录中。它的格式类似于上述提到的依赖项规范。例如，它可能是这样：
 - en: '[PRE20]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'What is aimed for is that you **do not** want to make your project into a package
     but still want to give hints on the libraries and their versions that your project
     expects. This file can be understood by `pip`, and we can make it set up our system
     to prepare for the project:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 目的是你**不想**将你的项目做成一个包，但仍希望给出项目所需库及其版本的提示。这个文件可以被`pip`理解，我们可以用它来设置系统以准备项目：
 - en: '[PRE21]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: But this is just for a project in development, and that’s all the convenience
     the `requirements.txt` can provide.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这仅适用于开发中的项目，这就是`requirements.txt`能够提供的所有便利。
 - en: Using venv for Your Project
+  id: totrans-76
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 venv 管理你的项目
 - en: The above is probably the most efficient way to ship and deploy a project since
     you include only the most essential files. This is also the recommended way because
     it is platform-agnostic. This still works if we change our Python version or move
     to a different OS (unless some specific dependency forbids us).
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述方法可能是发布和部署项目的最有效方式，因为你仅包含最关键的文件。这也是推荐的方法，因为它不依赖于平台。如果我们更改 Python 版本或转移到不同的操作系统，这种方法仍然有效（除非某些特定的依赖项禁止我们这样做）。
 - en: But there are cases where we may want to reproduce an exact environment for
     our project to run. For example, instead of requiring some packages installed,
     we want some that **must not** be installed. Also, there are cases where after
     we installed a package with `pip`, the version dependency breaks after another
     package is installed. We can solve this problem with the `venv` module in Python.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 但有时我们可能希望为项目运行重现一个精确的环境。例如，我们希望一些**不能**安装的包，而不是要求安装某些包。另外，还有些情况下，我们用`pip`安装了一个包后，另一个包的安装会打破版本依赖。我们可以用
+    Python 的`venv`模块解决这个问题。
 - en: The `venv` module is from Python’s standard library to allow us to create a
     **virtual environment**. It is not a virtual machine or virtualization like Docker
     can provide; instead, it heavily modifies the path location that Python operates.
@@ -349,40 +520,62 @@
     example is that within one virtual environment, we can run `pip install` to set
     up some packages in a virtual environment directory that will not interfere with
     the system outside.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '`venv`模块来自 Python 的标准库，用于创建**虚拟环境**。它不是像 Docker 提供的虚拟机或虚拟化；相反，它会大量修改 Python
+    操作的路径位置。例如，我们可以在操作系统中安装多个版本的 Python，但虚拟环境总是假设`python`命令意味着特定版本。另一个例子是，在一个虚拟环境中，我们可以运行`pip
+    install`来设置一些包在虚拟环境目录中，这不会干扰系统外部的环境。'
 - en: 'To start with `venv`, we can simply find a good location and run the command:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 要开始使用`venv`，我们可以简单地找到一个合适的位置并运行以下命令：
 - en: '[PRE22]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'Then there will be a directory named `myproject` created. A virtual environment
     is supposed to operate in a shell (so the environment variables can be manipulated).
     To **activate** a virtual environment, we execute the activation shell script
     with the following command (e.g., under bash or zsh in Linux and macOS):'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后将创建一个名为`myproject`的目录。虚拟环境应该在 shell 中运行（以便可以操作环境变量）。要**激活**虚拟环境，我们执行以下命令的激活
+    shell 脚本（例如，在 Linux 和 macOS 的 bash 或 zsh 下）：
 - en: '[PRE23]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: And afterward, you’re under the Python virtual environment. The command `python`
     will be the command you created in the virtual environment (in case you have multiple
     Python versions installed in your OS). And the packages installed will be located
     under `myproject/lib/python3.9/site-packages` (assuming Python 3.9). When you
     run `pip install` or `pip list`, you only see the packages under the virtual environment.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 此后，你将处于 Python 虚拟环境中。命令`python`将是你在虚拟环境中创建的命令（如果你在操作系统中安装了多个 Python 版本）。已安装的包将位于`myproject/lib/python3.9/site-packages` （假设使用
+    Python 3.9）。当你运行`pip install`或`pip list`时，你只会看到虚拟环境中的包。
 - en: 'To leave the virtual environment, we run **deactivate** in the shell command
     line:'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 要离开虚拟环境，我们在 shell 命令行中运行**deactivate**：
 - en: '[PRE24]'
+  id: totrans-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: This is defined as a shell function.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 这被定义为一个 shell 函数。
 - en: Using virtual environments could be particularly useful if you have multiple
     projects in development and they require different versions of packages (such
     as different versions of TensorFlow). You can simply create a virtual environment,
@@ -393,68 +586,104 @@
     shipping the entire virtual environment directory to others can guarantee the
     exact environment to execute your code. This can be an alternative to the Docker
     container if you prefer not to run the Docker server.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你有多个项目正在开发，并且它们需要不同版本的包（比如 TensorFlow 的不同版本），使用虚拟环境将特别有用。你可以简单地创建一个虚拟环境，激活它，使用
+    `pip install` 命令安装所有需要的库的正确版本，然后将你的项目代码放入虚拟环境中。你的虚拟环境目录可能会很大（例如，仅安装 TensorFlow
+    及其依赖项就会占用接近 1GB 的磁盘空间）。但是，随后将整个虚拟环境目录发送给其他人可以保证执行你的代码的确切环境。如果你不想运行 Docker 服务器，这可以作为
+    Docker 容器的一种替代方案。
 - en: Further Reading
+  id: totrans-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: Indeed, some other tools exist that help us deploy our projects neatly. Docker
     mentioned above can be one. The `zipapp` package from Python’s standard library
     is also an interesting tool. Below are resources on the topic if you are looking
     to go deeper.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 确实，还有其他工具可以帮助我们整洁地部署项目。前面提到的 Docker 可以是其中之一。Python 标准库中的 `zipapp` 包也是一个有趣的工具。如果你想深入了解，下面是关于这个主题的资源。
 - en: Articles
+  id: totrans-91
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 文章
 - en: Python tutorial, [Chapter 6, modules](https://docs.python.org/3/tutorial/modules.html)
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python 教程，[第 6 章，模块](https://docs.python.org/3/tutorial/modules.html)
 - en: '[Distributing Python Modules](https://docs.python.org/3/distributing/index.html)'
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 模块分发](https://docs.python.org/3/distributing/index.html)'
 - en: '[How to package your Python code](https://python-packaging.readthedocs.io/en/latest/index.html)'
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[如何打包你的 Python 代码](https://python-packaging.readthedocs.io/en/latest/index.html)'
 - en: '[Question about various venv-related packages](https://stackoverflow.com/questions/41573587)
     on StackOverflow'
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[关于各种与 venv 相关的包](https://stackoverflow.com/questions/41573587) 在 StackOverflow
+    上的问题'
 - en: APIs and software
+  id: totrans-96
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: APIs 和软件
 - en: '[Setuptools](https://setuptools.pypa.io/en/latest/)'
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Setuptools](https://setuptools.pypa.io/en/latest/)'
 - en: '[venv](https://docs.python.org/3/library/venv.html) from Python standard library'
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[venv](https://docs.python.org/3/library/venv.html) 来自 Python 标准库'
 - en: Summary
+  id: totrans-99
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you’ve seen how we can confidently wrap up our project and
     deliver it to another user to run it. Specifically, you learned:'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你已经看到如何确信地完成我们的项目并交付给另一个用户来运行。具体来说，你学到了：
 - en: The minimal change to a folder of Python scripts to make them a module
+  id: totrans-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将一组 Python 脚本变成模块的最小改动
 - en: How to convert a module into a package for `pip`
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何将一个模块转换成用于 `pip` 的包
 - en: What is a virtual environment in Python, and how to use it
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python 中虚拟环境的概念及其使用方法

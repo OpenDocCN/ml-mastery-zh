@@ -1,158 +1,237 @@
 - en: How to Read, Write, Display Images in OpenCV and Converting Color Spaces
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中读取、写入、显示图像以及转换颜色空间
 - en: 原文：[https://machinelearningmastery.com/how-to-read-write-display-images-in-opencv-and-converting-color-spaces/](https://machinelearningmastery.com/how-to-read-write-display-images-in-opencv-and-converting-color-spaces/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/how-to-read-write-display-images-in-opencv-and-converting-color-spaces/](https://machinelearningmastery.com/how-to-read-write-display-images-in-opencv-and-converting-color-spaces/)
 - en: When working with images, some of the most basic operations that are essential
     to get a grip on include reading the images from disk, displaying them, accessing
     their pixel values, and converting them from one color space to another.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在处理图像时，一些最基本的操作包括从磁盘读取图像、显示图像、访问其像素值以及在颜色空间之间转换。
 - en: This tutorial explains these basic operations, starting first with a description
     of how a digital image is formulated in terms of its spatial coordinates and intensity
     values.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程解释了这些基本操作，从描述数字图像如何通过其空间坐标和强度值来构建开始。
 - en: In this tutorial, you will familiarise yourself with the most basic OpenCV operations
     that are essential when working with images.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将熟悉在处理图像时至关重要的最基本的 OpenCV 操作。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解到：
 - en: How a digital image is formulated in terms of its spatial coordinates and intensity
     values.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数字图像如何通过其空间坐标和强度值来构建。
 - en: How an image is read and displayed in OpenCV.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中读取和显示图像。
 - en: How an image’s pixel values can be accessed.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何访问图像的像素值。
 - en: How an image may be converted from one color space to another.
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 图像如何从一种颜色空间转换到另一种颜色空间。
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，可以参考我的书籍 [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/)。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started. [![](../Images/5bfd6da5aac54635239852dc45b8cedc.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_cover-scaled.jpg)
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。 [![](../Images/5bfd6da5aac54635239852dc45b8cedc.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_cover-scaled.jpg)
 - en: Reading and Displaying Images, and Converting Between Color Spaces Using OpenCV
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 OpenCV 读取和显示图像，以及在颜色空间之间转换
 - en: Photo by [Andrew Ridley](https://unsplash.com/photos/jR4Zf-riEjI), some rights
     reserved.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Andrew Ridley](https://unsplash.com/photos/jR4Zf-riEjI) 提供，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分，它们是：
 - en: Formulation of an Image
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 图像的构建
 - en: Reading and Displaying Images in OpenCV
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 OpenCV 中读取和显示图像
 - en: Converting Between Color Spaces
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 颜色空间转换
 - en: '**Formulation of an Image**'
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**图像的构建**'
 - en: A digital image is made up of pixels, where each pixel is characterised by its
     *spatial coordinates* inside the image space, and its *intensity* or *gray level*
     value.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 数字图像由像素组成，每个像素由其*空间坐标*和*强度*或*灰度级*值来表征。
 - en: Essentially, an image can be described by a 2D function, *I*(*x*, *y*), where
     *x* and *y* denote the aforementioned spatial coordinates, and the value of *I*
     at any image position (*x*, *y*) denotes the pixel intensity. In a digital image,
     the spatial coordinates as well as the intensity values are all finite, discrete
     quantities.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 本质上，图像可以通过一个二维函数 *I*(*x*, *y*) 来描述，其中 *x* 和 *y* 表示上述空间坐标，*I* 在任何图像位置 (*x*, *y*)
+    的值表示像素强度。在数字图像中，空间坐标以及强度值都是有限的、离散的量。
 - en: The type of digital image that we have just described is referred to as a *grayscale*
     image, and that is because it comprises a single channel where the pixel values
     carry only intensity information. The pixel intensities are commonly represented
     by integer values in the range [0, 255], which means that each pixel can take
     any of 256 discrete values.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们刚刚描述的数字图像类型称为*灰度*图像，这是因为它由一个单一的通道组成，像素值仅包含强度信息。像素强度通常由范围为 [0, 255] 的整数值表示，这意味着每个像素可以取
+    256 个离散值中的任何一个。
 - en: An RGB image, on the other hand, is composed of three channels, namely the *Red*,
     *Green* and *Blue*.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，RGB 图像由三个通道组成，即*红色*、*绿色*和*蓝色*。
 - en: The RGB colour model is not the only one in existence, but it is possibly the
     most commonly used in many computer vision applications. It is an additive colour
     model, which refers to the process of creating colour by mixing (or adding) the
     light spectra of differently coloured sources.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: RGB颜色模型并不是唯一存在的模型，但它可能是许多计算机视觉应用中最常用的。它是一个加色模型，指的是通过混合（或添加）不同颜色源的光谱来创建颜色的过程。
 - en: 'Since an RGB image is composed of three channels, then we need three functions
     to describe it: *I**[R]*(*x*, *y*), *I**[G]*(*x*, *y*) and *I**[B]*(*x*, *y*),
     corresponding to the Red, Green and Blue channels, respectively. Consequently,
     in an RGB image each pixel value is expressed by a triplet of intensity values.'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于RGB图像由三个通道组成，因此我们需要三个函数来描述它：*I**[R]*(*x*, *y*), *I**[G]*(*x*, *y*) 和 *I**[B]*(*x*,
+    *y*)，分别对应红色、绿色和蓝色通道。因此，在RGB图像中，每个像素值由三个强度值的三元组表示。
 - en: '**Reading and Displaying Images in OpenCV**'
+  id: totrans-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**在OpenCV中读取和显示图像**'
 - en: 'Let’s start by first importing the `imread` method from the OpenCV library
     in Python:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，导入Python中OpenCV库的`imread`方法：
 - en: Python
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Then proceed to read an RGB image. For this purpose, I have downloaded [this
     image](https://unsplash.com/photos/N04FIfHhv_k) and saved it to disk with the
     name, *Dog.jpg*, in a folder called, *Images*.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后继续读取一张RGB图像。为此，我下载了[这张图片](https://unsplash.com/photos/N04FIfHhv_k)并将其保存到磁盘，文件名为*Dog.jpg*，保存在一个名为*Images*的文件夹中。
 - en: Python
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The `imread` method returns a NumPy array, `img`, that contains the image pixel
     values. We can check out the array’s data type and dimensions as follows:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '`imread`方法返回一个包含图像像素值的NumPy数组`img`。我们可以如下检查数组的数据类型和维度：'
 - en: Python
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Python
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The returned information tells us that the array is of data type uint8, which
     means that we are working with 8-bit unsigned integer values. This means that
     the pixels in each channel of the image can take any of 2⁸ = 256 values, within
@@ -160,47 +239,70 @@
     have reviewed above. We have also learned that the dimensions of the array are
     4000 × 6000 × 3, which correspond to the number of image rows, columns and channels,
     respectively.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 返回的信息告诉我们数组的数据类型是uint8，这意味着我们处理的是8位无符号整数值。这表示图像中每个通道的像素可以取任意2⁸ = 256个值，范围从0到255。这与我们上面审查的图像格式完全一致。我们还了解到数组的维度是4000
+    × 6000 × 3，分别对应图像的行数、列数和通道数。
 - en: The image is a 3-dimensional NumPy array. Hence you can manipulate the array
     using NumPy syntax.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 该图像是一个3维的NumPy数组。因此，你可以使用NumPy语法来操作这个数组。
 - en: Let’s now try to access the values of the very first pixel situated at the upper
     left hand corner of the image. Keep in mind that arrays in Python are zero-indexed,
     and hence the coordinates of this pixel are (0, 0).
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在尝试访问位于图像左上角的第一个像素的值。请记住，Python中的数组是从零开始索引的，因此该像素的坐标是(0, 0)。
 - en: Python
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Python
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: You may see from the output that, as expected, each pixel carries three values,
     one for each of the three channels that make up the image. We will discover to
     which specific channel each of these three values corresponds in the next section.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 从输出中可以看到，如预期的那样，每个像素携带三个值，每个值对应图像中的三个通道之一。我们将在下一部分发现这三个值分别对应哪个特定通道。
 - en: '**NOTE**: An important point to keep in mind is that, if the `imread` method
     fails to load the input image (because the provided image name does not exist
     or its path is invalid) it will not generate an error itself, but rather returns
     a `NoneType` object. Hence, the following check can be included before proceeding
     to run further code that eventually makes use of the `img` values:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意**：一个重要的点是，如果`imread`方法无法加载输入图像（因为提供的图像名称不存在或其路径无效），它不会自行生成错误，而是返回一个`NoneType`对象。因此，可以在继续运行进一步的代码之前，包含以下检查，以确保`img`值的有效性：'
 - en: Python
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Next we shall display the image using the Matplotlib package, as well as OpenCV’s
     `imshow` method. The latter takes as its first argument the name of the window
     that will contain the image, and the image to be displayed as its second argument.
@@ -209,266 +311,414 @@
     value of 0 is, otherwise, provided as input, the `waitkey` function will wait
     indefinitely, allowing us to see the displayed window until a keyboard event is
     generated.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将使用 Matplotlib 包和 OpenCV 的 `imshow` 方法显示图像。后者的第一个参数是包含图像的窗口的名称，第二个参数是要显示的图像。我们还将在图像显示后调用
+    OpenCV 的 `waitkey` 函数，该函数会等待指定的毫秒数的键盘事件。如果输入值为 0，则 `waitkey` 函数将无限等待，允许我们看到显示的窗口，直到生成键盘事件。
 - en: '**Using Matplotlib:**'
+  id: totrans-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**使用 Matplotlib：**'
 - en: '**Python'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Python'
 - en: '[PRE7]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '[![](../Images/2933a9d901d954c29d614cd980b871cd.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_1.png)'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/2933a9d901d954c29d614cd980b871cd.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_1.png)'
 - en: Displaying a BGR image using Matplotlib.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Matplotlib 显示 BGR 图像。
 - en: '**Using OpenCV:**'
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**使用 OpenCV：**'
 - en: '**Python'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Python'
 - en: '[PRE8]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '[![](../Images/8dbc4841817c551d01a4836007058329.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_2.png)'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/8dbc4841817c551d01a4836007058329.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_2.png)'
 - en: Displaying a BGR image using OpenCV.
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 OpenCV 显示 BGR 图像。
 - en: If you are surprised with the output produced by Matplotlib and are wondering
     how this happened, the reason for this is that OpenCV reads and displays the image
     in BGR rather than RGB order.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你对 Matplotlib 生成的输出感到惊讶并想知道发生了什么原因，这主要是因为 OpenCV 以 BGR 而不是 RGB 顺序读取和显示图像。
 - en: '*Initial developers at OpenCV chose the BGR color format (instead of the RGB
     one) because at the time, the BGR color format was very popular among software
     providers and camera manufacturers.*'
+  id: totrans-61
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*OpenCV 的初始开发者选择了 BGR 颜色格式（而不是 RGB 格式），因为当时 BGR 颜色格式在软件提供商和相机制造商中非常流行。*'
 - en: ''
+  id: totrans-62
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.*'
+  id: totrans-63
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*[掌握 OpenCV 4 与 Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019
+    年。*'
 - en: '*Matplotlib, on the other hand, uses the RGB color format and, hence, requires
     that the BGR image is first converted to RGB before it can be displayed well.'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '*另一方面，Matplotlib 使用 RGB 颜色格式，因此需要先将 BGR 图像转换为 RGB 才能正确显示。*'
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-65
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用 OpenCV 进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就获取我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取免费的 PDF 电子书版本课程。
 - en: 'With OpenCV, you can also write a NumPy array as an image into a file, as follows:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 OpenCV，你还可以将 NumPy 数组写入文件中，如下所示：
 - en: '[PRE9]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: When you write an image with `imwrite()` function in OpenCV, you have to make
     sure the NumPy array is in the format that OpenCV expects, namely, it is a 3-dimensional
     array of uint8 in row × column × channel in BGR channel order.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你使用 OpenCV 的 `imwrite()` 函数写入图像时，必须确保 NumPy 数组的格式符合 OpenCV 的要求，即它是一个具有 BGR
+    通道顺序的 uint8 类型的 3 维数组，格式为行 × 列 × 通道。*
 - en: '**Converting Between Color Spaces**'
+  id: totrans-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**颜色空间之间的转换**'
 - en: Conversion of an image from one color space to another can be achieved by means
     of OpenCV’s `cvtColor` method, which takes the source image as an input argument
     together with a color space conversion code.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 从一种颜色空间转换到另一种颜色空间可以通过 OpenCV 的 `cvtColor` 方法实现，该方法将源图像作为输入参数，并使用颜色空间转换代码。
 - en: 'In order to convert between the BGR and RGB color spaces, we may use the following
     code:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了在 BGR 和 RGB 颜色空间之间转换，我们可以使用以下代码：
 - en: Python
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'If we had to retry displaying the image using Matplotlib, we may now see that
     it is displayed correctly:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们需要重新尝试使用 Matplotlib 显示图像，我们现在可能会看到它正确显示：
 - en: Python
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[![](../Images/74fb719469ac3471da5b7df3ae82aa05.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_3.png)'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/74fb719469ac3471da5b7df3ae82aa05.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_3.png)'
 - en: Converting a BGR image to RGB and displaying it using Matplotlib.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 将 BGR 图像转换为 RGB 并使用 Matplotlib 显示它。
 - en: 'If we also had to access the values of the very first pixel of the newly converted
     RGB image:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们还需要访问新转换的 RGB 图像的第一个像素的值：
 - en: Python
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE12]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Python
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE13]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: and compare them to the values, [173 186 232], that we had printed earlier for
     the BGR image, we may notice the first and third values have now been swapped.
     What this tells us is that the order of the values, therefore, corresponds to
     the order of the image channels.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 比较这些值与我们之前为 BGR 图像打印的值 [173 186 232]，我们可能会注意到第一个和第三个值现在已交换。这告诉我们的是，值的顺序与图像通道的顺序相对应。
 - en: BGR to RGB is not the only color conversion that may be achieved by this method.
     Indeed, there are many color space conversion codes to choose from, such as `COLOR_RGB2HSV`
     that converts between the RGB and the HSV (Hue, Saturation, Value) color spaces.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: BGR 转 RGB 并不是通过这种方法实现的唯一颜色转换。事实上，还有许多颜色空间转换代码可供选择，例如 `COLOR_RGB2HSV`，它在 RGB
+    和 HSV（色相、饱和度、明度）颜色空间之间进行转换。
 - en: 'Another popular conversion is from RGB to grayscale where, as we have mentioned
     earlier, the resulting output is expected to be a single channel image. Let’s
     try it out:'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个常见的转换是将 RGB 转换为灰度图像，正如我们之前提到的，得到的结果应该是一个单通道图像。我们来试一下：
 - en: Python
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE14]'
+  id: totrans-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '[![](../Images/8c75df1bdc49457e4d19586cbad2ca19.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_4.png)'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/8c75df1bdc49457e4d19586cbad2ca19.png)](https://machinelearningmastery.com/wp-content/uploads/2022/12/image_basics_4.png)'
 - en: Converting an RGB image to grayscale and displaying it using OpenCV.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何将 RGB 图像转换为灰度图像并使用 OpenCV 显示它。
 - en: 'The conversion appears to have been carried out well, but let’s also try to
     access the value of the very first pixel at coordinates, (0, 0):'
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 转换似乎已成功完成，但我们也来尝试访问坐标（0, 0）处第一个像素的值：
 - en: Python
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE15]'
+  id: totrans-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Python
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE16]'
+  id: totrans-97
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: As expected, only a single number is printed out that corresponds to the pixel’s
     intensity value.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如预期的那样，只打印出一个对应于像素强度值的单一数字。
 - en: 'It is worth noting that this is not the only method by which the image may
     be converted to grayscale. Indeed, if we had to be working with an application
     that only requires the use of a grayscale (rather than an RGB) image, then we
     can also choose to read the image in grayscale straight away:'
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 值得注意的是，这并不是将图像转换为灰度图像的唯一方法。实际上，如果我们要处理的应用程序只需要使用灰度图像（而不是 RGB 图像），我们也可以选择直接以灰度图像的形式读取图像：
 - en: Python
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE17]'
+  id: totrans-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: '**NOTE**: The OpenCV documentation here warns that using `IMREAD_GRAYSCALE`
     will make use of the codec’s internal grayscale conversion when available, which
     may result in a different output to that of `cvtColor()`.'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意**：这里的 OpenCV 文档警告说，使用 `IMREAD_GRAYSCALE` 会利用编解码器的内部灰度转换（如果可用），这可能会导致与
+    `cvtColor()` 的输出不同。'
 - en: The `imread` method also supports several other flag values, two of which are
     `IMREAD_COLOR` and `IMREAD_UNCHANGED`. The `IMREAD_COLOR` flag is the default
     option that converts an image to BGR color, ignoring any transparency. The `IMREAD_UNCHANGED`,
     on the other hand, reads an image that may also include an alpha channel.
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: '`imread` 方法还支持其他几种标志值，其中两个是 `IMREAD_COLOR` 和 `IMREAD_UNCHANGED`。`IMREAD_COLOR`
+    标志是默认选项，它将图像转换为 BGR 颜色，忽略任何透明度。而 `IMREAD_UNCHANGED` 则读取可能包含 alpha 通道的图像。'
 - en: '**Further Reading**'
+  id: totrans-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: '**Books**'
+  id: totrans-106
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[掌握 OpenCV 4 与 Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019
+    年。'
 - en: '**Websites**'
+  id: totrans-108
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV，[https://opencv.org/](https://opencv.org/)
 - en: OpenCV Color Conversion Codes, [https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html#func-members](https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html#func-members)
+  id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV 颜色转换代码，[https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html#func-members](https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html#func-members)
 - en: '**Summary**'
+  id: totrans-111
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you familiarised yourself with the most basic OpenCV operations
     that are essential when working with images.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你熟悉了在处理图像时必不可少的最基本的 OpenCV 操作。
 - en: 'Specifically, you learned:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How a digital image is formulated in terms of its spatial coordinates and intensity
     values.
+  id: totrans-114
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数字图像如何从空间坐标和强度值的角度进行构造。
 - en: How an image is read and displayed in OpenCV.
+  id: totrans-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中读取和显示图像。
 - en: How an image’s pixel values can be accessed.
+  id: totrans-116
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何访问图像的像素值。
 - en: How an image may be converted from one color space to another.
+  id: totrans-117
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 图像如何从一种颜色空间转换到另一种颜色空间。
 - en: Do you have any questions?
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.*****
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 请在下面的评论中提出你的问题，我将尽力回答。*****

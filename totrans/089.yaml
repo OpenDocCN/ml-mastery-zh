@@ -1,11 +1,15 @@
 - en: Web Frameworks for Your Python Projects
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 你的 Python 项目的 web 框架
 - en: 原文：[https://machinelearningmastery.com/web-frameworks-for-your-python-projects/](https://machinelearningmastery.com/web-frameworks-for-your-python-projects/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/web-frameworks-for-your-python-projects/](https://machinelearningmastery.com/web-frameworks-for-your-python-projects/)
 - en: When we finish a Python project and roll it out for other people to use, the
     easiest way is to present our project as a command-line program. If you want to
     make it friendlier, you may want to develop a GUI for your program so people can
@@ -15,95 +19,143 @@
     to a pure command-line program, but not as heavy as writing an interface using,
     say, Qt5 library. In this post, we will show you the details of a web interface
     and how easy it is to give your program one.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们完成一个 Python 项目并推出供其他人使用时，最简单的方法是将项目呈现为命令行程序。如果你想让它更友好，可能需要为你的程序开发一个 GUI，以便人们可以在运行时通过鼠标点击进行互动。开发
+    GUI 可能很困难，因为人机交互的模型复杂。因此，折衷方案是为你的程序创建一个网页界面。这相比于纯命令行程序需要额外的工作，但不像使用 Qt5 库那样繁重。在这篇文章中，我们将展示网页界面的细节以及如何轻松地为你的程序提供一个界面。
 - en: 'After finishing this tutorial, you will learn:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将学到：
 - en: The Flask framework from a simple example
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从一个简单的例子看 Flask 框架
 - en: Using Dash to build an interactive web page entirely in Python
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Dash 完全用 Python 构建交互式网页
 - en: How a web application operates
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个 web 应用程序如何运行
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的新书** [《Python 机器学习》](https://machinelearningmastery.com/python-for-machine-learning/)，**启动你的项目**，包括
+    *逐步教程* 和所有示例的 *Python 源代码* 文件。'
 - en: Let’s get started!![](../Images/3c9ae620ba0715f364dadb96217dea84.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧!![](../Images/3c9ae620ba0715f364dadb96217dea84.png)
 - en: Web Frameworks for Your Python Projects
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 你的 Python 项目的 web 框架
 - en: Photo by [Quang Nguyen Vinh](https://www.pexels.com/photo/photo-of-people-on-a-boat-during-dawn-2150371/).
     Some rights reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Quang Nguyen Vinh](https://www.pexels.com/photo/photo-of-people-on-a-boat-during-dawn-2150371/)
+    提供。保留了一些权利。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is divided into five parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为五个部分，它们是：
 - en: Python and the web
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python 和网络
 - en: Flask for web API applications
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Flask 用于 web API 应用程序
 - en: Dash for interactive widgets
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Dash 用于交互式小部件
 - en: Polling in Dash
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Dash 中的轮询
 - en: Combining Flask and Dash
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 结合 Flask 和 Dash
 - en: Python and the Web
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Python 和网络
 - en: The web is served using the hypertext transfer protocol (HTTP). Python’s standard
     library comes with support for interacting with HTTP. If you simply want to run
     a web server with Python, nothing can be easier than going to a directory of files
     to serve and run the command.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 网络通过超文本传输协议（HTTP）进行服务。Python 的标准库支持与 HTTP 的交互。如果你只是想用 Python 运行一个 web 服务器，没有比进入一个文件目录并运行命令更简单的了。
 - en: '[PRE0]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This will usually launch a web server at port 8000\. If `index.html` exists
     in the directory, that would be the default page to serve if we open a browser
     on the same computer with the address `http://localhost:8000/`.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这通常会在 8000 端口启动一个 web 服务器。如果目录中存在 `index.html`，那将是我们在相同计算机上使用地址 `http://localhost:8000/`
+    打开浏览器时提供的默认页面。
 - en: This built-in web server is great if we just need to quickly set up a web server
     (e.g., let another computer on the local network download a file). But it would
     not be sufficient if we want to do more, such as having some dynamic content.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个内置的 web 服务器非常适合快速设置 web 服务器（例如，让网络上的另一台计算机下载一个文件）。但如果我们想做更多的事情，比如拥有一些动态内容，它将不够用。
 - en: Before we move on to the details, let’s review what we would like to achieve
     when we speak of the web interface. Firstly, a web page in the modern day would
     be an interface for disseminating information to the user interactively. This
     means not only sending information from the server but also receiving input from
     the user. The browser is capable of rendering the information aesthetically.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 在深入细节之前，让我们回顾一下我们在谈到网页界面时希望实现的目标。首先，现代网页将是一个与用户互动的界面，用于传播信息。这不仅意味着从服务器发送信息，还包括接收用户的输入。浏览器能够以美观的方式呈现信息。
 - en: Alternatively, we may use a web page without a browser. A case would be to download
     a file using web protocols. In Linux, we have the `wget` tool famous for doing
     this task. Another case is to query information or pass information to the server.
@@ -113,97 +165,149 @@
     use the `curl` tool to check. Its output will not be in HTML but in a plain-text
     machine-readable format. Sometimes, we call this the web API as we use it like
     a remotely executed function.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 另外，我们还可以使用不带浏览器的网页。例如，使用 web 协议下载文件。在 Linux 中，我们有著名的 `wget` 工具来完成这个任务。另一个例子是查询信息或向服务器传递信息。例如，在
+    AWS EC2 实例中，你可以在地址 `http://169.254.169.254/latest/meta-data/` 检查机器实例的 [元数据](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html)（其中
+    169.254.169.254 是 EC2 机器上可用的特殊 IP 地址）。在 Linux 实例中，我们可以使用 `curl` 工具进行检查。其输出将不是
+    HTML，而是机器可读的纯文本格式。有时，我们将其称为 web API，因为我们像使用远程执行函数一样使用它。
 - en: These are two different paradigms in web applications. The first one needs to
     write code for the interaction between user and server. The second one needs to
     set up various end-points on the URL so users can request different things using
     different addresses. In Python, there are third-party libraries to do both.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两种是网页应用中的不同范式。第一种需要编写用户与服务器之间交互的代码。第二种需要在 URL 上设置各种端点，以便用户可以使用不同的地址请求不同的内容。在
+    Python 中，有第三方库可以完成这两种任务。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始学习 Python 机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费 7 天电子邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取免费的 PDF 电子书版本课程。
 - en: Flask for Web API Applications
+  id: totrans-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Flask 用于 Web API 应用程序
 - en: The tools that allow us to write programs in Python to build a web-based application
     are called **web frameworks**. There are a lot. Django is probably the most famous
     one. However, the learning curve of different web frameworks can vary dramatically.
     Some web frameworks assume you use a model-view design, and you need to understand
     the rationale behind it to make sense of how you should use it.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 允许我们用 Python 编写程序来构建基于网页的应用程序的工具被称为 **web 框架**。有很多这样的框架。Django 可能是最著名的一个。然而，不同的
+    web 框架的学习曲线可能差异很大。一些 web 框架假设你使用的是模型-视图设计，你需要理解其背后的原理才能明白如何使用它。
 - en: As a machine learning practitioner, you probably want to do something quick,
     not too complex, and yet powerful enough to meet many use cases. Flask is probably
     a good choice in this class.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为机器学习从业者，你可能希望做一些快速的、不太复杂的，但又足够强大以满足许多使用场景的事情。Flask 可能是这个类别中的一个不错选择。
 - en: 'Flask is a lightweight web framework. You can run it as a command and use it
     as a Python module. Let’s say we want to write a web server that reports the current
     time in any user-specified time zone. It can be done using Flask in a trivial
     way:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: Flask 是一个轻量级的 web 框架。你可以将它作为一个命令运行，并将其用作 Python 模块。假设我们想编写一个 web 服务器，报告任何用户指定时区的当前时间。可以通过
+    Flask 以简单的方式实现：
 - en: '[PRE1]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Save the above into `server.py` or any filename you like, then run it on a
     terminal. You will see the following:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 将以上内容保存到 `server.py` 或任何你喜欢的文件名中，然后在终端中运行它。你将看到以下内容：
 - en: '[PRE2]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: This means your script is now running as a web server at `http://127.0.0.1:5000`.
     It will serve web requests forever until you interrupt it with Ctrl-C.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着你的脚本现在正在 `http://127.0.0.1:5000` 作为一个 web 服务器运行。它将永远服务于 web 请求，直到你用 Ctrl-C
+    中断它。
 - en: 'If you open up another terminal and query for the URL, e.g., using `curl` in
     Linux:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你打开另一个终端并查询 URL，例如，在 Linux 中使用 `curl`：
 - en: '[PRE3]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: You will see the time printed on the screen in the time zone you requested (Asia/Tokyo
     in this case, you can see the list of all supported time zone [on Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)).
     The string returned by the function in your code will be the content responded
     by the URL. If the time zone is not recognized, you will see the “Unknown time
     zone” message as returned by the `except` block in the code above.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 你会在屏幕上看到以你请求的时区（在这个例子中是 Asia/Tokyo）打印的时间，你可以在维基百科上查看所有支持的时区列表 [在维基百科](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。函数返回的字符串将是
+    URL 返回的内容。如果时区无法识别，你会看到“未知时区”消息，如上面代码中的 `except` 块所返回的。
 - en: 'If we want to extend this a little bit such that we will assume UTC if no time
     zone is provided, we just need to add another decorator to the function:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们想稍微扩展一下，假设在未提供时区的情况下使用UTC，我们只需向函数中添加另一个装饰器：
 - en: '[PRE4]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Restarting the server, we can see the result as follows:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 重启服务器后，我们可以看到如下结果：
 - en: '[PRE5]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Nowadays, many such applications return a JSON string for more complex data,
     but technically anything can be delivered. If you wish to create more web APIs,
     simply define your functions to return the data and decorate it with `@app.route()` as
     in the above examples.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 如今，许多这样的应用程序会返回一个JSON字符串以表示更复杂的数据，但从技术上讲，任何东西都可以被传递。如果你希望创建更多的Web API，只需定义你的函数以返回数据，并像上面的例子一样用`@app.route()`进行装饰。
 - en: Dash for Interactive Widgets
+  id: totrans-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 用于交互式小部件的Dash
 - en: The web end points, as provided by Flask, are powerful. A lot of web applications
     are done in this way. For example, we can write the web user interface using HTML
     and handle the user interaction with Javascript. Once the user triggers an event,
@@ -212,8 +316,10 @@
     hence when the web server’s response is received (usually within a fraction of
     a section), Javascript is triggered again to further update the UI to let the
     user know about it.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: Flask提供的Web端点非常强大。很多Web应用程序都是这样做的。例如，我们可以使用HTML编写网页用户界面，并用Javascript处理用户交互。一旦用户触发事件，我们可以让Javascript处理任何UI更改，并通过发送数据到一个端点创建一个AJAX调用并等待回复。AJAX调用是异步的；因此，当接收到Web服务器的响应（通常在几分之一秒内）时，Javascript会再次被触发，以进一步更新UI，让用户了解情况。
 - en: However, as the web interface gets more and more complex, writing Javascript
     code can be tedious. Hence there are many **client-side** libraries to simplify
     this. Some are to simplify Javascript programming, such as jQuery. Some are to
@@ -221,27 +327,37 @@
     we are developing machine learning projects in Python, it would be great to develop
     an interactive web application in Python without resorting to Javascript. Dash
     is a tool for this.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，随着网页界面的复杂度越来越高，编写Javascript代码可能会变得繁琐。因此，有许多**客户端**库可以简化这一过程。有些库简化了Javascript编程，例如jQuery。有些库改变了HTML和Javascript的交互方式，例如ReactJS。但由于我们正在用Python开发机器学习项目，能够在不使用Javascript的情况下开发一个交互式网页应用将是非常棒的。Dash就是为此而设的工具。
 - en: 'Let’s consider an example in machine learning: We want to use the MNIST handwritten
     digits dataset to train a handwritten digit recognizer. The LeNet5 model is famous
     for this task. But we want to let the user fine-tune the LeNet5 model, retrain
     it, and then use it for recognition. Training a simple LeNet5 model can be done
     with only a few lines of code:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们考虑一个机器学习的例子：我们希望使用MNIST手写数字数据集来训练一个手写数字识别器。LeNet5模型在这项任务中非常有名。但我们希望让用户微调LeNet5模型，重新训练它，然后用于识别。训练一个简单的LeNet5模型只需几行代码：
 - en: '[PRE6]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'There are several hyperparameters that we can change in this code, such as
     the activation function, the optimizer for training, the number of epochs, and
     the batch size. We can make an interface in Dash to let the user change these
     and retrain the model. This interface will be presented in HTML but coded in Python:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这段代码中，我们可以更改几个超参数，例如激活函数、训练的优化器、训练轮次和批量大小。我们可以在Dash中创建一个界面，让用户更改这些参数并重新训练模型。这个界面将以HTML呈现，但用Python编码：
 - en: '[PRE7]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Here we set up a Dash app built on top of a Flask server. The majority of the
     code above is to set up the **layout** of the Dash app that will be displayed
     on the web browser. The layout has a title on top, a button (with the label “Train”)
@@ -249,37 +365,54 @@
     There is a dropdown box for an activation function, another for a training optimizer,
     and two sliders, one for the number of epochs and one for the batch size. The
     layout will be like the following:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们设置了一个基于Flask服务器的Dash应用程序。上面的代码主要用于设置Dash应用程序的**布局**，该布局将在网页浏览器中显示。布局顶部有一个标题，底部有一个按钮（标签为“Train”），中间有一个包含多个选项小部件的大框。布局中有一个用于激活函数的下拉框，一个用于训练优化器的下拉框，以及两个滑块，一个用于轮次，一个用于批量大小。布局如下所示：
 - en: '![](../Images/4432753c56de312f60d25feba0400887.png)'
+  id: totrans-53
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4432753c56de312f60d25feba0400887.png)'
 - en: 'If you’re familiar with HTML development, you probably noticed we used many
     `<div>` elements above. Moreover, we provided `style` arguments to some elements
     to change the way they are rendered on the browser. Indeed, we saved this Python
     code into file `server.py` and created a file `assets/main.css` with the following
     content:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你熟悉 HTML 开发，你可能注意到我们上面使用了许多`<div>`元素。此外，我们还向一些元素提供了`style`参数，以改变它们在浏览器中的渲染方式。实际上，我们将这些
+    Python 代码保存到文件`server.py`中，并创建了一个文件`assets/main.css`，其内容如下：
 - en: CSS
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: CSS
 - en: '[PRE8]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: This is how we can have the four different user options aligned horizontally
     when this code is run.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 当运行此代码时，我们可以使四个不同的用户选项水平对齐。
 - en: 'After we have the HTML frontend created, the key is to let the user change
     the hyperparameter by selecting from the dropdown list or moving the slider. Then,
     we kick start the model training after the user clicks on the “Train” button.
     Let’s define the training function as follows:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 在创建了 HTML 前端之后，关键是让用户通过从下拉列表中选择或移动滑块来更改超参数。然后，在用户点击“训练”按钮后，我们启动模型训练。我们定义训练函数如下：
 - en: '[PRE9]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'This function depends on an external dictionary `model_data` for the parameters
     and the dataset, such as `X_train` and `y_train`, defined outside of the function.
     It will just create a new model, train it, and return the model with the training
@@ -290,19 +423,27 @@
     at the server anyway. We can also take one step further to display the history
     of loss and evaluation metrics along the training epochs. This is what we need
     to do:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个函数依赖于一个外部字典`model_data`来获取参数和数据集，例如`X_train`和`y_train`，这些是在函数外部定义的。它将创建一个新模型，训练它，并返回带有训练历史的模型。我们只需在浏览器上的“训练”按钮被点击时运行此函数即可。我们在`fit()`函数中设置`verbose=0`，以要求训练过程不要向屏幕打印任何内容，因为它应该在服务器上运行，而用户则在浏览器中查看。用户无法看到服务器上的终端输出。我们还可以进一步显示训练周期中的损失和评估指标历史。这是我们需要做的：
 - en: '[PRE10]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: We first add a `Graph` component to the web page to display our training metrics.
     The `Graph` component is not a standard HTML element but a Dash component. There
     are a number of such components provided by Dash as its major feature. Dash is
     a sister project of Plotly, another visualization library similar to Bokeh that
     renders interactive charts into HTML. The `Graph` component is to display a Plotly
     chart.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们首先在网页上添加一个`Graph`组件来显示我们的训练指标。`Graph`组件不是标准的 HTML 元素，而是 Dash 组件。Dash 提供了许多这样的组件，作为其主要特性。Dash
+    是 Plotly 的姊妹项目，Plotly 是一个类似于 Bokeh 的可视化库，将交互式图表渲染到 HTML 中。`Graph`组件用于显示 Plotly
+    图表。
 - en: Then we defined a function `train_action()` and decorated it with our Dash application’s
     callback function. The function `train_action()` takes several inputs (model hyperparameters)
     and returns an output. In Dash, the output is usually a string, but we return
@@ -310,8 +451,11 @@
     input and output. These are the web page components specified by their ID field
     and the property that served as the input or output. In this example, in addition
     to input and output, we also need some additional data called “states.”
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们定义了一个函数`train_action()`，并用我们 Dash 应用程序的回调函数装饰它。函数`train_action()`接受多个输入（模型超参数）并返回一个输出。在
+    Dash 中，输出通常是一个字符串，但我们在这里返回一个 Plotly 图形对象。回调装饰器要求我们指定输入和输出。这些是由其 ID 字段指定的网页组件，以及作为输入或输出的属性。在此示例中，除了输入和输出，我们还需要一些称为“状态”的额外数据。
 - en: In Dash, input is what triggers an action. In this example, a button in Dash
     will remember the number of times it has been pressed in the component’s property
     `n_clicks`. So we declared the change in this property as the trigger for this
@@ -320,13 +464,17 @@
     to this function. The order of specifying the output, input, and states is essential
     as this is what the callback decorator expects, as well as the order of arguments
     to the function we defined.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Dash中，输入是触发操作的因素。在这个示例中，Dash中的一个按钮会记住它被按下的次数，这个次数存储在组件的属性`n_clicks`中。所以我们将这个属性的变化声明为触发该函数的因素。类似地，当这个函数返回时，图形对象将替换`Graph`组件。状态参数作为非触发参数提供给这个函数。指定输出、输入和状态的顺序非常重要，因为这是回调装饰器所期望的，以及我们定义的函数的参数顺序。
 - en: We are not going to explain the Plotly syntax in detail. If you learned what
     a visualization library like Bokeh does, it should not be very difficult to adapt
     your knowledge to Plotly after consulting its documentation.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们不会详细解释Plotly的语法。如果你了解了像Bokeh这样的可视化库的工作原理，查阅Plotly的文档后，应该不会很难将你的知识适应到Plotly上。
 - en: 'However, there is one thing we need to mention about Dash callbacks: When the
     web page is first loaded, all callbacks will be invoked once because the components
     are newly created. Since all components’ properties changed from non-existence
@@ -334,29 +482,41 @@
     on the page load (e.g., in this case, we do not want our time-consuming training
     process to start until the user confirms the hyperparameters), we need to specify
     `prevent_initial_call=True` in the decorator.'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，我们需要提到Dash回调函数的一点：当网页首次加载时，所有回调函数会被调用一次，因为组件是新创建的。由于所有组件的属性从不存在到有了一些值，因此它们会触发事件。如果我们不希望它们在页面加载时被调用（例如，在这种情况下，我们不希望耗时的训练过程在用户确认超参数之前开始），我们需要在装饰器中指定`prevent_initial_call=True`。
 - en: 'We can go one step further by getting the hyperparameter selection interactive
     as well. This is polite because you give the user feedback on their action. As
     we already have a `<div>` element for the title of each selection component, we
     can make use of it for feedback by creating the following functions:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以进一步通过使超参数选择变得交互化来迈出一步。这是礼貌的，因为你会对用户的操作提供反馈。由于我们已经为每个选择组件的标题有一个`<div>`元素，我们可以利用它来提供反馈，通过创建以下函数：
 - en: '[PRE11]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: These functions are trivial and return a string, which will become the “children”
     of the `<div>` elements. We also demonstrated the named arguments in the first
     function’s decorator in case you prefer to be more explicit.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些函数很简单，返回一个字符串，这个字符串会成为`<div>`元素的“子元素”。我们还展示了第一个函数装饰器中的命名参数，以防你希望更明确。
 - en: 'Putting everything together, the following is the complete code that can control
     a model training from a web interface:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 把所有内容整合在一起，以下是可以通过网页接口控制模型训练的完整代码：
 - en: '[PRE12]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: The final line of the above code is to run the Dash application, just like we
     run our Flask app in the previous section. The `debug=True` argument to the `run_server()`
     function is for “hot-reloading,” which means to reload everything whenever Dash
@@ -370,69 +530,106 @@
     We cannot run a server in a single thread in a single process because even if
     we serve only one user, the browser will launch multiple HTTP queries at the same
     time (e.g., request for the CSS file we created above while loading the web page).
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码的最后一行是运行 Dash 应用程序，就像我们在上一节中运行 Flask 应用程序一样。`run_server()` 函数的 `debug=True`
+    参数用于“热重载”，这意味着每当 Dash 检测到我们的脚本已更改时，它会重新加载所有内容。这在我们在另一个窗口编辑代码时非常方便，因为它不需要我们终止 Dash
+    服务器并重新运行。`threaded=True` 是要求 Dash 服务器在处理多个请求时以多线程运行。一般来说，不建议 Python 程序使用多线程，因为全局解释器锁的问题。但在
+    Web 服务器环境中，由于大多数时候服务器在等待 I/O，所以是可以接受的。如果不是多线程，选项将是多进程运行。我们不能在单线程和单进程中运行服务器，因为即使我们只为一个用户提供服务，浏览器也会同时启动多个
+    HTTP 查询（例如，请求我们上面创建的 CSS 文件时加载网页）。
 - en: Polling in Dash
+  id: totrans-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在 Dash 中进行轮询
 - en: If we run the above Dash application with a moderate number of epochs, it would
     take noticeable time to complete. We want to see it running rather than just having
     the chart updated after it is finished. There is a way to ask Dash to **push** updates
     to our browser, but that would require a plugin (e.g., [dash_devices](https://pypi.org/project/dash-devices/) package
     can do this). But we can also ask the browser to **pull** for any updates. This
     design is called **polling**.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们用中等数量的 epochs 运行上述 Dash 应用程序，它将花费相当长的时间来完成。我们希望看到它运行，而不仅仅在完成后更新图表。有一种方法可以要求
+    Dash 向我们的浏览器**推送**更新，但这需要一个插件（例如，[dash_devices](https://pypi.org/project/dash-devices/)
+    包可以做到这一点）。但我们也可以要求浏览器**拉取**任何更新。这种设计称为**轮询**。
 - en: 'In the `train()` function we defined above, we set `verbose=0` to skip the
     terminal output. But we still need to know the progress of the training process.
     In Keras, this can be done with a custom callback. We can define one as follows:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们上面定义的 `train()` 函数中，我们设置 `verbose=0` 来跳过终端输出。但是我们仍然需要了解训练过程的进度。在 Keras 中，这可以通过自定义回调函数来完成。我们可以如下定义一个：
 - en: '[PRE13]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: If we provide an instance of this class to the `fit()` function of a Keras model,
     the member function of this class will be invoked at the beginning or the end
     of the training cycle, or epoch, or a batch in one epoch. It is quite flexible
     on what we can do inside the function. At the end of an epoch or a batch, the
     `logs` arguments to the functions are a dictionary of the loss and validation
     metrics. Hence we defined a global dictionary object to remember the metrics.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们为 Keras 模型的 `fit()` 函数提供此类的实例，这个类的成员函数将在训练周期、epoch 或批次的开始或结束时被调用。在函数内部我们可以做很多事情。在
+    epoch 或批次结束时，函数的 `logs` 参数是损失和验证指标的字典。因此，我们定义了一个全局字典对象来记住这些指标。
 - en: 'Now given we can check the dictionary `train_status` any time to know the progress
     of our model training, we can modify our web page to display it:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们可以随时检查字典 `train_status` 来了解模型训练的进度，我们可以修改我们的网页来显示它：
 - en: '[PRE14]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: We create a non-visible component `dcc.Interval()` that changes its property `n_intervals`
     automatically once every 1000 milliseconds (= 1 second). Then we create a `<pre>` element
     below our “Train” button and name it `progressdisplay`. Whenever the `Interval` component
     fires, we convert the `train_status` dictionary into a JSON string and display
     it in that `<pre>` element. If you prefer, you can make a widget to display this
     information. Dash has a few provided.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们创建一个不可见组件 `dcc.Interval()`，它每隔 1000 毫秒（= 1 秒）自动更改其属性 `n_intervals`。然后我们在我们的“Train”按钮下创建一个
+    `<pre>` 元素，并命名为 `progressdisplay`。每当 `Interval` 组件触发时，我们将 `train_status` 字典转换为
+    JSON 字符串并显示在那个 `<pre>` 元素中。如果你愿意，你可以创建一个小部件来显示这些信息。Dash 提供了几个小部件。
 - en: 'With just these changes, your browser will look like the following when your
     model is trained:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 仅仅通过这些更改，当您的模型训练完成时，您的浏览器将看起来像这样：
 - en: '![](../Images/c52255159aa96eda68efef591a3fb33b.png)'
+  id: totrans-82
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/c52255159aa96eda68efef591a3fb33b.png)'
 - en: 'Below is the complete code. Don’t forget you also need the `assets/main.css`
     file to properly render the web page:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是完整的代码。不要忘记你还需要 `assets/main.css` 文件以正确渲染网页：
 - en: '[PRE15]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Combining Flask and Dash
+  id: totrans-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结合 Flask 和 Dash
 - en: 'Can you also provide a web interface to **use** the trained model? Certainly.
     It will be easier if the model takes a few numerical inputs because we can just
     provide an input box element on the page. In this case, since it is a handwritten
@@ -441,28 +638,40 @@
     display it. There are two options we can do this: We can let the user upload an
     image of a digit for our model to recognize it, or we can let the user draw the
     image directly on the browser.'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 你也可以提供一个网页界面来 **使用** 训练好的模型吗？当然可以。如果模型接受一些数字输入，这会更容易，因为我们只需在页面上提供一个输入框元素。在这种情况下，由于这是一个手写数字识别模型，我们需要一种方法在浏览器中提供图像，并将其传递给服务器上的模型。只有这样，我们才能获得结果并显示出来。我们可以选择两种方式来实现这一点：我们可以让用户上传一个数字图像供模型识别，或者让用户直接在浏览器中绘制图像。
 - en: In HTML5, we have a `<canvas>` element that allows us to draw or display pixels
     in an area on the web page. We can make use of this to let the user draw on it,
     then convert it into a numerical matrix of size 28×28, and send it to the server
     side for the model to predict and display the prediction result.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 HTML5 中，我们有一个 `<canvas>` 元素，允许我们在网页上绘制或显示像素。我们可以利用这个元素让用户在上面绘制，然后将其转换为 28×28
+    的数字矩阵，并将其发送到服务器端，让模型进行预测并显示预测结果。
 - en: Doing this would not be Dash’s job because we want to read the `<canvas>` element
     and convert it to a matrix of the correct format. We will do this in Javascript.
     But after that, we would invoke the model in a web URL like what we described
     at the beginning of this post. A query is sent with the parameter, and the response
     from the server would be the digit that our model recognized.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样做不是 Dash 的工作，因为我们想要读取 `<canvas>` 元素并将其转换为正确格式的矩阵。我们将在 Javascript 中完成这项工作。但之后，我们会在一个网页
+    URL 中调用模型，就像我们在文章开头所描述的那样。一个带有参数的查询会被发送，服务器的响应将是我们的模型识别出的数字。
 - en: 'Behind the scene, Dash uses Flask, and the root URL points to the Dash application.
     We can create a Flask endpoint that makes use of the model as follows:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 在后台，Dash 使用 Flask，根 URL 指向 Dash 应用程序。我们可以创建一个使用模型的 Flask 端点，如下所示：
 - en: '[PRE16]'
+  id: totrans-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: As we can recall, the variable `server` is the Flask server upon which we build
     our Dash application. We create an endpoint with its decorator. Since we are going
     to pass a 28×28 matrix as the parameter, we use the HTTP POST method, which is
@@ -475,21 +684,35 @@
     model in `model_data["model"]`, but we can make the above code more robust by
     checking if this trained model exists and returning an error message if it does
     not.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们所回忆的，变量 `server` 是我们构建 Dash 应用程序的 Flask 服务器。我们使用其装饰器创建一个端点。由于我们要传递一个 28×28
+    矩阵作为参数，因此我们使用 HTTP POST 方法，这对于大块数据更为适合。POST 方法提供的数据不会成为 URL 的一部分。因此，我们没有在 `@server.route()`
+    装饰器中设置路径参数。相反，我们通过 `request.form["matrix"]` 读取数据，其中 `"matrix"` 是我们传递的参数名称。然后我们假设字符串为
+    JSON 格式，将其转换为数字列表，并进一步转换为 NumPy 数组，然后传递给模型以预测数字。我们将训练好的模型保存在 `model_data["model"]`
+    中，但我们可以通过检查该训练模型是否存在并在不存在时返回错误消息，使上述代码更健壮。
 - en: 'To modify the web page, we just add a few more components:'
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 要修改网页，我们只需添加一些组件：
 - en: '[PRE17]'
+  id: totrans-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: The bottom one is a hidden `<div>` element that we will use later. The main
     block is another `<div>` element with three items in it, namely, a `<canvas>` element
     (with ID `"writing"`), a `<div>` element (with ID `"predictresult"`) to display
     the result, and a `<pre>` element (with ID `"lastinput"`) to display the matrix
     that we passed to the server.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 底部是一个隐藏的 `<div>` 元素，我们稍后将使用它。主要部分是另一个 `<div>` 元素，其中包含三个项目，即一个 `<canvas>` 元素（ID
+    为 `"writing"`），一个 `<div>` 元素（ID 为 `"predictresult"`）用于显示结果，以及一个 `<pre>` 元素（ID
+    为 `"lastinput"`）用于显示我们传递给服务器的矩阵。
 - en: 'Since these elements are not handled by Dash, we do not need to create any
     more functions in Python. But instead, we need to create a Javascript file `assets/main.js` for
     the interaction with these components. A Dash application will automatically load
@@ -497,72 +720,109 @@
     is loaded. We can write this in plain Javascript, but to make our code more concise,
     we will use jQuery. Hence we need to tell Dash that we will require jQuery in
     this web application:'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于这些元素不是由 Dash 处理的，我们不需要在 Python 中创建更多的函数。相反，我们需要创建一个 JavaScript 文件 `assets/main.js`
+    以便与这些组件进行交互。Dash 应用程序会自动加载 `assets` 目录下的所有内容，并在网页加载时将其发送给用户。我们可以用纯 JavaScript
+    编写这些内容，但为了使代码更简洁，我们将使用 jQuery。因此，我们需要告诉 Dash 我们将在这个 Web 应用程序中使用 jQuery：
 - en: '[PRE18]'
+  id: totrans-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: The `external_scripts` argument is a list of URLs to be loaded as additional
     scripts **before** the web page is loaded. Hence we usually provide the library
     here but keep our own code away.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: '`external_scripts` 参数是一个 URL 列表，这些 URL 指向将在网页加载**之前**作为附加脚本加载的资源。因此，我们通常会在这里提供库，但将我们自己的代码保持在外部。'
 - en: 'Our own Javascript code would be a single function because it is called after
     our web page is fully loaded:'
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们自己的 JavaScript 代码将是一个单独的函数，因为它在网页完全加载后被调用：
 - en: JavaScript
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: JavaScript
 - en: '[PRE19]'
+  id: totrans-100
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'We first set up our `<canvas>` element in Javascript. These are specific to
     our requirement. Firstly, we added the following into our `assets/main.css`:'
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们首先在 JavaScript 中设置 `<canvas>` 元素。这些设置是特定于我们需求的。首先，我们将以下内容添加到 `assets/main.css`
+    中：
 - en: CSS
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: CSS
 - en: '[PRE20]'
+  id: totrans-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: This fixed the width and height to 300 pixels to make our canvas square, along
     with other cosmetic fine tuning. Since ultimately, we would convert our handwriting
     into a 28×28 pixel image to fit what our model expects, every stroke we write
     on the canvas cannot be too thin. Therefore we set the stoke width relative to
     the canvas size.
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将宽度和高度固定为 300 像素，以使我们的画布成为正方形，同时进行其他美观上的微调。由于最终我们会将手写的内容转换为 28×28 像素的图像，以适应模型的期望，所以我们在画布上写的每一笔都不能过于细。因此，我们将笔画宽度设置为与画布大小相关。
 - en: 'Having this is not enough to make our canvas usable. Let’s assume we never
     use it on mobile devices but only on a desktop browser, the drawing is done by
     mouse click and movements. We need to define what a mouse click does on the canvas.
     Hence we added the following functions to Javascript code:'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 仅有这些还不足以使我们的画布可用。假设我们从未在移动设备上使用它，而只在桌面浏览器上使用，绘图是通过鼠标点击和移动完成的。我们需要定义鼠标点击在画布上执行的操作。因此，我们将以下功能添加到
+    JavaScript 代码中：
 - en: JavaScript
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: JavaScript
 - en: '[PRE21]'
+  id: totrans-107
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: This is a bit verbose but essentially we ask to listen on three mouse events
     on the canvas, namely, press down the mouse button, moving the mouse, and release
     the mouse button. These three events combined is how we draw one stroke on the
     canvas.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 这有点啰嗦，但基本上我们要求监听画布上的三个鼠标事件，即按下鼠标按钮、移动鼠标和释放鼠标按钮。这三个事件组合在一起就是我们在画布上绘制一笔的方式。
 - en: Firstly, the `mousemove` event handler we added to the `<canvas>` element is
     to simply remember the current mouse position in the Javascript object `mouse`.
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们添加到 `<canvas>` 元素上的 `mousemove` 事件处理器仅仅是为了记住 JavaScript 对象 `mouse` 中当前的鼠标位置。
 - en: Then in the `mousedown` event handler, we start our drawing context at the latest
     mouse position. And since the drawing is started, all subsequent mouse move should
     be painted on the canvas. We defined the `onPaint` function to extend a line segment
     on the canvas to the current mouse position. This function is now registered as
     an additional event handler to the `mousemove` event.
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后在 `mousedown` 事件处理器中，我们从最新的鼠标位置开始绘图上下文。由于绘图已经开始，所有后续的鼠标移动都应该在画布上绘制。我们定义了 `onPaint`
+    函数，以将线段扩展到画布上当前的鼠标位置。现在这个函数被注册为 `mousemove` 事件的附加事件处理器。
 - en: Finally, the `mouseup` event handler is to handle the case when user finished
     one stroke and released the mouse button. All subsequent mouse movement should
     not be painted on the canvas so we need to remove the event handler of the `onPaint` function.
@@ -576,8 +836,15 @@
     in red, we concern only the red channel) into the Javascript array `input`. We
     just need to give this `input` array to our model and the prediction can be carryed
     out.
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，`mouseup` 事件处理程序用于处理用户完成一次绘制并释放鼠标按钮的情况。所有后续的鼠标移动不应在画布上绘制，因此我们需要移除 `onPaint`
+    函数的事件处理程序。然后，当我们完成一次绘制时，这 **可能是** 一个完成的数字，因此我们想将其提取为 28×28 像素版本。这可以很容易完成。我们只需在
+    Javascript 中创建一个新的 `Image` 对象，并将整个画布加载到其中。当完成后，Javascript 会自动调用与之关联的 `onload`
+    函数。在其中，我们将这个 `Image` 对象转化为 28×28 像素，并绘制到我们 `context` 对象的左上角。然后我们逐像素读取它（每个像素将是
+    0 到 255 的 RGB 值，但由于我们使用红色绘制，我们只关心红色通道）到 Javascript 数组 `input` 中。我们只需将这个 `input`
+    数组传递给我们的模型，然后可以进行预测。
 - en: We do not want to create any additional buttons to clear our canvas or submit
     our digit for recognition. Hence we want to clear our canvas automatically if
     the user has not draw anything new for 5 seconds. This is achieved with the Javascript
@@ -586,8 +853,12 @@
     scheduled call to the `reset` function will be cancelled whenever a drawing event
     happens before the timeout. Similarly, the recognition is automatic whenever a `mouseup` event
     happens.
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们不想创建任何额外的按钮来清除我们的画布或提交我们的数字进行识别。因此，我们希望如果用户在 5 秒内没有绘制任何新内容，画布会自动清除。这是通过 Javascript
+    函数 `setTimeout()` 和 `clearTimeout()` 实现的。我们创建一个 `reset` 函数来清除画布，该函数将在 `mouseup`
+    事件后 5 秒触发。而这个计划调用的 `reset` 函数会在超时之前发生绘制事件时被取消。同样，每当发生 `mouseup` 事件时，识别也会自动进行。
 - en: 'Given we have the input data in 28×28 pixels transformed into a Javascript
     array, we can just make use of the `recognize` end point we created with Flask.
     It would be helpful if we can see what we passed into `recognize` and what it
@@ -595,26 +866,42 @@
     display the result returned by the `recognize` end point in the `<div>` element
     with ID `predictresult`. This can be done easily by extending a bit on the `mouseup` event
     handler:'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 给定我们有一个 28×28 像素的输入数据被转化为一个 Javascript 数组，我们可以直接使用我们用 Flask 创建的 `recognize`
+    端点。如果我们能看到我们传递给 `recognize` 的内容以及它返回的结果会很有帮助。所以我们在 ID 为 `lastinput` 的 `<pre>`
+    元素中显示输入数据，并在 ID 为 `predictresult` 的 `<div>` 元素中显示 `recognize` 端点返回的结果。这可以通过稍微扩展
+    `mouseup` 事件处理程序轻松完成。
 - en: JavaScript
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: JavaScript
 - en: '[PRE22]'
+  id: totrans-115
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: We defined a new Javascript funuction `predict()` that fires a AJAX call to
     the `recognize` end point that we set up with Flask. It is using POST method with
     the data `matrix` assigned with a JSON version of the Javascript array. We cannot
     pass an array directly on a HTTP request because everything have to be serialized.
     When the AJAX call returns, we update our `<div>` element with the result.
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们定义了一个新的 Javascript 函数 `predict()`，它会发起一个 AJAX 调用到我们用 Flask 设置的 `recognize`
+    端点。它使用 POST 方法，数据 `matrix` 赋值为 Javascript 数组的 JSON 版本。我们不能直接在 HTTP 请求中传递数组，因为一切必须被序列化。当
+    AJAX 调用返回时，我们更新 `<div>` 元素以显示结果。
 - en: This `predict()` function is invoked by the `mouseup` event handler, when we
     finished transforming our 28×28 pixel image into numerical array. At the same
     time, we write a version into the `<pre>` element solely for display purpose.
+  id: totrans-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个 `predict()` 函数是由 `mouseup` 事件处理程序调用的，当我们完成将 28×28 像素图像转化为数字数组时。同时，我们将一个版本写入
+    `<pre>` 元素，仅用于显示目的。
 - en: 'Up to here, our application is finished. But we still need to call the `pageinit()` function
     when our Dash application is loaded. Behind the scene, Dash application is using
     React for the web for delayed rendering, therefore we should not hook our `pageinit()` function
@@ -624,155 +911,238 @@
     which means it is a callback but handled by the browser-side Javascript rather
     than on the server-side Python. We add the following function call to our Python
     program, `server.py`:'
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 到这里，我们的应用程序已经完成。但我们仍然需要在 Dash 应用程序加载时调用`pageinit()`函数。实际上，Dash 应用程序使用 React
+    来进行延迟渲染，因此我们不应该将`pageinit()`函数挂钩到`document.onload`事件处理程序上，否则我们会发现我们要找的组件不存在。正确的方法是在
+    Dash 应用程序完全加载时调用 JavaScript 函数是设置一个**客户端回调**，即由浏览器端 JavaScript 处理的回调，而不是服务器端的
+    Python。我们在 Python 程序`server.py`中添加以下函数调用：
 - en: '[PRE23]'
+  id: totrans-119
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: The `clientside_callback()` function is not used as a decorator but a complete
     function call. It takes the Javascript function as the first argument, and the `Output` and `Input` object
     as the second and third argument like the case of callback decorators. Because
     of this, we created a hidden dummy component in our web page layout just to help
     triggering the Javascript function at page load, all Dash callback would be invoked
     once unless `prevent_initial_call=True` is an argument to the callback.
+  id: totrans-120
   prefs: []
   type: TYPE_NORMAL
+  zh: '`clientside_callback()`函数不是作为装饰器使用，而是作为完整的函数调用。它将 JavaScript 函数作为第一个参数，将`Output`和`Input`对象作为第二和第三个参数，类似于回调装饰器的情况。由于这个原因，我们在网页布局中创建了一个隐藏的虚拟组件，以帮助在页面加载时触发
+    JavaScript 函数，所有 Dash 回调会被调用一次，除非`prevent_initial_call=True`作为回调的一个参数。'
 - en: Here we are all set. We can now run our `server.py` script to start our web
     server, and it will load the two files under the `assets/` directory. Opening
     a browser to visit the URL reported by our Dash application, we can change the
     hyperparameter and train the model, then use the model for prediction.
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们一切就绪。我们可以运行`server.py`脚本来启动我们的 Web 服务器，它将加载`assets/`目录下的两个文件。打开浏览器访问 Dash
+    应用程序报告的 URL，我们可以更改超参数并训练模型，然后使用模型进行预测。
 - en: 'Tying everything together, the below is the complete code on our Javascript
     part, saved as `assets/main.js`:'
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合起来，以下是我们 JavaScript 部分的完整代码，保存为`assets/main.js`：
 - en: JavaScript
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: JavaScript
 - en: '[PRE24]'
+  id: totrans-124
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: 'and the following are the complete code for the CSS, `assets/main.css` (the `pre#lastinput` part
     is to use smaller font to display our input matrix):'
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是 CSS 的完整代码，`assets/main.css`（`pre#lastinput`部分是使用较小的字体显示我们的输入矩阵）：
 - en: CSS
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: CSS
 - en: '[PRE25]'
+  id: totrans-127
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: 'and the following is the main Python program, `server.py`:'
+  id: totrans-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是主要的 Python 程序，`server.py`：
 - en: '[PRE26]'
+  id: totrans-129
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: If we run all of these, we should see a screen like the following:![](../Images/04723f0ab4a7bcaf5c76799e3aad525e.png)
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们运行所有这些，我们应该看到如下屏幕：![](../Images/04723f0ab4a7bcaf5c76799e3aad525e.png)
 - en: Further Reading
+  id: totrans-131
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 深入阅读
 - en: There are a vast amount of web framework available and Flask is just one of
     them. Another popular one is CherryPy. Below are resources on the topic if you
     are looking to go deeper.
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前有大量的 Web 框架可用，Flask 只是其中之一。另一个流行的框架是 CherryPy。如果你想深入了解，以下是相关资源。
 - en: Books
+  id: totrans-133
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Python Dash: Build Stunning Data Analysis and Visualization Apps with Plotly](https://www.amazon.com/dp/1718502222/)
     by Adam Schroeder, Christian Mayer, and Ann Marie Ward'
+  id: totrans-134
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python Dash: Build Stunning Data Analysis and Visualization Apps with Plotly](https://www.amazon.com/dp/1718502222/)
+    由 Adam Schroeder、Christian Mayer 和 Ann Marie Ward 编写'
 - en: '[Interactive Dashboards and Data Apps with Plotly and Dash](https://www.amazon.com/dp/1800568916/)
     by Elias Dabbas'
+  id: totrans-135
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Interactive Dashboards and Data Apps with Plotly and Dash](https://www.amazon.com/dp/1800568916/)
+    由 Elias Dabbas 编写'
 - en: '[Flask Web Development](https://www.amazon.com/dp/1491991739), 2nd Edition,
     by Miguel Grinberg'
+  id: totrans-136
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Flask Web Development](https://www.amazon.com/dp/1491991739)，由 Miguel Grinberg
+    编写，第 2 版'
 - en: '[Flask Framework Cookbook](https://www.amazon.com/dp/1789951291/), 2nd Edition,
     by Shalabh Aggarwal'
+  id: totrans-137
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Flask Framework Cookbook](https://www.amazon.com/dp/1789951291/)，由 Shalabh
+    Aggarwal 编写，第 2 版'
 - en: Articles
+  id: totrans-138
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[Web Frameworks](https://wiki.python.org/moin/WebFrameworks), Python.org wiki'
+  id: totrans-139
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Web Frameworks](https://wiki.python.org/moin/WebFrameworks)，Python.org wiki'
 - en: APIs and software
+  id: totrans-140
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: APIs 和软件
 - en: '[CherryPy](https://cherrypydocrework.readthedocs.io/)'
+  id: totrans-141
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[CherryPy](https://cherrypydocrework.readthedocs.io/)'
 - en: '[Django](https://www.djangoproject.com/)'
+  id: totrans-142
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Django](https://www.djangoproject.com/)'
 - en: '[Flask](https://flask.palletsprojects.com/en/2.1.x/)'
+  id: totrans-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Flask](https://flask.palletsprojects.com/en/2.1.x/)'
 - en: '[Dash](https://dash.plotly.com/)'
+  id: totrans-144
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Dash](https://dash.plotly.com/)'
 - en: '[Plotly](https://plotly.com/)'
+  id: totrans-145
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Plotly](https://plotly.com/)'
 - en: MDN [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+  id: totrans-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: MDN [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 - en: MDN [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
+  id: totrans-147
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: MDN [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
 - en: '[jQuery](https://jquery.com/)'
+  id: totrans-148
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[jQuery](https://jquery.com/)'
 - en: Summary
+  id: totrans-149
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you learned how we can build a web app easily in Python with
     the Dash library. You also learned how we can create some web API using Flask.
     Specifically you learned
+  id: totrans-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何使用 Dash 库在 Python 中轻松构建网页应用。你还学会了如何使用 Flask 创建一些网页 API。具体来说，你学习了
 - en: The mechanism of a web application
+  id: totrans-151
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 网页应用的机制
 - en: How we can use Dash to build a simple web application triggered by web page
     components
+  id: totrans-152
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们如何使用 Dash 来构建一个由网页组件触发的简单网页应用
 - en: How can we use Flask to create a web API
+  id: totrans-153
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们如何使用 Flask 创建网页 API
 - en: How a web application can be built in Javascript and run on a browser that uses
     the web API we built with Flask
+  id: totrans-154
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 Javascript 中构建网页应用，并在使用我们用 Flask 构建的网页 API 的浏览器上运行

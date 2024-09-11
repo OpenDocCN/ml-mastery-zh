@@ -1,44 +1,66 @@
 - en: Running a Neural Network Model in OpenCV
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 OpenCV 中运行神经网络模型
 - en: 原文：[https://machinelearningmastery.com/running-a-neural-network-model-in-opencv/](https://machinelearningmastery.com/running-a-neural-network-model-in-opencv/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/running-a-neural-network-model-in-opencv/](https://machinelearningmastery.com/running-a-neural-network-model-in-opencv/)
 - en: 'Many machine learning models have been developed, each with strengths and weaknesses.
     This catalog is not complete without neural network models. In OpenCV, you can
     use a neural network model developed using another framework. In this post, you
     will learn about the workflow of applying a neural network in OpenCV. Specifically,
     you will learn:'
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多机器学习模型已经被开发出来，每种模型都有其优缺点。没有神经网络模型，这个目录是不完整的。在 OpenCV 中，你可以使用通过其他框架开发的神经网络模型。在这篇文章中，你将学习在
+    OpenCV 中应用神经网络的工作流程。具体来说，你将学习：
 - en: What OpenCV can use in its neural network model
+  id: totrans-3
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV 在其神经网络模型中可以使用的内容
 - en: How to prepare a neural network model for OpenCV
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为 OpenCV 准备神经网络模型
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参考我的书籍 [《OpenCV中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)。它提供了**自学教程**和**有效代码**。'
 - en: Let’s get started.![](../Images/13d1d5548b6ce1712b519e48bfd98d5c.png)
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/13d1d5548b6ce1712b519e48bfd98d5c.png)
 - en: Running a Neural Network Model in OpenCV
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 OpenCV 中运行神经网络模型
 - en: Photo by [Nastya Dulhiier](https://unsplash.com/photos/lighted-city-at-night-aerial-photo-OKOOGO578eo).
     Some rights reserved.
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Nastya Dulhiier](https://unsplash.com/photos/lighted-city-at-night-aerial-photo-OKOOGO578eo)
+    提供。版权所有。
 - en: Overview of Neural Network Models
+  id: totrans-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 神经网络模型概述
 - en: The other name of the neural network is multilayer perceptrons. It is inspired
     by the structure and function of the human brain. Imagine a web of interconnected
     nodes, each performing simple calculations on data that passes through it. These
@@ -48,108 +70,154 @@
     organization is often described in terms of sequential **layers**. The learning
     process allows the network to identify patterns and make predictions even with
     unseen data.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 神经网络的另一个名称是多层感知器。它的灵感来自于人脑的结构和功能。想象一下一个由互联节点组成的网络，每个节点对通过它的数据执行简单的计算。这些节点，或称为“感知器”，相互通信，根据接收到的信息调整它们的连接。这些感知器组织在一个有向图中，计算从输入到输出具有确定的顺序。它们的组织通常用顺序**层**来描述。学习过程使网络能够识别模式并对未见过的数据进行预测。
 - en: 'In computer vision, neural networks tackle tasks like image recognition, object
     detection, and image segmentation. Usually, within the model, three high-level
     operations are performed:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在计算机视觉中，神经网络处理图像识别、对象检测和图像分割等任务。通常，在模型内部，会执行三种高级操作：
 - en: '**Feature extraction**: The network receives an image as input. The first layers
     then analyze the pixels, searching for basic features like edges, curves, and
     textures. These features are like building blocks, giving the network a rudimentary
     understanding of the image’s content.'
+  id: totrans-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**特征提取**：网络接收图像作为输入。第一层然后分析像素，寻找基本特征，如边缘、曲线和纹理。这些特征就像积木一样，给予网络对图像内容的初步理解。'
 - en: '**Feature learning**: Deeper layers build upon these features, combining and
     transforming them to discover higher-level, more complex patterns. This could
     involve recognizing shapes or objects.'
+  id: totrans-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**特征学习**：更深的层次在这些特征的基础上构建，结合和转化它们，以发现更高层次、更复杂的模式。这可能涉及到识别形状或对象。'
 - en: '**Output generation**: Finally, the last layers of the network use the learned
     patterns to make their predictions. Depending on the task, it could classify the
     image (e.g., cat vs. dog) or identify the objects it contains.'
+  id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**输出生成**：最后，网络的最后几层使用学习到的模式来进行预测。根据任务的不同，它可以对图像进行分类（例如，猫与狗）或识别其包含的对象。'
 - en: These operations are learned rather than crafted. The power of neural networks
     lies in their flexibility and adaptivity. By fine-tuning the connections between
     neurons and providing large amounts of labeled data, we can train them to solve
     complex vision problems with remarkable accuracy. But also because of their flexibility
     and adaptivity, neural networks are usually not the most efficient model regarding
     memory and computation complexity.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些操作是通过学习获得的，而不是手工制作的。神经网络的强大在于其灵活性和适应性。通过微调神经元之间的连接并提供大量标记数据，我们可以训练它们以卓越的准确性解决复杂的视觉问题。但由于其灵活性和适应性，神经网络通常在内存和计算复杂性方面不是最有效的模型。
 - en: Training a Neural Network
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 训练神经网络
 - en: Because of the nature of the model, training a generic neural network is not
     trivial. There is no training facility in OpenCV. Therefore, you must train a
     model using another framework and load it in OpenCV. You want to use OpenCV in
     this case because you are already using OpenCV for other image processing tasks
     and do not want to introduce another dependency to your project or because OpenCV
     is a much lighter library.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于模型的性质，训练一个通用的神经网络并不简单。OpenCV中没有训练功能。因此，你必须使用其他框架训练模型并在OpenCV中加载它。你希望在这种情况下使用OpenCV，因为你已经在使用OpenCV进行其他图像处理任务，不想给项目引入另一个依赖，或者因为OpenCV是一个更轻量的库。
 - en: For example, consider the classic MNIST handwritten digit recognition problem.
     Let’s use Keras and TensorFlow to build and train the model for simplicity. The
     dataset can be obtained from TensorFlow.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，考虑经典的MNIST手写数字识别问题。为了简化，我们使用Keras和TensorFlow来构建和训练模型。数据集可以从TensorFlow获得。
 - en: Python
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The two print statements give:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两个打印语句给出的结果是：
 - en: '[PRE1]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'You can see that the dataset provides the digits in 28×28 grayscale format.
     The training set has 60,000 samples. You can show some random samples using matplotlib,
     which you should see an image like the following:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到数据集以28×28的灰度格式提供数字。训练集有60,000个样本。你可以使用matplotlib展示一些随机样本，看到类似如下的图像：
 - en: '![](../Images/e18ed2bf60c284c17940fe6b9013f1dc.png)'
+  id: totrans-24
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/e18ed2bf60c284c17940fe6b9013f1dc.png)'
 - en: 'This dataset has a label of 0 to 9, denoting the digits on the image. There
     are many models you can use for this classification problem. The famous LeNet5
     model is one of them. Let’s create one using Keras syntax:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个数据集标记为0到9，表示图像上的数字。你可以使用许多模型来解决这个分类问题。著名的LeNet5模型就是其中之一。让我们使用Keras语法创建一个：
 - en: Python
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The last line shows the neural network architecture as follows:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一行显示了神经网络架构如下：
 - en: '[PRE3]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: There are three convolutional layers followed by two dense layers in this network.
     The final dense layer output is a 10-element vector as a probability that the
     input image corresponds to one of the 10 digits.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个网络有三个卷积层，接着是两个全连接层。最终的全连接层输出一个10维向量，表示输入图像对应于10个数字中的一个的概率。
 - en: Training such a network in Keras is not difficult.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Keras中训练这样的网络并不困难。
 - en: First, you need to reformat the input from a 28×28 image pixels into a tensor
     of 28×28×1 such that the extra dimension is expected by the convolutional layers.
     Then, the labels should be converted into a one-hot vector to match the format
     of the network output.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，你需要将输入从28×28图像像素重新格式化为28×28×1的张量，以便卷积层可以接受额外的维度。然后，标签应转换为一个独热向量，以匹配网络输出的格式。
 - en: 'Then, you can kickstart the training by providing the hyperparameters: The
     loss function should be cross entropy because it is a multi-class classification
     problem. Adam is used as the optimizer since it is the usual choice. And during
@@ -157,144 +225,226 @@
     be fast. So, let’s decide to run it for 100 epochs, but let it stop early if you
     can’t see the model improved on the loss metric in the validation set for four
     consecutive epochs.'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，你可以通过提供超参数来启动训练：损失函数应该是交叉熵，因为这是一个多类分类问题。Adam被用作优化器，因为它是常用的选择。在训练期间，你要观察预测准确率。训练应该很快。因此，决定运行100个周期，但如果你发现模型在验证集上的损失指标连续四个周期没有改进，就让它提前停止。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-34
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用OpenCV进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即获取我的免费电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: 'The code is as follows:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码如下：
 - en: Python
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Running this model would print the progress like the following:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行这个模型会打印出如下进度：
 - en: '[PRE5]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: This training stopped at epoch 15 because of the early stopping rule.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于早期停止规则，这次训练在第 15 个 epoch 时停止了。
 - en: 'Once you finished the model training, you can save your Keras model in the
     HDF5 format, which will include both the model architecture and the layer weights:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你完成模型训练，你可以将 Keras 模型保存为 HDF5 格式，这将包括模型结构和层权重：
 - en: Python
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The complete code to build a model is as follows:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 构建模型的完整代码如下：
 - en: Python
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Converting the Model for OpenCV
+  id: totrans-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将模型转换为 OpenCV 格式
 - en: OpenCV supports neural networks in its `dnn` module. It can consume models saved
     by several frameworks, including TensorFlow 1.x. But for the Keras models saved
     above, it is better to first convert into the ONNX format.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV 在其 `dnn` 模块中支持神经网络。它可以处理由多个框架（包括 TensorFlow 1.x）保存的模型。但是，对于上述保存的 Keras
+    模型，最好先转换为 ONNX 格式。
 - en: 'The tool to convert a Keras model (HDF5 format) or generic TensorFlow model
     (Protocol Buffer format) is the Python module `tf2onnx`. You can install it in
     your environment with the following command:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于将 Keras 模型（HDF5 格式）或通用 TensorFlow 模型（Protocol Buffer 格式）转换的工具是 Python 模块 `tf2onnx`。你可以使用以下命令在你的环境中安装它：
 - en: Shell
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE8]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'Afterwards, you have the conversion command from the module. For example, since
     you saved a Keras model into HDF5 format, you can use the following command to
     convert it into an ONNX format:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，你可以使用模块中的转换命令。例如，由于你将 Keras 模型保存为 HDF5 格式，你可以使用以下命令将其转换为 ONNX 格式：
 - en: Shell
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE9]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Then, a file `lenet5.onnx` is created.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，会创建一个文件 `lenet5.onnx`。
 - en: To use it in OpenCV, you need to load the model into OpenCV as a network object.
     Should it be a TensorFlow Protocol Buffer file, there is a function `cv2.dnn.readNetFromTensorflow('frozen_graph.pb')`
     for this. In this post, you are using an ONNX file. Hence, it should be `cv2.dnn.readNetFromONNX('model.onnx')`
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 要在 OpenCV 中使用它，你需要将模型作为网络对象加载到 OpenCV 中。如果是 TensorFlow Protocol Buffer 文件，可以使用函数
+    `cv2.dnn.readNetFromTensorflow('frozen_graph.pb')`。在这篇文章中，你使用的是 ONNX 文件。因此，它应该是
+    `cv2.dnn.readNetFromONNX('model.onnx')`
 - en: 'This model assumes an input as a “blob”, and you should invoke the model with
     the following:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个模型假设输入是一个“blob”，你应该使用以下方式调用模型：
 - en: '[PRE10]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The blob is also a numpy array but reformatted to add the batch dimension.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: Blob 也是一个 numpy 数组，但进行了重新格式化以添加批次维度。
 - en: 'Using the model in OpenCV only needs a few lines of code. For example, we get
     the images again from the TensorFlow dataset and check all test set samples to
     compute the model accuracy:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 OpenCV 中使用模型只需几行代码。例如，我们再次从 TensorFlow 数据集中获取图像，并检查所有测试集样本以计算模型的准确性：
 - en: Python
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Running a neural network model in OpenCV is slightly different from running
     the model in TensorFlow in such a way that you need to assign the input and get
     the output in two separate steps.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 OpenCV 中运行神经网络模型略有不同于在 TensorFlow 中运行模型，你需要将输入和输出分别处理为两个步骤。
 - en: 'In the code above, you convert the output into a “blob” with no scaling and
     shifting since this is how the model is trained. You set the input of a single
     image, and the output will be a 1×10 array. As a softmax output, you get the model’s
     prediction using the `argmax` function. The subsequent calculation of average
     accuracy over the test set is trivial. The above code prints:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的代码中，你将输出转换为“blob”，没有进行缩放和移位，因为模型就是这样训练的。你设置单张图像的输入，输出将是一个 1×10 的数组。作为 softmax
+    输出，你使用 `argmax` 函数获取模型的预测。随后计算测试集上的平均准确性非常简单。上述代码打印：
 - en: '[PRE12]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Summary
+  id: totrans-68
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: In this post, you learned how to use a neural network in OpenCV via its `dnn`
     module. Specifically, you learned
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你学会了如何通过 `dnn` 模块在 OpenCV 中使用神经网络。具体来说，你学会了
 - en: How to train a neural network model and convert it to ONNX format for the consumption
     of OpenCV
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何训练神经网络模型并将其转换为 ONNX 格式，以供 OpenCV 使用
 - en: How to use load the model in OpenCV and run the model
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中加载和运行模型

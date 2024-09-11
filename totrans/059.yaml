@@ -1,271 +1,405 @@
 - en: K-Means Clustering in OpenCV and Application for Color Quantization
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: OpenCV 中的 k-Means 聚类及其在颜色量化中的应用
 - en: 原文：[https://machinelearningmastery.com/k-means-clustering-in-opencv-and-application-for-color-quantization/](https://machinelearningmastery.com/k-means-clustering-in-opencv-and-application-for-color-quantization/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/k-means-clustering-in-opencv-and-application-for-color-quantization/](https://machinelearningmastery.com/k-means-clustering-in-opencv-and-application-for-color-quantization/)
 - en: The k-means clustering algorithm is an unsupervised machine learning technique
     that seeks to group similar data into distinct clusters to uncover patterns in
     the data that may not be apparent to the naked eye.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: k-means 聚类算法是一种无监督机器学习技术，旨在将相似的数据分组到不同的集群中，以揭示数据中的模式，这些模式可能在肉眼观察下并不明显。
 - en: It is possibly the most widely known algorithm for data clustering and is implemented
     in the OpenCV library.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可能是数据聚类中最广为人知的算法，并已在 OpenCV 库中实现。
 - en: In this tutorial, you will learn how to apply OpenCV’s k-means clustering algorithm
     for color quantization of images.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您将学习如何应用 OpenCV 的 k-means 聚类算法进行图像的颜色量化。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，您将了解：
 - en: What data clustering is within the context of machine learning.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 了解数据聚类在机器学习中的含义。
 - en: Applying the k-means clustering algorithm in OpenCV to a simple two-dimensional
     dataset containing distinct data clusters.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 OpenCV 中将 k-means 聚类算法应用于包含不同数据集群的简单二维数据集。
 - en: How to apply the k-means clustering algorithm in OpenCV for color quantization
     of images.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中应用 k-means 聚类算法进行图像的颜色量化。
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [《OpenCV 中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)
+    **来启动您的项目**。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started. [![](../Images/a6e0f013e8c42b7e01ab4d0b8ba34a90.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_cover-scaled.jpg)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。 [![](../Images/a6e0f013e8c42b7e01ab4d0b8ba34a90.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_cover-scaled.jpg)
 - en: K-Means Clustering for Color Quantization Using OpenCV
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 OpenCV 进行颜色量化的 k-Means 聚类
 - en: Photo by [Billy Huynh](https://unsplash.com/photos/W8KTS-mhFUE), some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Billy Huynh](https://unsplash.com/photos/W8KTS-mhFUE) 提供，保留部分权利。
 - en: '**Tutorial Overview**'
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三部分，它们是：
 - en: Clustering as an Unsupervised Machine Learning Task
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 聚类作为一种无监督机器学习任务
 - en: Discovering k-Means Clustering in OpenCV
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 OpenCV 中发现 k-Means 聚类
 - en: Color Quantization Using k-Means
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 k-Means 进行颜色量化
 - en: '**Clustering as an Unsupervised Machine Learning Task**'
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**聚类作为一种无监督机器学习任务**'
 - en: Cluster analysis is an unsupervised learning technique.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 聚类分析是一种无监督学习技术。
 - en: It involves automatically grouping data into distinct groups (or clusters),
     where the data within each cluster are similar but different from those in the
     other clusters. It aims to uncover patterns in the data that may not be apparent
     before clustering.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 它涉及将数据自动分组到不同的组（或集群）中，其中每个集群中的数据相似，但与其他集群的数据不同。它旨在揭示数据中的模式，这些模式在聚类之前可能并不明显。
 - en: There are many different clustering algorithms, as explained in [this tutorial](https://machinelearningmastery.com/clustering-algorithms-with-python/),
     with k-means clustering being one of the most widely known.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 有许多不同的聚类算法，如 [本教程](https://machinelearningmastery.com/clustering-algorithms-with-python/)
+    所述，其中 k-means 聚类是最广为人知的算法之一。
 - en: The k-means clustering algorithm takes unlabelled data points. It seeks to assign
     them to *k* clusters, where each data point belongs to the cluster with the nearest
     cluster center, and the center of each cluster is taken as the mean of the data
     points that belong to it. The algorithm requires that the user provide the value
     of k as an input; hence, this value needs to be known a priori or tuned according
     to the data.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: k-means 聚类算法处理无标签的数据点。它试图将数据点分配到 *k* 个集群中，每个数据点属于离其最近的集群中心的集群，而每个集群的中心被视为属于该集群的数据点的均值。该算法要求用户提供
+    k 的值作为输入，因此需要事先知道或根据数据调整这个值。
 - en: '**Discovering k-Means Clustering in OpenCV**'
+  id: totrans-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**在 OpenCV 中发现 k-Means 聚类**'
 - en: Let’s first consider applying k-means clustering to a simple two-dimensional
     dataset containing distinct data clusters before moving on to more complex tasks.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 在深入更复杂的任务之前，我们首先考虑将 k-means 聚类应用于包含不同数据集群的简单二维数据集。
 - en: 'For this purpose, we shall be generating a dataset consisting of 100 data points
     (specified by `n_samples`), which are equally divided into 5 Gaussian clusters
     (identified by `centers`) having a standard deviation set to 1.5 (determined by
     `cluster_std`). To be able to replicate the results, let’s also define a value
     for `random_state`, which we’re going to set to 10:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，我们将生成一个由 100 个数据点（由`n_samples`指定）组成的数据集，这些数据点平均分配到 5 个高斯聚类（由`centers`标识），标准差设置为
+    1.5（由`cluster_std`确定）。为了能够复制结果，我们还定义一个`random_state`的值，我们将其设置为 10：
 - en: Python
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The code above should generate the following plot of data points:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的代码应生成以下数据点的图表：
 - en: '[![](../Images/319ff12ce9d55196edeb9a23cc6e770b.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_1-e1678295533468.png)'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/319ff12ce9d55196edeb9a23cc6e770b.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_1-e1678295533468.png)'
 - en: Scatter Plot of Dataset Consisting of 5 Gaussian Clusters
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 由 5 个高斯聚类组成的数据集的散点图
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-31
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 OpenCV 进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件速成课程（附样例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取课程的免费 PDF 电子书版本。
 - en: If we look at this plot, we may already be able to visually distinguish one
     cluster from another, which means that this should be a sufficiently straightforward
     task for the k-means clustering algorithm.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们查看这个图表，我们可能已经可以直观地区分一个聚类与另一个聚类，这意味着这应该是一个足够简单的任务，适合 k-means 聚类算法。
 - en: 'In OpenCV, the k-means algorithm is not part of the `ml` module but can be
     called directly. To be able to use it, we need to specify values for its input
     arguments as follows:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 OpenCV 中，k-means 算法不属于`ml`模块，但可以直接调用。为了能够使用它，我们需要为其输入参数指定值，如下所示：
 - en: The input, unlabelled `data`.
+  id: totrans-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 输入，未标记的`data`。
 - en: The number, `K`, of required clusters.
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 所需的聚类数量`K`。
 - en: The termination criteria, `TERM_CRITERIA_EPS` and `TERM_CRITERIA_MAX_ITER`,
     defining the desired accuracy and the maximum number of iterations, respectively,
     which, when reached, the algorithm iteration should stop.
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 终止标准`TERM_CRITERIA_EPS`和`TERM_CRITERIA_MAX_ITER`，分别定义了所需的准确性和最大迭代次数，当达到这些标准时，算法迭代应停止。
 - en: The number of `attempts`, denoting the number of times the algorithm will be
     executed with different initial labeling to find the best cluster compactness.
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`attempts`的数量，表示算法将执行的次数，每次使用不同的初始标记以寻找最佳聚类紧凑度。'
 - en: How the cluster centers will be initialized, whether random, user-supplied,
     or through a center initialization method such as kmeans++, as specified by the
     parameter `flags`.
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 聚类中心的初始化方式，无论是随机的、用户提供的，还是通过诸如 kmeans++ 的中心初始化方法，如参数`flags`所指定的。
 - en: 'The k-means clustering algorithm in OpenCV returns:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV 中的 k-means 聚类算法返回：
 - en: The `compactness` of each cluster, computed as the sum of the squared distance
     of each data point to its corresponding cluster center. A smaller compactness
     value indicates that the data points are distributed closer to their corresponding
     cluster center and, hence, the cluster is more compact.
+  id: totrans-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 每个聚类的`compactness`，计算为每个数据点到其对应聚类中心的平方距离之和。较小的紧凑度值表明数据点分布得更接近其对应的聚类中心，因此聚类更紧凑。
 - en: The predicted cluster labels `y_pred`, associate each input data point with
     its corresponding cluster.
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 预测的聚类标签`y_pred`，将每个输入数据点与其对应的聚类关联起来。
 - en: The `centers` coordinates of each cluster of data points.
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 每个数据点聚类的`centers`坐标。
 - en: 'Let’s now apply the k-means clustering algorithm to the dataset generated earlier.
     Note that we are type-casting the input data to `float32`, as expected by the
     `kmeans()` function in OpenCV:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们将 k-means 聚类算法应用于之前生成的数据集。请注意，我们将输入数据转换为`float32`类型，这是 OpenCV 中`kmeans()`函数所期望的：
 - en: Python
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The code above generates the following plot, where each data point is now colored
     according to its assigned cluster, and the cluster centers are marked in red:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的代码生成了以下图表，其中每个数据点根据其分配的聚类进行着色，聚类中心用红色标记：
 - en: '[![](../Images/c60732be9dc64ea2fbe9a905b5cbc9f2.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_2-e1678295496224.png)'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/c60732be9dc64ea2fbe9a905b5cbc9f2.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_2-e1678295496224.png)'
 - en: Scatter Plot of Dataset With Clusters Identified Using k-Means Clustering
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 k-means 聚类识别聚类的数据集的散点图
 - en: 'The complete code listing is as follows:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码列表如下：
 - en: Python
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '**Color Quantization Using k-Means**'
+  id: totrans-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**使用 k-means 的颜色量化**'
 - en: One of the applications for k-means clustering is the color quantization of
     images.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: k-means 聚类的一种应用是图像的颜色量化。
 - en: Color quantization refers to the process of reducing the number of distinct
     colors that are used in the representation of an image.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 颜色量化指的是减少图像表示中使用的不同颜色数量的过程。
 - en: '*Color quantization is critical for displaying images with many colors on devices
     that can only display a limited number of colors, usually due to memory limitations,
     and enables efficient compression of certain types of images.*'
+  id: totrans-57
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*颜色量化对于在只能显示有限颜色数量的设备上显示多色图像至关重要，这通常是由于内存限制，并且能够高效地压缩某些类型的图像。*'
 - en: ''
+  id: totrans-58
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*[*Color quantization*](https://en.wikipedia.org/wiki/Color_quantization)*,
     2023.**'
+  id: totrans-59
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*[*颜色量化*](https://en.wikipedia.org/wiki/Color_quantization)*，2023。**'
 - en: '*In this case, the data points that we will provide to the k-means clustering
     algorithm are the RGB values of each image pixel. As we shall be seeing, we will
     provide these values in the form of an $M \times 3$ array, where $M$ denotes the
     number of pixels in the image.'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '*在这种情况下，我们将提供给 k-means 聚类算法的数据点是每个图像像素的 RGB 值。正如我们将看到的，我们将以 $M \times 3$ 数组的形式提供这些值，其中
+    $M$ 表示图像中的像素数量。*'
 - en: 'Let’s try out the k-means clustering algorithm on [this image](https://unsplash.com/photos/rgP93cPsVEc),
     which I have named *bricks.jpg*:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们在[这张图片](https://unsplash.com/photos/rgP93cPsVEc)上尝试 k-means 聚类算法，我将其命名为 *bricks.jpg*：
 - en: '[![](../Images/da6bd527cbf965bea444c4e02959f2f7.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_4.jpg)'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/da6bd527cbf965bea444c4e02959f2f7.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_4.jpg)'
 - en: The dominant colors that stand out in this image are red, orange, yellow, green,
     and blue. However, many shadows and glints introduce additional shades and colors
     to the dominant ones.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 图像中突出的主色是红色、橙色、黄色、绿色和蓝色。然而，许多阴影和光斑为主色引入了额外的色调和颜色。
 - en: We’ll start by first reading the image using OpenCV’s `imread` function.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将首先使用 OpenCV 的 `imread` 函数读取图像。
 - en: '[Remember](https://machinelearningmastery.com/?p=14402&preview=true) that OpenCV
     loads this image in BGR rather than RGB order. There is no need to convert it
     to RGB before feeding it to the k-means clustering algorithm because the latter
@@ -273,139 +407,214 @@
     specified. However, since we are making use of Matplotlib to display the images,
     we’ll convert it to RGB so that we may display the quantized result correctly
     later on:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: '[请记住](https://machinelearningmastery.com/?p=14402&preview=true)，OpenCV 以 BGR
+    而非 RGB 顺序加载此图像。在将其输入 k-means 聚类算法之前，不需要将其转换为 RGB，因为后者会根据像素值的顺序仍然分组相似的颜色。然而，由于我们使用
+    Matplotlib 来显示图像，因此我们会将其转换为 RGB，以便稍后可以正确显示量化结果：'
 - en: Python
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: As we have mentioned earlier, the next step involves reshaping the image to
     an $M \times 3$ array, and we may then proceed to apply k-means clustering to
     the resulting array values using several clusters that correspond to the number
     of dominant colors we have mentioned above.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们之前提到的，下一步涉及将图像重塑为 $M \times 3$ 数组，然后我们可以应用 k-means 聚类算法，将结果数组值分配到多个聚类中，这些聚类对应于我们上面提到的主色数。
 - en: 'In the code snippet below, I have also included a line that prints out the
     number of unique RGB pixel values from the total number of pixels in the image.
     We find that we have 338,742 unique RGB values out of 14,155,776 pixels, which
     is substantial:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的代码片段中，我还包括了一行代码，用于打印图像中总像素数的唯一 RGB 像素值。我们发现，从 14,155,776 像素中，我们有 338,742
+    个唯一 RGB 值，这个数字相当可观：
 - en: Python
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'At this point, we shall proceed to apply the actual RGB values of the cluster
     centers to the predicted pixel labels and reshape the resulting array to the shape
     of the original image before displaying it:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，我们将应用聚类中心的实际 RGB 值到预测的像素标签上，并将结果数组重塑为原始图像的形状，然后显示它：
 - en: Python
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Printing again the number of unique RGB values in the quantized image, we find
     that these have now lessened to the number of clusters that we had specified to
     the k-means algorithm:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次打印量化图像中的唯一 RGB 值，我们发现这些值已经减少到我们为 k-means 算法指定的聚类数量：
 - en: Python
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'If we look at the color quantized image, we find that the pixels belonging
     to the yellow and orange bricks have been grouped into the same cluster, possibly
     due to the similarity of their RGB values. In contrast, one of the clusters aggregates
     pixels belonging to regions of shadow:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们查看颜色量化图像，会发现黄色和橙色砖块的像素被分组到同一个簇中，这可能是由于它们的 RGB 值相似。相比之下，其中一个簇则聚合了阴影区域的像素：
 - en: '[![](../Images/eee1d51f72bdba4fb4f026fa267916ee.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_3-e1678295458313.png)'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/eee1d51f72bdba4fb4f026fa267916ee.png)](https://machinelearningmastery.com/wp-content/uploads/2023/03/kmeans_3-e1678295458313.png)'
 - en: Color Quantized Image Using k-Means Clustering with 5 Clusters
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 5 个簇的 k-means 聚类进行颜色量化图像
 - en: Now try changing the value specifying the number of clusters for the k-means
     clustering algorithm and investigate its effect on the quantization result.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在尝试更改指定 k-means 聚类算法簇数的值，并调查其对量化结果的影响。
 - en: 'The complete code listing is as follows:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的代码清单如下：
 - en: Python
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '**Further Reading**'
+  id: totrans-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多资源，如果你想深入了解该主题。
 - en: '**Books**'
+  id: totrans-87
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Machine Learning for OpenCV](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1),
     2017.'
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[《OpenCV 机器学习》](https://www.amazon.com/Machine-Learning-OpenCV-Intelligent-processing/dp/1783980281/ref=sr_1_1?crid=3VWMIM65XCS6K&keywords=machine+learning+for+opencv&qid=1678294085&sprefix=machine+learning+for+openc,aps,213&sr=8-1)，2017年。'
 - en: '**Websites**'
+  id: totrans-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: 10 Clustering Algorithms With Python, [https://machinelearningmastery.com/clustering-algorithms-with-python/](https://machinelearningmastery.com/clustering-algorithms-with-python/)
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 《10 种 Python 聚类算法》，[https://machinelearningmastery.com/clustering-algorithms-with-python/](https://machinelearningmastery.com/clustering-algorithms-with-python/)
 - en: K-Means Clustering in OpenCV, [https://docs.opencv.org/3.4/d1/d5c/tutorial_py_kmeans_opencv.html](https://docs.opencv.org/3.4/d1/d5c/tutorial_py_kmeans_opencv.html)
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV 中的 K-Means 聚类，[https://docs.opencv.org/3.4/d1/d5c/tutorial_py_kmeans_opencv.html](https://docs.opencv.org/3.4/d1/d5c/tutorial_py_kmeans_opencv.html)
 - en: k-means clustering, [https://en.wikipedia.org/wiki/K-means_clustering](https://en.wikipedia.org/wiki/K-means_clustering)
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: k-means 聚类，[https://en.wikipedia.org/wiki/K-means_clustering](https://en.wikipedia.org/wiki/K-means_clustering)
 - en: '**Summary**'
+  id: totrans-93
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you learned how to apply OpenCV’s k-means clustering algorithm
     for color quantization of images.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何应用 OpenCV 的 k-means 聚类算法进行图像的颜色量化。
 - en: 'Specifically, you learned:'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: What data clustering is within the context of machine learning.
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 机器学习中的数据聚类是什么。
 - en: Applying the k-means clustering algorithm in OpenCV to a simple two-dimensional
     dataset containing distinct data clusters.
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 OpenCV 中应用 k-means 聚类算法于一个包含不同数据簇的简单二维数据集。
 - en: How to apply the k-means clustering algorithm in OpenCV for color quantization
     of images.
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 OpenCV 中应用 k-means 聚类算法进行图像的颜色量化。
 - en: Do you have any questions?
+  id: totrans-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.*
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的评论中提问，我会尽力回答。

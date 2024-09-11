@@ -1,87 +1,127 @@
 - en: Neural Network with More Hidden Neurons
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用更多隐藏神经元的神经网络
 - en: 原文：[https://machinelearningmastery.com/neural-network-with-more-hidden-neurons/](https://machinelearningmastery.com/neural-network-with-more-hidden-neurons/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/neural-network-with-more-hidden-neurons/](https://machinelearningmastery.com/neural-network-with-more-hidden-neurons/)
 - en: The traditional model of neural network is called multilayer perceptrons. They
     are usually made up of a series of interconnected layers. The input layer is where
     the data enters the network, and the output layer is where the network delivers
     the output.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 传统的神经网络模型称为多层感知器。它们通常由一系列相互连接的层组成。输入层是数据进入网络的地方，输出层是网络输出结果的地方。
 - en: 'The input layer is usually connected to one or more hidden layers, which modify
     and process the data before it reaches the output layer. The hidden layers are
     what make neural networks so powerful: they can learn complicated functions that
     might be difficult for a programmer to specify in code.'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 输入层通常连接到一个或多个隐藏层，这些层在数据到达输出层之前修改和处理数据。隐藏层是神经网络如此强大的原因：它们可以学习对程序员来说可能难以在代码中指定的复杂函数。
 - en: In the previous tutorial, we built a neural network with only a couple of hidden
     neurons. Here, you will implement a neural network by adding more hidden neurons
     to it. This will estimate more complex function for us in order to fit the data.
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上一个教程中，我们构建了一个只有几个隐藏神经元的神经网络。在这里，您将通过添加更多隐藏神经元来实现一个神经网络。这将为我们估计更复杂的函数以适应数据。
 - en: 'During the implementation process, you’ll learn:'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 在实现过程中，您将学到：
 - en: How to build a neural network with more hidden neurons in PyTorch.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中构建一个使用更多隐藏神经元的神经网络。
 - en: How to estimate complex functions using neural networks by adding more hidden
     neurons to the network.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过在网络中添加更多隐藏神经元来估计复杂函数。
 - en: How to train a neural network in PyTorch.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中训练一个神经网络。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动您的项目**，使用我的书籍[PyTorch深度学习](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了带有**实际代码**的**自学教程**。'
 - en: Let’s get started.![](../Images/0a0df0be009ba84b451a0c0758afb706.png)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/0a0df0be009ba84b451a0c0758afb706.png)
 - en: Neural Network with More Hidden Neurons.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用更多隐藏神经元的神经网络。
 - en: Picture by [Kdwk Leung](https://unsplash.com/photos/Lu2NgRt7p_g). Some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Kdwk Leung](https://unsplash.com/photos/Lu2NgRt7p_g)拍摄。部分权利保留。
 - en: Overview
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in three parts; they are
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分，它们是：
 - en: Preparing the Data
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备数据
 - en: Build the Model Architecture
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建模型架构
 - en: Train the Model
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练模型
 - en: Preparing the Data
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备数据
 - en: Let’s build a `Data` class that extends the `Dataset` class from PyTorch. You
     use it to create a dataset of 100 synthetic values ranging from $-50$ to $50$.
     The `x` tensor stores the values in the specified range, while the `y` tensor
     is a corresponding tensor of zeros with the same shape as `x`.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们构建一个扩展自PyTorch的`Dataset`类的`Data`类。您可以使用它来创建一个包含100个从$-50$到$50$范围内的合成值的数据集。`x`张量存储指定范围内的值，而`y`张量是一个形状与`x`相同的零张量。
 - en: Next, you use a for loop to set the values in `x` and `y` tensors based on the
     values in `x`. If a value in `x` is between $-20$ and $20$, the corresponding
     value in `y` is set to 1 and if a value in `x` is between $-30$ and $-20$ or between
@@ -89,161 +129,241 @@
     in `x` is between $-40$ and $-30$ or between $30$ and $40$, the corresponding
     value in `y` is set to 1\. Otherwise, the corresponding value in `y` is set to
     0.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，您可以使用for循环根据`x`中的值设置`x`和`y`张量的值。如果`x`中的值介于$-20$和$20$之间，则将`y`中对应的值设置为1；如果`x`中的值介于$-30$和$-20$之间或者介于$20$和$30$之间，则将`y`中对应的值设置为0。类似地，如果`x`中的值介于$-40$和$-30$之间或者介于$30$和$40$之间，则将`y`中对应的值设置为1。否则，将`y`中对应的值设置为0。
 - en: In the `Data` class, the `__getitem__()` method has been used to retrieve the
     `x` and `y` values at a specified index in the dataset. The `__len__()` method
     returns the length of the dataset. With these, you can obtain a sample from the
     dataset using `data[i]` and tell the size of the dataset using `len(data)`. This
     class can be used to create a data object that can be passed to a PyTorch data
     loader to train a machine learning model.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`Data`类中，`__getitem__()`方法被用来获取数据集中指定索引处的`x`和`y`值。`__len__()`方法返回数据集的长度。有了这些，您可以使用`data[i]`获取数据集中的样本，并使用`len(data)`告知数据集的大小。此类可用于创建数据对象，该对象可传递给PyTorch数据加载器以训练机器学习模型。
 - en: Note that you are building this complex data object to see how well our neural
     network with more hidden neurons estimates the function. Here is how the code
     of the data object will look like.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，您正在构建此复杂的数据对象以查看我们具有更多隐藏神经元的神经网络估计函数的情况。以下是数据对象代码的外观。
 - en: '[PRE0]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Let’s instantiate a data object.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们实例化一个数据对象。
 - en: '[PRE1]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: And, write a function to visualize this data, which will also be useful when
     you train the model later.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 并编写一个函数来可视化这些数据，在以后训练模型时也会很有用。
 - en: '[PRE2]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'If you run this function, you can see the data looks like the following:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您运行此函数，您将看到数据看起来像下面这样：
 - en: '[PRE3]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '![](../Images/a6ae432bfb8664e8e340d87a4e8bf3a1.png)'
+  id: totrans-30
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/a6ae432bfb8664e8e340d87a4e8bf3a1.png)'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-31
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用PyTorch进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在开始我的免费电子邮件崩溃课程（带有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 单击注册，还可以获得课程的免费PDF电子书版本。
 - en: Build the Model Architecture
+  id: totrans-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 建立模型架构
 - en: Below, you will define a `NeuralNetwork` class to build a custom model architecture
     using `nn.Module` from PyTorch. This class represents a simple neural network
     with an input layer, a hidden layer, and an output layer.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面，您将定义一个`NeuralNetwork`类，使用PyTorch中的`nn.Module`来构建自定义模型架构。该类表示一个简单的神经网络，包含一个输入层、一个隐藏层和一个输出层。
 - en: The `__init__()` method is used to initialize the neural network by defining
     the layers in the network. The forward method is used to define the forward pass
     through the network. In this case, a sigmoid activation function is applied to
     the output of both input and output layers. This means that the output of the
     network will be a value between 0 and 1.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '`__init__()`方法用于初始化神经网络，定义网络中的各层。`forward`方法用于定义网络的前向传播。在本例中，sigmoid激活函数应用于输入层和输出层的输出。这意味着网络的输出将是一个介于0和1之间的值。'
 - en: Finally, you will create an instance of the `NeuralNetwork` class and store
     it in the `model` variable. The model is initialized with an input layer having
     1 input neuron, a hidden layer having 15 hidden neurons, and an output layer having
     1 output neuron. This model is now ready to be trained on some data.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，您将创建`NeuralNetwork`类的一个实例，并将其存储在`model`变量中。该模型初始化为具有1个输入神经元的输入层，15个隐藏神经元的隐藏层和1个输出神经元的输出层。现在，该模型已准备好在某些数据上进行训练。
 - en: '[PRE4]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Train the Model
+  id: totrans-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 训练模型
 - en: Let’s define the criterion, optimizer, and dataloader. You should use binary
     cross entropy loss as the dataset is a classification with two classes. Adam optimizer
     is used, with a batch size of 32\. The learning rate is set to 0.01 which determines
     how model weights are updated during training. The loss function is used to evaluate
     the model performance, the optimizer updates the weights, and the data loader
     divides the data into batches for efficient processing.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们定义准则、优化器和数据加载器。由于数据集是一个具有两类的分类问题，应使用二元交叉熵损失函数。使用Adam优化器，批量大小为32。学习率设置为0.01，决定了训练过程中模型权重的更新方式。损失函数用于评估模型性能，优化器更新权重，数据加载器将数据分成批次以进行高效处理。
 - en: '[PRE5]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Now, let’s build a training loop for 7000 epochs and visualize the results during
     training. You’ll see how well our model estimates the data points as the training
     progresses.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们构建一个包含7000个epoch的训练循环，并在训练过程中可视化结果。您将看到随着训练的进行，我们的模型如何估计数据点的情况。
 - en: '[PRE6]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: When you run this loop, you will see at the first epoch, the neural network
     modelled the dataset poorly, like the following:![](../Images/a675eee83978de4a004b788d04a9e0c3.png)
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您运行此循环时，您将看到在第一个epoch中，神经网络对数据集建模较差，如下所示：![](../Images/a675eee83978de4a004b788d04a9e0c3.png)
 - en: 'But the accuracy improved as the training progressed. After the training loop
     completed, we can see the result as the neural network modelled the data like
     the following:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 但随着训练的进行，准确性得到了改善。训练循环完成后，我们可以看到神经网络对数据的建模结果如下：
 - en: '[PRE7]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '![](../Images/0cf77d920f4e0504e79a1264c0a2cd4e.png)'
+  id: totrans-47
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/0cf77d920f4e0504e79a1264c0a2cd4e.png)'
 - en: 'and the corresponding history of loss metric can be plot like the following:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 并且对应的损失指标历史可以如下绘制：
 - en: '[PRE8]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '![](../Images/530f84d67b9270c5ec76573285bdbfba.png)'
+  id: totrans-50
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/530f84d67b9270c5ec76573285bdbfba.png)'
 - en: As you can see, our model estimated the function quite well but not perfect.
     The input of range 20 to 40, for example, isn’t predicted right. You may try to
     expand the network to add one more layer, such as the following, and see if it
     will make any difference.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如您所看到的，我们的模型相当好地估计了函数，但并非完美。例如，20到40的输入范围并没有得到正确的预测。您可以尝试扩展网络以添加一个额外的层，例如以下内容，并查看是否会有所不同。
 - en: '[PRE9]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Putting everything together, the following is the complete code:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容整合在一起，以下是完整的代码：
 - en: '[PRE10]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Summary
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you learned how we estimate complex functions by introducing
     more neurons into the neural networks. Particularly, you learned:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何通过向神经网络中引入更多的神经元来估计复杂函数。特别地，你学习了：
 - en: How to build a neural network with more hidden neurons in PyTorch.
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中构建一个具有更多隐藏神经元的神经网络。
 - en: How to estimate complex functions using neural networks by adding more hidden
     neurons to the network.
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过向网络中添加更多隐藏神经元来估计复杂函数。
 - en: How to train a neural network in PyTorch.
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中训练神经网络。

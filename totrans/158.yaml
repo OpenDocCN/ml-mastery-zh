@@ -1,300 +1,451 @@
 - en: Implementing Gradient Descent in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中实现梯度下降
 - en: 原文：[https://machinelearningmastery.com/implementing-gradient-descent-in-pytorch/](https://machinelearningmastery.com/implementing-gradient-descent-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/implementing-gradient-descent-in-pytorch/](https://machinelearningmastery.com/implementing-gradient-descent-in-pytorch/)
 - en: The gradient descent algorithm is one of the most popular techniques for training
     deep neural networks. It has many applications in fields such as computer vision,
     speech recognition, and natural language processing. While the idea of gradient
     descent has been around for decades, it’s only recently that it’s been applied
     to applications related to deep learning.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 梯度下降算法是训练深度神经网络的最流行技术之一。它在计算机视觉、语音识别和自然语言处理等领域有许多应用。尽管梯度下降的思想已经存在了几十年，但它最近才被应用于与深度学习相关的应用中。
 - en: Gradient descent is an iterative optimization method used to find the minimum
     of an objective function by updating values iteratively on each step. With each
     iteration, it takes small steps towards the desired direction until convergence,
     or a stop criterion is met.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 梯度下降是一种迭代优化方法，通过在每一步中迭代更新值来寻找目标函数的最小值。每次迭代时，它都会朝着期望的方向迈出小步，直到收敛或满足停止准则。
 - en: 'In this tutorial, you will train a simple linear regression model with two
     trainable parameters and explore how gradient descent works and how to implement
     it in PyTorch. Particularly, you’ll learn about:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将训练一个具有两个可训练参数的简单线性回归模型，并探索梯度下降的工作原理以及如何在 PyTorch 中实现它。特别地，你将学习：
 - en: Gradient Descent algorithm and its implementation in PyTorch
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 梯度下降算法及其在 PyTorch 中的实现
 - en: Batch Gradient Descent and its implementation in PyTorch
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 批量梯度下降及其在 PyTorch 中的实现
 - en: Stochastic Gradient Descent and its implementation in PyTorch
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 随机梯度下降及其在 PyTorch 中的实现
 - en: How Batch Gradient Descent and Stochastic Gradient Descent are different from
     each other
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 批量梯度下降（Batch Gradient Descent）和随机梯度下降（Stochastic Gradient Descent）之间的区别
 - en: How loss decreases in Batch Gradient Descent and Stochastic Gradient Descent
     during training
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 批量梯度下降和随机梯度下降在训练过程中损失如何下降
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书** [《用 PyTorch 进行深度学习》](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    **启动你的项目**。它提供了**自学教程**和**可运行的代码**。'
 - en: So, let’s get started.![](../Images/45ac7903b28ab4040d742d5544c770df.png)
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，让我们开始吧！[](../Images/45ac7903b28ab4040d742d5544c770df.png)
 - en: Implementing Gradient Descent in PyTorch.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中实现梯度下降。
 - en: Picture by [Michael Behrens](https://unsplash.com/photos/DA-iYgv8kjE). Some
     rights reserved.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Michael Behrens](https://unsplash.com/photos/DA-iYgv8kjE) 提供。保留部分权利。
 - en: Overview
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in four parts; they are
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四部分；它们是
 - en: Preparing Data
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备数据
 - en: Batch Gradient Descent
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 批量梯度下降
 - en: Stochastic Gradient Descent
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 随机梯度下降
 - en: Plotting Graphs for Comparison
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 绘制比较图
 - en: Preparing Data
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备数据
 - en: 'To keep the model simple for illustration, we will use the linear regression
     problem as in the last tutorial. The data is synthetic and generated as follows:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了简化模型以便说明，我们将使用与上一个教程相同的线性回归问题。数据是合成的，生成方式如下：
 - en: '[PRE0]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Same as in the previous tutorial, we initialized a variable `X` with values
     ranging from $-5$ to $5$, and created a linear function with a slope of $-5$.
     Then, Gaussian noise is added to create the variable `Y`.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 与之前的教程相同，我们初始化了一个变量 `X`，其值范围从 $-5$ 到 $5$，并创建了一个斜率为 $-5$ 的线性函数。然后，添加高斯噪声来生成变量
+    `Y`。
 - en: 'We can plot the data using matplotlib to visualize the pattern:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用 matplotlib 绘制数据以可视化模式：
 - en: '[PRE1]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '![](../Images/c7d2910711d5a9cf82e04f012cd344f1.png)'
+  id: totrans-26
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/c7d2910711d5a9cf82e04f012cd344f1.png)'
 - en: Data points for regression model
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 回归模型的数据点
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-28
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即获取我的免费电子邮件速成课程（附样例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并获得课程的免费 PDF 电子书版本。
 - en: Batch Gradient Descent
+  id: totrans-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 批量梯度下降
 - en: Now that we have created the data for our model, next we’ll build a forward
     function based on a simple linear regression equation. We’ll train the model for
     two parameters ($w$ and $b$). We will also need a loss criterion function. Because
     it is a regression problem on continuous values, MSE loss is appropriate.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经为模型创建了数据，接下来我们将基于一个简单的线性回归方程构建前向函数。我们将训练模型以优化两个参数（$w$ 和 $b$）。我们还需要一个损失标准函数。由于这是一个对连续值的回归问题，MSE
+    损失是合适的。
 - en: '[PRE2]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Before we train our model, let’s learn about the **batch gradient descent**.
     In batch gradient descent, all the samples in the training data are considered
     in a single step. The parameters are updated by taking the mean gradient of all
     the training examples. In other words, there is only one step of gradient descent
     in one epoch.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们训练模型之前，让我们先了解一下**批量梯度下降**。在批量梯度下降中，所有训练数据中的样本都在单步中考虑。参数通过所有训练样本的平均梯度来更新。换句话说，每个epoch中只有一步梯度下降。
 - en: While Batch Gradient Descent is the best choice for smooth error manifolds,
     it’s relatively slow and computationally complex, especially if you have a larger
     dataset for training.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然批量梯度下降在平滑误差流形上是最佳选择，但它相对较慢且计算复杂，特别是当你有更大的训练数据集时。
 - en: Training with Batch Gradient Descent
+  id: totrans-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用批量梯度下降进行训练
 - en: Let’s randomly initialize the trainable parameters $w$ and $b$, and define some
     training parameters such as learning rate or step size, an empty list to store
     the loss, and number of epochs for training.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们随机初始化可训练参数$w$和$b$，定义一些训练参数如学习率或步长，一个空列表来存储损失，以及训练的epoch数量。
 - en: '[PRE3]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: We’ll train our model for 20 epochs using below lines of code. Here, the `forward()`
     function generates the prediction while the `criterion()` function measures the
     loss to store it in `loss` variable. The `backward()` method performs the gradient
     computations and the updated parameters are stored in `w.data` and `b.data`.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用下面的代码行训练我们的模型20个epochs。在这里，`forward()`函数生成预测，而`criterion()`函数测量损失以存储在`loss`变量中。`backward()`方法执行梯度计算，更新后的参数存储在`w.data`和`b.data`中。
 - en: '[PRE4]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Here is the how the output looks like and the parameters are updated after every
     epoch when we apply batch gradient descent.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是输出的样子，以及在应用批量梯度下降时每个epoch后更新的参数。
 - en: '[PRE5]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Putting all together, the following is the complete code
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容放在一起，以下是完整的代码
 - en: '[PRE6]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The for-loop above prints one line per epoch, such as the following:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的for循环每个epoch打印一行，如下所示：
 - en: '[PRE7]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Stochastic Gradient Descent
+  id: totrans-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 随机梯度下降
 - en: As we learned that batch gradient descent is not a suitable choice when it comes
     to a huge training data. However, deep learning algorithms are data hungry and
     often require large quantity of data for training. For instance, a dataset with
     millions of training examples would require the model to compute the gradient
     for all data in a single step, if we are using batch gradient descent.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们所了解的，当涉及到大量训练数据时，批量梯度下降并不是一个合适的选择。然而，深度学习算法对数据有很强的需求，通常需要大量数据进行训练。例如，一个包含数百万训练样本的数据集需要模型在单步中计算所有数据的梯度，如果我们使用批量梯度下降。
 - en: This doesn’t seem to be an efficient way and the alternative is **stochastic
     gradient descent** (SGD). Stochastic gradient descent considers only a single
     sample from the training data at a time, computes the gradient to take a step,
     and update the weights. Therefore, if we have $N$ samples in the training data,
     there will be $N$ steps in each epoch.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 这似乎不是一种高效的方式，替代方法是**随机梯度下降**（SGD）。随机梯度下降每次只考虑训练数据中的单个样本，计算梯度并更新权重。因此，如果训练数据中有$N$个样本，每个epoch将有$N$步。
 - en: Training with Stochastic Gradient Descent
+  id: totrans-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用随机梯度下降进行训练
 - en: 'To train our model with stochastic gradient descent, we’ll randomly initialize
     the trainable parameters $w$ and $b$ as we did for the batch gradient descent
     above. Here we’ll define an empty list to store the loss for stochastic gradient
     descent and train the model for 20 epochs. The following is the complete code
     modified from the previous example:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使用随机梯度下降训练我们的模型，我们将像上面批量梯度下降一样随机初始化可训练参数$w$和$b$。在这里，我们将定义一个空列表来存储随机梯度下降的损失，并训练模型20个epochs。以下是从先前示例修改而来的完整代码：
 - en: '[PRE8]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: This prints a long list of values as follows
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印如下长长的数值列表
 - en: '[PRE9]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Plotting Graphs for Comparison
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 绘制比较图表
 - en: Now that we have trained our model using batch gradient descent and stochastic
     gradient descent, let’s visualize how the loss decreases for both the methods
     during model training. So, the graph for batch gradient descent looks like this.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经使用批量梯度下降和随机梯度下降训练了我们的模型，让我们来看看在模型训练期间这两种方法的损失如何减少。因此，批量梯度下降的图表如下所示。
 - en: '[PRE10]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '![](../Images/d5db2e52a1e8d2326b9d6ab22a28ecc0.png)'
+  id: totrans-58
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/d5db2e52a1e8d2326b9d6ab22a28ecc0.png)'
 - en: The loss history of batch gradient descent
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 批量梯度下降的损失历史
 - en: Similarly, here is how the graph for stochastic gradient descent looks like.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似地，这是随机梯度下降的图表。
 - en: '[PRE11]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '![](../Images/8579b9611bf88f4e7df2a6d465f48e93.png)'
+  id: totrans-62
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/8579b9611bf88f4e7df2a6d465f48e93.png)'
 - en: Loss history of stochastic gradient descent
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 随机梯度下降的损失历史
 - en: As you can see, the loss smoothly decreases for batch gradient descent. On the
     other hand, you’ll observe fluctuations in the graph for stochastic gradient descent.
     As mentioned earlier, the reason is quite simple. In batch gradient descent, the
     loss is updated after all the training samples are processed while the stochastic
     gradient descent updates the loss after every training sample in the training
     data.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你所见，批量梯度下降的损失平稳下降。另一方面，你会在随机梯度下降的图中观察到波动。前面提到过，原因很简单。在批量梯度下降中，损失在处理完所有训练样本后更新，而随机梯度下降则在每个训练样本处理后更新损失。
 - en: 'Putting everything together, below is the complete code:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合考虑，下面是完整的代码：
 - en: '[PRE12]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Summary
+  id: totrans-67
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial you learned about the Gradient Descent, some of its variations,
     and how to implement them in PyTorch. Particularly, you learned about:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了梯度下降法及其一些变体，并学习了如何在 PyTorch 中实现它们。特别是，你了解了：
 - en: Gradient Descent algorithm and its implementation in PyTorch
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 梯度下降算法及其在 PyTorch 中的实现
 - en: Batch Gradient Descent and its implementation in PyTorch
+  id: totrans-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 批量梯度下降及其在 PyTorch 中的实现
 - en: Stochastic Gradient Descent and its implementation in PyTorch
+  id: totrans-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 随机梯度下降及其在 PyTorch 中的实现
 - en: How Batch Gradient Descent and Stochastic Gradient Descent are different from
     each other
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 批量梯度下降和随机梯度下降的区别
 - en: How loss decreases in Batch Gradient Descent and Stochastic Gradient Descent
     during training
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 批量梯度下降和随机梯度下降在训练过程中损失的变化

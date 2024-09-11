@@ -1,140 +1,208 @@
 - en: Profiling Python Code
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Python代码分析
 - en: 原文：[https://machinelearningmastery.com/profiling-python-code/](https://machinelearningmastery.com/profiling-python-code/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 译文：[https://machinelearningmastery.com/profiling-python-code/](https://machinelearningmastery.com/profiling-python-code/)
 - en: Profiling is a technique to figure out how time is spent in a program. With
     these statistics, we can find the “hot spot” of a program and think about ways
     of improvement. Sometimes, a hot spot in an unexpected location may hint at a
     bug in the program as well.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 性能分析是一种确定程序中时间花费的技术。通过这些统计数据，我们可以找到程序的“热点”并考虑改进的方法。有时，意外位置的热点也可能暗示程序中的一个错误。
 - en: 'In this tutorial, we will see how we can use the profiling facility in Python.
     Specifically, you will see:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将看到如何使用Python中的性能分析功能。具体来说，你将看到：
 - en: How we can compare small code fragments using the `timeit` module
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们如何使用`timeit`模块比较小的代码片段
 - en: How we can profile the entire program using the `cProfile` module
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们如何使用`cProfile`模块对整个程序进行分析
 - en: How we can invoke a profiler inside an existing program
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们如何在现有程序中调用分析器
 - en: What the profiler cannot do
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 分析器无法做的事情
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请阅读我的新书[《机器学习中的Python》](https://machinelearningmastery.com/python-for-machine-learning/)，包括*逐步教程*和所有示例的*Python源代码*文件。'
 - en: Let’s get started.![](../Images/a86cb6c3738bf1a81ce1f210bfb00fd5.png)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/a86cb6c3738bf1a81ce1f210bfb00fd5.png)
 - en: Profiling Python Code. Photo by [Prashant Saini](https://unsplash.com/photos/BeoRcYyVgxE).
     Some rights reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: Python代码分析。照片由[Prashant Saini](https://unsplash.com/photos/BeoRcYyVgxE)提供。部分权利保留。
 - en: Tutorial Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is in four parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四部分；它们是：
 - en: Profiling small fragments
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 分析小片段
 - en: The profile module
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 分析模块
 - en: Using profiler inside code
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在代码中使用分析器
 - en: Caveats
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 注意事项
 - en: Profiling Small Fragments
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 分析小片段
 - en: When you are asked about the different ways of doing the same thing in Python,
     one perspective is to check which one is more efficient. In Python’s standard
     library, we have the `timeit` module that allows us to do some simple profiling.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你被问到Python中完成相同任务的不同方法时，一种观点是检查哪种方法更高效。在Python的标准库中，我们有`timeit`模块，它允许我们进行一些简单的性能分析。
 - en: 'For example, to concatenate many short strings, we can use the `join()` function
     from strings or the `+` operator. So, how do we know which is faster? Consider
     the following Python code:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，要连接多个短字符串，我们可以使用字符串的`join()`函数或`+`运算符。那么，我们如何知道哪个更快呢？请考虑以下Python代码：
 - en: '[PRE0]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'This will produce a long string `012345....` in the variable `longstr`. An
     alternative way to write this is:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将产生一个长字符串`012345....`在变量`longstr`中。另一种写法是：
 - en: '[PRE1]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'To compare the two, we can do the following at the command line:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了比较这两者，我们可以在命令行中执行以下操作：
 - en: '[PRE2]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'These two commands will produce the following output:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两个命令将产生以下输出：
 - en: '[PRE3]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The above commands are to load the `timeit` module and pass on a single line
     of code for measurement. In the first case, we have two lines of statements, and
     they are passed on to the `timeit` module as two separate arguments. In the same
     rationale, the first command can also be presented as three lines of statements
     (by breaking the for-loop into two lines), but the indentation of each line needs
     to be quoted correctly:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述命令用于加载`timeit`模块，并传递一行代码进行测量。在第一种情况下，我们有两行语句，它们作为两个单独的参数传递给`timeit`模块。按照相同的原理，第一条命令也可以呈现为三行语句（通过将for循环拆分成两行），但每行的缩进需要正确地引用：
 - en: '[PRE4]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The output of `timeit` is to find the best performance among multiple runs (default
     to be 5). Each run is to run the provided statements a few times (which is dynamically
     determined). The time is reported as the average to execute the statements once
     in the best run.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '`timeit`的输出是找到多次运行中的最佳性能（默认为5次）。每次运行是多次执行提供的语句（次数是动态确定的）。时间以最佳运行中执行一次语句的平均时间来报告。'
 - en: 'While it is true that the join function is faster than the `+` operator for
     string concatenation, the timing above is not a fair comparison. It is because
     we use `str(x)` to make short strings on the fly during the loop. The better way
     to do this is the following:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然`join`函数在字符串连接方面比`+`运算符更快，但上面的计时结果并不是公平的比较。这是因为我们在循环过程中使用`str(x)`来即时生成短字符串。更好的做法是如下：
 - en: '[PRE5]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'which produces:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 产生：
 - en: '[PRE6]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The `-s` option allows us to provide the “setup” code, which is executed before
     the profiling and not timed. In the above, we create the list of short strings
     before starting the loop. Hence the time to create those strings is not measured
@@ -143,194 +211,298 @@
     is to import the libraries. For example, we can compare the square root function
     from Python’s math module from NumPy and use the exponential operator `**` as
     follows:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '`-s`选项允许我们提供“设置”代码，该代码在分析之前执行且不计时。在上述代码中，我们在开始循环之前创建了短字符串列表。因此，创建这些字符串的时间不计入“每次循环”的时间。上述结果显示，`join()`函数比`+`运算符快两个数量级。`-s`选项的更常见用法是导入库。例如，我们可以比较Python数学模块中的平方根函数与NumPy，并使用指数运算符`**`：'
 - en: '[PRE7]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'The above produces the following measurement, which we see that `math.sqrt()`
     is fastest while `numpy.sqrt()` is slowest in this particular example:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述结果产生了以下测量，我们可以看到在这个特定的例子中，`math.sqrt()`是最快的，而`numpy.sqrt()`是最慢的：
 - en: '[PRE8]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'If you wonder why NumPy is the slowest, it is because NumPy is optimized for
     arrays. You will see its exceptional speed in the following alternative:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想知道为什么NumPy是最慢的，那是因为NumPy是为数组优化的。你将在以下替代方案中看到它的卓越速度：
 - en: '[PRE9]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'where the result is:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果如下：
 - en: '[PRE10]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'If you prefer, you can also run `timeit` in Python code. For example, the following
     will be similar to the above but give you the total raw timing for each run:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你愿意，你也可以在Python代码中运行`timeit`。例如，下面的代码将类似于上述代码，但会给你每次运行的总原始时间：
 - en: '[PRE11]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'In the above, each run is to execute the statement 10,000 times; the result
     is as follows. You can see the result of roughly 98 usec per loop in the best
     run:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述代码中，每次运行都是执行语句10,000次；结果如下。你可以看到在最佳运行中的每次循环约为98微秒的结果：
 - en: '[PRE12]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: The Profile Module
+  id: totrans-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 性能分析模块
 - en: Focusing on a statement or two for performance is from a microscopic perspective.
     Chances are, we have a long program and want to see what is causing it to run
     slow. That happens before we can consider alternative statements or algorithms.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 关注一两个语句的性能是微观的角度。很可能，我们有一个很长的程序，想要查看是什么导致它运行缓慢。这是在考虑替代语句或算法之前发生的情况。
 - en: 'A program running slow can generally be due to two reasons: A part is running
     slow, or a part is running too many times, adding up and taking too much time.
     We call these “performance hogs” the hot spot. Let’s look at an example. Consider
     the following program that uses a hill-climbing algorithm to find hyperparameters
     for a perceptron model:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序运行缓慢通常有两个原因：某一部分运行缓慢，或者某一部分运行次数过多，累计起来耗时过长。我们将这些“性能消耗者”称为热点。我们来看一个例子。考虑以下程序，它使用爬山算法来寻找感知机模型的超参数：
 - en: '[PRE13]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'Assume we saved this program in the file `hillclimb.py`, we can run the profiler
     in the command line as follows:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们将此程序保存到文件`hillclimb.py`中，我们可以在命令行中按如下方式运行分析器：
 - en: '[PRE14]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'and the output will be the following:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出将如下所示：
 - en: '[PRE15]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: The normal output of the program will be printed first, and then the profiler’s
     statistics will be printed. From the first row, we see that the function `objective()`
     in our program has run 101 times and took 4.89 seconds. But these 4.89 seconds
     are mostly spent on the functions it called, which the total time spent on that
     function is merely 0.001 seconds. The functions from dependent modules are also
     profiled. Hence you see a lot of NumPy functions above too.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序的正常输出会首先被打印，然后是分析器的统计信息。从第一行，我们可以看到我们程序中的`objective()`函数已运行101次，耗时4.89秒。但这4.89秒大部分时间都花在了它调用的函数上，该函数总共只花费了0.001秒。依赖模块中的函数也被分析。因此，你会看到很多NumPy函数。
 - en: 'The above output is long and may not be useful to you as it can be difficult
     to tell which function is the hot spot. Indeed we can sort the above output. For
     example, to see which function is called the most number of times, we can sort
     by `ncalls`:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述输出很长，可能对你没有帮助，因为很难判断哪个函数是热点。实际上，我们可以对上述输出进行排序。例如，为了查看哪个函数被调用的次数最多，我们可以按`ncalls`进行排序：
 - en: '[PRE16]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'Its output is as follows: It says the `get()` function from a Python dict is
     the most used function (but it only consumed 0.03 seconds in total out of the
     5.6 seconds to finish the program):'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 它的输出如下：它表示Python字典中的`get()`函数是使用最频繁的函数（但它在5.6秒完成程序中只消耗了0.03秒）：
 - en: '[PRE17]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'The other sort options are as follows:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 其他排序选项如下：
 - en: '| Sort string | Meaning |'
+  id: totrans-60
   prefs: []
   type: TYPE_TB
+  zh: '| 排序字符串 | 含义 |'
 - en: '| --- | --- |'
+  id: totrans-61
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- |'
 - en: '| calls | Call count |'
+  id: totrans-62
   prefs: []
   type: TYPE_TB
+  zh: '| 调用次数 | 调用计数 |'
 - en: '| cumulative | Cumulative time |'
+  id: totrans-63
   prefs: []
   type: TYPE_TB
+  zh: '| cumulative | 累积时间 |'
 - en: '| cumtime | Cumulative time |'
+  id: totrans-64
   prefs: []
   type: TYPE_TB
+  zh: '| cumtime | 累积时间 |'
 - en: '| file | File name |'
+  id: totrans-65
   prefs: []
   type: TYPE_TB
+  zh: '| file | 文件名 |'
 - en: '| filename | File name |'
+  id: totrans-66
   prefs: []
   type: TYPE_TB
+  zh: '| filename | 文件名 |'
 - en: '| module | File name |'
+  id: totrans-67
   prefs: []
   type: TYPE_TB
+  zh: '| module | 文件名 |'
 - en: '| ncalls | Call count |'
+  id: totrans-68
   prefs: []
   type: TYPE_TB
+  zh: '| ncalls | 调用次数 |'
 - en: '| pcalls | Primitive call count |'
+  id: totrans-69
   prefs: []
   type: TYPE_TB
+  zh: '| pcalls | 原始调用次数 |'
 - en: '| line | Line number |'
+  id: totrans-70
   prefs: []
   type: TYPE_TB
+  zh: '| line | 行号 |'
 - en: '| name | Function name |'
+  id: totrans-71
   prefs: []
   type: TYPE_TB
+  zh: '| name | 函数名 |'
 - en: '| nfl | Name/file/line |'
+  id: totrans-72
   prefs: []
   type: TYPE_TB
+  zh: '| nfl | 名称/文件/行 |'
 - en: '| stdname | Standard name |'
+  id: totrans-73
   prefs: []
   type: TYPE_TB
+  zh: '| stdname | 标准名称 |'
 - en: '| time | Internal time |'
+  id: totrans-74
   prefs: []
   type: TYPE_TB
+  zh: '| time | 内部时间 |'
 - en: '| tottime | Internal time |'
+  id: totrans-75
   prefs: []
   type: TYPE_TB
+  zh: '| tottime | 内部时间 |'
 - en: 'If the program takes some time to finish, it is not reasonable to run the program
     many times just to find the profiling result in a different sort order. Indeed,
     we can save the profiler’s statistics for further processing as follows:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果程序完成需要一些时间，那么为了找到不同排序方式的分析结果，重复运行程序是不合理的。事实上，我们可以保存分析器的统计数据以便进一步处理，方法如下：
 - en: '[PRE18]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'Similar to the above, it will run the program. But this will not print the
     statistics to the screen but save them into a file. Afterward, we can use the
     `pstats` module like the following to open up the statistics file and provide
     us a prompt to manipulate the data:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于上述情况，它将运行程序。但这不会将统计数据打印到屏幕上，而是将其保存到一个文件中。之后，我们可以像以下这样使用`pstats`模块打开统计文件，并提供一个提示以操作数据：
 - en: '[PRE19]'
+  id: totrans-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'For example, we can use the sort command to change the sort order and use stats
     to print what we saw above:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，我们可以使用排序命令来更改排序顺序，并使用stats打印我们看到的内容：
 - en: '[PRE20]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: You will notice that the `stats` command above allows us to provide an extra
     argument. The argument can be a regular expression to search for the functions
     such that only those matched will be printed. Hence it is a way to provide a search
     string to filter.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 你会注意到上述`stats`命令允许我们提供一个额外的参数。该参数可以是一个正则表达式，用于搜索函数，以便仅打印匹配的函数。因此，这是一种提供搜索字符串进行过滤的方法。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-83
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用Python进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的7天免费电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并获得课程的免费PDF电子书版本。
 - en: 'This `pstats` browser allows us to see more than just the table above. The
     `callers` and `callees` commands show us which function calls which function,
     how many times it is called, and how much time is spent. Hence we can consider
@@ -339,126 +511,186 @@
     in different scenarios. For example, this shows that the `objective()` function
     is called only by the `hillclimbing()` function, but the `hillclimbing()` function
     calls several other functions:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个`pstats`浏览器允许我们查看的不仅仅是上述表格。`callers`和`callees`命令显示了哪些函数调用了哪些函数，调用了多少次，以及花费了多少时间。因此，我们可以将其视为函数级别统计数据的细分。如果你有很多相互调用的函数，并且想要了解不同场景下时间的分配情况，这很有用。例如，这显示了`objective()`函数仅由`hillclimbing()`函数调用，而`hillclimbing()`函数调用了其他几个函数：
 - en: '[PRE21]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: Using Profiler Inside Code
+  id: totrans-88
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在代码中使用分析器
 - en: 'The above example assumes you have the complete program saved in a file and
     profile the entire program. Sometimes, we focus on only a part of the entire program.
     For example, if we load a large module, it takes time to bootstrap, and we want
     to remove this from the profiler. In this case, we can invoke the profiler only
     for certain lines. An example is as follows, which is modified from the program
     above:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述示例假设你已经将完整程序保存到一个文件中，并对整个程序进行了分析。有时，我们只关注程序的一部分。例如，如果我们加载了一个大型模块，它需要时间进行引导，并且我们想要从分析器中移除这个部分。在这种情况下，我们可以仅针对某些行调用分析器。以下是一个示例，来自于上述程序的修改：
 - en: '[PRE22]'
+  id: totrans-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'It will output the following:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 它将输出以下内容：
 - en: '[PRE23]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: Caveats
+  id: totrans-93
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 注意事项
 - en: Using profiler with Tensorflow models may not produce what you would expect,
     especially if you have written your own custom layer or custom function for the
     model. If you did it correctly, Tensorflow is supposed to build the computation
     graph before your model is executed, and hence the logic will be changed. The
     profiler output will therefore not show your custom classes.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用Tensorflow模型进行分析可能不会产生你预期的结果，特别是如果你为模型编写了自定义层或自定义函数。如果你正确地完成了这项工作，Tensorflow应该在执行模型之前构建计算图，因此逻辑将发生变化。因此，分析器输出将不会显示你的自定义类。
 - en: It’s the same for some advanced modules that involve binary code. The profiler
     can see you called some functions and marked them as “built-in” methods, but it
     cannot go any further into the compiled code.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于涉及二进制代码的一些高级模块也是如此。分析器可以看到你调用了一些函数，并将它们标记为“内置”方法，但它无法进一步深入编译代码。
 - en: 'Below is a short code of the LeNet5 model for the MNIST classification problem.
     If you try to profile it and print the top 15 rows, you will see that a wrapper
     is occupying the majority of the time, and nothing can be shown beyond that:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是用于 MNIST 分类问题的 LeNet5 模型的简短代码。如果你尝试分析它并打印前 15 行，你会看到一个包装器占据了大部分时间，而无法显示更多内容：
 - en: '[PRE24]'
+  id: totrans-97
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: In the result below, the `TFE_Py_Execute` is marked as a “built-in” method,
     and it consumes 30.1 sec out of the total run time of 39.6 sec. Note that the
     tottime is the same as the cumtime, meaning from the profiler’s perspective, it
     seems all time is spent at this function, and it doesn’t call any other functions.
     This illustrates the limitation of Python’s profiler.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的结果中，`TFE_Py_Execute` 被标记为“内置”方法，占用了总运行时间 39.6 秒中的 30.1 秒。注意 tottime 与 cumtime
+    相同，这意味着从分析器的角度来看，似乎所有时间都花费在这个函数上，并且它没有调用其他函数。这说明了 Python 分析器的局限性。
 - en: '[PRE25]'
+  id: totrans-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: Finally, Python’s profiler gives you only the statistics on time but not memory
     usage. You may need to look for another library or tools for this purpose.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 最终，Python 的分析器仅提供时间统计信息，而不包括内存使用情况。你可能需要寻找其他库或工具来实现这一目的。
 - en: Further Readings
+  id: totrans-101
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 深入阅读
 - en: 'The standard library modules `timeit`, `cProfile`, and `pstats` have their
     documentation in Python’s documentation:'
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 标准库模块 `timeit`、`cProfile` 和 `pstats` 的文档可以在 Python 的文档中找到：
 - en: '`timeit` module: [https://docs.python.org/3/library/timeit.html](https://docs.python.org/3/library/timeit.html)'
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`timeit` 模块: [https://docs.python.org/3/library/timeit.html](https://docs.python.org/3/library/timeit.html)'
 - en: '`cProfile` module and `pstats` module: [https://docs.python.org/3/library/profile.html](https://docs.python.org/3/library/profile.html)'
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`cProfile` 模块和 `pstats` 模块: [https://docs.python.org/3/library/profile.html](https://docs.python.org/3/library/profile.html)'
 - en: 'The standard library’s profiler is very powerful but not the only one. If you
     want something more visual, you can try out the Python Call Graph module. It can
     produce a picture of how functions call each other using the GraphViz tool:'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 标准库的分析器非常强大，但不是唯一的。如果你想要更具视觉效果的工具，你可以尝试 Python Call Graph 模块。它可以使用 GraphViz
+    工具生成函数调用关系图：
 - en: 'Python Call Graph: [https://pycallgraph.readthedocs.io/en/master/](https://pycallgraph.readthedocs.io/en/master/)'
+  id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'Python Call Graph: [https://pycallgraph.readthedocs.io/en/master/](https://pycallgraph.readthedocs.io/en/master/)'
 - en: 'The limitation of not being able to dig into the compiled code can be solved
     by not using Python’s profiler but instead using one for compiled programs. My
     favorite is Valgrind:'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 无法深入编译代码的限制可以通过不使用 Python 的分析器而是使用针对编译程序的分析器来解决。我最喜欢的是 Valgrind：
 - en: 'Valgrind: [https://valgrind.org/](https://valgrind.org/)'
+  id: totrans-108
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'Valgrind: [https://valgrind.org/](https://valgrind.org/)'
 - en: But to use it, you may need to recompile your Python interpreter to turn on
     debugging support.
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 但要使用它，你可能需要重新编译你的 Python 解释器以启用调试支持。
 - en: Summary
+  id: totrans-110
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, we learned what a profiler is and what it can do. Specifically,
+  id: totrans-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们了解了什么是分析器以及它能做什么。具体来说，
 - en: We know how to compare small code with the `timeit` module
+  id: totrans-112
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们知道如何使用 `timeit` 模块比较小代码片段。
 - en: We see Python’s `cProfile` module can provide us with detailed statistics on
     how time is spent
+  id: totrans-113
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们看到 Python 的 `cProfile` 模块可以提供有关时间使用的详细统计数据。
 - en: We learned to use the `pstats` module against the output of `cProfile` to sort
     or filter
+  id: totrans-114
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们学会了如何使用 `pstats` 模块对 `cProfile` 的输出进行排序或过滤。

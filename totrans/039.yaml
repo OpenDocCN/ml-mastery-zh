@@ -1,11 +1,15 @@
 - en: 'Skewness Be Gone: Transformative Tricks for Data Scientists'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 偏度去无踪：数据科学家的转换技巧
 - en: 原文：[https://machinelearningmastery.com/skewness-be-gone-transformative-tricks-for-data-scientists/](https://machinelearningmastery.com/skewness-be-gone-transformative-tricks-for-data-scientists/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '[https://machinelearningmastery.com/skewness-be-gone-transformative-tricks-for-data-scientists/](https://machinelearningmastery.com/skewness-be-gone-transformative-tricks-for-data-scientists/)'
 - en: Data transformations enable data scientists to refine, normalize, and standardize
     raw data into a format ripe for analysis. These transformations are not merely
     procedural steps; they are essential in mitigating biases, handling skewed distributions,
@@ -13,67 +17,99 @@
     focus on how to address skewed data. By focusing on the “SalePrice” and “YearBuilt”
     attributes from the Ames housing dataset, you will see examples of positive and
     negative skewed data and ways to normalize their distributions using transformations.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据转换使数据科学家能够将原始数据精炼、标准化，以适合分析的格式。这些转换不仅仅是程序步骤；它们对于减少偏差、处理偏斜分布和增强统计模型的稳健性至关重要。本章将主要关注如何解决偏斜数据。通过关注Ames住房数据集中的“SalePrice”和“YearBuilt”属性，你将看到正偏和负偏数据的示例，以及使用转换来规范其分布的方法。
 - en: Let’s get started.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/ef9f886abfc8f501420f90dd9a39bdeb.png)'
+  id: totrans-4
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/ef9f886abfc8f501420f90dd9a39bdeb.png)'
 - en: 'Skewness Be Gone: Transformative Tricks for Data Scientists'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 偏度去无踪：数据科学家的转换技巧
 - en: Photo by [Suzanne D. Williams](https://unsplash.com/photos/three-pupas-VMKBFR6r_jg).
     Some rights reserved.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 [Suzanne D. Williams](https://unsplash.com/photos/three-pupas-VMKBFR6r_jg)
+    拍摄。保留一些权利。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into five parts; they are:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为五部分，它们是：
 - en: Understanding Skewness and the Need for Transformation
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 理解偏度及其转化的必要性
 - en: Strategies for Taming Positive Skewness
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 驯化正偏度的策略
 - en: Strategies for Taming Negative Skewness
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 驯化负偏度的策略
 - en: Statistical Evaluation of Transformations
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 转换的统计评估
 - en: Choosing the Right Transformation
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 选择正确的转换
 - en: Understanding Skewness and the Need for Transformation
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 理解偏度及其转化的必要性
 - en: 'Skewness is a statistical measure that describes the asymmetry of a data distribution
     around its mean. In simpler terms, it indicates whether the bulk of the data is
     bunched up on one side of the scale, leaving a long tail stretching out in the
     opposite direction. There are two types of skewness you encounter in data analysis:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 偏度是一个统计度量，描述数据分布围绕其均值的非对称性。简单来说，它指示数据的大部分是否集中在量表的一侧，另一侧则延伸出长尾。在数据分析中，你会遇到两种类型的偏度：
 - en: '**Positive Skewness**: This occurs when the tail of the distribution extends
     towards higher values, on the right side of the peak. The majority of data points
     are clustered at the lower end of the scale, indicating that while most values
     are relatively low, there are a few exceptionally high values. The ‘SalePrice’
     attribute in the Ames dataset exemplifies positive skewness, as most homes sell
     at lower prices, but a small number sell at significantly higher prices.'
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**正偏度**：当分布的尾部向较高值方向延伸，位于峰值的右侧时，就会发生正偏度。大多数数据点集中在量表的较低端，这表明虽然大多数值相对较低，但也有一些异常高的值。Ames
+    数据集中的‘SalePrice’属性展示了正偏度，因为大多数房屋的销售价格较低，但有少数房屋的销售价格显著较高。'
 - en: '**Negative Skewness**: Conversely, negative skewness happens when the tail
     of the distribution stretches towards lower values, on the left side of the peak.
     In this scenario, the data is concentrated towards the higher end of the scale,
@@ -81,26 +117,37 @@
     the Ames dataset is a perfect illustration of negative skewness, suggesting that
     while a majority of houses were built in more recent years, a smaller portion
     dates back to earlier times.'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**负偏度**：相反，负偏度发生在分布的尾部向较低值方向延伸，位于峰值的左侧。在这种情况下，数据集中在量表的较高端，较少的值向较低的数字延伸。Ames
+    数据集中的‘YearBuilt’特征是负偏度的一个完美示例，这表明尽管大多数房屋是在较近的年份建造的，但少部分房屋可以追溯到较早的时期。'
 - en: To better grasp these concepts, let’s visualize the skewness.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了更好地理解这些概念，让我们可视化偏度。
 - en: '[PRE0]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: For ‘SalePrice’, the graph shows a pronounced right-skewed distribution, highlighting
     the challenge of skewness in data analysis. Such distributions can complicate
     predictive modeling and obscure insights, making it difficult to draw accurate
     conclusions. In contrast, ‘YearBuilt’ demonstrates negative skewness, where the
     distribution reveals that newer homes predominate, with older homes forming the
     long tail to the left.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于‘SalePrice’，图表显示了明显的右偏分布，突显了数据分析中偏态的挑战。这种分布会使预测建模变得复杂，并掩盖见解，使得得出准确结论变得困难。相比之下，‘YearBuilt’表现出负偏态，其中分布显示较新的房屋占主导地位，而旧房屋则形成了向左延伸的长尾。
 - en: '[![](../Images/e4b33d6707b791f1d4d1d22078bb52c7.png)](https://machinelearningmastery.com/wp-content/uploads/2024/02/Figure_1-1.png)'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/e4b33d6707b791f1d4d1d22078bb52c7.png)](https://machinelearningmastery.com/wp-content/uploads/2024/02/Figure_1-1.png)'
 - en: Addressing skewness through data transformation is not merely a statistical
     adjustment; it is a crucial step toward uncovering precise, actionable insights.
     By applying transformations, you aim to mitigate the effects of skewness, facilitating
@@ -109,282 +156,427 @@
     prerequisites. It underscores your commitment to improving the clarity and utility
     of your data, setting the stage for insightful, impactful findings in your subsequent
     explorations of data transformation.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过数据变换来处理偏态不仅仅是统计调整；这是揭示精确、可操作见解的关键步骤。通过应用变换，你旨在减轻偏态的影响，促进更可靠和可解释的分析。这一规范化过程提升了你进行有意义数据科学的能力，不仅仅是满足统计要求。它强调了你改善数据清晰度和实用性的承诺，为你在随后的数据变换探索中提供了有洞察力和影响力的发现的基础。
 - en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，请参考我的书籍 [初学者的数据科学指南](https://machinelearning.samcart.com/products/beginners-guide-data-science/)。它提供了**自学教程**和**有效的代码**。'
 - en: Strategies for Taming Positive Skewness
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 驯服正偏态的策略
 - en: 'To combat positive skew, you can use five key transformations: Log, Square
     Root, Box-Cox, Yeo-Johnson, and Quantile Transformations. Each method aims to
     mitigate skewness, enhancing the data’s suitability for further analysis.'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了应对正偏态，你可以使用五种关键的变换方法：对数变换、平方根变换、Box-Cox 变换、Yeo-Johnson 变换和分位数变换。每种方法旨在减轻偏态，提高数据适合进一步分析的程度。
 - en: '**Log Transformation**'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '**对数变换**'
 - en: This method is particularly suited for right-skewed data, effectively minimizing
     large-scale differences by taking the natural log of all data points. This compression
     of the data range makes it more amenable for further statistical analysis.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种方法特别适合右偏的数据，通过对所有数据点取自然对数来有效地最小化大规模的差异。数据范围的压缩使其更适合进一步的统计分析。
 - en: '[PRE1]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'You can see that the skewness is reduced:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到偏态被减少了：
 - en: '[PRE2]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '**Square Root Transformation**'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '**平方根变换**'
 - en: A softer approach than the log transformation, ideal for moderately skewed data.
     By applying the square root to each data point, it reduces skewness and diminishes
     the impact of outliers, making the distribution more symmetric.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 比对数变换更为温和，适用于中度偏态的数据。通过对每个数据点应用平方根，它减少了偏态并减小了异常值的影响，使分布更为对称。
 - en: '[PRE3]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'This prints:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这会打印：
 - en: '[PRE4]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '**Box-Cox Transformation**'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Box-Cox 变换**'
 - en: Offers flexibility by optimizing the transformation parameter lambda (λ), applicable
     only to positive data. The Box-Cox method systematically finds the best power
     transformation to reduce skewness and stabilize variance, enhancing the data’s
     normality.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过优化变换参数 lambda (λ) 提供灵活性，仅适用于正数据。Box-Cox 方法系统地寻找最佳的幂变换，以减少偏态并稳定方差，增强数据的正态性。
 - en: '[PRE5]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'This is the best transformation so far because the skewness is very close to
     zero:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是目前最好的变换，因为偏态非常接近于零：
 - en: '[PRE6]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '**Yeo-Johnson Transformation**'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Yeo-Johnson 变换**'
 - en: The above transformations only work with positive data. Yeo-Johnson is similar
     to Box-Cox but adaptable to both positive and non-positive data. It modifies the
     data through an optimal transformation parameter. This adaptability allows it
     to manage skewness across a wider range of data values, improving its fit for
     statistical models.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述变换仅适用于正数据。Yeo-Johnson 变换类似于 Box-Cox，但适应于正数据和非正数据。它通过最佳变换参数修改数据。这种适应性使其能够管理更广泛的数据值范围内的偏态，提高其对统计模型的适用性。
 - en: '[PRE7]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Similar to Box-Cox, the skewness after transformation is very close to zero:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于 Box-Cox，变换后的偏态非常接近于零：
 - en: '[PRE8]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '**Quantile Transformation**'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '**分位数变换**'
 - en: Quantile transformation maps data to a specified distribution, such as normal,
     effectively addresses skewness by distributing the data points evenly across the
     chosen distribution. This transformation normalizes the shape of the data, focusing
     on making the distribution more uniform or Gaussian-like without assuming it will
     directly benefit linear models due to its non-linear nature and the challenge
     of reverting the data to its original form.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 分位数变换将数据映射到指定的分布，例如正态分布，通过将数据点均匀分布在所选分布中，有效地解决了偏态问题。这种变换规范化了数据的形状，专注于使分布更均匀或类似高斯分布，但由于其非线性特性和将数据恢复到原始形式的挑战，并不直接对线性模型有利。
 - en: '[PRE9]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Because this transformation fits the data into the Gaussian distribution by
     brute force, the skewness is closest to zero:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于这种变换通过强力调整数据以适应高斯分布，偏态接近于零：
 - en: '[PRE10]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: To illustrate the effects of these transformations, let’s take a look at the
     visual representation of the ‘SalePrice’ distribution before and after each method
     is applied.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了说明这些变换的效果，让我们看看在应用每种方法之前和之后的 ‘SalePrice’ 分布的视觉表现。
 - en: '[PRE11]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: The following visual provides a side-by-side comparison, helping you to understand
     better the influence of each transformation on the distribution of housing prices.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下视觉图提供了一个并排比较，帮助你更好地理解每种变换对房价分布的影响。
 - en: '[![](../Images/14c4064dce26f3699d47dc5fd573d1a1.png)](https://machinelearningmastery.com/wp-content/uploads/2024/02/Figure_2-2.png)'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/14c4064dce26f3699d47dc5fd573d1a1.png)](https://machinelearningmastery.com/wp-content/uploads/2024/02/Figure_2-2.png)'
 - en: Distribution of data after transformation
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 变换后的数据分布
 - en: This visual serves as a clear reference for how each transformation method alters
     the distribution of ‘SalePrice’, demonstrating the resulting effect towards achieving
     a more normal distribution.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个视觉图清晰地展示了每种变换方法如何改变 ‘SalePrice’ 的分布，展示了实现更正态分布的效果。
 - en: Strategies for Taming Negative Skewness
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 驯服负偏态的策略
 - en: 'To combat negative skew, you can use the five key transformations: Squared,
     Cubed, Box-Cox, Yeo-Johnson, and Quantile Transformations. Each method aims to
     mitigate skewness, enhancing the data’s suitability for further analysis.'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了应对负偏态，你可以使用五种关键的变换方法：平方、立方、Box-Cox、Yeo-Johnson 和分位数变换。每种方法都旨在减轻偏态，提高数据的进一步分析适用性。
 - en: '**Squared Transformation**'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '**平方变换**'
 - en: This involves taking each data point in the dataset and squaring it (i.e., raising
     it to the power of 2). The squared transformation is useful for reducing negative
     skewness because it tends to spread out the lower values more than the higher
     values. However, it’s more effective when **all data points are positive** and
     the degree of negative skewness is not extreme.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 这涉及对数据集中每个数据点进行平方（即，将其提高到 2 的幂）。平方变换有助于减少负偏态，因为它往往比高值扩展低值更多。然而，当**所有数据点都是正值**且负偏态程度不极端时，它更有效。
 - en: '[PRE12]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'It prints:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 它打印：
 - en: '[PRE13]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '**Cubed Transformation**'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '**立方变换**'
 - en: Similar to the squared transformation but involves raising each data point to
     the power of 3\. The cubed transformation can further reduce negative skewness,
     especially in cases where the squared transformation is insufficient. It’s **more
     aggressive** in spreading out values, which can benefit more negatively skewed
     distributions.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于平方变换，但涉及将每个数据点提高到 3 的幂。立方变换可以进一步减少负偏态，特别是在平方变换不足的情况下。它在扩展值方面**更为激进**，这对负偏态更严重的分布可能更有利。
 - en: '[PRE14]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'It prints:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 它打印：
 - en: '[PRE15]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '**Box-Cox Transformation**'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Box-Cox 变换**'
 - en: A more sophisticated method that finds the best lambda (λ) parameter to transform
     the data into a normal shape. The transformation is defined for positive data
     only. The Box-Cox transformation is highly effective for a wide range of distributions,
     including those with negative skewness, by making the data more symmetric. For
     negatively skewed data, a positive lambda is often found, applying a transformation
     that effectively reduces skewness.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 一种更复杂的方法，通过找到最佳的 lambda (λ) 参数，将数据转换为正态分布。该变换仅适用于正值数据。Box-Cox 变换对多种分布非常有效，包括那些有负偏态的分布，通过使数据更对称来改进效果。对于负偏态数据，通常会找到一个正的
+    lambda，从而应用一种有效减少偏态的变换。
 - en: '[PRE16]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'You can see the skewness is moved closer to zero than before:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到偏态比之前更接近于零：
 - en: '[PRE17]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: '**Yeo-Johnson Transformation**'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Yeo-Johnson 变换**'
 - en: Similar to the Box-Cox transformation, but the Yeo-Johnson is designed to handle
     both positive and negative data. For negatively skewed data, the Yeo-Johnson transformation
     can normalize distributions even when negative values are present. It adjusts
     the data in a way that reduces skewness, making it particularly versatile for
     datasets with a mix of positive and negative values.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 与Box-Cox变换类似，但Yeo-Johnson变换旨在处理正负数据。对于负偏斜的数据，Yeo-Johnson变换可以即使在存在负值的情况下也能对分布进行标准化。它以减少偏斜度的方式调整数据，使其对包含正负值的数据集特别适用。
 - en: '[PRE18]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'Similar to Box-Cox, you get a skewness moved closer to zero:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于Box-Cox，你可以看到偏斜度接近零：
 - en: '[PRE19]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: '**Quantile Transformation**'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '**分位数变换**'
 - en: This method transforms the features to follow a specified distribution, such
     as the normal distribution, based on their quantiles. It does not assume any specific
     distribution shape for the input data. When applied to negatively skewed data,
     the quantile transformation can effectively normalize the distribution. It’s particularly
     useful for dealing with outliers and making the distribution of the data uniform
     or normal, regardless of the original skewness.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种方法将特征转换为符合指定分布，如正态分布，基于其分位数。它不对输入数据假设任何特定的分布形状。应用于负偏斜数据时，分位数变换可以有效地标准化分布。它特别适用于处理异常值，并使数据的分布变得均匀或正态，无论原始的偏斜度如何。
 - en: '[PRE20]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'As you saw before in the case of positive skewness, quantile transformation
     provides the best result in the sense that the resulting skewness is closest to
     zero:'
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你之前在正偏斜的情况下看到的，分位数变换提供了最佳结果，因为最终的偏斜度最接近零：
 - en: '[PRE21]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: To illustrate the effects of these transformations, let’s take a look at the
     visual representation of the ‘YearBuilt’ distribution before and after each method
     is applied.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了说明这些变换的效果，让我们看一下“YearBuilt”分布在应用每种方法前后的可视化表示。
 - en: '[PRE22]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: The following visual provides a side-by-side comparison, helping us to better
     understand the influence of each transformation on this feature.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下可视化图提供了逐项比较，帮助我们更好地理解每种转换对该特征的影响。
 - en: '[![](../Images/a54d737f5189bc8c49a6c9baff1a3e69.png)](https://machinelearningmastery.com/wp-content/uploads/2024/02/Figure_3.png)'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/a54d737f5189bc8c49a6c9baff1a3e69.png)](https://machinelearningmastery.com/wp-content/uploads/2024/02/Figure_3.png)'
 - en: This visual provides a clear reference for how each transformation method alters
     the distribution of ‘YearBuilt’, demonstrating the resulting effect towards achieving
     a more normal distribution.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个可视化图清楚地展示了每种变换方法如何改变“YearBuilt”的分布，展示了其在实现更正常分布方面的效果。
 - en: Want to Get Started With Beginner's Guide to Data Science?
+  id: totrans-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习数据科学初学者指南吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件速成课程（附样本代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: Statistical Evaluation of Transformations
+  id: totrans-92
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 变换的统计评估
 - en: How do you know the transformed data matches the normal distribution?
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何知道变换后的数据是否符合正态分布？
 - en: The Kolmogorov-Smirnov (KS) test is a **non-parametric test** used to determine
     if a sample comes from a population with a specific distribution. Unlike parametric
     tests, which assume a specific distribution form for the data (usually normal
@@ -394,52 +586,74 @@
     KS test compares the cumulative distribution function (CDF) of the sample data
     against the CDF of a known distribution (in this case, the normal distribution),
     providing a test statistic that quantifies the distance between the two.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: Kolmogorov-Smirnov（KS）检验是一种**非参数检验**，用于确定样本是否来自具有特定分布的总体。与假设数据具有特定分布形式（通常为正态分布）的参数检验不同，非参数检验不做此类假设。这一特点使得它们在数据变换的背景下非常有用，因为它有助于评估转换后的数据集与正态分布的接近程度。KS检验将样本数据的累计分布函数（CDF）与已知分布（在这种情况下为正态分布）的CDF进行比较，提供一个检验统计量来量化两者之间的距离。
 - en: '**Null and Alternate Hypothesis:**'
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: '**原假设和备择假设：**'
 - en: '**Null Hypothesis ($H_0$):** The data follows the specified distribution (normal
     distribution, in this case).'
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**原假设 ($H_0$):** 数据符合指定的分布（在本例中为正态分布）。'
 - en: '**Alternate Hypothesis ($H_1$):** The data does not follow the specified distribution.'
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**备择假设 ($H_1$):** 数据不符合指定的分布。'
 - en: In this context, the KS test is used to evaluate the goodness-of-fit between
     the empirical distribution of the transformed data and the normal distribution.
     The test statistic is a measure of the largest discrepancy between the empirical
     (transformed data) and theoretical CDFs (normal distribution). A small test statistic
     suggests that the distributions are similar.
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此背景下，KS 检验用于评估变换数据的经验分布与正态分布之间的拟合优度。检验统计量是经验（变换数据）和理论累计分布函数（正态分布）之间最大差异的度量。小的检验统计量表明分布是相似的。
 - en: '[PRE23]'
+  id: totrans-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'The code above prints a table as follows:'
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码打印出的表格如下：
 - en: '[PRE24]'
+  id: totrans-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: You can see that the higher the KS statistic, the lower the p-value. Respectively,
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到，KS 统计量越高，p 值越低。
 - en: '**KS Statistic:** This represents the maximum difference between the empirical
     distribution function of the sample and the cumulative distribution function of
     the reference distribution. Smaller values indicate a closer fit to the normal
     distribution.'
+  id: totrans-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**KS 统计量：** 这是样本的经验分布函数与参考分布的累计分布函数之间的最大差异。较小的值表示与正态分布的拟合程度更高。'
 - en: '**P-Value:** Provides the probability of observing the test results under the
     null hypothesis. A low p-value (typically <0.05) rejects the null hypothesis,
     indicating the sample distribution significantly differs from the normal distribution.'
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**p 值：** 提供了在原假设下观察测试结果的概率。较低的 p 值（通常 <0.05）会拒绝原假设，表明样本分布与正态分布存在显著差异。'
 - en: The Quantile transformation of ‘SalePrice’ yielded the most promising results,
     with a KS statistic of 0.00719 and a p-value of 0.99924, indicating that after
     this transformation, the distribution closely aligns with the normal distribution.
@@ -447,8 +661,11 @@
     good fit. The p-value is significant because a higher p-value (close to 1) suggests
     that the null hypothesis (that the sample comes from a specified distribution)
     cannot be rejected, implying good normality.
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: “SalePrice”的 Quantile 变换产生了最有前途的结果，KS 统计量为 0.00719，p 值为 0.99924，表明经过这种变换后，分布与正态分布紧密对齐。这并不令人惊讶，因为
+    Quantile 变换设计用于产生良好的拟合。p 值显著，因为较高的 p 值（接近 1）表明无法拒绝原假设（样本来自指定的分布），这意味着正态性良好。
 - en: Other transformations like Log, Box-Cox, and Yeo-Johnson also improved the distribution
     of ‘SalePrice’ but to a lesser extent, as reflected by their lower p-values (ranging
     from 0.00014 to 0.00017), indicating less conformity to the normal distribution
@@ -460,53 +677,72 @@
     ‘YearBuilt’ showed a more favorable outcome with a KS statistic of 0.02243 and
     a p-value of 0.14717, suggesting a moderate improvement towards normality, although
     not as pronounced as the effect seen with ‘SalePrice’.
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于 Log、Box-Cox 和 Yeo-Johnson 的其他变换也改善了“SalePrice”的分布，但效果较小，这从它们较低的 p 值（范围从
+    0.00014 到 0.00017）中可以看出，这表明与 Quantile 变换相比，符合正态分布的程度较低。应用于“YearBuilt”的变换在实现正态性方面的效果普遍不如“SalePrice”。BoxCox
+    和 YeoJohnson 变换在 KS 统计量和 p 值稍微低于平方和立方变换，虽然仍然显示出明显的偏离正态性的情况。对于“YearBuilt”的 Quantile
+    变换表现出更有利的结果，KS 统计量为 0.02243，p 值为 0.14717，表明在正态性方面有中等程度的改善，但效果不如“SalePrice”明显。
 - en: Choosing the Right Transformation
+  id: totrans-107
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 选择正确的变换方法
 - en: 'Choosing the right transformation for addressing skewness in data is not a
     one-size-fits-all decision; it requires careful consideration of the context and
     characteristics of the data at hand. The importance of context in selecting the
     appropriate transformation method cannot be overstated. Here are key factors to
     consider:'
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 选择适合处理数据偏态的正确变换方法不是一种通用的决策；它需要仔细考虑具体情况和数据特征。选择合适变换方法时，背景的重要性不容低估。以下是需要考虑的关键因素：
 - en: '**Data Characteristics:** The nature of the data (e.g., the presence of zeros
     or negative values) can limit the applicability of certain transformations. For
     instance, log transformations cannot be directly applied to zero or negative values
     without adjustments.'
+  id: totrans-109
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**数据特征：** 数据的性质（例如，是否存在零或负值）可能限制某些变换的适用性。例如，对数变换不能直接应用于零或负值，需要进行调整。'
 - en: '**Degree of Skewness:** The extent of skewness in the data influences the choice
     of transformation. More severe skewness might require more potent transformations
     (e.g., Box-Cox or Yeo-Johnson) compared to milder skewness, which might be adequately
     addressed with log or square root transformations.'
+  id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**偏斜程度：** 数据的偏斜程度影响变换的选择。较严重的偏斜可能需要更强的变换（例如，Box-Cox 或 Yeo-Johnson），而较轻微的偏斜可能通过对数或平方根变换就能得到充分解决。'
 - en: '**Statistical Properties:** The transformation chosen should ideally improve
     the statistical properties of the dataset, such as normalizing the distribution
     and stabilizing variance, which are essential for many statistical tests and models.'
+  id: totrans-111
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**统计属性：** 选择的变换应 ideally 改善数据集的统计属性，例如规范化分布和稳定方差，这对于许多统计测试和模型是至关重要的。'
 - en: '**Interpretability:** The ease of interpreting results after transformation
     is crucial. Some transformations, like log or square root, allow for relatively
     straightforward interpretation, whereas others, like the quantile transformation,
     might complicate the original scale’s interpretation.'
+  id: totrans-112
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**可解释性：** 变换后结果的易解释性至关重要。某些变换，如对数变换或平方根变换，允许相对简单的解释，而其他变换，如分位数变换，可能会复杂化对原始尺度的解释。'
 - en: '**Objective of Analysis:** The ultimate goal of the analysis—whether it’s predictive
     modeling, hypothesis testing, or exploratory analysis—plays a critical role in
     selecting the transformation method. The transformation should align with the
     analytical techniques and models to be employed later.'
+  id: totrans-113
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**分析目标：** 分析的**最终目标**—无论是预测建模、假设检验还是探索性分析—在选择变换方法时起着关键作用。变换应与后续使用的分析技术和模型相一致。'
 - en: In summary, the choice of the right transformation depends on multiple factors,
     including, but not limited to, a solid understanding of the dataset, the specific
     goals of the analysis, and the practical implications for model interpretability
@@ -524,52 +760,79 @@
     is a priority. In most scenarios, the preference might lean towards transformations
     that balance normalization effectiveness with simplicity and reversibility, ensuring
     that the data remains as interpretable and manageable as possible.
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 总结来说，选择合适的变换依赖于多个因素，包括但不限于对数据集的深入理解、分析的具体目标以及对模型可解释性和性能的实际影响。没有一种方法是普遍优越的；每种方法都有其权衡和适用性，具体取决于手头的场景。需要特别注意的是，Quantile
+    Transformation，尽管通过视觉和统计测试被识别为在实现正态分布方面非常有效，但它并不像其他方法那样是线性变换。这意味着它可能会显著改变数据的结构，方式不易逆转，可能会使结果的解释和逆变换的应用变得复杂。因此，尽管在归一化方面效果显著，但在需要保持与原始数据尺度的联系或模型可解释性优先的情况下，使用时应谨慎。在大多数情况下，可能更倾向于选择在归一化效果与简洁性和可逆性之间取得平衡的变换，确保数据尽可能可解释和可管理。
 - en: '**Further****Reading**'
+  id: totrans-115
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: APIs
+  id: totrans-116
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: APIs
 - en: '[scipy.stats.boxcox](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.boxcox.html)
     API'
+  id: totrans-117
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scipy.stats.boxcox](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.boxcox.html)
+    API'
 - en: '[scipy.stats.yeojohnson](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.yeojohnson.html)
     API'
+  id: totrans-118
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scipy.stats.yeojohnson](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.yeojohnson.html)
+    API'
 - en: '[sklearn.preprocessing.Quantile Transformer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.QuantileTransformer.html)
     API'
+  id: totrans-119
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[sklearn.preprocessing.Quantile Transformer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.QuantileTransformer.html)
+    API'
 - en: '[scipy.stats.kstest](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html)
     API'
+  id: totrans-120
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scipy.stats.kstest](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html)
+    API'
 - en: '**Resources**'
+  id: totrans-121
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**资源**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-122
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-123
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据词典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-124
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this post, you’ve embarked on a detailed exploration of data transformations,
     focusing on their critical role in addressing skewed data within the field of
     data science. Through practical examples using the ‘SalePrice’ and ‘YearBuilt’
@@ -579,26 +842,38 @@
     necessity of selecting appropriate transformations based on data characteristics,
     the degree of skewness, statistical goals, interpretability, and the specific
     objectives of the analysis.
+  id: totrans-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你对数据变换进行了详细探讨，重点关注它们在数据科学领域处理偏斜数据中的关键作用。通过使用‘SalePrice’和‘YearBuilt’特征的Ames房屋数据集的实际示例，你展示了各种变换技术——对数变换、平方根变换、Box-Cox变换、Yeo-Johnson变换以及分位数变换——以及它们在数据分布标准化中的影响。你的分析强调了根据数据特征、偏斜程度、统计目标、可解释性和分析的具体目标选择适当变换的必要性。
 - en: 'Specifically, you learned:'
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The significance of data transformations and how they can handle skewed distributions.
+  id: totrans-127
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据变换的意义以及它们如何处理偏斜分布。
 - en: How to compare the effectiveness of different transformations through visual
     and statistical assessments.
+  id: totrans-128
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过视觉和统计评估来比较不同变换的效果。
 - en: The importance of evaluating data characteristics, the severity of skewness,
     and analytical objectives to choose the most suitable transformation technique.
+  id: totrans-129
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 评估数据特征、偏斜程度和分析目标，以选择最适合的变换技术的重要性。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 有任何问题吗？请在下面的评论中提问，我会尽力回答。

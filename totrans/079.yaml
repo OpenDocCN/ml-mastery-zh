@@ -1,103 +1,157 @@
 - en: Developing a Python Program Using Inspection Tools
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用检查工具开发 Python 程序
 - en: 原文：[https://machinelearningmastery.com/developing-a-python-program-using-inspection-tools/](https://machinelearningmastery.com/developing-a-python-program-using-inspection-tools/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/developing-a-python-program-using-inspection-tools/](https://machinelearningmastery.com/developing-a-python-program-using-inspection-tools/)
 - en: Python is an interpreting language. It means there is an interpreter to run
     our program, rather than compiling the code and running natively. In Python, a
     REPL (read-eval-print loop) can run commands line by line. Together with some
     inspection tools provided by Python, it helps to develop codes.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 是一种解释型语言。这意味着有一个解释器来运行我们的程序，而不是编译代码并直接运行。在 Python 中，REPL（读-评-打印循环）可以逐行运行命令。结合
+    Python 提供的一些检查工具，它有助于开发代码。
 - en: In the following, you will see how to make use of the Python interpreter to
     inspect an object and develop a program.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在接下来的内容中，你将看到如何利用 Python 解释器来检查一个对象并开发一个程序。
 - en: 'After finishing this tutorial, you will learn:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将学到：
 - en: How to work in the Python interpreter
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 Python 解释器中工作
 - en: How to use the inspection functions in Python
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 Python 中使用检查函数
 - en: How to develop a solution step by step with the help of inspection functions
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何借助检查函数一步一步开发解决方案
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**快速启动你的项目**，请参阅我新的书籍 [《机器学习的 Python》](https://machinelearningmastery.com/python-for-machine-learning/)，包括*逐步教程*和所有示例的*Python
+    源代码*文件。'
 - en: Let’s get started!![](../Images/6aa46dadfb52f5e53446d8edd5b2df2c.png)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！！[](../Images/6aa46dadfb52f5e53446d8edd5b2df2c.png)
 - en: Developing a Python Program Using Inspection Tools.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用检查工具开发 Python 程序。
 - en: Photo by [Tekton](https://unsplash.com/photos/kzlxOJwD6i8). Some rights reserved.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：[Tekton](https://unsplash.com/photos/kzlxOJwD6i8)。保留所有权利。
 - en: Tutorial Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is in four parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四部分；它们是：
 - en: PyTorch and TensorFlow
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PyTorch 和 TensorFlow
 - en: Looking for Clues
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 寻找线索
 - en: Learning from the Weights
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从权重中学习
 - en: Making a Copier
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 制作一个复制器
 - en: PyTorch and TensorFlow
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: PyTorch 和 TensorFlow
 - en: PyTorch and TensorFlow are the two biggest neural network libraries in Python.
     Their code is different, but the things they can do are similar.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch 和 TensorFlow 是 Python 中两个最大的神经网络库。它们的代码不同，但它们能做的事情类似。
 - en: 'Consider the classic MNIST handwritten digit recognition problem; you can build
     a LeNet-5 model to classify the digits as follows:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑经典的 MNIST 手写数字识别问题；你可以构建一个 LeNet-5 模型来对数字进行分类，如下所示：
 - en: '[PRE0]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'This is a simplified code that does not need any validation or testing. The
     counterpart in TensorFlow is the following:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个简化的代码，不需要任何验证或测试。TensorFlow 中对应的代码如下：
 - en: '[PRE1]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Running this program would give you the file `lenet5.pt` from the PyTorch code
     and `lenet5.h5` from the TensorFlow code.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行这个程序会生成 PyTorch 代码中的文件 `lenet5.pt` 和 TensorFlow 代码中的 `lenet5.h5` 文件。
 - en: Looking for Clues
+  id: totrans-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 寻找线索
 - en: If you understand what the above neural networks are doing, you should be able
     to tell that there is nothing but many multiply and add calculations in each layer.
     Mathematically, there is a matrix multiplication between the input and the **kernel**
@@ -105,312 +159,478 @@
     convolutional layers, there is the element-wise multiplication of the kernel to
     a portion of the input matrix before taking the sum of the result and adding the
     bias as one output element of the feature map.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你理解了上述神经网络的工作原理，你应该能判断出每一层中只有大量的乘法和加法计算。从数学上讲，在每个全连接层中，输入与**核**之间进行矩阵乘法，然后将**偏差**加到结果上。在卷积层中，将核与输入矩阵的一部分逐元素相乘，然后对结果求和，并将偏差作为特征图的一个输出元素。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始使用 Python 进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费 7 天邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并免费获取课程的 PDF 电子书版本。
 - en: While developing the same LeNet-5 model using two different frameworks, it should
     be possible to make them work identically if their weights are the same. How can
     you copy over the weight from one model to another, given their architectures
     are identical?
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 在使用两个不同框架开发相同的 LeNet-5 模型时，如果它们的权重相同，应该可以使它们的工作结果相同。鉴于它们的架构相同，你如何将一个模型的权重复制到另一个模型？
 - en: 'You can load the saved models as follows:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以按如下方式加载保存的模型：
 - en: '[PRE2]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'This probably does not tell you much. But if you run `python` in the command
     line without any parameters, you launch the REPL, in which you can type in the
     above code (you can leave the REPL with `quit()`):'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可能不会告诉你太多。但如果你在命令行中运行 `python` 而不带任何参数，你将启动 REPL，你可以在其中输入上述代码（你可以通过 `quit()`
+    退出 REPL）：
 - en: '[PRE3]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Nothing shall be printed in the above. But you can check the two models that
     were loaded using the `type()` built-in command:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述内容不会输出任何内容。但你可以使用 `type()` 内置命令检查加载的两个模型：
 - en: '[PRE4]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'So here you know they are neural network models from PyTorch and Keras, respectively.
     Since they are trained models, the weight must be stored inside. So how can you
     find the weights in these models? Since they are objects, the easiest way is to
     use `dir()` built-in function to inspect their members:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以这里你知道它们分别是来自 PyTorch 和 Keras 的神经网络模型。由于它们是训练好的模型，权重必须被存储在其中。那么如何找到这些模型中的权重呢？由于它们是对象，最简单的方法是使用
+    `dir()` 内置函数来检查它们的成员：
 - en: '[PRE5]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'There are a lot of members in each object. Some are attributes, and some are
     methods of the class. By convention, those that begin with an underscore are internal
     members that you are not supposed to access in normal circumstances. If you want
     to see more of each member, you can use the `getmembers()` function from the `inspect`
     module:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个对象中有很多成员。有些是属性，有些是类的方法。按照惯例，以下划线开头的成员是内部成员，正常情况下不应访问。如果你想查看更多的每个成员，你可以使用 `inspect`
+    模块中的 `getmembers()` 函数：
 - en: '[PRE6]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The output of the `getmembers()` function is a list of tuples, in which each
     tuple is the name of the member and the member itself. From the above, for example,
     you know that `__call__` is a “bound method,” i.e., a member method of a class.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '`getmembers()` 函数的输出是一个元组列表，其中每个元组包含成员的名称和成员本身。例如，从上述内容你可以知道 `__call__` 是一个“绑定方法”，即类的成员方法。'
 - en: 'By carefully looking at the members’ names, you can see that in the PyTorch
     model, the “state” should be your interest, while in the Keras model, you have
     some member with the name “weights.” To shortlist the names of them, you can do
     the following in the interpreter:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过仔细查看成员的名称，你可以看到在 PyTorch 模型中，“state” 应该是你的关注点，而在 Keras 模型中，你有一个名为 “weights”
+    的成员。要缩短它们的名称列表，你可以在解释器中执行以下操作：
 - en: '[PRE7]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'This might take some time in trial and error. But it’s not too difficult, and
     you may discover that you can see the weight with `state_dict` in the torch model:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可能需要一些时间来试错。但并不太难，你可能会发现可以通过 `state_dict` 在 PyTorch 模型中查看权重：
 - en: '[PRE8]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'For the TensorFlow/Keras model, you can find the weights with `get_weights()`:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 TensorFlow/Keras 模型，你可以通过 `get_weights()` 查找权重：
 - en: '[PRE9]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Here it is also with the attribute `weights`:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里也可以看到 `weights` 属性：
 - en: '[PRE10]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'Here,  you can observe the following: In the PyTorch model, the function `state_dict()`
     gives an `OrderedDict`, which is a dictionary with the key in a specified order.
     There are keys such as `0.weight`, and they are mapped to a tensor value. In the
     Keras model, the `get_weights()` function returns a list. Each element in the
     list is a NumPy array. The `weight` attribute also holds a list, but the elements
     are `tf.Variable` type.'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，你可以观察到以下内容：在 PyTorch 模型中，函数 `state_dict()` 返回一个 `OrderedDict`，这是一个按指定顺序排列的字典。键中有
+    `0.weight` 之类的键，它们映射到一个张量值。在 Keras 模型中，`get_weights()` 函数返回一个列表。列表中的每个元素都是一个 NumPy
+    数组。`weight` 属性也包含一个列表，但元素是 `tf.Variable` 类型。
 - en: 'You can know more by checking the shape of each tensor or array:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过检查每个张量或数组的形状来了解更多：
 - en: '[PRE11]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'While you do not see the name of the layers from the Keras model above, in
     fact, you can use similar reasoning to find the layers and get their name:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管你在上述 Keras 模型中看不到层的名称，实际上你可以使用类似的推理来查找层并获取它们的名称：
 - en: '[PRE12]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Learning from the Weights
+  id: totrans-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 从权重中学习
 - en: By comparing the result of `state_dict()` from the PyTorch model and that of
     `get_weights()` from the Keras model, you can see that they both contain 10 elements.
     From the shape of the PyTorch tensors and NumPy arrays, you can further notice
     that they are in similar shapes. This is probably because both frameworks recognize
     a model in the order from input to output. You can further confirm that from the
     key of the `state_dict()` output compared to the layer names from the Keras model.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过比较 PyTorch 模型的 `state_dict()` 结果和 Keras 模型的 `get_weights()` 结果，你可以看到它们都包含
+    10 个元素。通过 PyTorch 张量和 NumPy 数组的形状，你可以进一步注意到它们的形状相似。这可能是因为两个框架都按从输入到输出的顺序识别模型。你可以通过
+    `state_dict()` 输出的键与 Keras 模型的层名称进行进一步确认。
 - en: 'You can check how you can manipulate a PyTorch tensor by extracting one and
     inspecting:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过提取一个 PyTorch 张量并检查来查看如何操作它：
 - en: '[PRE13]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'From the output of `dir()` on a PyTorch tensor, you found a member named `numpy`,
     and by calling that function, it seems to convert a tensor into a NumPy array.
     You can be quite confident about that because you see the numbers match and the
     shape matches. In fact, you can be more confident by looking at the documentation:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 从 PyTorch 张量的 `dir()` 输出中，你发现了一个名为 `numpy` 的成员，通过调用这个函数，它似乎将张量转换为 NumPy 数组。你可以相当有信心，因为你看到数字匹配，形状也匹配。实际上，通过查看文档，你可以更有信心：
 - en: '[PRE14]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: The `help()` function will show you the docstring of a function, which usually
     is its documentation.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '`help()` 函数将显示函数的文档字符串，这通常是其文档。'
 - en: 'Since this is the kernel of the first convolution layer, by comparing the shape
     of this kernel to that of the Keras model, you can note their shapes are different:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于这是第一个卷积层的内核，通过将该内核的形状与 Keras 模型的形状进行比较，你会发现它们的形状不同：
 - en: '[PRE15]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Know that the input to the first layer is a 28×28×1 image array while the output
     is 6 feature maps. It is natural to correspond the 1 and 6 in the kernel shape
     to be the number of channels in the input and output. Also, from our understanding
     of the mechanism of a convolutional layer, the kernel should be a 5×5 matrix.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 知道第一个层的输入是一个 28×28×1 的图像数组，而输出是 6 个特征图。将内核形状中的 1 和 6 对应为输入和输出中的通道数是很自然的。此外，根据我们对卷积层机制的理解，内核应该是一个
+    5×5 的矩阵。
 - en: At this point, you probably guessed that in the PyTorch convolutional layer,
     the kernel is represented as (output × input × height × width), while in Keras,
     it is represented as (height × width × input × output).
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，你可能已经猜到在 PyTorch 卷积层中，内核表示为 (output × input × height × width)，而在 Keras 中，它表示为
+    (height × width × input × output)。
 - en: 'Similarly, you also see in the fully-connected layers that PyTorch presents
     the kernel as (output × input) while Keras is in (input × output):'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似地，你也看到在全连接层中，PyTorch 将内核表示为 (output × input)，而 Keras 中是 (input × output)：
 - en: '[PRE16]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'Matching the weights and tensors and showing their shapes side by side should
     make these clearer:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 匹配权重和张量并将它们的形状并排显示应该可以让这些更清楚：
 - en: '[PRE17]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'And we can also match the name of the Keras weights and PyTorch tensors:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以匹配 Keras 权重和 PyTorch 张量的名称：
 - en: '[PRE18]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: Making a Copier
+  id: totrans-72
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 制作一个复制器
 - en: 'Since you learned what the weights look like in each model, it doesn’t seem
     difficult to create a program to copy weights from one to another. The key is
     to answer:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 既然你已经了解了每个模型中的权重是什么样的，那么创建一个程序来将权重从一个模型复制到另一个模型似乎并不困难。关键是要回答：
 - en: How to set the weights in each model
+  id: totrans-74
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如何在每个模型中设置权重
 - en: What the weights are supposed to look like (shape and data type) in each model
+  id: totrans-75
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 每个模型中权重的形状和数据类型应该是什么样的
 - en: 'The first question can be answered from the previous inspection using the `dir()`
     built-in function. You saw the `load_state_dict` member in the PyTorch model,
     and it seems to be the tool. Similarly, in the Keras model, you saw a member named
     `set_weight` that is exactly the counterpart name for `get_weight`. You can further
     confirm it is the case by checking their documentation online or via the `help()`
     function:'
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个问题可以从之前使用 `dir()` 内置函数的检查中回答。你在 PyTorch 模型中看到了 `load_state_dict` 成员，它似乎是工具。同样，在
+    Keras 模型中，你看到了一个名为 `set_weight` 的成员，它正是 `get_weight` 的对应名称。你可以通过查看它们的文档或使用 `help()`
+    函数进一步确认这一点：
 - en: '[PRE19]'
+  id: totrans-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: You confirmed that these are both functions, and their documentation explained
     they are what you believed them to be. From the documentation, you further learned
     that the `load_state_dict()` function of the PyTorch model expects the argument
     to be the same format as that returned from the `state_dict()` function; the `set_weights()`
     function of the Keras model expects the same format as returned from the `get_weights()`
     function.
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 你确认这些都是函数，它们的文档解释了它们的功能。根据文档，你进一步了解到 PyTorch 模型的 `load_state_dict()` 函数期望参数与
+    `state_dict()` 函数返回的格式相同；Keras 模型的 `set_weights()` 函数期望的格式与 `get_weights()` 函数返回的格式相同。
 - en: Now you have finished your adventure with the Python REPL (you can enter `quit()`
     to leave).
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你已经完成了在 Python REPL 中的冒险（你可以输入 `quit()` 退出）。
 - en: 'By researching a bit on how to **reshape** the weights and **cast** from one
     data type to another, you come up with the following program:'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过研究如何 **重塑** 权重和 **转换** 数据类型，你得出了以下程序：
 - en: '[PRE20]'
+  id: totrans-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: And the other way around, copying weights from the PyTorch model to the Keras
     model can be done similarly,
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 反之，从 PyTorch 模型到 Keras 模型复制权重也可以类似地完成，
 - en: '[PRE21]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'Then, you can verify they work the same by passing a random array as input,
     in which you can expect the output tied out exactly:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，你可以通过传入一个随机数组来验证它们是否工作相同，你可以期待输出完全一致：
 - en: '[PRE22]'
+  id: totrans-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'In our case, the output is:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的例子中，输出是：
 - en: '[PRE23]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: This agrees with each other at sufficient precision. Note that your result may
     not be exactly the same due to the random nature of training. Also, due to the
     nature of floating point calculation, the PyTorch and TensorFlow/Keras model would
     not produce the exact same output even if the weights were the same.
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 这在足够的精度下彼此一致。请注意，由于训练的随机性，你的结果可能不会完全相同。此外，由于浮点计算的特性，即使权重相同，PyTorch 和 TensorFlow/Keras
+    模型也不会产生完全相同的输出。
 - en: However, the objective here is to show you how you can make use of Python’s
     inspection tools to understand something you didn’t know and develop a solution.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，目标是展示你如何利用 Python 的检查工具来理解你不熟悉的东西并开发解决方案。
 - en: Further Readings
+  id: totrans-90
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你希望深入了解。
 - en: Articles
+  id: totrans-92
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[inspect](https://docs.python.org/3/library/inspect.html) module in Python
     Standard Libraries'
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[inspect](https://docs.python.org/3/library/inspect.html) 模块在 Python 标准库中'
 - en: '[dir](https://docs.python.org/3/library/functions.html#dir) built-in function'
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[dir](https://docs.python.org/3/library/functions.html#dir) 内置函数'
 - en: '[What is a `state_dict` in PyTorch](https://pytorch.org/tutorials/recipes/recipes/what_is_state_dict.html)'
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[PyTorch 中的 `state_dict` 是什么](https://pytorch.org/tutorials/recipes/recipes/what_is_state_dict.html)'
 - en: '[TensorFlow `get_weights` method](https://www.tensorflow.org/api_docs/python/tf/keras/layers/Layer#get_weights)'
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[TensorFlow `get_weights` 方法](https://www.tensorflow.org/api_docs/python/tf/keras/layers/Layer#get_weights)'
 - en: Summary
+  id: totrans-97
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: In this tutorial, you learned how to work under the Python REPL and use the
     inspection functions to develop a solution. Specifically,
+  id: totrans-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何在 Python REPL 中工作并使用检查函数来开发解决方案。具体而言，
 - en: You learned how to use the inspection functions in REPL to learn the internal
     members of an object
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你学习了如何在 REPL 中使用检查函数来了解对象的内部成员
 - en: You learned how to use REPL to experiment with Python code
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你学习了如何使用 REPL 来实验 Python 代码
 - en: As a result, you developed a program converting between a PyTorch and a Keras
     model
+  id: totrans-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 结果是，你开发了一个将 PyTorch 和 Keras 模型转换的程序

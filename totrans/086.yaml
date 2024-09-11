@@ -1,11 +1,15 @@
 - en: Techniques to Write Better Python Code
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 编写更好 Python 代码的技术
 - en: 原文：[https://machinelearningmastery.com/techniques-to-write-better-python-code/](https://machinelearningmastery.com/techniques-to-write-better-python-code/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/techniques-to-write-better-python-code/](https://machinelearningmastery.com/techniques-to-write-better-python-code/)
 - en: We write a program to solve a problem or make a tool that we can repeatedly
     solve a similar problem. For the latter, it is inevitable that we come back to
     revisit the program we wrote, or someone else is reusing the program we write.
@@ -13,75 +17,112 @@
     time we wrote our program. After all, we still want our program to **work**. There
     are some techniques and mentalities we can use in writing our program to make
     our code more robust.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们编写程序是为了问题解决或者制作一个可以重复解决类似问题的工具。对于后者，我们难免会再次回到之前编写的程序中，或者其他人会重用我们编写的程序。也有可能会遇到我们在编写程序时没有预见的数据。毕竟，我们仍然希望我们的程序能够**正常运行**。有一些技术和心态可以帮助我们编写更健壮的代码。
 - en: After finishing this tutorial, you will learn
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将学到
 - en: How to prepare your code for the unexpected situation
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为意外情况准备代码
 - en: How to give an appropriate signal for situations that your code cannot handle
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何为代码无法处理的情况提供适当的信号
 - en: What are the good practices to write a more robust program
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编写更健壮程序的最佳实践是什么
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的新书[《机器学习 Python 编程》](https://machinelearningmastery.com/python-for-machine-learning/)**来**快速启动你的项目**，书中包括*逐步教程*和所有示例的*Python
+    源代码*文件。'
 - en: Let’s get started!![](../Images/d62bb542e948384af4cdc4d5efc759e4.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！！[](../Images/d62bb542e948384af4cdc4d5efc759e4.png)
 - en: Techniques to Write Better Python Code
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 编写更好 Python 代码的技术
 - en: Photo by [Anna Shvets](https://www.pexels.com/photo/crop-woodworker-making-patterns-on-wooden-board-5711877/).
     Some rights reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Anna Shvets](https://www.pexels.com/photo/crop-woodworker-making-patterns-on-wooden-board-5711877/)提供。保留所有权利。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分，分别是：
 - en: Sanitation and assertive programming
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数据清理和自我检测编程
 - en: Guard rails and offensive programming
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 保护措施和防御性编程
 - en: Good practices to avoid bugs
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 避免错误的最佳实践
 - en: Sanitation and Assertive Programming
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数据清理和自我检测编程
 - en: 'When we write a function in Python, we usually take in some argument and return
     some value. After all, this is what a function supposed to be. As Python is a
     duck-typing language, it is easy to see a function accepting numbers to be called
     with strings. For example:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们在 Python 中编写一个函数时，我们通常会接收一些参数并返回一些值。毕竟，这就是函数的本质。由于 Python 是一种鸭子类型语言，很容易看到一个接受数字的函数被字符串调用。例如：
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This code works perfectly fine, as the `+` operator in Python strings means
     concatenation. Hence there is no syntax error; it’s just not what we intended
     to do with the function.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码完全正常，因为 Python 字符串中的 `+` 运算符表示连接。因此没有语法错误；只是它不是我们想要的函数行为。
 - en: This should not be a big deal, but if the function is lengthy, we shouldn’t
     learn there is something wrong only at a later stage. For example, our program
     failed and terminated because of a mistake like this only after spending hours
@@ -89,85 +130,121 @@
     would be better if we could proactively verify what we assumed. It is also a good
     practice to help us communicate to other people who read our code what we expect
     in the code.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这本不应该是个大问题，但如果函数较长，我们不应该只在后期才发现有问题。例如，我们的程序因为这样一个错误而失败和终止，这只发生在训练机器学习模型和浪费了几个小时的等待之后。如果我们能主动验证我们所假设的情况，那将会更好。这也是一个很好的实践，有助于我们向阅读我们代码的其他人传达我们在代码中期望的内容。
 - en: 'One common thing a fairly long code would do is to **sanitize the input**.
     For example, we may rewrite our function above as the following:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个常见的做法是**清理输入**。例如，我们可以将上面的函数重写如下：
 - en: '[PRE1]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Or, better, convert the input into a floating point whenever it is possible:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者，更好的是，在可能的情况下将输入转换为浮点数：
 - en: '[PRE2]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The key here is to do some “sanitization” at the beginning of a function, so
     subsequently, we can assume the input is in a certain format. Not only do we have
     better confidence that our code works as expected, but it may also allow our main
     algorithm to be simpler because we ruled out some situations by sanitizing. To
     illustrate this idea, we can see how we can reimplement the built-in `range()` function:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的关键是在函数开始时进行一些“清理”，这样后续我们可以假设输入是某种格式。这样不仅可以更有信心地认为我们的代码按预期工作，而且可能使我们的主要算法更简单，因为我们通过清理排除了某些情况。为了说明这个想法，我们可以看看如何重新实现内置的`range()`函数：
 - en: '[PRE3]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This is a simplified version of `range()` that we can get from Python’s built-in
     library. But with the two `if` statements at the beginning of the function, we
     know there are always values for variables `a`, `b`, and `c`. Then, the `while` loop
     can be written as such. Otherwise, we have to consider three different cases that
     we call `range()`, namely, `range(10)`, `range(2,10)`, and `range(2,10,3)`, which
     will make our `while` loop more complicated and error-prone.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我们可以从 Python 的内置库中获取的`range()`的简化版本。但是，通过函数开始的两个`if`语句，我们知道变量`a`、`b`和`c`总是有值的。然后，`while`循环可以像这样编写。否则，我们必须考虑调用`range()`的三种不同情况，即`range(10)`、`range(2,10)`和`range(2,10,3)`，这会使我们的`while`循环变得更复杂且容易出错。
 - en: Another reason to sanitize the input is for **canonicalization**. This means
     we should make the input in a standardized format. For example, a URL should start
     with “http://,” and a file path should always be a full absolute path like `/etc/passwd` instead
     of something like `/tmp/../etc/././passwd`. Canonicalized input is easier to check
     for conformation (e.g., we know `/etc/passwd` contains sensitive system data,
     but we’re not so sure about `/tmp/../etc/././passwd`).
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 清理输入的另一个原因是为了**标准化**。这意味着我们应该将输入格式化为标准化格式。例如，URL 应以“http://”开头，而文件路径应始终是完整的绝对路径，如`/etc/passwd`，而不是像`/tmp/../etc/././passwd`这样的路径。标准化后的输入更容易检查其一致性（例如，我们知道`/etc/passwd`包含敏感的系统数据，但对`/tmp/../etc/././passwd`不太确定）。
 - en: You may wonder if it is necessary to make our code lengthier by adding these
     sanitations. Certainly, that is a balance you need to decide on. Usually, we do
     not do this on every function to save our effort as well as not to compromise
     the computation efficiency. We do this only where it can go wrong, namely, on
     the interface functions that we expose as API for other users or on the main function
     where we take the input from a user’s command line.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会想知道是否有必要通过添加这些清理操作来使代码变得更长。确实，这是一个你需要决定的平衡。通常，我们不会在每个函数上都这样做，以节省精力并且不影响计算效率。我们只在可能出错的地方这样做，即在我们作为
+    API 向其他用户公开的接口函数或在从用户命令行获取输入的主要函数中。
 - en: 'However, we want to point out that the following is a wrong but common way
     to do sanitation:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，我们要指出的是，以下是一种错误但常见的清理方式：
 - en: '[PRE4]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The `assert` statement in Python will raise the `AssertError` exception (with
     the optional message provided) if the first argument is not `True`. While there
     is not much practical difference between raising `AssertError` and raising `ValueError` on
     unexpected input, using `assert` is not recommended because we can “optimize out”
     our code by running with the `-O` option to the Python command, i.e.,
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 中的`assert`语句如果第一个参数不为`True`，将引发`AssertError`异常（如果提供了可选消息）。尽管引发`AssertError`与引发`ValueError`在处理意外输入时没有实际上的不同，但不推荐使用`assert`，因为我们可以通过使用`-O`选项运行
+    Python 命令来“优化”我们的代码，即，
 - en: '[PRE5]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: All `assert` in the code `script.py` will be ignored in this case. Therefore,
     if our intention is to stop the code from execution (including you want to catch
     the exception at a higher level), you should use `if` and explicitly raise an
     exception rather than use `assert`.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，代码`script.py`中的所有`assert`都将被忽略。因此，如果我们的意图是停止代码的执行（包括你想在更高层次捕获异常），你应该使用`if`并明确地引发异常，而不是使用`assert`。
 - en: The correct way of using `assert` is to help us debug while developing our code.
     For example,
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用`assert`的正确方式是帮助我们在开发代码时进行调试。例如，
 - en: '[PRE6]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: While we develop this function, we are not sure our algorithm is correct. There
     are many things to check, but here we want to be sure that if we extracted every
     even-indexed item from the input, it should be at least half the length of the
@@ -177,49 +254,73 @@
     as a different way of unit testing. But usually, we call it unit testing when
     we check our functions’ input and output conformant to what we expect. Using `assert` this
     way is to check the steps inside a function.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们开发这个函数时，我们不能确定算法是否正确。有许多事情需要检查，但在这里我们希望确保如果我们从输入中提取了每个偶数索引的项，它的长度应该至少是输入数组长度的一半。当我们尝试优化算法或修饰代码时，这个条件必须不会被破坏。我们在关键位置保留
+    `assert` 语句，以确保在修改后代码没有被破坏。你可以将这看作是另一种单元测试方法。但通常，当我们检查函数的输入和输出是否符合预期时，我们称之为单元测试。以这种方式使用
+    `assert` 是为了检查函数内部的步骤。
 - en: 'If we write a complex algorithm, it is helpful to add `assert` to check for **loop
     invariants**, namely, the conditions that a loop should uphold. Consider the following
     code of binary search in a sorted array:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们编写复杂的算法，添加 `assert` 来检查**循环不变量**是很有帮助的，即循环应该遵守的条件。考虑以下对排序数组进行二分查找的代码：
 - en: '[PRE7]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The last `assert` statement is to uphold our loop invariants. This is to make
     sure we didn’t make a mistake on the logic to update the start cursor `s` and
     end cursor `e` such that the midpoint `m` wouldn’t update in the next iteration.
     If we replaced `s = m+1` with `s = m` in the last `elif` branch and used the function
     on certain targets that do not exist in the array, the assert statement will warn
     us about this bug. That’s why this technique can help us write better code.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后的 `assert` 语句是为了维护我们的循环不变量。这是为了确保我们在更新起始游标 `s` 和结束游标 `e` 时没有逻辑错误，使得中点 `m`
+    在下一次迭代中不会更新。如果我们在最后的 `elif` 分支中将 `s = m+1` 替换为 `s = m` 并在数组中不存在的特定目标上使用该函数，断言语句将会警告我们这个错误。这就是为什么这种技术可以帮助我们编写更好的代码。
 - en: Guard Rails and Offensive Programming
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 保护机制与进攻性编程
 - en: It is amazing to see Python comes with a `NotImplementedError` exception built-in.
     This is useful for what we call  **offensive programming**.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 看到 Python 内置了一个 `NotImplementedError` 异常真是令人惊讶。这对于我们所说的**进攻性编程**非常有用。
 - en: 'While the input sanitation is to help align the input to a format that our
     code expects, sometimes it is not easy to sanitize everything or is inconvenient
     for our future development. One example is the following, in which we define a
     registering decorator and some functions:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然输入清理旨在将输入对齐到我们的代码期望的格式，有时候清理所有内容并不容易，或者对我们未来的开发不方便。以下是一个例子，其中我们定义了一个注册装饰器和一些函数：
 - en: '[PRE8]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'We raised `NotImplementedError` with a custom error message in our function `activate()`.
     Running this code will print you the result for the first two calls but fail on
     the third one as we haven’t defined the `tanh` function yet:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在函数 `activate()` 中引发了 `NotImplementedError` 并附带了自定义错误消息。运行这段代码将会打印前两个调用的结果，但在第三个调用时失败，因为我们还没有定义
+    `tanh` 函数：
 - en: '[PRE9]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: As you can imagine, we can raise `NotImplementedError` in places where the condition
     is not entirely invalid, but it’s just that we are not ready to handle those cases
     yet. This is useful when we gradually develop our program, which we implement
@@ -227,8 +328,10 @@
     in place will guarantee our half-baked code is never used in the way it is not
     supposed to. It is also a good practice to make our code harder to be misused,
     i.e., not to let variables go out of our intended range without notice.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你所想象的，我们可以在条件不是完全无效的地方引发 `NotImplementedError`，只是因为我们还没有准备好处理这些情况。当我们逐步开发程序时，这一点特别有用，我们可以一次实现一个案例，并在稍后处理一些边角情况。设置这些保护机制可以确保我们的半成品代码不会以不应该的方式被使用。这也是一种让代码更难被滥用的好做法，即不让变量在未被察觉的情况下超出我们的预期范围。
 - en: In fact, the exception handling system in Python is mature, and we should use
     it. When you never expect the input to be negative, raise a `ValueError` with
     an appropriate message. Similarly, when something unexpected happens, e.g., a
@@ -238,77 +341,109 @@
     raising exceptions is faster than using if-statements to check. That’s why in
     Python, we prefer “it’s easier to ask for forgiveness than permission” (EAFP)
     over “look before you leap” (LBYL).
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 事实上，Python中的异常处理系统非常成熟，我们应该使用它。当你从未预期输入为负值时，应引发一个带有适当消息的`ValueError`。类似地，当发生意外情况时，例如，你创建的临时文件在中途消失，引发一个`RuntimeError`。在这些情况下你的代码无论如何都无法正常工作，抛出适当的异常有助于未来的重用。从性能角度来看，你还会发现抛出异常比使用if语句检查要更快。这就是为什么在Python中，我们更倾向于使用“请宽恕而不是许可”（EAFP）而不是“跃前先看”（LBYL）。
 - en: The principle here is that you should never let the anomaly proceed silently
     as your algorithm will not behave correctly and sometimes have dangerous effects
     (e.g., deleting wrong files or creating cybersecurity issues).
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的原则是你绝不应让异常静默地进行，因为你的算法将无法正确运行，有时还会产生危险的效果（例如，删除错误的文件或产生网络安全问题）。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用Python进行机器学习？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费7天电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费PDF电子书版本。
 - en: Good Practices to Avoid Bugs
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 避免错误的良好实践
 - en: It is impossible to say that a piece of code we wrote has no bugs. It is as
     good as we tested it, but we don’t know what we don’t know. There are always potential
     ways to break the code unexpectedly. However, there are some practices that can
     promote good code with fewer bugs.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 无法说我们写的代码没有错误。它就像我们测试过的一样好，但我们不知道自己不知道什么。总有潜在的方式会意外地破坏代码。然而，有一些实践可以促进良好的代码并减少错误。
 - en: First is the use of the functional paradigm. While we know Python has constructs
     that allow us to write an algorithm in functional syntax, the principle behind
     functional programming is to make no side effect on function calls. We never mutate
     something, and we don’t use variables declared outside of the function. The “no
     side effect” principle is powerful in avoiding a lot of bugs since we can never
     mistakenly change something.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先是使用函数式编程范式。虽然我们知道Python有允许我们用函数式语法编写算法的构造，但函数式编程背后的原则是函数调用不产生副作用。我们从不改变任何东西，也不使用函数外部声明的变量。“无副作用”原则在避免大量错误方面非常强大，因为我们永远不会错误地改变任何东西。
 - en: 'When we write in Python, there are some common surprises that we find mutated
     a data structure unintentionally. Consider the following:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们在Python中编程时，经常会发现数据结构无意中被修改。考虑以下情况：
 - en: '[PRE10]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: It is trivial to see what this function does. However, when we call this function
     without any argument, the default is used and returned us `[1]`. When we call
     it again, a different default is used and returned us `[1,1]`. It is because the
     list `[]` we created at the function declaration as the default value for argument `a` is
     an initiated object. When we append a value to it, this object is mutated. The
     next time we call the function will see the mutated object.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个函数的作用很简单。然而，当我们在没有任何参数的情况下调用这个函数时，使用了默认值，并返回了`[1]`。当我们再次调用它时，使用了不同的默认值，返回了`[1,1]`。这是因为我们在函数声明时创建的列表`[]`作为参数`a`的默认值是一个初始化的对象。当我们向其中添加一个值时，这个对象会发生变化。下次调用函数时会看到这个变化后的对象。
 - en: Unless we explicitly want to do this (e.g., an in-place sort algorithm), we
     should not use the function arguments as variables but should use them as read-only.
     And in case it is appropriate, we should make a copy of it. For example,
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 除非我们明确想这样做（例如，原地排序算法），否则我们不应该将函数参数用作变量，而应将其作为只读使用。如果合适，我们应当对其进行复制。例如，
 - en: '[PRE11]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'This code intended to keep a log of what we did in the list `LOGS`, but it
     did not. While we work on the names “Alice,” “Bob,” and then “Charlie,” the three
     records in `LOGS` will all be “Charlie” because we keep the mutable dictionary
     object there. It should be corrected as follows:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码原本是为了记录我们在列表`LOGS`中所做的操作，但它并没有实现。当我们处理名字“Alice”、“Bob”以及“Charlie”时，`LOGS`中的三条记录都会是“Charlie”，因为我们在其中保留了可变的字典对象。应将其修改如下：
 - en: '[PRE12]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Then we will see the three distinct names in the log. In summary, we should
     be careful if the argument to our function is a mutable object.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们将在日志中看到三个不同的名称。总的来说，如果我们函数的参数是一个可变对象，我们应该小心。
 - en: The other technique to avoid bugs is not to reinvent the wheel. In Python, we
     have a lot of nice containers and optimized operations. You should never try to
     create a stack data structure yourself since a list supports `append()` and `pop()`.
@@ -319,159 +454,232 @@
     same attitude applies to functions too. We have a JSON library, and we shouldn’t
     write our own. If we need some numerical algorithms, check if you can get one
     from NumPy.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 避免错误的另一种方法是不要重复造轮子。在Python中，我们有许多优秀的容器和优化过的操作。你不应该尝试自己创建一个栈数据结构，因为列表支持`append()`和`pop()`。你的实现不会更快。同样，如果你需要一个队列，我们在标准库的`collections`模块中有`deque`。Python没有平衡搜索树或链表，但字典是高度优化的，我们应该在可能的情况下使用字典。函数也是如此，我们有JSON库，不应自行编写。如果我们需要一些数值算法，可以检查一下NumPy是否有合适的实现。
 - en: 'Another way to avoid bugs is to use better logic. An algorithm with a lot of
     loops and branches would be hard to follow and may even confuse ourselves. It
     would be easier to spot errors if we could make our code clearer. For example,
     making a function that checks if the upper triangular part of a matrix contains
     any negative would be like this:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 避免错误的另一种方法是使用更好的逻辑。一个包含大量循环和分支的算法很难跟踪，甚至可能让我们自己感到困惑。如果我们能使代码更清晰，就更容易发现错误。例如，创建一个检查矩阵上三角部分是否包含负数的函数，可以这样做：
 - en: '[PRE13]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'But we also use a Python generator to break this into two functions:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 但我们也使用Python生成器将其拆分成两个函数：
 - en: '[PRE14]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: We wrote a few more lines of code, but we kept each function focused on one
     topic. If the function is more complicated, separating the nested loop into generators
     may help us make the code more maintainable.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们多写了几行代码，但保持了每个函数专注于一个主题。如果函数更复杂，将嵌套循环拆分成生成器可能有助于使代码更易于维护。
 - en: 'Let’s consider another example: We want to write a function to check if an
     input string looks like a valid floating point or integer. We require the string
     to be “`0.12`” and not accept “`.12`“. We need integers to be like “`12`” but
     not “`12.`“. We also do not accept scientific notations like “`1.2e-1`” or thousand
     separators like “`1,234.56`“. To make things simpler, we also do not consider
     signs such as “`+1.23`” or “`-1.23`“.'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们考虑另一个例子：我们想编写一个函数来检查输入字符串是否看起来像一个有效的浮点数或整数。我们要求字符串是“`0.12`”，而不接受“`.12`”。我们需要整数像“`12`”，而不是“`12.`”。我们也不接受科学记数法，比如“`1.2e-1`”或千位分隔符，如“`1,234.56`”。为了简化，我们也不考虑符号，比如“`+1.23`”或“`-1.23`”。
 - en: 'We can write a function to scan the string from the first character to the
     last and remember what we saw so far. Then check whether what we saw matched our
     expectation. The code is as follows:'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以编写一个函数，从第一个字符扫描到最后一个字符，并记住到目前为止看到的内容。然后检查我们看到的内容是否符合预期。代码如下：
 - en: '[PRE15]'
+  id: totrans-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'The function `isfloat()` above is messy with a lot of nested branches inside
     the for-loop. Even after the for-loop, the logic is not entirely clear for how
     we determine the Boolean value. Indeed we can use a different way to write our
     code to make it less error-prone, such as using a state machine model:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的函数`isfloat()`在for循环内部有许多嵌套分支，显得很杂乱。即使在for循环之后，逻辑也不完全清晰如何确定布尔值。实际上，我们可以用不同的方法来编写代码，以减少错误的可能性，比如使用状态机模型：
 - en: '[PRE16]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Visually, we implement the diagram below into code. We maintain a state variable
     until we finish scanning the input string. The state will decide to accept a character
     in the input and move to another state or reject the character and terminate.
     This function returns True only if it stops at the acceptable states, namely,
     “integer” or “decimal.” This code is easier to understand and more structured.
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 从视觉上，我们将下面的图示转化为代码。我们维护一个状态变量，直到扫描完输入字符串。状态将决定接受输入中的一个字符并移动到另一个状态，还是拒绝字符并终止。该函数只有在停留在可接受状态，即“整数”或“小数”，时才返回True。这段代码更容易理解且结构更清晰。
 - en: '![](../Images/422b81bc004d88bc9ce584b2ea2eb512.png)'
+  id: totrans-76
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/422b81bc004d88bc9ce584b2ea2eb512.png)'
 - en: In fact, the better approach is to use a regular expression to match the input
     string, namely,
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，更好的方法是使用正则表达式来匹配输入字符串，即，
 - en: '[PRE17]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: However, a regular expression matcher is also running a state machine under
     the hood.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，正则表达式匹配器在背后也在运行一个状态机。
 - en: There is way more to explore on this topic. For example, how we can better segregate
     responsibilities of functions and objects to make our code more maintainable and
     easier to understand. Sometimes, using a different data structure can let us write
     simpler code, which helps make our code more robust. It is not a science, but
     almost always, bugs can be avoided if the code is simpler.
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个主题还有很多值得探索的内容。例如，我们如何更好地分离函数和对象的职责，以使代码更易于维护和理解。有时，使用不同的数据结构可以让我们编写更简单的代码，从而使代码更强健。这不是一种科学，但几乎总是，如果代码更简单，就能避免错误。
 - en: Finally, consider adopting a **coding style** for your project. Having a consistent
     way to write code is the first step in offloading some of your mental burdens
     later when you read what you have written. This also makes you spot mistakes easier.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，考虑为你的项目采用一种**编码风格**。保持一致的编码方式是你将来阅读自己编写代码时减少心理负担的第一步。这也使你更容易发现错误。
 - en: Further reading
+  id: totrans-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: Articles
+  id: totrans-84
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)'
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Google Python 风格指南](https://google.github.io/styleguide/pyguide.html)'
 - en: Books
+  id: totrans-86
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Building Secure Software](https://www.amazon.com/dp/0321425235/) by John Viega
     and Gary R. McGraw'
+  id: totrans-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[构建安全软件](https://www.amazon.com/dp/0321425235/) 由 John Viega 和 Gary R. McGraw
+    编著'
 - en: '[Building Secure and Reliable Systems](https://www.amazon.com/dp/1492083127/)
     by Heather Adkins et al'
+  id: totrans-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[构建安全可靠的系统](https://www.amazon.com/dp/1492083127/) 由 Heather Adkins 等人编著'
 - en: '[The Hitchhiker’s Guide to Python](https://www.amazon.com/dp/1491933178/) by
     Kenneth Reitz and Tanya Schlusser'
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 编程指南](https://www.amazon.com/dp/1491933178/) 由 Kenneth Reitz 和 Tanya
+    Schlusser 编著'
 - en: '[The Practice of Programming](https://www.amazon.com/dp/020161586X/) by Brian
     Kernighan and Rob Pike'
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[编程实践](https://www.amazon.com/dp/020161586X/) 由 Brian Kernighan 和 Rob Pike
+    编著'
 - en: '[Refactoring](https://www.amazon.com/dp/0134757599/), 2nd Edition, by Martin
     Fowler'
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[重构](https://www.amazon.com/dp/0134757599/)，第2版，由 Martin Fowler 编著'
 - en: Summary
+  id: totrans-92
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you have seen the high-level techniques to make your code
     better. It can be better prepared for a different situation, so it works more
     rigidly. It can also be easier to read, maintain, and extend, so it is fit for
     reuse in the future. Some techniques mentioned here are generic to other programming
     languages as well.
+  id: totrans-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你已经看到了提升代码质量的高级技巧。这些技巧可以让代码为不同的情况做好更好的准备，使其更为稳健。它们还可以使代码更易于阅读、维护和扩展，从而适合未来的重用。这里提到的一些技巧在其他编程语言中也很通用。
 - en: 'Specifically, you learned:'
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: Why we would like to sanitize our input, and how it can help make our program
     simpler
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么我们希望清理输入，以及这如何帮助简化程序
 - en: The correct way of using `assert` as a tool to help development
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`assert` 作为开发工具的正确使用方法'
 - en: How to use Python exceptions appropriately to give signals in unexpected situations
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何适当地使用 Python 异常来在意外情况下发出信号
 - en: The pitfall in Python programming in handling mutable objects
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 处理可变对象时 Python 编程中的陷阱

@@ -1,11 +1,15 @@
 - en: Data Visualization in Python with matplotlib, Seaborn, and Bokeh
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 matplotlib、Seaborn 和 Bokeh 在 Python 中进行数据可视化
 - en: 原文：[https://machinelearningmastery.com/data-visualization-in-python-with-matplotlib-seaborn-and-bokeh/](https://machinelearningmastery.com/data-visualization-in-python-with-matplotlib-seaborn-and-bokeh/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/data-visualization-in-python-with-matplotlib-seaborn-and-bokeh/](https://machinelearningmastery.com/data-visualization-in-python-with-matplotlib-seaborn-and-bokeh/)
 - en: Data visualization is an important aspect of all AI and machine learning applications.
     You can gain key insights into your data through different graphical representations.
     In this tutorial, we’ll talk about a few options for data visualization in Python.
@@ -13,150 +17,232 @@
     data manipulation. To illustrate various methods for creating different types
     of graphs, we’ll use Python’s graphing libraries, namely matplotlib, Seaborn,
     and Bokeh.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据可视化是所有 AI 和机器学习应用的重要方面。通过不同的图形表示，你可以获得数据的关键洞察。在本教程中，我们将讨论 Python 中的数据可视化几种选项。我们将使用
+    MNIST 数据集和 Tensorflow 库进行数据处理和操作。为了说明创建各种类型图表的方法，我们将使用 Python 的图形库，即 matplotlib、Seaborn
+    和 Bokeh。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: How to visualize images in matplotlib
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 matplotlib 中可视化图像
 - en: How to make scatter plots in matplotlib, Seaborn, and Bokeh
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 matplotlib、Seaborn 和 Bokeh 中制作散点图
 - en: How to make multiline plots in matplotlib, Seaborn, and Bokeh
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 matplotlib、Seaborn 和 Bokeh 中制作多线图
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，阅读我的新书 [《Python 机器学习》](https://machinelearningmastery.com/python-for-machine-learning/)，其中包括*逐步教程*和所有示例的*Python
+    源代码*文件。'
 - en: Let’s get started.[![Picture of Istanbul taken from airplane](../Images/88c24030d7a26d93073142de26a88852.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/IMG_0570-scaled.jpg)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。[![从飞机上拍摄的伊斯坦布尔的照片](../Images/88c24030d7a26d93073142de26a88852.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/IMG_0570-scaled.jpg)
 - en: Data Visualization in Python With matplotlib, Seaborn, and Bokeh
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 matplotlib、Seaborn 和 Bokeh 在 Python 中进行数据可视化
 - en: Photo by Mehreen Saeed, some rights reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 照片由 Mehreen Saeed 拍摄，部分权利保留。
 - en: Tutorial Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into seven parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为七个部分，它们是：
 - en: Preparation of scatter data
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 散点数据的准备
 - en: Figures in matplotlib
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: matplotlib 中的图形
 - en: Scatter plots in matplotlib and Seaborn
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: matplotlib 和 Seaborn 中的散点图
 - en: Scatter plots in Bokeh
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Bokeh 中的散点图
 - en: Preparation of line plot data
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 线图数据的准备
 - en: Line plots in matplotlib, Seaborn, and Bokeh
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 matplotlib、Seaborn 和 Bokeh 中绘制线图
 - en: More on visualization
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 更多关于可视化的内容
 - en: Preparation of Scatter Data
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 散点数据的准备
 - en: 'In this post, we will use matplotlib, Seaborn, and Bokeh. They are all external
     libraries that need to be installed. To install them using `pip`, run the following
     command:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我们将使用 matplotlib、Seaborn 和 Bokeh。它们都是需要安装的外部库。要使用 `pip` 安装它们，请运行以下命令：
 - en: '[PRE0]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'For demonstration purposes, we will also use the MNIST handwritten digits dataset.
     We will load it from TensorFlow and run the PCA algorithm on it. Hence we will
     also need to install TensorFlow and pandas:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了演示目的，我们还将使用 MNIST 手写数字数据集。我们将从 TensorFlow 中加载它，并对其运行 PCA 算法。因此，我们还需要安装 TensorFlow
+    和 pandas：
 - en: '[PRE1]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The code afterward will assume the following imports are executed:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后的代码将假设已执行以下导入：
 - en: '[PRE2]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: We load the MNIST dataset from the `keras.datasets` library. To keep things
     simple, we’ll retain only the subset of data containing the first three digits.
     We’ll also ignore the test set for now.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们从 `keras.datasets` 库中加载 MNIST 数据集。为了简化起见，我们将仅保留包含前三个数字的数据子集。我们现在还将忽略测试集。
 - en: '[PRE3]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Output
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出
 - en: '[PRE4]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-31
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始学习 Python 进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费 7 天电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费 PDF 电子书版本。
 - en: Figures in matplotlib
+  id: totrans-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: matplotlib 中的图形
 - en: Seaborn is indeed an add-on to matplotlib. Therefore, you need to understand
     how matplotlib handles plots even if using Seaborn.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: Seaborn 确实是 matplotlib 的一个附加库。因此，即使使用 Seaborn，你也需要了解 matplotlib 如何处理图表。
 - en: Matplotlib calls its canvas the figure. You can divide the figure into several
     sections called subplots, so you can put two visualizations side-by-side.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: Matplotlib 称其画布为图形。你可以将图形划分为几个称为子图的部分，以便将两个可视化并排放置。
 - en: 'For example, let’s visualize the first 16 images of our MNIST dataset using
     matplotlib. We’ll create 2 rows and 8 columns using the `subplots()` function.
     The `subplots()` function will create the **axes** objects for each unit. Then
     we will display each image on each axes object using the `imshow()` method. Finally,
     the figure will be shown using the `show()` function:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，让我们使用matplotlib可视化MNIST数据集的前16张图像。我们将使用`subplots()`函数创建2行8列的图像。`subplots()`函数将为每个单元创建**坐标轴**对象。然后，我们将使用`imshow()`方法在每个坐标轴对象上显示每张图像。最后，将使用`show()`函数显示图像：
 - en: '[PRE5]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '[![First 16 images of the training dataset displayed in 2 rows and 8 columns](../Images/2194463e522602d959517efc2e4ca8f8.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/output_8_0.png)'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![训练数据集前16张图像显示在2行8列中](../Images/2194463e522602d959517efc2e4ca8f8.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/output_8_0.png)'
 - en: First 16 images of the training dataset displayed in 2 rows and 8 columns
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练数据集的前16张图像显示在2行8列中
 - en: Here we can see a few properties of matplotlib. There is a default figure and
     default axes in matplotlib. There are a number of functions defined in matplotlib
     under the `pyplot` submodule for plotting on the default axes. If we want to plot
@@ -167,513 +253,777 @@
     Because of that, we can gradually fine-tune a lot of details in the figure. In
     the example above, we hid the “ticks” (i.e., the markers on the axes) by setting
     `xticks` and `yticks` to empty lists.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们可以看到matplotlib的一些特性。matplotlib有一个默认的图形和默认的坐标轴。matplotlib的`pyplot`子模块下定义了许多函数，用于在默认坐标轴上绘图。如果我们想在特定坐标轴上绘图，可以使用坐标轴对象下的绘图函数。操作图形是过程性的。这意味着matplotlib内部记住了一个数据结构，我们的操作会改变它。`show()`函数仅显示一系列操作的结果。因此，我们可以逐步调整图形中的许多细节。在上面的示例中，我们通过将`xticks`和`yticks`设置为空列表来隐藏了“刻度”（即坐标轴上的标记）。
 - en: Scatter Plots in matplotlib and Seaborn
+  id: totrans-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: matplotlib和Seaborn中的散点图
 - en: One common visualization we use in machine learning projects is the scatter
     plot.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 在机器学习项目中，我们常用的一种可视化方式是散点图。
 - en: For example, we apply PCA to the MNIST dataset and extract the first three components
     of each image. In the code below, we compute the eigenvectors and eigenvalues
     from the dataset, then project the data of each image along the direction of the
     eigenvectors and store the result in `x_pca`. For simplicity, we didn’t normalize
     the data to zero mean and unit variance before computing the eigenvectors. This
     omission does not affect our purpose of visualization.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，我们对MNIST数据集应用PCA，并提取每张图像的前三个成分。在下面的代码中，我们从数据集中计算特征向量和特征值，然后沿着特征向量的方向投影每张图像的数据，并将结果存储在`x_pca`中。为了简单起见，我们在计算特征向量之前没有将数据标准化为零均值和单位方差。这一省略不影响我们可视化的目的。
 - en: '[PRE6]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The eigenvalues printed are as follows:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 打印出的特征值如下：
 - en: '[PRE7]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The array `x_pca` is in the shape 18623 x 784\. Let’s consider the last two
     columns as the x- and y-coordinates and make the point of each row in the plot.
     We can further color the point according to which digit it corresponds to.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 数组`x_pca`的形状为18623 x 784。我们考虑最后两列作为x和y坐标，并在图中标出每一行的点。我们还可以根据每个点对应的数字进一步为其上色。
 - en: The following code generates a scatter plot using matplotlib. The plot is created
     using the axes object’s `scatter()` function, which takes the x- and y-coordinates
     as the first two arguments. The `c` argument to the `scatter()` method specifies
     a value that will become its color. The `s` argument specifies its size. The code
     also creates a legend and adds a title to the plot.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下代码使用matplotlib生成散点图。图是通过坐标轴对象的`scatter()`函数创建的，该函数将x和y坐标作为前两个参数。`scatter()`方法的`c`参数指定将成为其颜色的值。`s`参数指定其大小。代码还创建了一个图例，并为图形添加了标题。
 - en: '[PRE8]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '[![2D scatter plot generated using Matplotlib](../Images/839d5c2be51875def79983dd23937875.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/output_13_0.png)'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![使用Matplotlib生成的2D散点图](../Images/839d5c2be51875def79983dd23937875.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/output_13_0.png)'
 - en: 2D scatter plot generated using matplotlib
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用matplotlib生成的2D散点图
 - en: 'Putting the above altogether, the following is the complete code to generate
     the 2D scatter plot using matplotlib:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 将上述内容综合起来，以下是使用matplotlib生成2D散点图的完整代码：
 - en: '[PRE9]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Matplotlib also allows a 3D scatter plot to be produced. To do so, you need
     to create an axes object with 3D projection first. Then the 3D scatter plot is
     created with the `scatter3D()` function, with the x-, y-, and z-coordinates as
     the first three arguments. The code below uses the data projected along the eigenvectors
     corresponding to the three largest eigenvalues. Instead of creating a legend,
     this code creates a color bar:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: Matplotlib 还允许生成 3D 散点图。为此，首先需要创建一个具有 3D 投影的坐标轴对象。然后使用 `scatter3D()` 函数创建 3D
+    散点图，第一个三个参数为 x、y 和 z 坐标。下面的代码使用沿着与三个最大特征值对应的特征向量投影的数据。此代码创建了一个颜色条，而不是图例：
 - en: '[PRE10]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '[![3D scatter plot generated using Matplotlib](../Images/06c84632c960514059046c22d190f8a7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/output_15_0.png)'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![使用 Matplotlib 生成的 3D 散点图](../Images/06c84632c960514059046c22d190f8a7.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/output_15_0.png)'
 - en: 3D scatter plot generated using matplotlib
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 matplotlib 生成的 3D 散点图
 - en: 'The `scatter3D()` function just puts the points onto the 3D space. Afterward,
     we can still modify how the figure displays, such as the label of each axis and
     the background color. But in 3D plots, one common tweak is the **viewport**, namely,
     the angle we look at the 3D space. The viewport is controlled by the `view_init()`
     function in the axes object:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '`scatter3D()` 函数仅将点放置到 3D 空间中。之后，我们仍然可以修改图形的显示方式，例如每个坐标轴的标签和背景颜色。但在 3D 图形中，一个常见的调整是**视口**，即我们查看
+    3D 空间的角度。视口由坐标轴对象中的 `view_init()` 函数控制：'
 - en: '[PRE11]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: The viewport is controlled by the elevation angle (i.e., angle to the horizon
     plane) and the azimuthal angle (i.e., rotation on the horizon plane). By default,
     matplotlib uses 30-degree elevation and -60-degree azimuthal, as shown above.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 视口由仰角（即相对于水平面角度）和方位角（即水平面上的旋转）控制。默认情况下，matplotlib 使用 30 度的仰角和 -60 度的方位角，如上所示。
 - en: 'Putting everything together, the following is the complete code to create the
     3D scatter plot in matplotlib:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合所有内容，以下是使用 matplotlib 创建 3D 散点图的完整代码：
 - en: '[PRE12]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Creating scatter plots in Seaborn is similarly easy. The `scatterplot()` method
     automatically creates a legend and uses different symbols for different classes
     when plotting the points. By default, the plot is created on the “current axes”
     from matplotlib, unless the axes object is specified by the `ax` argument.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Seaborn 中创建散点图也很简单。`scatterplot()` 方法会自动创建图例，并在绘制点时对不同的类别使用不同的符号。默认情况下，图形会在
+    matplotlib 的“当前坐标轴”上创建，除非通过 `ax` 参数指定坐标轴对象。
 - en: '[PRE13]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '[![2D scatter plot generated using Seaborn](../Images/66304f59167ddf0225a2ed8b7c8c17be.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/output_17_0.png)'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![使用 Seaborn 生成的 2D 散点图](../Images/66304f59167ddf0225a2ed8b7c8c17be.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/output_17_0.png)'
 - en: 2D scatter plot generated using Seaborn
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Seaborn 生成的 2D 散点图
 - en: 'The benefit of Seaborn over matplotlib is twofold: First, we have a polished
     default style. For example, if we compare the point style in the two scatter plots
     above, the Seaborn one has a border around the dot to prevent the many points
     from being smudged together. Indeed, if we run the following line before calling
     any matplotlib functions:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: Seaborn 相对于 matplotlib 的好处有两点：首先，我们有一个精美的默认样式。例如，如果我们比较上述两个散点图的点样式，Seaborn 的点周围有边框，以防止许多点混在一起。实际上，如果我们在调用任何
+    matplotlib 函数之前运行以下代码：
 - en: '[PRE14]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'We can still use the matplotlib functions but get a better looking figure by
     using Seaborn’s style. Secondly, it is more convenient to use Seaborn if we are
     using a pandas DataFrame to hold our data. As an example, let’s convert our MNIST
     data from a tensor into a pandas DataFrame:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们仍然可以使用 matplotlib 函数，但通过使用 Seaborn 的样式可以得到更好的图形。其次，如果我们使用 pandas DataFrame
+    来保存数据，使用 Seaborn 会更方便。例如，让我们将 MNIST 数据从张量转换为 pandas DataFrame：
 - en: '[PRE15]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'Now, the DataFrame looks like the following:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，DataFrame 看起来如下：
 - en: '[PRE16]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'Then, we can reproduce the Seaborn’s scatter plot with the following:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以使用以下代码重现 Seaborn 的散点图：
 - en: '[PRE17]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: We do not pass in arrays as coordinates to the `scatterplot()` function but
     use column names for the `data` argument instead.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们不会将数组作为坐标传递给 `scatterplot()` 函数，而是使用 `data` 参数中的列名。
 - en: 'The following is the complete code to generate a scatter plot using Seaborn
     with the data stored in pandas:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是使用 Seaborn 生成散点图的完整代码，数据存储在 pandas 中：
 - en: '[PRE18]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: Seaborn, as a wrapper to some matplotlib functions, is not replacing matplotlib
     entirely. Plotting in 3D, for example, is not supported by Seaborn, and we still
     need to resort to matplotlib functions for such purposes.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: Seaborn作为一些matplotlib函数的封装，并没有完全取代matplotlib。例如，Seaborn不支持3D绘图，我们仍然需要使用matplotlib函数来实现这些目的。
 - en: Scatter Plots in Bokeh
+  id: totrans-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Bokeh中的散点图
 - en: The plots created by matplotlib and Seaborn are static images. If you need to
     zoom in, pan, or toggle the display of some part of the plot, you should use Bokeh
     instead.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: matplotlib和Seaborn创建的图表是静态图像。如果你需要放大、平移或切换图表的某部分显示，应该使用Bokeh。
 - en: Creating scatter plots in Bokeh is also easy. The following code generates a
     scatter plot and adds a legend. The `show()` method from the Bokeh library opens
     a new browser window to display the image. You can interact with the plot by scaling,
     zooming, scrolling, and more using options that are shown in the toolbar next
     to the rendered plot. You can also hide part of the scatter by clicking on the
     legend.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Bokeh中创建散点图也很简单。以下代码生成一个散点图并添加一个图例。Bokeh库中的`show()`方法会打开一个新浏览器窗口来显示图像。你可以通过缩放、缩放、滚动等方式与图表互动，使用渲染图旁边工具栏中显示的选项。你还可以通过点击图例来隐藏部分散点。
 - en: '[PRE19]'
+  id: totrans-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'Bokeh will produce the plot in HTML with Javascript. All your actions to control
     the plot are handled by some Javascript functions. Its output will look like the
     following:'
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: Bokeh将以HTML和JavaScript生成图表。你控制图表的所有操作都由一些JavaScript函数处理。其输出如下所示：
 - en: '[![2D scatter plot generated using Bokeh in a new browser window. Note the
     various options on the right for interacting with the plot.](../Images/11d472c349f69e4d8c964a242c6d6f5a.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/bokeh_scatter.png)'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![使用Bokeh在新浏览器窗口生成的2D散点图。注意右侧的各种选项，用于与图表互动。](../Images/11d472c349f69e4d8c964a242c6d6f5a.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/bokeh_scatter.png)'
 - en: 2D scatter plot generated using Bokeh in a new browser window. Note the various
     options on the right for interacting with the plot.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用Bokeh在新浏览器窗口生成的2D散点图。注意右侧的各种选项，用于与图表互动。
 - en: 'The following is the complete code to generate the above scatter plot using
     Bokeh:'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是使用Bokeh生成上述散点图的完整代码：
 - en: '[PRE20]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'If you are rendering the Bokeh plot in a Jupyter notebook, you may see the
     plot is produced in a new browser window. To put the plot in the Jupyter notebook,
     you need to tell Bokeh that you are under the notebook environment by running
     the following before the Bokeh functions:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你在Jupyter Notebook中渲染Bokeh图表，你可能会看到图表在新浏览器窗口中生成。要将图表放在Jupyter Notebook中，你需要在运行Bokeh函数之前，告诉Bokeh你在笔记本环境下，方法是运行以下代码：
 - en: '[PRE21]'
+  id: totrans-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: Also, note that we create the scatter plot of the three digits in a loop, one
     digit at a time. This is required to make the legend interactive since each time
     `scatter()` is called, a new object is created. If we create all scatter points
     at once, like the following, clicking on the legend will hide and show everything
     instead of only the points of one of the digits.
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，请注意我们在循环中创建三个数字的散点图，每次一个数字。这是为了使图例可互动，因为每次调用`scatter()`时都会创建一个新对象。如果我们一次性创建所有散点，如下所示，点击图例会隐藏和显示所有内容，而不是仅显示一个数字的点。
 - en: '[PRE22]'
+  id: totrans-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: Preparation of Line Plot Ddata
+  id: totrans-93
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备线图数据
 - en: Before we move on to show how we can visualize line plot data, let’s generate
     some data for illustration. Below is a simple classifier using the Keras library,
     which we train to learn the handwritten digit classification. The history object
     returned by the `fit()` method is a dictionary that contains all the learning
     history of the training stage. For simplicity, we’ll train the model using only
     10 epochs.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们继续展示如何可视化线图数据之前，让我们生成一些示例数据。下面是一个使用Keras库的简单分类器，我们训练它来学习手写数字分类。`fit()`方法返回的历史对象是一个包含训练阶段所有学习历史的字典。为了简化，我们将使用10个epochs来训练模型。
 - en: '[PRE23]'
+  id: totrans-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'The code above will produce a dictionary with keys `loss`, `accuracy`, `val_loss`,
     and `val_accuracy`, as follows:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码将生成一个包含`loss`、`accuracy`、`val_loss`和`val_accuracy`键的字典，如下所示：
 - en: Output
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出
 - en: '[PRE24]'
+  id: totrans-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: Line Plots in matplotlib, Seaborn, and Bokeh
+  id: totrans-99
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: matplotlib、Seaborn和Bokeh中的线图
 - en: Let’s look at various options for visualizing the learning history obtained
     from training our classifier.
+  id: totrans-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们来看看各种选项，用于可视化训练分类器获得的学习历史。
 - en: Creating a multi-line plot in matplotlib is as trivial as the following. We
     obtain the list of values of the training and validation accuracies from the history,
     and by default, matplotlib will consider that as sequential data (i.e., x-coordinates
     are integers counting from 0 onward).
+  id: totrans-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 matplotlib 中创建多线图就像下面这样简单。我们从历史记录中获取训练和验证准确性的值列表，默认情况下，matplotlib 会将其视为顺序数据（即
+    x 坐标是从 0 开始的整数）。
 - en: '[PRE25]'
+  id: totrans-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: '[![Multi-line plot using Matplotlib](../Images/fb7108a0260c5e4fee908d78671e8482.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/lineplot1.png)'
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![使用 Matplotlib 的多线图](../Images/fb7108a0260c5e4fee908d78671e8482.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/lineplot1.png)'
 - en: Multi-line plot using Matplotlib
+  id: totrans-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Matplotlib 的多线图
 - en: 'The complete code for creating the multi-line plot is as follows:'
+  id: totrans-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建多线图的完整代码如下：
 - en: '[PRE26]'
+  id: totrans-106
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'Similarly, we can do the same in Seaborn. As we have seen in the case of scatter
     plots, we can pass in the data to Seaborn as a series of values explicitly or
     through a pandas DataFrame. Let’s plot the training loss and validation loss in
     the following using a pandas DataFrame:'
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样，我们也可以在 Seaborn 中做同样的事情。正如我们在散点图的例子中看到的，我们可以将数据作为值序列明确传递给 Seaborn，或者通过 pandas
+    DataFrame 传递。让我们使用 pandas DataFrame 绘制训练损失和验证损失：
 - en: '[PRE27]'
+  id: totrans-108
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: 'It will print the following table, which is the DataFrame we created from the
     history:'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 它将打印以下表格，即我们从历史记录中创建的 DataFrame：
 - en: Output
+  id: totrans-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出
 - en: '[PRE28]'
+  id: totrans-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: 'And the plot it generated is as follows:'
+  id: totrans-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 它生成的图表如下：
 - en: '[![Multi-line plot using Seaborn](../Images/1a7c613acf8ce296c0d0fb4363c59f56.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/lineplot2.png)'
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![使用 Seaborn 的多线图](../Images/1a7c613acf8ce296c0d0fb4363c59f56.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/lineplot2.png)'
 - en: Multi-line plot using Seaborn
+  id: totrans-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Seaborn 的多线图
 - en: By default, Seaborn will understand the column labels from the DataFrame and
     use them as a legend. In the above, we provide a new label for each plot. Moreover,
     the x-axis of the line plot is taken from the index of the DataFrame by default,
     which is an integer running from 0 to 9 in our case, as we can see above.
+  id: totrans-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，Seaborn 会从 DataFrame 中理解列标签，并将其用作图例。在上面的例子中，我们为每个图提供了新的标签。此外，线图的 x 轴默认取自
+    DataFrame 的索引，在我们的例子中是从 0 到 9 的整数。
 - en: 'The complete code of producing the plot in Seaborn is as follows:'
+  id: totrans-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成 Seaborn 图表的完整代码如下：
 - en: '[PRE29]'
+  id: totrans-117
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: As you can expect, we can also provide arguments `x` and `y` together with `data`
     to our call to `lineplot()` as in our example of the Seaborn scatter plot above
     if we want to control the x- and y-coordinates precisely.
+  id: totrans-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你所预期的，如果我们想精确控制 x 和 y 坐标，我们还可以将参数 `x` 和 `y` 与 `data` 一起传递给 `lineplot()`，就像我们在上面的
+    Seaborn 散点图示例中一样。
 - en: Bokeh can also generate multi-line plots, as illustrated in the code below.
     As we saw in the scatter plot example, we need to provide the x- and y-coordinates
     explicitly and do one line at a time. Again, the `show()` method opens a new browser
     window to display the plot, and you can interact with it.
+  id: totrans-119
   prefs: []
   type: TYPE_NORMAL
+  zh: Bokeh 也可以生成多线图，如下代码所示。正如我们在散点图例子中看到的，我们需要明确提供 x 和 y 坐标，并且一次绘制一条线。同样，`show()`
+    方法会打开一个新的浏览器窗口来显示图表，你可以与之互动。
 - en: '[PRE30]'
+  id: totrans-120
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: '[![Multi-line plot using Bokeh. Note the options for user interaction shown
     on the toolbar on the right.](../Images/8444204aa3b5ebb1da14627fbf7c0780.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/lineplot3.png)'
+  id: totrans-121
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![使用 Bokeh 的多线图。注意右侧工具栏上的用户交互选项。](../Images/8444204aa3b5ebb1da14627fbf7c0780.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/lineplot3.png)'
 - en: Multi-line plot using Bokeh. Note the options for user interaction shown on
     the toolbar on the right.
+  id: totrans-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Bokeh 的多线图。注意右侧工具栏上的用户交互选项。
 - en: 'The complete code for making the Bokeh plot is as follows:'
+  id: totrans-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 制作 Bokeh 图表的完整代码如下：
 - en: '[PRE31]'
+  id: totrans-124
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: More on Visualization
+  id: totrans-125
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 更多可视化内容
 - en: Each of the tools we introduced above has a lot more functions for us to control
     the bits and pieces of the details in the visualization. It is important to search
     their respective documentation to find how you can polish your plots. It is equally
     important to check out the example code in their documentation to learn how you
     can possibly make your visualization better.
+  id: totrans-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们之前介绍的每一个工具都有更多功能，让我们控制可视化中的细节。重要的是查看它们各自的文档，以了解如何完善你的图表。同样重要的是查看文档中的示例代码，以学习如何使你的可视化更好。
 - en: 'Without providing too much detail, here are some ideas that you may want to
     add to your visualization:'
+  id: totrans-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 不提供过多细节，这里有一些你可能想要添加到可视化中的想法：
 - en: Add auxiliary lines, such as to mark the training and validation dataset on
     a time series data. The `axvline()` function from matplotlib can make a vertical
     line on plots for this purpose.
+  id: totrans-128
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 添加辅助线，例如在时间序列数据上标记训练集和验证集。matplotlib 的 `axvline()` 函数可以在图上画竖直线来实现这个目的。
 - en: Add annotations, such as arrows and text labels, to identify key points on the
     plot. See the `annotate()` function in matplotlib axes objects.
+  id: totrans-129
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 添加注释，例如箭头和文本标签，以识别图中的关键点。查看 matplotlib axes 对象中的 `annotate()` 函数。
 - en: Control the transparency level in case of overlapping graphic elements. All
     plotting functions we introduced above allow an `alpha` argument to provide a
     value between 0 and 1 for how much we can see through the graph.
+  id: totrans-130
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 控制透明度水平，以防止图形元素重叠。我们上面介绍的所有绘图函数都允许使用 `alpha` 参数，提供一个介于 0 和 1 之间的值，表示我们可以看到图形的透明程度。
 - en: If the data is better illustrated this way, we may show some of the axes in
     log scale. It is usually called the log plot or semilog plot.
+  id: totrans-131
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果数据以这种方式更好地呈现，我们可以在某些轴上显示对数刻度。通常称为对数图或半对数图。
 - en: 'Before we conclude this post, the following is an example to create a side-by-side
     visualization in matplotlib, where one of them is created using Seaborn:'
+  id: totrans-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们结束本文之前，以下是一个示例，展示了如何在 matplotlib 中创建并排可视化，其中一个使用了 Seaborn：
 - en: '[PRE32]'
+  id: totrans-133
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: '![](../Images/3bb3fd2a032ee31d47de2d67b0c35b6f.png)'
+  id: totrans-134
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/3bb3fd2a032ee31d47de2d67b0c35b6f.png)'
 - en: Side-by-side visualization created using matplotlib and Seaborn
+  id: totrans-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 matplotlib 和 Seaborn 创建的并排可视化
 - en: 'The equivalent in Bokeh is to create each subplot separately and then specify
     the layout when we show it:'
+  id: totrans-136
   prefs: []
   type: TYPE_NORMAL
+  zh: Bokeh 的等效方法是分别创建每个子图，然后在显示时指定布局：
 - en: '[PRE33]'
+  id: totrans-137
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: '![](../Images/1a58106cdf91b36d6e7e7ec780cba930.png)'
+  id: totrans-138
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/1a58106cdf91b36d6e7e7ec780cba930.png)'
 - en: Side-by-side plot created in Bokeh
+  id: totrans-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 侧边并排绘制在 Bokeh 中创建的图
 - en: Further Reading
+  id: totrans-140
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你希望更深入地了解这个主题，本节提供更多资源。
 - en: Books
+  id: totrans-142
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Think Python: How to Think Like a Computer Scientist](https://greenteapress.com/thinkpython/html/index.html)
     by Allen B. Downey'
+  id: totrans-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Think Python：如何像计算机科学家一样思考](https://greenteapress.com/thinkpython/html/index.html)，Allen
+    B. Downey 著'
 - en: '[Programming in Python 3: A Complete Introduction to the Python Language](https://www.amazon.com/dp/B001OFK2DK/)
     by Mark Summerfield'
+  id: totrans-144
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 3 编程：Python 语言完全介绍](https://www.amazon.com/dp/B001OFK2DK/)，Mark Summerfield
+    著'
 - en: '[Python Programming: An Introduction to Computer Science](https://www.amazon.com/dp/1590282418/)
     by John Zelle'
+  id: totrans-145
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 编程：计算机科学导论](https://www.amazon.com/dp/1590282418/)，John Zelle 著'
 - en: '[Python for Data Analysis](https://www.amazon.com/dp/1491957662), 2nd edition,
     by Wes McKinney'
+  id: totrans-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 数据分析](https://www.amazon.com/dp/1491957662)，第二版，Wes McKinney 著'
 - en: Articles
+  id: totrans-147
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 文章
 - en: '[A Gentle Introduction to Data Visualization Methods in Python](https://machinelearningmastery.com/data-visualization-methods-in-python/)'
+  id: totrans-148
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 中数据可视化方法的简明介绍](https://machinelearningmastery.com/data-visualization-methods-in-python/)'
 - en: '[How to use Seaborn Data Visualization for Machine Learning](https://machinelearningmastery.com/seaborn-data-visualization-for-machine-learning/)'
+  id: totrans-149
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[如何使用 Seaborn 数据可视化机器学习](https://machinelearningmastery.com/seaborn-data-visualization-for-machine-learning/)'
 - en: API Reference
+  id: totrans-150
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: API 参考
 - en: '[matplotlib.pyplot.scatter](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.scatter.html#matplotlib.pyplot.scatter)'
+  id: totrans-151
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[matplotlib.pyplot.scatter](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.scatter.html#matplotlib.pyplot.scatter)'
 - en: '[matplotlib.pyplot.plot](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html)'
+  id: totrans-152
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[matplotlib.pyplot.plot](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html)'
 - en: '[seaborn.scatterplot](https://seaborn.pydata.org/generated/seaborn.scatterplot.html)'
+  id: totrans-153
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[seaborn.scatterplot](https://seaborn.pydata.org/generated/seaborn.scatterplot.html)'
 - en: '[seaborn.lineplot](https://seaborn.pydata.org/generated/seaborn.lineplot.html)'
+  id: totrans-154
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[seaborn.lineplot](https://seaborn.pydata.org/generated/seaborn.lineplot.html)'
 - en: '[Bokeh plotting with basic glyphs](https://docs.bokeh.org/en/latest/docs/user_guide/plotting.html)'
+  id: totrans-155
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Bokeh 使用基本图元进行绘图](https://docs.bokeh.org/en/latest/docs/user_guide/plotting.html)'
 - en: '[Bokeh scatter plots](https://docs.bokeh.org/en/latest/docs/reference/plotting/figure.html#bokeh.plotting.Figure.scatter)'
+  id: totrans-156
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Bokeh 散点图](https://docs.bokeh.org/en/latest/docs/reference/plotting/figure.html#bokeh.plotting.Figure.scatter)'
 - en: '[Bokeh line charts](https://docs.bokeh.org/en/latest/docs/first_steps/first_steps_1.html)'
+  id: totrans-157
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Bokeh 折线图](https://docs.bokeh.org/en/latest/docs/first_steps/first_steps_1.html)'
 - en: Summary
+  id: totrans-158
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: In this tutorial, you discovered various options for data visualization in Python.
+  id: totrans-159
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个教程中，你将发现 Python 中数据可视化的各种选项。
 - en: 'Specifically, you learned:'
+  id: totrans-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学会了：
 - en: How to create subplots in different rows and columns
+  id: totrans-161
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在不同行和列创建子图
 - en: How to render images using matplotlib
+  id: totrans-162
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 matplotlib 渲染图像
 - en: How to generate 2D and 3D scatter plots using matplotlib
+  id: totrans-163
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 matplotlib 生成 2D 和 3D 散点图
 - en: How to create 2D plots using Seaborn and Bokeh
+  id: totrans-164
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 Seaborn 和 Bokeh 创建 2D 图
 - en: How to create multi-line plots using matplotlib, Seaborn, and Bokeh
+  id: totrans-165
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 matplotlib、Seaborn 和 Bokeh 创建多行图
 - en: Do you have any questions about the data visualization options discussed in
     this post? Ask your questions in the comments below, and I will do my best to
     answer.
+  id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本帖讨论的数据可视化选项，您是否有任何问题？请在下面的评论中提问，我将尽力回答。

@@ -1,225 +1,323 @@
 - en: 'Feature Relationships 101: Lessons from the Ames Housing Data'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 特征关系101：来自Ames Housing数据的教训
 - en: 原文：[https://machinelearningmastery.com/feature-relationships-101/](https://machinelearningmastery.com/feature-relationships-101/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/feature-relationships-101/](https://machinelearningmastery.com/feature-relationships-101/)
 - en: In the realm of real estate, understanding the intricacies of property features
     and their impact on sale prices is paramount. In this exploration, we’ll dive
     deep into the Ames Housing dataset, shedding light on the relationships between
     various features and their correlation with the sale price. Harnessing the power
     of data visualization, we’ll unveil patterns, trends, and insights that can guide
     stakeholders from homeowners to real estate developers.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在房地产领域，了解物业特征及其对销售价格的影响至关重要。在此探索中，我们将深入分析Ames Housing数据集，揭示各种特征之间的关系以及它们与销售价格的相关性。通过数据可视化的力量，我们将揭示模式、趋势和见解，以指导从房主到房地产开发商的利益相关者。
 - en: Let’s get started.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/9ff9df9b842e10d8c54dacf73e85ef53.png)'
+  id: totrans-4
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/9ff9df9b842e10d8c54dacf73e85ef53.png)'
 - en: 'Feature Relationships 101: Lessons from the Ames Housing Data'
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 特征关系101：来自Ames Housing数据的教训
 - en: Photo by [Andraz Lazic](https://unsplash.com/photos/white-feather-on-body-of-water-in-shallow-focus-64sgR8HV_68).
     Some rights reserved.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Andraz Lazic](https://unsplash.com/photos/white-feather-on-body-of-water-in-shallow-focus-64sgR8HV_68)
+    提供。部分权利保留。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into three parts; they are:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为三部分；它们是：
 - en: Unraveling Correlations
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 揭示相关性
 - en: Visualizing with Heatmaps
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过热图进行可视化
 - en: Dissecting Feature Relationships through Scatter Plots
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过散点图分析特征关系
 - en: Unraveling Correlations
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 揭示相关性
 - en: Correlation is a statistical measure that illustrates the extent to which two
     variables change together. A positive correlation indicates that as one variable
     increases, the other also tends to increase, and vice versa. Conversely, a negative
     correlation implies that as one variable increases, the other tends to decrease.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 相关性是一个统计度量，显示两个变量共同变化的程度。正相关表示一个变量增加时，另一个变量也倾向于增加，反之亦然。相反，负相关表示一个变量增加时，另一个变量倾向于减少。
 - en: '[PRE0]'
+  id: totrans-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'This prints:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印：
 - en: '[PRE1]'
+  id: totrans-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'From the Ames Housing dataset, the top features most correlated with housing
     prices are:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 从Ames Housing数据集中，与房价最相关的主要特征有：
 - en: '**OverallQual:** Overall Quality of the house, rated on a scale from 1 (Very
     Poor) to 10 (Very Excellent).'
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**OverallQual:** 房屋的总体质量，评分范围从1（非常差）到10（非常优秀）。'
 - en: '**GrLivArea:** Above Ground Living Area, measured in square feet. It encompasses
     the living area that is not in the basement.'
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**GrLivArea:** 地上生活面积，以平方英尺为单位。包括不在地下室中的生活区域。'
 - en: '**TotalBsmtSF:** Total Basement Area, represented in square feet. This combines
     both the finished and unfinished areas of the basement.'
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**TotalBsmtSF:** 总地下室面积，以平方英尺表示。这包括了地下室的完成和未完成区域。'
 - en: '**1stFlrSF:** First Floor Square Feet, indicating the size of the first floor
     of the house.'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**1stFlrSF:** 一楼平方英尺，表示房屋第一层的大小。'
 - en: '**GarageCars:** Size of Garage in terms of car capacity. This represents the
     number of cars that can fit into the garage.'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**GarageCars:** 车库容量。表示车库可以容纳的汽车数量。'
 - en: '**GarageArea:** Size of Garage, measured in square feet. It gives a sense of
     the total area covered by the garage.'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**GarageArea:** 车库面积，以平方英尺为单位。这显示了车库所覆盖的总面积。'
 - en: '**YearBuilt:** Original Construction Date, indicating the year when the primary
     construction of the house was completed.'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**YearBuilt:** 原始建设日期，指示房屋主要施工完成的年份。'
 - en: '**FullBath:** Full Bathrooms Above Grade. This counts the number of full bathrooms
     (i.e., with a sink, toilet, and either a tub or shower) that are not in the basement.'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**FullBath:** 地上完整浴室数量。计算不在地下室中的完整浴室数量（即有洗手池、马桶和浴缸或淋浴）。'
 - en: '**GarageYrBlt:** Year Garage was Built. This specifies the year the garage
     was constructed. For houses without a garage, this feature can be null.'
+  id: totrans-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**GarageYrBlt:** 车库建造年份。指定车库建造的年份。对于没有车库的房屋，此特征可能为空。'
 - en: '**YearRemodAdd:** Remodel Date. It indicates the year of remodeling or addition,
     with the same year as construction if no remodeling or additions.'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**YearRemodAdd:** 改造日期。指示改造或增加的年份，如果没有改造或增加，则与建设年份相同。'
 - en: Features most correlated are the features with best predictive power. If you
     build a model to predict housing prices, these are the subset of input features
     with a high possibility of success. Correlated features may also caused by some
     other common factor, which itself is a topic in data science that you would like
     to investigate and elaborate on.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 最相关的特征是具有最佳预测能力的特征。如果你建立一个预测房价的模型，这些特征是输入特征中成功可能性较高的子集。相关特征也可能是由某些共同因素引起的，这本身是数据科学中的一个主题，你可能会想要调查和详细阐述。
 - en: The code above prints `correlations[1:11]` because `correlations[0]` is the
     SalesPrice, which by definition is 1.0\. From a feature selection perspective,
     you should also check `correlations[-10:]` for the most negatively correlated
     features, which may also be powerful in explaining the prices. This is not the
     case in this particular dataset.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码打印了`correlations[1:11]`，因为`correlations[0]`是SalesPrice，按照定义其值为1.0。从特征选择的角度来看，你还应该检查`correlations[-10:]`，以了解最负相关的特征，这些特征可能在解释价格方面也很强大。然而，在这个特定的数据集中并非如此。
 - en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [《数据科学入门指南》](https://machinelearning.samcart.com/products/beginners-guide-data-science/)
+    **开启你的项目**。它提供了**自学教程**和**工作代码**。'
 - en: Visualizing with Heatmaps
+  id: totrans-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用热图进行可视化
 - en: Heatmaps provide a powerful visual tool to represent data in a two-dimensional
     space, with colors indicating magnitudes or frequencies. In the context of correlations,
     a heatmap can beautifully illustrate the strength and direction of relationships
     between multiple features. Let’s dive into a heatmap showcasing the correlations
     among the top features most correlated with *SalePrice*.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 热图提供了一种强大的可视化工具，用于在二维空间中表示数据，颜色指示了大小或频率。在相关性分析的背景下，热图可以生动地展示多个特征之间的关系强度和方向。让我们深入了解一张展示与*SalePrice*最相关的顶级特征的热图。
 - en: '[PRE2]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '[![](../Images/393837109cc95c56c2a476eb37077581.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/Figure_1.png)'
+  id: totrans-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '[![](../Images/393837109cc95c56c2a476eb37077581.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/Figure_1.png)'
 - en: Heatmaps are a fantastic way to visualize the strength and direction of relationships
     between multiple variables simultaneously. The color intensity in each cell of
     the heatmap corresponds to the magnitude of the correlation, with warmer colors
     representing positive correlations and cooler colors indicating negative correlations.
     There is no blue in the heatmap above because only the 10 most positively correlated
     columns are concerned.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 热图是同时可视化多个变量之间关系强度和方向的绝佳方式。热图中每个单元格的颜色强度对应于相关性的大小，暖色表示正相关，冷色表示负相关。由于上述热图仅涉及10个正相关性最高的列，因此没有蓝色。
 - en: 'In the heatmap above, we can observe the following:'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的热图中，我们可以观察到以下内容：
 - en: '**OverallQual**, representing the overall quality of the house, has the strongest
     positive correlation with **SalePrice**, with a correlation coefficient of approximately
     0.79\. This implies that as the quality of the house increases, the sale price
     also tends to increase.'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**OverallQual**，表示房屋的整体质量，与**SalePrice**的相关性最强，相关系数约为0.79。这意味着随着房屋质量的提高，销售价格也有上升的趋势。'
 - en: '**GrLivArea** and **TotalBsmtSF**, representing the above-ground living area
     and total basement area respectively, also show strong positive correlations with
     the sale price.'
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**GrLivArea**和**TotalBsmtSF**，分别表示地上生活面积和总地下室面积，也与销售价格显示出强烈的正相关。'
 - en: Most of the features have a positive correlation with **SalePrice**, which indicates
     that as these features increase or improve, the sale price of the house also tends
     to go up.
+  id: totrans-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 大多数特征与**SalePrice**呈正相关，这表明当这些特征增加或改善时，房屋的销售价格也有上升的趋势。
 - en: It’s worth noting some features are correlated with each other. For example,
     **GarageCars** and **GarageArea** are strongly correlated, which makes sense as
     a larger garage can accommodate more cars.
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 值得注意的是，有些特征彼此相关。例如，**GarageCars**和**GarageArea**之间的相关性很强，这很有意义，因为较大的车库可以容纳更多的汽车。
 - en: Such insights can be invaluable for various stakeholders in the real estate
     sector. For instance, real estate developers can focus on improving specific features
     in homes to increase their market value.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些见解对房地产领域的各类利益相关者来说非常宝贵。例如，房地产开发商可以集中精力提升房屋的特定特征，以提高其市场价值。
 - en: 'Below is the complete code:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是完整的代码：
 - en: '[PRE3]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Dissecting Feature Relationships through Scatter Plots
+  id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 通过散点图解剖特征关系
 - en: While correlations provide a preliminary understanding of relationships, it’s
     crucial to visualize these relationships further. Scatter plots, for instance,
     can paint a clearer picture of how two features interact with each other. Moreover,
     it’s essential to discern between correlation and causation. A high correlation
     does not necessarily imply that one variable causes changes in another. It merely
     indicates a relationship.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然相关性提供了对关系的初步理解，但进一步可视化这些关系至关重要。例如，散点图可以更清晰地描绘两个特征如何相互作用。此外，区分相关性和因果关系也很重要。高相关性并不一定意味着一个变量导致另一个变量的变化，它仅仅表示存在关系。
 - en: '[PRE4]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '[![](../Images/7a484df73acf6df72588dfdad9cd396d.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/Figure_2.png)'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/7a484df73acf6df72588dfdad9cd396d.png)](https://machinelearningmastery.com/wp-content/uploads/2023/12/Figure_2.png)'
 - en: 'The scatter plots emphasize the strong positive relationships between sale
     price and key features. As the overall quality, ground living area, basement area,
     and first floor area increase, houses generally fetch higher prices. However,
@@ -228,66 +326,98 @@
     Area” scatter plot above: At 2500 sq. ft. and above, the dots are dispersed, suggesting
     that there is a wide range in the house price in which the area is not strongly
     correlated or not effectively explained.'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 散点图强调了销售价格与关键特征之间的强正相关关系。随着整体质量、地面生活面积、地下室面积和一楼面积的增加，房屋通常会获得更高的价格。然而，一些例外和离群点表明其他因素也影响最终销售价格。一个特别的例子是上面的“房价与地面生活面积”散点图：在2500平方英尺及以上，点的分布较散，表明在这个面积范围内，房价的变化不与面积有强相关或无法有效解释。
 - en: Want to Get Started With Beginner's Guide to Data Science?
+  id: totrans-49
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想开始数据科学初学者指南吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即参加我的免费电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: '**Further****Reading**'
+  id: totrans-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，供你深入了解。
 - en: '**Resources**'
+  id: totrans-54
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**资源**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In exploring the Ames Housing dataset, we embarked on a journey to understand
     the relationships between various property features and their correlation with
     sale prices. Through heatmaps and scatter plots we unveiled patterns and insights
     that can significantly impact real estate stakeholders.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 在探索Ames Housing数据集时，我们踏上了了解各种属性特征与销售价格之间关系的旅程。通过热力图和散点图，我们揭示了对房地产利益相关者有重大影响的模式和见解。
 - en: 'Specifically, you learned:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体而言，你学到了：
 - en: The importance of correlation and its significance in understanding relationships
     between property features and sale prices.
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 相关性的重要性及其在理解属性特征与销售价格之间关系中的意义。
 - en: The utility of heatmaps in visually representing correlations among multiple
     features.
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 热力图在直观表示多个特征之间的相关性中的实用性。
 - en: The depth added by scatter plots, emphasizing the importance of dissecting individual
     feature dynamics beyond mere correlation coefficients.
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 散点图所增加的深度，强调了超越简单相关系数的个体特征动态分析的重要性。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？请在下面的评论中提问，我会尽力回答。

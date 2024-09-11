@@ -1,97 +1,141 @@
 - en: Building a Multiclass Classification Model in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在PyTorch中构建多类别分类模型
 - en: 原文：[https://machinelearningmastery.com/building-a-multiclass-classification-model-in-pytorch/](https://machinelearningmastery.com/building-a-multiclass-classification-model-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/building-a-multiclass-classification-model-in-pytorch/](https://machinelearningmastery.com/building-a-multiclass-classification-model-in-pytorch/)
 - en: The PyTorch library is for deep learning. Some applications of deep learning
     models are used to solve regression or classification problems. In this tutorial,
     you will discover how to use PyTorch to develop and evaluate neural network models
     for multi-class classification problems.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch库用于深度学习。一些深度学习模型的应用被用来解决回归或分类问题。在本教程中，你将发现如何使用PyTorch来开发和评估用于多类别分类问题的神经网络模型。
 - en: 'After completing this step-by-step tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本逐步教程后，你将知道：
 - en: How to load data from CSV and make it available to PyTorch
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从CSV文件加载数据并使其对PyTorch可用
 - en: How to prepare multi-class classification data for modeling with neural networks
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何准备多类别分类数据以用于神经网络建模
 - en: How to use cross validation to evaluate a PyTorch neural network model
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用交叉验证来评估PyTorch神经网络模型
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的书籍** [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)
+    **来启动你的项目**。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started.![](../Images/7f27a731fa367f18038cd54aa9457355.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 开始吧！[](../Images/7f27a731fa367f18038cd54aa9457355.png)
 - en: Building a multiclass classification model in PyTorch
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在PyTorch中构建多类别分类模型
 - en: Photo by [Cheung Yin](https://unsplash.com/photos/0BoRlSmNmc0). Some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Cheung Yin](https://unsplash.com/photos/0BoRlSmNmc0)提供。版权所有。
 - en: Problem Description
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 问题描述
 - en: In this tutorial, you will use a standard machine learning dataset called the
     iris flowers dataset. It is a well-studied dataset and good for practicing machine
     learning. It has four input variables; all are numeric and length measurements
     in centimeters. Therefore, they are on a similar scale. Each data sample describes
     the properties of an observed iris flower. Its goal is to use the measurements
     (input features) to classify the iris species (output label).
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将使用一个标准的机器学习数据集，称为鸢尾花数据集。它是一个经过充分研究的数据集，适合用于机器学习练习。它有四个输入变量；这些变量都是数值型的，单位为厘米长度。因此，它们在类似的尺度上。每个数据样本描述了一个观察到的鸢尾花的属性。目标是使用这些测量（输入特征）来分类鸢尾花的种类（输出标签）。
 - en: There are three iris species in the dataset. Therefore, it is a multi*class
     classification problem. Multi-class classification problems are special because
     they require special handling to specify a class.
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据集中有三种鸢尾花种类。因此，这是一个多*类别分类问题。多类别分类问题是特殊的，因为它们需要特殊处理来指定类别。
 - en: This dataset came from Sir Ronald Fisher, the father of modern statistics. It
     is the best-known dataset for pattern recognition, and you can achieve a model
     accuracy in the range of 95% to 97%. You can make this your target in developing
     the deep learning model.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个数据集来源于现代统计学之父罗纳德·费舍尔（Sir Ronald Fisher）。这是一个最著名的模式识别数据集，你可以在95%到97%的范围内达到模型准确率。你可以将这个作为开发深度学习模型的目标。
 - en: You can download the [iris flowers dataset](https://archive.ics.uci.edu/ml/datasets/iris)
     from the UCI Machine Learning repository and place it in your current working
     directory with the filename “`iris.csv`“. You can also download the dataset [here](https://raw.githubusercontent.com/jbrownlee/Datasets/master/iris.csv).
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以从UCI机器学习库下载[鸢尾花数据集](https://archive.ics.uci.edu/ml/datasets/iris)，并将其放在当前工作目录中，文件名为“`iris.csv`”。你也可以[在这里](https://raw.githubusercontent.com/jbrownlee/Datasets/master/iris.csv)下载数据集。
 - en: Load the Dataset
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 加载数据集
 - en: 'There are multiple ways to read a CSV file. The easiest way is probably to
     use a pandas library. After reading the dataset, you want to split it into features
     and labels as you need to further process the labels before use. Unlike NumPy
     or PyTorch tensors, a pandas DataFrame can do slicing by indices only through
     `iloc`:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 有多种方式来读取CSV文件。最简单的方法可能是使用pandas库。在读取数据集后，你需要将其拆分为特征和标签，因为在使用前你需要进一步处理标签。与NumPy或PyTorch张量不同，pandas
+    DataFrame只能通过`iloc`按索引切片：
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Now,  you have loaded the dataset and split the attributes (i.e., input features,
     columns in the DataFrame) as `X` and the output variables (i.e., species labels)
     as a single-column DataFrame `y`.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，你已经加载了数据集并将属性（即，输入特征，DataFrame中的列）分为`X`，将输出变量（即，种类标签）分为单列DataFrame `y`。
 - en: Encode the Categorical Variable
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 编码分类变量
 - en: 'The species labels are strings, but you want them in numbers. It is because
     numerical data are easier to use. In this dataset, the three class labels are
     `Iris-setosa`, `Iris-versicolor`, and `Iris-virginica`. One way to convert these
@@ -99,75 +143,109 @@
     such as 0, 1, or 2 to replace these labels. But there is a problem: You do not
     want the model to think that `Iris-virginica` it is the sum of `Iris-setosa` and
     `Iris-versicolor`. In fact, in statistics, there are levels of measurement:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 种类标签是字符串，但你希望将它们转换为数字。这是因为数值数据更容易使用。在这个数据集中，三个类别标签是`Iris-setosa`、`Iris-versicolor`和`Iris-virginica`。将这些标签转换为数字（即编码）的一种方法是简单地分配一个整数值，如0、1或2来替代这些标签。但存在一个问题：你不希望模型认为`Iris-virginica`是`Iris-setosa`和`Iris-versicolor`的总和。实际上，在统计学中，有不同的测量等级：
 - en: 'Nominal numbers: Those numbers are, in fact, names. Operations on them do not
     make sense'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 名义数：这些数字实际上是名字。对它们进行操作没有意义。
 - en: 'Ordinal numbers: They are orders of something. Comparing for greater or less
     than makes sense, but addition or subtraction does not'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 顺序数：它们表示某物的顺序。比较大小有意义，但加法或减法没有意义。
 - en: 'Interval numbers: They are measurements, such as the year today, so that subtraction
     bears meaning (e.g., how old are you), but the zero value is arbitrary and not
     special'
+  id: totrans-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 区间数：它们是测量值，如今天的年份，因此减法有意义（例如，你多大了），但零值是任意的，并没有特殊含义。
 - en: 'Ratio numbers: Like interval, but the zero is meaningful, such as the measure
     of length or time. In this case, both subtraction and division bear meaning, and
     you can say that something is twice as long.'
+  id: totrans-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 比率数：类似于区间数，但零是有意义的，如长度或时间的测量。在这种情况下，减法和除法都有意义，你可以说某物是两倍长。
 - en: 'The encoded label is nominal. You do not want to mistake it as interval or
     ratio data, but your model would not know. One way to avoid such a mistake is
     with **one-hot encoding**, which instead of converting a label into an integer,
     converts a label into a **one-hot vector**. A one-hot vector is a vector of integers,
     but only one of them is 1, and the rest are all zero. In this case, you convert
     the labels into the following:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 编码后的标签是名义性的。你不想将其误认为是区间或比率数据，但你的模型不会知道。避免这种错误的一种方法是使用**独热编码**，它将标签从整数转换为**独热向量**。独热向量是一个整数向量，但只有一个值为1，其余的都是零。在这种情况下，你将标签转换为如下：
 - en: '[PRE1]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The above is a one-hot encoded binary matrix. You don’t need to create it manually.
     You can encode the strings consistently to integers using the scikit-learn class
     `LabelEncoder` or into one-hot encoding vectors using the class `OneHotEncoder`:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面是一个独热编码的二进制矩阵。你不需要手动创建它。你可以使用scikit-learn的`LabelEncoder`类将字符串一致编码为整数，或使用`OneHotEncoder`类将其编码为独热向量：
 - en: '[PRE2]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'From these, you can see the `OneHotEncoder` learned the three categories:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 从这些，你可以看到`OneHotEncoder`学会了这三种类别：
 - en: '[PRE3]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Then the string labels are transformed into one-hot vectors like the following:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，字符串标签被转换为如下的独热向量：
 - en: '[PRE4]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-34
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用PyTorch进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就接受我的免费电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费PDF电子书版。
 - en: Define the Neural Network Model
+  id: totrans-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 定义神经网络模型
 - en: Now you need to have a model that can take the input and predict the output,
     ideally in the form of one-hot vectors. There is no science behind the design
     of a perfect neural network model. But know one thing–it has to take in a vector
@@ -175,41 +253,61 @@
     you have in the dataset. The 3-value output is because we know the one-hot vector
     has 3 elements. Anything can be in between, known as the “hidden layers,” since
     they are neither input nor output.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你需要一个模型，能够接收输入并预测输出，理想情况下是以独热编码向量的形式。设计一个完美的神经网络模型没有科学依据。但要知道一点——它必须接收一个4特征的向量，并输出一个3值的向量。4个特征对应于你在数据集中拥有的内容。3值输出是因为我们知道独热向量有3个元素。中间可以有任何东西，称为“隐藏层”，因为它们既不是输入也不是输出。
 - en: 'The simplest is to have only one hidden layer. Let’s make one like this:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 最简单的情况是只有一个隐藏层。我们可以这样构建一个：
 - en: '[PRE5]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Such a design is called the network topology. You should use a “softmax” activation
     at the output layer. In the formula, it means:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样的设计称为网络拓扑。你应该在输出层使用“softmax”激活函数。在公式中，这意味着：
 - en: $$
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: \sigma(z_i) = \dfrac{e^{z_i}}{\sum_{j=1}^3 e^{z_j}}
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: \sigma(z_i) = \dfrac{e^{z_i}}{\sum_{j=1}^3 e^{z_j}}
 - en: $$
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: This normalizes the values ($z_1,z_2,z_3$) and applies a non-linear function
     such that the sum of all 3 outputs will be 1, and each of them is in the range
     of 0 to 1\. This makes the output look like a vector of probabilities. The use
     of the softmax function at the output is the signature of a multi-class classification
     model. But in PyTorch, you can skip this if you combine it with an appropriate
     loss function.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将对值($z_1,z_2,z_3$)进行归一化，并应用非线性函数，使所有三个输出的总和为1，并且每个值都在0到1的范围内。这使得输出看起来像一个概率向量。在输出层使用softmax函数是多类分类模型的标志。但在PyTorch中，如果你将其与适当的损失函数结合使用，可以跳过这一过程。
 - en: 'In PyTorch, you can build such a model as follows:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 在PyTorch中，你可以按如下方式构建这样的模型：
 - en: '[PRE6]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The output of this model is the “weight” of the three classes. Ideally, the
     model output will be such that only one of the elements is positive infinity,
     and the rest are negative infinity, making an extreme contrast with absolute confidence
@@ -218,23 +316,33 @@
     is very positive, and the others are very negative. Or if you transform these
     values using a sigmoid function or softmax function, one is very close to 1, and
     the others are very close to 0.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 该模型的输出是三个类别的“权重”。理想情况下，模型输出将使得只有一个元素是正无穷大，其余的是负无穷大，从而对输入特征属于哪个类别形成极端对比。在不完美的情况下，正如常常发生的那样，你可以期望一个好的模型告诉你其中一个值非常大，而其他值非常小。或者如果你使用sigmoid函数或softmax函数转换这些值，一个非常接近1，其他的非常接近0。
 - en: 'In this case, the loss metric for the output can simply be measuring how close
     the output is to the one-hot vector you transformed from the label. But usually,
     in multi-class classification, you use categorical cross entropy as the loss metric.
     In the formula, it is:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，输出的损失度量可以简单地通过测量输出与从标签转换得到的one-hot向量的接近程度来计算。但通常在多类分类中，你使用分类交叉熵作为损失度量。在公式中，它是：
 - en: $$
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: H(p,q) = -\sum_x p(x) \log q(x)
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: H(p,q) = -\sum_x p(x) \log q(x)
 - en: $$
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: This means, given the real probability vector $p(x)$ and the predicted probability
     vector $q(x)$, the similarity is the sum of the product of $p(x)$ and $\log q(x)$
     for each element $x$. The one-hot vector is considered as the probability vector
@@ -243,40 +351,57 @@
     is essentially $-\log q(x)$ of the actual class $x$. The value will be 0 when
     $q(x)=1$, and as $q(x)$ approaches 0 (the minimum value softmax can produce),
     $-\log q(x)$ approaches infinity.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着，给定真实概率向量$p(x)$和预测概率向量$q(x)$，相似度是每个元素$x$的$p(x)$与$\log q(x)$的乘积之和。one-hot向量被视为概率向量$p(x)$，而模型输出是$q(x)$。由于它是one-hot向量，因此只有实际类别的$p(x)=1$，其他类别的$p(x)=0$。上面的总和本质上是实际类别$x$的$-\log
+    q(x)$。当$q(x)=1$时，值将为0，而当$q(x)$接近0（softmax能产生的最小值）时，$-\log q(x)$接近无穷大。
 - en: Below is how you can define the loss metric. The `CrossEntropyLoss` function
     in PyTorch combines the softmax function with the cross entropy calculation, so
     you don’t need any activation function at the output layer of your model. You
     also need an optimizer, and Adam is chosen below.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是如何定义损失度量的方法。PyTorch中的`CrossEntropyLoss`函数将softmax函数与交叉熵计算结合在一起，因此你不需要在模型的输出层使用任何激活函数。你还需要一个优化器，下面选择了Adam。
 - en: '[PRE7]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Note that when you define the optimizer, you need to tell it the model parameters
     as well since these are what the optimizer is going to update.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，当你定义优化器时，你还需要告诉它模型参数，因为这些是优化器将要更新的内容。
 - en: 'Now you need to run the training loop to train your model. Minimally, you need
     to put three steps in the loop: a forward pass, a backward pass, and the weight
     update. The forward pass provides the input to the model and takes the output.
     The backward pass starts with the loss metric, which is based on the model output,
     and propagates the gradient backto the input. The weight update is based on the
     gradient used to update the weights.'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你需要运行训练循环来训练你的模型。最基本的，你需要在循环中包含三个步骤：前向传播、反向传播和权重更新。前向传播将输入提供给模型并获得输出。反向传播从基于模型输出的损失指标开始，并将梯度传播回输入。权重更新则基于梯度来更新权重。
 - en: 'A minimal training loop can be implemented using a for-loop. But you can make
     use of `tqdm` to create a progress bar visualization:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 最简单的训练循环可以使用for循环实现。但你可以利用`tqdm`来创建进度条可视化：
 - en: '[PRE8]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Benchmark the Model
+  id: totrans-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 基准测试模型
 - en: The goal of a model is never to match the dataset per se. The reason you want
     to build a machine learning model is to prepare for the data you will encounter
     in the future, which is unseen yet. How can you know the model can do that? You
@@ -284,103 +409,151 @@
     training but is separate. So it is like unseen data from the training process,
     and you can take that as a benchmark. This technique of evaluating a model is
     called **cross validation**.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 模型的目标从来不是与数据集本身匹配。你希望构建机器学习模型的原因是为了准备未来你将遇到的数据，这些数据目前尚未见过。你怎么知道模型能做到这一点？你需要一个测试集。它是一个与训练时使用的数据集结构相同但分开的数据集。因此，它就像是训练过程中的未见数据，你可以将其作为基准。这种评估模型的技术被称为**交叉验证**。
 - en: 'Usually, you do not add a test set but split the data set you obtained into
     a training set and a test set. Then you use the test set to evaluate the model
     at the end. Such a benchmark serves another purpose: You do not want your model
     to overfit. It means the model learned too much about the training set and failed
     to generalize. If this happens, you will see that the model does not give a good
     result on the test set.'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，你不会添加测试集，而是将获得的数据集拆分为训练集和测试集。然后，你使用测试集在最后对模型进行评估。这样的基准测试还有另一个目的：你不希望你的模型过拟合。这意味着模型对训练集学习过多，未能进行泛化。如果发生这种情况，你会发现模型在测试集上表现不好。
 - en: 'Splitting the data into a training set and a test set can be easily done with
     scikit-learn. The workflow from loading data to one-hot encoding and splitting
     is as follows:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用scikit-learn可以轻松地将数据拆分为训练集和测试集。从加载数据到进行独热编码和拆分的工作流程如下：
 - en: '[PRE9]'
+  id: totrans-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: The arguments `train_size=0.7` with `shuffle=True` means to randomly select
     70% of the samples in the dataset into the training set, while the rest will become
     the test set.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 参数`train_size=0.7`和`shuffle=True`表示随机选择数据集中70%的样本用于训练集，而其余部分将成为测试集。
 - en: 'Once you do that, you need to modify the training loop to use the training
     set in training and use the test set at the end of each epoch for benchmarking:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦完成这一操作，你需要修改训练循环，以在训练中使用训练集，并在每个训练周期结束时使用测试集进行基准测试：
 - en: '[PRE10]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'That’s almost everything you need to finish a deep learning model in PyTorch.
     But you may also want to do a bit more: Firstly, after all the training epochs,
     you may want to roll back the model to the best you ever achieved rather than
     the last one. Secondly, you may want to produce a graph to visualize how the cross
     entropy and accuracy progressed.'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是你完成PyTorch深度学习模型所需的几乎所有内容。但你可能还想做更多的事情：首先，在所有训练周期结束后，你可能希望将模型回滚到你曾经达到的最佳状态，而不是最后的状态。其次，你可能希望生成一个图表，以可视化交叉熵和准确率的进展。
 - en: It is not difficult to do. In the training loop, you keep track of the accuracy
     on the test set and keep a copy of the model whenever this accuracy is higher.
     And at the same time, remember the metrics you calculated in a list. Then at the
     end of the training loop, you restore the best model you ever saw and plot the
     metrics as a time series.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这并不难做。在训练循环中，你需要跟踪测试集上的准确率，并在准确率更高时保留模型的副本。同时，记得将计算的指标保存在一个列表中。然后在训练循环结束时，你恢复你见过的最佳模型，并将指标绘制为时间序列图。
 - en: 'In code, this is how the training loop is modified into:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 在代码中，训练循环的修改如下：
 - en: '[PRE11]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'When you run it, you will see something like this, where you see the accuracy
     and cross entropy loss at each epoch:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你运行它时，你会看到类似于这样的信息，其中显示了每个周期的准确率和交叉熵损失：
 - en: '[PRE12]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: You added more lines into the training loop but for a good reason. It is a good
     practice to switch the model between training mode and evaluation mode when you
     are switching between the training set and test set. In this particular model,
     nothing is changed. But for some other models, it will affect the model’s behavior.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 你在训练循环中添加了更多的行，但这是有充分理由的。在你在训练集和测试集之间切换时，切换模型的训练模式和评估模式是一种好的实践。在这个特定的模型中，没有任何变化。但对于其他一些模型，这将影响模型的行为。
 - en: You collected metrics in Python lists. You need to be careful to convert the
     PyTorch tensor (even if it is a scalar value) into a Python float. The purpose
     of this conversion is to make a copy of the number so that PyTorch will not silently
     mutate it (e.g., through the optimizer).
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 你在 Python 列表中收集了度量指标。你需要小心将 PyTorch 张量（即使是标量值）转换为 Python 浮点数。这样做的目的是为了复制这个数字，以便
+    PyTorch 不会悄悄地更改它（例如，通过优化器）。
 - en: After each epoch, you calculated the accuracy based on the test set, and the
     model weight is stored if you saw the accuracy is higher. However, when you take
     out the model weight, you should make a deep copy; otherwise, you lost them when
     the model changes its weights in the next epoch.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个 epoch 之后，你根据测试集计算准确率，并在看到准确率更高时保存模型权重。然而，当你提取模型权重时，你应该进行深度复制；否则，当模型在下一个 epoch
+    中更改权重时，你将丢失它们。
 - en: 'Finally, you can plot the loss and accuracy across epochs using matplotlib
     as follows:'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，你可以使用 matplotlib 绘制每个 epoch 的损失和准确率，如下所示：
 - en: '[PRE13]'
+  id: totrans-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'A typical result is as follows:'
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个典型的结果如下：
 - en: '![](../Images/3f9137f3053ae2cbbad06f6de74e8052.png)'
+  id: totrans-80
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/3f9137f3053ae2cbbad06f6de74e8052.png)'
 - en: Training and validation loss
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练和验证损失
 - en: '![](../Images/c75fd53f20ed487f8a6818cc1080809b.png)'
+  id: totrans-82
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/c75fd53f20ed487f8a6818cc1080809b.png)'
 - en: Training and validation accuracy
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练和验证准确率
 - en: You can see from the graph that at the beginning, both training and test accuracy
     are very low. This is when your model is underfitting and is performing horribly.
     As you keep training the model, the accuracy increases, and the cross entropy
@@ -389,47 +562,71 @@
     accuracy flattened or even lowered. This is when the model overfitted, and you
     do not want to use such a model. That’s why you want to keep track of the test
     accuracy and restore the model weight to the best result based on the test set.
+  id: totrans-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 从图中可以看到，刚开始时，训练准确率和测试准确率都很低。这是因为你的模型出现了欠拟合，表现很差。随着你继续训练模型，准确率会提高，交叉熵损失会降低。但在某一点，训练准确率高于测试准确率，实际上，即使训练准确率提高，测试准确率也可能会平稳或下降。这是模型出现了过拟合，你不希望使用这样的模型。这就是为什么你要跟踪测试准确率，并根据测试集将模型权重恢复到最佳结果。
 - en: Complete Example
+  id: totrans-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 完整示例
 - en: 'Putting everything together, the following is the complete code:'
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容整合在一起，以下是完整代码：
 - en: '[PRE14]'
+  id: totrans-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Summary
+  id: totrans-88
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this post, you discovered how to develop and evaluate a neural network for
     multi-class classification using PyTorch.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你了解了如何使用 PyTorch 开发和评估用于多类分类的神经网络。
 - en: 'By completing this tutorial, you learned:'
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你学到了：
 - en: How to load data and convert them to PyTorch tensors
+  id: totrans-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何加载数据并将其转换为 PyTorch 张量
 - en: How to prepare multi-class classification data for modeling using one-hot encoding
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用独热编码准备多类分类数据以进行建模
 - en: How to define a deep learning model with PyTorch for multi-class classification
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 PyTorch 定义一个用于多类分类的深度学习模型
 - en: How to measure the likeness of model output to the expected result of a multi-class
     classification
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何衡量模型输出与多类分类预期结果的相似度
 - en: How to run a training loop on a PyTorch model and collect evaluation metrics
+  id: totrans-95
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 模型上运行训练循环并收集评估指标

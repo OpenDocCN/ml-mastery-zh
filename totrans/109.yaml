@@ -1,184 +1,284 @@
 - en: Understanding Traceback in Python
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 理解 Python 中的 Traceback
 - en: 原文：[https://machinelearningmastery.com/understanding-traceback-in-python/](https://machinelearningmastery.com/understanding-traceback-in-python/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/understanding-traceback-in-python/](https://machinelearningmastery.com/understanding-traceback-in-python/)
 - en: When an exception occurs in a Python program, often a traceback will be printed.
     Knowing how to read the traceback can help you easily identify the error and make
     a fix. In this tutorial, we are going to see what the traceback can tell you.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 当 Python 程序中发生异常时，通常会打印 traceback。知道如何阅读 traceback 可以帮助你轻松识别错误并进行修复。在本教程中，我们将看到
+    traceback 可以告诉你什么。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: How to read a traceback
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何读取 traceback
 - en: How to print the call stack without an exception
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在没有异常的情况下打印调用栈
 - en: What is not shown in the traceback
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Traceback 中未显示的内容
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用我的新书 [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/)
+    **启动你的项目**，包括*逐步教程*和所有示例的*Python 源代码*文件。
 - en: Let’s get started.![](../Images/bac7f8e495a1a3172f09a36f73585547.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/bac7f8e495a1a3172f09a36f73585547.png)
 - en: Understanding Traceback in Python
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 理解 Python 中的 Traceback
 - en: Photo by [Marten Bjork](https://unsplash.com/photos/GM9Xpgb0g98), some rights
     reserved
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Marten Bjork](https://unsplash.com/photos/GM9Xpgb0g98) 提供，部分权利保留
 - en: Tutorial Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into four parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四部分；它们是：
 - en: The call hierarchy of a simple program
+  id: totrans-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 简单程序的调用层次结构
 - en: Traceback upon exception
+  id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 异常时的 Traceback
 - en: Triggering traceback manually
+  id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 手动触发 traceback
 - en: An example in model training
+  id: totrans-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 模型训练中的一个示例
 - en: The call hierarchy of a simple program
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 简单程序的调用层次结构
 - en: 'Let’s consider a simple program:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们考虑一个简单的程序：
 - en: '[PRE0]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'This program will print the Python dictionary `data` with indentations. Its
     output is the following:'
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个程序将带有缩进的 Python 字典 `data` 打印出来。它的输出如下：
 - en: '[PRE1]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'This is a short program, but functions are calling each other. If we add a
     line at the beginning of each function, we can reveal how the output is produced
     with the flow of control:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个短程序，但函数之间相互调用。如果我们在每个函数的开头添加一行，我们可以揭示输出是如何随着控制流产生的：
 - en: '[PRE2]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'and the output will be messed with more information:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出将被更多信息搞乱：
 - en: '[PRE3]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: So now we know the order of how each function is invoked. This is the idea of
     a call stack. At any point in time, when we run a line of code in a function,
     we want to know what invoked this function.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们知道了每个函数调用的顺序。这就是调用栈的概念。在我们运行函数中的一行代码时，我们想知道是什么调用了这个函数。
 - en: Traceback upon exception
+  id: totrans-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 异常时的 Traceback
 - en: 'If we make one typo in the code like the following:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们在代码中犯了一个错别字，例如：
 - en: '[PRE4]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The typo is at the last line, where the closing bracket should be at the end
     of the line, not before any `+`. The return value of the `print()` function is
     a Python `None` object. And adding something to `None` will trigger an exception.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 错误在最后一行，其中闭合括号应该在行末，而不是在任何 `+` 之前。`print()` 函数的返回值是 Python 的 `None` 对象。将内容添加到
+    `None` 会触发异常。
 - en: 'If you run this program using the Python interpreter, you will see this:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你使用 Python 解释器运行这个程序，你将看到：
 - en: '[PRE5]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The lines starting with “Traceback (most recent call last):” are the traceback.
     It is the **stack** of your program at the time when your program encountered
     the exception. In the above example, the traceback is in the “most recent call
     last” order. Hence your main function is at the top while the one triggering the
     exception is at the bottom. So we know the issue is inside the function `printdict()`.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 以“Traceback (most recent call last):”开头的行是 traceback。它是你的程序在遇到异常时的**栈**。在上述示例中，traceback
+    以“最近的调用最后”顺序显示。因此你的主函数在顶部，而触发异常的函数在底部。所以我们知道问题出在函数 `printdict()` 内部。
 - en: Usually, you will see the error message at the end of the traceback. In this
     example, it is a `TypeError` triggered by adding `None` and string. But the traceback’s
     help stops here. You need to figure out which one is `None` and which one is string.
     By reading the traceback, we also know the exception-triggering function `printdict()`
     is invoked by `indentprint()`, and it is in turn invoked by `printlist()`, and
     so on.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，你会在 traceback 的末尾看到错误消息。在这个例子中，是由于将 `None` 和字符串相加触发的 `TypeError`。但 traceback
+    的帮助到此为止。你需要弄清楚哪个是 `None`，哪个是字符串。通过阅读 traceback，我们也知道触发异常的函数 `printdict()` 是由 `indentprint()`
+    调用的，`indentprint()` 又由 `printlist()` 调用，依此类推。
 - en: 'If you run this in a Jupyter notebook, the following is the output:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你在 Jupyter notebook 中运行这段代码，输出如下：
 - en: '[PRE6]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The information is essentially the same, but it gives you the lines before and
     after each function call.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 信息本质上是相同的，但它提供了每个函数调用前后的行。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习 Python 进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在立即报名我的免费 7 天电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得免费 PDF 电子书版课程。
 - en: Triggering traceback manually
+  id: totrans-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 手动触发 traceback
 - en: 'The easiest way to print a traceback is to add a `raise` statement to manually
     create an exception. But this will also terminate your program. If we want to
     print the stack at any time, even without any exception, we can do so with the
     following:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 打印 traceback 最简单的方法是添加 `raise` 语句来手动创建异常。但这也会终止你的程序。如果我们希望在任何时间打印栈，即使没有任何异常，我们可以使用以下方法：
 - en: '[PRE7]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The line `traceback.print_stack()` will print the current call stack.
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 行 `traceback.print_stack()` 将打印当前调用栈。
 - en: 'But indeed, we often want to print the stack only when there is an error (so
     we learn more about why it is so). The more common use case is the following:'
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 但确实，我们通常只在出现错误时才打印栈（以便了解为什么会这样）。更常见的用例如下：
 - en: '[PRE8]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: This is a typical pattern for repeatedly calculating a function, such as Monte
     Carlo simulation. But if we are not careful enough, we may run into some error,
     such as in the above example where we may have division by zero. The problem is,
@@ -188,97 +288,146 @@
     to handle the case of the error rather than let the entire program terminate.
     If we use the `try-catch` construct, the traceback will not be printed by default.
     Therefore, we need to use the `traceback.print_exc()` statement to do it manually.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是重复计算函数的典型模式，例如蒙特卡洛模拟。但如果我们不够小心，可能会遇到一些错误，如上例中的除零错误。问题是，在更复杂的计算情况下，你不能轻易发现缺陷。例如上面的情况，问题隐藏在
+    `compute()` 的调用中。因此，理解错误的产生方式是有帮助的。但同时，我们希望处理错误的情况，而不是让整个程序终止。如果我们使用 `try-catch`
+    构造，traceback 默认不会打印。因此，我们需要使用 `traceback.print_exc()` 语句手动打印。
 - en: 'Actually, we can have the traceback more elaborated. Because the traceback
     is the call stack, we can examine each function in the call stack and check the
     variables in each level. In this complicated case, this is the function I usually
     use to do a more detailed trace:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，我们可以使 traceback 更加详细。由于 traceback 是调用栈，我们可以检查调用栈中的每个函数，并检查每一层中的变量。在这种复杂的情况下，这是我通常用来做更详细跟踪的函数：
 - en: '[PRE9]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: An example of model training
+  id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 模型训练的一个示例
 - en: 'The call stack, as reported in the traceback, has a limitation: You can only
     see the Python functions. It should be just fine for the program you wrote, but
     many large libraries in Python have part of them written in another language and
     compiled into binary. An example is Tensorflow. All the underlying operations
     are in binary for the performance. Hence if you run the following code, you will
     see something different:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: traceback 中报告的调用栈有一个限制：你只能看到 Python 函数。这对于你编写的程序应该没问题，但许多大型 Python 库的一部分是用其他语言编写并编译成二进制的。例如
+    Tensorflow。所有底层操作都是以二进制形式存在以提升性能。因此，如果你运行以下代码，你会看到不同的内容：
 - en: '[PRE10]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'The `input_shape` parameter to the first LSTM layer in the model should be
     `(n_in, 1)` to match the input data, rather than `(n_in+1, 1)`. This code will
     print the following error once you invoke the last line:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 模型中第一个 LSTM 层的 `input_shape` 参数应该是 `(n_in, 1)` 以匹配输入数据，而不是 `(n_in+1, 1)`。这段代码在你调用最后一行时将打印以下错误：
 - en: '[PRE11]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: If you look at the traceback, you cannot really see the complete call stack.
     For example, the top frame you know you called `model.fit()`, but the second frame
     is from a function named `error_handler()`. Here, you cannot see how the `fit()`
     function triggered that. This is because Tensorflow is highly optimized. A lot
     of stuff is hidden in compiled code and not visible by the Python interpreter.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你查看追溯信息，你无法真正看到完整的调用栈。例如，你知道你调用了 `model.fit()`，但第二个帧来自一个名为 `error_handler()`
+    的函数。在这里，你无法看到 `fit()` 函数如何触发了这个函数。这是因为 Tensorflow 被高度优化了。许多内容隐藏在编译代码中，Python 解释器无法看到。
 - en: In this case, it is essential to patiently read the traceback and find the clue
     to the cause. Of course, the error message usually should also give you some useful
     hints.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，耐心阅读追溯信息并找出原因的线索是至关重要的。当然，错误信息通常也会给你一些有用的提示。
 - en: Further Reading
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想更深入了解该主题，本节提供了更多资源。
 - en: Books
+  id: totrans-59
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Python Cookbook, 3rd edition](https://www.amazon.com/dp/1449340377) by David
     Beazley and Brian K. Jones'
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python Cookbook, 第三版](https://www.amazon.com/dp/1449340377) 作者 David Beazley
+    和 Brian K. Jones'
 - en: Python Official Documentation
+  id: totrans-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Python 官方文档
 - en: '[The traceback module](https://docs.python.org/3/library/traceback.html) in
     Python standard library'
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[追溯模块](https://docs.python.org/3/library/traceback.html) 在 Python 标准库中'
 - en: Summary
+  id: totrans-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you discovered how to read and print the traceback from a
     Python program.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何读取和打印 Python 程序的追溯信息。
 - en: 'Specifically, you learned:'
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学习了：
 - en: What information the traceback tells you
+  id: totrans-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 追溯信息告诉你什么
 - en: How to print a traceback at any point of your program without raising an exception
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在程序的任何点打印追溯信息而不引发异常
 - en: In the next post, we will see how to navigate the call stack inside the Python
     debugger.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下一篇文章中，我们将学习如何在 Python 调试器中导航调用栈。

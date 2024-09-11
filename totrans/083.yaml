@@ -1,11 +1,15 @@
 - en: Static Analyzers in Python
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Python中的静态分析器
 - en: 原文：[https://machinelearningmastery.com/static-analyzers-in-python/](https://machinelearningmastery.com/static-analyzers-in-python/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/static-analyzers-in-python/](https://machinelearningmastery.com/static-analyzers-in-python/)
 - en: Static analyzers are tools that help you check your code without really running
     your code. The most basic form of static analyzers is the syntax highlighters
     in your favorite editors. If you need to compile your code (say, in C++), your
@@ -13,124 +17,187 @@
     you about potential issues (e.g., mistaken assignment “`=`” for equality “`==`”
     in C++). In Python, we have some tools to identify potential errors or point out
     violations of coding standards.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 静态分析器是帮助你检查代码而不实际运行代码的工具。最基本的静态分析器形式是你最喜欢的编辑器中的语法高亮器。如果你需要编译代码（比如在C++中），你的编译器，如LLVM，可能还会提供一些静态分析器功能，以警告你潜在的问题（例如，C++中的误用赋值“`=`”代替等于“`==`”）。在Python中，我们有一些工具来识别潜在错误或指出代码标准的违反。
 - en: After finishing this tutorial, you will learn some of these tools. Specifically,
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将学习一些这些工具。具体来说，
 - en: What can the tools Pylint, Flake8, and mypy do?
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 工具Pylint、Flake8和mypy能做什么？
 - en: What are coding style violations?
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是编码风格违规？
 - en: How can we use type hints to help analyzers identify potential bugs?
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们如何使用类型提示来帮助分析器识别潜在的错误？
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的新书[Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/)**来**启动你的项目**，包括*逐步教程*和所有示例的*Python源代码*文件。'
 - en: Let’s get started.![](../Images/af4ac8df86aea43068b7641185d5001c.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/af4ac8df86aea43068b7641185d5001c.png)
 - en: Static Analyzers in Python
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: Python中的静态分析器
 - en: Photo by [Skylar Kang](https://www.pexels.com/photo/blooming-sea-lavender-flowers-on-rough-surface-6044187/).
     Some rights reserved
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Skylar Kang](https://www.pexels.com/photo/blooming-sea-lavender-flowers-on-rough-surface-6044187/)提供。一些权利保留
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is in three parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分；它们是：
 - en: Introduction to Pylint
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Pylint简介**'
 - en: Introduction to Flake8
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Flake8简介**'
 - en: Introduction to mypy
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**mypy简介**'
 - en: Pylint
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Pylint
 - en: 'Lint was the name of a static analyzer for C created a long time ago. Pylint
     borrowed its name and is one of the most widely used static analyzers. It is available
     as a Python package, and we can install it with `pip`:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: Lint是很久以前为C创建的静态分析器的名称。Pylint借用了这个名字，并且是最广泛使用的静态分析器之一。它作为一个Python包提供，我们可以通过`pip`安装：
 - en: Shell
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE0]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Then we have the command `pylint` available in our system.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们在系统中有命令`pylint`可用。
 - en: 'Pylint can check one script or the entire directory. For example, if we have
     the following script saved as `lenet5-notworking.py`:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: Pylint可以检查一个脚本或整个目录。例如，如果我们将以下脚本保存为`lenet5-notworking.py`：
 - en: '[PRE1]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'We can ask Pylint to tell us how good our code is before even running it:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以在运行代码之前请Pylint告诉我们代码的质量如何：
 - en: Shell
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The output is as follows:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出如下：
 - en: '[PRE3]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: If you provide the root directory of a module to Pylint, all components of the
     module will be checked by Pylint. In that case, you will see the path of different
     files at the beginning of each line.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你将模块的根目录提供给Pylint，Pylint将检查该模块的所有组件。在这种情况下，你会看到每行开头的不同文件路径。
 - en: There are several things to note here. First, the complaints from Pylint are
     in different categories. Most commonly we would see issues on convention (i.e.,
     a matter of style), warnings (i.e., the code may run in a sense not consistent
     with what you intended to do), and error (i.e., the code may fail to run and throw
     exceptions). They are identified by the code such as E0601, where the first letter
     is the category.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有几点需要注意。首先，Pylint的抱怨分为不同的类别。最常见的是我们会看到关于规范（即风格问题）、警告（即代码可能以与预期不同的方式运行）和错误（即代码可能无法运行并抛出异常）的问题。它们通过像E0601这样的代码来标识，其中第一个字母是类别。
 - en: Pylint may give false positives. In the example above, we see Pylint flagged
     the import from `tensorflow.keras.datasets` as an error. It is caused by an optimization
     in the Tensorflow package that not everything would be scanned and loaded by Python
     when we import Tensorflow, but a LazyLoader is created to help load only the necessary
     part of a large package. This saves significant time in starting the program,
     but it also confuses Pylint in that we seem to import something that doesn’t exist.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Pylint 可能会出现误报。在上面的例子中，我们看到 Pylint 将从 `tensorflow.keras.datasets` 的导入标记为错误。这是由于
+    Tensorflow 包中的优化，导致在导入 Tensorflow 时，Python 并不会扫描和加载所有内容，而是创建了一个 LazyLoader 以仅加载大型包的必要部分。这可以显著节省程序启动时间，但也会使
+    Pylint 误以为我们导入了不存在的东西。
 - en: Furthermore, one of the key feature of Pylint is to help us make our code align
     with the PEP8 coding style. When we define a function without a docstring, for
     instance, Pylint will complain that we didn’t follow the coding convention even
     if the code is not doing anything wrong.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，Pylint 的一个关键特性是帮助我们使代码符合 PEP8 编码风格。例如，当我们定义一个没有文档字符串的函数时，即使代码没有任何错误，Pylint
+    也会抱怨我们没有遵循编码规范。
 - en: But the most important use of Pylint is to help us identify potential issues.
     For example, we misspelled `y_train` as `Y_train` with an uppercase `Y`. Pylint
     will tell us that we are using a variable without assigning any value to it. It
@@ -140,159 +207,248 @@
     the outer scope. Hence the reference to `model` later on may not be what we were
     thinking. Similarly, unused imports may be just that we misspelled the name of
     the modules.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 但 Pylint 最重要的用途是帮助我们识别潜在的问题。例如，我们将 `y_train` 拼写为大写的 `Y_train`。Pylint 会告诉我们我们在使用一个未赋值的变量。它不会直接告诉我们出了什么问题，但肯定会指向我们审校代码的正确位置。类似地，当我们在第
+    23 行定义变量 `model` 时，Pylint 告诉我们在外部范围内有一个同名变量。因此，稍后的 `model` 引用可能不是我们想的那样。类似地，未使用的导入可能只是因为我们拼错了模块名称。
 - en: All these are **hints** provided by Pylint. We still have to use our judgement
     to correct our code (or ignore Pylint’s complaints).
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些都是 Pylint 提供的 **提示**。我们仍然需要运用判断来修正代码（或忽略 Pylint 的抱怨）。
 - en: 'But if you know what Pylint should stop complaining about, you can request
     to ignore those. For example, we know the `import` statements are fine, so we
     can invoke Pylint with:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 但如果你知道 Pylint 应该停止抱怨的内容，你可以要求忽略这些。例如，我们知道 `import` 语句是可以的，所以我们可以用以下命令调用 Pylint：
 - en: Shell
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE4]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Now, all errors of code E0611 will be ignored by Pylint. You can disable multiple
     codes by a comma-separated list, e.g.,
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，所有代码 E0611 的错误将被 Pylint 忽略。你可以通过逗号分隔的列表禁用多个代码，例如：
 - en: Shell
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE5]'
+  id: totrans-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'If you want to disable some issues on only a specific line or a specific part
     of the code, you can put special comments to your code, as follows:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想在特定的行或代码的特定部分禁用某些问题，可以在代码中添加特殊注释，如下所示：
 - en: '[PRE6]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The magic keyword `pylint:` will introduce Pylint-specific instructions. The
     code E0611 and the name `no-name-in-module` are the same. In the example above,
     Pylint will complain about the last two import statements but not the first two
     because of those special comments.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 魔法关键字 `pylint:` 将引入 Pylint 特定的指令。代码 E0611 和名称 `no-name-in-module` 是相同的。在上面的例子中，由于这些特殊注释，Pylint
+    会对最后两个导入语句提出抱怨，但不会对前两个提出抱怨。
 - en: Flake8
+  id: totrans-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Flake8
 - en: 'The tool Flake8 is indeed a wrapper over PyFlakes, McCabe, and pycodestyle.
     When you install flake8 with:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 工具 Flake8 实际上是 PyFlakes、McCabe 和 pycodestyle 的封装器。当你使用以下命令安装 flake8 时：
 - en: Shell
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE7]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: you will install all these dependencies.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将安装所有这些依赖项。
 - en: 'Similar to Pylint, we have the command `flake8` after installing this package,
     and we can pass in a script or a directory for analysis. But the focus of Flake8
     is inclined toward coding style. Hence we would see the following output for the
     same code as above:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 Pylint 类似，安装此软件包后，我们可以使用 `flake8` 命令，并可以传递一个脚本或目录进行分析。但 Flake8 的重点倾向于编码风格。因此，对于上述相同的代码，我们会看到以下输出：
 - en: Shell
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE8]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: The error codes beginning with letter E are from pycodestyle, and those beginning
     with letter F are from PyFlakes. We can see it complains about coding style issues
     such as the use of `(5,5)` for not having a space after the comma. We can also
     see it can identify the use of variables before assignment. But it does not catch
     some *code smells* such as the function `createmodel()`that reuses the variable
     `model` that was already defined in outer scope.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 以字母 E 开头的错误代码来自 pycodestyle，以字母 F 开头的错误代码来自 PyFlakes。我们可以看到它抱怨代码风格问题，例如使用 `(5,5)`
+    而逗号后没有空格。我们还可以看到它可以识别变量在赋值之前的使用。但它没有捕捉到一些*代码异味*，例如函数 `createmodel()` 重新使用了在外部作用域中已经定义的变量
+    `model`。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-52
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 Python 进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即获取我的免费 7 天电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费 PDF 电子书版本。
 - en: Similar to Pylint, we can also ask Flake8 to ignore some complaints. For example,
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 Pylint 类似，我们也可以要求 Flake8 忽略一些警告。例如，
 - en: Shell
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE9]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Those lines will not be printed in the output:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些行不会被打印在输出中：
 - en: '[PRE10]'
+  id: totrans-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: We can also use magic comments to disable some complaints, e.g.,
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以使用魔法注释来禁用一些警告，例如，
 - en: '[PRE11]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Flake8 will look for the comment `# noqa:` to skip some complaints on those
     particular lines.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: Flake8 将查找注释 `# noqa:` 来跳过这些特定行上的一些警告。
 - en: Mypy
+  id: totrans-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Mypy
 - en: Python is not a typed language so, unlike C or Java, you do not need to declare
     the types of some functions or variables before use. But lately, Python has introduced
     type hint notation, so we can specify what type a function or variable **intended**
     to be without enforcing its compliance like a typed language.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 不是一种强类型语言，因此，与 C 或 Java 不同，你不需要在使用之前声明一些函数或变量的类型。但最近，Python 引入了类型提示符号，因此我们可以指定一个函数或变量**意图**是什么类型，而不强制遵守像强类型语言那样。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-65
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 Python 进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即获取我的免费 7 天电子邮件速成课程（包含示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费 PDF 电子书版本。
 - en: One of the biggest benefits of using type hints in Python is to provide additional
     information for static analyzers to check. Mypy is the tool that can understand
     type hints. Even without type hints, Mypy can still provide complaints similar
     to Pylint and Flake8.
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Python 中使用类型提示的最大好处之一是为静态分析工具提供额外的信息进行检查。 Mypy 是能够理解类型提示的工具。 即使没有类型提示，Mypy
+    仍然可以提供类似于 Pylint 和 Flake8 的警告。
 - en: 'We can install Mypy from PyPI:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以从 PyPI 安装 Mypy：
 - en: Shell
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE12]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'Then the example above can be provided to the `mypy` command:'
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后可以将上述示例提供给 `mypy` 命令：
 - en: '[PRE13]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'We see similar errors as Pylint above, although sometimes not as precise (e.g.,
     the issue with the variable `y_train`). However we see one characteristic of mypy
     above: It expects all libraries we used to come with a stub so the type checking
@@ -300,110 +456,165 @@
     a library does not provide type hints, the code can still work, but mypy cannot
     verify. Some of the libraries have **typing stubs** available that enables mypy
     to check them better.'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们看到与上面的 Pylint 相似的错误，尽管有时不如 Pylint 精确（例如，变量 `y_train` 的问题）。然而，我们在上面看到的一个 mypy
+    特点是：它期望我们使用的所有库都附带一个存根，以便进行类型检查。这是因为类型提示是**可选**的。如果库中的代码未提供类型提示，代码仍然可以正常工作，但 mypy
+    无法验证。一些库提供了**类型存根**，使 mypy 可以更好地检查它们。
 - en: 'Let’s consider another example:'
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们考虑另一个例子：
 - en: '[PRE14]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: This program is supposed to load a HDF5 file (such as a Keras model) and print
     every attribute and data stored in it. We used the `h5py` module (which does not
     have a typing stub, and hence mypy cannot identify the types it used), but we
     added type hints to the function we defined, `dumphdf5()`. This function expects
     the filename of a HDF5 file and prints everything stored inside. At the end, the
     number of datasets stored will be returned.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个程序应该加载一个 HDF5 文件（例如一个 Keras 模型），并打印其中存储的每个属性和数据。我们使用了 `h5py` 模块（它没有类型存根，因此
+    mypy 无法识别它使用的类型），但我们为我们定义的函数 `dumphdf5()` 添加了类型提示。这个函数期望一个 HDF5 文件的文件名并打印其中存储的所有内容。最后，将返回存储的数据集数量。
 - en: 'When we save this script into `dumphdf5.py` and pass it into mypy, we will
     see the following:'
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们将此脚本保存为 `dumphdf5.py` 并传递给 mypy 时，我们将看到如下内容：
 - en: Shell
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: Shell
 - en: '[PRE15]'
+  id: totrans-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: We misused our function so that an opened file object is passed into `dumphdf5()`
     instead of just the filename (as a string). Mypy can identify this error. We also
     declared that the function should return an integer, but we didn’t have the return
     statement in the function.
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们误用了函数，导致一个打开的文件对象被传递给`dumphdf5()`，而不是仅仅传递文件名（作为字符串）。Mypy可以识别这个错误。我们还声明了该函数应该返回一个整数，但函数中没有返回语句。
 - en: However, there is one more error in this code that mypy didn’t identify. Namely,
     the use of the variable `count` in the inner function `recur_dump()` should be
     declared `nonlocal` because it is defined out of scope. This error can be caught
     by Pylint and Flake8, but mypy missed it.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，还有一个错误是mypy没有识别出来的。也就是说，内函数`recur_dump()`中使用的变量`count`应该声明为`nonlocal`，因为它是在作用域之外定义的。这个错误可以被Pylint和Flake8捕获，但mypy漏掉了它。
 - en: 'The following is the complete, corrected code with no more errors. Note that
     we added the magic comment “`# type: ignore`” at the first line to mute the typing
     stubs warning from mypy:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: '以下是完整的、修正过的代码，没有更多错误。注意，我们在第一行添加了魔法注释“`# type: ignore`”以抑制mypy的类型提示警告：'
 - en: '[PRE16]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: In conclusion, the three tools we introduced above can be complementary to each
     other. You may consider to run all of them to look for any possible bugs in your
     code or improve the coding style. Each tool allows some configuration, either
     from the command line or from a config file, to customize for your needs (e.g.,
     how long a line should be too long to deserve a warning?). Using a static analyzer
     is also a way to help yourself develop better programming skills.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 总之，我们上面介绍的三种工具可以互补。你可以考虑运行所有这些工具，以查找代码中的任何潜在错误或改善编码风格。每个工具都允许一些配置，无论是通过命令行还是配置文件，以适应你的需求（例如，什么样的行长度应该引发警告？）。使用静态分析器也是帮助自己提高编程技能的一种方式。
 - en: Further reading
+  id: totrans-86
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于这个主题的资源，如果你想深入了解。
 - en: '**Articles**'
+  id: totrans-88
   prefs: []
   type: TYPE_NORMAL
+  zh: '**文章**'
 - en: PEP8, [https://peps.python.org/pep-0008/](https://peps.python.org/pep-0008/)
+  id: totrans-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PEP8，[https://peps.python.org/pep-0008/](https://peps.python.org/pep-0008/)
 - en: Google Python Style Guide, [https://google.github.io/styleguide/pyguide.html](https://google.github.io/styleguide/pyguide.html)
+  id: totrans-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Google Python 风格指南，[https://google.github.io/styleguide/pyguide.html](https://google.github.io/styleguide/pyguide.html)
 - en: '**Software packages**'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: '**软件包**'
 - en: Pylint User Manual, [https://pylint.pycqa.org/en/latest/index.html](https://pylint.pycqa.org/en/latest/index.html)
+  id: totrans-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Pylint用户手册，[https://pylint.pycqa.org/en/latest/index.html](https://pylint.pycqa.org/en/latest/index.html)
 - en: Flake8, [https://flake8.pycqa.org/en/latest/](https://flake8.pycqa.org/en/latest/)
+  id: totrans-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Flake8，[https://flake8.pycqa.org/en/latest/](https://flake8.pycqa.org/en/latest/)
 - en: mypy, [https://mypy.readthedocs.io/en/stable/](https://mypy.readthedocs.io/en/stable/)
+  id: totrans-94
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: mypy，[https://mypy.readthedocs.io/en/stable/](https://mypy.readthedocs.io/en/stable/)
 - en: Summary
+  id: totrans-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you’ve seen how some common static analyzers can help you
     write better Python code. Specifically you learned:'
+  id: totrans-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你已经看到一些常见的静态分析器如何帮助你编写更好的Python代码。具体来说，你学习了：
 - en: 'The strengths and weaknesses of three tools: Pylint, Flake8, and mypy'
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 三个工具（Pylint、Flake8和mypy）的优缺点
 - en: How to customize the behavior of these tools
+  id: totrans-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何自定义这些工具的行为
 - en: How to understand the complaints made by these analyzers
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何理解这些分析器提出的投诉

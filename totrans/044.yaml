@@ -1,11 +1,15 @@
 - en: Garage or Not? Housing Insights Through the Chi-Squared Test for Ames, Iowa
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 车库与否？通过卡方检验获取爱荷华州艾姆斯市的住房见解
 - en: 原文：[https://machinelearningmastery.com/chi-squared-ames/](https://machinelearningmastery.com/chi-squared-ames/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/chi-squared-ames/](https://machinelearningmastery.com/chi-squared-ames/)
 - en: The chi-squared test for independence is a statistical procedure employed to
     assess the relationship between two categorical variables—determining whether
     they are correlated or independent. The exploration of the visual appeal of a
@@ -13,133 +17,187 @@
     the outlook of a house with functional features like a garage? With the chi-squared
     test, you can determine whether there exists a statistically significant correlation
     between features.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 卡方独立性检验是一种统计程序，用于评估两个分类变量之间的关系——确定它们是相关的还是独立的。探索房产的视觉吸引力及其对估值的影响是很有趣的。但是你多久将房子的外观与车库等功能特征联系在一起？通过卡方检验，你可以确定这些特征之间是否存在统计学上显著的关联。
 - en: Let’s get started.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。
 - en: '![](../Images/a9f80be1f13b40c791938e24656cb22f.png)'
+  id: totrans-4
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/a9f80be1f13b40c791938e24656cb22f.png)'
 - en: Garage or Not? Housing Insights Through the Chi-Squared Test for Ames, Iowa
+  id: totrans-5
   prefs: []
   type: TYPE_NORMAL
+  zh: 车库与否？通过卡方检验获取爱荷华州艾姆斯市的住房见解
 - en: Photo by [Damir Kopezhanov](https://unsplash.com/photos/gray-sedan-w-bRrLmXODg).
     Some rights reserved.
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Damir Kopezhanov](https://unsplash.com/photos/gray-sedan-w-bRrLmXODg)提供。一些权利保留。
 - en: Overview
+  id: totrans-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is divided into four parts; they are:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为四部分，它们是：
 - en: Understanding the Chi-Squared Test
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 理解卡方检验
 - en: How the Chi-Squared Test Works
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 卡方检验的工作原理
 - en: Unraveling the Association Between External Quality and Garage Presence
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 揭示外部质量与车库存在之间的关系
 - en: Important Caveats
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 重要注意事项
 - en: Understanding the Chi-Squared Test
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 理解卡方检验
 - en: 'The Chi-squared ($\chi^2$) test is useful because of its ability to test for
     relationships between **categorical variables**. It’s particularly valuable when
     working with nominal or ordinal data, where the variables are divided into categories
     or groups. The primary purpose of the Chi-squared test is to determine whether
     there is a statistically significant association between two categorical variables.
     In other words, it helps to answer questions such as:'
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 卡方（$\chi^2$）检验之所以有用，是因为它能够测试**分类变量**之间的关系。它在处理名义或顺序数据时特别有价值，因为这些数据被划分为类别或组。卡方检验的主要目的是确定两个分类变量之间是否存在统计学上显著的关联。换句话说，它有助于回答以下问题：
 - en: '**Are two categorical variables independent of each other? **'
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**两个分类变量是否相互独立？**'
 - en: If the variables are independent, changes in one variable are not related to
     changes in the other. There is no association between them.
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果变量是独立的，一个变量的变化与另一个变量的变化无关。它们之间没有关联。
 - en: '**Is there a significant association between the two categorical variables?**'
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**两个分类变量之间是否存在显著关联？**'
 - en: If the variables are associated, changes in one variable are related to changes
     in the other. The Chi-squared test helps to quantify whether this association
     is statistically significant.
+  id: totrans-18
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果变量之间存在关联，一个变量的变化与另一个变量的变化相关。卡方检验有助于量化这种关联是否具有统计学意义。
 - en: 'In your study, you focus on the external quality of a house (categorized as
     “Great” or “Average”) and its relation to the presence or absence of a garage.
     For the results of the Chi-squared test to be valid, the following conditions
     must be satisfied:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 在你的研究中，你关注房子的外部质量（分为“优秀”或“一般”）及其与车库有无的关系。为了使卡方检验的结果有效，必须满足以下条件：
 - en: '**Independence:** The observations must be independent, meaning the occurrence
     of one outcome shouldn’t affect another. Our dataset satisfies this as each entry
     represents a distinct house.'
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**独立性：** 观察值必须是独立的，意味着一个结果的发生不应影响另一个结果。我们的数据集符合这一点，因为每个条目代表一个独立的房子。'
 - en: '**Sample Size:** The dataset should not only be randomly sampled but also sizable
     enough to be representative. Our data, sourced from Ames, Iowa, meets this criterion.'
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**样本大小：** 数据集不仅要随机抽样，而且要足够大以具代表性。我们的数据来自爱荷华州艾姆斯市，符合这一标准。'
 - en: '**Expected Frequency:** Every cell in the contingency table should have an
     expected frequency of at least 5\. This is vital for the test’s reliability, as
     the Chi-squared test relies on a large sample approximation. You will demonstrate
     this condition below by creating and visualizing the expected frequencies.'
+  id: totrans-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**期望频率：** 每个列联表中的单元格应该有至少5的期望频率。这对于检验的可靠性至关重要，因为卡方检验依赖于大样本近似。你将通过创建和可视化期望频率来展示这一条件。'
 - en: '**Kick-start your project** with my book [The Beginner’s Guide to Data Science](https://machinelearning.samcart.com/products/beginners-guide-data-science/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，参考我的书籍[数据科学入门指南](https://machinelearning.samcart.com/products/beginners-guide-data-science/)。它提供了**自学教程**和**可运行的代码**。'
 - en: How the Chi-Squared Test Works
+  id: totrans-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 卡方检验的工作原理
 - en: Chi-squared test compares the observed frequencies from data to the expected
     frequencies from assumptions.
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 卡方检验将数据中的观察频率与假设中的期望频率进行比较。
 - en: The Chi-squared test works by comparing the observed frequencies of the categories
     in a contingency table to the expected frequencies that would be expected under
     the assumption of independence. The contingency table is a cross-tabulation of
     the two categorical variables, showing how many observations fall into each combination
     of categories.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 卡方检验通过将列联表中类别的观察频率与在独立假设下预期的频率进行比较来工作。列联表是两个分类变量的交叉表，显示每个类别组合中有多少观察值。
 - en: '**Null Hypothesis ($H_0$):** The null hypothesis in the Chi-squared test assumes
     independence between the two variables, i.e., the observed frequencies (with or
     without garage) should match.'
+  id: totrans-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**零假设 ($H_0$)：** 卡方检验中的零假设假定两个变量之间独立，即观察到的频率（有或没有车库）应该匹配。'
 - en: '**Alternative Hypothesis ($H_1$):** The alternative hypothesis suggests that
     there is a significant association between the two variables, i.e., the observed
     frequencies (with or without garage) should differ based on the value of another
     variable (quality of a house).'
+  id: totrans-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**备择假设 ($H_1$)：** 备择假设表明两个变量之间存在显著关联，即观察到的频率（有或没有车库）应该根据另一个变量的值（房屋质量）有所不同。'
 - en: The test statistic in the Chi-squared test is calculated by comparing the observed
     and expected frequencies in each cell of the contingency table. The larger the
     difference between observed and expected frequencies, the larger the Chi-squared
@@ -148,183 +206,270 @@
     the assumption of independence. If the p-value is below a chosen significance
     level $\alpha$ (commonly 0.05), the null hypothesis of independence is rejected,
     suggesting a significant association.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 卡方检验中的检验统计量通过比较列联表中每个单元格的观察频率和期望频率来计算。观察频率与期望频率之间的差异越大，卡方统计量越大。卡方检验产生一个p值，表示在独立假设下观察到观察到的关联（或更极端的关联）的概率。如果p值低于选择的显著性水平
+    $\alpha$（通常为0.05），则拒绝独立性零假设，表明存在显著的关联。
 - en: '**Unraveling the Association Between External Quality and Garage Presence**'
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**揭示外部质量与车库存在之间的关联**'
 - en: Using the [Ames housing dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv),
     you set out to determine whether there’s an association between a house’s external
     quality and the presence or absence of a garage. Let’s delve into the specifics
     of our analysis, supported by the corresponding Python code.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用[Ames房屋数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)，你着手确定房屋的外部质量与车库存在或不存在之间是否存在关联。让我们深入分析的细节，并辅以相应的Python代码。
 - en: '[PRE0]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The output should be:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出应为：
 - en: '[PRE1]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The code above performs three steps:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码执行了三个步骤：
 - en: '**Data Loading & Preparation:**'
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '**数据加载与准备：**'
 - en: 'You began by loading the dataset and extracting the pertinent columns: `ExterQual`
     (Exterior Quality) and `GarageFinish` (Garage Finish).'
+  id: totrans-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你首先加载了数据集，并提取了相关列：`ExterQual`（外部质量）和`GarageFinish`（车库完成情况）。
 - en: Recognizing the missing values in `GarageFinish`, you sensibly imputed them
     with the label `"No Garage"`, indicating houses devoid of garages.
+  id: totrans-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 识别到`GarageFinish`中的缺失值后，你明智地用标签`"No Garage"`填补这些缺失值，表示没有车库的房屋。
 - en: '**Data Grouping for Simplification:**'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '**简化的数据分组：**'
 - en: 'You further categorized the `GarageFinish` data into two groups: “With Garage”
     (for houses with any kind of garage) and “No Garage”.'
+  id: totrans-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你进一步将`GarageFinish`数据分类为两组：“有车库”（对于任何类型的有车库的房屋）和“无车库”。
 - en: Similarly, you grouped the `ExterQual` data into “Great” (houses with excellent
     or good exterior quality) and “Average” (houses with average or fair exterior
     quality).
+  id: totrans-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 同样，你将`ExterQual`数据分为“优秀”（具有优秀或良好外部质量的房屋）和“一般”（具有平均或一般外部质量的房屋）两组。
 - en: '**Chi-squared Test:**'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '**卡方检验:**'
 - en: With the data aptly prepared, you constructed a contingency table to depict
     the observed frequencies between the newly formed categories. They are the two
     tables printed in the output.
+  id: totrans-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将数据适当准备后，你构建了一个列联表来展示新形成类别之间的观察频率。它们是输出中打印的两个表格。
 - en: You then performed a Chi-squared test on this contingency table using SciPy.
     The p-value is printed and found much less than $\alpha$. The extremely low p-value
     obtained from the test signifies a statistically significant association between
     a house’s external quality and the presence of a garage in this dataset.
+  id: totrans-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 然后，你使用SciPy对这个列联表执行了卡方检验。p值被打印出来，发现远小于$\alpha$。从测试中获得的极低p值表明，在这个数据集中，房屋外部质量与车库存在之间存在显著的统计关联。
 - en: A quick glance at the expected frequencies satisfies the third condition of
     a Chi-squared test, which requires a minimum of 5 occurrences in each cell.
+  id: totrans-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 仔细观察期望频率可以满足卡方检验的第三个条件，即每个单元格至少需要5次发生。
 - en: Through this analysis, you not only refined and simplified the data to make
     it more interpretable but also provided statistical evidence of an association
     between two categorical variables of interest.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过这项分析，你不仅使数据更加精炼和简化，使其更易解释，还提供了关于两个感兴趣的分类变量之间关联的统计证据。
 - en: Want to Get Started With Beginner's Guide to Data Science?
+  id: totrans-47
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习数据科学初学者指南吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费电子邮件快速课程（带有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并且还可以获得课程的免费PDF电子书版本。
 - en: Important Caveats
+  id: totrans-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 重要注意事项
 - en: 'The Chi-squared test, despite its utility, has its limitations:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管卡方检验非常实用，但也有其局限性：
 - en: '**No Causation:** While the test can determine association, it doesn’t infer
     causation. So, even though there’s a significant link between a house’s external
     quality and its garage presence, you can’t conclude that one causes the other.'
+  id: totrans-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**非因果关系:** 虽然测试可以确定关联，但不能推断因果关系。因此，即使房屋外部质量与其车库存在之间存在显著联系，也不能得出一个导致另一个的结论。'
 - en: '**Directionality:** The test indicates an association but doesn’t specify its
     direction. However, our data suggests that houses labeled as “Great” in terms
     of external quality are more likely to have garages than those labeled as “Average”.'
+  id: totrans-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**方向性:** 这项测试表明了一种关联，但并未指明其方向。然而，我们的数据表明，在外部质量“优秀”的房屋中更有可能有车库，而在“一般”标记的房屋中则可能性较小。'
 - en: '**Magnitude:** The test doesn’t provide insights into the relationship’s strength.
     Other metrics, like Cramér’s V, would be more informative in this regard.'
+  id: totrans-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**幅度:** 该测试不提供关系强度的见解。其他度量指标，如克拉默V，对此更具信息性。'
 - en: '**External Validity:** Our conclusions are specific to the Ames dataset. Caution
     is advised when generalizing these findings to other regions.'
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**外部效度:** 我们的结论仅适用于Ames数据集。在将这些发现推广到其他地区时需谨慎。'
 - en: '**Further****Reading**'
+  id: totrans-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: Online
+  id: totrans-57
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 线上
 - en: '[Chi-square Test for Independence | Stat Trek](https://stattrek.com/chi-square-test/independence)'
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[独立性的卡方检验 | Stat Trek](https://stattrek.com/chi-square-test/independence)'
 - en: '[scipy.stats.chi2_contingency](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html)
     API'
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[scipy.stats.chi2_contingency](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html)
+    API'
 - en: '[Chi-square test](https://en.wikipedia.org/wiki/Chi-squared_test) on Wikipedia'
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[卡方检验](https://zh.wikipedia.org/wiki/%E5%8D%A1%E6%96%B9%E6%A3%80%E9%AA%8C)
+    在维基百科'
 - en: '**Resources**'
+  id: totrans-61
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**资源**'
 - en: '[Ames Dataset](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据集](https://raw.githubusercontent.com/Padre-Media/dataset/main/Ames.csv)'
 - en: '[Ames Data Dictionary](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Ames 数据字典](https://github.com/Padre-Media/dataset/blob/main/Ames%20Data%20Dictionary.txt)'
 - en: '**Summary**'
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this post, you delved into the Chi-squared test and its application on the
     Ames housing dataset. You discovered a significant association between a house’s
     external quality and the presence of a garage.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你深入探讨了卡方检验及其在Ames住房数据集上的应用。你发现了房屋外部质量与车库存在之间的显著关联。
 - en: 'Specifically, you learned:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: The fundamentals and practicality of the Chi-squared test.
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 卡方检验的基本原理和实际应用。
 - en: The Chi-squared test revealed a significant association between a house’s external
     quality and the presence of a garage in the Ames dataset. Houses with a “Great”
     external quality rating showed a higher likelihood of having a garage when compared
     to those with an “Average” rating, a trend that was statistically significant.
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 卡方检验揭示了Ames数据集中房屋外部质量与车库存在之间的显著关联。与“普通”评级的房屋相比，具有“优秀”外部质量评级的房屋更有可能拥有车库，这一趋势具有统计学意义。
 - en: The vital caveats and limitations of the Chi-squared test.
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 卡方检验的重要警示和局限性。
 - en: Do you have any questions? Please ask your questions in the comments below,
     and I will do my best to answer.
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？请在下面的评论中提问，我会尽力回答。

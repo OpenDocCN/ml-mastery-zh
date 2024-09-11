@@ -1,11 +1,15 @@
 - en: Multiprocessing in Python
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Python 中的多处理
 - en: 原文：[https://machinelearningmastery.com/multiprocessing-in-python/](https://machinelearningmastery.com/multiprocessing-in-python/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/multiprocessing-in-python/](https://machinelearningmastery.com/multiprocessing-in-python/)
 - en: When you work on a computer vision project, you probably need to preprocess
     a lot of image data. This is time-consuming, and it would be great if you could
     process multiple images in parallel. Multiprocessing is the ability of a system
@@ -14,71 +18,106 @@
     most computers today have at least a multi-core processor, allowing several processes
     to be executed at once. The Python Multiprocessing Module is a tool for you to
     increase your scripts’ efficiency by allocating tasks to different processes.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你在进行计算机视觉项目时，你可能需要处理大量图像数据。这是耗时的，如果能够并行处理多个图像会更好。多处理是指系统能够同时运行多个处理器。如果你有一台单处理器的计算机，它会在多个进程之间切换以保持它们的运行。然而，如今大多数计算机至少配备了多核处理器，可以同时执行多个进程。Python
+    的多处理模块是一个工具，可以通过将任务分配给不同的进程来提高脚本的效率。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将会知道：
 - en: Why we would want to use multiprocessing
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么我们要使用多处理
 - en: How to use basic tools in the Python multiprocessing module
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 Python 多处理模块中的基本工具
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的新书《机器学习的 Python》**启动你的项目，其中包括*一步步的教程*和所有示例的*Python 源代码*文件。'
 - en: Let’s get started.![](../Images/9a88deccc690ace4b32ff7249d00cfa4.png)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 开始吧.![](../Images/9a88deccc690ace4b32ff7249d00cfa4.png)
 - en: Multiprocessing in Python
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 中的多处理
 - en: Photo by [Thirdman](https://www.pexels.com/photo/wooden-interior-of-a-piano-6193847/).
     Some rights reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：[Thirdman](https://www.pexels.com/photo/wooden-interior-of-a-piano-6193847/)。保留部分权利。
 - en: Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This tutorial is divided into four parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四个部分，它们是：
 - en: Benefits of multiprocessing
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 多处理的好处
 - en: Basic multiprocessing
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 基本多处理
 - en: Multiprocessing for real use
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 实际应用中的多处理
 - en: Using joblib
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 joblib
 - en: Benefits of Multiprocessing
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 多处理的好处
 - en: You may ask, “Why Multiprocessing?” Multiprocessing can make a program substantially
     more efficient by running multiple tasks in parallel instead of sequentially.
     A similar term is multithreading, but they are different.
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会问，“为什么要使用多处理？”多处理可以通过并行运行多个任务而不是顺序运行，显著提高程序的效率。一个类似的术语是多线程，但它们是不同的。
 - en: A process is a program loaded into memory to run and does not share its memory
     with other processes. A thread is an execution unit within a process. Multiple
     threads run in a process and share the process’s memory space with each other.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 进程是加载到内存中运行的程序，并且不与其他进程共享内存。线程是进程中的一个执行单元。多个线程在一个进程中运行，并且共享进程的内存空间。
 - en: Python’s Global Interpreter Lock (GIL) only allows one thread to be run at a
     time under the interpreter, which means you can’t enjoy the performance benefit
     of multithreading if the Python interpreter is required. This is what gives multiprocessing
@@ -90,95 +129,145 @@
     where there is a lot of I/O in your program, threading may be more efficient because
     most of the time, your program is waiting for the I/O to complete. However, multiprocessing
     is generally more efficient because it runs concurrently.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 的全局解释器锁（GIL）只允许解释器下的一个线程同时运行，这意味着如果需要 Python 解释器，你不能享受多线程的性能提升。这就是为什么多处理在
+    Python 中优于多线程。多个进程可以并行运行，因为每个进程都有自己的解释器来执行分配给它的指令。此外，操作系统会将你的程序视为多个进程，并分别调度它们，即你的程序总的来说获得了更多的计算机资源。因此，当程序是
+    CPU 绑定时，多处理更快。在程序中有大量 I/O 的情况下，线程可能更有效，因为大多数时候，程序在等待 I/O 完成。然而，多处理通常更高效，因为它是并发运行的。
 - en: Basic multiprocessing
+  id: totrans-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 基本多处理
 - en: Let’s use the Python Multiprocessing module to write a basic program that demonstrates
     how to do concurrent programming.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们使用Python的Multiprocessing模块编写一个基本程序，演示如何进行并发编程。
 - en: 'Let’s look at this function, `task()`, that sleeps for 0.5 seconds and prints
     before and after the sleep:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看这个函数`task()`，它在休眠0.5秒钟后打印休眠前后的内容：
 - en: '[PRE0]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'To create a process, we simply say so using the multiprocessing module:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 要创建一个进程，我们只需使用multiprocessing模块：
 - en: '[PRE1]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The `target` argument to the `Process()` specifies the target function that
     the process runs. But these processes do not run immediately until we start them:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Process()`的`target`参数指定了进程运行的目标函数。但这些进程不会立即运行，直到我们启动它们：'
 - en: '[PRE2]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'A complete concurrent program would be as follows:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的并发程序如下：
 - en: '[PRE3]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: We must fence our main program under `if __name__ == "__main__"` or otherwise
     the `multiprocessing` module will complain. This safety construct guarantees Python
     finishes analyzing the program before the sub-process is created.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们必须将主程序放在`if __name__ == "__main__"`下，否则`multiprocessing`模块会报错。这种安全结构确保Python在创建子进程之前完成程序分析。
 - en: 'However, there is a problem with the code, as the program timer is printed
     before the processes we created are even executed. Here’s the output for the code
     above:'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，代码有个问题，因为程序计时器在我们创建的进程执行之前就已打印出来。以下是上面代码的输出：
 - en: '[PRE4]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'We need to call the `join()` function on the two processes to make them run
     before the time prints. This is because three processes are going on: `p1`, `p2`,
     and the main process. The main process is the one that keeps track of the time
     and prints the time taken to execute. We should make the line of `finish_time`
     run no earlier than the processes `p1` and `p2` are finished. We just need to
     add this snippet of code immediately after the `start()` function calls:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要对两个进程调用`join()`函数，以确保它们在时间打印之前运行。这是因为有三个进程在运行：`p1`、`p2`和主进程。主进程负责跟踪时间并打印执行所需的时间。我们应该确保`finish_time`的那一行在`p1`和`p2`进程完成之前不会运行。我们只需在`start()`函数调用后立即添加这段代码：
 - en: '[PRE5]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'The `join()` function allows us to make other processes wait until the processes
     that had `join()` called on it are complete. Here’s the output with the join statements
     added:'
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '`join()`函数允许我们使其他进程等待，直到对其调用了`join()`的进程完成。以下是添加了`join()`语句后的输出：'
 - en: '[PRE6]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'With similar reasoning, we can make more processes run. The following is the
     complete code modified from above to have 10 processes:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用类似的推理，我们可以运行更多的进程。以下是从上面修改的完整代码，设置为10个进程：
 - en: '[PRE7]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-39
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习Python进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在立即参加我的免费7天邮件速成课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并获取课程的免费PDF电子书版本。
 - en: Multiprocessing for Real Use
+  id: totrans-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 实际应用中的多进程
 - en: Starting a new process and then joining it back to the main process is how multiprocessing
     works in Python (as in many other languages). The reason we want to run multiprocessing
     is probably to execute many different tasks concurrently for speed. It can be
@@ -186,36 +275,52 @@
     also be to convert PDFs into plaintext for the subsequent natural language processing
     tasks, and we need to process a thousand PDFs. Usually, we will create a function
     that takes an argument (e.g., filename) for such tasks.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 启动一个新进程然后将其合并回主进程是Python（以及许多其他语言）中多进程的工作方式。我们想要运行多进程的原因可能是为了并行执行多个不同的任务以提高速度。这可以是一个图像处理函数，我们需要对数千张图像进行处理。也可以是将PDF转换为文本以进行后续的自然语言处理任务，我们需要处理一千个PDF。通常，我们会创建一个接收参数（例如，文件名）的函数来完成这些任务。
 - en: 'Let’s consider a function:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们考虑一个函数：
 - en: '[PRE8]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'If we want to run it with arguments 1 to 1,000, we can create 1,000 processes
     and run them in parallel:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们想要运行从1到1,000的参数，我们可以创建1,000个进程并行运行：
 - en: '[PRE9]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'However, this will not work as you probably have only a handful of cores in
     your computer. Running 1,000 processes is creating too much overhead and overwhelming
     the capacity of your OS. Also, you may have exhausted your memory. The better
     way is to run a process pool to limit the number of processes that can be run
     at a time:'
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，这不会有效，因为你可能只有少量的核心。运行1,000个进程会造成过多的开销，超出操作系统的容量。此外，你可能已经耗尽了内存。更好的方法是运行进程池，以限制同时运行的进程数量：
 - en: '[PRE10]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The argument for `multiprocessing.Pool()` is the number of processes to create
     in the pool. If omitted, Python will make it equal to the number of cores you
     have in your computer.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '`multiprocessing.Pool()`的参数是要在池中创建的进程数。如果省略，Python将其设置为你计算机中的核心数量。'
 - en: We use the `apply_async()` function to pass the arguments to the function `cube`
     in a list comprehension. This will create tasks for the pool to run. It is called
     “`async`” (asynchronous) because we didn’t wait for the task to finish, and the
@@ -225,150 +330,224 @@
     the order of the result corresponds to the arguments we created in the asynchronous
     tasks. However, this does not mean the processes are started or finished in this
     order inside the pool.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用`apply_async()`函数将参数传递给`cube`函数的列表推导。这将为池创建任务。它被称为“`async`”（异步），因为我们没有等待任务完成，主进程可能会继续运行。因此，`apply_async()`函数不会返回结果，而是一个我们可以使用的对象`get()`，以等待任务完成并检索结果。由于我们在列表推导中获取结果，因此结果的顺序对应于我们在异步任务中创建的参数。然而，这并不意味着进程在池中按此顺序启动或完成。
 - en: 'If you think writing lines of code to start processes and join them is too
     explicit, you can consider using `map()` instead:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你认为编写代码行来启动进程并将其连接起来过于显式，你可以考虑使用`map()`代替：
 - en: '[PRE11]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'We don’t have the start and join here because it is hidden behind the `pool.map()`
     function. What it does is split the iterable `range(1,1000)` into chunks and runs
     each chunk in the pool. The map function is a parallel version of the list comprehension:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在这里没有使用start和join，因为它们被隐藏在`pool.map()`函数后面。`pool.map()`的作用是将可迭代对象`range(1,1000)`拆分成块，并在池中运行每个块。map函数是列表推导的并行版本：
 - en: '[PRE12]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'But the modern-day alternative is to use `map` from `concurrent.futures`, as
     follows:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 但现代的替代方法是使用`concurrent.futures`中的`map`，如下所示：
 - en: '[PRE13]'
+  id: totrans-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: This code is running the `multiprocessing` module under the hood. The beauty
     of doing so is that we can change the program from multiprocessing to multithreading
     by simply replacing `ProcessPoolExecutor` with `ThreadPoolExecutor`. Of course,
     you have to consider whether the global interpreter lock is an issue for your
     code.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码在后台运行了`multiprocessing`模块。这样做的好处是，我们可以通过将`ProcessPoolExecutor`替换为`ThreadPoolExecutor`，将程序从多进程改为多线程。当然，你必须考虑全局解释器锁是否对你的代码构成问题。
 - en: Using joblib
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用joblib
 - en: 'The package `joblib` is a set of tools to make parallel computing easier. It
     is a common third-party library for multiprocessing. It also provides caching
     and serialization functions. To install the `joblib` package, use the command
     in the terminal:'
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '`joblib`包是一组使并行计算更简单的工具。它是用于多进程的常见第三方库。它还提供缓存和序列化功能。要安装`joblib`包，请在终端中使用以下命令：'
 - en: '[PRE14]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'We can convert our previous example into the following to use `joblib`:'
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将之前的例子转换为如下，以使用`joblib`：
 - en: '[PRE15]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Indeed, it is intuitive to see what it does. The `delayed()` function is a wrapper
     to another function to make a “delayed” version of the function call. Which means
     it will not execute the function immediately when it is called.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，看到它的作用是直观的。`delayed()`函数是对另一个函数的包装器，旨在创建一个“延迟”的函数调用版本。这意味着它在被调用时不会立即执行函数。
 - en: Then we call the delayed function multiple times with different sets of arguments
     we want to pass to it. For example, when we give integer `1` to the delayed version
     of the function `cube`, instead of computing the result, we produce a tuple, `(cube,
     (1,), {})` for the function object, the positional arguments, and keyword arguments,
     respectively.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们多次调用延迟函数，并传递我们希望传递给它的不同参数集。例如，当我们将整数`1`传递给`cube`函数的延迟版本时，我们不会计算结果，而是为函数对象、位置参数和关键字参数分别生成一个元组`(cube,
+    (1,), {})`。
 - en: We created the engine instance with `Parallel()`. When it is invoked like a
     function with the list of tuples as an argument, it will actually execute the
     job as specified by each tuple in parallel and collect the result as a list after
     all jobs are finished. Here we created the `Parallel()` instance with `n_jobs=3`,
     so there will be three processes running in parallel.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用`Parallel()`创建了引擎实例。当它像函数一样被调用并传入包含元组的列表作为参数时，它实际上会并行执行每个元组指定的任务，并在所有任务完成后将结果汇总为一个列表。在这里，我们使用`n_jobs=3`创建了`Parallel()`实例，因此会有三个进程并行运行。
 - en: 'We can also write the tuples directly. Hence the code above can be rewritten
     as:'
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以直接写出元组。因此，上面的代码可以重写为：
 - en: '[PRE16]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'The benefit of using `joblib` is that we can run the code in multithread by
     simply adding an additional argument:'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 `joblib` 的好处在于，我们可以通过简单地添加一个额外的参数来在多线程中运行代码：
 - en: '[PRE17]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: And this hides all the details of running functions in parallel. We simply use
     a syntax not too much different from a plain list comprehension.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 这隐藏了并行运行函数的所有细节。我们只需使用一种与普通列表推导式差别不大的语法。
 - en: Further Reading
+  id: totrans-72
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多关于该主题的资源，如果你想深入了解。
 - en: Books
+  id: totrans-74
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[High Performance Python](https://www.amazon.com/dp/1718502222/), 2nd edition,
     by Micha Gorelick and Ian Ozsvald'
+  id: totrans-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[高性能 Python](https://www.amazon.com/dp/1718502222/)，第二版，由 Micha Gorelick 和
+    Ian Ozsvald 著'
 - en: APIs
+  id: totrans-76
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: API
 - en: '[joblib](https://joblib.readthedocs.io/en/latest/)'
+  id: totrans-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[joblib](https://joblib.readthedocs.io/en/latest/)'
 - en: '[multiprocessing](https://docs.python.org/3/library/multiprocessing.html) in
     Python standard library'
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[multiprocessing](https://docs.python.org/3/library/multiprocessing.html) 是
+    Python 标准库中的一部分'
 - en: '[concurrent.futures](https://docs.python.org/3/library/concurrent.futures.html)
     in Python standard library'
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[concurrent.futures](https://docs.python.org/3/library/concurrent.futures.html)
+    是 Python 标准库中的一部分'
 - en: Summary
+  id: totrans-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you learned how we run Python functions in parallel for speed.
     In particular, you learned:'
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何并行运行 Python 函数以提高速度。特别是，你学到了：
 - en: How to use the `multiprocessing` module in Python to create new processes that
     run a function
+  id: totrans-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 `multiprocessing` 模块在 Python 中创建运行函数的新进程
 - en: The mechanism of launching and completing a process
+  id: totrans-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 启动和完成进程的机制
 - en: The use of process pool in `multiprocessing` for controlled multiprocessing
     and the counterpart syntax in `concurrent.futures`
+  id: totrans-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 `multiprocessing` 中使用进程池进行受控的多进程处理以及 `concurrent.futures` 中的对应语法
 - en: How to use the third-party library `joblib` for multiprocessing
+  id: totrans-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用第三方库 `joblib` 进行多进程处理

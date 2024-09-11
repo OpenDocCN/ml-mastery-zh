@@ -1,276 +1,417 @@
 - en: 'Image Feature Extraction in OpenCV: Keypoints and Description Vectors'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: OpenCV 中的图像特征提取：关键点和描述向量
 - en: 原文：[https://machinelearningmastery.com/opencv_sift_surf_orb_keypoints/](https://machinelearningmastery.com/opencv_sift_surf_orb_keypoints/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/opencv_sift_surf_orb_keypoints/](https://machinelearningmastery.com/opencv_sift_surf_orb_keypoints/)
 - en: In the [previous post](https://machinelearningmastery.com/opencv_edges_and_corners/),
     you learned some basic feature extraction algorithms in OpenCV. The features are
     extracted in the form of classifying pixels. These indeed abstract the features
     from images because you do not need to consider the different color channels of
     each pixel, but to consider a single value. In this post, you will learn some
     other feature extract algorithms that can tell you about the image more concisely.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 [上一篇文章](https://machinelearningmastery.com/opencv_edges_and_corners/) 中，你学习了一些
+    OpenCV 中的基本特征提取算法。特征以分类像素的形式提取。这确实从图像中抽象出特征，因为你不需要考虑每个像素的不同颜色通道，而是考虑一个单一的值。在这篇文章中，你将学习一些其他特征提取算法，它们可以更简洁地告诉你关于图像的信息。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: What are keypoints in an image
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 图像中的关键点是什么
 - en: What are the common algorithms available in OpenCV for extracting keypoints
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 OpenCV 中用于提取关键点的常见算法有哪些
 - en: '**Kick-start your project** with my book [Machine Learning in OpenCV](https://machinelearning.samcart.com/products/machine-learning-opencv/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**通过我的书籍** [《OpenCV 中的机器学习》](https://machinelearning.samcart.com/products/machine-learning-opencv/)
+    **启动你的项目**。它提供了 **自学教程** 和 **有效的代码**。'
 - en: Let’s get started.![](../Images/024d2c09a7b79bfc4ab5d65e42396879.png)
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。![](../Images/024d2c09a7b79bfc4ab5d65e42396879.png)
 - en: 'Image Feature Extraction in OpenCV: Keypoints and Description Vectors'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenCV 中的图像特征提取：关键点和描述向量
 - en: Photo by [Silas Köhler](https://unsplash.com/photos/black-skeleton-keys-C1P4wHhQbjM),
     some rights reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Silas Köhler](https://unsplash.com/photos/black-skeleton-keys-C1P4wHhQbjM)
+    提供，部分权利保留。
 - en: '**Overview**'
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**概述**'
 - en: 'This post is divided into two parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文分为两个部分；它们是：
 - en: Keypoint Detection with SIFT and SURF in OpenCV
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 SIFT 和 SURF 进行 OpenCV 中的关键点检测
 - en: Keypoint Detection using ORB in OpenCV
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 ORB 进行 OpenCV 中的关键点检测
 - en: '**Prerequisites**'
+  id: totrans-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**先决条件**'
 - en: 'For this tutorial, we assume that you are already familiar with:'
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本教程，我们假设你已经熟悉：
 - en: '[Reading and displaying images using OpenCV](https://machinelearningmastery.com/?p=14402&preview=true)'
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[使用 OpenCV 读取和显示图像](https://machinelearningmastery.com/?p=14402&preview=true)'
 - en: Keypoint Detection with SIFT and SURF in OpenCV
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 SIFT 和 SURF 进行 OpenCV 中的关键点检测
 - en: Scale-Invariant Feature Transform (SIFT) and Speeded-Up Robust Features (SURF)
     are powerful algorithms for detecting and describing local features in images.
     They are named scale-invariant and robust because, compared to Harris Corner Detection,
     for example, its result is expectable even after some change to the image.
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 尺度不变特征变换（SIFT）和加速稳健特征（SURF）是用于检测和描述图像中局部特征的强大算法。它们被称为尺度不变和鲁棒，是因为与 Harris 角点检测相比，其结果在图像发生某些变化后仍然是可以预期的。
 - en: The SIFT algorithm applies Gaussian blur to the image and computes the difference
     in multiple scales. Intuitively, such a difference will be zero if your entire
     image is a single flat color. Hence, this algorithm is called keypoint detection,
     which identifies a place in the image with the most significant change in pixel
     values, such as corners.
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: SIFT 算法对图像应用高斯模糊，并计算多个尺度下的差异。直观上，如果整个图像是单一的平面颜色，这种差异将为零。因此，这个算法被称为关键点检测，它识别图像中像素值变化最显著的地方，例如角点。
 - en: The SIFT algorithm derives certain “orientation” values for each keypoint and
     outputs a vector representing the histogram of the orientation values.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: SIFT 算法为每个关键点推导出某些“方向”值，并输出表示方向值直方图的向量。
 - en: It is found quite slow to run SIFT algorithm. Hence, there is a speed-up version,
     SURF. Describing the SIFT and SURF algorithms in detail would be lengthy, but
     luckily, you do not need to understand too much to use it with OpenCV.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行 SIFT 算法的速度比较慢，因此有一个加速版本，即 SURF。详细描述 SIFT 和 SURF 算法会比较冗长，但幸运的是，你不需要了解太多就可以在
+    OpenCV 中使用它。
 - en: 'Let’s look at an example using the following image:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们通过以下图像看一个例子：
 - en: '[https://unsplash.com/photos/VSLPOL9PwB8](https://unsplash.com/photos/VSLPOL9PwB8)'
+  id: totrans-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[https://unsplash.com/photos/VSLPOL9PwB8](https://unsplash.com/photos/VSLPOL9PwB8)'
 - en: 'Similar to the previous post, SIFT and SURF algorithms assume a grayscale image.
     This time, you need to create a detector first and apply it to the image:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 与之前的帖子类似，SIFT 和 SURF 算法假设图像为灰度图像。这次，你需要首先创建一个检测器，并将其应用于图像：
 - en: '[PRE0]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '**NOTE:** You may find difficulties in running the above code in your OpenCV
     installation. To make this run, you may need to compile your own OpenCV module
     from scratch. It is because SIFT and SURF were patented, so OpenCV considered
     them “non-free”. Since the SIFT patent has already expired (SURF is still in effect),
     you may find SIFT works fine if you download a newer version of OpenCV.'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意：** 你可能会发现运行上述代码时在你的 OpenCV 安装中遇到困难。为了使其运行，你可能需要从头编译自己的 OpenCV 模块。这是因为
+    SIFT 和 SURF 已经申请了专利，所以 OpenCV 认为它们是“非自由”的。由于 SIFT 专利已过期（SURF 仍在有效期内），如果你下载一个更新版本的
+    OpenCV，你可能会发现 SIFT 运行正常。'
 - en: The output of the SIFT or SURF algorithm are a list of keypoints and a numpy
     array of descriptors. The descriptors array is Nx128 for N keypoints, each represented
     by a vector of length 128\. Each keypoint is an object with several attributes,
     such as the orientation angle.
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: SIFT 或 SURF 算法的输出是一个关键点列表和一个描述符的 numpy 数组。描述符数组是 Nx128，对于 N 个关键点，每个由长度为 128
+    的向量表示。每个关键点是一个具有多个属性的对象，例如方向角度。
 - en: There can be a lot of keypoints detected by default, because this helps one
     of the best uses for detected keypoints — to find associations between distorted
     images.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下可以检测到许多关键点，因为这有助于关键点的最佳用途之一——寻找失真图像之间的关联。
 - en: To reduce the number of detected keypoint in the output, you can set a higher
     “contrast threshold” and lower “edge threshold” (default to be 0.03 and 10 respectively)
     in SIFT or increase the “Hessian threshold” (default 100) in SURF. These can be
     adjusted at the detector object using `sift.setContrastThreshold(0.03)`, `sift.setEdgeThreshold(10)`,
     and `surf.setHessianThreshold(100)` respectively.
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了减少输出中检测到的关键点数量，你可以在 SIFT 中设置更高的“对比度阈值”和更低的“边缘阈值”（默认值分别为 0.03 和 10），或者在 SURF
+    中增加“Hessian 阈值”（默认值为 100）。这些可以通过 `sift.setContrastThreshold(0.03)`、`sift.setEdgeThreshold(10)`
+    和 `surf.setHessianThreshold(100)` 进行调整。
 - en: 'To draw the keypoints on the image, you can use the `cv2.drawKeypoints()` function
     and apply the list of all keypoints to it. The complete code, using only the SIFT
     algorithm and setting a very high threshold to keep only a few keypoints, is as
     follows:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 要在图像上绘制关键点，你可以使用 `cv2.drawKeypoints()` 函数，并将所有关键点的列表应用于它。完整代码，使用仅 SIFT 算法并设置非常高的阈值以保留少量关键点，如下所示：
 - en: '[PRE1]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The image created is as follows:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建的图像如下：
 - en: '![](../Images/b24e32936e21c3ce59b89b1263f1df22.png)'
+  id: totrans-33
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/b24e32936e21c3ce59b89b1263f1df22.png)'
 - en: Keypoints detected by the SIFT algorithm (zoomed in)
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: SIFT 算法检测到的关键点（放大查看）
 - en: Original photo by [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8),
     some rights reserved.
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 原始照片由 [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8) 提供，部分权利保留。
 - en: The function `cv2.drawKeypoints()` will not modify your original image, but
     return a new one. In the picture above, you can see the keypoints drawn as circles
     proportional to its “size” with a stroke indicating the orientation. There are
     keypoints on the number “17” on the door as well as on the mail slots. But there
     are indeed more. From the for loop above, you can see that some keypoints are
     overlapped because multiple orientation angles are found.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '`cv2.drawKeypoints()` 函数不会修改你的原始图像，而是返回一个新图像。在上面的图片中，你可以看到关键点被绘制为与其“大小”成比例的圆圈，并有一个表示方向的描边。门上的“17”号以及邮件槽上都有关键点，但实际上还有更多。从上面的
+    for 循环中，你可以看到一些关键点重叠，因为发现了多个方向角度。'
 - en: In showing the keypoints on the image, you used the keypoint objects returned.
     However, you may find the feature vectors stored in `descriptors` useful if you
     want to further process the keypoints, such as running a clustering algorithm.
     But note that you still need the list of keypoints for information, such as the
     coordinates, to match the feature vectors.
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 在图像上显示关键点时，你使用了返回的关键点对象。然而，如果你想进一步处理关键点，例如运行聚类算法，你可能会发现存储在 `descriptors` 中的特征向量很有用。但请注意，你仍然需要关键点列表中的信息，例如坐标，以匹配特征向量。
 - en: Keypoint Detection using ORB in OpenCV
+  id: totrans-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 OpenCV 中的 ORB 进行关键点检测
 - en: Since the SIFT and SURF algorithms are patented, there is an incentive to develop
     a free alternative that doesn’t need to be licensed. It is a product of the OpenCV
     developers themselves.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于 SIFT 和 SURF 算法已经申请了专利，因此有开发无需许可的免费替代品的动力。这是 OpenCV 开发者自己开发的产品。
 - en: 'ORB stands for Oriented FAST and Rotated BRIEF. It is a combination of two
     other algorithms, FAST and BRIEF with modifications to match the performance of
     SIFT and SURF. You do not need to understand the algorithm details to use it,
     and its output is also a list of keypoint objects, as follows:'
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: ORB 代表定向 FAST 和旋转 BRIEF。它是两个其他算法 FAST 和 BRIEF 的组合，并进行了修改以匹配 SIFT 和 SURF 的性能。你无需了解算法细节就可以使用它，输出结果也是一个关键点对象的列表，如下所示：
 - en: '[PRE2]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: In the above, you set the ORB to generate the top 30 keypoints when you created
     the detector. By default, this number will be 500.
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的操作中，你设置了 ORB 以在创建探测器时生成前 30 个关键点。默认情况下，这个数字是 500。
 - en: The detector returns a list of keypoints and a numpy array of descriptors (feature
     vector of each keypoint) exactly as before. However, the descriptors of each keypoint
     are now of length-32 instead of 128.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 探测器返回的仍然是关键点列表和描述符的 numpy 数组（每个关键点的特征向量）。然而，现在每个关键点的描述符长度为 32，而不是 128。
 - en: 'The generated keypoints are as follows:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成的关键点如下：
 - en: '![](../Images/dac0ab34ca23dab6ba83dbb937ec3667.png)'
+  id: totrans-45
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/dac0ab34ca23dab6ba83dbb937ec3667.png)'
 - en: Keypoints detected by ORB algorithm
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: ORB 算法检测的关键点
 - en: Original photo by [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8),
     some rights reserved.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 原始照片由 [Gleren Meneghin](https://unsplash.com/photos/VSLPOL9PwB8) 提供，部分权利保留。
 - en: You can see, keypoints are generated roughly at the same location. The results
     are not exactly the same because there are overlapping keypoints (or offset by
     a very small distance) and easily the ORB algorithm reached the maximum count
     of 30\. Moreover, the size are not comparable between different algorithms.
+  id: totrans-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到，关键点大致生成在相同的位置。结果并不完全相同，因为存在重叠的关键点（或偏移了非常小的距离），ORB 算法容易达到 30 的最大数量。此外，不同算法之间的大小不可比较。
 - en: Want to Get Started With Machine Learning with OpenCV?
+  id: totrans-49
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 OpenCV 进行机器学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在立即获取我的免费电子邮件速成课程（附样例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费 PDF 电子书版本。
 - en: '**Further Reading**'
+  id: totrans-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多资源，如果你想深入了解这个话题。
 - en: '**Books**'
+  id: totrans-54
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913),
     2019.'
+  id: totrans-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Mastering OpenCV 4 with Python](https://www.amazon.com/Mastering-OpenCV-Python-practical-processing/dp/1789344913)，2019
+    年。'
 - en: '**Websites**'
+  id: totrans-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**网站**'
 - en: OpenCV, [https://opencv.org/](https://opencv.org/)
+  id: totrans-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV，[https://opencv.org/](https://opencv.org/)
 - en: OpenCV Feature Detection and Description, [https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html](https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html)
+  id: totrans-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: OpenCV 特征检测与描述，[https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html](https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html)
 - en: '**Summary**'
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you learned how to apply OpenCV’s keypoint detection algorithms,
     SIFT, SURF, and ORB.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何应用 OpenCV 的关键点检测算法，SIFT、SURF 和 ORB。
 - en: 'Specifically, you learned:'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: What is a keypoint in an image
+  id: totrans-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 图像中的关键点是什么
 - en: How to find the keypoints and the associated description vectors using OpenCV
     functions.
+  id: totrans-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 OpenCV 函数查找关键点及其相关描述向量。
 - en: If you have any questions, please leave a comment below.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你有任何问题，请在下方留言。

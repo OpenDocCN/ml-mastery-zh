@@ -1,144 +1,219 @@
 - en: A Guide to Obtaining Time Series Datasets in Python
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 获取时间序列数据集的指南
 - en: 原文：[https://machinelearningmastery.com/a-guide-to-obtaining-time-series-datasets-in-python/](https://machinelearningmastery.com/a-guide-to-obtaining-time-series-datasets-in-python/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/a-guide-to-obtaining-time-series-datasets-in-python/](https://machinelearningmastery.com/a-guide-to-obtaining-time-series-datasets-in-python/)
 - en: Datasets from real-world scenarios are important for building and testing machine
     learning models. You may just want to have some data to experiment with an algorithm.
     You may also want to evaluate your model by setting up a benchmark or determining
     its weaknesses using different sets of data. Sometimes, you may also want to create
     synthetic datasets, where you can test your algorithms under controlled conditions
     by adding noise, correlations, or redundant information to the data.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 来自真实世界场景的数据集对构建和测试机器学习模型至关重要。你可能只是想有一些数据来实验算法。你也可能想通过设置基准或使用不同的数据集来评估你的模型的弱点。有时，你可能还想创建合成数据集，通过向数据中添加噪声、相关性或冗余信息，在受控条件下测试你的算法。
 - en: In this post, we’ll illustrate how you can use Python to fetch some real-world
     time-series data from different sources. We’ll also create synthetic time-series
     data using Python’s libraries.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我们将演示如何使用 Python 从不同来源获取一些真实的时间序列数据。我们还将使用 Python 的库创建合成时间序列数据。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解：
 - en: How to use the `pandas_datareader`
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 `pandas_datareader`
 - en: How to call a web data server’s APIs using the `requests` library
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 `requests` 库调用网络数据服务器的 API
 - en: How to generate synthetic time-series data
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何生成合成时间序列数据
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**开启你的项目**，请参考我新书 [《Python 机器学习》](https://machinelearningmastery.com/python-for-machine-learning/)，包括
+    *一步一步的教程* 和所有示例的 *Python 源代码* 文件。'
 - en: Let’s get started.[![Picture of sea waves and a bird](../Images/8afd3fb3afbbb8c2bf99d5530ec64b67.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/IMG_0628-scaled.jpg)
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。[![海浪和鸟的图片](../Images/8afd3fb3afbbb8c2bf99d5530ec64b67.png)](https://machinelearningmastery.com/wp-content/uploads/2022/03/IMG_0628-scaled.jpg)
 - en: A Guide to Working With Datasets in Python
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Python 中处理数据集的指南
 - en: Photo by Mehreen Saeed, some rights reserved
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源于 Mehreen Saeed，部分权利保留
 - en: Tutorial Overview
+  id: totrans-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is divided into three parts; they are:'
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三个部分，分别是：
 - en: Using `pandas_datareader`
+  id: totrans-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用 `pandas_datareader`
 - en: Using the `requests` library to fetch data using the remote server’s APIs
+  id: totrans-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用 `requests` 库通过远程服务器的 API 获取数据
 - en: Generate synthetic time-series data
+  id: totrans-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 生成合成时间序列数据
 - en: Loading Data Using pandas-datareader
+  id: totrans-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 pandas-datareader 加载数据
 - en: 'This post will depend on a few libraries. If you haven’t installed them in
     your system, you may install them using `pip`:'
+  id: totrans-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文将依赖于一些库。如果你还未安装它们，可以使用 `pip` 安装：
 - en: '[PRE0]'
+  id: totrans-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The `pandas_datareader` library allows you to [fetch data from different sources,](https://pandas-datareader.readthedocs.io/en/latest/readers/index.html)
     including Yahoo Finance for financial market data, World Bank for global development
     data, and St. Louis Fed for economic data. In this section, we’ll show how you
     can load data from different sources.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '`pandas_datareader` 库允许你 [从不同的数据源获取数据](https://pandas-datareader.readthedocs.io/en/latest/readers/index.html)，包括
+    Yahoo Finance（获取金融市场数据）、世界银行（获取全球发展数据）以及圣路易斯联邦储备银行（获取经济数据）。在本节中，我们将展示如何从不同的数据源加载数据。'
 - en: Behind the scene, `pandas_datareader` pulls the data you want from the web in
     real time and assembles it into a pandas DataFrame. Because of the vastly different
     structure of web pages, each data source needs a different reader. Hence, pandas_datareader
     only supports reading from a limited number of sources, mostly related to financial
     and economic time series.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在幕后，`pandas_datareader` 实时从网络中提取你所需的数据，并将其组装成 pandas DataFrame。由于网页结构差异巨大，每个数据源需要不同的读取器。因此，pandas_datareader
+    仅支持从有限数量的数据源读取，主要与金融和经济时间序列相关。
 - en: 'Fetching data is simple. For example, we know that the stock ticker for Apple
     is AAPL, so we can get the daily historical prices of Apple stock from Yahoo Finance
     as follows:'
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 获取数据很简单。例如，我们知道苹果公司的股票代码是 AAPL，因此我们可以通过 Yahoo Finance 获取苹果公司股票的每日历史价格，如下所示：
 - en: '[PRE1]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The call to `DataReader()` requires the first argument to specify the ticker
     and the second argument the data source. The above code prints the DataFrame:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 调用`DataReader()`时，第一个参数需要指定股票代码，第二个参数指定数据来源。上述代码打印出DataFrame：
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'We may also fetch the stock price history from multiple companies with the
     tickers in a list:'
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以从多个公司获取股票价格历史数据，方法是使用一个包含股票代码的列表：
 - en: '[PRE3]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'and the result would be a DataFrame with multi-level columns:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果将是一个具有多层列的DataFrame：
 - en: '[PRE4]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Because of the structure of DataFrames, it is convenient to extract part of
     the data. For example, we can plot only the daily close price on some dates using
     the following:'
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于DataFrames的结构，提取部分数据非常方便。例如，我们可以使用以下方法仅绘制某些日期的每日收盘价：
 - en: '[PRE5]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '![](../Images/3a8ff2424899b5e433bb929c61f62270.png)'
+  id: totrans-32
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/3a8ff2424899b5e433bb929c61f62270.png)'
 - en: Multiple shares fetched from Yahoo Finance
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 从Yahoo Finance获取的多个股票
 - en: 'The complete code is as follows:'
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整代码如下：
 - en: '[PRE6]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The syntax for reading from another data source using pandas-datareader is similar.
     For example, we can read an economic time series from the [Federal Reserve Economic
     Data (FRED)](https://fred.stlouisfed.org/). Every time series in FRED is identified
@@ -147,92 +222,139 @@
     for all items less food and energy is [CPILFESL,](https://fred.stlouisfed.org/series/CPILFESL)
     and personal consumption expenditure is [PCE](https://fred.stlouisfed.org/series/PCE).
     You can search and look up the symbols from FRED’s webpage.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用pandas-datareader从另一个数据源读取数据的语法类似。例如，我们可以从[联邦储备经济数据（FRED）](https://fred.stlouisfed.org/)读取经济时间序列。FRED中的每个时间序列都有一个符号。例如，所有城市消费者的消费者价格指数是[CPIAUCSL](https://fred.stlouisfed.org/series/CPIAUCSL)，不包括食品和能源的所有项目的消费者价格指数是[CPILFESL](https://fred.stlouisfed.org/series/CPILFESL)，个人消费支出是[PCE](https://fred.stlouisfed.org/series/PCE)。你可以在FRED的网页上搜索和查找这些符号。
 - en: 'Below is how we can obtain two consumer price indices, CPIAUCSL and CPILFESL,
     and show them in a plot:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是如何获取两个消费者价格指数，CPIAUCSL和CPILFESL，并在图中显示它们：
 - en: '[PRE7]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '![](../Images/a24165e267eec61782aae6a54ca27092.png)'
+  id: totrans-39
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/a24165e267eec61782aae6a54ca27092.png)'
 - en: Plot of Consumer Price Index
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 消费者物价指数图
 - en: Obtaining data from World Bank is also similar, but we have to understand that
     the data from World Bank is more complicated. Usually, a data series, such as
     population, is presented as a time series and also has the countries dimension.
     Therefore, we need to specify more parameters to obtain the data.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 从世界银行获取数据也类似，但我们需要理解世界银行的数据更为复杂。通常，数据系列，如人口，以时间序列的形式呈现，并且还具有国家维度。因此，我们需要指定更多参数来获取数据。
 - en: 'Using `pandas_datareader`, we have a specific set of APIs for the World Bank.
     The symbol for an indicator can be looked up from [World Bank Open Data](https://data.worldbank.org/) or
     searched using the following:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用`pandas_datareader`，我们可以使用一组特定的世界银行API。可以从[世界银行开放数据](https://data.worldbank.org/)中查找指标的符号，或者使用以下方法进行搜索：
 - en: '[PRE8]'
+  id: totrans-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The `search()` function accepts a regular expression string (e.g., `.*` above
     means string of any length). This will print:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '`search()`函数接受一个正则表达式字符串（例如，上述`.*`表示任何长度的字符串）。这将打印出：'
 - en: '[PRE9]'
+  id: totrans-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: where the `id` column is the symbol for the time series.
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中`id`列是时间序列的符号。
 - en: 'We can read data for specific countries by specifying the ISO-3166-1 country
     code. But World Bank also contains non-country aggregates (e.g., South Asia),
     so while `pandas_datareader` allows us to use the string “`all`” for all countries,
     usually we do not want to use it. Below is how we can get a list of all countries
     and aggregates from the World Bank:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过指定ISO-3166-1国家代码来读取特定国家的数据。但世界银行也包含非国家的汇总数据（例如，南亚），因此虽然`pandas_datareader`允许我们使用“`all`”字符串表示所有国家，但通常我们不希望使用它。以下是如何从世界银行获取所有国家和汇总数据列表：
 - en: '[PRE10]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '[PRE11]'
+  id: totrans-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Below is how we can get the population of all countries in 2020 and show the
     top 25 countries in a bar chart. Certainly, we can also get the population data
     across years by specifying a different `start` and `end` year:'
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是如何获取2020年所有国家的人口数据，并在条形图中展示前25个国家的情况。当然，我们也可以通过指定不同的`start`和`end`年份来获取跨年度的人口数据：
 - en: '[PRE12]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '![](../Images/65dc3d1bc4e7adfcb14cacb657c62458.png)'
+  id: totrans-52
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/65dc3d1bc4e7adfcb14cacb657c62458.png)'
 - en: Bar chart of total population of different countries
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 不同国家总人口的条形图
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-54
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始学习用于机器学习的Python？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就参加我的免费7天邮件速成课程（附示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，并获取课程的免费 PDF 电子书版本。
 - en: Fetching Data Using Web APIs
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 Web APIs 获取数据
 - en: Instead of using `the pandas_datareader` library, sometimes you have the option
     to fetch data directly from a web data server by calling its web APIs without
     any authentication needed. It can be done in Python using the standard library
     `urllib.requests`, or you may also use the `requests` library for an easier interface.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时，你可以选择直接从 Web 数据服务器获取数据，而无需进行任何身份验证。这可以通过使用标准库 `urllib.requests` 在 Python
+    中完成，或者你也可以使用 `requests` 库以获得更简单的接口。
 - en: 'World Bank is an example where web APIs are freely available, so we can easily
     read data in different formats, such as JSON, XML, or plain text. The page on
     [the World Bank data repository’s API](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589-developer-information)
@@ -240,223 +362,342 @@
     in the previous example without using `pandas_datareader`, we first construct
     a URL to read a list of all countries so we can find the country code that is
     not an aggregate. Then, we can construct a query URL with the following arguments:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 世界银行是一个示例，其中 Web APIs 自由提供，因此我们可以轻松读取不同格式的数据，如 JSON、XML 或纯文本。页面上的 [世界银行数据存储库
+    API](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589-developer-information)
+    描述了各种 API 及其相应参数。为了重复我们在之前示例中所做的，而不使用 `pandas_datareader`，我们首先构造一个 URL 以读取所有国家的列表，以便找到不是汇总的国家代码。然后，我们可以构造一个查询
+    URL，包含以下参数：
 - en: '`country` argument with value = `all`'
+  id: totrans-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`country` 参数值 = `all`'
 - en: '`indicator` argument with value = `SP.POP.TOTL`'
+  id: totrans-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`indicator` 参数值 = `SP.POP.TOTL`'
 - en: '`date` argument with value = `2020`'
+  id: totrans-62
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`date` 参数值 = `2020`'
 - en: '`format` argument with value = `json`'
+  id: totrans-63
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`format` 参数值 = `json`'
 - en: 'Of course, you can experiment with different [indicators](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation).
     By default, the World Bank returns 50 items on a page, and we need to query for
     one page after another to exhaust the data. We can enlarge the page size to get
     all data in one shot. Below is how we get the list of countries in JSON format
     and collect the country codes:'
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，你可以尝试不同的 [指标](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation)。默认情况下，世界银行在每页上返回
+    50 项，我们需要逐页查询以获取所有数据。我们可以扩大页面大小，以便一次性获取所有数据。下面是如何以 JSON 格式获取国家列表并收集国家代码：
 - en: '[PRE13]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'It will print the HTTP status code, the header, and the list of country codes
     as follows:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 它将打印 HTTP 状态码、页眉以及国家代码列表，如下所示：
 - en: '[PRE14]'
+  id: totrans-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'From the header, we can verify that we exhausted the data (page 1 out of 1).
     Then we can get all population data as follows:'
+  id: totrans-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 从页眉中，我们可以验证数据已被耗尽（第 1 页，共 1 页）。然后我们可以获取所有的人口数据，如下所示：
 - en: '[PRE15]'
+  id: totrans-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'You should check the World Bank API documentation for details on how to construct
     the URL. For example, the date syntax of `2020:2021` would mean the start and
     end years, and the extra parameter `page=3` will give you the third page in a
     multi-page result. With the data fetched, we can filter for only those non-aggregate
     countries, make it into a pandas DataFrame for sorting, and then plot the bar
     chart:'
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应查看世界银行 API 文档，了解如何构造 URL。例如，`2020:2021` 的日期语法表示开始和结束年份，额外参数 `page=3` 将为你提供多页结果中的第三页。获取数据后，我们可以筛选出非汇总国家，将其转换为
+    pandas DataFrame 以进行排序，然后绘制条形图：
 - en: '[PRE16]'
+  id: totrans-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: The figure should be precisely the same as before. But as you can see, using
     `pandas_datareader` helps make the code more concise by hiding the low-level operations.
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 图形应与之前完全相同。但正如你所见，使用 `pandas_datareader` 有助于通过隐藏低级操作使代码更加简洁。
 - en: 'Putting everything together, the following is the complete code:'
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容整合在一起，以下是完整的代码：
 - en: '[PRE17]'
+  id: totrans-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Creating Synthetic Data Using NumPy
+  id: totrans-75
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用 NumPy 创建合成数据
 - en: Sometimes, we may not want to use real-world data for our project because we
     need something specific that may not happen in reality. One particular example
     is to test out a model with ideal time-series data. In this section, we will see
     how we can create synthetic autoregressive (AR) time-series data.
+  id: totrans-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时，我们可能不想使用现实世界的数据，因为我们需要特定的内容，这些内容在现实中可能不会发生。一个具体的例子是使用理想的时间序列数据测试模型。在这一部分，我们将探讨如何创建合成的自回归（AR）时间序列数据。
 - en: The [numpy.random](https://numpy.org/doc/1.16/reference/routines.random.html)
     library can be used to create random samples from different distributions. The
     `randn()` method generates data from a standard normal distribution with zero
     mean and unit variance.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: '[numpy.random](https://numpy.org/doc/1.16/reference/routines.random.html) 库可用于从不同分布中创建随机样本。`randn()`
+    方法生成来自标准正态分布的数据，均值为零，方差为一。'
 - en: In the AR($n$) model of order $n$, the value $x_t$ at time step $t$ depends
     upon the values at the previous $n$ time steps. That is,
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 AR($n$) 模型中，时间步 $t$ 的值 $x_t$ 取决于前 $n$ 个时间步的值。即，
 - en: $$
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: x_t = b_1 x_{t-1} + b_2 x_{t-2} + … + b_n x_{t-n} + e_t
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: x_t = b_1 x_{t-1} + b_2 x_{t-2} + … + b_n x_{t-n} + e_t
 - en: $$
+  id: totrans-81
   prefs: []
   type: TYPE_NORMAL
+  zh: $$
 - en: with model parameters $b_i$ as coefficients to different **lags** of $x_t$,
     and the error term $e_t$ is expected to follow normal distribution.
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用模型参数 $b_i$ 作为不同**滞后**的 $x_t$ 的系数，误差项 $e_t$ 预计遵循正态分布。
 - en: 'Understanding the formula, we can generate an AR(3) time series in the example
     below. We first use `randn()` to generate the first 3 values of the series and
     then iteratively apply the above formula to generate the next data point. Then,
     an error term is added using `the randn()` function again, subject to the predefined
     `noise_level`:'
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 理解公式后，我们可以在下面的示例中生成一个 AR(3) 时间序列。我们首先使用 `randn()` 生成序列的前 3 个值，然后迭代应用上述公式生成下一个数据点。然后，再次使用
+    `randn()` 函数添加一个误差项，受预定义的 `noise_level` 影响：
 - en: '[PRE18]'
+  id: totrans-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'The code above will create the following plot:'
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的代码将创建以下图表：
 - en: '![](../Images/395a5291a0d23c7080eec1631d5a21c1.png)'
+  id: totrans-86
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/395a5291a0d23c7080eec1631d5a21c1.png)'
 - en: 'But we can further add the time axis by first converting the data into a pandas
     DataFrame and then adding the time as an index:'
+  id: totrans-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 但我们可以通过首先将数据转换为 pandas DataFrame，然后将时间作为索引来进一步添加时间轴：
 - en: '[PRE19]'
+  id: totrans-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'after which we will have the following plot instead:'
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 此后我们将得到以下图表：
 - en: '![](../Images/ef298ff88cb9d03a3b2ce3f86c75651a.png)'
+  id: totrans-90
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/ef298ff88cb9d03a3b2ce3f86c75651a.png)'
 - en: Plot of synthetic time series
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 合成时间序列的图表
 - en: Using similar techniques, we can generate pure random noise (i.e., AR(0) series),
     ARIMA time series (i.e., with coefficients to error terms), or Brownian motion
     time series (i.e., running sum of random noise) as well.
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用类似技术，我们也可以生成纯随机噪声（即 AR(0) 系列）、ARIMA 时间序列（即带有误差项的系数）或布朗运动时间序列（即随机噪声的累计和）。
 - en: Further Reading
+  id: totrans-93
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多资源，如果你希望深入了解这个主题。
 - en: Libraries
+  id: totrans-95
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 库
 - en: '[pandas-datareader](https://pandas-datareader.readthedocs.io/en/latest/index.html)'
+  id: totrans-96
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[pandas-datareader](https://pandas-datareader.readthedocs.io/en/latest/index.html)'
 - en: '[Python requests](https://docs.python-requests.org/en/latest/)'
+  id: totrans-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python requests](https://docs.python-requests.org/en/latest/)'
 - en: Data source
+  id: totrans-98
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 数据来源
 - en: '[Yahoo! Finance](https://finance.yahoo.com/)'
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Yahoo! Finance](https://finance.yahoo.com/)'
 - en: '[St. Louis Fed Federal Research Economic Data](https://fred.stlouisfed.org/)'
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[圣路易斯联邦储备经济数据](https://fred.stlouisfed.org/)'
 - en: '[World Bank Open Data](https://data.worldbank.org/)'
+  id: totrans-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[世界银行开放数据](https://data.worldbank.org/)'
 - en: '[World Bank Data API documentation](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589-developer-information)'
+  id: totrans-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[世界银行数据 API 文档](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589-developer-information)'
 - en: Books
+  id: totrans-103
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 书籍
 - en: '[Think Python: How to Think Like a Computer Scientist](https://greenteapress.com/thinkpython/html/index.html)
     by Allen B. Downey'
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Think Python: How to Think Like a Computer Scientist](https://greenteapress.com/thinkpython/html/index.html)
+    由 Allen B. Downey 编著'
 - en: '[Programming in Python 3: A Complete Introduction to the Python Language](https://www.amazon.com/dp/B001OFK2DK/)
     by Mark Summerfield'
+  id: totrans-105
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 3 编程：Python 语言完全介绍](https://www.amazon.com/dp/B001OFK2DK/) 由 Mark Summerfield
+    编著'
 - en: '[Python for Data Analysis](https://www.amazon.com/dp/1491957662/), 2nd edition,
     by Wes McKinney'
+  id: totrans-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 数据分析](https://www.amazon.com/dp/1491957662/)，由 Wes McKinney 编著，第二版'
 - en: Summary
+  id: totrans-107
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, you discovered various options for fetching data or generating
     synthetic time-series data in Python.
+  id: totrans-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你发现了在 Python 中获取数据或生成合成时间序列数据的各种选项。
 - en: 'Specifically, you learned:'
+  id: totrans-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to use `pandas_datareader` and fetch financial data from different data
     sources
+  id: totrans-110
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 `pandas_datareader` 从不同的数据源中获取金融数据
 - en: How to call APIs to fetch data from different web servers using `the requests`
     library
+  id: totrans-111
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何调用 API 从不同的 Web 服务器获取数据，使用 `requests` 库
 - en: How to generate synthetic time-series data using NumPy’s random number generator
+  id: totrans-112
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 NumPy 的随机数生成器生成合成时间序列数据
 - en: Do you have any questions about the topics discussed in this post? Ask your
     questions in the comments below, and I will do my best to answer.
+  id: totrans-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于本帖讨论的主题，你有任何问题吗？请在下面的评论中提问，我会尽力回答。

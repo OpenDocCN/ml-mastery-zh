@@ -1,158 +1,237 @@
 - en: Running and Passing Information to a Python Script
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 运行和传递信息给 Python 脚本
 - en: 原文：[https://machinelearningmastery.com/running-and-passing-information-to-a-python-script/](https://machinelearningmastery.com/running-and-passing-information-to-a-python-script/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/running-and-passing-information-to-a-python-script/](https://machinelearningmastery.com/running-and-passing-information-to-a-python-script/)
 - en: Running your Python scripts is an important step in the development process
     because it is in this manner that you’ll get to find out if your code works as
     you intended it to. Also, it is often the case that we would need to pass information
     to the Python script for it to function.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行 Python 脚本是开发过程中的一个重要步骤，因为通过这种方式你可以确定你的代码是否按预期工作。同时，我们通常需要将信息传递给 Python 脚本，以使其正常工作。
 - en: In this tutorial, you will discover various ways of running and passing information
     to a Python script.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你将发现多种运行和传递信息给 Python 脚本的方法。
 - en: 'After completing this tutorial, you will know:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将了解到：
 - en: How to run a Python script using the command-line interface, the Jupyter Notebook,
     or an Integrated Development Environment (IDE)
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用命令行界面、Jupyter Notebook 或集成开发环境（IDE）运行 Python 脚本
 - en: How to pass information to a Python script using the  sys.argv  command by hard-coding
     the input variables in the Jupyter Notebook or through the interactive use of
     the input()  function.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 sys.argv 命令将信息传递给 Python 脚本，方法是通过硬编码输入变量到 Jupyter Notebook 中或通过交互式使用 input()
+    函数。
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用我的新书《Python 机器学习》**启动你的项目，[Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/)，包括*逐步教程*和*Python
+    源代码*文件。'
 - en: Let’s get started.[![](../Images/09153287642a50f7f16be72bb77cfe36.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/invoking_python_cover-scaled.jpg)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧。[![](../Images/09153287642a50f7f16be72bb77cfe36.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/invoking_python_cover-scaled.jpg)
 - en: Running and Passing Information to a Python Script
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行和传递信息给 Python 脚本
 - en: Photo by [Andrea Leopardi](https://unsplash.com/photos/QVD3Xht9txA), some rights
     reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源 [Andrea Leopardi](https://unsplash.com/photos/QVD3Xht9txA)，部分权利保留。
 - en: '**Tutorial Overview**'
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**教程概述**'
 - en: 'This tutorial is divided into two parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为两部分；它们是：
 - en: Running a Python Script
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 运行 Python 脚本
 - en: Using a Command-Line Interface
+  id: totrans-14
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用命令行界面
 - en: Using the Jupyter Notebook
+  id: totrans-15
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 Jupyter Notebook
 - en: Using an Integrated Development Environment (IDE)
+  id: totrans-16
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用集成开发环境（IDE）
 - en: Python Input
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Python 输入
 - en: '**Running a Python Script:**'
+  id: totrans-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**运行 Python 脚本：**'
 - en: '**Using a Command-Line Interface**'
+  id: totrans-19
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**使用命令行界面**'
 - en: The command-line interface is used extensively for running Python code.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 命令行界面广泛用于运行 Python 代码。
 - en: Let’s test a few commands by first opening up a Command Prompt or Terminal window,
     depending on the operating system that you are working on.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，根据你使用的操作系统，打开一个命令提示符或终端窗口，测试一些命令。
 - en: Typing the  python command in your command-line interface will initiate a Python
     interactive session. You will see that a message appears informing you of the
     Python version that you are using.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在命令行界面中输入 python 命令将启动一个 Python 交互式会话。你将看到一条消息，告知你所使用的 Python 版本。
 - en: Python
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE0]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Any statements you write in your command-line interface during an interactive
     session will be executed immediately. For example, typing out 2 + 3 returns a
     value of 5:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在交互式会话中，你在命令行界面中输入的任何语句都会立即执行。例如，输入 2 + 3 会返回 5：
 - en: Python
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE1]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Python
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE2]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Using an interactive session in this manner has its advantages because you can
     test out lines of Python code easily and quickly. However, it is not the ideal
     option if we are more interested in writing lengthier programs, as would be the
     case if we are developing a machine learning algorithm. The code also disappears
     once the interactive session is terminated.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 以这种方式进行交互式会话有其优势，因为你可以轻松快速地测试 Python 代码的各行。然而，如果我们更关注编写较长的程序（如开发机器学习算法），这不是理想的选择。代码还会在交互式会话结束后消失。
 - en: An alternative option would be to run a Python script. Let’s start with a simple
     example first.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种选择是运行 Python 脚本。我们先从一个简单的例子开始。
 - en: In a text editor (such as [Notepad++](https://notepad-plus-plus.org/), [Visual
     Studio Code](https://code.visualstudio.com/), or [Sublime Text](https://www.sublimetext.com/)),
     type the statement  print("Hello World!")  and save the file to *test_script.py* or
     any other name of your choice as long as you include a *.py* extension.
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在文本编辑器（例如[Notepad++](https://notepad-plus-plus.org/)，[Visual Studio Code](https://code.visualstudio.com/)或[Sublime
+    Text](https://www.sublimetext.com/)）中，键入语句 `print("Hello World!")` 并将文件保存为*test_script.py*或任何其他名称，只要包含*.py*扩展名。
 - en: 'Now, head back to your command-line interface and type the python command,
     followed by the name of your script file. Before you do so, you might need to
     change the path to point to the directory that contains the script file. Running
     the script file should then produce the following output:'
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，返回到您的命令行界面，键入`python`命令，后跟您的脚本文件名。在执行此操作之前，您可能需要更改路径，以指向包含脚本文件的目录。运行脚本文件应该会产生以下输出：
 - en: Python
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE3]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Python
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE4]'
+  id: totrans-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Let’s now write a script file that loads a pre-trained Keras model and outputs
     a prediction for [this](https://unsplash.com/photos/2l0CWTpcChI) image of a dog.
     It is often the case that we would also need to pass information to the Python
@@ -160,276 +239,423 @@
     the  sys.argv  command to pass to the script the image path and the number of
     top guesses to return. We could have as many input arguments as the code requires,
     in which case we would keep on reading the inputs from the argument list.
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们编写一个脚本文件，加载预训练的Keras模型，并输出对[此](https://unsplash.com/photos/2l0CWTpcChI)狗图像的预测。通常情况下，我们还需要通过命令行*参数*向Python脚本传递信息。为此，我们将使用`sys.argv`命令将图像路径和要返回的前几个猜测的数量传递给脚本。如果代码需要，我们可以有尽可能多的输入参数，此时我们将继续从参数列表中读取输入。
 - en: 'The script file that we will be running now contains the following code:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们将要运行的脚本文件包含以下代码：
 - en: Python
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE5]'
+  id: totrans-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'In the above code, we read the command line arguments using `sys.argv[1]` and
     `sys.argv[2]` for the first two arguments. We can run the script by making use
     of the `python` command followed by the name of the script file and further passing
     it as arguments for the image path (after the image has been saved to the disk)
     and the number of top guesses that we would like to predict:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述代码中，我们使用`sys.argv[1]`和`sys.argv[2]`读取命令行参数的前两个参数。我们可以通过使用`python`命令后跟脚本文件名来运行脚本，并进一步传递图像路径（在图像保存到磁盘后）和我们想要预测的前几个猜测的数量：
 - en: Python
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE6]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Here, *pretrained_model.py* is the name of the script file, and the *dog.jpg*
     image has been saved into the same directory that also contains the Python script.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，*pretrained_model.py*是脚本文件的名称，*dog.jpg*图像已保存在同一个目录中，该目录还包含Python脚本。
 - en: 'The generated top three guesses are the following:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成的前三个猜测如下：
 - en: Python
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE7]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'But there can be more in the command line. For example, the following command
     line will run the script in “optimized” mode, in which the debugging variable
     `__debug__` is set to `False,` and `assert` statements are skipped:'
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 但在命令行中可能还有更多内容。例如，以下命令行将以“优化”模式运行脚本，在此模式下，调试变量`__debug__`被设置为`False`，并且跳过`assert`语句。
 - en: Python
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE8]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'And the following is to launch the script with a Python module, such as the
     debugger:'
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是使用Python模块（例如调试器）启动脚本的方法：
 - en: Python
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE9]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: We will have another post about the use of the debugger and profilers.
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将在另一篇文章中讨论调试器和分析器的使用。
 - en: '**Using Jupyter Notebook**'
+  id: totrans-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**使用Jupyter Notebook**'
 - en: Running a Python script from the command-line interface is a straightforward
     option if your code generates a string output and not much else.
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 从命令行界面运行Python脚本是一个直接的选择，如果您的代码生成字符串输出而不是其他内容。
 - en: However, when we are working with images, it is often desirable to generate
     a visual output too. We might be checking the correctness of any pre-processing
     applied to the input image before feeding it into a neural network or visualizing
     the result that the neural network produces. The Jupyter Notebook offers an interactive
     computing environment that can help us achieve this.
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，当我们处理图像时，通常希望生成可视化输出。我们可能会检查输入图像上应用的任何预处理的正确性，然后将其馈送到神经网络中，或者可视化神经网络产生的结果。Jupyter
+    Notebook提供了一个交互式计算环境，可以帮助我们实现这一目标。
 - en: 'One way of running a Python script through the Jupyter Notebook interface is
     to simply add the code to a “cell” in the notebook. But this means your code stays
     inside the Jupyter notebook and cannot be accessed elsewhere, such as using the
     command line as above. Another way is to use the run magic command, prefixed by
     the  %  character. Try typing the following code into a cell in Jupyter Notebook:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过Jupyter Notebook界面运行Python脚本的一种方法是简单地将代码添加到笔记本中的一个“单元格”中。但这意味着您的代码仅留在Jupyter笔记本中，无法像使用上述命令行那样在其他地方访问。另一种方法是使用以%字符为前缀的运行魔术命令。尝试在Jupyter
+    Notebook的一个单元格中输入以下代码：
 - en: Python
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE10]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Here, we are again specifying the name of the Python script file as *pretrained_model.py,* followed
     by the image path and the number of top guesses as the input arguments. You will
     see that the top three predictions are printed beneath the cell that produced
     this result.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们再次指定Python脚本文件名为*pretrained_model.py*，接着是图像路径和顶部猜测的数量作为输入参数。您将看到前三个预测结果打印在生成此结果的单元格下方。
 - en: 'Now, let’s say that we would like to display the input image in order to check
     that it has been loaded according to the model target size. For this purpose,
     we will modify the code slightly as follows and save it into a new Python script,
     *pretrained_model_image.py*:'
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，假设我们想要显示输入图像，以检查它是否已按照模型目标大小加载。为此，我们将稍微修改代码如下，并保存到一个新的Python脚本*pretrained_model_image.py*中：
 - en: Python
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE11]'
+  id: totrans-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Running the newly saved Python script through the Jupyter Notebook interface
     now displays the resized $224 \times 224$ pixel image, in addition to printing
     the top three predictions:'
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过Jupyter Notebook界面运行新保存的Python脚本现在显示了调整大小为$224 \times 224$像素的图像，并打印了前三个预测结果：
 - en: Python
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE12]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '[![](../Images/c108d83793e64252ae12f8fc3aa8c8a1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/invoking_python_1.png)'
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/c108d83793e64252ae12f8fc3aa8c8a1.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/invoking_python_1.png)'
 - en: Running a Python Script in Jupyter Notebook
+  id: totrans-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Jupyter Notebook中运行Python脚本
 - en: 'Alternatively, we can trim down the code to the following (and save it to yet
     another Python script, *pretrained_model_inputs.py*):'
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者，我们可以将代码简化为以下内容（并将其保存到另一个Python脚本*pretrained_model_inputs.py*中）：
 - en: Python
+  id: totrans-72
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE13]'
+  id: totrans-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'And define the input variables in one of the cells of the Jupyter Notebook
     itself. Running the Python script in this manner would require that we also make
     use of the  -i  option after the  %run  magic:'
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 并在Jupyter Notebook的一个单元格中定义输入变量。以这种方式运行Python脚本需要在%run魔术之后使用-i选项：
 - en: Python
+  id: totrans-75
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE14]'
+  id: totrans-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '[![](../Images/b5a763afb12cc7fe37471e7d9b00a96b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/invoking_python_2.png)'
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](../Images/b5a763afb12cc7fe37471e7d9b00a96b.png)](https://machinelearningmastery.com/wp-content/uploads/2021/12/invoking_python_2.png)'
 - en: Running a Python Script in Jupyter Notebook
+  id: totrans-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Jupyter Notebook中运行Python脚本
 - en: The advantage of doing so is to gain easier access to variables inside the Python
     script that can be defined interactively.
+  id: totrans-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样做的优点是更轻松地访问可以交互定义的Python脚本内的变量。
 - en: 'As your code grows, combining the use of a text editor with Jupyter Notebook
     could provide a convenient way forward: the text editor can be used to create
     Python scripts, which store code that can be reused, while the Jupyter Notebook
     provides an interactive computing environment for easier data exploration.'
+  id: totrans-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 随着您的代码增长，结合文本编辑器与Jupyter Notebook可能会提供一种便捷的方法：文本编辑器可用于创建Python脚本，存储可重用的代码，而Jupyter
+    Notebook则提供了交互式计算环境，便于数据探索。
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-81
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用Python进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在立即获取我的免费7天电子邮件快速课程（附有示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获得课程的免费PDF电子书版本。
 - en: '**Using an Integrated Development Environment (IDE)**'
+  id: totrans-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**使用集成开发环境（IDE）**'
 - en: Another option is to run the Python script from an IDE. This requires that a
     project is created first, and the Python script with a *.py* extension is added
     to it.
+  id: totrans-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种选择是从集成开发环境（IDE）运行Python脚本。这需要首先创建一个项目，并将带有*.py*扩展名的Python脚本添加到其中。
 - en: If we had to consider PyCharm or Visual Studio Code as the IDE of choice, this
     would require that we create a new project and subsequently choose the version
     of Python interpreter that we would like to work with. After adding the Python
     script to the newly created project, this can be run to generate an output. The
     following is a screenshot of running Visual Studio Code on macOS. Depending on
     the IDE, there should be an option to run the code with or without the debugger.
+  id: totrans-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们选择 PyCharm 或 Visual Studio Code 作为 IDE，这将要求我们创建一个新项目，然后选择我们想使用的 Python 解释器版本。在将
+    Python 脚本添加到新创建的项目后，可以运行它以生成输出。以下是 macOS 上运行 Visual Studio Code 的屏幕截图。根据 IDE 的不同，应该有一个选项来选择是否使用调试器运行代码。
 - en: '![](../Images/51d03c368f2389f15420ea3c1092dfe0.png)'
+  id: totrans-87
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/51d03c368f2389f15420ea3c1092dfe0.png)'
 - en: '**Python Input**'
+  id: totrans-88
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**Python 输入**'
 - en: We have, so far, considered the options of passing information to the Python
     script using the sys.argv  command or by hard-coding the input variables in Jupyter
     Notebook before running the script.
+  id: totrans-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们考虑了使用 sys.argv 命令或在运行脚本前在 Jupyter Notebook 中硬编码输入变量的选项，以将信息传递给 Python
+    脚本。
 - en: Another option is to take input from the user through the input()  function.
+  id: totrans-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种选择是通过 input() 函数从用户那里获取输入。
 - en: 'Consider the following code:'
+  id: totrans-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑以下代码：
 - en: Python
+  id: totrans-92
   prefs: []
   type: TYPE_NORMAL
+  zh: Python
 - en: '[PRE15]'
+  id: totrans-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Here, the user is prompted to manually enter the image path (the image has been
     saved into the same directory containing the Python script and, hence, specifying
     the image name is sufficient) and the number of top guesses to generate. Both
     input values are of type string; however, the number of top guesses is later cast
     to an integer when this is used.
+  id: totrans-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，系统会提示用户手动输入图像路径（图像已保存到包含 Python 脚本的同一目录中，因此只需指定图像名称即可）和要生成的 top guesses
+    数量。两个输入值都是字符串类型的；然而，top guesses 的数量在使用时会被转换为整数。
 - en: No matter if this code is run in the command-line interface, in Jupyter Notebook,
     or in a Python IDE, it will prompt the user for the required inputs and subsequently
     generate the number of predictions that the user asks for.
+  id: totrans-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论代码是在命令行界面、Jupyter Notebook 还是 Python IDE 中运行，它都会提示用户输入所需的输入值，并随后生成用户要求的预测数量。
 - en: '**Further Reading**'
+  id: totrans-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**进一步阅读**'
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多相关资源，如果你希望深入了解这个话题。
 - en: '**Books**'
+  id: totrans-98
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**书籍**'
 - en: '[Python Fundamentals](https://www.amazon.com/Python-Fundamentals-practical-learning-real-world-ebook/dp/B07K4CVYND/ref=sr_1_1?keywords=python+fundamentals+ebook&qid=1638986660&sr=8-1),
     2018.'
+  id: totrans-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 基础知识](https://www.amazon.com/Python-Fundamentals-practical-learning-real-world-ebook/dp/B07K4CVYND/ref=sr_1_1?keywords=python+fundamentals+ebook&qid=1638986660&sr=8-1)，2018。'
 - en: '[Python Machine Learning Blueprints](https://www.amazon.com/Python-Machine-Learning-Blueprints-developing-ebook/dp/B07JLMHWRG),
     2019.'
+  id: totrans-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 机器学习蓝图](https://www.amazon.com/Python-Machine-Learning-Blueprints-developing-ebook/dp/B07JLMHWRG)，2019。'
 - en: '**Summary**'
+  id: totrans-101
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**总结**'
 - en: In this tutorial, you discovered various ways of running and passing information
     to a Python script.
+  id: totrans-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你了解了运行 Python 脚本和传递信息的各种方式。
 - en: 'Specifically, you learned:'
+  id: totrans-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，你学到了：
 - en: How to run a Python script using the command-line interface, the Jupyter Notebook,
     or an Integrated Development Environment (IDE)
+  id: totrans-104
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用命令行界面、Jupyter Notebook 或集成开发环境（IDE）运行 Python 脚本
 - en: How to pass information to a Python script using the sys.argv  command by hard-coding
     the input variables in Jupyter Notebook or through the interactive use of the
     input()  function
+  id: totrans-105
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过在 Jupyter Notebook 中硬编码输入变量或使用 input() 函数的交互方式，将信息传递给 Python 脚本，使用 sys.argv
+    命令
 - en: Do you have any questions?
+  id: totrans-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有任何问题吗？
 - en: Ask your questions in the comments below, and I will do my best to answer.
+  id: totrans-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下方评论中提出你的问题，我会尽力回答。

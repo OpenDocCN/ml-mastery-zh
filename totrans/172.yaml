@@ -1,84 +1,123 @@
 - en: 'Stable Diffusion Project: Creating Illustration'
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 稳定扩散项目：创建插图
 - en: 原文：[https://machinelearningmastery.com/stable-diffusion-project-creating-illustration/](https://machinelearningmastery.com/stable-diffusion-project-creating-illustration/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/stable-diffusion-project-creating-illustration/](https://machinelearningmastery.com/stable-diffusion-project-creating-illustration/)
 - en: Many people write in their jobs. Not everyone is a novel writer; some write
     technical documentation, business plans, news articles, and even blog posts. In
     those writings, illustrations are not essential but often good to have. They are
     decorations, interpretations, or visual explanations of the text. However, you
     probably do not want to spend too much time or do not have the drawing skills
     to create the illustration. Stable Diffusion is here to help!
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多人在工作中写作。并非所有人都是小说作家；有些人写技术文档、商业计划、新闻文章甚至博客帖子。在这些写作中，插图不是必需的，但通常是有益的。它们是文本的装饰、解释或视觉说明。然而，你可能不希望花费太多时间或没有绘画技能来创建插图。稳定扩散在这里帮助你！
 - en: 'In this post, you will see how you can use Stable Diffusion to create illustrations.
     After finishing this post, you will learn:'
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，你将看到如何使用稳定扩散来创建插图。完成这篇文章后，你将学到：
 - en: How to create a prompt from text
+  id: totrans-4
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从文本中创建提示
 - en: How to adjust the prompt for a better illustration
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何调整提示以获得更好的插图
 - en: '**Kick-start your project** with my book [Mastering Digital Art with Stable
     Diffusion](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 用我的书**[掌握稳定扩散数字艺术](https://machinelearningmastery.com/mastering-digital-art-with-stable-diffusion/)**来**启动你的项目**。它提供了**自学教程**和**有效的代码**。
 - en: Let’s get started
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧
 - en: '![](../Images/319ea69d535ed69cb589740d52d63985.png)'
+  id: totrans-8
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/319ea69d535ed69cb589740d52d63985.png)'
 - en: 'Stable Diffusion Project: Creating Illustration'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 稳定扩散项目：创建插图
 - en: Photo by [Koushik Chowdavarapu](https://unsplash.com/photos/shallow-focus-photography-of-person-drawing-QNj_dwdljY8).
     Some rights reserved.
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：[Koushik Chowdavarapu](https://unsplash.com/photos/shallow-focus-photography-of-person-drawing-QNj_dwdljY8)。部分版权保留。
 - en: Overview
+  id: totrans-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'This post is in three parts; they are:'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章分为三部分：
 - en: Project Idea
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 项目想法
 - en: Creating the Illustration
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 创建插图
 - en: Facial Details
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 面部细节
 - en: Project Idea
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 项目想法
 - en: 'Illustration is a decoration to the text. Let’s begin with the following story:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 插图是对文本的装饰。我们从以下故事开始：
 - en: A number of generals are attacking a fortress. The generals must decide as a
     group whether to attack or retreat; some may prefer to attack, while others prefer
     to retreat. The important thing is that all generals agree on a common decision,
     for a halfhearted attack by a few generals would become a rout, and would be worse
     than either a coordinated attack or a coordinated retreat.
+  id: totrans-18
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一些将军正在攻击一座堡垒。将军们必须作为一个集体决定是攻击还是撤退；有些将军可能倾向于攻击，而其他将军则倾向于撤退。重要的是所有将军在共同决策上达成一致，否则少数将军的半心半意的攻击将变成溃败，效果比协调的攻击或协调的撤退更糟。
 - en: ''
+  id: totrans-19
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -91,18 +130,24 @@
     (which may not go well for the attackers). The problem is complicated further
     by the generals being physically separated and having to send their votes via
     messengers who may fail to deliver votes or may forge false votes.
+  id: totrans-20
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 问题复杂化在于存在背叛的将军，他们不仅可能投票支持次优策略，还可能有选择地投票。例如，如果有九位将军投票，其中四位支持攻击，四位支持撤退，第九位将军可能向支持撤退的将军投票撤退，而向其余将军投票攻击。那些收到第九位将军撤退票的将撤退，而其余将攻击（这可能对攻击者不利）。问题进一步复杂化在于将军们被物理分隔，必须通过信使发送投票，而信使可能无法送达投票或伪造虚假投票。
 - en: If you are familiar with this story, it is the description of [Byzantine Generals’
     Problem](https://en.wikipedia.org/wiki/Byzantine_fault). The text above is from
     Wikipedia. You are going to create a picture to accompany the text above.
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你对这个故事熟悉，它描述了[拜占庭将军问题](https://en.wikipedia.org/wiki/Byzantine_fault)。上述文本来自维基百科。你将创建一幅图像来配合上述文本。
 - en: Creating the Illustration
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建插图
 - en: Simply, you can open up the Stable Diffusion Web UI and enter the story as the
     positive prompt and generate. But there are some problems. Firstly, the story
     may have different scenes, and you need only one in an illustration. Secondly,
@@ -110,20 +155,27 @@
     into an embedding for the diffusion process, you want to emphasize the keywords
     while using a grammatically correct sentence is not important. Thirdly, besides
     the positive prompt, you may also need a negative prompt.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 简单来说，你可以打开Stable Diffusion的Web界面，将故事作为正向提示输入并生成。但也存在一些问题。首先，故事可能包含不同的场景，而你只需要一个场景的插图。其次，描述没有针对提示进行优化。由于文本会被转换为扩散过程中的嵌入，你需要强调关键字，而语法正确的句子并不重要。第三，除了正向提示，你可能还需要一个负向提示。
 - en: 'Paraphrasing the story to make it suitable to use as a prompt is the first
     step. ChatGPT or some other AI tool is good at paraphrasing. You can start with
     this prompt in ChatGPT:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 将故事改写成适合用作提示的形式是第一步。ChatGPT或其他AI工具擅长改写。你可以在ChatGPT中使用以下提示开始：
 - en: Below is a story. Please extract a key scene and describe it as a prompt for
     Stable Diffusion to generate an illustration. If appropriate, please also describe
     the corresponding negative prompt.
+  id: totrans-25
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 以下是一个故事。请提取一个关键场景，并将其描述为Stable Diffusion生成插图的提示。如果适用，请同时描述相应的负向提示。
 - en: ''
+  id: totrans-26
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -141,17 +193,24 @@
     (which may not go well for the attackers). The problem is complicated further
     by the generals being physically separated and having to send their votes via
     messengers who may fail to deliver votes or may forge false votes.'
+  id: totrans-27
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 故事：一群将军正在攻击一个堡垒。将军们必须集体决定是攻击还是撤退；有些人可能倾向于攻击，而另一些人则倾向于撤退。重要的是所有将军必须达成一致的决定，因为部分将军半心半意的攻击将变成溃败，比协调一致的攻击或撤退都要糟糕。问题因存在奸诈的将军而复杂化，他们不仅可能投票支持次优策略，还可能有选择性地这样做。例如，如果有九位将军投票，其中四位支持攻击，而另外四位支持撤退，第九位将军可能会向支持撤退的将军发送撤退的投票，而向其余将军发送攻击的投票。那些收到撤退投票的将军将会撤退，而其余将军则会攻击（这可能对攻击者不利）。问题进一步复杂化，因为将军们被物理分隔，必须通过可能无法传递投票或伪造虚假投票的信使来发送他们的投票。
 - en: 'And the response will be:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 响应将是：
 - en: '**Key Scene Description for Stable Diffusion:**'
+  id: totrans-29
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**Stable Diffusion的关键场景描述：**'
 - en: ''
+  id: totrans-30
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -166,67 +225,97 @@
     open flap. The expressions and body language of the generals convey the gravity
     of their dilemma, hinting at underlying treachery and the looming threat of a
     disastrous miscommunication.
+  id: totrans-31
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 在一个戏剧性的时刻，九位将军在一个昏暗的战斗帐篷内紧张地站成一圈。气氛充满悬念，他们面临着是否攻击或撤退到即将到来的堡垒的关键决定。将军们正在深入讨论，有些人脸上带着决心的表情，而其他人则充满怀疑，反映出他们的冲突偏好。在场景中心，一位信使正被描绘为递送投票，他的出现增加了紧张感，将军们警惕地注视着他。背景中有地图和战斗计划贴在帐篷墙上，通过帐篷的开口可以看到远处堡垒的轮廓。将军们的表情和肢体语言传达了他们困境的严重性，暗示了潜在的背叛和即将到来的灾难性误通信威胁。
 - en: ''
+  id: totrans-32
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**Negative Prompt:**'
+  id: totrans-33
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**负向提示：**'
 - en: ''
+  id: totrans-34
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Avoid depicting modern technology, futuristic elements, and unrealistic or fantasy
     settings. The scene should not include any supernatural elements or anachronistic
     details like computers or modern uniforms.
+  id: totrans-35
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 避免描绘现代技术、未来元素和不现实或幻想的场景。这个场景不应包含任何超自然的元素或不合时宜的细节，比如计算机或现代制服。
 - en: '![](../Images/86789154581e6cdf6406278154147904.png)'
+  id: totrans-36
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/86789154581e6cdf6406278154147904.png)'
 - en: Using ChatGPT to generate a prompt for Stable Diffusion
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 ChatGPT 生成 Stable Diffusion 的提示。
 - en: 'By just copy-and-paste these two generated paragraphs into Stable Diffusion
     Web UI as the positive and negative prompts, you may get this:'
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 只需将这两个生成的段落复制并粘贴到 Stable Diffusion Web UI 中作为正面和负面提示，你可能会得到这样的结果：
 - en: '![](../Images/53829eca7e7f04243c53b8a6ef1f21cb.png)'
+  id: totrans-39
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/53829eca7e7f04243c53b8a6ef1f21cb.png)'
 - en: A picture generated from Stable Diffusion using the prompts as suggested by
     ChatGPT
+  id: totrans-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过使用 ChatGPT 建议的提示生成的 Stable Diffusion 生成的图片。
 - en: This is generated using the model [Deliberate](https://huggingface.co/XpucT/Deliberate)
     and the generation is set to 768×512 pixels. This result is not bad, but it may
     not be what you wanted. Firstly, this output looks like a picture of a photograph.
     If you repeat it a few times, you will see various different styles may be produced
     because you never mentioned what style you wanted! Surely, you want to polish
     the prompts for a better picture.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是使用模型 [Deliberate](https://huggingface.co/XpucT/Deliberate) 生成的，生成设置为 768×512
+    像素。这个结果不错，但可能不是您想要的。首先，这个输出看起来像一张照片。如果你重复几次，你会看到可能会生成各种不同的风格，因为您从未提及您想要的风格！当然，您希望为更好的图片改进提示。
 - en: 'Let’s resort to ChatGPT again, as a follow-up:'
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们再次求助于 ChatGPT，作为后续：
 - en: Simplify the answer of the positive prompt into fewer words
+  id: totrans-43
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 将正面提示的答案简化为更少的词语
 - en: 'Then you get:'
+  id: totrans-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后你得到：
 - en: '**Positive Prompt for Stable Diffusion:**'
+  id: totrans-45
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**稳定扩散的正面提示：**'
 - en: ''
+  id: totrans-46
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -235,111 +324,163 @@
     conflicting preferences. A messenger delivers a vote, adding to the tension. Maps
     and battle plans adorn the tent walls, with the fortress silhouette visible through
     the open flap.
+  id: totrans-47
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一个昏暗的战争帐篷里，九位将军深入讨论是进攻还是撤退的问题。紧张的表情和身体语言反映了他们不同的偏好。一名信使递交了一张票，增加了紧张感。地图和战斗计划装饰着帐篷的墙壁，帐篷的开口处可以看到堡垒的轮廓。
 - en: '![](../Images/d817a8f064a4d84276bbb121b23d30cb.png)'
+  id: totrans-48
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/d817a8f064a4d84276bbb121b23d30cb.png)'
 - en: Asking ChatGPT to simplify the prompt
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 请求 ChatGPT 简化提示
 - en: You can replace your positive prompt with this shorter version. The result should
     not be very different. A good prompt should mention the main focus, the background,
     and the composition and style. This prompt lacks the last. So you can modify the
     prompt to enrich such details. If you want a realistic-looking output, adding
     a keyword “photorealistic” should works.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以用这个更简短的版本替换您的正面提示。结果不应该有太大的区别。一个好的提示应该提到主要焦点、背景、构图和风格。这个提示缺乏后者。所以你可以修改提示以丰富这些细节。如果你想要一个看起来逼真的输出，添加关键词“逼真”应该起作用。
 - en: 'The negative prompt is also important to the generation. We can also simply
     the negative prompt to provide just the keyword. You should also add some style
     keywords to the negative prompt to control what you do not want. An example is
     the following:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 负面提示对于生成同样重要。我们还可以简化负面提示，只提供关键词即可。您还应该为负面提示添加一些样式关键词，以控制不希望出现的内容。一个例子如下：
 - en: Modern technology, futuristic elements, fantasy, supernatural elements, sketch,
     cartoon, anime, model
+  id: totrans-52
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 现代技术、未来元素、幻想、超自然元素、素描、卡通、动漫、模型
 - en: 'And the output is like the following:'
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出如下：
 - en: '![](../Images/9eeeaacd68e93e716161601f2c7f9123.png)'
+  id: totrans-54
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/9eeeaacd68e93e716161601f2c7f9123.png)'
 - en: Improved generation from Stable Diffusion by adjusting the prompt used
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过调整使用的提示改进稳定扩散的生成
 - en: Facial Details
+  id: totrans-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 面部细节
 - en: 'A photorealistic picture would easily fail if you want to have a lot of persons
     in it. This is the case in the screenshot above: If you look closer to each person’s
     face, you will see many of them have a weird facial expression of distorted anatomy.
     This can be fixed, but not with the prompt.'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你希望图片非常真实，那么在图片中有很多人物的情况下很容易失败。这正是上面的屏幕截图中的情况：如果你更仔细地看每个人的脸，你会看到很多人的面部表情有一种扭曲的解剖学。这个问题可以修复，但不能通过提示来解决。
 - en: 'You need to install the [“ADetailer” plugin](https://github.com/Bing-su/adetailer)
     to Stable Diffusion: Go to the extension tab and type in the URL to the “Install
     from URL” section and then restart the Web UI. Then you can see “ADetailer” section
     in the text2img control.'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 要安装[“ADetailer”插件](https://github.com/Bing-su/adetailer)到稳定扩散版本：进入扩展标签页，输入URL到“从URL安装”部分，然后重新启动Web
+    UI。然后你可以在text2img控制中看到“ADetailer”部分。
 - en: 'Repeating the prompt, but this time you should check “ADetailer” to enable
     it and make sure the detector is “face_yolo8n.pt”. This will detect the faces
     from the generated picture and run inpainting to regenerate the faces. You do
     not need to provide any additional prompt in ADetailer plugin unless you want
     some additional details to those faces. The result is as follows:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 重复提示，但这次你应该检查“ADetailer”以启用它，并确保检测器是“face_yolo8n.pt”。这将检测生成图片中的面部并运行修复以重新生成面部。您不需要在ADetailer插件中提供任何额外的提示，除非您希望为这些面部提供一些额外的细节。结果如下：
 - en: '![](../Images/3bbadb6bff38fb607b35154d7a80476b.png)'
+  id: totrans-60
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/3bbadb6bff38fb607b35154d7a80476b.png)'
 - en: Generation from Stable Diffusion. Note the faces look malformed.
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 从稳定扩散生成。注意面部看起来畸形。
 - en: '![](../Images/20b8fb0efddbc0f724be365293ec92cc.png)'
+  id: totrans-62
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/20b8fb0efddbc0f724be365293ec92cc.png)'
 - en: Improved picture after applying the ADetailer plugin.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 应用ADetailer插件后改进的图片。
 - en: The two pictures are generated with a fixed random seed so they looks similar.
     But with the ADetailer plugin, you see the faces look much more natural. Now you
     can use the generated picture as an illustration for your writing.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两幅图片是用固定的随机种子生成的，所以它们看起来很相似。但使用ADetailer插件，你会看到面部看起来更自然。现在你可以将生成的图片用作你的写作插图。
 - en: Further Readings
+  id: totrans-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 更多阅读
 - en: This section provides more resources on the topic if you want to go deeper.
+  id: totrans-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想深入了解这个主题，本节提供了更多资源。
 - en: '[Byzantine fault](https://en.wikipedia.org/wiki/Byzantine_fault) on Wikipedia'
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[拜占庭错误](https://en.wikipedia.org/wiki/Byzantine_fault)在维基百科上'
 - en: '[Deliberate model](https://huggingface.co/XpucT/Deliberate) on Hugging Face'
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Hugging Face上的Deliberate模型](https://huggingface.co/XpucT/Deliberate)'
 - en: '[ADetailer plugin](https://github.com/Bing-su/adetailer) for Stable Diffusion
     Web UI'
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[稳定扩散Web UI的ADetailer插件](https://github.com/Bing-su/adetailer)'
 - en: Summary
+  id: totrans-70
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: In this post, you experienced a workflow on how to extract a scene from text
     and convert it into a prompt for Stable Diffusion. With some attention to the
     details, you can modify the prompt to generate a picture that is suitable as an
     illustration for your text. You also learned that the ADetailer extension for
     the Stable Diffusion Web UI can help you make a better picture by replacing the
     faces in the generation with more naturally looking one.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，您体验了从文本中提取场景并将其转换为稳定扩散提示的工作流程。通过注意细节，您可以修改提示以生成适合作为文本插图的图片。您还了解到，稳定扩散Web
+    UI的ADetailer扩展可以通过用更自然的面孔替换生成的面孔来帮助您制作更好的图片。

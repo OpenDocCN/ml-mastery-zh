@@ -1,234 +1,358 @@
 - en: Introduction to Softmax Classifier in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: PyTorch中的Softmax分类器介绍
 - en: 原文：[https://machinelearningmastery.com/introduction-to-softmax-classifier-in-pytorch/](https://machinelearningmastery.com/introduction-to-softmax-classifier-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/introduction-to-softmax-classifier-in-pytorch/](https://machinelearningmastery.com/introduction-to-softmax-classifier-in-pytorch/)
 - en: While a logistic regression classifier is used for binary class classification,
     softmax classifier is a supervised learning algorithm which is mostly used when
     multiple classes are involved.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然逻辑回归分类器用于二类分类，softmax分类器是一种监督学习算法，主要用于多类别情况。
 - en: Softmax classifier works by assigning a probability distribution to each class.
     The probability distribution of the class with the highest probability is normalized
     to 1, and all other probabilities are scaled accordingly.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: Softmax分类器通过为每个类别分配概率分布来工作。具有最高概率的类别的概率分布被归一化为1，其他所有概率则相应地缩放。
 - en: 'Similarly, a softmax function transforms the output of neurons into a probability
     distribution over the classes. It has the following properties:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似地，softmax函数将神经元的输出转换为类别上的概率分布。它具有以下属性：
 - en: It is related to the logistic sigmoid, which is used in probabilistic modeling
     and has similar properties.
+  id: totrans-5
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 它与逻辑sigmoid有关，逻辑sigmoid用于概率建模，并具有类似的属性。
 - en: It takes values between 0 and 1, with 0 corresponding to an impossible event
     and 1 corresponding to an event that is certain to occur.
+  id: totrans-6
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 它的取值范围在0到1之间，0表示不可能发生的事件，1表示必然发生的事件。
 - en: The derivative of softmax with respect to input `x` can be interpreted as predicting
     how likely it is that a particular class will be selected, given an input `x`.
+  id: totrans-7
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对输入`x`的softmax的导数可以解释为预测给定输入`x`时某个特定类别被选择的可能性。
 - en: 'In this tutorial, we’ll build a one-dimensional softmax classifier and explore
     its functionality. Particularly, we’ll learn:'
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将构建一个一维的softmax分类器并探索其功能。特别地，我们将学习：
 - en: How you can use a Softmax classifier for multiclass classification.
+  id: totrans-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用Softmax分类器进行多类分类。
 - en: How to build and train a Softmax classifier in PyTorch.
+  id: totrans-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中构建和训练Softmax分类器。
 - en: How to analyze the results of the model on test data.
+  id: totrans-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何分析模型在测试数据上的结果。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，参考我的书籍[《深度学习与PyTorch》](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了**自学教程**和**可运行的代码**。'
 - en: Let’s get started.![](../Images/57fde22c2688d158fe47a133006f4715.png)
+  id: totrans-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/57fde22c2688d158fe47a133006f4715.png)
 - en: Introduction to Softmax Classifier in PyTorch.
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTorch中的Softmax分类器介绍。
 - en: Picture by [Julia Caesar](https://unsplash.com/photos/HTSpgMng5ys). Some rights
     reserved.
+  id: totrans-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由[Julia Caesar](https://unsplash.com/photos/HTSpgMng5ys)提供。版权所有。
 - en: Overview
+  id: totrans-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in four parts; they are
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四个部分；它们是
 - en: Preparing Dataset
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备数据集
 - en: Load Dataset into DataLoader
+  id: totrans-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 将数据集加载到DataLoader中
 - en: Build the Model with `nn.Module`
+  id: totrans-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用`nn.Module`构建模型
 - en: Training the Classifier
+  id: totrans-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 训练分类器
 - en: Preparing Dataset
+  id: totrans-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备数据集
 - en: First, let’s build our dataset class to generate some data samples. Unlike the
     previous experiments, you will generate data for multiple classes. Then you will
     train the softmax classifier on these data samples and later use it to make predictions
     on test data.
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们构建我们的数据集类以生成一些数据样本。与之前的实验不同，你将为多个类别生成数据。然后你将训练softmax分类器并在这些数据样本上进行预测，之后使用它对测试数据进行预测。
 - en: 'In below, we generate data for four classes based on a single input variable:'
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下内容，我们基于一个输入变量生成四个类别的数据：
 - en: '[PRE0]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Let’s create the data object and check the first ten data samples and their
     labels.
+  id: totrans-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们创建数据对象并检查前十个数据样本及其标签。
 - en: '[PRE1]'
+  id: totrans-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'This prints:'
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印：
 - en: '[PRE2]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Building the Softmax Model with `nn.Module`
+  id: totrans-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用`nn.Module`构建Softmax模型
 - en: You will employ `nn.Module` from PyTorch to build a custom softmax module. It
     is similar to the custom module you built in previous tutorials for logistic regression.
     So, what’s the difference here? Previously you used `1` in place of `n_ouputs`
     for binary classification, while here we’ll define four classes for multi-class
     classification. Secondly, in the `forward()` function, the model doesn’t use logistic
     function for prediction.
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 你将使用PyTorch中的`nn.Module`来构建自定义的softmax模块。这与之前教程中为逻辑回归构建的自定义模块类似。那么这里有什么不同呢？之前你使用`1`代替`n_outputs`进行二分类，而在这里我们将定义四个类别进行多分类。其次，在`forward()`函数中，模型不使用逻辑函数进行预测。
 - en: '[PRE3]'
+  id: totrans-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Now, let’s create the model object. It takes a one-dimensional vector as input
     and predicts for four different classes. Let’s also check how parameters are initialized.
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们创建模型对象。它接受一个一维向量作为输入，并对四个不同的类别进行预测。我们还来检查一下参数是如何初始化的。
 - en: '[PRE4]'
+  id: totrans-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: This prints
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将打印
 - en: '[PRE5]'
+  id: totrans-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-37
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 PyTorch 进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在参加我的免费电子邮件速成课程（附带示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费 PDF 电子书版本。
 - en: Training the Model
+  id: totrans-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 训练模型
 - en: Combined with the stochastic gradient descent, you will use cross entropy loss
     for model training and set the learning rate at 0.01\. You’ll load the data into
     the data loader and set the batch size to 2.
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 结合随机梯度下降，你将使用交叉熵损失进行模型训练，并将学习率设置为 0.01。你将数据加载到数据加载器中，并将批量大小设置为 2。
 - en: '[PRE6]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Now that everything is set, let’s train our model for 100 epochs.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 既然一切都已设置好，我们来训练我们的模型 100 次迭代。
 - en: '[PRE7]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: After the training loop completed, you call the `max()` method on the model
     to make predictions. The argument `1` returns maximum value with respect to axis
     one, i.e., to return the index of the maximum value from each column.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练循环完成后，你调用模型上的 `max()` 方法来进行预测。参数 `1` 返回相对于轴一的最大值，即从每列返回最大值的索引。
 - en: '[PRE8]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'From above, you should see:'
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 从上面，你应该可以看到：
 - en: '[PRE9]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: These are the model predictions on test data.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些是模型在测试数据上的预测结果。
 - en: Let’s also check the model accuracy.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们也检查一下模型的准确性。
 - en: '[PRE10]'
+  id: totrans-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: In this case, you may see
+  id: totrans-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，你可能会看到
 - en: '[PRE11]'
+  id: totrans-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Which in this simple model, you can see the accuracy approach 1 if you train
     it longer.
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个简单的模型中，如果你训练得更久，你会看到准确率接近 1。
 - en: 'Putting everything together, the following is the complete code:'
+  id: totrans-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容整合在一起，以下是完整的代码：
 - en: '[PRE12]'
+  id: totrans-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Summary
+  id: totrans-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'In this tutorial, you learned how to build a simple one-dimensional softmax
     classifier. Particularly, you learned:'
+  id: totrans-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，你学习了如何构建一个简单的一维 Softmax 分类器。特别地，你学习了：
 - en: How you can use a Softmax classifier for multiclass classification.
+  id: totrans-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使用 Softmax 分类器进行多类分类。
 - en: How to build and train a Softmax classifier in PyTorch.
+  id: totrans-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在 PyTorch 中构建和训练 Softmax 分类器。
 - en: How to analyze the results of the model on test data.
+  id: totrans-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何分析模型在测试数据上的结果。

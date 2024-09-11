@@ -1,308 +1,473 @@
 - en: Training a Linear Regression Model in PyTorch
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中训练线性回归模型
 - en: 原文：[https://machinelearningmastery.com/training-a-linear-regression-model-in-pytorch/](https://machinelearningmastery.com/training-a-linear-regression-model-in-pytorch/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/training-a-linear-regression-model-in-pytorch/](https://machinelearningmastery.com/training-a-linear-regression-model-in-pytorch/)
 - en: Linear regression is a simple yet powerful technique for predicting the values
     of variables based on other variables. It is often used for modeling relationships
     between two or more continuous variables, such as the relationship between income
     and age, or the relationship between weight and height. Likewise, linear regression
     can be used to predict continuous outcomes such as price or quantity demand, based
     on other variables that are known to influence these outcomes.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 线性回归是一种简单而强大的技术，用于基于其他变量预测变量的值。它通常用于建模两个或更多连续变量之间的关系，例如收入与年龄之间的关系，或体重与身高之间的关系。同样，线性回归也可以用于预测诸如价格或需求量等连续结果，这些结果是基于已知会影响这些结果的其他变量。
 - en: In order to train a linear regression model, we need to define a cost function
     and an optimizer. The cost function is used to measure how well our model fits
     the data, while the optimizer decides which direction to move in order to improve
     this fit.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了训练线性回归模型，我们需要定义一个成本函数和一个优化器。成本函数用于衡量模型与数据的拟合程度，而优化器决定了如何移动以改善这种拟合。
 - en: 'While in the previous tutorial you learned how we can make simple predictions
     with only a linear regression forward pass, here you’ll train a linear regression
     model and update its learning parameters using PyTorch. Particularly, you’ll learn:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上一个教程中，你学习了如何仅通过线性回归前向传播进行简单预测，在这里你将训练一个线性回归模型，并使用 PyTorch 更新其学习参数。特别地，你将学习：
 - en: How you can build a simple linear regression model from scratch in PyTorch.
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从头开始在 PyTorch 中构建一个简单的线性回归模型。
 - en: How you can apply a simple linear regression model on a dataset.
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在数据集上应用简单线性回归模型。
 - en: How a simple linear regression model can be trained on a single learnable parameter.
+  id: totrans-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在单个可学习参数上训练简单线性回归模型。
 - en: How a simple linear regression model can be trained on two learnable parameters.
+  id: totrans-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在两个可学习参数上训练简单线性回归模型。
 - en: '**Kick-start your project** with my book [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/).
     It provides **self-study tutorials** with **working code**.'
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，参考我的书籍 [Deep Learning with PyTorch](https://machinelearningmastery.com/deep-learning-with-pytorch/)。它提供了**自学教程**和**可运行的代码**。'
 - en: So, let’s get started.![](../Images/36c11f7d580464fc02a1045f012399aa.png)
+  id: totrans-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，让我们开始吧！[](../Images/36c11f7d580464fc02a1045f012399aa.png)
 - en: Training a Linear Regression Model in PyTorch.
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PyTorch 中训练线性回归模型。
 - en: Picture by [Ryan Tasto](https://unsplash.com/photos/chbXE4o0ryU). Some rights
     reserved.
+  id: totrans-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片由 [Ryan Tasto](https://unsplash.com/photos/chbXE4o0ryU) 提供。一些权利保留。
 - en: Overview
+  id: totrans-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: This tutorial is in four parts; they are
+  id: totrans-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为四部分；它们是
 - en: Preparing Data
+  id: totrans-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 准备数据
 - en: Building the Model and Loss Function
+  id: totrans-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 构建模型和损失函数
 - en: Training the Model for a Single Parameter
+  id: totrans-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为单个参数训练模型
 - en: Training the Model for Two Parameters
+  id: totrans-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为两个参数训练模型
 - en: Preparing Data
+  id: totrans-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 准备数据
 - en: Let’s import a few libraries we’ll use in this tutorial and make some data for
     our experiments.
+  id: totrans-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们导入一些将在本教程中使用的库，并制作一些实验数据。
 - en: '[PRE0]'
+  id: totrans-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: We will use synthetic data to train the linear regression model. We’ll initialize
     a variable `X` with values from $-5$ to $5$ and create a linear function that
     has a slope of $-5$. Note that this function will be estimated by our trained
     model later.
+  id: totrans-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用合成数据来训练线性回归模型。我们将初始化一个变量 `X`，其值从 $-5$ 到 $5$，并创建一个斜率为 $-5$ 的线性函数。请注意，这个函数稍后将由我们训练的模型进行估计。
 - en: '[PRE1]'
+  id: totrans-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Also, we’ll see how our data looks like in a line plot, using matplotlib.
+  id: totrans-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，我们将使用 matplotlib 查看数据在折线图中的表现。
 - en: '[PRE2]'
+  id: totrans-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '![](../Images/0a01711341bd7916a2a85908675aab14.png)'
+  id: totrans-26
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/0a01711341bd7916a2a85908675aab14.png)'
 - en: Plot of the linear function
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 线性函数的图示
 - en: As we need to simulate the real data we just created, let’s add some Gaussian
     noise to it in order to create noisy data of the same size as $X$, keeping the
     value of standard deviation at 0.4\. This will be done by using `torch.randn(X.size())`.
+  id: totrans-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们需要模拟刚刚创建的真实数据，我们将向其中添加一些高斯噪声，以生成与 $X$ 同样大小的噪声数据，标准差保持在 0.4。这将通过使用 `torch.randn(X.size())`
+    来完成。
 - en: '[PRE3]'
+  id: totrans-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Now, let’s visualize these data points using below lines of code.
+  id: totrans-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们使用下面的代码行来可视化这些数据点。
 - en: '[PRE4]'
+  id: totrans-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '![](../Images/4205c90fc75188f10574fafcd50b09f5.png)'
+  id: totrans-32
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/4205c90fc75188f10574fafcd50b09f5.png)'
 - en: Data points and the linear function
+  id: totrans-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据点和线性函数
 - en: Putting all together, the following is the complete code.
+  id: totrans-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合起来，以下是完整的代码。
 - en: '[PRE5]'
+  id: totrans-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Building the Model and Loss Function
+  id: totrans-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建模型和损失函数
 - en: 'We created the data to feed into the model, next we’ll build a forward function
     based on a simple linear regression equation. Note that we’ll build the model
     to train only a single parameter ($w$) here. Later, in the sext section of the
     tutorial, we’ll add the bias and train the model for two parameters ($w$ and $b$).
     The function for the forward pass of the model is defined as follows:'
+  id: totrans-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们创建了用于输入模型的数据，接下来我们将基于一个简单的线性回归方程构建一个前向函数。注意，我们将在这里构建一个只训练单一参数（$w$）的模型。稍后，在教程的下一部分，我们将添加偏差并对两个参数（$w$和$b$）进行训练。模型前向传递的函数定义如下：
 - en: '[PRE6]'
+  id: totrans-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: In training steps, we’ll need a criterion to measure the loss between the original
     and the predicted data points. This information is crucial for gradient descent
     optimization operations of the model and updated after every iteration in order
     to calculate the gradients and minimize the loss. Usually, linear regression is
     used for continuous data where Mean Square Error (MSE) effectively calculates
     the model loss. Therefore MSE metric is the criterion function we use here.
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 在训练步骤中，我们需要一个标准来衡量原始数据点和预测数据点之间的损失。这些信息对模型的梯度下降优化操作至关重要，并且在每次迭代后更新以计算梯度并最小化损失。通常，线性回归用于连续数据，其中均方误差（MSE）有效地计算模型损失。因此，MSE度量是我们在这里使用的标准函数。
 - en: '[PRE7]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Want to Get Started With Deep Learning with PyTorch?
+  id: totrans-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用PyTorch进行深度学习吗？
 - en: Take my free email crash course now (with sample code).
+  id: totrans-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就接受我的免费电子邮件速成课程吧（附样例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册并获取免费的PDF电子书版本课程。
 - en: Training the Model for a Single Parameter
+  id: totrans-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 对单一参数训练模型
 - en: With all these preparations, we are ready for model training. First, the parameter
     $w$ need to be initialized randomly, for example, to the value $-10$.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 经过这些准备后，我们准备开始模型训练。首先，参数$w$需要随机初始化，例如设置为$-10$。
 - en: '[PRE8]'
+  id: totrans-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Next, we’ll define the learning rate or the step size, an empty list to store
     the loss after each iteration, and the number of iterations we want our model
     to train for. While the step size is set at 0.1, we train the model for 20 iterations
     per epochs.
+  id: totrans-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将定义学习率或步长，一个空列表以存储每次迭代后的损失，以及我们希望模型训练的迭代次数。步长设置为0.1，我们对模型进行20次迭代每个纪元。
 - en: '[PRE9]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: When below lines of code is executed, the `forward()` function takes an input
     and generates a prediction. The `criterian()` function calculates the loss and
     stores it in `loss` variable. Based on the model loss, the `backward()` method
     computes the gradients and `w.data` stores the updated parameters.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 当执行以下代码时，`forward()`函数接受输入并生成预测。`criterian()`函数计算损失并将其存储在`loss`变量中。根据模型损失，`backward()`方法计算梯度，`w.data`存储更新后的参数。
 - en: '[PRE10]'
+  id: totrans-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The output of the model training is printed as under. As you can see, model
     loss reduces after every iteration and the trainable parameter (which in this
     case is $w$) is updated.
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 模型训练的输出如下所示。如你所见，模型损失在每次迭代后减少，训练参数（在本例中是$w$）得到更新。
 - en: '[PRE11]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Let’s also visualize via the plot to see how the loss reduces.
+  id: totrans-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以通过图示来查看损失如何减少。
 - en: '[PRE12]'
+  id: totrans-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '![](../Images/6d683ebe8813cbfa81bb2cd8a33c131f.png)'
+  id: totrans-55
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/6d683ebe8813cbfa81bb2cd8a33c131f.png)'
 - en: Training loss vs epochs
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练损失与迭代次数的关系
 - en: 'Putting everything together, the following is the complete code:'
+  id: totrans-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 综合起来，以下是完整的代码：
 - en: '[PRE13]'
+  id: totrans-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Training the Model for Two Parameters
+  id: totrans-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 对两个参数训练模型
 - en: Let’s also add bias $b$ to our model and train it for two parameters. First
     we need to change the forward function to as follows.
+  id: totrans-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还需要将偏差$b$添加到我们的模型中，并对两个参数进行训练。首先，我们需要将前向函数更改如下。
 - en: '[PRE14]'
+  id: totrans-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: As we have two parameters $w$ and $b$, we need to initialize both to some random
     values, such as below.
+  id: totrans-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们有两个参数$w$和$b$，我们需要将两者都初始化为一些随机值，如下所示。
 - en: '[PRE15]'
+  id: totrans-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: While all the other code for training will remain the same as before, we’ll
     only have to make a few changes for two learnable parameters.
+  id: totrans-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然训练的所有其他代码保持不变，我们只需对两个可学习参数进行一些更改。
 - en: Keeping learning rate at 0.1, lets train our model for two parameters for 20
     iterations/epochs.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 将学习率保持在0.1，训练我们的模型两个参数20次迭代/纪元。
 - en: '[PRE16]'
+  id: totrans-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Here is what we get for output.
+  id: totrans-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我们得到的输出结果。
 - en: '[PRE17]'
+  id: totrans-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Similarly we can plot the loss history.
+  id: totrans-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样，我们可以绘制损失历史。
 - en: '[PRE18]'
+  id: totrans-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: And here is how the plot for the loss looks like.
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是损失的图示效果。
 - en: '![](../Images/924907dee58b3d5e330d169165c3a225.png)'
+  id: totrans-72
   prefs: []
   type: TYPE_IMG
+  zh: '![](../Images/924907dee58b3d5e330d169165c3a225.png)'
 - en: History of loss for training with two parameters
+  id: totrans-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练具有两个参数的损失历史
 - en: Putting everything together, this is the complete code.
+  id: totrans-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容整合起来，这是完整的代码。
 - en: '[PRE19]'
+  id: totrans-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Summary
+  id: totrans-76
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial you learned how you can build and train a simple linear regression
     model in PyTorch. Particularly, you learned.
+  id: totrans-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，您学习了如何在PyTorch中构建和训练一个简单的线性回归模型。特别是，您学到了：
 - en: How you can build a simple linear regression model from scratch in PyTorch.
+  id: totrans-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在PyTorch中从头开始构建一个简单的线性回归模型。
 - en: How you can apply a simple linear regression model on a dataset.
+  id: totrans-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在数据集上应用一个简单的线性回归模型。
 - en: How a simple linear regression model can be trained on a single learnable parameter.
+  id: totrans-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何训练一个具有单个可学习参数的简单线性回归模型。
 - en: How a simple linear regression model can be trained on two learnable parameters.
+  id: totrans-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何训练一个具有两个可学习参数的简单线性回归模型。

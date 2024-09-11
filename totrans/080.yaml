@@ -1,11 +1,15 @@
 - en: Monkey Patching Python Code
+  id: totrans-0
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 猴子补丁 Python 代码
 - en: 原文：[https://machinelearningmastery.com/monkey-patching-python-code/](https://machinelearningmastery.com/monkey-patching-python-code/)
+  id: totrans-1
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 原文：[https://machinelearningmastery.com/monkey-patching-python-code/](https://machinelearningmastery.com/monkey-patching-python-code/)
 - en: Python is a dynamic scripting language. Not only does it have a dynamic type
     system where a variable can be assigned to one type first and changed later, but
     its object model is also dynamic. This allows us to modify its behavior at run
@@ -14,8 +18,11 @@
     code. Imagine you can use the `print()` function to print something to the screen,
     and we can modify the definition of this function to print it to a file without
     modifying any single line of your code.
+  id: totrans-2
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 是一种动态脚本语言。它不仅具有动态类型系统，允许变量首先分配为一种类型然后后续改变，而且它的对象模型也是动态的。这使得我们可以在运行时修改其行为。其结果是可以进行猴子补丁。这是一个想法，我们可以在不修改高层代码的情况下修改程序的基础层。想象一下，你可以使用
+    `print()` 函数将内容打印到屏幕上，我们可以修改该函数的定义，将其打印到文件中，而无需修改你的任何一行代码。
 - en: It is possible because Python is an interpreted language, so we can make changes
     while the program is running. We can make use of this property in Python to modify
     the interface of a class or a module. It’s useful if we are dealing with legacy
@@ -23,97 +30,150 @@
     but still want to make it run with different versions of libraries or environments.
     In this tutorial, we are going to see how we can apply this technique to some
     Keras and TensorFlow code.
+  id: totrans-3
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是可能的，因为 Python 是一种解释型语言，因此我们可以在程序运行时进行更改。我们可以利用这一特性在 Python 中修改类或模块的接口。如果我们处理遗留代码或其他人的代码，我们不想对其进行广泛修改，但仍然希望在不同版本的库或环境中运行它，这就很有用。在本教程中，我们将看到如何将这一技术应用于一些
+    Keras 和 TensorFlow 代码。
 - en: 'After finishing this tutorial, you will learn:'
+  id: totrans-4
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成本教程后，你将学到：
 - en: What is monkey patching
+  id: totrans-5
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是猴子补丁
 - en: How to change an object or a module in Python at runtime
+  id: totrans-6
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在运行时更改 Python 中的对象或模块
 - en: '**Kick-start your project** with my new book [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/),
     including *step-by-step tutorials* and the *Python source code* files for all
     examples.'
+  id: totrans-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**启动你的项目**，通过我的新书 [Python for Machine Learning](https://machinelearningmastery.com/python-for-machine-learning/)，包括
+    *一步步的教程* 和 *Python 源代码* 文件，用于所有示例。'
 - en: Let’s get started.![](../Images/a31cd24750c6b8c4d1a22885e9693da5.png)
+  id: totrans-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！[](../Images/a31cd24750c6b8c4d1a22885e9693da5.png)
 - en: Monkey Patching Python Code. Photo by [Juan Rumimpunu](https://unsplash.com/photos/nLXOatvTaLo).
     Some rights reserved.
+  id: totrans-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 猴子补丁 Python 代码。照片由 [Juan Rumimpunu](https://unsplash.com/photos/nLXOatvTaLo)
+    提供。保留所有权利。
 - en: Tutorial Overview
+  id: totrans-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 教程概述
 - en: 'This tutorial is in three parts; they are:'
+  id: totrans-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程分为三部分；它们是：
 - en: One model, two interfaces
+  id: totrans-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个模型，两种接口
 - en: Extending an object with monkey patching
+  id: totrans-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用猴子补丁扩展对象
 - en: Monkey patching to revive legacy code
+  id: totrans-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 猴子补丁以复兴遗留代码
 - en: One Model, Two Interfaces
+  id: totrans-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个模型，两种接口
 - en: TensorFlow is a huge library. It provides a high-level Keras API to describe
     deep learning models in layers. It also comes with a lot of functions for training,
     such as different optimizers and data generators. It is overwhelming to install
     TensorFlow just because we need to run our **trained model**. Therefore, TensorFlow
     provides us with a counterpart called **TensorFlow Lite** that is much smaller
     in size and suitable to run in small devices such as mobile or embedded devices.
+  id: totrans-16
   prefs: []
   type: TYPE_NORMAL
+  zh: TensorFlow 是一个庞大的库。它提供了一个高层 Keras API 来描述深度学习模型的层次结构。它还附带了很多用于训练的函数，如不同的优化器和数据生成器。仅仅因为我们需要运行**训练后的模型**，安装
+    TensorFlow 就显得很繁琐。因此，TensorFlow 提供了一个名为 **TensorFlow Lite** 的对等产品，体积更小，适合在诸如移动设备或嵌入式设备等小型设备上运行。
 - en: 'We want to show how the original TensorFlow Keras model and the TensorFlow
     Lite model are used differently. So let’s make a model of moderate size, such
     as the LeNet-5 model. Below is how we load the MNIST dataset and train a model
     for classification:'
+  id: totrans-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们希望展示原始 TensorFlow Keras 模型和 TensorFlow Lite 模型的不同使用方式。因此，让我们制作一个中等大小的模型，比如
+    LeNet-5 模型。以下是我们如何加载 MNIST 数据集并训练一个分类模型：
 - en: '[PRE0]'
+  id: totrans-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Running the above code will download the MNIST dataset using the TensorFlow’s
     dataset API and train the model. Afterward, we can save the model:'
+  id: totrans-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行上述代码将使用 TensorFlow 的数据集 API 下载 MNIST 数据集并训练模型。之后，我们可以保存模型：
 - en: '[PRE1]'
+  id: totrans-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Or we can evaluate the model with our test set:'
+  id: totrans-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者我们可以用测试集评估模型：
 - en: '[PRE2]'
+  id: totrans-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Then we should see:'
+  id: totrans-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们应该看到：
 - en: '[PRE3]'
+  id: totrans-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'But if we intend to use it with TensorFlow Lite, we want to convert it to the
     TensorFlow Lite format as follows:'
+  id: totrans-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 但如果我们打算在 TensorFlow Lite 中使用它，我们希望将其转换为 TensorFlow Lite 格式，如下所示：
 - en: '[PRE4]'
+  id: totrans-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'We can add more options to the converter, such as reducing the model to use
     a 16-bit floating point. But in all cases, the output of the conversion is a binary
     string. Not only will the conversion reduce the model to a much smaller size (compared
@@ -122,48 +182,75 @@
     devices. If you’re using embedded Linux, you may find the `tflite-runtime` module
     from the PyPI repository (or you may compile one from TensorFlow source code).
     Below is how we can use `tflite-runtime` to run the converted model:'
+  id: totrans-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以向转换器添加更多选项，例如将模型减少为使用 16 位浮点数。但在所有情况下，转换的输出是二进制字符串。转换不仅会将模型缩减到比从 Keras 保存的
+    HDF5 文件小得多的尺寸，还会允许我们使用轻量级库。有适用于 Android 和 iOS 移动设备的库。如果你使用嵌入式 Linux，可能会找到来自 PyPI
+    仓库的 `tflite-runtime` 模块（或从 TensorFlow 源代码编译一个）。下面是如何使用 `tflite-runtime` 运行转换后的模型：
 - en: '[PRE5]'
+  id: totrans-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'In fact, the larger TensorFlow library can also run the converted model in
     a very similar syntax:'
+  id: totrans-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，更大的 TensorFlow 库也可以用类似的语法运行转换后的模型：
 - en: '[PRE6]'
+  id: totrans-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Note the different ways of using the models: In the Keras model, we have the
     `predict()` function that takes a batch as input and returns a result. In the
     TensorFlow Lite model, however, we have to inject one input tensor at a time to
     the “interpreter” and invoke it, then retrieve the result.'
+  id: totrans-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意使用模型的不同方式：在 Keras 模型中，我们有 `predict()` 函数，它以批次为输入并返回结果。然而，在 TensorFlow Lite
+    模型中，我们必须一次注入一个输入张量到“解释器”并调用它，然后检索结果。
 - en: 'Putting everything together, the code below is how we build a Keras model,
     train it, convert it to TensorFlow Lite format, and test with the converted model:'
+  id: totrans-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 将所有内容结合起来，下面的代码展示了如何构建一个 Keras 模型、训练它、将其转换为 TensorFlow Lite 格式，并用转换后的模型进行测试：
 - en: '[PRE7]'
+  id: totrans-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Want to Get Started With Python for Machine Learning?
+  id: totrans-34
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 想要开始使用 Python 进行机器学习吗？
 - en: Take my free 7-day email crash course now (with sample code).
+  id: totrans-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在就领取我的免费 7 天电子邮件速成课程（包括示例代码）。
 - en: Click to sign-up and also get a free PDF Ebook version of the course.
+  id: totrans-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击注册，还可以获得课程的免费 PDF 电子书版本。
 - en: Extending an Object with Monkey Patching
+  id: totrans-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用猴子补丁扩展对象
 - en: Can we use `predict()` in the TensorFlow Lite interpreter?
+  id: totrans-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以在 TensorFlow Lite 解释器中使用 `predict()` 吗？
 - en: 'The interpreter object does not have such a function. But since we’re using
     Python, it is possible for us to add it using the **monkey patching** technique.
     To understand what we are doing, first, we have to note that the `interpreter` object
@@ -171,149 +258,225 @@
     we call `interpreter.predict()` like a function, Python will look for the one
     with such a name inside the object, then execute it. If no such name is found,
     Python will raise the `AttributeError` exception:'
+  id: totrans-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 解释器对象没有这样的函数。但是，由于我们使用 Python，我们可以使用 **猴子补丁** 技术添加它。要理解我们在做什么，首先我们要注意，在之前的代码中定义的
+    `interpreter` 对象可能包含许多属性和函数。当我们像调用函数一样调用 `interpreter.predict()` 时，Python 会在对象内部寻找这样一个名称，然后执行它。如果没有找到这样的名称，Python
+    会引发 `AttributeError` 异常：
 - en: '[PRE8]'
+  id: totrans-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'That gives:'
+  id: totrans-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将产生：
 - en: '[PRE9]'
+  id: totrans-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'To make this work, we need to add a function to the `interpreter` object with
     the name `predict`, and that should behave like one when it is invoked. To make
     things simple, we notice that our model is a sequential one with an array as input
     and returns an array of softmax results as output. So we can write a `predict()`
     function that behaves like the one from the Keras model, but using the TensorFlow
     Lite interpreter:'
+  id: totrans-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使其工作，我们需要向 `interpreter` 对象添加一个名称为 `predict` 的函数，并且在调用时应表现得像一个函数。为了简单起见，我们注意到我们的模型是一个顺序模型，输入是一个数组，输出是一个
+    softmax 结果的数组。因此，我们可以编写一个类似于 Keras 模型中 `predict()` 函数的函数，但使用 TensorFlow Lite 解释器：
 - en: '[PRE10]'
+  id: totrans-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The last line above assigns the function we created to the `interpreter` object,
     with the name `predict`. The `__get__(interpreter)` part is required to make a
     function we defined to become a member function of the object `interpreter`.
+  id: totrans-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述最后一行将我们创建的函数分配给 `interpreter` 对象，名称为 `predict`。`__get__(interpreter)` 部分是必需的，以便将我们定义的函数变为
+    `interpreter` 对象的成员函数。
 - en: 'With these, we can now run a batch:'
+  id: totrans-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这些，我们现在可以运行一个批次：
 - en: '[PRE11]'
+  id: totrans-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[PRE12]'
+  id: totrans-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: This is possible because Python has a dynamic object model. We can modify attributes
     or member functions of an object at runtime. In fact, this should not surprise
     us. A Keras model needs to run `model.compile()` before we can run `model.fit()`.
     One effect of the compile function is to add the attribute `loss` to the model
     to hold the loss function. This is accomplished at runtime.
+  id: totrans-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是可能的，因为Python具有动态对象模型。我们可以在运行时修改对象的属性或成员函数。实际上，这不应该让我们感到惊讶。一个Keras模型需要运行`model.compile()`才能运行`model.fit()`。`compile`函数的一个效果是将`loss`属性添加到模型中以保存损失函数。这是在运行时完成的。
 - en: With the `predict()` function added to the `interpreter` object, we can pass
     around the `interpreter` object just like a trained Keras model for prediction.
     While they are different behind the scenes, they share the same interface so other
     functions can use it without modifying any line of code.
+  id: totrans-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 添加了`predict()`函数到`interpreter`对象后，我们可以像使用训练好的Keras模型进行预测一样传递`interpreter`对象。尽管在幕后它们有所不同，但它们共享相同的接口，因此其他函数可以在不修改任何代码行的情况下使用它。
 - en: 'Below is the complete code to load our saved TensorFlow Lite model, then monkey
     patch the `predict()` function to it to make it look like a Keras model:'
+  id: totrans-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是完整的代码，用于加载我们保存的TensorFlow Lite模型，然后对`predict()`函数进行猴子补丁，使其看起来像Keras模型：
 - en: '[PRE13]'
+  id: totrans-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Monkey Patching to Revive Legacy Code
+  id: totrans-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 猴子补丁以恢复遗留代码
 - en: 'We can give one more example of monkey patching in Python. Consider the following
     code:'
+  id: totrans-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以给出一个Python中猴子补丁的另一个示例。考虑以下代码：
 - en: '[PRE14]'
+  id: totrans-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'This code was written a few years back and assumes an older version of Keras
     with TensorFlow 1.x. The data file `sonar.csv` can be found in [the other post](https://machinelearningmastery.com/dropout-regularization-deep-learning-models-keras/).
     If we run this code with TensorFlow 2.5, we will see the issue of an `ImportError`
     on the line of `SGD`. We need to make two changes at a minimum in the above code
     in order to make it run:'
+  id: totrans-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码编写于几年前，假设使用的是旧版本的Keras和TensorFlow 1.x。数据文件`sonar.csv`可以在[另一篇文章](https://machinelearningmastery.com/dropout-regularization-deep-learning-models-keras/)中找到。如果我们使用TensorFlow
+    2.5运行此代码，将会看到`SGD`行出现`ImportError`。我们需要至少在上述代码中进行两个更改以使其运行：
 - en: Functions and classes should be imported from `tensorflow.keras` instead of `keras`
+  id: totrans-57
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 函数和类应该从`tensorflow.keras`而不是`keras`中导入
 - en: The constraint class `maxnorm` should be in camel case, `MaxNorm`
+  id: totrans-58
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 约束类`maxnorm`应该使用驼峰命名法，`MaxNorm`
 - en: 'The following is the updated code, in which we modified only the import statements:'
+  id: totrans-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是更新后的代码，其中我们仅修改了导入语句：
 - en: '[PRE15]'
+  id: totrans-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'If we have a much bigger project with a lot of scripts, it would be tedious
     to modify every single line of import. But Python’s module system is just a dictionary
     at `sys.modules`. Therefore we can monkey patch it to make the old code fit with
     the new library. The following is how we do it. This works for TensorFlow 2.5
     installations (this backward compatibility issue of Keras code was fixed in TensorFlow
     2.9; hence you don’t need this patching in the latest version of libraries):'
+  id: totrans-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们有一个更大的项目，包含许多脚本，那么修改每一行导入将是繁琐的。但Python的模块系统实际上是一个`sys.modules`中的字典。因此，我们可以对其进行猴子补丁，使旧代码适配新库。以下是如何做的。这适用于TensorFlow
+    2.5安装（Keras代码的向后兼容性问题在TensorFlow 2.9中已修复；因此在最新版本的库中不需要这种补丁）：
 - en: '[PRE16]'
+  id: totrans-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: This is definitely not a clean and tidy code, and it will be a problem for future
     maintenance. Therefore, monkey patching is unwelcomed in production code. However,
     this would be a quick technique that exploited the inner mechanism of Python language
     to get something to work easily.
+  id: totrans-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 这绝对不是干净整洁的代码，并且未来维护将是一个问题。因此，猴子补丁在生产代码中是不受欢迎的。然而，这是一种快速技术，利用了Python语言的内部机制，使事情能够轻松工作。
 - en: Further Readings
+  id: totrans-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: This section provides more resources on the topic if you are looking to go deeper.
+  id: totrans-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节提供了更多有关该主题的资源，如果你希望深入了解。
 - en: Articles
+  id: totrans-66
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 文章
 - en: StackOverflow Question “[What is monkey patching?](https://stackoverflow.com/questions/5626193/what-is-monkey-patching)“
+  id: totrans-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: StackOverflow 问题 “[什么是猴子补丁？](https://stackoverflow.com/questions/5626193/what-is-monkey-patching)“
 - en: '[Python quickstart](https://www.tensorflow.org/lite/guide/python), TensorFlow
     Lite Guide'
+  id: totrans-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Python 快速入门](https://www.tensorflow.org/lite/guide/python)，TensorFlow Lite指南'
 - en: '[The import system](https://docs.python.org/3/reference/import.html), Python
     Language Reference'
+  id: totrans-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[导入系统](https://docs.python.org/3/reference/import.html)，Python语言参考'
 - en: Summary
+  id: totrans-70
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this tutorial, we learned what monkey patching is and how to do it. Specifically,
+  id: totrans-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们学习了什么是猴子补丁以及如何进行猴子补丁。具体来说，
 - en: We learned how to add a member function to an existing object
+  id: totrans-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们学习了如何向现有对象添加成员函数
 - en: How to modify the Python module cache at `sys.modules` to deceive the `import`
     statements
+  id: totrans-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何修改 `sys.modules` 中的 Python 模块缓存以欺骗 `import` 语句
